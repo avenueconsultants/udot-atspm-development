@@ -5,6 +5,7 @@ import {
   useGetRegion,
   usePutLocationFromKey,
 } from '@/api/config'
+import AuditInfo from '@/components/AuditInfo'
 import CustomSelect from '@/components/customSelect'
 import { useLocationStore } from '@/features/locations/components/editLocation/locationStore'
 import { useNotificationStore } from '@/stores/notifications'
@@ -133,7 +134,14 @@ const LocationGeneralOptionsEditor = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" mb={1}>
+      <Box
+        display="flex"
+        justifyContent="flex-end"
+        mb={1}
+        gap={2}
+        alignItems="flex-end"
+      >
+        <AuditInfo obj={location} modifiedOnly />
         <Button
           variant="contained"
           color="success"
