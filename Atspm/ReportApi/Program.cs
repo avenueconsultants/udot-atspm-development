@@ -30,6 +30,7 @@ using Utah.Udot.Atspm.Business.PhaseTermination;
 using Utah.Udot.Atspm.Business.PreempDetail;
 using Utah.Udot.Atspm.Business.PreemptService;
 using Utah.Udot.Atspm.Business.PreemptServiceRequest;
+using Utah.Udot.Atspm.Business.PrioritySummary;
 using Utah.Udot.Atspm.Business.PurdueCoordinationDiagram;
 using Utah.Udot.Atspm.Business.RampMetering;
 using Utah.Udot.Atspm.Business.SplitFail;
@@ -108,6 +109,7 @@ builder.Host
         s.AddScoped<IReportService<PreemptDetailOptions, PreemptDetailResult>, PreemptDetailReportService>();
         s.AddScoped<IReportService<PreemptServiceOptions, PreemptServiceResult>, PreemptServiceReportService>();
         s.AddScoped<IReportService<PreemptServiceRequestOptions, PreemptServiceRequestResult>, PreemptRequestReportService>();
+        s.AddScoped<IReportService<PrioritySummaryOptions, PrioritySummaryResult>, PrioritySummaryReportService>();
         s.AddScoped<IReportService<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>>, PurdueCoordinationDiagramReportService>();
         s.AddScoped<IReportService<PurduePhaseTerminationOptions, PhaseTerminationResult>, PurduePhaseTerminationReportService>();
         s.AddScoped<IReportService<RampMeteringOptions, RampMeteringResult>, RampMeteringReportService>();
@@ -143,6 +145,7 @@ builder.Host
         s.AddScoped<LeftTurnPeakHourService>();
         s.AddScoped<PreemptServiceService>();
         s.AddScoped<PreemptServiceRequestService>();
+        s.AddScoped<PrioritySummaryService>();
         s.AddScoped<PurdueCoordinationDiagramService>();
         s.AddScoped<SplitFailPhaseService>();
         s.AddScoped<SplitMonitorService>();

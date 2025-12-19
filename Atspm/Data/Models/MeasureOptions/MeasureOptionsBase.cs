@@ -104,6 +104,12 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
         //public string LocationIdentifier { get; set; }
     }
 
+    public class PrioritySummaryOptions : MeasureOptionsBase, IBinSize
+    {
+        public int BinSize { get; set; }
+        //public string LocationIdentifier { get; set; }
+    }
+
 
     public class TimeSpaceDiagramOptions : MeasureOptionsBase
     {
