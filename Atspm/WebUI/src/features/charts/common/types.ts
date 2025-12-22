@@ -100,6 +100,7 @@ export interface BasePlan {
   planDescription: string
   start: string
   end: string
+  backgroundColor?: string
 }
 
 export type PlanData = [string, 1, string]

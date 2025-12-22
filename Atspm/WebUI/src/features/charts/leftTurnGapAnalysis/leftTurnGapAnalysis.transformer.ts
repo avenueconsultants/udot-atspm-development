@@ -83,7 +83,8 @@ function transformData(data: RawLeftTurnGapData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Left Turn Gap Analysis',
+    location: data.locationDescription,
     dateRange,
     info,
   })
@@ -103,9 +104,9 @@ function transformData(data: RawLeftTurnGapData) {
   )
 
   const grid = createGrid({
-    top: 175,
+    top: 150,
     left: 65,
-    right: 220,
+    right: 250,
   })
 
   const gapNames = [
@@ -118,6 +119,7 @@ function transformData(data: RawLeftTurnGapData) {
   const percentofGreenText = '% of Green Time\nWhere Gaps ≥'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: gapNames[0] },
       { name: gapNames[1] },

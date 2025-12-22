@@ -90,7 +90,7 @@ function transformData(data: RawPurdueSplitFailureData) {
   const title = createTitle({
     title: titleHeader,
     dateRange,
-    info: info,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
@@ -115,7 +115,10 @@ function transformData(data: RawPurdueSplitFailureData) {
   const failLinesText = 'Fail Lines'
   const percentFailsText = 'Percent Fails'
 
+  const isPermissivePhase = data.phaseType.toLowerCase() === 'permissive'
+
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: gapOutGreenText },
       { name: gapOutRedText },
@@ -127,6 +130,10 @@ function transformData(data: RawPurdueSplitFailureData) {
       { name: percentFailsText, icon: DashedLineSeriesSymbol },
     ],
   })
+
+  if (isPermissivePhase) {
+    legend.backgroundColor = 'white'
+  }
 
   const dataZoom = createDataZoom()
 
@@ -294,8 +301,7 @@ function transformData(data: RawPurdueSplitFailureData) {
 
   const displayProps = createDisplayProps({
     description: data.approachDescription,
-    isPermissivePhase:
-      data.phaseType.toLowerCase() === 'permissive' ? true : false,
+    isPermissivePhase,
   })
 
   const chartOptions: EChartsOption = {

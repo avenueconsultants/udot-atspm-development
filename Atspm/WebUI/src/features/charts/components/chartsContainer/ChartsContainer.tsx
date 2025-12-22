@@ -72,7 +72,15 @@ export default function ChartsContainer({
     ) {
       setAlert('')
     }
-  }, [location, chartType, alert, options?.binSize, startDateTime, endDateTime])
+  }, [
+    location,
+    chartType,
+    alert,
+    options?.binSize,
+    startDateTime,
+    endDateTime,
+    options,
+  ])
 
   useEffect(() => {
     showConfig
@@ -119,12 +127,8 @@ export default function ChartsContainer({
     refetch()
   }
 
-  if (chartData && chartData.data.charts.length > 0) {
-    if ('displayProps' in chartData.data.charts[0].chart) {
-      useChartsController =
-        chartData.data.charts[0].chart.displayProps !== undefined
-    }
-  }
+  useChartsController =
+    chartData?.data?.charts && chartData.data.charts.length > 1 ? true : false
 
   const displayStyle = (shouldShow: boolean) => ({
     display: shouldShow ? 'block' : 'none',

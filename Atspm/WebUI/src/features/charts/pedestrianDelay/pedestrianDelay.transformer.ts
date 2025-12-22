@@ -91,9 +91,10 @@ function transformData(data: RawPedestrianDelayData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Pedestrian Delay',
+    location: `${data.locationDescription} - ${data.phaseDescription}`,
     dateRange,
-    info: info,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
@@ -112,7 +113,7 @@ function transformData(data: RawPedestrianDelayData) {
   const grid = createGrid({
     top: 230,
     left: 65,
-    right: 270,
+    right: 280,
   })
 
   const pedestrianDelayText = 'Pedestrian Delay'
@@ -121,6 +122,7 @@ function transformData(data: RawPedestrianDelayData) {
   const percentDelayText = 'Percent Delay\nby Cycle Length'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: pedestrianDelayText },
       { name: cycleLengthText, icon: SolidLineSeriesSymbol },
@@ -137,7 +139,7 @@ function transformData(data: RawPedestrianDelayData) {
       type: 'slider',
       orient: 'vertical',
       filterMode: 'none',
-      right: 160,
+      right: grid.right - 40,
       minSpan: 0.2,
       yAxisIndex: [0, 1],
     },
@@ -215,9 +217,10 @@ function transformData(data: RawPedestrianDelayData) {
     pedPresses: (value: number) => `${value} PP`,
   }
 
-  const plansSeries = createPlans(plans, yAxis.length, planOptions, 125)
+  const plansSeries = createPlans(plans, yAxis.length, planOptions, 135)
 
   const displayProps = createDisplayProps({
+    height: '600px',
     description: data.phaseDescription,
   })
 

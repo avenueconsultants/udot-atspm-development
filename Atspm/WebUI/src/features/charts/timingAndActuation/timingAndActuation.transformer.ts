@@ -29,12 +29,7 @@ import {
   SolidLineSeriesSymbol,
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
-import {
-  EChartsOption,
-  GridComponentOption,
-  SeriesOption,
-  ToolboxComponentOption,
-} from 'echarts'
+import { EChartsOption, SeriesOption, ToolboxComponentOption } from 'echarts'
 import {
   AdvancedDetectors,
   BasicDetectors,
@@ -103,11 +98,11 @@ function transformData(data: RawTimingAndActuationData) {
     data: extractDetectorsNames(data),
   })
 
-  const grid: GridComponentOption = {
-    top: 30,
-    bottom: 90,
+  const grid = {
+    top: 50,
+    bottom: 100,
     right: 60,
-    left: 210,
+    left: 0,
     show: true,
     borderColor: Color.Black,
   }
@@ -218,7 +213,7 @@ function transformData(data: RawTimingAndActuationData) {
   const displayProps = createDisplayProps({
     description: data.approachDescription,
     approachDescription: data.approachDescription,
-    amountOfChannels: amountOfChannels,
+    amountOfChannels,
     detectorEvents: ['Detector Events'],
     phaseType: data.phaseType,
     numberOfLocations: 0,
@@ -279,7 +274,8 @@ export function generateCycles(
     }
 
     const series = seriesMap.get(color)
-    series!.markArea.data.push([{ xAxis: startTime }, { xAxis: endTime }])
+    if (!series) continue
+    series.markArea.data.push([{ xAxis: startTime }, { xAxis: endTime }])
   }
 
   return Array.from(seriesMap.values())
@@ -337,8 +333,9 @@ function generateDetectorSeriesData(
   const lineSeriesData = []
 
   detectors.forEach((detector) => {
-    detector.events.forEach((event, i) => {
-      const onPoint = [event.detectorOn, detector.name]
+    detector.events.forEach((event) => {
+      if (!event.detectorOn) return
+      const onPoint = [event?.detectorOn, detector.name]
       onSeriesData.push(onPoint)
 
       if (!detector.name.includes('Stop')) return
@@ -558,12 +555,12 @@ function getAllEventDetails() {
 }
 
 function createTitleOnlyChart(data: RawTimingAndActuationData) {
-  const titleHeader = `Timing and Actuation\n${data.locationDescription} - ${data.approachDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   return {
     title: createTitle({
-      title: titleHeader,
+      title: 'Timing and Actuation',
+      location: data.locationDescription,
       dateRange,
     }),
   }

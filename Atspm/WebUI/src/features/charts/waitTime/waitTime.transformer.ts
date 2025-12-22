@@ -75,9 +75,10 @@ function transformData(data: RawWaitTimeData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Wait Time',
+    location: data.locationDescription,
     dateRange,
-    info: info,
+    info,
   })
 
   const volumePerHourText = 'Volume Per Hour'
@@ -92,16 +93,17 @@ function transformData(data: RawWaitTimeData) {
   const yAxis = createYAxis(
     true,
     { name: 'Wait Time (Seconds)' },
-    { name: volumePerHourText, position: 'right', nameGap: 50 }
+    { name: volumePerHourText, position: 'right', nameGap: 30 }
   )
 
   const grid = createGrid({
-    top: 200,
+    top: 180,
     left: 80,
-    right: 220,
+    right: 240,
   })
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       volumes.length
         ? {
@@ -193,7 +195,12 @@ function transformData(data: RawWaitTimeData) {
     maxWaitTime: (value: number) => `Max ${value.toFixed(1)} s`,
   }
 
-  const planSeries = createPlans(plans, yAxis.length, planOptions)
+  const planSeries = createPlans(
+    plans,
+    yAxis.length,
+    planOptions,
+    grid.top - 60
+  )
 
   const displayProps = createDisplayProps({
     description: data.approachDescription,

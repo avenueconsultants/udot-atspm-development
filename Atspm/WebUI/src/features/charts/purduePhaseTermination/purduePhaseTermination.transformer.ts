@@ -16,6 +16,7 @@
 // #endregion
 import {
   createDataZoom,
+  createDisplayProps,
   createGrid,
   createInfoString,
   createLegend,
@@ -69,9 +70,10 @@ function transformData(data: RawPurduePhaseTerminationData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Phase Termination',
+    location: data.locationDescription,
     dateRange,
-    info: info,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
@@ -84,9 +86,9 @@ function transformData(data: RawPurduePhaseTerminationData) {
   })
 
   const grid = createGrid({
-    top: 190,
+    top: 160,
     left: 60,
-    right: 250,
+    right: 270,
   })
 
   const gapOuts = 'Gap Outs'
@@ -96,6 +98,7 @@ function transformData(data: RawPurduePhaseTerminationData) {
   const unknownTerminations = 'Unknown Terminations'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: gapOuts },
       { name: forceOffs },
@@ -111,7 +114,7 @@ function transformData(data: RawPurduePhaseTerminationData) {
     {
       type: 'slider',
       orient: 'vertical',
-      right: 190,
+      right: grid.right - 50,
     },
   ])
 
@@ -143,25 +146,25 @@ function transformData(data: RawPurduePhaseTerminationData) {
       name: gapOuts,
       data: combinedGapOuts,
       type: 'scatter',
-      symbolSize: symbolSize,
+      symbolSize,
       color: Color.Green,
-      symbolOffset: [0, '-200%'],
+      symbolOffset: [0, '-300%'],
       tooltip: seriesTooltip as TooltipComponentOption,
     },
     {
       name: forceOffs,
       data: combinedForceOffs,
       type: 'scatter',
-      symbolSize: symbolSize,
+      symbolSize,
       color: Color.Blue,
-      symbolOffset: [0, '-100%'],
+      symbolOffset: [0, '-150%'],
       tooltip: seriesTooltip as TooltipComponentOption,
     },
     {
       name: maxOuts,
       data: combinedMaxOuts,
       type: 'scatter',
-      symbolSize: symbolSize,
+      symbolSize,
       color: Color.Pink,
       tooltip: seriesTooltip as TooltipComponentOption,
     },
@@ -169,27 +172,31 @@ function transformData(data: RawPurduePhaseTerminationData) {
       name: pedWalkBeings,
       data: combinedPedWalkBegins,
       type: 'scatter',
-      symbolSize: symbolSize,
+      symbolSize,
       color: Color.Red,
       symbol: triangleSvgSymbol,
-      symbolOffset: [0, '100%'],
+      symbolOffset: [0, '150%'],
       tooltip: seriesTooltip as TooltipComponentOption,
     },
     {
       name: unknownTerminations,
       data: combinedUnknownTerminations,
       type: 'scatter',
-      symbolSize: symbolSize,
+      symbolSize,
       color: Color.Yellow,
-      symbolOffset: [0, '200%'],
+      symbolOffset: [0, '300%'],
       tooltip: seriesTooltip as TooltipComponentOption,
     }
   )
 
   const planSeries: SeriesOption = {
-    ...createPlans(plans, yAxis.length, undefined, 155),
+    ...createPlans(plans, yAxis.length, undefined, 125),
     tooltip: { trigger: 'none' },
   }
+
+  const displayProps = createDisplayProps({
+    height: 650,
+  })
 
   const chartOptions: ExtendedEChartsOption = {
     title,
@@ -202,6 +209,7 @@ function transformData(data: RawPurduePhaseTerminationData) {
     animation: false,
     series: [...series, planSeries],
     tooltip,
+    displayProps,
   }
 
   return { chart: chartOptions }

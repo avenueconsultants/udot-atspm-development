@@ -15,11 +15,6 @@
 // limitations under the License.
 // #endregion
 import {
-  ArrivalsOnRedPlan,
-  RawArrivalsOnRedData,
-  RawArrivalsOnRedResponse,
-} from '@/features/charts/arrivalsOnRed/types'
-import {
   createDataZoom,
   createDisplayProps,
   createGrid,
@@ -36,17 +31,23 @@ import {
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType, PlanOptions } from '@/features/charts/common/types'
-import { TransformedChartResponse } from '@/features/charts/types'
+import {
+  ExtendedEChartsOption,
+  TransformedChartResponse,
+} from '@/features/charts/types'
 import {
   Color,
-  DashedLineSeriesSymbol,
   SolidLineSeriesSymbol,
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
-import { EChartsOption } from 'echarts'
+import {
+  ApproachDelayPlan,
+  RawApproachDelayData,
+  RawApproachDelayReponse,
+} from './types'
 
-export default function transformArrivalsOnRedData(
-  response: RawArrivalsOnRedResponse
+export default function transformApproachDelayData(
+  response: RawApproachDelayReponse
 ): TransformedChartResponse {
   const charts = response.data.map((data) => {
     const chartOptions = transformData(data)
@@ -56,59 +57,55 @@ export default function transformArrivalsOnRedData(
   })
 
   return {
-    type: ChartType.ArrivalsOnRed,
+    type: ChartType.ApproachDelay,
     data: {
       charts,
     },
   }
 }
 
-function transformData(data: RawArrivalsOnRedData) {
-  const { percentArrivalsOnRed, totalVehicles, arrivalsOnRed, plans } = data
+function transformData(data: RawApproachDelayData) {
+  const { approachDelayPerVehicleDataPoints, approachDelayDataPoints, plans } =
+    data
 
   const info = createInfoString(
-    ['Total Detector Hits: ', data.totalDetectorHits.toLocaleString()],
-    [`% Arrivals on Red (AoR): `, `${data.percentArrivalOnRed.toFixed(2)}%`],
-    ['Total Arrivals on Red: ', data.totalArrivalOnRed.toLocaleString()]
+    [
+      'Average Delay Per Vehicle (AD): ',
+      `${Math.round(data.averageDelayPerVehicle)} seconds`,
+    ],
+    [`Total Delay (TD): `, `${Math.round(data.totalDelay / 3600)} hours`]
   )
 
-  const titleHeader = `Arrivals on Red\n${data.locationDescription} - ${data.phaseDescription}`
+  const titleHeader = `Approach Delay\n${data.locationDescription} - ${data.phaseDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
-
   const title = createTitle({
-    title: titleHeader,
+    title: 'Approach Delay',
+    location: `${data.locationDescription} - ${data.phaseDescription}`,
     dateRange,
-    info: info,
+    info,
   })
 
-  const arrivalsOnRedText = 'Arrivals on Red'
-  const percentArrivalsOnRedText = '% Arrivals on Red'
-  const totalVehiclesText = 'Total Vehicles'
+  const approachDelayHour = 'Approach Delay\n(per hour)'
+  const approachDelaySecond = 'Approach Delay\nPer Vehicle\n(per second)'
 
   const xAxis = createXAxis(data.start, data.end)
   const yAxis = createYAxis(
     true,
-    { name: 'Volume (Vehicles per Hour)', nameGap: 60 },
-    {
-      name: percentArrivalsOnRedText,
-      nameGap: 40,
-      max: 100,
-      position: 'right',
-      axisLine: { show: false },
-    }
+    { name: 'Delay per Vehicle (seconds)' },
+    { name: 'Delay per Hour (hours)' }
   )
 
   const grid = createGrid({
-    top: 210,
-    left: 90,
-    right: 200,
+    top: 190,
+    left: 60,
+    right: 220,
   })
 
   const legend = createLegend({
+    top: grid.top,
     data: [
-      { name: arrivalsOnRedText, icon: SolidLineSeriesSymbol },
-      { name: percentArrivalsOnRedText, icon: DashedLineSeriesSymbol },
-      { name: totalVehiclesText, icon: SolidLineSeriesSymbol },
+      { name: approachDelaySecond, icon: SolidLineSeriesSymbol },
+      { name: approachDelayHour, icon: SolidLineSeriesSymbol },
     ],
   })
 
@@ -120,59 +117,56 @@ function transformData(data: RawArrivalsOnRedData) {
       dateRange,
     },
     data.locationIdentifier,
-    ChartType.ArrivalsOnRed
+    ChartType.ApproachDelay
   )
 
   const tooltip = createTooltip()
 
   const series = createSeries(
     {
-      name: percentArrivalsOnRedText,
-      data: transformSeriesData(percentArrivalsOnRed),
-      type: 'line',
-      yAxisIndex: 1,
-      color: Color.Red,
-      lineStyle: {
-        type: 'dashed',
-      },
-      tooltip: {
-        valueFormatter: (value) => `${Math.round(value as number)}%`,
-      },
-    },
-    {
-      name: totalVehiclesText,
-      data: transformSeriesData(totalVehicles),
+      name: approachDelaySecond,
+      data: transformSeriesData(approachDelayPerVehicleDataPoints),
       type: 'line',
       color: Color.Blue,
       tooltip: {
         valueFormatter: (value) =>
-          `${Math.round(value as number).toLocaleString()} vph`,
+          `${Math.round(value as number).toLocaleString()}s`,
       },
     },
     {
-      name: arrivalsOnRedText,
-      data: transformSeriesData(arrivalsOnRed),
+      name: approachDelayHour,
+      data: transformSeriesData(approachDelayDataPoints),
       type: 'line',
       color: Color.Red,
+      yAxisIndex: 1,
       tooltip: {
         valueFormatter: (value) =>
-          `${Math.round(value as number).toLocaleString()} vph`,
+          `${Math.round(value as number).toLocaleString()}h`,
       },
     }
   )
 
-  const planOptions: PlanOptions<ArrivalsOnRedPlan> = {
-    percentArrivalOnRed: (value: number) => `AoR: ${value}%`,
-    percentRedTime: (value: number) => `Red Time: ${value}%`,
+  const planOptions: PlanOptions<ApproachDelayPlan> = {
+    averageDelay: (value: number) => `AD: ${value}s`,
+    totalDelay: (value: number) => {
+      const num = Number((value / 3600).toFixed(1))
+      return `TD: ${Number.isInteger(num) ? num.toFixed(0) : num}h`
+    },
   }
 
-  const planSeries = createPlans(plans, yAxis.length, planOptions)
+  const planSeries = createPlans(
+    plans,
+    yAxis.length,
+    planOptions,
+    grid.top - 60
+  )
 
   const displayProps = createDisplayProps({
     description: data.phaseDescription,
+    numberOfLocations: 0,
   })
 
-  const chartOptions: EChartsOption = {
+  const chartOptions: ExtendedEChartsOption = {
     title,
     xAxis,
     yAxis,
