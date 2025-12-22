@@ -67,11 +67,11 @@ export default function transformPreemptionDetailsData(
 function transformDetailsData(data: LocationDetail) {
   const { cycles } = data
 
-  const titleHeader = `Preemption Details\n${data.locationDescription} - Preempt Number ${data.preemptionNumber}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Preemption Details',
+    location: `${data.locationDescription} - Preempt Number ${data.preemptionNumber}`,
     dateRange,
   })
 
@@ -80,18 +80,18 @@ function transformDetailsData(data: LocationDetail) {
   const yAxis = createYAxis(true, { name: 'Seconds Since Request' })
 
   const grid = createGrid({
-    top: 140,
+    top: 100,
     left: 65,
-    right: 200,
+    right: 170,
   })
 
-  const legend = createLegend()
+  const legend = createLegend({ top: grid.top })
 
   const dataZoom = createDataZoom()
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName('titleHeader', data.start, data.end),
       dateRange,
     },
     data.locationIdentifer,
@@ -185,21 +185,22 @@ function transformDetailsData(data: LocationDetail) {
 
   const displayProps = createDisplayProps({
     description: `Preempt # ${data.preemptionNumber}`,
-    height: '550px',
+    height: '450px',
   })
 
   const chartOptions: EChartsOption = {
-    title: title,
-    xAxis: xAxis,
-    yAxis: yAxis,
-    grid: grid,
-    legend: legend,
-    dataZoom: dataZoom,
-    toolbox: toolbox,
-    tooltip: tooltip,
-    series: series,
-    displayProps: displayProps,
+    title,
+    xAxis,
+    yAxis,
+    grid,
+    legend,
+    dataZoom,
+    toolbox,
+    tooltip,
+    series,
+    displayProps,
   }
+
   return chartOptions
 }
 
@@ -236,7 +237,8 @@ function transformSummaryData(data: PreemptServiceSummary) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Preemption Service and Request Summary',
+    location: data.locationDescription,
     dateRange,
   })
 
@@ -263,13 +265,15 @@ function transformSummaryData(data: PreemptServiceSummary) {
     },
   })
 
+  const top = 100
+
   const grid = createGrid({
-    top: 120,
+    top: 100,
     left: 65,
-    right: 130,
+    right: 120,
   })
 
-  const legend = createLegend()
+  const legend = createLegend({ top })
 
   const dataZoom = createDataZoom()
 

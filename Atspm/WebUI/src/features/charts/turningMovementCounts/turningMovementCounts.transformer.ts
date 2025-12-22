@@ -136,9 +136,10 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Turning Movement Counts',
+    location: data.locationDescription,
     dateRange,
-    info: info,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
@@ -147,7 +148,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const grid = createGrid({
     top: 180,
     left: 70,
-    right: 180,
+    right: 190,
   })
 
   const legendData = [] as { name: string; icon: string }[]
@@ -160,6 +161,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   })
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: 'Total Volume', icon: SolidLineSeriesSymbol },
       ...legendData,
@@ -170,7 +172,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
     {
       type: 'slider',
       orient: 'vertical',
-      right: 140,
+      right: grid.right - 40,
       yAxisIndex: 0,
     },
   ])

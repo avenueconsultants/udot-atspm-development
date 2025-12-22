@@ -82,19 +82,20 @@ function transformData(data: RawGreenTimeUtilizationData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Green Time Utilization',
+    location: data.locationDescription,
     dateRange,
   })
 
   const grid = createGrid({
-    top: 160,
+    top: 120,
     left: 90,
     right: 230,
     bottom: 95,
   })
 
   const legend = createLegend({
-    top: 200,
+    top: grid.top,
     data: [
       { name: 'Average Split', icon: SolidLineSeriesSymbol },
       { name: 'Programmed Splits', icon: DashedLineSeriesSymbol },
@@ -117,7 +118,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
     {
       type: 'slider',
       orient: 'vertical',
-      right: 190,
+      right: grid.right - 40,
       yAxisIndex: [0, 1],
     },
   ])
@@ -132,34 +133,6 @@ function transformData(data: RawGreenTimeUtilizationData) {
   )
 
   const averageSplitsData = formatDataPointForStepView(averageSplits, data.end)
-
-  // Todo: We should be able to extend the line by adding something like this
-  // const transformedData = transformSeriesData(averageSplits)
-  // const lastDataPoint = transformedData[transformedData.length - 1]
-
-  // markLine: {
-  //   animation: false,
-  //   silent: true,
-  //   symbol: 'none',
-  //   lineStyle: {
-  //     type: 'solid',
-  //     color: 'black',
-  //     width: 2,
-  //   },
-  //   data: [
-  //     [
-  //       {
-  //         coord: lastDataPoint,
-  //         symbol: 'none',
-  //       },
-  //       {
-  //         xAxis: end,
-  //         yAxis: lastDataPoint[1],
-  //         symbol: 'none',
-  //       },
-  //     ],
-  //   ],
-  // },
 
   const series = createSeries(
     {
@@ -292,9 +265,9 @@ function transformData(data: RawGreenTimeUtilizationData) {
     calculable: true,
     max: 2,
     orient: 'vertical',
-    bottom: 110,
-    right: '60',
-    itemHeight: 200,
+    bottom: 80,
+    right: 60,
+    itemHeight: 180,
     precision: 2,
     handleStyle: {
       borderColor: Color.Black,
@@ -305,7 +278,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
     },
   }
 
-  const planSeries = createPlans(plans, yAxis.length, undefined, 120, 1)
+  const planSeries = createPlans(plans, yAxis.length, undefined, 80, 1)
 
   const displayProps = createDisplayProps({
     description: data.approachDescription,

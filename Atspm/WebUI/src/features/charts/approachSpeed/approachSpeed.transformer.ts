@@ -104,6 +104,7 @@ function transformData(data: RawApproachSpeedData) {
   const postedSpeed = 'Posted Speed'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: averageMPHText, icon: SolidLineSeriesSymbol },
       { name: eightyFivePercentText, icon: SolidLineSeriesSymbol },

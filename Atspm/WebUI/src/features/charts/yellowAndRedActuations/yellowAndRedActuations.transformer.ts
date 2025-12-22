@@ -63,8 +63,7 @@ export default function transformYellowAndRedActuationsData(
 }
 
 function transformData(data: RawYellowAndRedActuationsData) {
-  const { plans, redEvents, yellowEvents, redClearanceEvents, detectorEvents } =
-    data
+  const { plans, yellowEvents, redClearanceEvents, detectorEvents } = data
 
   const info = createInfoString(
     ['Total Violations: ', data.totalViolations.toLocaleString()],
@@ -79,9 +78,11 @@ function transformData(data: RawYellowAndRedActuationsData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Yellow And Red Actuations',
+    location: data.locationDescription,
     dateRange,
-    info: info,
+    info,
+    invertColors: data.isPermissivePhase,
   })
 
   const yAxis = createYAxis(true, {
@@ -96,11 +97,19 @@ function transformData(data: RawYellowAndRedActuationsData) {
 
   const xAxis = createXAxis(data.start, data.end)
 
+  const grid = createGrid({
+    top: 200,
+    left: 60,
+    right: 220,
+    backgroundColor: '#FF000050',
+  })
+
   const detectorEventsText = 'Detector Events'
   const yellowChangeText = 'Yellow Change'
   const redClearanceText = 'Red Clearance'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: detectorEventsText },
       { name: yellowChangeText, icon: SolidLineSeriesSymbol },
@@ -108,12 +117,16 @@ function transformData(data: RawYellowAndRedActuationsData) {
     ],
   })
 
+  if (data.isPermissivePhase) {
+    legend.backgroundColor = Color.White
+  }
+
   const dataZoom = createDataZoom([
     {
       type: 'slider',
       orient: 'vertical',
       filterMode: 'none',
-      right: 160,
+      right: grid.right - 40,
       yAxisIndex: 0,
     },
   ])
@@ -128,13 +141,6 @@ function transformData(data: RawYellowAndRedActuationsData) {
   )
 
   const tooltip = createTooltip()
-
-  const grid = createGrid({
-    top: 230,
-    left: 60,
-    right: 220,
-    backgroundColor: '#FF000050',
-  })
 
   const series = createSeries(
     {
@@ -189,7 +195,14 @@ function transformData(data: RawYellowAndRedActuationsData) {
     averageTimeViolations: (value: number) => `Avg V: ${Math.round(value)}s`,
   }
 
-  const planSeries = createPlans(plans, yAxis.length, planOptions)
+  const planSeries = createPlans(
+    plans,
+    yAxis.length,
+    planOptions,
+    grid.top - 80,
+    undefined,
+    data.isPermissivePhase ? Color.White : undefined
+  )
 
   const displayProps = createDisplayProps({
     description: data.approachDescription,

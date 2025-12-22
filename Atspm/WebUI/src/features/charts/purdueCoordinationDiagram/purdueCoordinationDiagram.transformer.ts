@@ -84,9 +84,10 @@ export function transformPcdData(
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Purdue Coordination Diagram',
+    location: data.locationDescription,
     dateRange,
-    info: info,
+    info,
   })
 
   const volumePerHourText = 'Volume Per Hour'
@@ -105,10 +106,11 @@ export function transformPcdData(
   const grid = createGrid({
     top: 220,
     left: 90,
-    right: 270,
+    right: 290,
   })
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: volumePerHourText, icon: SolidLineSeriesSymbol },
       { name: redSeriesText, icon: SolidLineSeriesSymbol },
@@ -123,7 +125,7 @@ export function transformPcdData(
       type: 'slider',
       orient: 'vertical',
       filterMode: 'none',
-      right: 160,
+      right: grid.right - 90,
       minSpan: 0.2,
       yAxisIndex: [0, 1],
     },
@@ -206,6 +208,7 @@ export function transformPcdData(
   const plansSeries = createPlans(plans, yAxis.length, planOptions, planYLength)
 
   const displayProps = createDisplayProps({
+    height: 600,
     description: data.phaseDescription,
     numberOfLocations: 0,
   })

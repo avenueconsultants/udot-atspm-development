@@ -99,7 +99,8 @@ function transformData(data: RawApproachVolumeData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Approach Volume',
+    location: `${data.locationDescription} - ${data.primaryDirectionName}/${data.opposingDirectionName}`,
     dateRange,
     info,
   })
@@ -118,16 +119,18 @@ function transformData(data: RawApproachVolumeData) {
   )
 
   const xAxis = createXAxis(data.start, data.end)
+
   const grid = createGrid({
     top: 150,
     left: 65,
-    right: 250,
+    right: 270,
   })
 
   const combinedValueText = 'Combined Volume'
   const dFactorText = 'D-Factor'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       { name: data.primaryDirectionName, icon: SolidLineSeriesSymbol },
       { name: data.opposingDirectionName, icon: SolidLineSeriesSymbol },
@@ -210,6 +213,7 @@ function transformData(data: RawApproachVolumeData) {
   )
 
   const displayProps = createDisplayProps({
+    height: 550,
     description: `${directionAbbreviations[data.primaryDirectionName]}/${
       directionAbbreviations[data.opposingDirectionName]
     } - ${data.detectorType}`,

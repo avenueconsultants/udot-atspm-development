@@ -79,7 +79,8 @@ function transformData(data: RawSplitMonitorData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: 'Split Monitor',
+    location: data.locationDescription,
     dateRange,
   })
 
@@ -96,9 +97,9 @@ function transformData(data: RawSplitMonitorData) {
   })
 
   const grid = createGrid({
-    top: 200,
+    top: 170,
     left: 60,
-    right: 200,
+    right: 220,
   })
 
   const programmedSplitsText = 'Programmed Splits'
@@ -109,6 +110,7 @@ function transformData(data: RawSplitMonitorData) {
   const pedestriansText = 'Pedestrians'
 
   const legend = createLegend({
+    top: grid.top,
     data: [
       programmedSplits.length
         ? { name: programmedSplitsText, icon: SolidLineSeriesSymbol }
@@ -126,7 +128,7 @@ function transformData(data: RawSplitMonitorData) {
       type: 'slider',
       orient: 'vertical',
       filterMode: 'none',
-      right: 160,
+      right: grid.right - 40,
       endValue: 100,
       yAxisIndex: 0,
     },
@@ -240,11 +242,11 @@ function transformData(data: RawSplitMonitorData) {
     }
   })
 
-  const plansSeries = createPlans(plans, yAxis.length, planOptions, 100)
+  const plansSeries = createPlans(plans, yAxis.length, planOptions, 90)
 
   const displayProps = createDisplayProps({
     description: 'ph' + data.phaseNumber.toLocaleString(),
-    plans: plans,
+    plans,
     phaseNumber: data.phaseNumber,
   })
 

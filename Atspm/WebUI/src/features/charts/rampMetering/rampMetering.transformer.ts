@@ -50,7 +50,7 @@ export default function transformRampMeteringData(
   const chartOptions = transformData(response.data)
   const transformedData = chartOptions.map((chart) => {
     return {
-      chart: chart,
+      chart,
     }
   })
 
@@ -180,6 +180,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   }
 
   const legendOne = createLegend({
+    top: grid.top,
     data: [
       ...lanesActiveLegends,
       {
@@ -190,6 +191,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   const legendTwo = createLegend({
+    top: grid.top,
     data: [
       ...lanesActiveLegends,
       ...lanesBaseLegends,
@@ -199,6 +201,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   const legendThree = createLegend({
+    top: grid.top,
     data: [
       ...lanesActiveLegends,
       ...lanesBaseLegends,
@@ -210,6 +213,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   const legendFour = createLegend({
+    top: grid.top,
     data: [
       ...lanesActiveLegends,
       ...lanesBaseLegends,
@@ -225,7 +229,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
       type: 'slider',
       orient: 'vertical',
       filterMode: 'none',
-      right: 160,
+      right: grid.right - 90,
       yAxisIndex: 0,
       minSpan: 0.2,
     },

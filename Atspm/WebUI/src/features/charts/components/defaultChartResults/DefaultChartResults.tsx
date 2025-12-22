@@ -28,9 +28,9 @@ export default function DefaultChartResults({
         >
           <Paper
             sx={{
-              p: 4,
-              my: 3,
-              height: chartWrapper.chart.displayProps?.height || '700px',
+              p: 2,
+              my: 2,
+              height: chartWrapper.chart.displayProps?.height || '200px',
               width: '99%',
               marginLeft: '2px',
               backgroundColor: chartWrapper.chart.displayProps
