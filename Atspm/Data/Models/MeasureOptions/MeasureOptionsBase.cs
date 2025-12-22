@@ -110,6 +110,13 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
         //public string LocationIdentifier { get; set; }
     }
 
+    public class PriorityDetailsOptions : MeasureOptionsBase, IBinSize
+    {
+        public int BinSize { get; set; }
+        //public string LocationIdentifier { get; set; }
+        public List<short>? PhaseEventCodesList { get; set; }
+    }
+
 
     public class TimeSpaceDiagramOptions : MeasureOptionsBase
     {

@@ -75,6 +75,11 @@ namespace Utah.Udot.Atspm.Data.Models
         /// </summary>
         public string PedestrianDetectors { get; set; }
 
+        /// <summary>
+        /// PriorityAndPreemptionPhaseNumber
+        /// </summary>
+        public int? PriorityAndPreemptionPhaseNumber { get; set; }
+
         #region IRelatedLocation
 
         /// <inheritdoc/>
