@@ -43,6 +43,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             this.controllerEventLogRepository = controllerEventLogRepository;
             this.LocationRepository = LocationRepository;
             this.cycleService = cycleService;
+            this.phaseService = phaseService;
         }
 
         /// <inheritdoc/>
