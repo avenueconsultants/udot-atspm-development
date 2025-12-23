@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {

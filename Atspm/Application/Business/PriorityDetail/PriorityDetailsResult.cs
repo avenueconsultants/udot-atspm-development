@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.Business.PriorityDetails
@@ -39,14 +38,12 @@ namespace Utah.Udot.Atspm.Business.PriorityDetails
             double numberExtendedGreens,
             ICollection<IndianaEvent> indianaEvents,
             List<CycleEventsDto> cycleAllEvents,
-            List<DetectorEventDto> priorityAndPreemptionEvents,
-            Dictionary<string, List<DataPointForInt>> phaseCustomEvents) : base(approachId, locationId, start, end)
+            List<DetectorEventDto> priorityAndPreemptionEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             IsPhaseOverLap = phaseOrOverlap;
             PhaseNumberSort = phaseNumberSort;
             PhaseType = phaseType;
-            PhaseCustomEvents = phaseCustomEvents;
             NumberCheckins = numberCheckins;
             NumberCheckouts = numberCheckouts;
             NumberEarlyGreens = numberEarlyGreens;
@@ -67,6 +64,5 @@ namespace Utah.Udot.Atspm.Business.PriorityDetails
         public ICollection<IndianaEvent> RawEvents { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<DetectorEventDto> PriorityAndPreemptionEvents { get; set; }
-        public Dictionary<string, List<DataPointForInt>> PhaseCustomEvents { get; set; }
     }
 }

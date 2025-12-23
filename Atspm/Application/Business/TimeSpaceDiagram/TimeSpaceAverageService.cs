@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using GreenToGreenCycle = Utah.Udot.Atspm.Business.Common.GreenToGreenCycle;
 
