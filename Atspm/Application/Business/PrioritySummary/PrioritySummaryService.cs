@@ -41,24 +41,27 @@ namespace Utah.Udot.Atspm.Business.PrioritySummary
 
             var orderedEvents = events
                 .OrderBy(e => e.Timestamp)
+                .GroupBy(i => i.EventParam)
                 .ToList();
 
             var durations = new List<TimeSpan>();
             DateTime? lastCheckIn = null;
-
-            foreach (var e in orderedEvents)
+            orderedEvents.ForEach(orderedParamEvents =>
             {
-                if (e.EventCode == 112)
+                foreach (var e in orderedParamEvents)
                 {
-                    // Always keep the most recent check-in
-                    lastCheckIn = e.Timestamp;
+                    if (e.EventCode == 112)
+                    {
+                        // Always keep the most recent check-in
+                        lastCheckIn = e.Timestamp;
+                    }
+                    else if (e.EventCode == 115 && lastCheckIn.HasValue)
+                    {
+                        durations.Add(e.Timestamp - lastCheckIn.Value);
+                        lastCheckIn = null; // reset so we don’t reuse the same 112
+                    }
                 }
-                else if (e.EventCode == 115 && lastCheckIn.HasValue)
-                {
-                    durations.Add(e.Timestamp - lastCheckIn.Value);
-                    lastCheckIn = null; // reset so we don’t reuse the same 112
-                }
-            }
+            });
 
             var averageDuration = durations.Any()
                 ? TimeSpan.FromTicks((long)durations.Average(d => d.Ticks))

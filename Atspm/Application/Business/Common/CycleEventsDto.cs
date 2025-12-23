@@ -1,6 +1,6 @@
 ﻿#region license
 // Copyright 2025 Utah Departement of Transportation
-// for Application - Utah.Udot.Atspm.Business.TimingAndActuation/DetectorEventDto.cs
+// for Application - Utah.Udot.Atspm.Business.TimingAndActuation/CycleEventsDto.cs
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,17 +15,18 @@
 // limitations under the License.
 #endregion
 
-namespace Utah.Udot.Atspm.Business.TimingAndActuation
+namespace Utah.Udot.Atspm.Business.Common
 {
-    public class DetectorEventDto
+    public class CycleEventsDto
     {
-        public DetectorEventDto(string name, List<DetectorEventBase> events)
+        public CycleEventsDto(DateTime start, int value)
         {
-            Name = name;
-            Events = events;
+            Start = start;
+            Value = value;
         }
 
-        public string Name { get; set; }
-        public List<DetectorEventBase> Events { get; set; }
+        public DateTime Start { get; set; }
+        public int Value { get; set; }
+
     }
 }
