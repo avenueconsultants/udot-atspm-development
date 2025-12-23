@@ -45,25 +45,19 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
-                //return BadRequest("Location not found");
                 return await Task.FromException<PrioritySummaryResult>(new NullReferenceException("Location not found"));
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(parameter.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
-                //return Ok("No Controller Event Logs found for Location");
                 return await Task.FromException<PrioritySummaryResult>(new NullReferenceException("No Controller Event Logs found for Location"));
             }
-            //TODO if we are doing cycles....
-            //var planEvents = controllerEventLogs.GetPlanEvents(
-            //parameter.Start.AddHours(-12),
-            //    parameter.End.AddHours(12)).ToList();
 
             //Get all events 112-130
-            var events = controllerEventLogs.GetEventsByEventCodes(parameter.Start, parameter.End, new List<short>() { 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130 });
+            var tspEventCodes = new List<short>() { 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130 };
+            var events = controllerEventLogs.GetEventsByEventCodes(parameter.Start, parameter.End, tspEventCodes);
             PrioritySummaryResult result = prioritySummaryService.GetChartData(parameter, events);
             result.LocationDescription = Location.LocationDescription();
-            //return Ok(viewModel);
 
             return result;
         }

@@ -52,21 +52,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
-                //return BadRequest("Location not found");
                 return await Task.FromException<IEnumerable<PriorityDetailsResult>>(new NullReferenceException("Location not found"));
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(parameter.LocationIdentifier, parameter.Start.AddHours(-1), parameter.End.AddHours(1)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
-                //return Ok("No Controller Event Logs found for Location");
                 return await Task.FromException<IEnumerable<PriorityDetailsResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
             }
             var phaseDetails = phaseService.GetPhases(Location);
             var tasks = new List<Task<PriorityDetailsResult>>();
-            var tspEventCodes = new List<short>() { 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130 };
             foreach (var phase in phaseDetails)
             {
-                tasks.Add(GetChartDataForPhase(parameter, controllerEventLogs, phase, tspEventCodes, phase.IsPermissivePhase));
+                tasks.Add(GetChartDataForPhase(parameter, controllerEventLogs, phase, phase.IsPermissivePhase));
             }
             var results = await Task.WhenAll(tasks);
             var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumberSort).ToList();
@@ -77,7 +74,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             PriorityDetailsOptions options,
             List<IndianaEvent> controllerEventLogs,
             PhaseDetail phaseDetail,
-            List<short> tspEventCodes,
             bool usePermissivePhase)
         {
             var cycleEvents = controllerEventLogs.GetEventsByEventCodes(
@@ -86,6 +82,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 cycleService.GetCycleCodes(phaseDetail.UseOverlap))
                 .Where(e => e.EventParam == phaseDetail.PhaseNumber).ToList();
 
+            var tspEventCodes = new List<short>() { 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130 };
             var priorityEvents = controllerEventLogs.GetEventsByEventCodes(
                 options.Start.AddMinutes(-15),
                 options.End.AddMinutes(15),
