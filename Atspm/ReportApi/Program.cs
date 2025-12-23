@@ -195,6 +195,7 @@ builder.Host
         s.AddScoped<LinkPivotPcdService>();
         s.AddScoped<WatchDogIgnoreEventService>();
         s.AddScoped<RampMeteringService>();
+        s.AddScoped<DetectionService>();
 
         s.AddPathBaseFilter(h);
 
