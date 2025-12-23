@@ -87,6 +87,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 options.Start.AddMinutes(-15),
                 options.End.AddMinutes(15),
                 tspEventCodes)
+                //.ToList();
                 .Where(e => e.EventParam == phaseDetail.Approach.TransitSignalPriorityNumber).ToList();
 
             var detectionEvents = controllerEventLogs.GetEventsByEventCodes(
