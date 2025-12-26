@@ -86,11 +86,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     previousLocationDistance,
                     isFirstElement: i == 0,
                     isLastElement: i == routeLocations.Count - 1,
-                    "Primary"
+                    "Primary",
+                    i
                 ));
             }
 
-            for (int i = routeLocations.Count - 1; i >= 0; i--)
+            for (int i = routeLocations.Count - 1, j = 0; i >= 0; i--, j++)
             {
                 var nextLocationDistance = i == 0 ? 0 : routeLocations[i].PreviousLocationDistance.Distance;
                 var previousLocationDistance = i == routeLocations.Count - 1 ? 0 : routeLocations[i].NextLocationDistance.Distance;
@@ -103,7 +104,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     previousLocationDistance,
                     isFirstElement: i == routeLocations.Count - 1,
                     isLastElement: i == 0,
-                    "Opposing"
+                    "Opposing",
+                    j
                 ));
             }
 
@@ -177,7 +179,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             double distanceToPreviousLocation,
             bool isFirstElement,
             bool isLastElement,
-            string phaseType)
+            string phaseType,
+            int order)
         {
             eventCodes.AddRange(timeSpaceDiagramReportService.GetCycleCodes(currentPhase.UseOverlap));
             var approachEvents = currentControllerEventLogs.GetEventsByEventCodes(
@@ -194,6 +197,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             viewModel.LocationDescription = currentPhase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = currentPhase.Approach.Description;
             viewModel.PhaseType = phaseType;
+            viewModel.Order = order;
             return viewModel;
         }
 

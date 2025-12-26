@@ -29,6 +29,7 @@ import {
   SolidLineSeriesSymbol,
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
 import {
   DataZoomComponentOption,
   EChartsOption,
@@ -42,6 +43,7 @@ import {
   generateOpposingCycleLabels,
   generatePrimaryCycleLabels,
   getDistancesLabelOption,
+  getDraggableOffsetabelOption,
   getLocationsLabelOption,
 } from './timeSpaceTransformerBase'
 
@@ -78,7 +80,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const xAxis = createXAxis(data[0].start, data[0].end)
 
-  let initialDistance = 0
+  let initialDistance = 250
 
   const primaryDirection = primaryPhaseData[0].approachDescription.split(' ')[0]
   const opposingDirection =
@@ -235,7 +237,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   )
 
   series.push(
-    generateLaneByLaneCountEventLines(
+    ...generateLaneByLaneCountEventLines(
       primaryPhaseData,
       distanceData,
       'darkblue',
@@ -244,7 +246,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   )
 
   series.push(
-    generateAdvanceCountEventLines(
+    ...generateAdvanceCountEventLines(
       primaryPhaseData,
       distanceData,
       'darkblue',
@@ -257,18 +259,32 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       primaryPhaseData,
       distanceData,
       'lightblue',
-      primaryDirection
+      primaryDirection,
+      true
     )
   )
 
   series.push(
-    generateGreenEventLines(primaryPhaseData, distanceData, primaryDirection)
+    ...generateGreenEventLines(
+      primaryPhaseData,
+      distanceData,
+      primaryDirection,
+      true
+    )
   )
   series.push(getLocationsLabelOption(primaryPhaseData, distanceData))
   series.push(getDistancesLabelOption(primaryPhaseData, distanceData))
+  series.push(
+    ...getDraggableOffsetabelOption(
+      primaryPhaseData,
+      distanceData,
+      primaryDirection,
+      true
+    )
+  )
 
   let reverseDistanceData = distanceData.reverse()
-  reverseDistanceData = reverseDistanceData.map((distance) => (distance += 120))
+  reverseDistanceData = reverseDistanceData.map((distance) => (distance += 300))
   series.push(
     ...generateCycles(
       opposingPhaseData,
@@ -279,7 +295,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   )
 
   series.push(
-    generateLaneByLaneCountEventLines(
+    ...generateLaneByLaneCountEventLines(
       opposingPhaseData,
       reverseDistanceData,
       'orange',
@@ -288,7 +304,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   )
 
   series.push(
-    generateAdvanceCountEventLines(
+    ...generateAdvanceCountEventLines(
       opposingPhaseData,
       reverseDistanceData,
       'orange',
@@ -301,21 +317,31 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       opposingPhaseData,
       reverseDistanceData,
       'orange',
-      opposingDirection
+      opposingDirection,
+      false
     )
   )
 
   series.push(
-    generateGreenEventLines(
+    ...generateGreenEventLines(
       opposingPhaseData,
       reverseDistanceData,
-      opposingDirection
+      opposingDirection,
+      false
     )
   )
 
   series.push(generatePrimaryCycleLabels(distanceData, primaryDirection))
   series.push(
     generateOpposingCycleLabels(reverseDistanceData, opposingDirection)
+  )
+  series.push(
+    ...getDraggableOffsetabelOption(
+      opposingPhaseData,
+      reverseDistanceData,
+      opposingDirection,
+      false
+    )
   )
 
   const displayProps = createDisplayProps({
@@ -344,33 +370,125 @@ function generateLaneByLaneCountEventLines(
   distanceData: number[],
   color: string,
   phaseType?: string
-): SeriesOption {
-  return {
-    name: `Lane by Lane Count ${phaseType?.length && phaseType}`,
-    type: 'line',
-    symbol: 'none',
-    lineStyle: {
-      width: 2,
-      color,
-    },
-    data: data.reduce((result, location, i) => {
-      if (location.laneByLaneCountDetectors) {
-        const points: any[] = location.laneByLaneCountDetectors.flatMap(
-          (events) => {
-            const values = [
-              [events.initialX, distanceData[i]],
-              [events.finalX, distanceData[i + 1]],
-              null,
-            ]
-            return values
-          }
+): SeriesOption[] {
+  const seriesOptions: SeriesOption[] = []
+  data.forEach((location, i) => {
+    const series: SeriesOption = {
+      name: `Lane by Lane Count ${phaseType?.length && phaseType}`,
+      id: `LLC ${location.locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+      type: 'line',
+      symbol: 'none',
+      lineStyle: {
+        width: 2,
+        color,
+      },
+      data: location.laneByLaneCountDetectors.flatMap((events) => {
+        const initialX = events.detectorOn
+        const finalX = getArrivalTime(
+          location.distanceToNextLocation,
+          location.speed,
+          initialX
         )
-        points.push(null)
-        result.push(...points)
-      }
-      return result
-    }, [] as any[]),
-  }
+        const values = [
+          [initialX, distanceData[i]],
+          [finalX, distanceData[i + 1]],
+          null,
+        ]
+        return values
+      }),
+    }
+    seriesOptions.push(series)
+  })
+  return seriesOptions
+  // return {
+  //   name: `Lane by Lane Count ${phaseType?.length && phaseType}`,
+  //   id: `LLC ${data[i].locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+  //   type: 'line',
+  //   symbol: 'none',
+  //   lineStyle: {
+  //     width: 2,
+  //     color,
+  //   },
+  //   data: data.reduce((result, location, i) => {
+  //     if (location.laneByLaneCountDetectors) {
+  //       const points: any[] = location.laneByLaneCountDetectors.flatMap(
+  //         (events) => {
+  //           const initialX = events.detectorOn
+  //           const finalX = getArrivalTime(
+  //             location.distanceToNextLocation,
+  //             location.speed,
+  //             initialX
+  //           )
+  //           const values = [
+  //             [initialX, distanceData[i]],
+  //             [finalX, distanceData[i + 1]],
+  //             null,
+  //           ]
+  //           return values
+  //         }
+  //       )
+  //       points.push(null)
+  //       result.push(...points)
+  //     }
+  //     return result
+  //   }, [] as any[]),
+  // }
+}
+
+// function calculateTimeSpaceResult(
+//   events: TimeSpaceDetectorEventWithDistanceDTO[],
+//   speed: number,
+//   distanceToNextLocation: number
+// ): TimeSpaceEvent[] {
+//   const results: TimeSpaceEvent[] = []
+
+//   if (!events || events.length < 1) {
+//     return results
+//   }
+
+//   for (const detectorEvent of events) {
+//     if (!detectorEvent.detectorOn) {
+//       continue
+//     }
+
+//     const speedLimit = speed
+
+//     const currentDetectorOn = detectorEvent.detectorOn
+
+//     const arrivalTime = getArrivalTime(
+//       distanceToNextLocation,
+//       speedLimit,
+//       currentDetectorOn
+//     )
+
+//     const resultOn: TimeSpaceEvent = {
+//       initialX: currentDetectorOn,
+//       finalX: arrivalTime,
+//       isDetectorOn: null,
+//     }
+
+//     results.push(resultOn)
+//   }
+
+//   return results
+// }
+
+function getArrivalTime(
+  distanceToNextLocation: number,
+  speed: number,
+  currentDetectorOn: Date | string
+): string {
+  const start = new Date(currentDetectorOn)
+  const speedInFeetPerSecond = getSpeedInFeetPerSecond(speed)
+  const timeToTravelSeconds = distanceToNextLocation / speedInFeetPerSecond
+
+  const arrivalMs = start.getTime() + timeToTravelSeconds * 1000
+
+  return dateToTimestamp(new Date(arrivalMs))
+}
+
+function getSpeedInFeetPerSecond(speed: number): number {
+  return (speed * 5280) / 3600
 }
 
 function generateAdvanceCountEventLines(
@@ -378,138 +496,266 @@ function generateAdvanceCountEventLines(
   distanceData: number[],
   color: string,
   phaseType?: string
-): SeriesOption {
-  return {
-    name: `Advance Count ${phaseType?.length && phaseType}`,
-    type: 'line',
-    symbol: 'none',
-    lineStyle: {
-      width: 2,
-      color,
-    },
-    data: data.reduce((result, location, i) => {
-      if (location.advanceCountDetectors) {
-        const points: any[] = location.advanceCountDetectors.flatMap(
-          (events) => {
-            const values = [
-              [events.initialX, distanceData[i - 1]],
-              [events.finalX, distanceData[i]],
-              null,
-            ]
-            return values
-          }
-        )
-        // points.push(null)
-        result.push(...points)
+): SeriesOption[] {
+  const seriesOptions: SeriesOption[] = []
+  data.forEach((location, i) => {
+    if (location.advanceCountDetectors.length) {
+      const series: SeriesOption = {
+        name: `Advance Count ${phaseType?.length && phaseType}`,
+        id: `AC ${i !== 0 ? data[i - 1].locationIdentifier : location.locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+        type: 'line',
+        symbol: 'none',
+        lineStyle: {
+          width: 2,
+          color,
+        },
+        data: location.advanceCountDetectors.flatMap((events) => {
+          const finalX = getArrivalTime(
+            events.distanceToStopBar,
+            location.speed,
+            events.detectorOn
+          )
+
+          const initialX = getArrivalTime(
+            -location.distanceToPreviousLocation,
+            location.speed,
+            finalX
+          )
+          const values = [
+            [initialX, distanceData[i - 1]],
+            [finalX, distanceData[i]],
+            null,
+          ]
+          return values
+        }),
       }
-      return result
-    }, [] as any[]),
-  }
+      seriesOptions.push(series)
+    }
+  })
+  return seriesOptions
+  // return {
+  //   name: `Advance Count ${phaseType?.length && phaseType}`,
+  //   type: 'line',
+  //   symbol: 'none',
+  //   lineStyle: {
+  //     width: 2,
+  //     color,
+  //   },
+  //   data: data.reduce((result, location, i) => {
+  //     if (location.advanceCountDetectors) {
+  //       const points: any[] = location.advanceCountDetectors.flatMap(
+  //         (events) => {
+  //           const finalX = getArrivalTime(
+  //             events.distanceToStopBar,
+  //             location.speed,
+  //             events.detectorOn
+  //           )
+
+  //           const initialX = getArrivalTime(
+  //             -location.distanceToPreviousLocation,
+  //             location.speed,
+  //             finalX
+  //           )
+  //           const values = [
+  //             [initialX, distanceData[i - 1]],
+  //             [finalX, distanceData[i]],
+  //             null,
+  //           ]
+  //           return values
+  //         }
+  //       )
+  //       // points.push(null)
+  //       result.push(...points)
+  //     }
+  //     return result
+  //   }, [] as any[]),
+  // }
 }
+
+// function generateStopBarPresenceEventLines(
+//   data: RawTimeSpaceHistoricData[],
+//   distanceData: number[],
+//   color: string,
+//   phaseType?: string
+// ): SeriesOption[] {
+//   const dataPoints = getStopBarPresenceDataPoints(data, distanceData)
+//   const chunkSize = 1000
+//   const options: SeriesOption[] = []
+
+//   for (let i = 0, j = 0; i < dataPoints.length; i += chunkSize, j++) {
+//     const startIndex = j * chunkSize
+//     const endIndex = Math.min((j + 1) * chunkSize, dataPoints.length)
+//     const chunk = dataPoints.slice(startIndex, endIndex)
+
+//     options.push({
+//       name: `Stop Bar Presence ${phaseType?.length && phaseType}`,
+//       type: 'custom',
+//       data: chunk,
+//       clip: true,
+//       selectedMode: false,
+//       renderItem: function (params, api) {
+//         if (params.context.rendered) {
+//           return
+//         }
+//         params.context.rendered = true
+//         let points = []
+//         const polygons: any[] = []
+//         for (let j = 0; j < chunk.length; j++) {
+//           if (chunk[j] === null) {
+//             polygons.push({
+//               type: 'polygon',
+//               transition: ['shape'],
+//               shape: {
+//                 points: points,
+//               },
+//               style: {
+//                 opacity: 1,
+//                 fill: color,
+//                 lineWidth: 3,
+//               },
+//             })
+//             points = []
+//           } else {
+//             points.push(api.coord(chunk[j]))
+//           }
+//         }
+//         return {
+//           type: 'group',
+//           children: polygons,
+//         }
+//       },
+//     })
+//   }
+
+//   return options
+// }
 
 function generateStopBarPresenceEventLines(
   data: RawTimeSpaceHistoricData[],
   distanceData: number[],
   color: string,
-  phaseType?: string
+  phaseType?: string,
+  isPrimary?: boolean
 ): SeriesOption[] {
-  const dataPoints = getStopBarPresenceDataPoints(data, distanceData)
-  const chunkSize = 1000
-  const options: SeriesOption[] = []
+  const seriesOptions: SeriesOption[] = []
 
-  for (let i = 0, j = 0; i < dataPoints.length; i += chunkSize, j++) {
-    const startIndex = j * chunkSize
-    const endIndex = Math.min((j + 1) * chunkSize, dataPoints.length)
-    const chunk = dataPoints.slice(startIndex, endIndex)
+  for (let i = 0; i < data.length; i++) {
+    const location = data[i]
+    const dataPoints = getStopBarPresenceDataPoints(location, distanceData[i])
 
-    options.push({
+    const seriesOption: SeriesOption = {
       name: `Stop Bar Presence ${phaseType?.length && phaseType}`,
+      id: `SBP ${data[i].locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
       type: 'custom',
-      data: chunk,
+      data: dataPoints,
       clip: true,
       selectedMode: false,
       renderItem: function (params, api) {
-        if (params.context.rendered) {
+        const i = params.dataIndex
+        if (!dataPoints || i >= dataPoints.length - 1 || i % 2 !== 0) {
           return
         }
-        params.context.rendered = true
-        let points = []
-        const polygons: any[] = []
-        for (let j = 0; j < chunk.length; j++) {
-          if (chunk[j] === null) {
-            polygons.push({
-              type: 'polygon',
-              transition: ['shape'],
-              shape: {
-                points: points,
-              },
-              style: {
-                opacity: 1,
-                fill: color,
-                lineWidth: 3,
-              },
-            })
-            points = []
-          } else {
-            points.push(api.coord(chunk[j]))
-          }
-        }
+        const nextIndex = i + 1
+        const distanceToNext = isPrimary
+          ? location.distanceToNextLocation
+          : -location.distanceToNextLocation
+        const [x1, y1] = [api.value(0), api.value(1)]
+
+        const [x2, y2] = [api.value(0, nextIndex), api.value(1, nextIndex)]
+        const currPointFinalX = getArrivalTime(
+          location.distanceToNextLocation,
+          location.speed,
+          x1 as string
+        )
+        const nextPointFinalX = getArrivalTime(
+          location.distanceToNextLocation,
+          location.speed,
+          x2 as string
+        )
+        const points = [
+          api.coord([x1, y1]),
+          api.coord([x2, y2]),
+          api.coord([nextPointFinalX, (y2 as number) + distanceToNext]),
+          api.coord([currPointFinalX, (y1 as number) + distanceToNext]),
+        ]
         return {
-          type: 'group',
-          children: polygons,
+          type: 'polygon',
+          transition: ['shape'],
+          shape: {
+            points: points,
+          },
+          style: {
+            opacity: 1,
+            fill: color,
+            lineWidth: 3,
+          },
         }
       },
-    })
+    }
+    seriesOptions.push(seriesOption)
   }
-
-  return options
+  return seriesOptions
 }
 
 function getStopBarPresenceDataPoints(
-  data: RawTimeSpaceHistoricData[],
-  distanceData: number[]
+  location: RawTimeSpaceHistoricData,
+  currDistance: number
 ) {
-  return data.reduce((result, location, index) => {
-    if (location.stopBarPresenceDetectors) {
-      const stopBarEvents = location.stopBarPresenceDetectors
-      for (let i = 0; i < stopBarEvents.length; ) {
-        const currPoint = stopBarEvents[i]
-        const nextPoint = stopBarEvents[i + 1]
-        if (i === 0 && currPoint.isDetectorOn === false) {
-          result.push(
-            [location.start, distanceData[index]],
-            [currPoint.initialX, distanceData[index]],
-            [currPoint.finalX, distanceData[index + 1]],
-            [location.start, distanceData[index + 1]],
-            null
-          )
-          i++
-        } else if (
-          i === stopBarEvents.length - 1 &&
-          currPoint.isDetectorOn === true
-        ) {
-          result.push(
-            [currPoint.initialX, distanceData[index]],
-            [location.end, distanceData[index]],
-            [location.end, distanceData[index + 1]],
-            [currPoint.finalX, distanceData[index + 1]],
-            null
-          )
-          i++
-        } else {
-          result.push(
-            ...[
-              [currPoint.initialX, distanceData[index]],
-              [nextPoint.initialX, distanceData[index]],
-              [nextPoint.finalX, distanceData[index + 1]],
-              [currPoint.finalX, distanceData[index + 1]],
-              null,
-            ]
-          )
-          i += 2
-        }
-      }
-    }
-    return result
-  }, [] as any)
+  if (location.stopBarPresenceDetectors.length) {
+    return location.stopBarPresenceDetectors.flatMap((events) => {
+      return [
+        [events.detectorOn, currDistance],
+        [events.detectorOff, currDistance],
+      ]
+    })
+  }
 }
+
+// function getStopBarPresenceDataPoints(
+//   data: RawTimeSpaceHistoricData[],
+//   distanceData: number[]
+// ) {
+//   return data.reduce((result, location, index) => {
+//     if (location.stopBarPresenceDetectors) {
+//       const stopBarEvents = location.stopBarPresenceDetectors
+//       for (let i = 0; i < stopBarEvents.length; ) {
+//         const currPoint = stopBarEvents[i]
+//         const nextPoint = stopBarEvents[i + 1]
+//         if (i === 0 && currPoint.isDetectorOn === false) {
+//           result.push(
+//             [location.start, distanceData[index]],
+//             [currPoint.initialX, distanceData[index]],
+//             [currPoint.finalX, distanceData[index + 1]],
+//             [location.start, distanceData[index + 1]],
+//             null
+//           )
+//           i++
+//         } else if (
+//           i === stopBarEvents.length - 1 &&
+//           currPoint.isDetectorOn === true
+//         ) {
+//           result.push(
+//             [currPoint.initialX, distanceData[index]],
+//             [location.end, distanceData[index]],
+//             [location.end, distanceData[index + 1]],
+//             [currPoint.finalX, distanceData[index + 1]],
+//             null
+//           )
+//           i++
+//         } else {
+//           result.push(
+//             ...[
+//               [currPoint.initialX, distanceData[index]],
+//               [nextPoint.initialX, distanceData[index]],
+//               [nextPoint.finalX, distanceData[index + 1]],
+//               [currPoint.finalX, distanceData[index + 1]],
+//               null,
+//             ]
+//           )
+//           i += 2
+//         }
+//       }
+//     }
+//     return result
+//   }, [] as any)
+// }

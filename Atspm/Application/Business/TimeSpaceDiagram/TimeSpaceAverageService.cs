@@ -18,7 +18,6 @@
 using Utah.Udot.Atspm.Business.Common;
 using Utah.Udot.Atspm.Business.TimingAndActuation;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
-using GreenToGreenCycle = Utah.Udot.Atspm.Business.Common.GreenToGreenCycle;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
@@ -82,7 +81,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             }
             var cycleEvents = CreateCyclesEvents(startOfRefPoint, options.StartDate.ToDateTime(options.EndTime), options.StartDate.ToDateTime(options.StartTime), cycleLength, percentileSplitCycle);
 
-            var greenTimeEventsResult = new List<TimeSpaceEventBase>();
+            var greenTimeEventsResult = new List<DataPointWithDetectorCheckBase>();
             var speedLimit = options.SpeedLimit ?? phaseDetail.Approach.Mph ?? 0;
 
             if (speedLimit == 0)
@@ -92,7 +91,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 
             if (!isLastElement)
             {
-                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleEvents, speedLimit, distanceToNextLocation);
+                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleEvents, speedLimit);
             }
 
             var phaseNumberSort = TimeSpaceService.GetPhaseSort(phaseDetail);

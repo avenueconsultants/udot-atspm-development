@@ -1,49 +1,37 @@
-import { ChartType } from '@/features/charts/common/types'
-import {
-  adjustPlanPositions,
-  handleGreenTimeUtilizationDataZoom,
-} from '@/features/charts/utils'
 import { useChartsStore } from '@/stores/charts'
-import type {
-  DataZoomComponentOption,
+import {
+  connect,
   DatasetComponentOption,
+  DataZoomComponentOption,
   ECharts,
   EChartsOption,
+  init,
   SeriesOption,
-  SetOptionOpts,
 } from 'echarts'
-import { connect, init } from 'echarts'
-import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { ChartType } from '../../common/types'
+import { useTimeSpaceHandler } from '../../timeSpaceDiagram/handlers/timeSpaceHandler'
+import { ApacheEChartsProps } from '../apacheEChart'
 
-export interface ApacheEChartsProps {
-  id: string
-  option: EChartsOption
-  chartType?: ChartType
-  style?: CSSProperties
-  settings?: SetOptionOpts
-  loading?: boolean
-  theme?: 'light' | 'dark'
-  hideInteractionMessage?: boolean
-  resetKey?: boolean
-}
+export default function TimeSpaceEChart(prop: ApacheEChartsProps) {
+  const {
+    id,
+    option,
+    chartType,
+    style,
+    settings,
+    loading,
+    theme,
+    hideInteractionMessage,
+    resetKey,
+  } = prop
 
-export default function ApacheEChart({
-  id,
-  option,
-  chartType,
-  style,
-  settings,
-  loading,
-  theme,
-  hideInteractionMessage = false,
-}: ApacheEChartsProps) {
   const chartRef = useRef<HTMLDivElement>(null)
-  const { activeChart, setActiveChart, syncZoom, yAxisMaxStore } =
-    useChartsStore()
+  const { activeChart, setActiveChart, syncZoom } = useChartsStore()
   const [isHovered, setIsHovered] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const chartInstance = useRef<ECharts | null>(null)
+  useTimeSpaceHandler(chartInstance.current)
 
   const isActive = activeChart === id || hideInteractionMessage
 
@@ -76,19 +64,9 @@ export default function ApacheEChart({
         })),
       }
 
-      chartInstance.current.setOption(disabledZoomOption, settings)
-
-      if (chartType === ChartType.GreenTimeUtilization) {
-        chartInstance.current.on('datazoom', () =>
-          handleGreenTimeUtilizationDataZoom(chartInstance.current!)
-        )
-      } else {
-        chartInstance.current.on('datazoom', () =>
-          adjustPlanPositions(chartInstance.current!)
-        )
-      }
+      chartInstance.current.setOption(disabledZoomOption)
     }
-  }, [option, settings, theme, chartType, syncZoom])
+  }, [option, theme, chartType, syncZoom])
 
   useEffect(() => {
     initChart()
@@ -105,39 +83,8 @@ export default function ApacheEChart({
   }, [theme, chartType, initChart, syncZoom])
 
   useEffect(() => {
-    if (chartInstance.current) {
-      const adjustedDataZoom = (
-        option.dataZoom as DataZoomComponentOption[]
-      )?.map((zoom) => ({
-        ...zoom,
-        // Only modify endValue if yAxisMaxStore exists
-        endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
-        disabled: !isActive,
-        zoomLock: !isActive,
-      }))
-
-      // Use adjusted dataZoom in the chart options
-      const updatedOption: EChartsOption = {
-        ...option,
-        dataZoom: adjustedDataZoom,
-        series: (option.series as SeriesOption[])?.map((series) => ({
-          ...series,
-          silent: !isActive,
-        })),
-      }
-
-      // Apply the updated option to the chart
-      chartInstance.current.setOption(updatedOption, settings)
-    }
-  }, [option, settings, theme, isActive, yAxisMaxStore])
-
-  useEffect(() => {
-    if (chartInstance.current) {
-      loading
-        ? chartInstance.current.showLoading()
-        : chartInstance.current.hideLoading()
-    }
-  }, [loading])
+    if (resetKey) initChart()
+  }, [initChart, resetKey])
 
   useEffect(() => {
     let scrollTimeout: NodeJS.Timeout
@@ -155,49 +102,6 @@ export default function ApacheEChart({
     return () => {
       window.removeEventListener('scroll', handleScroll)
       clearTimeout(scrollTimeout)
-    }
-  }, [])
-
-  useEffect(() => {
-    const handleSaveAsImage = (event: Event) => {
-      const customEvent = event as CustomEvent<{
-        text: string
-      }>
-      const clickedChart = customEvent.detail.text
-      const currentChart = chartInstance.current
-      if (!clickedChart || !currentChart) return
-
-      const chartOptions = currentChart.getOption() as EChartsOption
-      if (chartOptions.title[0].text !== clickedChart) return
-
-      // Temporarily remove grouping to prevent all charts from saving
-      const originalGroup = currentChart.group
-      currentChart.group = ''
-
-      const imageURL = currentChart.getDataURL({
-        type: 'png',
-        pixelRatio: 2,
-        backgroundColor: '#fff',
-      })
-      const link = document.createElement('a')
-      link.href = imageURL
-      link.download = `${clickedChart}.png`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link) // Clean up
-
-      // Restore the group after saving
-      setTimeout(() => {
-        if (clickedChart) {
-          currentChart.group = originalGroup
-        }
-      }, 100)
-    }
-
-    window.addEventListener('saveChartImage', handleSaveAsImage)
-
-    return () => {
-      window.removeEventListener('saveChartImage', handleSaveAsImage)
     }
   }, [])
 

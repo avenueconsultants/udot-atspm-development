@@ -71,7 +71,7 @@ namespace Utah.Udot.Atspm.Analysis.Common
         public DateTime YellowEvent { get; set; }
     }
 
-    public class GreenToGreenCycle : CycleBase
-    {
-    }
+    //public class GreenToGreenCycle : CycleBase
+    //{
+    //}
 }
