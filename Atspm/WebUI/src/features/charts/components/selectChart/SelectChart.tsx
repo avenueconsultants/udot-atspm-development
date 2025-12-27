@@ -10,6 +10,7 @@ import { GreenTimeUtilizationChartOptions } from '@/features/charts/greenTimeUti
 import { LeftTurnGapAnalysisChartOptions } from '@/features/charts/leftTurnGapAnalysis/components/LeftTurnGapAnalysisChartOptions'
 import { PedestrianDelayChartOptions } from '@/features/charts/pedestrianDelay/components/PedestrianDelayChartOptions'
 import { PreemptionDetailsChartOptions } from '@/features/charts/preemptionDetails/components/PreemptionDetailsChartOptions'
+import { PrioritySummaryChartOptions } from '@/features/charts/prioritySummary/components/PrioritySummaryChartOptions'
 import { PurdueCoordinationDiagramChartOptions } from '@/features/charts/purdueCoordinationDiagram/components/PurdueCoordinationDiagramChartOptions'
 import { PurduePhaseTerminationChartOptions } from '@/features/charts/purduePhaseTermination/components/PurduePhaseTerminationChartOptions'
 import { PurdueSplitFailureChartOptions } from '@/features/charts/purdueSplitFailure/components/PurdueSplitFailureChartOptions'
@@ -41,6 +42,7 @@ export const chartComponents = {
   LeftTurnGapAnalysis: LeftTurnGapAnalysisChartOptions,
   PedestrianDelay: PedestrianDelayChartOptions,
   PreemptionDetails: PreemptionDetailsChartOptions,
+  PrioritySummary: PrioritySummaryChartOptions,
   PurdueCoordinationDiagram: PurdueCoordinationDiagramChartOptions,
   PurduePhaseTermination: PurduePhaseTerminationChartOptions,
   PurdueSplitFailure: PurdueSplitFailureChartOptions,
@@ -120,6 +122,9 @@ const SelectChart = ({
       },
       {} as Record<ChartType, React.ComponentType<any>>
     )
+
+    // just show priority summary
+    unsortedCharts[ChartType.PrioritySummary] = PrioritySummaryChartOptions
 
     // if(location.de)
     // unsortedCharts[ChartType.RampMetering] = RampMeteringChartOptions

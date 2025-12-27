@@ -38,6 +38,7 @@ export const TypeApiMap: Record<ChartType, string> = {
   [ChartType.PedestrianDelay]: '/PedDelay/GetReportData',
   [ChartType.PurduePhaseTermination]: '/PurduePhaseTermination/GetReportData',
   [ChartType.PreemptionDetails]: '/PreemptDetail/GetReportData',
+  [ChartType.PrioritySummary]: '/PrioritySummary/GetReportData',
   [ChartType.PurdueSplitFailure]: '/SplitFail/GetReportData',
   [ChartType.SplitMonitor]: '/SplitMonitor/GetReportData',
   [ChartType.TimingAndActuation]: '/TimingAndActuation/GetReportData',
@@ -77,7 +78,6 @@ export const getCharts = async (
   const transformedOptions = mapStringBooleansToBoolean(options)
   transformedOptions.start = dateToTimestamp(transformedOptions.start as Date)
   transformedOptions.end = dateToTimestamp(transformedOptions.end as Date)
-
 
   const response = await reportsAxios.post(endpoint, transformedOptions)
   return transformChartData({
