@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { PrioritySummaryResult } from '@/api/reports'
+import { PrioritySummaryOptions } from '@/api/reports/atspmReportsApi.schemas'
 import {
   ApproachDelayChartOptions,
   RawApproachDelayReponse,
@@ -144,6 +146,7 @@ export type RawChartResponse =
   | RawPreemptionDetailsResponse
   | RawPurdueCoordinationDiagramResponse
   | RawPurduePhaseTerminationResponse
+  | PrioritySummaryResult
   | RawPurdueSplitFailureResponse
   | RawSplitMonitorResponse
   | RawTimingAndActuationResponse
@@ -166,6 +169,7 @@ export type ChartOptions =
   | LeftTurnGapAnalysisChartOptions
   | PedestrianDelayChartOptions
   | PreemptionDetailsChartOptions
+  | PrioritySummaryOptions
   | PurdueCoordinationDiagramChartOptions
   | PurduePhaseTerminationChartOptions
   | PurdueSplitFailureChartOptions
@@ -186,6 +190,7 @@ export type ChartOptionType =
   | 'LeftTurnGapAnalysis'
   | 'PedestrianDelay'
   | 'PreemptionDetails'
+  | 'PrioritySummary'
   | 'PurdueCoordinationDiagram'
   | 'PurduePhaseTermination'
   | 'PurdueSplitFailure'
@@ -207,6 +212,7 @@ export enum ChartType {
   PedestrianDelay = 'PedestrianDelay',
   PurduePhaseTermination = 'PurduePhaseTermination',
   PreemptionDetails = 'PreemptionDetails',
+  PrioritySummary = 'PrioritySummary',
   PurdueSplitFailure = 'PurdueSplitFailure',
   SplitMonitor = 'SplitMonitor',
   TimingAndActuation = 'TimingAndActuation',
@@ -257,6 +263,8 @@ export const chartTypeToString = (chartType: ChartType) => {
       return 'Wait Time'
     case ChartType.YellowAndRedActuations:
       return 'Yellow and Red Actuations'
+    case ChartType.PrioritySummary:
+      return 'Priority Summary'
     case ChartType.RampMetering:
       return 'Ramp Metering'
   }

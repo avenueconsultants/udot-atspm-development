@@ -28,6 +28,7 @@ import transformGreenTimeUtilizationData from '@/features/charts/greenTimeUtiliz
 import transformLeftTurnGapAnalysisData from '@/features/charts/leftTurnGapAnalysis/leftTurnGapAnalysis.transformer'
 import transformPedestrianDelayData from '@/features/charts/pedestrianDelay/pedestrianDelay.transformer'
 import transformPreemptionDetailsData from '@/features/charts/preemptionDetails/preemptionDetails.transformer'
+import transformPrioritySummaryData from '@/features/charts/prioritySummary/prioritySummary.transformer'
 import transformPurdueCoordinationDiagramData from '@/features/charts/purdueCoordinationDiagram/purdueCoordinationDiagram.transformer'
 import transformPurduePhaseTerminationData from '@/features/charts/purduePhaseTermination/purduePhaseTermination.transformer'
 import transformPurdueSplitFailureData from '@/features/charts/purdueSplitFailure/purdueSplitFailure.transformer'
@@ -64,6 +65,8 @@ export const transformChartData = (
       return transformLeftTurnGapAnalysisData(response)
     case ChartType.PedestrianDelay:
       return transformPedestrianDelayData(response)
+    case ChartType.PrioritySummary:
+      return transformPrioritySummaryData(response)
     case ChartType.PurduePhaseTermination:
       return transformPurduePhaseTerminationData(response)
     case ChartType.PreemptionDetails:

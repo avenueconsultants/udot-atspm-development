@@ -1,12 +1,12 @@
 // #region license
-// Copyright 2024 Utah Departement of Transportation
-// for WebUI - transformers.ts
+// Copyright 2025 Utah Departement of Transportation
+// for WebUI - prioritySummary.transformer.ts
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//http://www.apache.org/licenses/LICENSE-2.
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+
 import {
   createDataZoom,
   createDisplayProps,
@@ -28,60 +29,58 @@ import {
   formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
-import { TransformedPreemptDetailsResponse } from '@/features/charts/types'
-import {
-  Color,
-  formatChartDateTimeRange,
-  triangleSvgSymbol,
-  xSvgSymbol,
-} from '@/features/charts/utils'
-import { EChartsOption, XAXisComponentOption } from 'echarts'
-import {
-  Cycle,
-  LocationDetail,
-  PreemptServiceSummary,
-  RawPreemptionDetailsResponse,
-} from './types'
+import { Color, formatChartDateTimeRange } from '@/features/charts/utils'
+import { EChartsOption } from 'echarts'
 
-export default function transformPreemptionDetailsData(
-  response: RawPreemptionDetailsResponse
-): TransformedPreemptDetailsResponse {
-  const summary = transformSummaryData(response.data.summary)
+/**
+ * Priority Summary (Indiana Hi-Res TSP):
+ * Build "cycle" bars with a common baseline at 112 (Check In).
+ *
+ * Each bar is plotted at x = 112 timestamp, y = seconds since 112.
+ * Bars are stacked to show segment lengths:
+ *  - Time To Service: 112 -> 118 (if present)
+ *  - Service Duration: 118 -> 119 (or 118 -> 115 fallback)
+ *  - Tail: 119 -> 115 (usually 0, but handled)
+ * If no 118, we show Request Duration (No Service): 112 -> 115
+ *
+ * Markers:
+ *  - Early Green (113): scatter at y = (113 - 112)
+ *  - Extend Green (114): scatter at y = (114 - 112)
+ *
+ * Note: 116 is preemption-related and is ignored here.
+ */
+export default function transformPrioritySummaryData(
+  response: RawPrioritySummaryResponse | PrioritySummaryLocationDetail
+): TransformedPrioritySummaryResponse {
+  const data =
+    (response as RawPrioritySummaryResponse)?.data ?? (response as any)
 
-  const charts = response.data.details.map((data) => {
-    const chartOptions = transformDetailsData(data)
+  const chart = transformLocation(data)
 
-    return {
-      chart: chartOptions,
-    }
-  })
-  charts.unshift({ chart: summary })
   return {
-    type: ChartType.PreemptionDetails,
+    type: ChartType.PrioritySummary,
     data: {
-      charts,
+      charts: [{ chart }],
     },
   }
 }
 
-function transformDetailsData(data: LocationDetail) {
-  const { cycles } = data
-
+function transformLocation(data: PrioritySummaryLocationDetail) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Preemption Details',
-    location: `${data.locationDescription} - Preempt Number ${data.preemptionNumber}`,
+    title: 'Priority Summary',
+    location: data.locationDescription,
     dateRange,
   })
 
   const xAxis = createXAxis(data.start, data.end)
 
-  const yAxis = createYAxis(true, { name: 'Seconds Since Request' })
+  const yAxis = createYAxis(true, { name: 'Seconds Since Request (112)' })
 
   const grid = createGrid({
     top: 100,
-    left: 65,
+    left: 70,
     right: 170,
   })
 
@@ -91,101 +90,102 @@ function transformDetailsData(data: LocationDetail) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName('titleHeader', data.start, data.end),
+      title: formatExportFileName(
+        `Priority Summary\n${data.locationDescription}`,
+        data.start,
+        data.end
+      ),
       dateRange,
     },
-    data.locationIdentifer,
-    ChartType.PreemptionDetails
+    data.locationIdentifier,
+    ChartType.PrioritySummary
   )
 
   const tooltip = createTooltip()
 
-  const inputOff = getSeries('inputOff', cycles)
-  const gateDown = getSeries('gateDown', cycles)
-  const callMaxOut = getSeries('callMaxOut', cycles)
-  const delay = getSeries('delay', cycles)
-  const timeToService = getSeries('timeToService', cycles)
-  const dwellTime = getSeries('dwellTime', cycles)
-  const trackClear = getSeries('trackClear', cycles)
+  const cycles = rollEventsIntoCycles(data.events, data.start, data.end)
+
+  // bars (stacked)
+  const timeToService = getDurationSeries('timeToServiceSeconds', cycles)
+  const serviceDuration = getDurationSeries('serviceDurationSeconds', cycles)
+  const tailDuration = getDurationSeries('tailSeconds', cycles)
+  const requestNoService = getDurationSeries('requestNoServiceSeconds', cycles)
+
+  // markers
+  const earlyGreen = getMarkerSeries('earlyGreenOffsets', cycles)
+  const extendGreen = getMarkerSeries('extendGreenOffsets', cycles)
+
   const series = createSeries()
 
   const barWidth = 5
-  if (gateDown !== null) {
-    series.push({
-      name: 'Gate Down',
-      type: 'scatter',
-      data: gateDown,
-      color: Color.Black,
-      symbol: triangleSvgSymbol,
-    })
-  }
 
-  if (inputOff.length > 0) {
+  if (requestNoService.length > 0) {
     series.push({
-      name: 'Input Off',
-      type: 'scatter',
-      data: inputOff,
-      color: Color.Black,
-    })
-  }
-
-  if (callMaxOut.length > 0) {
-    series.push({
-      name: 'Call Max Out',
-      type: 'scatter',
-      data: callMaxOut,
-      color: Color.Black,
-      symbol: xSvgSymbol,
-    })
-  }
-
-  if (delay.length > 0) {
-    series.push({
-      name: 'Delay',
+      name: 'Request Duration (No Service)',
       type: 'bar',
-      data: delay,
+      data: requestNoService,
       color: Color.Red,
       stack: 'cycle',
-      barWidth: barWidth,
+      barWidth,
     })
   }
 
   if (timeToService.length > 0) {
     series.push({
-      name: 'Time To Service',
+      name: 'Time To Service (112→118)',
       type: 'bar',
       data: timeToService,
       color: Color.Blue,
       stack: 'cycle',
-      barWidth: barWidth,
+      barWidth,
     })
   }
 
-  if (trackClear.length > 0) {
+  if (serviceDuration.length > 0) {
     series.push({
-      name: 'Track Clear',
+      name: 'Service Duration (118→119)',
       type: 'bar',
-      data: trackClear,
-      color: Color.Orange,
-      stack: 'cycle',
-      barWidth: barWidth,
-    })
-  }
-
-  if (dwellTime.length > 0) {
-    series.push({
-      name: 'Dwell Time',
-      type: 'bar',
-      data: dwellTime,
+      data: serviceDuration,
       color: Color.Green,
       stack: 'cycle',
-      barWidth: barWidth,
+      barWidth,
+    })
+  }
+
+  if (tailDuration.length > 0) {
+    series.push({
+      name: 'Tail (119→115)',
+      type: 'bar',
+      data: tailDuration,
+      color: Color.Orange,
+      stack: 'cycle',
+      barWidth,
+    })
+  }
+
+  if (earlyGreen.length > 0) {
+    series.push({
+      name: 'Early Green (113)',
+      type: 'scatter',
+      data: earlyGreen,
+      color: Color.Black,
+      symbolSize: 8,
+    })
+  }
+
+  if (extendGreen.length > 0) {
+    series.push({
+      name: 'Extend Green (114)',
+      type: 'scatter',
+      data: extendGreen,
+      color: Color.Orange,
+      symbolSize: 8,
     })
   }
 
   const displayProps = createDisplayProps({
-    description: `Preempt # ${data.preemptionNumber}`,
-    height: '450px',
+    description: 'Summary',
+    height: '440px',
   })
 
   const chartOptions: EChartsOption = {
@@ -204,138 +204,310 @@ function transformDetailsData(data: LocationDetail) {
   return chartOptions
 }
 
-interface ChartDataEntry {
-  0: string
-  1: number | null
+/* ---------------------------------------------
+ * Cycle rolling
+ * --------------------------------------------- */
+
+type EventCode = 112 | 113 | 114 | 115 | 116 | 118 | 119
+
+interface TspCycle {
+  locationIdentifier: string
+  tspNumber: number
+  checkIn: string // 112
+  checkOut: string // 115 (or closed at reportEnd)
+  serviceStart?: string // 118
+  serviceEnd?: string // 119 (or fallback to 115)
+  earlyGreens: string[] // 113 timestamps
+  extendGreens: string[] // 114 timestamps
+
+  // derived (seconds since 112)
+  timeToServiceSeconds: number | null
+  serviceDurationSeconds: number | null
+  tailSeconds: number | null
+  requestNoServiceSeconds: number | null
+  earlyGreenOffsets: number[]
+  extendGreenOffsets: number[]
+
+  forcedClosed: boolean
+  incomplete: boolean
 }
 
-type PremptStuf = ChartDataEntry[]
+function rollEventsIntoCycles(
+  events: PrioritySummaryEvent[],
+  reportStartIso: string,
+  reportEndIso: string
+): TspCycle[] {
+  const sorted = [...events].sort(
+    (a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)
+  )
 
-function getSeries(key: keyof Cycle, cycles: Cycle[]): PremptStuf {
-  return cycles.map((cycle) => {
-    let value: number
+  // key by TSP number (eventParam) per location
+  const open = new Map<
+    string,
+    Omit<
+      TspCycle,
+      | 'timeToServiceSeconds'
+      | 'serviceDurationSeconds'
+      | 'tailSeconds'
+      | 'requestNoServiceSeconds'
+      | 'earlyGreenOffsets'
+      | 'extendGreenOffsets'
+    >
+  >()
+  const outRaw: Array<
+    Omit<
+      TspCycle,
+      | 'timeToServiceSeconds'
+      | 'serviceDurationSeconds'
+      | 'tailSeconds'
+      | 'requestNoServiceSeconds'
+      | 'earlyGreenOffsets'
+      | 'extendGreenOffsets'
+    >
+  > = []
 
-    if (cycle[key] == null) return
+  const keyOf = (e: PrioritySummaryEvent) =>
+    `${e.locationIdentifier}:${e.eventParam}`
 
-    if (typeof cycle[key] === 'string' && Date.parse(cycle[key] as string)) {
-      value =
-        (Date.parse(cycle[key] as string) - Date.parse(cycle.inputOn)) / 1000
-    } else if (typeof cycle[key] === 'number') {
-      value = cycle[key] as number
-    } else {
-      value = 0
+  for (const e of sorted) {
+    // Ignore preemption (not TSP cycle chart)
+    if (e.eventCode === 116) continue
+
+    const key = keyOf(e)
+    const curr = open.get(key)
+
+    if (e.eventCode === 112) {
+      // Start new request cycle
+      if (curr) {
+        // Overlap: force-close previous at this new 112.
+        outRaw.push({
+          ...curr,
+          checkOut: e.timestamp,
+          forcedClosed: true,
+          incomplete: false,
+        })
+      }
+
+      open.set(key, {
+        locationIdentifier: e.locationIdentifier,
+        tspNumber: e.eventParam,
+        checkIn: e.timestamp,
+        checkOut: e.timestamp, // placeholder
+        serviceStart: undefined,
+        serviceEnd: undefined,
+        earlyGreens: [],
+        extendGreens: [],
+        forcedClosed: false,
+        incomplete: false,
+      })
+      continue
     }
 
-    return [cycle.inputOn, value]
-  })
+    if (!curr) continue
+
+    if (e.eventCode === 113) {
+      curr.earlyGreens.push(e.timestamp)
+    } else if (e.eventCode === 114) {
+      curr.extendGreens.push(e.timestamp)
+    } else if (e.eventCode === 118) {
+      if (!curr.serviceStart) curr.serviceStart = e.timestamp
+    } else if (e.eventCode === 119) {
+      if (!curr.serviceEnd) curr.serviceEnd = e.timestamp
+    } else if (e.eventCode === 115) {
+      outRaw.push({
+        ...curr,
+        checkOut: e.timestamp,
+      })
+      open.delete(key)
+    }
+  }
+
+  // Close any remaining open cycles at report end
+  for (const curr of open.values()) {
+    outRaw.push({
+      ...curr,
+      checkOut: reportEndIso,
+      incomplete: true,
+    })
+  }
+
+  // Build derived durations and offsets
+  const reportStartMs = Date.parse(reportStartIso)
+  const reportEndMs = Date.parse(reportEndIso)
+
+  return outRaw
+    .map((c) => finalizeCycle(c))
+    .filter((c) => {
+      const s = Date.parse(c.checkIn)
+      const e = Date.parse(c.checkOut)
+      return e >= reportStartMs && s <= reportEndMs
+    })
 }
 
-function transformSummaryData(data: PreemptServiceSummary) {
-  const { requestAndServices } = data
+function finalizeCycle(
+  c: Omit<
+    TspCycle,
+    | 'timeToServiceSeconds'
+    | 'serviceDurationSeconds'
+    | 'tailSeconds'
+    | 'requestNoServiceSeconds'
+    | 'earlyGreenOffsets'
+    | 'extendGreenOffsets'
+  >
+): TspCycle {
+  const checkInMs = Date.parse(c.checkIn)
+  const checkOutMs = Date.parse(c.checkOut)
 
-  const titleHeader = `Preemption Service and Request\n${data.locationDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  // Service end fallback:
+  // - if we have serviceStart but no serviceEnd, use checkout as the end.
+  // - if we have serviceEnd but no serviceStart (weird), treat as no service.
+  let serviceStartMs: number | null = c.serviceStart
+    ? Date.parse(c.serviceStart)
+    : null
+  let serviceEndMs: number | null = c.serviceEnd
+    ? Date.parse(c.serviceEnd)
+    : null
 
-  const title = createTitle({
-    title: 'Preemption Service and Request Summary',
-    location: data.locationDescription,
-    dateRange,
-  })
-
-  const xAxis: XAXisComponentOption = {
-    type: 'time',
-    min: data.start,
-    nameLocation: 'middle',
-    name: 'Time',
-    nameGap: 30,
-    max: data.end,
-    splitNumber: 10,
-    minorTick: {
-      show: true,
-      splitNumber: 2,
-    },
+  if (
+    serviceStartMs != null &&
+    (serviceEndMs == null || !Number.isFinite(serviceEndMs))
+  ) {
+    serviceEndMs = checkOutMs
   }
 
-  const yAxis = createYAxis(true, {
-    name: 'Preemption Number',
-    type: 'category',
-    data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-    splitLine: {
-      show: true,
-    },
-  })
+  const hasService =
+    serviceStartMs != null &&
+    serviceEndMs != null &&
+    Number.isFinite(serviceStartMs) &&
+    Number.isFinite(serviceEndMs) &&
+    serviceEndMs >= serviceStartMs
 
-  const top = 100
+  const requestDurationSeconds =
+    Number.isFinite(checkInMs) &&
+    Number.isFinite(checkOutMs) &&
+    checkOutMs >= checkInMs
+      ? (checkOutMs - checkInMs) / 1000
+      : null
 
-  const grid = createGrid({
-    top: 100,
-    left: 65,
-    right: 120,
-  })
+  const timeToServiceSeconds =
+    hasService && serviceStartMs != null
+      ? (serviceStartMs - checkInMs) / 1000
+      : null
 
-  const legend = createLegend({ top })
+  const serviceDurationSeconds =
+    hasService && serviceStartMs != null && serviceEndMs != null
+      ? (serviceEndMs - serviceStartMs) / 1000
+      : null
 
-  const dataZoom = createDataZoom()
+  const tailSeconds =
+    hasService && serviceEndMs != null
+      ? Math.max(0, (checkOutMs - serviceEndMs) / 1000)
+      : null
 
-  const toolbox = createToolbox(
-    {
-      title: formatExportFileName(titleHeader, data.start, data.end),
-      dateRange,
-    },
-    data.locationIdentifer,
-    ChartType.PreemptionDetails
-  )
-  const tooltip = createTooltip({ trigger: 'item' })
+  const requestNoServiceSeconds = !hasService ? requestDurationSeconds : null
 
-  const series = createSeries()
+  const earlyGreenOffsets = c.earlyGreens
+    .map((ts) => (Date.parse(ts) - checkInMs) / 1000)
+    .filter((v) => Number.isFinite(v) && v >= 0)
 
-  const requestArr: PremptStuf = []
-  const servicetArr: PremptStuf = []
-  requestAndServices.forEach((entry) => {
-    const preemptionNumber = entry.preemptionNumber.toString()
-    entry.requests.forEach((request) =>
-      requestArr.push([request, preemptionNumber])
-    )
-    entry.services.forEach((service) =>
-      servicetArr.push([service, preemptionNumber])
-    )
-  })
+  const extendGreenOffsets = c.extendGreens
+    .map((ts) => (Date.parse(ts) - checkInMs) / 1000)
+    .filter((v) => Number.isFinite(v) && v >= 0)
 
-  series.push({
-    name: 'Services',
-    type: 'scatter',
-    symbolOffset: [0, '-50%'],
-    symbolSize: 8,
-    data: servicetArr,
-    color: Color.Blue,
-  })
+  return {
+    ...c,
+    // keep original strings, but ensure serviceEnd fallback is reflected
+    serviceEnd: hasService
+      ? new Date(serviceEndMs as number).toISOString()
+      : c.serviceEnd,
+    timeToServiceSeconds,
+    serviceDurationSeconds,
+    tailSeconds,
+    requestNoServiceSeconds,
+    earlyGreenOffsets,
+    extendGreenOffsets,
+  }
+}
 
-  series.push({
-    name: 'Requests',
-    type: 'scatter',
-    symbolOffset: [0, '50%'],
-    symbolSize: 8,
-    data: requestArr,
-    color: Color.Red,
-  })
+/* ---------------------------------------------
+ * Chart series helpers (like Preempt Details)
+ * --------------------------------------------- */
 
-  const displayProps = createDisplayProps({
-    description: 'Summary',
-    height: '440px',
-  })
+interface ChartDataEntry {
+  0: string // x = 112 timestamp
+  1: number | null // y = seconds since 112 (or duration segment in seconds)
+}
 
-  const chartOptions: EChartsOption = {
-    title: title,
-    xAxis: xAxis,
-    yAxis: yAxis,
-    grid: grid,
-    legend: legend,
-    dataZoom: dataZoom,
-    toolbox: toolbox,
-    tooltip: tooltip,
-    series: series,
-    displayProps: displayProps,
+type ChartData = ChartDataEntry[]
+
+function getDurationSeries(
+  key: keyof Pick<
+    TspCycle,
+    | 'timeToServiceSeconds'
+    | 'serviceDurationSeconds'
+    | 'tailSeconds'
+    | 'requestNoServiceSeconds'
+  >,
+  cycles: TspCycle[]
+): ChartData {
+  return cycles
+    .map((c) => {
+      const v = c[key]
+      if (v == null) return
+      if (!Number.isFinite(Number(v))) return
+      return [c.checkIn, Number(v)]
+    })
+    .filter(Boolean) as ChartData
+}
+
+function getMarkerSeries(
+  key: keyof Pick<TspCycle, 'earlyGreenOffsets' | 'extendGreenOffsets'>,
+  cycles: TspCycle[]
+): ChartData {
+  const out: ChartData = []
+
+  for (const c of cycles) {
+    const offsets = c[key]
+    for (const off of offsets) {
+      if (!Number.isFinite(off)) continue
+      out.push([c.checkIn, off])
+    }
   }
 
-  return chartOptions
+  return out
+}
+
+/* ---------------------------------------------
+ * Types (wire these to your generated API types)
+ * --------------------------------------------- */
+
+export interface RawPrioritySummaryResponse {
+  data: PrioritySummaryLocationDetail
+}
+
+export interface TransformedPrioritySummaryResponse {
+  type: ChartType
+  data: {
+    charts: Array<{ chart: EChartsOption }>
+  }
+}
+
+export interface PrioritySummaryLocationDetail {
+  averageDuration?: string
+  numberCheckins?: number
+  numberCheckouts?: number
+  numberEarlyGreens?: number
+  numberExtendedGreens?: number
+  events: PrioritySummaryEvent[]
+  locationIdentifier: string
+  locationDescription: string
+  start: string
+  end: string
+}
+
+export interface PrioritySummaryEvent {
+  eventCode: EventCode
+  eventParam: number
+  locationIdentifier: string
+  timestamp: string
 }

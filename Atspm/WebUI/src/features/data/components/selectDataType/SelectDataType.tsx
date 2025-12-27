@@ -1,4 +1,3 @@
-import { useGetEventLogDataTypes } from '@/api/data'
 import OptionsWrapper from '@/components/OptionsWrapper'
 import {
   Box,
@@ -23,8 +22,9 @@ export const SelectDataType = ({
   selectedDataType,
   setSelectedDataType,
 }: SelectDataTypeProps) => {
+  return null
   // const { data: aggData, isLoading: aggLoading } = useGetAggDataTypes()
-  const { data: rawData, isLoading: rawLoading } = useGetEventLogDataTypes()
+  // const { data: rawData, isLoading: rawLoading } = useGetEventLogDataTypes()
 
   // build a flat list of options, raw first, then aggregations
   const dataTypes: DataTypeOption[] = []
