@@ -1,22 +1,22 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Atspm Reports Api",
-    "description": "ATSPM Report Api The API will be sunset on 12/22/2026.\r\n\r\n[API v1 Sunset Policy](https://example.com/api/v1-sunset)",
+    "title": "ATSPM Report Api",
+    "description": "ATSPM Reporting with OpenAPI, Swashbuckle, and API versioning.",
     "contact": {
-      "name": "API Support",
-      "url": "https://example.com/support",
-      "email": "support@example.com"
+      "name": "udotdevelopment",
+      "url": "https://udottraffic.utah.gov/atspm/",
+      "email": "udotdevelopment@gmail.com"
     },
     "license": {
-      "name": "Apache 2.0",
-      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+      "name": "Apache",
+      "url": "http://www.apache.org/licenses/LICENSE-2."
     },
     "version": "1.0"
   },
   "servers": [
     {
-      "url": "/dataapi"
+      "url": "/report"
     }
   ],
   "paths": {
@@ -1803,6 +1803,100 @@
         }
       }
     },
+    "/api/v1/PriorityDetails/test": {
+      "get": {
+        "tags": ["PriorityDetails"],
+        "summary": "Get example data for testing",
+        "operationId": "GetPriorityDetailsTestData",
+        "responses": {
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriorityDetailsResult"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/PriorityDetails/getReportData": {
+      "post": {
+        "tags": ["PriorityDetails"],
+        "summary": "Get report data",
+        "operationId": "GetPriorityDetailsReportData",
+        "requestBody": {
+          "description": "Reporting options",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriorityDetailsOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriorityDetailsOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PriorityDetailsOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PriorityDetailsResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/PrioritySummary/test": {
       "get": {
         "tags": ["PrioritySummary"],
@@ -3168,8 +3262,9 @@
   "components": {
     "schemas": {
       "AggregationCalculationType": {
-        "enum": ["Sum", "Average"],
-        "type": "string"
+        "enum": [0, 1],
+        "type": "integer",
+        "format": "int32"
       },
       "AggregationDataPoint": {
         "type": "object",
@@ -3271,23 +3366,9 @@
         "additionalProperties": false
       },
       "AggregationType": {
-        "enum": [
-          "DetectorEventCount",
-          "Pcd",
-          "Speed",
-          "SplitFail",
-          "YellowRedActivation",
-          "PhaseCycle",
-          "PhaseLeftTurn",
-          "Ped",
-          "SplitMonitor",
-          "PhaseTermination",
-          "Preemption",
-          "Priority",
-          "SignalEventCount",
-          "signalPlan"
-        ],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+        "type": "integer",
+        "format": "int32"
       },
       "ApproachDelayOptions": {
         "type": "object",
@@ -3812,15 +3893,9 @@
         "additionalProperties": false
       },
       "BinSize": {
-        "enum": [
-          "FifteenMinute",
-          "ThirtyMinute",
-          "Hour",
-          "Day",
-          "Month",
-          "Year"
-        ],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5],
+        "type": "integer",
+        "format": "int32"
       },
       "CycleEventsDto": {
         "type": "object",
@@ -3895,16 +3970,9 @@
         "additionalProperties": false
       },
       "DayOfWeek": {
-        "enum": [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday"
-        ],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5, 6],
+        "type": "integer",
+        "format": "int32"
       },
       "DescriptionWithDataPoints": {
         "type": "object",
@@ -3924,21 +3992,9 @@
         "additionalProperties": false
       },
       "DetectionTypes": {
-        "enum": [
-          "NA",
-          "B",
-          "AC",
-          "AS",
-          "LLC",
-          "LLS",
-          "SBP",
-          "AP",
-          "P",
-          "D",
-          "IQ",
-          "EQ"
-        ],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "type": "integer",
+        "format": "int32"
       },
       "DetectorEventBase": {
         "type": "object",
@@ -4304,8 +4360,9 @@
         "additionalProperties": false
       },
       "LaneTypes": {
-        "enum": ["NA", "V", "Bike", "Ped", "E", "LRT", "Bus", "HDV"],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+        "type": "integer",
+        "format": "int32"
       },
       "LeftTurnGapAnalysisOptions": {
         "type": "object",
@@ -6625,6 +6682,110 @@
         },
         "additionalProperties": false
       },
+      "PriorityDetailsOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "binSize": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriorityDetailsResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "approachId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approachDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "phaseNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isPhaseOverLap": {
+            "type": "boolean"
+          },
+          "phaseNumberSort": {
+            "type": "string",
+            "nullable": true
+          },
+          "phaseType": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberCheckins": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberCheckouts": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberEarlyGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberExtendedGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "rawEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndianaEvent"
+            },
+            "nullable": true
+          },
+          "cycleAllEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CycleEventsDto"
+            },
+            "nullable": true
+          },
+          "priorityAndPreemptionEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetectorEventDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "PrioritySummaryOptions": {
         "type": "object",
         "properties": {
@@ -7010,8 +7171,9 @@
         "additionalProperties": false
       },
       "SeriesType": {
-        "enum": ["Signal", "PhaseNumber", "Direction", "Route", "Detector"],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4],
+        "type": "integer",
+        "format": "int32"
       },
       "SpeedPlan": {
         "type": "object",
@@ -7427,8 +7589,9 @@
         "additionalProperties": false
       },
       "TimePeriodOptions": {
-        "enum": ["StartToEnd", "TimePeriod"],
-        "type": "string"
+        "enum": [0, 1],
+        "type": "integer",
+        "format": "int32"
       },
       "TimeSpaceDiagramAverageOptions": {
         "type": "object",
@@ -8394,8 +8557,9 @@
         "additionalProperties": false
       },
       "WatchDogComponentTypes": {
-        "enum": ["Location", "Approach", "Detector"],
-        "type": "string"
+        "enum": [0, 1, 2],
+        "type": "integer",
+        "format": "int32"
       },
       "WatchDogDashboardOptions": {
         "type": "object",
@@ -8446,18 +8610,9 @@
         "additionalProperties": false
       },
       "WatchDogIssueTypes": {
-        "enum": [
-          "RecordCount",
-          "LowDetectorHits",
-          "StuckPed",
-          "ForceOffThreshold",
-          "MaxOutThreshold",
-          "UnconfiguredApproach",
-          "UnconfiguredDetector",
-          "MissingMainlineData",
-          "StuckQueueDetection"
-        ],
-        "type": "string"
+        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "type": "integer",
+        "format": "int32"
       },
       "WatchDogLogEventDTO": {
         "type": "object",
@@ -8622,15 +8777,9 @@
         "additionalProperties": false
       },
       "XAxisType": {
-        "enum": [
-          "Time",
-          "TimeOfDay",
-          "Direction",
-          "Approach",
-          "Signal",
-          "Detector"
-        ],
-        "type": "string"
+        "enum": [0, 1, 2, 3, 4, 5],
+        "type": "integer",
+        "format": "int32"
       },
       "YellowRedActivationsOptions": {
         "type": "object",
