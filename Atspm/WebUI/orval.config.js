@@ -5,7 +5,7 @@ module.exports = {
     },
     output: {
       workspace: './src/api/config',
-      target: './',
+      target: './config-api.ts',
       client: 'react-query',
       mock: true,
       templates: './orval-templates',
@@ -24,7 +24,7 @@ module.exports = {
     },
     output: {
       workspace: './src/api/reports',
-      target: './',
+      target: './report-api.ts',
       client: 'react-query',
       mock: true,
       templates: './orval-templates',
@@ -43,7 +43,7 @@ module.exports = {
     },
     output: {
       workspace: './src/api/data',
-      target: './',
+      target: './data-api.ts',
       client: 'react-query',
       mock: true,
       templates: './orval-templates',
