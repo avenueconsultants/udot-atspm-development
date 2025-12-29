@@ -193,6 +193,9 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             double std = AtspmMath.SampleStandardDeviation(values);
             double min = AtspmMath.Min(values);
             double max = AtspmMath.Max(values);
+            double twentyFifthPercentile = AtspmMath.Percentile(values, 25);
+            double fiftiethPercentile = AtspmMath.Percentile(values, 50);
+            double seventyFifthPercentile = AtspmMath.Percentile(values, 75);
 
             return new StatisticsDataPoint
             {
@@ -203,9 +206,9 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 Std = std,
                 Min = min,
                 Max = max,
-                TwentyFifthPercentile = Math.Round(AtspmMath.Percentile(values, 0.25)),
-                FiftiethPercentile = Math.Round(AtspmMath.Percentile(values, 0.5)),
-                SeventyFifthPercentile = Math.Round(AtspmMath.Percentile(values, 0.75))
+                TwentyFifthPercentile = twentyFifthPercentile,
+                FiftiethPercentile = fiftiethPercentile,
+                SeventyFifthPercentile = seventyFifthPercentile
             };
         }
 
