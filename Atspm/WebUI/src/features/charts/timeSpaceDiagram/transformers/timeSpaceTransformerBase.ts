@@ -14,8 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { SeriesOption } from 'echarts'
-import { RawTimeSpaceAverageData, TimeSpaceResponseData } from '../types'
+import { dateToTimestamp } from '@/utils/dateTime'
+import { CustomSeriesRenderItemReturn, SeriesOption } from 'echarts'
+import { Cycle } from '../../timingAndActuation/types'
+import {
+  RawTimeSpaceAverageData,
+  TimeSpaceDetectorEvent,
+  TimeSpaceResponseData,
+} from '../types'
 
 export function generateCycles(
   data: TimeSpaceResponseData,
@@ -24,33 +30,185 @@ export function generateCycles(
   phaseType?: string
 ): SeriesOption[] {
   const seriesOptions: SeriesOption[] = []
-  const bandTypes = [1, 8, 9]
-  const greenEventOptions = getDataByValue(data, distanceData, 1)
-  const yellowEventOptions = getDataByValue(data, distanceData, 8)
-  const redEventOptions = getDataByValue(data, distanceData, 9)
-
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < data.length; i++) {
+    const cycleEvents = getCycleEvents(data[i].cycleAllEvents, distanceData[i])
     const seriesOption: SeriesOption = {
       name: `Cycles ${phaseType?.length ? phaseType : ''}`,
-      type: 'line',
-      symbol: 'none',
+      id: `Cycles ${data[i].locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+      type: 'custom',
+      clip: true,
       z: 5,
-      lineStyle: {
-        width: 6,
-        color: colorMap.get(bandTypes[i]),
+      silent: true,
+      data: cycleEvents,
+      renderItem: (param, api): CustomSeriesRenderItemReturn => {
+        const i = param.dataIndex
+        if (!cycleEvents || i >= cycleEvents.length - 1) {
+          return
+        }
+        const nextIndex = i + 1
+
+        const [x1, y1, v1] = [api.value(0), api.value(1), api.value(2)]
+
+        const [x2, y2, v2] = [
+          api.value(0, nextIndex),
+          api.value(1, nextIndex),
+          api.value(2, nextIndex),
+        ]
+        const newX2 = new Date(x2).getTime()
+        const p1 = api.coord([x1, y1])
+        const p2 = api.coord([newX2, y2])
+        return {
+          type: 'rect',
+          shape: {
+            x: p1[0],
+            y: p1[1],
+            width: p2[0] - p1[0],
+            height: 10,
+          },
+          style: {
+            fill: getSegmentColor(v1 as number, v2 as number),
+          },
+        }
       },
-      data:
-        bandTypes[i] === 1
-          ? greenEventOptions
-          : bandTypes[i] === 8
-            ? yellowEventOptions
-            : redEventOptions,
     }
     seriesOptions.push(seriesOption)
   }
-
-  // seriesOptions.push(labelSeriesOption)
   return seriesOptions
+}
+
+function getSegmentColor(from: number, to: number): string {
+  if (from === 1 && to === 8) return 'green'
+  if (from === 8 && to === 9) return 'yellow'
+  if (from === 9 && to === 1) return 'red'
+  return '#999' // fallback
+}
+
+// export function generateCycles(
+//   data: TimeSpaceResponseData,
+//   distanceData: number[],
+//   colorMap: Map<number, string>,
+//   phaseType?: string
+// ): SeriesOption[] {
+//   const series: SeriesOption[] = []
+
+//   const greenBands = getBandData(data, distanceData, 1)
+//   const yellowBands = getBandData(data, distanceData, 8)
+//   const redBands = getBandData(data, distanceData, 9)
+
+//   const bandSpecs = [
+//     { items: greenBands, color: colorMap.get(1) },
+//     { items: yellowBands, color: colorMap.get(8) },
+//     { items: redBands, color: colorMap.get(9) },
+//   ]
+
+//   for (const band of bandSpecs) {
+//     series.push({
+//       type: 'custom',
+//       name: `Cycles ${phaseType ?? ''}`,
+//       renderItem: renderCycleBand,
+
+//       itemStyle: {
+//         color: band.color,
+//         opacity: 0.8,
+//       },
+
+//       encode: {
+//         x: [1, 2], // start & end time
+//         y: 0, // distance index
+//       },
+
+//       data: band.items,
+//     })
+//   }
+
+//   return series
+// }
+
+// function toTimestamp(dt: string): number {
+//   return new Date(dt).getTime()
+// }
+
+// function getBandData(
+//   data: TimeSpaceResponseData,
+//   distanceData: number[],
+//   value: number
+// ) {
+//   const bands: Array<{ name: string; value: number[] }> = []
+
+//   data.forEach((location, index) => {
+//     if (!location.cycleAllEvents?.length) return
+
+//     const cycles = location.cycleAllEvents
+//     const startIndex = cycles.findIndex((e) => e.value === value)
+//     if (startIndex < 0) return
+
+//     for (let i = startIndex; i < cycles.length; i += 3) {
+//       const startTimeStr = cycles[i].start
+//       const endTimeStr =
+//         i === cycles.length - 1 ? location.end : cycles[i + 1].start
+
+//       const startTime = toTimestamp(startTimeStr)
+//       const endTime = toTimestamp(endTimeStr)
+
+//       bands.push({
+//         name: `${value}`,
+//         value: [
+//           index, // y-axis category index
+//           startTime, // x-axis start (timestamp)
+//           endTime, // x-axis end (timestamp)
+//         ],
+//       })
+//     }
+//   })
+
+//   return bands
+// }
+
+// function renderCycleBand(params, api) {
+//   const yIndex = api.value(0)
+//   const xStart = api.value(1)
+//   const xEnd = api.value(2)
+
+//   const startCoord = api.coord([xStart, yIndex])
+//   const endCoord = api.coord([xEnd, yIndex])
+
+//   // console.log(yIndex, startCoord, endCoord)
+
+//   // band thickness in Y units:
+//   const height = api.size([0, 1])[1] * 5 // adjust width (% of row height)
+//   console.log(height)
+
+//   const rect = graphic.clipRectByRect(
+//     {
+//       x: startCoord[0],
+//       y: startCoord[1] - height / 2,
+//       width: endCoord[0] - startCoord[0],
+//       height,
+//     },
+//     {
+//       x: params.coordSys.x,
+//       y: params.coordSys.y,
+//       width: params.coordSys.width,
+//       height: params.coordSys.height,
+//     }
+//   )
+
+//   return (
+//     rect && {
+//       type: 'rect',
+//       shape: rect,
+//       style: api.style(),
+//     }
+//   )
+// }
+
+function getCycleEvents(
+  data: Cycle[] | null,
+  distanceData: number
+): [string, number, number][] {
+  if (data === null) return
+
+  return data.map((e) => [e.start, distanceData, e.value])
 }
 
 function getDataByValue(
@@ -83,99 +241,184 @@ function getDataByValue(
 export function generateGreenEventLines(
   data: TimeSpaceResponseData,
   distanceData: number[],
-  phaseType?: string
-): SeriesOption {
-  const dataPoints = getGreenEventsDataPoints(data, distanceData)
-
-  return {
-    name: `Green Bands ${phaseType?.length ? phaseType : ''}`,
-    type: 'custom',
-    data: dataPoints,
-    clip: true,
-    renderItem: function (params, api) {
-      if (params.context.rendered) {
-        return
-      }
-      params.context.rendered = true
-      let points = []
-      const polygons: any[] = []
-      const color = 'green'
-      for (let i = 0; i < dataPoints.length; i++) {
-        if (dataPoints[i] === null) {
-          polygons.push({
-            type: 'polygon',
-            transition: ['shape'],
-            shape: {
-              points: points,
-            },
-            style: {
-              z: -1,
-              opacity: 0.2,
-              fill: color,
-            },
-          })
-          points = []
-        } else {
-          points.push(api.coord(dataPoints[i]))
+  phaseType?: string,
+  isPrimary?: boolean
+): SeriesOption[] {
+  const seriesOptions: SeriesOption[] = []
+  for (let i = 0; i < data.length; i++) {
+    const location = data[i]
+    const dataPoints = getGreenEventsDataPoints(
+      location.greenTimeEvents,
+      distanceData[i],
+      location.start,
+      location.end
+    )
+    const seriesOption: SeriesOption = {
+      name: `Green Bands ${phaseType?.length ? phaseType : ''}`,
+      id: `Green Bands ${data[i].locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+      type: 'custom',
+      data: dataPoints,
+      clip: true,
+      renderItem: function (params, api) {
+        const i = params.dataIndex
+        if (!dataPoints || i >= dataPoints.length - 1 || i % 2 !== 0) {
+          return
         }
-      }
-      return {
-        type: 'group',
-        children: polygons,
-      }
-    },
+        const distanceToNext = isPrimary
+          ? location.distanceToNextLocation
+          : -location.distanceToNextLocation
+
+        const nextIndex = i + 1
+        const [x1, y1] = [api.value(0), api.value(1)]
+
+        const [x2, y2] = [api.value(0, nextIndex), api.value(1, nextIndex)]
+        const currPointFinalX = getArrivalTime(
+          location.distanceToNextLocation,
+          location.speed,
+          x1 as string
+        )
+        const nextPointFinalX = getArrivalTime(
+          location.distanceToNextLocation,
+          location.speed,
+          x2 as string
+        )
+        const points = [
+          api.coord([x1, y1]),
+          api.coord([x2, y2]),
+          api.coord([nextPointFinalX, (y2 as number) + distanceToNext]),
+          api.coord([currPointFinalX, (y1 as number) + distanceToNext]),
+        ]
+        return {
+          type: 'polygon',
+          transition: ['shape'],
+          shape: {
+            points: points,
+          },
+          style: {
+            z: -1,
+            opacity: 0.2,
+            fill: 'green',
+          },
+        }
+      },
+    }
+    seriesOptions.push(seriesOption)
   }
+  return seriesOptions
 }
 
 function getGreenEventsDataPoints(
-  data: TimeSpaceResponseData,
-  distanceData: number[]
+  greenEvents: TimeSpaceDetectorEvent[],
+  currDistance: number,
+  start: string,
+  end: string
 ) {
-  return data.reduce((result, location, index) => {
-    if (location.greenTimeEvents) {
-      const greenEvents = location.greenTimeEvents
-      for (let i = 0; i < greenEvents.length; ) {
-        const currPoint = greenEvents[i]
-        const nextPoint = greenEvents[i + 1]
-        if (i === 0 && currPoint.isDetectorOn === false) {
-          result.push(
-            [location.start, distanceData[index]],
-            [currPoint.initialX, distanceData[index]],
-            [currPoint.finalX, distanceData[index + 1]],
-            [location.start, distanceData[index + 1]],
-            null
-          )
-          i++
-        } else if (
-          i === greenEvents.length - 1 &&
-          currPoint.isDetectorOn === true
-        ) {
-          result.push(
-            [currPoint.initialX, distanceData[index]],
-            [location.end, distanceData[index]],
-            [location.end, distanceData[index + 1]],
-            [currPoint.finalX, distanceData[index + 1]],
-            null
-          )
-          i++
-        } else if (currPoint.isDetectorOn === false) {
-          i++
-        } else {
-          result.push(
-            ...[
-              [currPoint.initialX, distanceData[index]],
-              [nextPoint.initialX, distanceData[index]],
-              [nextPoint.finalX, distanceData[index + 1]],
-              [currPoint.finalX, distanceData[index + 1]],
-              null,
-            ]
-          )
-          i += 2
-        }
-      }
+  const result = []
+  for (let i = 0; i < greenEvents.length; ) {
+    const currPoint = greenEvents[i]
+    const nextPoint = greenEvents[i + 1]
+    if (i === 0 && currPoint.isDetectorOn === false) {
+      result.push([start, currDistance], [currPoint.initialX, currDistance])
+      i++
+    } else if (
+      i === greenEvents.length - 1 &&
+      currPoint.isDetectorOn === true
+    ) {
+      result.push([currPoint.initialX, currDistance], [end, currDistance])
+      i++
+    } else if (currPoint.isDetectorOn === false) {
+      i++
+    } else {
+      result.push(
+        ...[
+          [currPoint.initialX, currDistance],
+          [nextPoint.initialX, currDistance],
+        ]
+      )
+      i += 2
     }
-    return result
-  }, [] as any)
+  }
+
+  return result
+}
+
+// function getGreenEventsDataPoints(
+//   data: TimeSpaceResponseData,
+//   distanceData: number[]
+// ) {
+//   return data.reduce((result, location, index) => {
+//     if (location.greenTimeEvents) {
+//       const greenEvents = location.greenTimeEvents
+//       for (let i = 0; i < greenEvents.length; ) {
+//         const currPoint = greenEvents[i]
+//         const nextPoint = greenEvents[i + 1]
+//         const currPointFinalX = getArrivalTime(
+//           location.distanceToNextLocation,
+//           location.speed,
+//           currPoint.initialX
+//         )
+//         const nextPointFinalX = getArrivalTime(
+//           location.distanceToNextLocation,
+//           location.speed,
+//           nextPoint.initialX
+//         )
+//         if (i === 0 && currPoint.isDetectorOn === false) {
+//           result.push(
+//             [location.start, distanceData[index]],
+//             [currPoint.initialX, distanceData[index]]
+//             // [currPointFinalX, distanceData[index + 1]],
+//             // [location.start, distanceData[index + 1]],
+//             // null
+//           )
+//           i++
+//         } else if (
+//           i === greenEvents.length - 1 &&
+//           currPoint.isDetectorOn === true
+//         ) {
+//           result.push(
+//             [currPoint.initialX, distanceData[index]],
+//             [location.end, distanceData[index]]
+//             // [location.end, distanceData[index + 1]],
+//             // [currPointFinalX, distanceData[index + 1]],
+//             // null
+//           )
+//           i++
+//         } else if (currPoint.isDetectorOn === false) {
+//           i++
+//         } else {
+//           result.push(
+//             ...[
+//               [currPoint.initialX, distanceData[index]],
+//               [nextPoint.initialX, distanceData[index]],
+//               // [nextPointFinalX, distanceData[index + 1]],
+//               // [currPointFinalX, distanceData[index + 1]],
+//               // null,
+//             ]
+//           )
+//           i += 2
+//         }
+//       }
+//     }
+//     return result
+//   }, [] as any)
+// }
+
+function getArrivalTime(
+  distanceToNextLocation: number,
+  speed: number,
+  currentDetectorOn: Date | string
+): string {
+  const start = new Date(currentDetectorOn)
+  const speedInFeetPerSecond = getSpeedInFeetPerSecond(speed)
+  const timeToTravelSeconds = distanceToNextLocation / speedInFeetPerSecond
+
+  const arrivalMs = start.getTime() + timeToTravelSeconds * 1000
+
+  return dateToTimestamp(new Date(arrivalMs))
+}
+
+function getSpeedInFeetPerSecond(speed: number): number {
+  return (speed * 5280) / 3600
 }
 
 export function getLocationsLabelOption(
@@ -326,6 +569,55 @@ export function getDistancesLabelOption(
     },
     data: dataPoints,
   }
+}
+
+export function getDraggableOffsetabelOption(
+  data: TimeSpaceResponseData,
+  distanceData: number[],
+  phaseType?: string,
+  isPrimary?: boolean
+): SeriesOption[] {
+  const seriesOptions: SeriesOption[] = []
+  for (let i = 0; i < data.length; i++) {
+    const location = data[i]
+    const distance = distanceData[i]
+    const dataPoint: [string, number, number, number][] = [
+      [
+        location.end,
+        distance,
+        i !== distanceData.length - 1 ? location.distanceToNextLocation : 0,
+        0,
+      ],
+    ]
+    const seriesOption: SeriesOption = {
+      name: `Offset amount`,
+      id: `Offset ${location.locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
+      type: 'custom',
+      data: dataPoint,
+      renderItem: (params, api) => {
+        const distanceToNext = isPrimary
+          ? location.distanceToNextLocation
+          : -location.distanceToNextLocation
+        const [x, y] = api.coord([
+          api.value(0),
+          (api.value(1) as number) + distanceToNext / 2,
+        ])
+        const offsetValue = api.value(3)
+        return {
+          type: 'text',
+          style: {
+            x: x + 20,
+            y: y - 10,
+            text: phaseType + ' Offset: ' + offsetValue.toString() + ' seconds',
+            textFill: '#000',
+            fontSize: 10,
+          },
+        }
+      },
+    }
+    seriesOptions.push(seriesOption)
+  }
+  return seriesOptions
 }
 
 export function generatePrimaryCycleLabels(

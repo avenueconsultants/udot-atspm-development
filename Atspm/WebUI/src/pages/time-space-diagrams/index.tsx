@@ -14,7 +14,6 @@ import { toUTCDateWithTimeStamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { Alert, Box, Tab, Typography } from '@mui/material'
-import { AxiosError, AxiosResponse } from 'axios'
 import { set, subDays, subMonths } from 'date-fns'
 import { RefObject, useRef, useState } from 'react'
 
@@ -184,7 +183,7 @@ const TimeSpaceDiagram = () => {
               </LoadingButton>
               {isError && (
                 <Alert severity="error" sx={{ marginLeft: 1 }}>
-                  {(
+                  {/* {(
                     ((error as AxiosError).response as unknown as AxiosResponse)
                       ?.data as string
                   ).includes('Controller')
@@ -195,7 +194,7 @@ const TimeSpaceDiagram = () => {
                     : ((
                         (error as AxiosError)
                           .response as unknown as AxiosResponse
-                      )?.data as string) + '. Verify in Configuration'}
+                      )?.data as string) + '. Verify in Configuration'} */}
                 </Alert>
               )}
               {hasAttemptedGenerate && toolOptions.routeId === '' && (

@@ -36,7 +36,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             bool coordinatedPhases,
             int cycleLength,
             List<CycleEventsDto> cycleAllEvents,
-            List<TimeSpaceEventBase> greenTimeEvents) : base(approachId, locationId, start, end)
+            List<DataPointWithDetectorCheckBase> greenTimeEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
@@ -60,6 +60,6 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
-        public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
+        public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
     }
 }

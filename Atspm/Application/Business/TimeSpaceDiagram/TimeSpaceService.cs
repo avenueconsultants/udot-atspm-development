@@ -49,6 +49,26 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             return greenTimeEvents;
         }
 
+        public static List<DataPointWithDetectorCheckBase> GetGreenTimeEvents(
+            List<CycleEventsDto> cycleEvents,
+            int speedLimit)
+        {
+            List<int> cycleGreenStartEndCodes = new List<int>() { 1, 8 };
+            var events = new List<CycleEventsDto>();
+            var greenTimeEvents = new List<DataPointWithDetectorCheckBase>();
+            var tempEvents = cycleEvents.Where(c => cycleGreenStartEndCodes.Contains(c.Value)).ToList();
+
+            foreach (var gEvent in tempEvents)
+            {
+                DateTime start = gEvent.Start;
+                DataPointWithDetectorCheckBase resultOn = new DataPointWithDetectorCheckBase(
+                    start,
+                    gEvent.Value == 1 ? true : false);
+                greenTimeEvents.Add(resultOn);
+            }
+            return greenTimeEvents;
+        }
+
         public static void GetArrivalTime(double distanceToDetector, double speedLimit, DateTime InitialTime, out double speedInFeetPerSecond, out DateTime arrivalTime)
         {
             DateTime currentDetectorOn = InitialTime;
