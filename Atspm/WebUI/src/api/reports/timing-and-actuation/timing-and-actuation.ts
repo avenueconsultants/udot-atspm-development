@@ -40,14 +40,14 @@ export const getTimingAndActuationTestData = (
       
       
       return reportsRequest<TimingAndActuationsForPhaseResult[]>(
-      {url: `/api/v1/TimingAndActuation/test`, method: 'GET', signal
+      {url: `/TimingAndActuation/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetTimingAndActuationTestDataQueryKey = () => {
-    return [`/api/v1/TimingAndActuation/test`] as const;
+    return [`/TimingAndActuation/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getTimingAndActuationReportData = (
       
       
       return reportsRequest<TimingAndActuationsForPhaseResult[]>(
-      {url: `/api/v1/TimingAndActuation/getReportData`, method: 'POST',
+      {url: `/TimingAndActuation/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: timingAndActuationsOptions, signal
     },

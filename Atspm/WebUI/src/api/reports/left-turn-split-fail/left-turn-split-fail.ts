@@ -40,14 +40,14 @@ export const getLeftTurnSplitFailTestData = (
       
       
       return reportsRequest<LeftTurnSplitFailResult>(
-      {url: `/api/v1/LeftTurnSplitFail/test`, method: 'GET', signal
+      {url: `/LeftTurnSplitFail/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetLeftTurnSplitFailTestDataQueryKey = () => {
-    return [`/api/v1/LeftTurnSplitFail/test`] as const;
+    return [`/LeftTurnSplitFail/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getLeftTurnSplitFailReportData = (
       
       
       return reportsRequest<LeftTurnSplitFailResult>(
-      {url: `/api/v1/LeftTurnSplitFail/getReportData`, method: 'POST',
+      {url: `/LeftTurnSplitFail/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: leftTurnSplitFailOptions, signal
     },

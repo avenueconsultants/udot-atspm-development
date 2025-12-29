@@ -40,14 +40,14 @@ export const getPriorityDetailsTestData = (
       
       
       return reportsRequest<PriorityDetailsResult[]>(
-      {url: `/api/v1/PriorityDetails/test`, method: 'GET', signal
+      {url: `/PriorityDetails/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetPriorityDetailsTestDataQueryKey = () => {
-    return [`/api/v1/PriorityDetails/test`] as const;
+    return [`/PriorityDetails/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getPriorityDetailsReportData = (
       
       
       return reportsRequest<PriorityDetailsResult[]>(
-      {url: `/api/v1/PriorityDetails/getReportData`, method: 'POST',
+      {url: `/PriorityDetails/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: priorityDetailsOptions, signal
     },

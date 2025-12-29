@@ -67,14 +67,14 @@ export const getApproachVolumeTestData = (
       
       
       return reportsRequest<ApproachVolumeResult[]>(
-      {url: `/api/v1/ApproachVolume/test`, method: 'GET', signal
+      {url: `/ApproachVolume/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetApproachVolumeTestDataQueryKey = () => {
-    return [`/api/v1/ApproachVolume/test`] as const;
+    return [`/ApproachVolume/test`] as const;
     }
 
     
@@ -130,7 +130,7 @@ export const getApproachVolumeReportData = (
       
       
       return reportsRequest<ApproachVolumeResult[]>(
-      {url: `/api/v1/ApproachVolume/getReportData`, method: 'POST',
+      {url: `/ApproachVolume/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: approachVolumeOptions, signal
     },

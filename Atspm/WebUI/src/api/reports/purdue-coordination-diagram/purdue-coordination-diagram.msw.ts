@@ -26,7 +26,7 @@ export const getGetPurdueCoordinationDiagramReportDataResponseMock = (): PurdueC
 
 
 export const getGetPurdueCoordinationDiagramTestDataMockHandler = (overrideResponse?: PurdueCoordinationDiagramResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PurdueCoordinationDiagramResult[]> | PurdueCoordinationDiagramResult[])) => {
-  return http.get('*/api/v1/PurdueCoordinationDiagram/test', async (info) => {await delay(1000);
+  return http.get('*/PurdueCoordinationDiagram/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetPurdueCoordinationDiagramTestDataMockHandler = (overrideRespo
 }
 
 export const getGetPurdueCoordinationDiagramReportDataMockHandler = (overrideResponse?: PurdueCoordinationDiagramResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PurdueCoordinationDiagramResult[]> | PurdueCoordinationDiagramResult[])) => {
-  return http.post('*/api/v1/PurdueCoordinationDiagram/getReportData', async (info) => {await delay(1000);
+  return http.post('*/PurdueCoordinationDiagram/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

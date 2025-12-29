@@ -26,7 +26,7 @@ export const getGetLeftTurnPeakHoursReportDataResponseMock = (overrideResponse: 
 
 
 export const getGetLeftTurnPeakHoursTestDataMockHandler = (overrideResponse?: PeakHourResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PeakHourResult> | PeakHourResult)) => {
-  return http.get('*/api/v1/LeftTurnPeakHours/test', async (info) => {await delay(1000);
+  return http.get('*/LeftTurnPeakHours/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetLeftTurnPeakHoursTestDataMockHandler = (overrideResponse?: Pe
 }
 
 export const getGetLeftTurnPeakHoursReportDataMockHandler = (overrideResponse?: PeakHourResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PeakHourResult> | PeakHourResult)) => {
-  return http.post('*/api/v1/LeftTurnPeakHours/getReportData', async (info) => {await delay(1000);
+  return http.post('*/LeftTurnPeakHours/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

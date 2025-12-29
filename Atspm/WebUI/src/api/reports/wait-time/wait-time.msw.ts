@@ -26,7 +26,7 @@ export const getGetWaitTimeReportDataResponseMock = (): WaitTimeResult[] => (Arr
 
 
 export const getGetWaitTimeTestDataMockHandler = (overrideResponse?: WaitTimeResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WaitTimeResult[]> | WaitTimeResult[])) => {
-  return http.get('*/api/v1/WaitTime/test', async (info) => {await delay(1000);
+  return http.get('*/WaitTime/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetWaitTimeTestDataMockHandler = (overrideResponse?: WaitTimeRes
 }
 
 export const getGetWaitTimeReportDataMockHandler = (overrideResponse?: WaitTimeResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<WaitTimeResult[]> | WaitTimeResult[])) => {
-  return http.post('*/api/v1/WaitTime/getReportData', async (info) => {await delay(1000);
+  return http.post('*/WaitTime/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

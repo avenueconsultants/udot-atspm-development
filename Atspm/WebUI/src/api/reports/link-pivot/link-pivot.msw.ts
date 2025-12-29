@@ -29,7 +29,7 @@ export const getGetLinkPivotReportDataResponseMock = (overrideResponse: Partial<
 
 
 export const getGetLinkPivotPcdDataMockHandler = (overrideResponse?: LinkPivotPcdResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LinkPivotPcdResult> | LinkPivotPcdResult)) => {
-  return http.post('*/api/v1/LinkPivot/getPcdData', async (info) => {await delay(1000);
+  return http.post('*/LinkPivot/getPcdData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -41,7 +41,7 @@ export const getGetLinkPivotPcdDataMockHandler = (overrideResponse?: LinkPivotPc
 }
 
 export const getGetLinkPivotTestDataMockHandler = (overrideResponse?: LinkPivotResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<LinkPivotResult> | LinkPivotResult)) => {
-  return http.get('*/api/v1/LinkPivot/test', async (info) => {await delay(1000);
+  return http.get('*/LinkPivot/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -53,7 +53,7 @@ export const getGetLinkPivotTestDataMockHandler = (overrideResponse?: LinkPivotR
 }
 
 export const getGetLinkPivotReportDataMockHandler = (overrideResponse?: LinkPivotResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LinkPivotResult> | LinkPivotResult)) => {
-  return http.post('*/api/v1/LinkPivot/getReportData', async (info) => {await delay(1000);
+  return http.post('*/LinkPivot/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

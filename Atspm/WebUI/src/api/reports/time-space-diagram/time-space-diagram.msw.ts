@@ -26,7 +26,7 @@ export const getGetTimeSpaceDiagramReportDataResponseMock = (): TimeSpaceDiagram
 
 
 export const getGetTimeSpaceDiagramTestDataMockHandler = (overrideResponse?: TimeSpaceDiagramResultForPhase[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TimeSpaceDiagramResultForPhase[]> | TimeSpaceDiagramResultForPhase[])) => {
-  return http.get('*/api/v1/TimeSpaceDiagram/test', async (info) => {await delay(1000);
+  return http.get('*/TimeSpaceDiagram/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetTimeSpaceDiagramTestDataMockHandler = (overrideResponse?: Tim
 }
 
 export const getGetTimeSpaceDiagramReportDataMockHandler = (overrideResponse?: TimeSpaceDiagramResultForPhase[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<TimeSpaceDiagramResultForPhase[]> | TimeSpaceDiagramResultForPhase[])) => {
-  return http.post('*/api/v1/TimeSpaceDiagram/getReportData', async (info) => {await delay(1000);
+  return http.post('*/TimeSpaceDiagram/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

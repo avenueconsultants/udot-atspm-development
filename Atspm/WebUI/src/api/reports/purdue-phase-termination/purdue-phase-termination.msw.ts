@@ -26,7 +26,7 @@ export const getGetPurduePhaseTerminationReportDataResponseMock = (overrideRespo
 
 
 export const getGetPurduePhaseTerminationTestDataMockHandler = (overrideResponse?: PhaseTerminationResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PhaseTerminationResult> | PhaseTerminationResult)) => {
-  return http.get('*/api/v1/PurduePhaseTermination/test', async (info) => {await delay(1000);
+  return http.get('*/PurduePhaseTermination/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetPurduePhaseTerminationTestDataMockHandler = (overrideResponse
 }
 
 export const getGetPurduePhaseTerminationReportDataMockHandler = (overrideResponse?: PhaseTerminationResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PhaseTerminationResult> | PhaseTerminationResult)) => {
-  return http.post('*/api/v1/PurduePhaseTermination/getReportData', async (info) => {await delay(1000);
+  return http.post('*/PurduePhaseTermination/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

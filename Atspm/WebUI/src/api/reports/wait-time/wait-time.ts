@@ -40,14 +40,14 @@ export const getWaitTimeTestData = (
       
       
       return reportsRequest<WaitTimeResult[]>(
-      {url: `/api/v1/WaitTime/test`, method: 'GET', signal
+      {url: `/WaitTime/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetWaitTimeTestDataQueryKey = () => {
-    return [`/api/v1/WaitTime/test`] as const;
+    return [`/WaitTime/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getWaitTimeReportData = (
       
       
       return reportsRequest<WaitTimeResult[]>(
-      {url: `/api/v1/WaitTime/getReportData`, method: 'POST',
+      {url: `/WaitTime/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: waitTimeOptions, signal
     },

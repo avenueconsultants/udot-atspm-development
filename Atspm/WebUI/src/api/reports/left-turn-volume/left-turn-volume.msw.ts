@@ -30,7 +30,7 @@ export const getGetLeftTurnVolumeReportDataResponseMock = (overrideResponse: Par
 
 
 export const getGetLeftTurnVolumeTestDataMockHandler = (overrideResponse?: VolumeResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<VolumeResult> | VolumeResult)) => {
-  return http.get('*/api/v1/LeftTurnVolume/test', async (info) => {await delay(1000);
+  return http.get('*/LeftTurnVolume/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -42,7 +42,7 @@ export const getGetLeftTurnVolumeTestDataMockHandler = (overrideResponse?: Volum
 }
 
 export const getGetLeftTurnVolumeReportDataMockHandler = (overrideResponse?: VolumeResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<VolumeResult> | VolumeResult)) => {
-  return http.post('*/api/v1/LeftTurnVolume/getReportData', async (info) => {await delay(1000);
+  return http.post('*/LeftTurnVolume/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

@@ -26,7 +26,7 @@ export const getGetPreemptServiceRequestReportDataResponseMock = (overrideRespon
 
 
 export const getGetPreemptServiceRequestTestDataMockHandler = (overrideResponse?: PreemptServiceRequestResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PreemptServiceRequestResult> | PreemptServiceRequestResult)) => {
-  return http.get('*/api/v1/PreemptServiceRequest/test', async (info) => {await delay(1000);
+  return http.get('*/PreemptServiceRequest/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetPreemptServiceRequestTestDataMockHandler = (overrideResponse?
 }
 
 export const getGetPreemptServiceRequestReportDataMockHandler = (overrideResponse?: PreemptServiceRequestResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PreemptServiceRequestResult> | PreemptServiceRequestResult)) => {
-  return http.post('*/api/v1/PreemptServiceRequest/getReportData', async (info) => {await delay(1000);
+  return http.post('*/PreemptServiceRequest/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

@@ -26,7 +26,7 @@ export const getGetTransitSignalPriorityReportDataResponseMock = (): TransitSign
 
 
 export const getGetTransitSignalPriorityTestDataMockHandler = (overrideResponse?: TransitSignalPriorityResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TransitSignalPriorityResult[]> | TransitSignalPriorityResult[])) => {
-  return http.get('*/api/v1/TransitSignalPriority/test', async (info) => {await delay(1000);
+  return http.get('*/TransitSignalPriority/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetTransitSignalPriorityTestDataMockHandler = (overrideResponse?
 }
 
 export const getGetTransitSignalPriorityReportDataMockHandler = (overrideResponse?: TransitSignalPriorityResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<TransitSignalPriorityResult[]> | TransitSignalPriorityResult[])) => {
-  return http.post('*/api/v1/TransitSignalPriority/getReportData', async (info) => {await delay(1000);
+  return http.post('*/TransitSignalPriority/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

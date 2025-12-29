@@ -30,7 +30,7 @@ export const getGetGreenTimeUtilizationReportDataResponseMock = (): GreenTimeUti
 
 
 export const getGetGreenTimeUtilizationTestDataMockHandler = (overrideResponse?: GreenTimeUtilizationResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GreenTimeUtilizationResult[]> | GreenTimeUtilizationResult[])) => {
-  return http.get('*/api/v1/GreenTimeUtilization/test', async (info) => {await delay(1000);
+  return http.get('*/GreenTimeUtilization/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -42,7 +42,7 @@ export const getGetGreenTimeUtilizationTestDataMockHandler = (overrideResponse?:
 }
 
 export const getGetGreenTimeUtilizationReportDataMockHandler = (overrideResponse?: GreenTimeUtilizationResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<GreenTimeUtilizationResult[]> | GreenTimeUtilizationResult[])) => {
-  return http.post('*/api/v1/GreenTimeUtilization/getReportData', async (info) => {await delay(1000);
+  return http.post('*/GreenTimeUtilization/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

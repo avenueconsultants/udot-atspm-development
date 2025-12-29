@@ -40,14 +40,14 @@ export const getAggregationTestData = (
       
       
       return reportsRequest<AggregationResult[]>(
-      {url: `/api/v1/Aggregation/test`, method: 'GET', signal
+      {url: `/Aggregation/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetAggregationTestDataQueryKey = () => {
-    return [`/api/v1/Aggregation/test`] as const;
+    return [`/Aggregation/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getAggregationReportData = (
       
       
       return reportsRequest<AggregationResult[]>(
-      {url: `/api/v1/Aggregation/getReportData`, method: 'POST',
+      {url: `/Aggregation/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: aggregationOptions, signal
     },

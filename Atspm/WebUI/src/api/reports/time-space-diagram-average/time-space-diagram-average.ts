@@ -40,14 +40,14 @@ export const getTimeSpaceDiagramAverageTestData = (
       
       
       return reportsRequest<TimeSpaceDiagramAverageResult[]>(
-      {url: `/api/v1/TimeSpaceDiagramAverage/test`, method: 'GET', signal
+      {url: `/TimeSpaceDiagramAverage/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetTimeSpaceDiagramAverageTestDataQueryKey = () => {
-    return [`/api/v1/TimeSpaceDiagramAverage/test`] as const;
+    return [`/TimeSpaceDiagramAverage/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getTimeSpaceDiagramAverageReportData = (
       
       
       return reportsRequest<TimeSpaceDiagramAverageResult[]>(
-      {url: `/api/v1/TimeSpaceDiagramAverage/getReportData`, method: 'POST',
+      {url: `/TimeSpaceDiagramAverage/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: timeSpaceDiagramAverageOptions, signal
     },

@@ -26,7 +26,7 @@ export const getGetApproachDelayReportDataResponseMock = (): ApproachDelayResult
 
 
 export const getGetApproachDelayTestDataMockHandler = (overrideResponse?: ApproachDelayResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ApproachDelayResult[]> | ApproachDelayResult[])) => {
-  return http.get('*/api/v1/ApproachDelay/test', async (info) => {await delay(1000);
+  return http.get('*/ApproachDelay/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetApproachDelayTestDataMockHandler = (overrideResponse?: Approa
 }
 
 export const getGetApproachDelayReportDataMockHandler = (overrideResponse?: ApproachDelayResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApproachDelayResult[]> | ApproachDelayResult[])) => {
-  return http.post('*/api/v1/ApproachDelay/getReportData', async (info) => {await delay(1000);
+  return http.post('*/ApproachDelay/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

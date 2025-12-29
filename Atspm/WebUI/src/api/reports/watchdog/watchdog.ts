@@ -37,14 +37,14 @@ export const getWatchdogIssueTypes = (
       
       
       return reportsRequest<unknown>(
-      {url: `/api/v1/Watchdog/GetIssueTypes`, method: 'GET', signal
+      {url: `/Watchdog/GetIssueTypes`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetWatchdogIssueTypesQueryKey = () => {
-    return [`/api/v1/Watchdog/GetIssueTypes`] as const;
+    return [`/Watchdog/GetIssueTypes`] as const;
     }
 
     
@@ -97,14 +97,14 @@ export const getWatchdogTestData = (
       
       
       return reportsRequest<WatchDogResult>(
-      {url: `/api/v1/Watchdog/test`, method: 'GET', signal
+      {url: `/Watchdog/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetWatchdogTestDataQueryKey = () => {
-    return [`/api/v1/Watchdog/test`] as const;
+    return [`/Watchdog/test`] as const;
     }
 
     
@@ -160,7 +160,7 @@ export const getWatchdogReportData = (
       
       
       return reportsRequest<WatchDogResult>(
-      {url: `/api/v1/Watchdog/getReportData`, method: 'POST',
+      {url: `/Watchdog/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: watchDogOptions, signal
     },

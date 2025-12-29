@@ -10,8 +10,8 @@ export type AggregationCalculationType = typeof AggregationCalculationType[keyof
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AggregationCalculationType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  Sum: 'Sum',
+  Average: 'Average',
 } as const;
 
 export interface AggregationDataPoint {
@@ -53,20 +53,20 @@ export type AggregationType = typeof AggregationType[keyof typeof AggregationTyp
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const AggregationType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
-  NUMBER_12: 12,
-  NUMBER_13: 13,
+  DetectorEventCount: 'DetectorEventCount',
+  Pcd: 'Pcd',
+  Speed: 'Speed',
+  SplitFail: 'SplitFail',
+  YellowRedActivation: 'YellowRedActivation',
+  PhaseCycle: 'PhaseCycle',
+  PhaseLeftTurn: 'PhaseLeftTurn',
+  Ped: 'Ped',
+  SplitMonitor: 'SplitMonitor',
+  PhaseTermination: 'PhaseTermination',
+  Preemption: 'Preemption',
+  Priority: 'Priority',
+  SignalEventCount: 'SignalEventCount',
+  signalPlan: 'signalPlan',
 } as const;
 
 export interface ApproachDelayOptions {
@@ -254,12 +254,12 @@ export type BinSize = typeof BinSize[keyof typeof BinSize];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BinSize = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+  FifteenMinute: 'FifteenMinute',
+  ThirtyMinute: 'ThirtyMinute',
+  Hour: 'Hour',
+  Day: 'Day',
+  Month: 'Month',
+  Year: 'Year',
 } as const;
 
 export interface CycleEventsDto {
@@ -294,13 +294,13 @@ export type DayOfWeek = typeof DayOfWeek[keyof typeof DayOfWeek];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DayOfWeek = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
+  Sunday: 'Sunday',
+  Monday: 'Monday',
+  Tuesday: 'Tuesday',
+  Wednesday: 'Wednesday',
+  Thursday: 'Thursday',
+  Friday: 'Friday',
+  Saturday: 'Saturday',
 } as const;
 
 export interface DescriptionWithDataPoints {
@@ -315,19 +315,19 @@ export type DetectionTypes = typeof DetectionTypes[keyof typeof DetectionTypes];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DetectionTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
-  NUMBER_12: 12,
+  NA: 'NA',
+  B: 'B',
+  AC: 'AC',
+  AS: 'AS',
+  LLC: 'LLC',
+  LLS: 'LLS',
+  SBP: 'SBP',
+  AP: 'AP',
+  P: 'P',
+  D: 'D',
+  IQ: 'IQ',
+  EQ: 'EQ',
+  PP: 'PP',
 } as const;
 
 export interface DetectorEventBase {
@@ -470,14 +470,14 @@ export type LaneTypes = typeof LaneTypes[keyof typeof LaneTypes];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LaneTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+  NA: 'NA',
+  V: 'V',
+  Bike: 'Bike',
+  Ped: 'Ped',
+  E: 'E',
+  LRT: 'LRT',
+  Bus: 'Bus',
+  HDV: 'HDV',
 } as const;
 
 export interface LeftTurnGapAnalysisOptions {
@@ -1312,11 +1312,37 @@ export interface PriorityDetailsResult {
   numberEarlyGreens?: number;
   numberExtendedGreens?: number;
   /** @nullable */
-  rawEvents?: IndianaEvent[] | null;
+  tspEvents?: IndianaEvent[] | null;
   /** @nullable */
-  cycleAllEvents?: CycleEventsDto[] | null;
+  cycleEvents?: CycleEventsDto[] | null;
   /** @nullable */
   priorityAndPreemptionEvents?: DetectorEventDto[] | null;
+}
+
+export interface PrioritySummaryCycleDto {
+  /** @nullable */
+  locationIdentifier?: string | null;
+  tspNumber?: number;
+  checkIn?: string;
+  checkOut?: string;
+  /** @nullable */
+  serviceStart?: string | null;
+  /** @nullable */
+  serviceEnd?: string | null;
+  /** @nullable */
+  earlyGreen?: string[] | null;
+  /** @nullable */
+  extendGreen?: string[] | null;
+  /** @nullable */
+  preemptForceOff?: string[] | null;
+  /** @nullable */
+  tspEarlyForceOff?: string[] | null;
+  /** @nullable */
+  requestEndOffsetSec?: number | null;
+  /** @nullable */
+  serviceStartOffsetSec?: number | null;
+  /** @nullable */
+  serviceEndOffsetSec?: number | null;
 }
 
 export interface PrioritySummaryOptions {
@@ -1341,6 +1367,8 @@ export interface PrioritySummaryResult {
   numberExtendedGreens?: number;
   /** @nullable */
   events?: IndianaEvent[] | null;
+  /** @nullable */
+  cycles?: PrioritySummaryCycleDto[] | null;
 }
 
 export interface ProblemDetails {
@@ -1459,11 +1487,11 @@ export type SeriesType = typeof SeriesType[keyof typeof SeriesType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SeriesType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
+  Signal: 'Signal',
+  PhaseNumber: 'PhaseNumber',
+  Direction: 'Direction',
+  Route: 'Route',
+  Detector: 'Detector',
 } as const;
 
 export interface SpeedPlan {
@@ -1607,8 +1635,8 @@ export type TimePeriodOptions = typeof TimePeriodOptions[keyof typeof TimePeriod
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TimePeriodOptions = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  StartToEnd: 'StartToEnd',
+  TimePeriod: 'TimePeriod',
 } as const;
 
 export interface TimeSpaceDiagramAverageOptions {
@@ -1947,9 +1975,9 @@ export type WatchDogComponentTypes = typeof WatchDogComponentTypes[keyof typeof 
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WatchDogComponentTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
+  Location: 'Location',
+  Approach: 'Approach',
+  Detector: 'Detector',
 } as const;
 
 export interface WatchDogDashboardOptions {
@@ -1976,15 +2004,15 @@ export type WatchDogIssueTypes = typeof WatchDogIssueTypes[keyof typeof WatchDog
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const WatchDogIssueTypes = {
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
+  RecordCount: 'RecordCount',
+  LowDetectorHits: 'LowDetectorHits',
+  StuckPed: 'StuckPed',
+  ForceOffThreshold: 'ForceOffThreshold',
+  MaxOutThreshold: 'MaxOutThreshold',
+  UnconfiguredApproach: 'UnconfiguredApproach',
+  UnconfiguredDetector: 'UnconfiguredDetector',
+  MissingMainlineData: 'MissingMainlineData',
+  StuckQueueDetection: 'StuckQueueDetection',
 } as const;
 
 export interface WatchDogLogEventDTO {
@@ -2054,12 +2082,12 @@ export type XAxisType = typeof XAxisType[keyof typeof XAxisType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const XAxisType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+  Time: 'Time',
+  TimeOfDay: 'TimeOfDay',
+  Direction: 'Direction',
+  Approach: 'Approach',
+  Signal: 'Signal',
+  Detector: 'Detector',
 } as const;
 
 export interface YellowRedActivationsOptions {

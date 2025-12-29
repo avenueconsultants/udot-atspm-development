@@ -26,7 +26,7 @@ export const getGetRampMeteringReportDataResponseMock = (overrideResponse: Parti
 
 
 export const getGetRampMeteringTestDataMockHandler = (overrideResponse?: RampMeteringResult | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<RampMeteringResult> | RampMeteringResult)) => {
-  return http.get('*/api/v1/RampMetering/test', async (info) => {await delay(1000);
+  return http.get('*/RampMetering/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetRampMeteringTestDataMockHandler = (overrideResponse?: RampMet
 }
 
 export const getGetRampMeteringReportDataMockHandler = (overrideResponse?: RampMeteringResult | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<RampMeteringResult> | RampMeteringResult)) => {
-  return http.post('*/api/v1/RampMetering/getReportData', async (info) => {await delay(1000);
+  return http.post('*/RampMetering/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

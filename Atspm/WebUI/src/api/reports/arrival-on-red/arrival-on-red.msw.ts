@@ -26,7 +26,7 @@ export const getGetArrivalOnRedReportDataResponseMock = (): ArrivalOnRedResult[]
 
 
 export const getGetArrivalOnRedTestDataMockHandler = (overrideResponse?: ArrivalOnRedResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ArrivalOnRedResult[]> | ArrivalOnRedResult[])) => {
-  return http.get('*/api/v1/ArrivalOnRed/test', async (info) => {await delay(1000);
+  return http.get('*/ArrivalOnRed/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetArrivalOnRedTestDataMockHandler = (overrideResponse?: Arrival
 }
 
 export const getGetArrivalOnRedReportDataMockHandler = (overrideResponse?: ArrivalOnRedResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ArrivalOnRedResult[]> | ArrivalOnRedResult[])) => {
-  return http.post('*/api/v1/ArrivalOnRed/getReportData', async (info) => {await delay(1000);
+  return http.post('*/ArrivalOnRed/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

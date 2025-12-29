@@ -40,14 +40,14 @@ export const getTimeSpaceDiagramTestData = (
       
       
       return reportsRequest<TimeSpaceDiagramResultForPhase[]>(
-      {url: `/api/v1/TimeSpaceDiagram/test`, method: 'GET', signal
+      {url: `/TimeSpaceDiagram/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetTimeSpaceDiagramTestDataQueryKey = () => {
-    return [`/api/v1/TimeSpaceDiagram/test`] as const;
+    return [`/TimeSpaceDiagram/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getTimeSpaceDiagramReportData = (
       
       
       return reportsRequest<TimeSpaceDiagramResultForPhase[]>(
-      {url: `/api/v1/TimeSpaceDiagram/getReportData`, method: 'POST',
+      {url: `/TimeSpaceDiagram/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: timeSpaceDiagramOptions, signal
     },

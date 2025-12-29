@@ -26,7 +26,7 @@ export const getGetTimeSpaceDiagramAverageReportDataResponseMock = (): TimeSpace
 
 
 export const getGetTimeSpaceDiagramAverageTestDataMockHandler = (overrideResponse?: TimeSpaceDiagramAverageResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TimeSpaceDiagramAverageResult[]> | TimeSpaceDiagramAverageResult[])) => {
-  return http.get('*/api/v1/TimeSpaceDiagramAverage/test', async (info) => {await delay(1000);
+  return http.get('*/TimeSpaceDiagramAverage/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetTimeSpaceDiagramAverageTestDataMockHandler = (overrideRespons
 }
 
 export const getGetTimeSpaceDiagramAverageReportDataMockHandler = (overrideResponse?: TimeSpaceDiagramAverageResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<TimeSpaceDiagramAverageResult[]> | TimeSpaceDiagramAverageResult[])) => {
-  return http.post('*/api/v1/TimeSpaceDiagramAverage/getReportData', async (info) => {await delay(1000);
+  return http.post('*/TimeSpaceDiagramAverage/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

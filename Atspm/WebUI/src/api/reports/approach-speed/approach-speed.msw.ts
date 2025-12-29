@@ -26,7 +26,7 @@ export const getGetApproachSpeedReportDataResponseMock = (): ApproachSpeedResult
 
 
 export const getGetApproachSpeedTestDataMockHandler = (overrideResponse?: ApproachSpeedResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ApproachSpeedResult[]> | ApproachSpeedResult[])) => {
-  return http.get('*/api/v1/ApproachSpeed/test', async (info) => {await delay(1000);
+  return http.get('*/ApproachSpeed/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetApproachSpeedTestDataMockHandler = (overrideResponse?: Approa
 }
 
 export const getGetApproachSpeedReportDataMockHandler = (overrideResponse?: ApproachSpeedResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApproachSpeedResult[]> | ApproachSpeedResult[])) => {
-  return http.post('*/api/v1/ApproachSpeed/getReportData', async (info) => {await delay(1000);
+  return http.post('*/ApproachSpeed/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

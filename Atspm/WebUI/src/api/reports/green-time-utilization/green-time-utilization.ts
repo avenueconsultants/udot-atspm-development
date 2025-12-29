@@ -40,14 +40,14 @@ export const getGreenTimeUtilizationTestData = (
       
       
       return reportsRequest<GreenTimeUtilizationResult[]>(
-      {url: `/api/v1/GreenTimeUtilization/test`, method: 'GET', signal
+      {url: `/GreenTimeUtilization/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetGreenTimeUtilizationTestDataQueryKey = () => {
-    return [`/api/v1/GreenTimeUtilization/test`] as const;
+    return [`/GreenTimeUtilization/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getGreenTimeUtilizationReportData = (
       
       
       return reportsRequest<GreenTimeUtilizationResult[]>(
-      {url: `/api/v1/GreenTimeUtilization/getReportData`, method: 'POST',
+      {url: `/GreenTimeUtilization/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: greenTimeUtilizationOptions, signal
     },

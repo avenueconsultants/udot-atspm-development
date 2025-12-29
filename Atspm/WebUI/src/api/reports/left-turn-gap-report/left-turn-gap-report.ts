@@ -40,14 +40,14 @@ export const getLeftTurnGapReportTestData = (
       
       
       return reportsRequest<LeftTurnGapReportResult[]>(
-      {url: `/api/v1/LeftTurnGapReport/test`, method: 'GET', signal
+      {url: `/LeftTurnGapReport/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetLeftTurnGapReportTestDataQueryKey = () => {
-    return [`/api/v1/LeftTurnGapReport/test`] as const;
+    return [`/LeftTurnGapReport/test`] as const;
     }
 
     
@@ -103,7 +103,7 @@ export const getLeftTurnGapReportReportData = (
       
       
       return reportsRequest<LeftTurnGapReportResult[]>(
-      {url: `/api/v1/LeftTurnGapReport/getReportData`, method: 'POST',
+      {url: `/LeftTurnGapReport/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: leftTurnGapReportOptions, signal
     },

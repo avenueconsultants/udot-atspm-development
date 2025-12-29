@@ -26,7 +26,7 @@ export const getGetSplitMonitorReportDataResponseMock = (): SplitMonitorResult[]
 
 
 export const getGetSplitMonitorTestDataMockHandler = (overrideResponse?: SplitMonitorResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SplitMonitorResult[]> | SplitMonitorResult[])) => {
-  return http.get('*/api/v1/SplitMonitor/test', async (info) => {await delay(1000);
+  return http.get('*/SplitMonitor/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetSplitMonitorTestDataMockHandler = (overrideResponse?: SplitMo
 }
 
 export const getGetSplitMonitorReportDataMockHandler = (overrideResponse?: SplitMonitorResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<SplitMonitorResult[]> | SplitMonitorResult[])) => {
-  return http.post('*/api/v1/SplitMonitor/getReportData', async (info) => {await delay(1000);
+  return http.post('*/SplitMonitor/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

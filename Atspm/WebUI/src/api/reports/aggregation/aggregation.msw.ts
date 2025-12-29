@@ -26,7 +26,7 @@ export const getGetAggregationReportDataResponseMock = (): AggregationResult[] =
 
 
 export const getGetAggregationTestDataMockHandler = (overrideResponse?: AggregationResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<AggregationResult[]> | AggregationResult[])) => {
-  return http.get('*/api/v1/Aggregation/test', async (info) => {await delay(1000);
+  return http.get('*/Aggregation/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetAggregationTestDataMockHandler = (overrideResponse?: Aggregat
 }
 
 export const getGetAggregationReportDataMockHandler = (overrideResponse?: AggregationResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<AggregationResult[]> | AggregationResult[])) => {
-  return http.post('*/api/v1/Aggregation/getReportData', async (info) => {await delay(1000);
+  return http.post('*/Aggregation/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

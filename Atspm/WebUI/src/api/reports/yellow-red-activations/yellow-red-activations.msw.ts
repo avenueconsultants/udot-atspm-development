@@ -26,7 +26,7 @@ export const getGetYellowRedActivationsReportDataResponseMock = (): YellowRedAct
 
 
 export const getGetYellowRedActivationsTestDataMockHandler = (overrideResponse?: YellowRedActivationsResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<YellowRedActivationsResult[]> | YellowRedActivationsResult[])) => {
-  return http.get('*/api/v1/YellowRedActivations/test', async (info) => {await delay(1000);
+  return http.get('*/YellowRedActivations/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetYellowRedActivationsTestDataMockHandler = (overrideResponse?:
 }
 
 export const getGetYellowRedActivationsReportDataMockHandler = (overrideResponse?: YellowRedActivationsResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<YellowRedActivationsResult[]> | YellowRedActivationsResult[])) => {
-  return http.post('*/api/v1/YellowRedActivations/getReportData', async (info) => {await delay(1000);
+  return http.post('*/YellowRedActivations/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

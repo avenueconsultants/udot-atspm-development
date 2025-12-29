@@ -26,7 +26,7 @@ export const getGetLeftTurnGapAnalysisReportDataResponseMock = (): LeftTurnGapAn
 
 
 export const getGetLeftTurnGapAnalysisTestDataMockHandler = (overrideResponse?: LeftTurnGapAnalysisResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<LeftTurnGapAnalysisResult[]> | LeftTurnGapAnalysisResult[])) => {
-  return http.get('*/api/v1/LeftTurnGapAnalysis/test', async (info) => {await delay(1000);
+  return http.get('*/LeftTurnGapAnalysis/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetLeftTurnGapAnalysisTestDataMockHandler = (overrideResponse?: 
 }
 
 export const getGetLeftTurnGapAnalysisReportDataMockHandler = (overrideResponse?: LeftTurnGapAnalysisResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<LeftTurnGapAnalysisResult[]> | LeftTurnGapAnalysisResult[])) => {
-  return http.post('*/api/v1/LeftTurnGapAnalysis/getReportData', async (info) => {await delay(1000);
+  return http.post('*/LeftTurnGapAnalysis/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

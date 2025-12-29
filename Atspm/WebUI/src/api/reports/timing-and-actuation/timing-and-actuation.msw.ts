@@ -30,7 +30,7 @@ export const getGetTimingAndActuationReportDataResponseMock = (): TimingAndActua
 
 
 export const getGetTimingAndActuationTestDataMockHandler = (overrideResponse?: TimingAndActuationsForPhaseResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TimingAndActuationsForPhaseResult[]> | TimingAndActuationsForPhaseResult[])) => {
-  return http.get('*/api/v1/TimingAndActuation/test', async (info) => {await delay(1000);
+  return http.get('*/TimingAndActuation/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -42,7 +42,7 @@ export const getGetTimingAndActuationTestDataMockHandler = (overrideResponse?: T
 }
 
 export const getGetTimingAndActuationReportDataMockHandler = (overrideResponse?: TimingAndActuationsForPhaseResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<TimingAndActuationsForPhaseResult[]> | TimingAndActuationsForPhaseResult[])) => {
-  return http.post('*/api/v1/TimingAndActuation/getReportData', async (info) => {await delay(1000);
+  return http.post('*/TimingAndActuation/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

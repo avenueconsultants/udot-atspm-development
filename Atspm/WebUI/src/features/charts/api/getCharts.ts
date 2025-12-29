@@ -81,7 +81,7 @@ export const getCharts = async (
 
   const response = await reportsAxios.post(endpoint, transformedOptions)
   return transformChartData({
-    type: type,
+    type,
     data: response,
   } as unknown as RawChartResponse)
 }

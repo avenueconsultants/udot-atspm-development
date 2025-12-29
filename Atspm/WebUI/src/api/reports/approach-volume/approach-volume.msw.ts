@@ -26,7 +26,7 @@ export const getGetApproachVolumeReportDataResponseMock = (): ApproachVolumeResu
 
 
 export const getGetApproachVolumeTestDataMockHandler = (overrideResponse?: ApproachVolumeResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<ApproachVolumeResult[]> | ApproachVolumeResult[])) => {
-  return http.get('*/api/v1/ApproachVolume/test', async (info) => {await delay(1000);
+  return http.get('*/ApproachVolume/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetApproachVolumeTestDataMockHandler = (overrideResponse?: Appro
 }
 
 export const getGetApproachVolumeReportDataMockHandler = (overrideResponse?: ApproachVolumeResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApproachVolumeResult[]> | ApproachVolumeResult[])) => {
-  return http.post('*/api/v1/ApproachVolume/getReportData', async (info) => {await delay(1000);
+  return http.post('*/ApproachVolume/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

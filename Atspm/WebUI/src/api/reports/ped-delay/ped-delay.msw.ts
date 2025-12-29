@@ -26,7 +26,7 @@ export const getGetPedDelayReportDataResponseMock = (): PedDelayResult[] => (Arr
 
 
 export const getGetPedDelayTestDataMockHandler = (overrideResponse?: PedDelayResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PedDelayResult[]> | PedDelayResult[])) => {
-  return http.get('*/api/v1/PedDelay/test', async (info) => {await delay(1000);
+  return http.get('*/PedDelay/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetPedDelayTestDataMockHandler = (overrideResponse?: PedDelayRes
 }
 
 export const getGetPedDelayReportDataMockHandler = (overrideResponse?: PedDelayResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<PedDelayResult[]> | PedDelayResult[])) => {
-  return http.post('*/api/v1/PedDelay/getReportData', async (info) => {await delay(1000);
+  return http.post('*/PedDelay/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 

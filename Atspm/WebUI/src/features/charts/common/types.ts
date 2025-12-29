@@ -212,6 +212,7 @@ export enum ChartType {
   PedestrianDelay = 'PedestrianDelay',
   PurduePhaseTermination = 'PurduePhaseTermination',
   PreemptionDetails = 'PreemptionDetails',
+  PriorityDetails = 'PriorityDetails',
   PrioritySummary = 'PrioritySummary',
   PurdueSplitFailure = 'PurdueSplitFailure',
   SplitMonitor = 'SplitMonitor',

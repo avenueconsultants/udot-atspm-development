@@ -67,14 +67,14 @@ export const getApproachSpeedTestData = (
       
       
       return reportsRequest<ApproachSpeedResult[]>(
-      {url: `/api/v1/ApproachSpeed/test`, method: 'GET', signal
+      {url: `/ApproachSpeed/test`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetApproachSpeedTestDataQueryKey = () => {
-    return [`/api/v1/ApproachSpeed/test`] as const;
+    return [`/ApproachSpeed/test`] as const;
     }
 
     
@@ -130,7 +130,7 @@ export const getApproachSpeedReportData = (
       
       
       return reportsRequest<ApproachSpeedResult[]>(
-      {url: `/api/v1/ApproachSpeed/getReportData`, method: 'POST',
+      {url: `/ApproachSpeed/getReportData`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: approachSpeedOptions, signal
     },

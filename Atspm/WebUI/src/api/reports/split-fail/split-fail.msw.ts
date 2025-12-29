@@ -26,7 +26,7 @@ export const getGetSplitFailReportDataResponseMock = (): SplitFailsResult[] => (
 
 
 export const getGetSplitFailTestDataMockHandler = (overrideResponse?: SplitFailsResult[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<SplitFailsResult[]> | SplitFailsResult[])) => {
-  return http.get('*/api/v1/SplitFail/test', async (info) => {await delay(1000);
+  return http.get('*/SplitFail/test', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
@@ -38,7 +38,7 @@ export const getGetSplitFailTestDataMockHandler = (overrideResponse?: SplitFails
 }
 
 export const getGetSplitFailReportDataMockHandler = (overrideResponse?: SplitFailsResult[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<SplitFailsResult[]> | SplitFailsResult[])) => {
-  return http.post('*/api/v1/SplitFail/getReportData', async (info) => {await delay(1000);
+  return http.post('*/SplitFail/getReportData', async (info) => {await delay(1000);
   
     return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
             ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
