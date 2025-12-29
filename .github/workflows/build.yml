@@ -106,10 +106,9 @@ jobs:
       
       - name: 🚀 Deploy to Cloud Run
         if: ${{ success() }}
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE_NAME }}
-          image: ${{ steps.meta.outputs.tags }}
+          image: ${{ fromJSON('[' + steps.meta.outputs.tags + ']')[0] }} # pick the first tag
           region: ${{ secrets.GCP_REGION }}
           platform: managed
-
