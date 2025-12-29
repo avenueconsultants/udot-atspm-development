@@ -108,7 +108,7 @@ jobs:
         if: ${{ success() }}
         run: |
           # Pick the first tag from the metadata output
-          IMAGE=$(echo "${{ steps.meta.outputs.tags }}" | cut -d',' -f1)
+          IMAGE=$(echo "${{ steps.meta.outputs.tags }}" | head -n1)
           echo "Deploying $IMAGE to Cloud Run service $SERVICE_NAME"
           gcloud run deploy "$SERVICE_NAME" \
             --image "$IMAGE" \
@@ -116,4 +116,5 @@ jobs:
             --platform managed
         env:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
+
 
