@@ -55,7 +55,7 @@ export default function timeSeriesByHourByLocationTransformer(
 ): EChartsOption {
   const xBuckets = gatherBuckets(data)
   const series = data.map((loc) => {
-    const name = (loc.names || loc.locationIdentifier || 'Unknown').trim()
+    const name = (loc.locationIdentifier || 'Unknown').trim()
     const m = bucketize(loc)
     const values = xBuckets.map((b) => m.get(b) ?? 0)
     return {
@@ -81,12 +81,11 @@ export default function timeSeriesByHourByLocationTransformer(
   }
 
   const yAxis = { type: 'value', name: 'Pedestrian Volume' }
-  const grid = createGrid({ top: 80, left: 60, right: 210, bottom: 80 })
+  const grid = createGrid({ top: 80, left: 60, right: 150, bottom: 80 })
   const legend = createLegend({
     bottom: 0,
-    data: data.map((l) =>
-      (l.names || l.locationIdentifier || 'Unknown').trim()
-    ),
+
+    data: data.map((l) => (l.locationIdentifier || 'Unknown').trim()),
   })
   const dataZoom = createDataZoom()
   const toolbox: ToolboxComponentOption = {

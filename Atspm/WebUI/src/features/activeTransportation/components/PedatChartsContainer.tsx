@@ -8,7 +8,7 @@ import HourlyPedVolByDayOfWeekChart from './charts/HourlyPedVolByDayOfWeekChart'
 import HourlyPedVolByHourOfDayChart from './charts/HourlyPedVolByHourOfDayChart'
 import TimeSeriesByHourByLocationChart from './charts/TimeSeriesByHourByLocationChart'
 import TotalPedVolByLocationCharts from './charts/TotalPedVolByLocationCharts'
-import DescriptiveStatsByHourByLocationChart from './DescriptiveStatsByHourByLocationChart'
+import DescriptiveStatsByHourByLocationTable from './DescriptiveStatsByHourByLocationTable'
 import PedatMapContainer from './PedatMapContainer'
 import PedestrianVolumeTimeSeriesTable from './PedestrianVolumeTimeSeriesTable'
 
@@ -429,7 +429,7 @@ const PedatChartsContainer = ({
             phase={phase}
             timeUnit={timeUnitString}
           />
-          <DescriptiveStatsByHourByLocationChart
+          <DescriptiveStatsByHourByLocationTable
             data={data}
             timeUnit={timeUnitString}
           />

@@ -184,6 +184,10 @@ const ActiveTransportation = () => {
       location.rawData?.forEach((item) => {
         item.pedestrianCount = roundTo(item.pedestrianCount, 0)
       })
+
+      location.statisticData.count = roundTo(location.statisticData?.count, 0)
+      location.statisticData.max = roundTo(location.statisticData?.max, 0)
+      location.statisticData.min = roundTo(location.statisticData?.min, 0)
     })
 
     setData(charts)
