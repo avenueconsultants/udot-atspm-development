@@ -97,18 +97,19 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 🚀 Set Service Name and Region from JSON
+      - name: 🚀 Set Service Name from JSON
         id: service_and_region
         run: |
           # Load the service name from the JSON file based on the matrix name
           service_name=$(jq -r --arg matrix_name "${{ matrix.name }}" '.[$matrix_name]' .github/service-names.json)
           echo "SERVICE_NAME=$service_name" >> $GITHUB_ENV
-
+      
       - name: 🚀 Deploy to Cloud Run
         if: ${{ success() }}
         uses: google-github-actions/deploy-cloudrun@v0
         with:
-          service: ${{ env.SERVICE_NAME }}  # Use the service name from the previous step
+          service: ${{ env.SERVICE_NAME }}
           image: ${{ steps.meta.outputs.tags }}
-          region: ${{ secrets.GCP_REGION }}  # Use the region from the previous step
+          region: ${{ secrets.GCP_REGION }}
           platform: managed
+
