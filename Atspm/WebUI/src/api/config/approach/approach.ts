@@ -33,7 +33,7 @@ import type {
   PostApproachParams,
   PutApproachFromKeyParams,
   UpsertApproachApproachParams
-} from '../aTSPMConfigurationApi.schemas';
+} from '../config-api.schemas';
 
 import { configRequest } from '../../../lib/axios';
 

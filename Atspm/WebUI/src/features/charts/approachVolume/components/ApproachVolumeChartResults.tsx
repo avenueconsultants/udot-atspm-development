@@ -25,13 +25,13 @@ export default function ApproachVolumeChartResults({
             transition: 'max-height .5s',
           }}
         >
-          <Paper sx={{ p: 4, my: 3, width: '99%', marginLeft: '2px' }}>
+          <Paper sx={{ p: 2, my: 2, width: '99%', marginLeft: '2px' }}>
             <ApacheEChart
               id={`chart-${index}`}
               option={chartWrapper.chart}
               chartType={chartData.type}
               theme={theme.palette.mode}
-              style={{ width: '100%', height: '700px' }}
+              style={{ width: '100%', height: '500px' }}
             />
             <ApproachVolumeTable data={chartWrapper.table} />
           </Paper>

@@ -48,9 +48,9 @@ namespace Utah.Udot.Atspm.Business.PriorityDetails
             NumberCheckouts = numberCheckouts;
             NumberEarlyGreens = numberEarlyGreens;
             NumberExtendedGreens = numberExtendedGreens;
-            CycleAllEvents = cycleAllEvents;
+            CycleEvents = cycleAllEvents;
             PriorityAndPreemptionEvents = priorityAndPreemptionEvents;
-            RawEvents = indianaEvents;
+            TspEvents = indianaEvents;
         }
 
         public int PhaseNumber { get; set; }
@@ -61,8 +61,8 @@ namespace Utah.Udot.Atspm.Business.PriorityDetails
         public double NumberCheckouts { get; set; }
         public double NumberEarlyGreens { get; set; }
         public double NumberExtendedGreens { get; set; }
-        public ICollection<IndianaEvent> RawEvents { get; set; }
-        public List<CycleEventsDto> CycleAllEvents { get; set; }
+        public ICollection<IndianaEvent> TspEvents { get; set; }
+        public List<CycleEventsDto> CycleEvents { get; set; }
         public List<DetectorEventDto> PriorityAndPreemptionEvents { get; set; }
     }
 }

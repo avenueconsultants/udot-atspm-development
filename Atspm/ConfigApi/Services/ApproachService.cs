@@ -61,6 +61,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                 approach.PedestrianDetectors = dto.PedestrianDetectors;
                 approach.LocationId = dto.LocationId;
                 approach.DirectionTypeId = dto.DirectionTypeId;
+                approach.TransitSignalPriorityNumber = dto.TransitSignalPriorityNumber;
 
                 // Remove Detectors that are not in DTO
                 var detectorIds = dto.Detectors.Select(d => d.Id).ToList();

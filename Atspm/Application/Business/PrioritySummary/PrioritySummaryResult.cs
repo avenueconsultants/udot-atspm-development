@@ -34,6 +34,7 @@ namespace Utah.Udot.Atspm.Business.PrioritySummary
             double numberCheckouts,
             double numberEarlyGreens,
             double numberExtendedGreens,
+            ICollection<PrioritySummaryCycleDto> cycles,
             ICollection<IndianaEvent> indianaEvents) : base(locationId, start, end)
         {
             AverageDuration = averageDuration;
@@ -42,6 +43,7 @@ namespace Utah.Udot.Atspm.Business.PrioritySummary
             NumberEarlyGreens = numberEarlyGreens;
             NumberExtendedGreens = numberExtendedGreens;
             Events = indianaEvents;
+            Cycles = cycles;
         }
         public TimeSpan AverageDuration { get; set; }
         public double NumberCheckins { get; set; }
@@ -49,7 +51,8 @@ namespace Utah.Udot.Atspm.Business.PrioritySummary
         public double NumberEarlyGreens { get; set; }
         public double NumberExtendedGreens { get; set; }
         public ICollection<IndianaEvent> Events { get; set; }
-        //Add one that is for each cycle like as is dont in the preemption
+
+        public ICollection<PrioritySummaryCycleDto> Cycles { get; set; }
 
     }
 }

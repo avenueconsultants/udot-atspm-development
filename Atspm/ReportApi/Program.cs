@@ -17,6 +17,7 @@
 
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.Business.AppoachDelay;
 using Utah.Udot.Atspm.Business.ApproachSpeed;
 using Utah.Udot.Atspm.Business.ApproachVolume;
@@ -61,7 +62,10 @@ builder.Host
             o.ReturnHttpNotAcceptable = true;
             o.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
             o.Filters.Add(new ProducesAttribute("application/json"));
-        });
+        }).AddJsonOptions(o =>
+         {
+             o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+         });
         s.AddProblemDetails();
         s.AddConfiguredCompression(new[] { "application/json", "application/xml", "text/csv", "application/x-ndjson" });
         s.AddConfiguredSwagger(builder.Configuration, o =>
@@ -74,6 +78,15 @@ builder.Host
 
         });
         s.AddConfiguredCors(builder.Configuration);
+        s.AddCors(options =>
+        {
+            options.AddPolicy("Default", policy =>
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+            );
+        });
         s.AddHttpLogging(l =>
         {
             l.LoggingFields = HttpLoggingFields.All;
@@ -220,7 +233,7 @@ else
 
 //Security
 app.UseHttpsRedirection();
-//app.UseCors("Default");
+app.UseCors("Default");
 app.UseAuthentication();
 app.UseAuthorization();
 
