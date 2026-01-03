@@ -1,9 +1,12 @@
+import { getPriorityDetailsReportData } from '@/api/reports'
 import { ChartType } from '@/features/charts/common/types'
+import transformPriorityDetailsData from '@/features/charts/prioritySummary/priorityDetails.transformer'
 import {
   adjustPlanPositions,
   handleGreenTimeUtilizationDataZoom,
 } from '@/features/charts/utils'
 import { useChartsStore } from '@/stores/charts'
+import { dateToTimestamp } from '@/utils/dateTime'
 import type {
   DataZoomComponentOption,
   DatasetComponentOption,
@@ -12,7 +15,7 @@ import type {
   SeriesOption,
   SetOptionOpts,
 } from 'echarts'
-import { connect, graphic, init } from 'echarts'
+import { connect, init } from 'echarts'
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -44,7 +47,7 @@ export default function ApacheEChart({
   const [isScrolling, setIsScrolling] = useState(false)
   const chartInstance = useRef<ECharts | null>(null)
 
-  // HARD-CODED drilldown swap (local override)
+  // Drilldown override (local option swap)
   const [overrideOption, setOverrideOption] = useState<EChartsOption | null>(
     null
   )
@@ -52,256 +55,112 @@ export default function ApacheEChart({
 
   const isActive = activeChart === id || hideInteractionMessage
 
-  const buildFakePhaseOption = (clicked: any): EChartsOption => {
-    const checkIn = clicked?.checkIn ?? clicked?.value?.[0]
-    const checkOut = clicked?.checkOut
-    const serviceStart = clicked?.serviceStart
-    const serviceEnd = clicked?.serviceEnd
-    const tsp = clicked?.tsp ?? clicked?.tspNumber ?? '—'
-
-    const inMs = Date.parse(checkIn)
-    const outMs = Number.isFinite(Date.parse(checkOut))
-      ? Date.parse(checkOut)
-      : inMs + 30_000
-
-    const startMs = inMs - 120_000
-    const endMs = outMs + 120_000
-
-    const startIso = new Date(startMs).toISOString()
-    const endIso = new Date(endMs).toISOString()
-
-    // 8 phases only
-    const categories = ['8', '7', '6', '5', '4', '3', '2', '1']
-
-    // fake repeating G/Y/R per phase (offset each phase a bit)
-    const greenSec = 12
-    const yellowSec = 3
-    const redSec = 15
-    const cycleSec = greenSec + yellowSec + redSec
-
-    type Seg = { value: [string, string, string, 'G' | 'Y' | 'R'] }
-    const segs: Seg[] = []
-
-    const push = (phase: number, a: number, b: number, c: 'G' | 'Y' | 'R') => {
-      const s = Math.max(a, startMs)
-      const e = Math.min(b, endMs)
-      if (e <= s) return
-      segs.push({
-        value: [
-          new Date(s).toISOString(),
-          new Date(e).toISOString(),
-          `${phase}`,
-          c,
-        ],
-      })
-    }
-
-    for (let phase = 1; phase <= 8; phase++) {
-      const offsetSec = (phase * 2) % cycleSec
-      let t = startMs - offsetSec * 1000
-
-      while (t < endMs) {
-        const g0 = t
-        const g1 = t + greenSec * 1000
-        const y0 = g1
-        const y1 = y0 + yellowSec * 1000
-        const r0 = y1
-        const r1 = r0 + redSec * 1000
-
-        push(phase, g0, g1, 'G')
-        push(phase, y0, y1, 'Y')
-        push(phase, r0, r1, 'R')
-
-        t += cycleSec * 1000
-      }
-    }
-
-    const colorOf = (c: 'G' | 'Y' | 'R') =>
-      c === 'G' ? '#2e7d32' : c === 'Y' ? '#f9a825' : '#c62828'
-
-    const phaseSeries: SeriesOption = {
-      name: 'Phase Indications (fake)',
-      type: 'custom',
-      data: segs,
-      renderItem: (params: any, api: any) => {
-        const x0 = api.value(0)
-        const x1 = api.value(1)
-        const phase = api.value(2) as string
-        const c = api.value(3) as 'G' | 'Y' | 'R'
-
-        const p0 = api.coord([x0, phase])
-        const p1 = api.coord([x1, phase])
-
-        const band = api.size([0, 1])[1]
-        const h = Math.max(2, band * 0.7)
-        const y = p0[1] - h / 2
-
-        const rect = {
-          x: Math.min(p0[0], p1[0]),
-          y,
-          width: Math.max(1, Math.abs(p1[0] - p0[0])),
-          height: h,
-        }
-
-        const clipped = graphic.clipRectByRect(rect, {
-          x: params.coordSys.x,
-          y: params.coordSys.y,
-          width: params.coordSys.width,
-          height: params.coordSys.height,
-        })
-        if (!clipped) return null
-
-        return {
-          type: 'rect',
-          shape: clipped,
-          style: api.style({ fill: colorOf(c), opacity: 0.95 }),
-        }
-      },
-      tooltip: {
-        formatter: (p: any) => {
-          const v = p?.value ?? p?.data?.value
-          if (!v) return ''
-          const [a, b, ph, cc] = v
-          const label = cc === 'G' ? 'Green' : cc === 'Y' ? 'Yellow' : 'Red'
-          return `<b>Phase ${ph}</b><br/>${label}<br/>${a} → ${b}`
-        },
-      },
-      encode: { x: [0, 1], y: 2 },
-      z: 1,
-    }
-
-    const lines = [checkIn, checkOut, serviceStart, serviceEnd].filter(Boolean)
-
-    const eventLineSeries: SeriesOption = {
-      name: 'Event Lines',
-      type: 'line',
-      data: [],
-      silent: true,
-      symbol: 'none',
-      lineStyle: { opacity: 0 },
-      markLine: {
-        symbol: 'none',
-        silent: true,
-        lineStyle: {
-          type: 'dashed',
-          width: 1,
-          color: '#000000',
-          opacity: 0.35,
-        },
-        data: lines.map((t) => ({ xAxis: t })),
-      },
-      z: 2,
-    }
-
-    const tspPointSeries: SeriesOption = {
-      name: `TSP #${tsp} (selected)`,
-      type: 'scatter',
-      data: lines.map((t) => [t, '8', `TSP #${tsp}<br/>${t}`]), // place on top row visually
-      symbolSize: 9,
-      itemStyle: { color: '#000000' },
-      tooltip: {
-        formatter: (p: any) => (p?.data?.[2] ? p.data[2] : ''),
-      },
-      z: 3,
-    }
-
-    return {
-      title: {
-        text: 'TSP Events with all Phase Indications (FAKE)',
-        subtext: `TSP #${tsp} — click background to go back`,
-        left: 10,
-        top: 6,
-      },
-      grid: { top: 70, left: 65, right: 30, bottom: 70 },
-      xAxis: {
-        type: 'time',
-        min: startIso,
-        max: endIso,
-        name: 'Time',
-        nameLocation: 'middle',
-        nameGap: 30,
-      },
-      yAxis: {
-        type: 'category',
-        name: 'Phase',
-        data: categories,
-        splitLine: { show: true },
-      },
-      dataZoom: [
-        { type: 'slider', height: 22, bottom: 20 },
-        { type: 'inside' },
-      ],
-      legend: { show: true, top: 40, left: 10 },
-      tooltip: { trigger: 'item' },
-      series: [phaseSeries, eventLineSeries, tspPointSeries],
-    }
-  }
-
   const initChart = useCallback(() => {
-    if (chartRef.current !== null) {
-      chartInstance.current = init(chartRef.current, theme, {
-        useDirtyRect: true,
-      })
+    if (chartRef.current === null) return
 
-      if (syncZoom || chartType === ChartType.TimingAndActuation) {
-        chartInstance.current.group = 'group1'
-        connect('group1')
+    chartInstance.current = init(chartRef.current, theme, {
+      useDirtyRect: true,
+    })
+
+    if (syncZoom || chartType === ChartType.TimingAndActuation) {
+      chartInstance.current.group = 'group1'
+      connect('group1')
+    }
+
+    // --- Click: Priority Summary -> fetch Priority Details + swap chart ---
+    chartInstance.current.off('click')
+    chartInstance.current.on('click', async (p: any) => {
+      if (!isActive) return
+
+      const isPrioritySummary =
+        chartType === ChartType.PrioritySummary &&
+        p?.seriesType === 'bar' &&
+        typeof p?.seriesName === 'string' &&
+        (p.seriesName.includes('TSP Request') ||
+          p.seriesName.includes('TSP Service')) &&
+        !p.seriesName.startsWith('__') // ignore hidden offset bar
+
+      // if already drilled down, clicking anything else toggles back
+      if (!isPrioritySummary && overrideOption) {
+        setOverrideOption(null)
+        return
       }
 
-      // --- HARD-CODE click -> drilldown swap ---
-      chartInstance.current.off('click')
-      chartInstance.current.on('click', (p: any) => {
-        if (!isActive) return
+      if (!isPrioritySummary) return
 
-        const isPriorityBar =
-          p?.seriesType === 'custom' &&
-          (p?.seriesName?.includes('TSP Request') ||
-            p?.seriesName?.includes('TSP Service'))
+      const d = p?.data
+      if (!Array.isArray(d)) return
 
-        // if already in drilldown, clicking anywhere toggles back
-        if (!isPriorityBar && overrideOption) {
-          setOverrideOption(null)
-          return
-        }
+      // IMPORTANT:
+      // This expects Priority Summary bar data payload to include drilldown metadata.
+      //
+      // Request bar:
+      //   [checkIn, durSec, tsp, checkOut, locationIdentifier, windowStart, windowEnd, binSize?]
+      // Service duration bar:
+      //   [checkIn, durSec, tsp, serviceStart, serviceEnd, startOffset, checkOut, locationIdentifier, windowStart, windowEnd, binSize?]
+      //
+      const seriesIsRequest = p.seriesName.includes('TSP Request')
 
-        if (!isPriorityBar) return
+      const locationIdentifier = seriesIsRequest
+        ? (d[4] as string)
+        : (d[7] as string)
+      const start = seriesIsRequest ? (d[5] as string) : (d[8] as string)
+      const end = seriesIsRequest ? (d[6] as string) : (d[9] as string)
 
-        // Use the clicked data payload from your custom series
-        const clickedData = p?.data
-        if (!clickedData) return
+      if (!locationIdentifier || !start || !end) return
 
-        setOverrideOption(buildFakePhaseOption(clickedData))
-      })
+      try {
+        chartInstance.current?.showLoading()
 
-      if (effectiveOption?.dataZoom === undefined) return
+        const detailsResponse = await getPriorityDetailsReportData({
+          locationIdentifier,
+          start: dateToTimestamp(start),
+          end: dateToTimestamp(end),
+        })
 
-      // Set initial options with zooming disabled
-      const disabledZoomOption: EChartsOption = {
-        ...effectiveOption,
-        dataZoom: (effectiveOption.dataZoom as DataZoomComponentOption[])?.map(
-          (zoom) => ({
-            ...zoom,
-            disabled: true,
-            zoomLock: true,
-          })
-        ),
-        series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
-          ...series,
-          silent: true,
-        })),
+        console.log('Priority Details drilldown response:', detailsResponse)
+
+        const transformed = transformPriorityDetailsData(detailsResponse)
+        const nextOption = transformed?.data?.charts?.[0]?.chart
+
+        console.log('Priority Details drilldown option:', nextOption)
+
+        if (nextOption) setOverrideOption(nextOption)
+      } catch (err) {
+        console.error('Priority Details drilldown failed:', err)
+      } finally {
+        chartInstance.current?.hideLoading()
       }
+    })
 
-      chartInstance.current.setOption(disabledZoomOption, settings)
+    if (effectiveOption?.dataZoom === undefined) return
 
-      if (chartType === ChartType.GreenTimeUtilization) {
-        chartInstance.current.on('datazoom', () =>
-          handleGreenTimeUtilizationDataZoom(chartInstance.current!)
-        )
-      } else {
-        chartInstance.current.on('datazoom', () =>
-          adjustPlanPositions(chartInstance.current!)
-        )
-      }
+    // Set initial options with zooming disabled
+    const disabledZoomOption: EChartsOption = {
+      ...effectiveOption,
+      dataZoom: (effectiveOption.dataZoom as DataZoomComponentOption[])?.map(
+        (zoom) => ({
+          ...zoom,
+          disabled: true,
+          zoomLock: true,
+        })
+      ),
+      series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
+        ...series,
+        silent: true,
+      })),
+    }
+
+    chartInstance.current.setOption(disabledZoomOption, settings)
+
+    if (chartType === ChartType.GreenTimeUtilization) {
+      chartInstance.current.on('datazoom', () =>
+        handleGreenTimeUtilizationDataZoom(chartInstance.current!)
+      )
+    } else {
+      chartInstance.current.on('datazoom', () =>
+        adjustPlanPositions(chartInstance.current!)
+      )
     }
   }, [
     effectiveOption,
@@ -328,35 +187,34 @@ export default function ApacheEChart({
   }, [theme, chartType, initChart, syncZoom])
 
   useEffect(() => {
-    if (chartInstance.current) {
-      const adjustedDataZoom = (
-        effectiveOption.dataZoom as DataZoomComponentOption[]
-      )?.map((zoom) => ({
-        ...zoom,
-        endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
-        disabled: !isActive,
-        zoomLock: !isActive,
-      }))
+    if (!chartInstance.current) return
 
-      const updatedOption: EChartsOption = {
-        ...effectiveOption,
-        dataZoom: adjustedDataZoom,
-        series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
-          ...series,
-          silent: !isActive,
-        })),
-      }
+    const adjustedDataZoom = (
+      effectiveOption.dataZoom as DataZoomComponentOption[]
+    )?.map((zoom) => ({
+      ...zoom,
+      endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
+      disabled: !isActive,
+      zoomLock: !isActive,
+    }))
 
-      chartInstance.current.setOption(updatedOption, settings)
+    const updatedOption: EChartsOption = {
+      ...effectiveOption,
+      dataZoom: adjustedDataZoom,
+      series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
+        ...series,
+        silent: !isActive,
+      })),
     }
+
+    chartInstance.current.setOption(updatedOption, settings)
   }, [effectiveOption, settings, theme, isActive, yAxisMaxStore])
 
   useEffect(() => {
-    if (chartInstance.current) {
-      loading
-        ? chartInstance.current.showLoading()
-        : chartInstance.current.hideLoading()
-    }
+    if (!chartInstance.current) return
+    loading
+      ? chartInstance.current.showLoading()
+      : chartInstance.current.hideLoading()
   }, [loading])
 
   useEffect(() => {
@@ -365,13 +223,10 @@ export default function ApacheEChart({
     const handleScroll = () => {
       setIsScrolling(true)
       clearTimeout(scrollTimeout)
-      scrollTimeout = setTimeout(() => {
-        setIsScrolling(false)
-      }, 700)
+      scrollTimeout = setTimeout(() => setIsScrolling(false), 700)
     }
 
     window.addEventListener('scroll', handleScroll)
-
     return () => {
       window.removeEventListener('scroll', handleScroll)
       clearTimeout(scrollTimeout)
@@ -380,9 +235,7 @@ export default function ApacheEChart({
 
   useEffect(() => {
     const handleSaveAsImage = (event: Event) => {
-      const customEvent = event as CustomEvent<{
-        text: string
-      }>
+      const customEvent = event as CustomEvent<{ text: string }>
       const clickedChart = customEvent.detail.text
       const currentChart = chartInstance.current
       if (!clickedChart || !currentChart) return
@@ -406,14 +259,11 @@ export default function ApacheEChart({
       document.body.removeChild(link)
 
       setTimeout(() => {
-        if (clickedChart) {
-          currentChart.group = originalGroup
-        }
+        currentChart.group = originalGroup
       }, 100)
     }
 
     window.addEventListener('saveChartImage', handleSaveAsImage)
-
     return () => {
       window.removeEventListener('saveChartImage', handleSaveAsImage)
     }
@@ -468,10 +318,10 @@ export default function ApacheEChart({
           <div
             style={{
               position: 'absolute',
-              top: effectiveOption?.grid?.top || 0,
-              left: effectiveOption?.grid?.left || 0,
-              right: effectiveOption?.grid?.right || 0,
-              bottom: effectiveOption?.grid?.bottom || 0,
+              top: (effectiveOption as any)?.grid?.top || 0,
+              left: (effectiveOption as any)?.grid?.left || 0,
+              right: (effectiveOption as any)?.grid?.right || 0,
+              bottom: (effectiveOption as any)?.grid?.bottom || 0,
               background: 'rgba(0, 0, 0, 0.3)',
               display: 'flex',
               visibility:
@@ -491,10 +341,10 @@ export default function ApacheEChart({
               style={{
                 display: isActive ? 'block' : 'none',
                 position: 'absolute',
-                top: effectiveOption?.grid?.top || 0,
-                left: effectiveOption?.grid?.left || 0,
-                right: effectiveOption?.grid?.right || 0,
-                bottom: effectiveOption?.grid?.bottom || 0,
+                top: (effectiveOption as any)?.grid?.top || 0,
+                left: (effectiveOption as any)?.grid?.left || 0,
+                right: (effectiveOption as any)?.grid?.right || 0,
+                bottom: (effectiveOption as any)?.grid?.bottom || 0,
                 zIndex: 1,
                 pointerEvents: 'none',
               }}

@@ -41,7 +41,7 @@ export interface RawPriorityDetailsResponse {
 export default function transformPriorityDetailsData(
   response: RawPriorityDetailsResponse
 ): TransformedChartResponse {
-  const rows = response.data ?? []
+  const rows = response ?? []
 
   const chart = transformCyclesOnly(rows)
 
@@ -73,17 +73,21 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   xAxis.min = chartStartMs
   xAxis.max = chartEndMs
 
-  const allEvents = collectEvents(rows)
-  const eventRows = buildTspEventCategories(allEvents) // e.g. ["TSP 4", "TSP 2"]
-  const phaseRows = buildPhaseCategories(rows) // your existing phase labels
-  const categories = [...eventRows, ...phaseRows]
+  const categories = buildRowCategories(rows)
 
   const yAxis = createYAxis(false, {
     type: 'category',
     name: 'Phase',
     boundaryGap: true,
-    axisPointer: { show: true, type: 'shadow', triggerTooltip: false },
-    splitLine: { show: true, lineStyle: { color: '#000000' } },
+    axisPointer: {
+      show: true,
+      type: 'shadow',
+      triggerTooltip: false,
+    },
+    splitLine: {
+      show: true,
+      lineStyle: { color: '#000000' },
+    },
     data: categories,
   })
 
@@ -124,13 +128,6 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const series = createSeries()
 
   series.push(buildCycleTimelineSeries(rows, categories))
-
-  const { barSeries, markLineSeries } = buildEventBarSeries(
-    allEvents,
-    eventRows
-  )
-  if (markLineSeries) series.push(markLineSeries)
-  series.push(...barSeries)
 
   const legend = createLegend({
     top: grid.top,
@@ -331,145 +328,6 @@ function renderCycleRect(params: any, api: any) {
       transition: ['shape'],
       shape: rectShape,
       style: api.style(),
-    }
-  )
-}
-
-function buildTspEventCategories(events: PriorityDetailsTspEvent[]): string[] {
-  const params = Array.from(
-    new Set(events.map((e) => e.eventParam).filter((x) => Number.isFinite(x)))
-  )
-
-  // keep stable ordering (descending like your screenshot) if you want:
-  params.sort((a, b) => b - a)
-
-  return params.map((p) => `TSP ${p}`)
-}
-
-function buildEventBarSeries(
-  events: PriorityDetailsTspEvent[],
-  eventRows: string[]
-): {
-  barSeries: SeriesOption[]
-  markLineSeries: SeriesOption | null
-  legendItems: Array<{ name: string }>
-} {
-  if (!events.length || !eventRows.length) {
-    return { barSeries: [], markLineSeries: null, legendItems: [] }
-  }
-
-  // Dedup by timestamp+param+code (prevents double-stacking)
-  const key = (e: PriorityDetailsTspEvent) =>
-    `${e.timestamp}|${e.eventParam}|${e.eventCode}|${e.locationIdentifier}`
-  const dedup = new Map<string, PriorityDetailsTspEvent>()
-  for (const e of events) dedup.set(key(e), e)
-  const list = Array.from(dedup.values()).sort(
-    (a, b) => Date.parse(a.timestamp) - Date.parse(b.timestamp)
-  )
-
-  // dashed lines through chart at every event time
-  const markLineSeries: SeriesOption = {
-    name: '__Event Lines (hidden)',
-    type: 'line',
-    data: [],
-    silent: true,
-    symbol: 'none',
-    lineStyle: { opacity: 0 },
-    tooltip: { show: false },
-    markLine: {
-      symbol: 'none',
-      silent: true,
-      lineStyle: {
-        type: 'dashed',
-        width: 1,
-        color: '#000000',
-        opacity: 0.35,
-      },
-      data: list.map((e) => ({ xAxis: e.timestamp })),
-    },
-    z: 2,
-  }
-
-  // build small vertical "bars" on their TSP row
-  // We'll use a CUSTOM series drawing a thin rectangle centered on the timestamp.
-  const byParam = new Map<number, any[]>()
-  for (const e of list) {
-    if (!Number.isFinite(e.eventParam)) continue
-    if (!byParam.has(e.eventParam)) byParam.set(e.eventParam, [])
-    byParam.get(e.eventParam)!.push(e)
-  }
-
-  const barSeries: SeriesOption[] = []
-
-  for (const [param, arr] of byParam.entries()) {
-    const rowName = `TSP ${param}`
-    if (!eventRows.includes(rowName)) continue
-
-    const data = arr.map((e) => ({
-      name: rowName,
-      // [yCategoryName, timeMs]
-      value: [rowName, Date.parse(e.timestamp), e.eventCode],
-    }))
-
-    barSeries.push({
-      name: rowName,
-      type: 'custom',
-      silent: false,
-      renderItem: renderEventTick,
-      encode: { x: 1, y: 0 }, // x = timeMs, y = category name
-      data,
-      tooltip: {
-        formatter: (p: any) => {
-          const v = p?.data?.value
-          if (!v) return ''
-          const [row, timeMs, code] = v
-          return `${row}<br/>${new Date(timeMs).toISOString()}<br/>Code ${code}`
-        },
-      },
-      z: 5,
-    } as any)
-  }
-
-  return {
-    barSeries,
-    markLineSeries,
-    legendItems: eventRows.map((name) => ({ name })),
-  }
-}
-
-function renderEventTick(params: any, api: any) {
-  const yName = api.value(0) // category string like "TSP 4"
-  const xVal = api.value(1) // timeMs
-
-  const coord = api.coord([xVal, yName])
-
-  // thickness + height within the row
-  const barWidth = 3
-  const rowHeight = api.size([0, 1])[1]
-  const barHeight = rowHeight * 0.55
-
-  const rectShape = graphic.clipRectByRect(
-    {
-      x: coord[0] - barWidth / 2,
-      y: coord[1] - barHeight / 2,
-      width: barWidth,
-      height: barHeight,
-    },
-    {
-      x: params.coordSys.x,
-      y: params.coordSys.y,
-      width: params.coordSys.width,
-      height: params.coordSys.height,
-    }
-  )
-
-  return (
-    rectShape && {
-      type: 'rect',
-      shape: rectShape,
-      style: {
-        fill: '#d47a1f', // orange-ish like your tiny bar
-      },
     }
   )
 }

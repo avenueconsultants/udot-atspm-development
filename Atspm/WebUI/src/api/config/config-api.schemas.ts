@@ -20,6 +20,8 @@ export interface Approach {
   isPedestrianPhaseOverlap?: boolean;
   /** @nullable */
   pedestrianDetectors?: string | null;
+  /** @nullable */
+  transitSignalPriorityNumber?: number | null;
   locationId?: number;
   location?: Location;
   directionTypeId?: DirectionTypes;
@@ -193,6 +195,7 @@ export const DetectionTypes = {
   NUMBER_9: 9,
   NUMBER_10: 10,
   NUMBER_11: 11,
+  NUMBER_12: 12,
 } as const;
 
 export interface Detector {
@@ -418,11 +421,6 @@ export const DirectionTypes = {
 } as const;
 
 export interface Faq {
-  /** @nullable */
-  header?: string | null;
-  /** @nullable */
-  body?: string | null;
-  displayOrder?: number;
   id?: number;
   /** @nullable */
   created?: string | null;
@@ -432,6 +430,11 @@ export interface Faq {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
+  /** @nullable */
+  header?: string | null;
+  /** @nullable */
+  body?: string | null;
+  displayOrder?: number;
 }
 
 export interface GapDurationOptions {
@@ -951,15 +954,23 @@ export interface PreemptServiceRequestOptions {
   end?: string;
 }
 
+export interface PriorityDetailsOptions {
+  /** @nullable */
+  locationIdentifier?: string | null;
+  start?: string;
+  end?: string;
+  binSize?: number;
+}
+
+export interface PrioritySummaryOptions {
+  /** @nullable */
+  locationIdentifier?: string | null;
+  start?: string;
+  end?: string;
+  binSize?: number;
+}
+
 export interface Product {
-  /** @nullable */
-  manufacturer?: string | null;
-  /** @nullable */
-  model?: string | null;
-  /** @nullable */
-  webPage?: string | null;
-  /** @nullable */
-  notes?: string | null;
   id?: number;
   /** @nullable */
   created?: string | null;
@@ -969,6 +980,14 @@ export interface Product {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
+  /** @nullable */
+  manufacturer?: string | null;
+  /** @nullable */
+  model?: string | null;
+  /** @nullable */
+  webPage?: string | null;
+  /** @nullable */
+  notes?: string | null;
 }
 
 export interface PurdueCoordinationDiagramOptions {
