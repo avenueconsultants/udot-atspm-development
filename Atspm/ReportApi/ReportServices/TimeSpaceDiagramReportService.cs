@@ -71,7 +71,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 }
             }
 
-            var (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails) = ProcessRouteLocations(routeLocations, parameter);
+            var (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength) = ProcessRouteLocations(routeLocations, parameter);
 
             for (int i = 0; i < routeLocations.Count; i++)
             {
@@ -81,6 +81,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 tasks.Add(GetChartDataForPhase(parameter,
                     controllerEventLogsList[i],
                     primaryPhaseDetails[i],
+                    programmedCycleLength[i],
                     eventCodes,
                     nextLocationDistance,
                     previousLocationDistance,
@@ -99,6 +100,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 tasks.Add(GetChartDataForPhase(parameter,
                     controllerEventLogsList[i],
                     opposingPhaseDetails[i],
+                    programmedCycleLength[i],
                     eventCodes,
                     nextLocationDistance,
                     previousLocationDistance,
@@ -121,16 +123,19 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
         private (List<List<IndianaEvent>> controllerEventLogsList,
            List<PhaseDetail> primaryPhaseDetails,
-           List<PhaseDetail> opposingPhaseDetails)
+           List<PhaseDetail> opposingPhaseDetails,
+           List<int> ProgrammedCycleLength)
            ProcessRouteLocations(IEnumerable<RouteLocation> routeLocations, TimeSpaceDiagramOptions parameter)
         {
             var controllerEventLogsList = new List<List<IndianaEvent>>();
             var primaryPhaseDetails = new List<PhaseDetail>();
             var opposingPhaseDetails = new List<PhaseDetail>();
+            var programmedCycleLength = new List<int>();
 
             foreach (var routeLocation in routeLocations)
             {
                 var location = LocationRepository.GetLatestVersionOfLocation(routeLocation.LocationIdentifier, parameter.Start);
+                int currentProgrammedCycleLength = 0;
 
                 if (location == null)
                 {
@@ -162,18 +167,27 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     throw new Exception($"No Controller Event Logs found for Location {location.LocationIdentifier}");
                 }
 
+                if (currentProgrammedCycleLength == 0)
+                {
+                    var programmedCycleForPlan = controllerEventLogs.GetEventsByEventCodes(parameter.Start.AddHours(-12), parameter.End.AddHours(12), new List<short>() { 132 });
+                    currentProgrammedCycleLength = GetEventOverlappingTime(parameter.Start, programmedCycleForPlan, "CycleLength").FirstOrDefault().EventParam;
+                }
+
                 controllerEventLogsList.Add(controllerEventLogs);
                 primaryPhaseDetails.Add(primaryPhaseDetail);
                 opposingPhaseDetails.Add(opposingPhaseDetail);
+                programmedCycleLength.Add(currentProgrammedCycleLength);
+
             }
 
-            return (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails);
+            return (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength);
         }
 
         private async Task<TimeSpaceDiagramResultForPhase> GetChartDataForPhase(
             TimeSpaceDiagramOptions parameter,
             List<IndianaEvent> currentControllerEventLogs,
             PhaseDetail currentPhase,
+            int programmedCycleLength,
             List<short> eventCodes,
             double distanceToNextLocation,
             double distanceToPreviousLocation,
@@ -190,6 +204,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var viewModel = timeSpaceDiagramReportService.GetChartDataForPhase(parameter,
                 currentPhase,
                 approachEvents,
+                programmedCycleLength,
                 distanceToNextLocation,
                 distanceToPreviousLocation,
                 isFirstElement,
@@ -209,6 +224,25 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 .Include(x => x.PreviousLocationDistance)
                 .Where(l => l.RouteId == routeId).ToList();
             return routeLocations ?? new List<RouteLocation>();
+        }
+
+        private List<IndianaEvent> GetEventOverlappingTime(DateTime start, IReadOnlyList<IndianaEvent> programmedCycleForPlan, string eventType)
+        {
+            var planEvent = programmedCycleForPlan.Where(e => e.Timestamp == start).ToList();
+
+
+            if (planEvent.Count == 0)
+            {
+                var planEventInTimeSpan = programmedCycleForPlan.Where(e => e.Timestamp < start)
+                    ?.GroupBy(log => log.EventCode)
+                    ?.Select(group => group.OrderByDescending(e => e.Timestamp).FirstOrDefault())
+                    .ToList();
+
+                if (planEventInTimeSpan != null && planEventInTimeSpan.Count != 0)
+                    planEvent = planEventInTimeSpan;
+            }
+
+            return planEvent.ToList();
         }
     }
 }

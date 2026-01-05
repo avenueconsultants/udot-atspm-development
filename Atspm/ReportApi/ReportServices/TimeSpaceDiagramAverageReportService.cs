@@ -92,6 +92,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             int cycleLength,
             List<short> eventCodes,
             double distanceToNextLocation,
+            double distanceToPreviousLocation,
             bool isLastElement,
             string phaseType)
         {
@@ -111,6 +112,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 offset,
                 cycleLength,
                 distanceToNextLocation,
+                distanceToPreviousLocation,
                 isLastElement,
                 isCoordPhasesMatchRoutePhases
                 );
@@ -134,6 +136,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             for (var i = 0; i < routeLocations.Count; i++)
             {
                 var nextLocationDistance = i == routeLocations.Count - 1 ? 0 : routeLocations[i].NextLocationDistance.Distance;
+                var previousLocationDistance = i == 0 ? 0 : routeLocations[i].PreviousLocationDistance.Distance;
+
                 results.Add(GetChartDataForPhase(
                     parameter,
                     routeLocations[i],
@@ -144,6 +148,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     averageParamsBase.ProgrammedCycleLength[i],
                     eventCodes,
                     nextLocationDistance,
+                    previousLocationDistance,
                     isLastElement: i == routeLocations.Count - 1,
                     "Primary"
                     ));
@@ -152,6 +157,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             for (int i = routeLocations.Count - 1; i >= 0; i--)
             {
                 var nextLocationDistance = i == 0 ? 0 : routeLocations[i].PreviousLocationDistance.Distance;
+                var previousLocationDistance = i == routeLocations.Count - 1 ? 0 : routeLocations[i].NextLocationDistance.Distance;
+
                 results.Add(GetChartDataForPhase(
                     parameter,
                     routeLocations[i],
@@ -162,6 +169,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     averageParamsBase.ProgrammedCycleLength[i],
                     eventCodes,
                     nextLocationDistance,
+                    previousLocationDistance,
                     isLastElement: i == 0,
                     "Opposing"
                 ));

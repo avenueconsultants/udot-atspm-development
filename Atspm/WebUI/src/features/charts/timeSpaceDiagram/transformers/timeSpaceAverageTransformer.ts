@@ -201,7 +201,12 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
     )
   )
   series.push(
-    generateGreenEventLines(primaryPhaseData, distanceData, primaryDirection)
+    ...generateGreenEventLines(
+      primaryPhaseData,
+      distanceData,
+      primaryDirection,
+      true
+    )
   )
 
   series.push(getLocationsLabelOption(primaryPhaseData, distanceData))
@@ -230,10 +235,11 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
   )
 
   series.push(
-    generateGreenEventLines(
+    ...generateGreenEventLines(
       opposingPhaseData,
       reverseDistanceData,
-      opposingDirection
+      opposingDirection,
+      false
     )
   )
 
