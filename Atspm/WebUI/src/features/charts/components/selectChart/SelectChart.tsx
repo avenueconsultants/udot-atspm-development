@@ -78,6 +78,7 @@ interface SelectChartProps {
   chartType: ChartType | null
   setChartType: (chart: ChartType | null) => void
   setChartOptions: (options: Partial<ChartOptions>) => void
+  chartOptions?: Partial<ChartOptions>
   location: Location | null
 }
 
@@ -85,15 +86,43 @@ const SelectChart = ({
   chartType,
   setChartType,
   setChartOptions,
+  chartOptions,
   location,
 }: SelectChartProps) => {
   const { data: chartDefaultsData, isLoading } = useChartDefaults()
   const { data: measureTypesData } = useGetMeasureTypes()
 
-  const chartDefaults =
+  const chartDefaultsRaw =
     chartDefaultsData &&
     chartDefaultsData.value.find((chart) => chart.chartType === chartType)
       ?.measureOptions
+
+  const chartDefaultsForUi: Default[] | undefined = useMemo(() => {
+    if (!chartDefaultsRaw) return undefined
+    if (!chartOptions || Object.keys(chartOptions).length === 0)
+      return chartDefaultsRaw
+
+    const asRecord = chartDefaultsRaw as unknown as Record<
+      string,
+      { value: unknown; [k: string]: unknown }
+    >
+
+    const merged: Record<string, { value: unknown; [k: string]: unknown }> = {
+      ...asRecord,
+    }
+
+    Object.entries(chartOptions).forEach(([key, overrideValue]) => {
+      if (overrideValue === undefined || overrideValue === null) return
+
+      if (merged[key]) {
+        merged[key] = { ...merged[key], value: overrideValue }
+      } else {
+        merged[key] = { value: overrideValue }
+      }
+    })
+
+    return merged as unknown as Default[]
+  }, [chartDefaultsRaw, chartOptions])
 
   const simplifyChartDefaults = (chartDefaults: Default[]) => {
     return chartDefaults
@@ -124,16 +153,13 @@ const SelectChart = ({
     )
 
     // just show priority summary
-    unsortedCharts[ChartType.PrioritySummary] = PrioritySummaryChartOptions
-
-    // if(location.de)
-    // unsortedCharts[ChartType.RampMetering] = RampMeteringChartOptions
+    unsortedCharts[ChartType.PrioritySummary] = PrioritySummaryChartOptions // TODO: remove when ready
 
     const sortedKeys = Object.keys(unsortedCharts).sort((a, b) =>
       a.localeCompare(b)
     )
 
-    const sortedCharts = sortedKeys.reduce(
+    return sortedKeys.reduce(
       (acc, key) => {
         const chartType = key as ChartType
         acc[chartType] = unsortedCharts[chartType]
@@ -141,8 +167,6 @@ const SelectChart = ({
       },
       {} as Record<ChartType, React.ComponentType<any>>
     )
-
-    return sortedCharts
   }, [measureTypesData, location])
 
   const isChartTypeAvailable = Boolean(
@@ -150,11 +174,11 @@ const SelectChart = ({
   )
 
   useEffect(() => {
-    if (!isLoading && chartDefaults) {
-      const simplifiedDefaults = simplifyChartDefaults(chartDefaults)
+    if (!isLoading && chartDefaultsRaw) {
+      const simplifiedDefaults = simplifyChartDefaults(chartDefaultsRaw)
       setChartOptions(simplifiedDefaults)
     }
-  }, [chartType, chartDefaults, isLoading, setChartOptions])
+  }, [chartType, chartDefaultsRaw, isLoading, setChartOptions])
 
   const handleChartTypeChange = (event: SelectChangeEvent<string>) => {
     setChartType(event.target.value as ChartType)
@@ -188,13 +212,12 @@ const SelectChart = ({
     const ChartComponent =
       chartComponents[chartType as keyof typeof chartComponents]
 
-    if (!ChartComponent || !chartDefaults) return null
-
+    if (!ChartComponent || !chartDefaultsForUi) return null
     if (isLoading) return <div>Loading...</div>
 
     return (
       <ChartComponent
-        chartDefaults={chartDefaults}
+        chartDefaults={chartDefaultsForUi}
         handleChartOptionsUpdate={handleChartOptionsUpdate}
       />
     )
