@@ -30,6 +30,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int phaseNumber,
             string phaseNumberSort,
             double distanceToNextLocation,
+            double distanceToPreviousLocation,
             int speed,
             double refPoint,
             int programmedSplit,
@@ -59,6 +60,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public int CycleLength { get; }
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
+        public double DistanceToPreviousLocation { get; set; }
+        public int Order { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
     }

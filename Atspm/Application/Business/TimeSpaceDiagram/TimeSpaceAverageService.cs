@@ -53,6 +53,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
            int offset,
            int cycleLength,
            double distanceToNextLocation,
+           double distanceToPreviousLocation,
            bool isLastElement,
            bool isCoordPhasesMatchRoutePhases
            )
@@ -105,6 +106,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 phaseDetail.PhaseNumber,
                 phaseNumberSort,
                 distanceToNextLocation,
+                distanceToPreviousLocation,
                 speedLimit,
                 offset,
                 programmedSplit,
