@@ -53,6 +53,7 @@ const LocationMap = ({
 }: LocationMapProps) => {
   const theme = useTheme()
   const [mapRef, setMapRef] = useState<LeafletMap | null>(null)
+  const [googleSession, setGoogleSession] = useState<string | null>(null)
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [hasFocusedRoute, setHasFocusedRoute] = useState(false)
   const filtersButtonRef = useRef(null)
@@ -80,6 +81,18 @@ const LocationMap = ({
       })
     }
     fetchEnv()
+  }, [])
+
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const r = await fetch('/api/google/tiles/session', { method: 'POST' })
+        if (!r.ok) return
+        const data = (await r.json()) as { session: string }
+        setGoogleSession(data.session)
+      } catch {}
+    }
+    run()
   }, [])
 
   useEffect(() => {
@@ -234,7 +247,19 @@ const LocationMap = ({
         </Box>
       </ClickAwayListener>
 
-      <TileLayer attribution={mapInfo.attribution} url={mapInfo.tile_layer} />
+      {googleSession ? (
+        <TileLayer
+          attribution={
+            mapInfo.attribution /* or hardcode Google attribution string */
+          }
+          url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
+          maxZoom={22}
+          crossOrigin
+        />
+      ) : (
+        // optional: keep your old layer as fallback or show skeleton
+        <TileLayer attribution={mapInfo.attribution} url={mapInfo.tile_layer} />
+      )}
       <Markers locations={filteredLocations} setLocation={setLocation} />
       {route && route.length > 0 && (
         <Polyline
