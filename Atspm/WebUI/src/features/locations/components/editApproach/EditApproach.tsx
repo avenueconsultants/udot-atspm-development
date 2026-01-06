@@ -149,6 +149,10 @@ function EditApproach({ approach }: ApproachAdminProps) {
     modifiedApproach.protectedPhaseNumber = protectedPhaseNumber
     modifiedApproach.permissivePhaseNumber = permissivePhaseNumber
     modifiedApproach.pedestrianPhaseNumber = pedestrianPhaseNumber
+    modifiedApproach.transitSignalPriorityNumber =
+      approach.transitSignalPriorityNumber === ''
+        ? null
+        : Number(approach.transitSignalPriorityNumber)
 
     // If the approach is new, remove the local ID so the server will create one
     if (modifiedApproach.isNew) {
