@@ -32,6 +32,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             double distanceToNextLocation,
             int speed,
             List<CycleEventsDto> cycleAllEvents,
+            List<CycleEventsDto> pedIntervals,
             List<TimeSpaceEventBase> laneByLaneCountDetectors,
             List<TimeSpaceEventBase> advanceCountDetectors,
             List<TimeSpaceEventBase> stopBarPresenceDetectors,
@@ -42,6 +43,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             DistanceToNextLocation = distanceToNextLocation;
             Speed = speed;
             CycleAllEvents = cycleAllEvents;
+            PedestrianIntervals = pedIntervals;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
             AdvanceCountDetectors = advanceCountDetectors;
             StopBarPresenceDetectors = stopBarPresenceDetectors;
@@ -54,6 +56,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
+        public List<CycleEventsDto> PedestrianIntervals { get; set; }
         public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
         public List<TimeSpaceEventBase> LaneByLaneCountDetectors { get; set; }
         public List<TimeSpaceEventBase> AdvanceCountDetectors { get; set; }

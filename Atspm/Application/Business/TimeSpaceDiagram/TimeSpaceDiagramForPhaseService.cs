@@ -56,6 +56,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceEventBase>();
             var advanceCountEventsTimeSpaceResult = new List<TimeSpaceEventBase>();
             var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, out List<GreenToGreenCycle> resultCycles);
+            var pedIntervals = TimeSpaceService.GetPedestrianIntervals(phaseDetail.Approach, controllerEventLogs, options);
 
 
             if (isFirstElement)
@@ -98,6 +99,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 distanceToNextLocation,
                 speedLimit,
                 cycleAllEvents,
+                pedIntervals,
                 countEventsTimeSpaceResult,
                 advanceCountEventsTimeSpaceResult,
                 stopBarPresenceEventsTimeSpaceResult,
@@ -169,30 +171,30 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             return results;
         }
 
-        private List<TimeSpaceEventBase> GetGreenTimeEvents(PhaseDetail phaseDetail,
-            List<CycleEventsDto> cycleEvents,
-            TimeSpaceDiagramOptions options,
-            double distanceToNextLocation,
-            int speedLimit)
-        {
-            List<int> cycleGreenStartEndCodes = new List<int>() { 1, 8 };
-            var events = new List<CycleEventsDto>();
-            var greenTimeEvents = new List<TimeSpaceEventBase>();
-            var tempEvents = cycleEvents.Where(c => cycleGreenStartEndCodes.Contains(c.Value)).ToList();
+        //private List<TimeSpaceEventBase> GetGreenTimeEvents(PhaseDetail phaseDetail,
+        //    List<CycleEventsDto> cycleEvents,
+        //    TimeSpaceDiagramOptions options,
+        //    double distanceToNextLocation,
+        //    int speedLimit)
+        //{
+        //    List<int> cycleGreenStartEndCodes = new List<int>() { 1, 8 };
+        //    var events = new List<CycleEventsDto>();
+        //    var greenTimeEvents = new List<TimeSpaceEventBase>();
+        //    var tempEvents = cycleEvents.Where(c => cycleGreenStartEndCodes.Contains(c.Value)).ToList();
 
-            foreach (var gEvent in tempEvents)
-            {
-                double speed = options.SpeedLimit ?? speedLimit;
-                DateTime start = gEvent.Start;
-                TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, start, out _, out DateTime arrivalTime);
-                TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
-                    start,
-                    arrivalTime,
-                    gEvent.Value == 1 ? true : false);
-                greenTimeEvents.Add(resultOn);
-            }
-            return greenTimeEvents;
-        }
+        //    foreach (var gEvent in tempEvents)
+        //    {
+        //        double speed = options.SpeedLimit ?? speedLimit;
+        //        DateTime start = gEvent.Start;
+        //        TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, start, out _, out DateTime arrivalTime);
+        //        TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
+        //            start,
+        //            arrivalTime,
+        //            gEvent.Value == 1 ? true : false);
+        //        greenTimeEvents.Add(resultOn);
+        //    }
+        //    return greenTimeEvents;
+        //}
 
         private List<TimeSpaceEventBase> CalculateTimeSpaceResult(
             List<TimeSpaceDetectorEventDto> events,
@@ -262,15 +264,15 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             return results;
         }
 
-        private static void GetArrivalTime(double distanceToDetector, double speedLimit, DateTime InitialTime, out double speedInFeetPerSecond, out DateTime arrivalTime)
-        {
-            DateTime currentDetectorOn = InitialTime;
+        //private static void GetArrivalTime(double distanceToDetector, double speedLimit, DateTime InitialTime, out double speedInFeetPerSecond, out DateTime arrivalTime)
+        //{
+        //    DateTime currentDetectorOn = InitialTime;
 
-            speedInFeetPerSecond = GetSpeedInFeetPerSecond(speedLimit);
-            double timeToTravel = distanceToDetector / speedInFeetPerSecond;
+        //    speedInFeetPerSecond = GetSpeedInFeetPerSecond(speedLimit);
+        //    double timeToTravel = distanceToDetector / speedInFeetPerSecond;
 
-            arrivalTime = currentDetectorOn.AddSeconds(timeToTravel);
-        }
+        //    arrivalTime = currentDetectorOn.AddSeconds(timeToTravel);
+        //}
 
         public List<short> GetCycleCodes(bool getOverlapCodes)
         {
@@ -336,17 +338,17 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             return events;
         }
 
-        private string GetPhaseSort(PhaseDetail phaseDetail)
-        {
-            return phaseDetail.IsPermissivePhase ?  // Check if the 'GetPermissivePhase' property of 'options' is true
-                phaseDetail.Approach.IsPermissivePhaseOverlap ?  // If true, check if the 'IsPermissivePhaseOverlap' property of 'approach' is true
-                    "zOverlap - " + phaseDetail.Approach.PermissivePhaseNumber.Value.ToString("D2")  // If true, concatenate "zOverlap - " with 'PermissivePhaseNumber' formatted as a two-digit string
-                    : "Phase - " + phaseDetail.Approach.PermissivePhaseNumber.Value.ToString("D2")  // If false, concatenate "Phase - " with 'PermissivePhaseNumber' formatted as a two-digit string
-                :  // If 'GetPermissivePhase' is false
-                phaseDetail.Approach.IsProtectedPhaseOverlap ?  // Check if the 'IsProtectedPhaseOverlap' property of 'approach' is true
-                    "zOverlap - " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2")  // If true, concatenate "zOverlap - " with 'ProtectedPhaseNumber' formatted as a two-digit string
-                    : "Phase = " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2");  // If false, concatenate "Phase = " with 'ProtectedPhaseNumber' formatted as a two-digit string
-        }
+        //private string GetPhaseSort(PhaseDetail phaseDetail)
+        //{
+        //    return phaseDetail.IsPermissivePhase ?  // Check if the 'GetPermissivePhase' property of 'options' is true
+        //        phaseDetail.Approach.IsPermissivePhaseOverlap ?  // If true, check if the 'IsPermissivePhaseOverlap' property of 'approach' is true
+        //            "zOverlap - " + phaseDetail.Approach.PermissivePhaseNumber.Value.ToString("D2")  // If true, concatenate "zOverlap - " with 'PermissivePhaseNumber' formatted as a two-digit string
+        //            : "Phase - " + phaseDetail.Approach.PermissivePhaseNumber.Value.ToString("D2")  // If false, concatenate "Phase - " with 'PermissivePhaseNumber' formatted as a two-digit string
+        //        :  // If 'GetPermissivePhase' is false
+        //        phaseDetail.Approach.IsProtectedPhaseOverlap ?  // Check if the 'IsProtectedPhaseOverlap' property of 'approach' is true
+        //            "zOverlap - " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2")  // If true, concatenate "zOverlap - " with 'ProtectedPhaseNumber' formatted as a two-digit string
+        //            : "Phase = " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2");  // If false, concatenate "Phase = " with 'ProtectedPhaseNumber' formatted as a two-digit string
+        //}
 
         public List<TimeSpaceDetectorEventDto> GetDetectionEvents(
             Approach approach,
