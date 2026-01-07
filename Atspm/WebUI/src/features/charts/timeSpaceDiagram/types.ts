@@ -17,10 +17,27 @@
 import { BaseChartData, ToolType } from '@/features/charts/common/types'
 import { Cycle } from '../timingAndActuation/types'
 
-export interface TimeSpaceDetectorEvent {
+// export interface TimeSpaceDetectorEvent {
+//   initialX: string
+//   finalX: string
+//   isDetectorOn?: boolean | null
+// }
+
+export interface TimeSpaceEvent {
   initialX: string
   finalX: string
   isDetectorOn?: boolean | null
+}
+
+export interface TimeSpaceDetectorEvent {
+  initialX: string
+  isDetectorOn?: boolean | null
+}
+
+export interface TimeSpaceDetectorEventWithDistanceDTO {
+  distanceToStopBar: number
+  detectorOn: Date
+  detectorOff: Date
 }
 
 export interface LocationWithSequence {
@@ -60,6 +77,7 @@ export interface RawTimeSpaceBaseData extends BaseChartData {
   phaseNumber: number
   phaseNumberSort: string
   distanceToNextLocation: number
+  distanceToPreviousLocation: number
   speed: number
   approachId: number
   approachDescription: string
@@ -77,9 +95,9 @@ export interface RawTimeSpaceAverageData extends RawTimeSpaceBaseData {
 
 export interface RawTimeSpaceHistoricData extends RawTimeSpaceBaseData {
   greenTimeEvents: TimeSpaceDetectorEvent[] | []
-  laneByLaneCountDetectors: TimeSpaceDetectorEvent[] | []
-  advanceCountDetectors: TimeSpaceDetectorEvent[] | []
-  stopBarPresenceDetectors: TimeSpaceDetectorEvent[] | []
+  laneByLaneCountDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
+  advanceCountDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
+  stopBarPresenceDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
   cycleAllEvents: Cycle[] | null
 }
 
