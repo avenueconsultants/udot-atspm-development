@@ -19,7 +19,7 @@ import {
   startOfTomorrow,
   startOfWeek,
 } from 'date-fns'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 const PerformanceMeasures = () => {
   const theme = useTheme()
@@ -57,12 +57,17 @@ const PerformanceMeasures = () => {
     setCurrentTab(newValue)
   }
 
-  const handleLocationChange = (newLocation: Location) => {
-    if (!location) {
-      setChartType(ChartType.PurduePhaseTermination)
-    }
-    setLocation(newLocation)
-  }
+  const handleLocationChange = useCallback(
+    (newLocation: Location) => {
+      setLocation((prev) => {
+        if (!prev) {
+          setChartType(ChartType.PurduePhaseTermination)
+        }
+        return newLocation
+      })
+    },
+    [setChartType]
+  )
 
   const handleCalendarRangeChange = (start: Date, end: Date) => {
     setCalendarStartDate(start)

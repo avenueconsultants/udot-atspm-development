@@ -11,14 +11,13 @@ export default async function handler(
 ) {
   if (req.method !== 'POST') return res.status(405).end()
 
-  const apiKey = process.env.GOOGLE_MAP_TILES_API_KEY
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY
   if (!apiKey)
-    return res.status(500).json({ error: 'Missing GOOGLE_MAP_TILES_API_KEY' })
+    return res.status(500).json({ error: 'Missing GOOGLE_MAPS_API_KEY' })
 
-  const mapType = process.env.GOOGLE_MAP_TILES_MAPTYPE ?? 'roadmap'
-  const language = process.env.GOOGLE_MAP_TILES_LANGUAGE ?? 'en-US'
-  const region = process.env.GOOGLE_MAP_TILES_REGION ?? 'US'
-
+  const mapType = process.env.GOOGLE_MAPS_MAPTYPE ?? 'roadmap'
+  const language = process.env.GOOGLE_MAPS_LANGUAGE ?? 'en-US'
+  const region = process.env.GOOGLE_MAPS_REGION ?? 'US'
   const r = await fetch(
     `https://tile.googleapis.com/v1/createSession?key=${encodeURIComponent(apiKey)}`,
     {
