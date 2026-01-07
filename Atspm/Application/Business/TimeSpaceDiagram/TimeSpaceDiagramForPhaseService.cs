@@ -16,6 +16,7 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
+using Utah.Udot.Atspm.Business.PriorityDetails;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using GreenToGreenCycle = Utah.Udot.Atspm.Business.Common.GreenToGreenCycle;
@@ -41,7 +42,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
            double distanceToNextLocation,
            double distanceToPreviousLocation,
            bool isFirstElement,
-           bool isLastElement
+           bool isLastElement,
+           PriorityDetailsResult priorityDetailsResult
            )
         {
             var speedLimit = options.SpeedLimit ?? phaseDetail.Approach.Mph ?? 0;
@@ -106,7 +108,14 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 countEventsTimeSpaceResult,
                 advanceCountEventsTimeSpaceResult,
                 stopBarPresenceEventsTimeSpaceResult,
-                greenTimeEventsResult
+                greenTimeEventsResult,
+                priorityDetailsResult.IsPhaseOverLap,
+                priorityDetailsResult.NumberCheckins,
+                priorityDetailsResult.NumberCheckouts,
+                priorityDetailsResult.NumberEarlyGreens,
+                priorityDetailsResult.NumberExtendedGreens,
+                priorityDetailsResult.TspEvents,
+                priorityDetailsResult.PriorityAndPreemptionEvents
                 );
             return timeSpaceDiagramResult;
         }

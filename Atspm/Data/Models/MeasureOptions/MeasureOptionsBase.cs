@@ -116,13 +116,14 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
     }
 
 
-    public class TimeSpaceDiagramOptions : MeasureOptionsBase
+    public class TimeSpaceDiagramOptions : MeasureOptionsBase, IBinSize
     {
         public int RouteId { get; set; }
         public int? SpeedLimit { get; set; }
 
         public double ExtendStartStopSearch { get; set; }
         public bool ShowAllLanesInfo { get; set; }
+        public int BinSize { get; set; }
         // public string LocationIdentifier { get; set; }
     }
 

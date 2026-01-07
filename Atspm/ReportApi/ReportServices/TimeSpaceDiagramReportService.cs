@@ -16,6 +16,7 @@
 #endregion
 
 using Microsoft.EntityFrameworkCore;
+using Utah.Udot.Atspm.Business.PriorityDetails;
 using Utah.Udot.Atspm.Business.TimeSpaceDiagram;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
@@ -32,13 +33,15 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private readonly PhaseService phaseService;
         private readonly IRouteLocationsRepository routeLocationsRepository;
         private readonly IRouteRepository routeRepository;
+        private readonly PriorityDetailsReportService priorityDetailsReportService;
 
         public TimeSpaceDiagramReportService(IIndianaEventLogRepository controllerEventLogRepository,
             ILocationRepository locationRepository,
             TimeSpaceDiagramForPhaseService timeSpaceDiagramReportService,
             PhaseService phaseService,
             IRouteLocationsRepository routeLocationsRepository,
-            IRouteRepository routeRepository)
+            IRouteRepository routeRepository,
+            PriorityDetailsReportService priorityDetailsReportService)
         {
             this.controllerEventLogRepository = controllerEventLogRepository;
             LocationRepository = locationRepository;
@@ -46,6 +49,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             this.phaseService = phaseService;
             this.routeLocationsRepository = routeLocationsRepository;
             this.routeRepository = routeRepository;
+            this.priorityDetailsReportService = priorityDetailsReportService;
         }
 
         /// <inheritdoc/>
@@ -196,6 +200,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             string phaseType,
             int order)
         {
+            PriorityDetailsOptions priorityDetailsOptions = new PriorityDetailsOptions
+            {
+                BinSize = parameter.BinSize,
+                Start = parameter.Start,
+                End = parameter.End,
+            };
+            PriorityDetailsResult priorityDetails = await priorityDetailsReportService.GetChartDataForPhase(
+                priorityDetailsOptions,
+                currentControllerEventLogs,
+                currentPhase,
+                currentPhase.IsPermissivePhase);
+
             eventCodes.AddRange(timeSpaceDiagramReportService.GetCycleCodes(currentPhase.UseOverlap));
             var approachEvents = currentControllerEventLogs.GetEventsByEventCodes(
                 parameter.Start.AddMinutes(-15),
@@ -208,7 +224,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 distanceToNextLocation,
                 distanceToPreviousLocation,
                 isFirstElement,
-                isLastElement);
+                isLastElement,
+                priorityDetails);
             viewModel.LocationDescription = currentPhase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = currentPhase.Approach.Description;
             viewModel.PhaseType = phaseType;
