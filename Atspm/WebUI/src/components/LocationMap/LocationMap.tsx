@@ -100,17 +100,7 @@ const LocationMap = ({
       const markerLocation = locations.find((loc) => loc.id === location.id)
       if (markerLocation) {
         const { latitude, longitude } = markerLocation
-        mapRef.setView([latitude, longitude], 16)
-      }
-    }
-  }, [location, mapRef, locations])
-
-  useEffect(() => {
-    if (location && mapRef) {
-      const markerLocation = locations.find((loc) => loc.id === location.id)
-      if (markerLocation) {
-        const { latitude, longitude } = markerLocation
-        mapRef.setView([latitude, longitude], 16)
+        mapRef.setView([latitude + 0.002, longitude], 16)
       }
     } else if (route && mapRef && !hasFocusedRoute) {
       const bounds = L.latLngBounds(route.map((coord) => [coord[0], coord[1]]))
@@ -253,7 +243,6 @@ const LocationMap = ({
             mapInfo.attribution /* or hardcode Google attribution string */
           }
           url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
-          maxZoom={22}
           crossOrigin
         />
       ) : (

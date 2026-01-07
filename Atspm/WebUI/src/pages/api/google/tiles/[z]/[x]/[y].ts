@@ -10,9 +10,9 @@ export default async function handler(
 
   if (!session) return res.status(400).json({ error: 'Missing session' })
 
-  const apiKey = process.env.GOOGLE_MAP_TILES_API_KEY
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY
   if (!apiKey)
-    return res.status(500).json({ error: 'Missing GOOGLE_MAP_TILES_API_KEY' })
+    return res.status(500).json({ error: 'Missing GOOGLE_MAPS_API_KEY' })
 
   const url =
     `https://tile.googleapis.com/v1/2dtiles/${z}/${x}/${y}` +
