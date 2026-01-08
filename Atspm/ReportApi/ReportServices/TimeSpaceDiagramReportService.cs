@@ -202,7 +202,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         {
             PriorityDetailsOptions priorityDetailsOptions = new PriorityDetailsOptions
             {
-                BinSize = parameter.BinSize,
                 Start = parameter.Start,
                 End = parameter.End,
             };
