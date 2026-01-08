@@ -105,7 +105,7 @@ function transformLocation(data: PrioritySummaryResult) {
   const series = createSeries()
 
   const barWidthRequest = 5
-  const barWidthService = 2
+  const barWidthService = 3
 
   const requestBar = cycles
     .filter((c) => c.requestEndOffsetSec != null && c.requestEndOffsetSec >= 0)

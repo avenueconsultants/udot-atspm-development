@@ -1,3 +1,4 @@
+// priorityDetails.transformer.ts
 // #region license
 // Copyright 2025 Utah Departement of Transportation
 // for WebUI - priorityDetails.transformer.ts
@@ -17,7 +18,6 @@
 
 import { PriorityDetailsResult } from '@/api/reports'
 import {
-  createDataZoom,
   createDisplayProps,
   createGrid,
   createLegend,
@@ -30,6 +30,7 @@ import {
   formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
+import { buildPriorityOverlay } from '@/features/charts/prioritySummary/priorityDetails.priorityOverlay'
 import { TransformedChartResponse } from '@/features/charts/types'
 import { Color, formatChartDateTimeRange } from '@/features/charts/utils'
 import { graphic, type EChartsOption, type SeriesOption } from 'echarts'
@@ -69,15 +70,29 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     dateRange,
   })
 
-  const xAxis = createXAxis(chartStartIso, chartEndIso)
-  xAxis.min = chartStartMs
-  xAxis.max = chartEndMs
+  const xAxis = {
+    type: 'time',
+    min: chartStartIso,
+    max: chartEndIso,
+    show: false,
+  }
 
+  const xAxisBottom = createXAxis(chartStartIso, chartEndIso)
   const categories = buildRowCategories(rows)
 
-  const yAxis = createYAxis(false, {
+  const {
+    gridTop,
+    yAxisTop,
+    series: prioritySeries,
+    legendItems,
+  } = buildPriorityOverlay(rows)
+
+  yAxisTop.gridIndex = 0
+
+  const yAxisBottom = createYAxis(false, {
     type: 'category',
     name: 'Phase',
+    gridIndex: 1,
     boundaryGap: true,
     axisPointer: {
       show: true,
@@ -91,24 +106,14 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     data: categories,
   })
 
-  const grid = createGrid({
-    top: 95,
+  const gridBottom = createGrid({
+    top: 220,
     left: 65,
-    right: 140,
-    bottom: 70,
+    right: 210,
+    bottom: 110,
   })
 
-  const dataZoom = createDataZoom([
-    {
-      type: 'slider',
-      height: 22,
-      bottom: 20,
-      filterMode: 'weakFilter',
-      showDataShadow: false,
-      labelFormatter: '',
-    },
-    { type: 'inside', filterMode: 'weakFilter' },
-  ])
+  // const dataZoom = createDataZoom()
 
   const toolbox = createToolbox(
     {
@@ -126,38 +131,46 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const tooltip = createTooltip({ trigger: 'item', confine: true })
 
   const series = createSeries()
-
+  series.push(...prioritySeries)
   series.push(buildCycleTimelineSeries(rows, categories))
 
   const legend = createLegend({
-    top: grid.top,
+    top: gridTop.top,
     data: [
       { name: 'Green', icon: 'roundRect' },
       { name: 'Light Green', icon: 'roundRect' },
       { name: 'Yellow', icon: 'roundRect' },
       { name: 'Red', icon: 'roundRect' },
       { name: 'Light Red', icon: 'roundRect' },
+      ...legendItems,
     ],
   })
 
   const displayProps = createDisplayProps({
     description: 'Priority Details',
-    height: '460px',
+    height: '900px',
   })
 
-  return {
+  const x = {
     title,
-    xAxis,
-    yAxis,
-    grid,
+    grid: [gridTop, gridBottom],
+    xAxis: [
+      { ...xAxis, gridIndex: 0 },
+      { ...xAxisBottom, gridIndex: 1 },
+    ],
+    yAxis: [
+      { ...yAxisTop[0], gridIndex: 0 },
+      { ...yAxisBottom[0], gridIndex: 1 },
+    ],
     legend,
-    dataZoom,
+    // dataZoom,
     toolbox,
     tooltip,
     animation: false,
     series,
     displayProps,
   }
+  return x
 }
 
 function buildRowCategories(rows: PriorityDetailsResult[]): string[] {
@@ -175,8 +188,6 @@ function buildRowCategories(rows: PriorityDetailsResult[]): string[] {
 }
 
 function categoryOfRow(r: PriorityDetailsResult): string {
-  // If you truly want *only* the phaseNumber string even for overlaps,
-  // change this to: return `${r.phaseNumber}`
   return r.isPhaseOverLap ? `O${r.phaseNumber}` : `${r.phaseNumber}`
 }
 
@@ -213,8 +224,6 @@ type IndicationName = 'Green' | 'Light Green' | 'Yellow' | 'Red' | 'Light Red'
 function getIndicationDetails(
   value: number
 ): { name: IndicationName; color: string } | null {
-  // Matches Timing & Actuation conventions:
-  // 1/61 = green, 3/62 = light green, 8/63 = yellow, 9/64 = red, 11/65 = light red
   switch (value) {
     case 1:
     case 61:
@@ -245,7 +254,7 @@ function buildCycleTimelineSeries(
 
   const data: Array<{
     name: string
-    value: [number, number, number, number] // [rowIndex, startMs, endMs, durationMs]
+    value: [number, number, number, number]
     itemStyle: { color: string }
   }> = []
 
@@ -280,6 +289,8 @@ function buildCycleTimelineSeries(
   return {
     name: 'Cycles',
     type: 'custom',
+    xAxisIndex: 1,
+    yAxisIndex: 1,
     renderItem: renderCycleRect,
     itemStyle: { opacity: 0.95 },
     encode: {
