@@ -151,6 +151,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                     PedestrianDetectors = dto.PedestrianDetectors,
                     LocationId = dto.LocationId,
                     DirectionTypeId = dto.DirectionTypeId,
+                    TransitSignalPriorityNumber = dto.TransitSignalPriorityNumber,
                     Detectors = dto.Detectors?.Select(d => new Detector
                     {
                         DectectorIdentifier = d.DectectorIdentifier,
@@ -205,6 +206,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                 PedestrianPhaseNumber = approach.PedestrianPhaseNumber,
                 IsPedestrianPhaseOverlap = approach.IsPedestrianPhaseOverlap,
                 PedestrianDetectors = approach.PedestrianDetectors,
+                TransitSignalPriorityNumber = approach.TransitSignalPriorityNumber,
                 LocationId = approach.LocationId,
                 DirectionTypeId = approach.DirectionTypeId,
                 Detectors = approach.Detectors.Select(d => new DetectorDto
