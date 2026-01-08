@@ -168,6 +168,8 @@ builder.Host
         s.AddScoped<TimeSpaceDiagramForPhaseService>();
         s.AddScoped<TimeSpaceAverageService>();
         s.AddScoped<TimingAndActuationsForPhaseService>();
+        s.AddScoped<PriorityDetailsReportService>();
+        s.AddScoped<TimeSpaceDiagramReportService>();
         s.AddScoped<TransitSignalPriorityService>();
         s.AddScoped<TurningMovementCountsService>();
         s.AddScoped<WaitTimeService>();
