@@ -421,53 +421,142 @@ function getSpeedInFeetPerSecond(speed: number): number {
   return (speed * 5280) / 3600
 }
 
+const ORANGE = '#f2a23a'
+const CIRCLE_R = 7
+
+function splitPrimarySecondary(desc: string | undefined) {
+  const raw = (desc ?? '').trim()
+
+  // remove leading "#1234 - " (or "1234 - ")
+  const noId = raw.replace(/^\s*#?\d+\s*-\s*/, '')
+
+  // split on first " & "
+  const [primary, secondary = ''] = noId.split(/\s*&\s*/, 2)
+
+  return {
+    primary: (primary ?? '').trim(),
+    secondary: (secondary ?? '').trim(),
+  }
+}
+
 export function getLocationsLabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[]
 ): SeriesOption {
   return {
-    name: `Labels location`,
+    name: 'Location axis',
     type: 'custom',
+    silent: true,
+    clip: false,
     renderItem: (params, api) => {
+      const idx = params.dataIndexInside ?? params.dataIndex
+      const len = params.dataInsideLength ?? distanceData.length
+      const coordSys = params.coordSys
+
       const [, y] = api.coord([api.value(0), api.value(1)])
-      return {
-        type: 'group',
-        position: [0, y],
-        children: [
-          {
-            type: 'path',
-            shape: {
-              d: 'M0,0 L0,-20 L30,-20 C42,-20 38,-1 50,-1 L70,-1 L30,0 Z',
-              x: 0,
-              y: -20,
-              width: 90,
-              height: 20,
-              layout: 'cover',
-            },
-            style: {
-              fill: 'lightgreen',
-              opacity: 0.7,
-            },
+      const x = coordSys.x - 55
+
+      const children: any[] = []
+
+      // Draw the vertical connector once
+      if (idx === 0 && len > 1) {
+        const last = len - 1
+        const [, yTop] = api.coord([api.value(0, 0), api.value(1, 0)])
+        const [, yBottom] = api.coord([api.value(0, last), api.value(1, last)])
+
+        children.push({
+          type: 'line',
+          shape: {
+            x1: x,
+            y1: yTop,
+            x2: x,
+            y2: yBottom,
           },
+          style: {
+            stroke: ORANGE,
+            lineWidth: 3,
+          },
+          z2: 1,
+        })
+      }
+      // Circle node
+      children.push({
+        type: 'circle',
+        shape: { cx: x, cy: y, r: CIRCLE_R },
+        style: { fill: '#fff', stroke: ORANGE, lineWidth: 3 },
+        z2: 2,
+      })
+
+      // Label text
+      const ident = String(api.value(2) ?? '')
+      const { primary, secondary } = splitPrimarySecondary(
+        String(api.value(3) ?? '')
+      )
+
+      const lineGap = 14 // px between lines
+      const blockTop = y - lineGap // centers the 3-line block around the dot
+
+      children.push({
+        type: 'group',
+        children: [
+          // Line 1: identifier (bold)
           {
             type: 'text',
             style: {
-              x: 22,
-              y: -1,
-              textVerticalAlign: 'bottom',
-              textAlign: 'center',
-              text: api.value(2).toString(),
-              textFill: '#000',
-              fontSize: 15,
+              x: x - 12,
+              y: blockTop,
+              text: ident,
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#111',
+              fontSize: 14,
+              fontWeight: 700,
             },
+            z2: 2,
+          },
+
+          // Line 2: primary + "&" (normal)
+          {
+            type: 'text',
+            style: {
+              x: x - 12,
+              y: blockTop + lineGap,
+              text: primary ? `${primary} &` : '',
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#333',
+              fontSize: 12,
+              fontWeight: 400,
+            },
+            z2: 2,
+          },
+
+          // Line 3: secondary (normal)
+          {
+            type: 'text',
+            style: {
+              x: x - 12,
+              y: blockTop + lineGap * 2,
+              text: secondary,
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#333',
+              fontSize: 12,
+              fontWeight: 400,
+            },
+            z2: 2,
           },
         ],
-      }
+      })
+
+      return { type: 'group', children }
     },
+
     data: distanceData.map((distance, index) => [
-      data[index].start,
+      data[index].start, // any valid x for coord calc
       distance,
       data[index].locationIdentifier,
+      data[index].locationDescription,
     ]),
   }
 }
@@ -550,15 +639,15 @@ export function getDistancesLabelOption(
           {
             type: 'text',
             style: {
-              x: 50,
+              x: 100,
               y: y - 10,
               text:
                 params.dataIndex !== dataPoints.length - 1
-                  ? api.value(2).toString() +
+                  ? api.value(2).toLocaleString() +
                     ' ft' +
                     '\n' +
                     api.value(3).toString() +
-                    'mph'
+                    ' mph'
                   : '',
               textFill: '#000',
               fontSize: 10,

@@ -66,6 +66,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     (location) => location.phaseType === 'Primary'
   )
 
+  console.log('primaryPhaseData', primaryPhaseData)
+
   const opposingPhaseData = data.filter(
     (location) => location.phaseType === 'Opposing'
   )
@@ -165,8 +167,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const grid: GridComponentOption = {
     top: 200,
-    left: 100,
-    right: 250,
+    left: 150,
+    right: 300,
     show: true,
     borderWidth: 1,
   }
@@ -361,6 +363,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     series: series,
     displayProps,
   }
+
+  console.log('chartOptions', chartOptions)
 
   return chartOptions
 }
