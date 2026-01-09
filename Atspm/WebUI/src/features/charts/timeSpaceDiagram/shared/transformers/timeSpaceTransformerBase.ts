@@ -14,14 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { dateToTimestamp } from '@/utils/dateTime'
-import { CustomSeriesRenderItemReturn, SeriesOption } from 'echarts'
-import { Cycle } from '../../timingAndActuation/types'
 import {
   RawTimeSpaceAverageData,
   TimeSpaceDetectorEvent,
   TimeSpaceResponseData,
-} from '../types'
+} from '@/features/charts/timeSpaceDiagram/shared/types'
+import { Cycle } from '@/features/charts/timingAndActuation/types'
+import { Color } from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
+import { CustomSeriesRenderItemReturn, SeriesOption } from 'echarts'
 
 export function generateCycles(
   data: TimeSpaceResponseData,
@@ -421,9 +422,6 @@ function getSpeedInFeetPerSecond(speed: number): number {
   return (speed * 5280) / 3600
 }
 
-const ORANGE = '#f2a23a'
-const CIRCLE_R = 7
-
 function splitPrimarySecondary(desc: string | undefined) {
   const raw = (desc ?? '').trim()
 
@@ -473,7 +471,7 @@ export function getLocationsLabelOption(
             y2: yBottom,
           },
           style: {
-            stroke: ORANGE,
+            stroke: Color.Orange,
             lineWidth: 3,
           },
           z2: 1,
@@ -482,8 +480,8 @@ export function getLocationsLabelOption(
       // Circle node
       children.push({
         type: 'circle',
-        shape: { cx: x, cy: y, r: CIRCLE_R },
-        style: { fill: '#fff', stroke: ORANGE, lineWidth: 3 },
+        shape: { cx: x, cy: y, r: 7 },
+        style: { fill: '#fff', stroke: Color.Orange, lineWidth: 3 },
         z2: 2,
       })
 
@@ -639,7 +637,7 @@ export function getDistancesLabelOption(
           {
             type: 'text',
             style: {
-              x: 100,
+              x: 155,
               y: y - 10,
               text:
                 params.dataIndex !== dataPoints.length - 1

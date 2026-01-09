@@ -26,6 +26,19 @@ import {
   formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
+import {
+  generateCycles,
+  generateGreenEventLines,
+  generateOpposingCycleLabels,
+  generatePrimaryCycleLabels,
+  getDistancesLabelOption,
+  getLocationsLabelOption,
+  getOffsetAndProgramSplitLabel,
+} from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
+import {
+  RawTimeSpaceAverageData,
+  RawTimeSpaceDiagramResponse,
+} from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedToolResponse } from '@/features/charts/types'
 import {
   SolidLineSeriesSymbol,
@@ -38,16 +51,6 @@ import {
   GridComponentOption,
   SeriesOption,
 } from 'echarts'
-import { RawTimeSpaceAverageData, RawTimeSpaceDiagramResponse } from '../types'
-import {
-  generateCycles,
-  generateGreenEventLines,
-  generateOpposingCycleLabels,
-  generatePrimaryCycleLabels,
-  getDistancesLabelOption,
-  getLocationsLabelOption,
-  getOffsetAndProgramSplitLabel,
-} from './timeSpaceTransformerBase'
 
 export default function transformTimeSpaceAverageData(
   response: RawTimeSpaceDiagramResponse

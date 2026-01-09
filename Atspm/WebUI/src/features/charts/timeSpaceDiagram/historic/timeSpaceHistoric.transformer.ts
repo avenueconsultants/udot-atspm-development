@@ -24,19 +24,6 @@ import {
   formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
-import { TransformedToolResponse } from '@/features/charts/types'
-import {
-  SolidLineSeriesSymbol,
-  formatChartDateTimeRange,
-} from '@/features/charts/utils'
-import { dateToTimestamp } from '@/utils/dateTime'
-import {
-  DataZoomComponentOption,
-  EChartsOption,
-  GridComponentOption,
-  SeriesOption,
-} from 'echarts'
-import { RawTimeSpaceDiagramResponse, RawTimeSpaceHistoricData } from '../types'
 import {
   generateCycles,
   generateGreenEventLines,
@@ -45,7 +32,24 @@ import {
   getDistancesLabelOption,
   getDraggableOffsetabelOption,
   getLocationsLabelOption,
-} from './timeSpaceTransformerBase'
+} from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
+import {
+  RawTimeSpaceDiagramResponse,
+  RawTimeSpaceHistoricData,
+} from '@/features/charts/timeSpaceDiagram/shared/types'
+import { TransformedToolResponse } from '@/features/charts/types'
+import {
+  formatChartDateTimeRange,
+  SolidLineSeriesSymbol,
+} from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
+import {
+  DataZoomComponentOption,
+  EChartsOption,
+  GridComponentOption,
+  SeriesOption,
+  TitleComponentOption,
+} from 'echarts'
 
 export default function transformTimeSpaceHistoricData(
   response: RawTimeSpaceDiagramResponse
@@ -61,12 +65,12 @@ export default function transformTimeSpaceHistoricData(
   }
 }
 
+const opacity = 0.4
+
 function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const primaryPhaseData = data.filter(
     (location) => location.phaseType === 'Primary'
   )
-
-  console.log('primaryPhaseData', primaryPhaseData)
 
   const opposingPhaseData = data.filter(
     (location) => location.phaseType === 'Opposing'
@@ -74,11 +78,48 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const titleHeader = `Time Space Diagram (Historic),\nPrimary Phase - ${primaryPhaseData[0].approachDescription}\nOpposing Phase - ${opposingPhaseData[0].approachDescription}`
   const dateRange = formatChartDateTimeRange(data[0].start, data[0].end)
-  const title = createTitle({
-    title: titleHeader,
+
+  const shiftTitlesDown = (
+    titles: TitleComponentOption[],
+    dy: number
+  ): TitleComponentOption[] =>
+    titles.map((t) => ({
+      ...t,
+      left: 100,
+      top: typeof t.top === 'number' ? t.top + dy : t.top,
+    }))
+
+  // --- build titles (results-side) ---
+  const baseTitles = createTitle({
+    title: 'Time Space Diagram',
+    location: `Primary: ${primaryPhaseData[0].approachDescription} • Opposing: ${opposingPhaseData[0].approachDescription}`,
     dateRange,
-    info: `Route data from ${primaryPhaseData[0].locationDescription} to ${primaryPhaseData[primaryPhaseData.length - 1].locationDescription} \n`,
+    info: `Route data from ${primaryPhaseData[0].locationDescription} to ${
+      primaryPhaseData[primaryPhaseData.length - 1].locationDescription
+    }`,
   })
+
+  // add new light-blue strip higher up
+  const historicStrip: TitleComponentOption = {
+    left: 100,
+    right: 10,
+    top: 0,
+    text: 'Historic',
+    backgroundColor: '#d9efff', // light blue
+    padding: [6, 6],
+    borderRadius: 8,
+    textStyle: {
+      fontSize: 16,
+      fontWeight: 500,
+      color: '#0b4f79',
+    },
+  }
+
+  // move everything else down to make room for the strip
+  const title: TitleComponentOption[] = [
+    historicStrip,
+    ...shiftTitlesDown(baseTitles, 32), // tweak this number to taste
+  ]
 
   const xAxis = createXAxis(data[0].start, data[0].end)
 
@@ -101,8 +142,17 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     },
   })
 
+  const grid: GridComponentOption = {
+    top: 190,
+    left: 200,
+    right: 250,
+    bottom: 100,
+    show: true,
+    borderWidth: 1,
+  }
+
   const legends = createLegend({
-    top: 195,
+    top: grid.top,
     data: [
       {
         name: `Cycles ${primaryDirection}`,
@@ -164,14 +214,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       [`Stop Bar Presence ${opposingDirection}`]: false,
     },
   })
-
-  const grid: GridComponentOption = {
-    top: 200,
-    left: 150,
-    right: 300,
-    show: true,
-    borderWidth: 1,
-  }
 
   const start = new Date(data[0].end)
   const end = new Date(data[0].start)
@@ -351,9 +393,27 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     numberOfLocations: primaryPhaseData.length,
   })
 
+  const chartStartMs = Date.parse(primaryPhaseData[0].start)
+  const chartEndMs = Date.parse(primaryPhaseData[0].end)
+  const totalSeconds = Math.floor((chartEndMs - chartStartMs) / 1000)
+
+  const xAxisTopSeconds = {
+    type: 'value',
+    position: 'top',
+    min: 0,
+    max: totalSeconds,
+    interval: 60,
+    minorTick: { show: true, splitNumber: 6 },
+    minorSplitLine: { show: false },
+    axisTick: { show: true },
+    axisLabel: {
+      formatter: (v: number) => String(v),
+    },
+  } as const
+
   const chartOptions: EChartsOption = {
     title: title,
-    xAxis: xAxis,
+    xAxis: [xAxis, xAxisTopSeconds],
     yAxis: yAxis,
     grid: grid,
     dataZoom: dataZoom,
@@ -363,8 +423,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     series: series,
     displayProps,
   }
-
-  console.log('chartOptions', chartOptions)
 
   return chartOptions
 }
@@ -385,6 +443,7 @@ function generateLaneByLaneCountEventLines(
       lineStyle: {
         width: 2,
         color,
+        opacity,
       },
       data: location.laneByLaneCountDetectors.flatMap((events) => {
         const initialX = events.detectorOn
@@ -512,6 +571,7 @@ function generateAdvanceCountEventLines(
         lineStyle: {
           width: 2,
           color,
+          opacity,
         },
         data: location.advanceCountDetectors.flatMap((events) => {
           const finalX = getArrivalTime(
@@ -691,6 +751,7 @@ function generateStopBarPresenceEventLines(
           style: {
             opacity: 1,
             fill: color,
+            fillOpacity: opacity,
             lineWidth: 3,
           },
         }

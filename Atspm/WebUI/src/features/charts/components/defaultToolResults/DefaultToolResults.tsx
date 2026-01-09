@@ -1,7 +1,7 @@
+import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceEChart'
 import { TransformedToolResponse } from '@/features/charts/types'
 import { Box, Button, Paper, useTheme } from '@mui/material'
 import { useState } from 'react'
-import TimeSpaceEChart from '../timeSpaceEChart/TimeSpaceEChart'
 
 export interface DefaultToolResultsProps {
   chartData: TransformedToolResponse

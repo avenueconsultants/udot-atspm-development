@@ -190,51 +190,88 @@ export function createPlans<T extends BasePlan>(
   return plansSeries
 }
 
-type titleProps = {
+interface TitleProps {
   title: string
-  dateRange: string
+  location?: string
+  dateRange?: string
   info?: string
+  invertColors?: boolean
 }
 
-export function createTitle({ title, dateRange, info }: titleProps) {
-  const option: TitleComponentOption = {
+export function createTitle({
+  title,
+  location,
+  dateRange,
+  info,
+  invertColors,
+}: TitleProps): TitleComponentOption[] {
+  const titles: TitleComponentOption[] = []
+
+  // Row 1: main title
+  titles.push({
+    left: 10,
+    top: 0,
+    text: title,
     textStyle: {
-      rich: {
-        title: {
-          fontSize: 20,
-          fontWeight: 'bold',
-          lineHeight: 24,
-        },
-        dateTime: {
-          fontSize: 14,
-          fontWeight: 500,
-          lineHeight: 30,
-        },
-      },
+      fontSize: 18,
+      fontWeight: 600,
+      color: '#1f1f1f',
     },
-    subtextStyle: {
-      rich: {
-        description: {
-          fontStyle: 'italic',
-        },
-        values: {
-          fontStyle: 'italic',
-          fontWeight: 'bold',
-        },
+  })
+
+  // Row 2: location
+  if (location) {
+    titles.push({
+      left: 10,
+      top: 27,
+      text: location,
+      textStyle: {
+        fontSize: 15,
+        fontWeight: 400,
+        color: '#2b2b2b',
       },
-    },
-    text:
-      dateRange !== ''
-        ? `{title|${title}}\n{dateTime|${dateRange}}`
-        : `{title|${title}}`,
-    padding: 5,
+    })
   }
 
+  // Row 3: date range
+  if (dateRange) {
+    titles.push({
+      left: 10,
+      top: 52,
+      text: `{dateTime|${dateRange}}`,
+      textStyle: {
+        rich: {
+          dateTime: {
+            fontSize: 12,
+            fontWeight: 450,
+            color: '#6b6b6b',
+          },
+        },
+      },
+    })
+  }
+
+  // Row 4: grey info strip
   if (info) {
-    option.subtext = `\n${info}`
+    titles.push({
+      left: 10,
+      right: 10,
+      top: 82,
+      text: info,
+      backgroundColor: invertColors ? Color.White : '#f2f2f2',
+      padding: [8, 12],
+      borderRadius: 6,
+      textStyle: {
+        fontWeight: 400,
+        fontSize: 12,
+        rich: {
+          values: { fontWeight: 600 },
+        },
+      },
+    })
   }
 
-  return option
+  return titles
 }
 
 const planYAxis: YAXisComponentOption = {

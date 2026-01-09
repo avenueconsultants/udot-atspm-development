@@ -1,3 +1,6 @@
+import { ChartType } from '@/features/charts/common/types'
+import { ApacheEChartsProps } from '@/features/charts/components/apacheEChart'
+import { useTimeSpaceHandler } from '@/features/charts/timeSpaceDiagram/shared/handlers/timeSpace.handler'
 import { useChartsStore } from '@/stores/charts'
 import {
   connect,
@@ -9,9 +12,6 @@ import {
   SeriesOption,
 } from 'echarts'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ChartType } from '../../common/types'
-import { useTimeSpaceHandler } from '../../timeSpaceDiagram/handlers/timeSpaceHandler'
-import { ApacheEChartsProps } from '../apacheEChart'
 
 export default function TimeSpaceEChart(prop: ApacheEChartsProps) {
   const {

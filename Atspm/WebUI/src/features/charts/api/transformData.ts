@@ -32,6 +32,8 @@ import transformPurdueCoordinationDiagramData from '@/features/charts/purdueCoor
 import transformPurduePhaseTerminationData from '@/features/charts/purduePhaseTermination/transformers'
 import transformPurdueSplitFailureData from '@/features/charts/purdueSplitFailure/transformers'
 import transformSplitMonitorData from '@/features/charts/splitMonitor/tranformers'
+import transformTimeSpaceAverageData from '@/features/charts/timeSpaceDiagram/average/timeSpaceAverage.transformer'
+import transformTimeSpaceHistoricData from '@/features/charts/timeSpaceDiagram/historic/timeSpaceHistoric.transformer'
 import transformTimingAndActuationData from '@/features/charts/timingAndActuation/transformers'
 import transformTurningMovementCountsData from '@/features/charts/turningMovementCounts/transformers'
 import {
@@ -41,8 +43,6 @@ import {
 import transformWaitTimeData from '@/features/charts/waitTime/transformers'
 import transformYellowAndRedActuationsData from '@/features/charts/yellowAndRedActuations/transformers'
 import transformRampMeteringData from '../rampMetering/transformer'
-import transformTimeSpaceAverageData from '../timeSpaceDiagram/transformers/timeSpaceAverageTransformer'
-import transformTimeSpaceHistoricData from '../timeSpaceDiagram/transformers/timeSpaceHistoricTransformer'
 
 export const transformChartData = (
   response: RawChartResponse

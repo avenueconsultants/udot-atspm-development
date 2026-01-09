@@ -1,3 +1,4 @@
+import { LocationWithCoordPhases, LocationWithSequence } from '@/api/config'
 import OptionsWrapper from '@/components/OptionsWrapper'
 import {
   Box,
@@ -9,7 +10,6 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { LocationWithCoordPhases, LocationWithSequence } from '../types'
 
 interface CoordinatedTableProps {
   locationWithSequence: LocationWithSequence[]

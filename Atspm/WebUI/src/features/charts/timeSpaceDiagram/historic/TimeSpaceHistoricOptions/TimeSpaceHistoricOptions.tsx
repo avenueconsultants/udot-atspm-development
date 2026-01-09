@@ -1,5 +1,5 @@
 import SelectTimeSpan from '@/components/selectTimeSpan'
-import TimeSpaceRouteSelect from '@/features/charts/timeSpaceDiagram/components/TimeSpaceRouteSelect'
+import TimeSpaceRouteSelect from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/TimeSpaceRouteSelect'
 import { Box, Paper } from '@mui/material'
 import { differenceInMinutes } from 'date-fns'
 import { useMemo } from 'react'
