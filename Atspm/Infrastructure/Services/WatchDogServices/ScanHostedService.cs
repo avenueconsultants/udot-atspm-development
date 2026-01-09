@@ -43,6 +43,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             {
                 ConsecutiveCount = _options.ConsecutiveCount,
                 LowHitThreshold = _options.LowHitThreshold,
+                LowHitRampThreshold = _options.LowHitRampThreshold,
                 MaximumPedestrianEvents = _options.MaximumPedestrianEvents,
                 MinimumRecords = _options.MinimumRecords,
                 MinPhaseTerminations = _options.MinPhaseTerminations,
@@ -50,6 +51,8 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 PreviousDayPMPeakEnd = _options.PreviousDayPMPeakEnd,
                 PreviousDayPMPeakStart = _options.PreviousDayPMPeakStart,
                 ScanDate = _options.ScanDate,
+                RampStart = _options.ScanDate.Date + _options.RampStart.TimeOfDay,
+                RampEnd = _options.ScanDate.Date + _options.RampEnd.TimeOfDay,
                 ScanDayEndHour = _options.ScanDayEndHour,
                 ScanDayStartHour = _options.ScanDayStartHour,
                 WeekdayOnly = _options.WeekdayOnly

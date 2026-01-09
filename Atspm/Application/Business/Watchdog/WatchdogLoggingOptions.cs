@@ -30,6 +30,7 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public int PreviousDayPMPeakEnd { get; set; }
         public int MinimumRecords { get; set; }
         public int LowHitThreshold { get; set; }
+        public int LowHitRampThreshold { get; set; }
         public int MaximumPedestrianEvents { get; set; }
         public bool WeekdayOnly { get; set; }
         public int RampMainlineStartHour { get; set; }
@@ -41,5 +42,7 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public DateTime AnalysisStart => ScanDate.Date + new TimeSpan(ScanDayStartHour, 0, 0);
 
         public DateTime AnalysisEnd => ScanDate.Date + new TimeSpan(ScanDayEndHour, 0, 0);
+        public DateTime RampStart { get; set; }
+        public DateTime RampEnd { get; set; }
     }
 }

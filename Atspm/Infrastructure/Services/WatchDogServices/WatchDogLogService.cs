@@ -88,6 +88,8 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             CheckForUnconfiguredDetectors(location, options, locationEvents, errors, detectorEventCodes);
             CheckForLowDetectorHits(location, options, locationEvents, errors, detectorEventCodes);
             CheckRampMeteringDetectors(location, options, locationEvents, errors);
+            //Check for low Ramp hits
+            CheckForLowRampDetectorHits(location, options, locationEvents, errors, detectorEventCodes);
         }
 
         private void CheckRampMeteringDetectors(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
@@ -519,7 +521,50 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 checkMissing: false);
         }
 
+        //WatchDogIssueType LowRampDetectorHits - 10
+        private void CheckForLowRampDetectorHits(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
+        {
+            if (location.LocationTypeId != 2)
+            {
+                return;
+            }
+            var detectors = location.GetDetectorsForLocation();
+            var detectionTypeValidIds = new List<int> { 8, 9, 10, 11 };
 
+            var result = detectors
+                .Where(d => d.DetectionTypes.Any(i => detectionTypeValidIds.Contains((int)i.Id)));
+
+            foreach (var detector in detectors)
+                try
+                {
+                    var channel = detector.DetectorChannel;
+                    var currentVolume = locationEvents.Where(e => e.EventParam == detector.DetectorChannel &&
+                        detectorEventCodes.Contains(e.EventCode) &&
+                        e.Timestamp >= options.RampStart &&
+                        e.Timestamp <= options.RampEnd
+                        ).Count();
+                    //Compare collected hits to low hit ramp threshold, 
+                    if (currentVolume < Convert.ToInt32(options.LowHitRampThreshold))
+                    {
+                        var error = new WatchDogLogEvent(
+                            location.Id,
+                            location.LocationIdentifier,
+                            options.ScanDate,
+                            WatchDogComponentTypes.Detector,
+                            detector.Id,
+                            WatchDogIssueTypes.LowRampDetectorHits,
+                            $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}",
+                            null);
+                        if (!errors.Contains(error))
+                            errors.Add(error);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"CheckForLowRampDetectorHits {detector.Id} {ex.Message}");
+                }
+        }
 
 
 

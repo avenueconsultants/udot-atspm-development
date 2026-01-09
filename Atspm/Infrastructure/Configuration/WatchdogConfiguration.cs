@@ -27,6 +27,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         public int ScanDayEndHour { get; set; }
         public int ConsecutiveCount { get; set; } = 3;
         public int LowHitThreshold { get; set; } = 50;
+        public int LowHitRampThreshold { get; set; } = 10;
         public int MaximumPedestrianEvents { get; set; } = 200;
         public int MinimumRecords { get; set; } = 500;
         public int MinPhaseTerminations { get; set; } = 50;
@@ -37,6 +38,8 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
 
         public DateTime AnalysisStart => ScanDate.Date + new TimeSpan(ScanDayStartHour, 0, 0);
         public DateTime AnalysisEnd => ScanDate.Date + new TimeSpan(ScanDayEndHour, 0, 0);
+        public DateTime RampStart { get; set; } = DateTime.Today.AddDays(-1) + new TimeSpan(7, 0, 0);
+        public DateTime RampEnd { get; set; } = DateTime.Today.AddDays(-1) + new TimeSpan(8, 0, 0);
 
         public string Sort { get; set; }
     }
