@@ -57,6 +57,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
         public double DistanceToPreviousLocation { get; set; }
+        public double PercentArrivalOnGreen { get; set; }
         public int Order { get; set; }
         public int CycleLength { get; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }

@@ -30,6 +30,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private readonly ILocationRepository LocationRepository;
         private readonly TimeSpaceDiagramForPhaseService timeSpaceDiagramReportService;
         private readonly PhaseService phaseService;
+        private readonly LocationPhaseService LocationPhaseService;
         private readonly IRouteLocationsRepository routeLocationsRepository;
         private readonly IRouteRepository routeRepository;
 
@@ -38,7 +39,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             TimeSpaceDiagramForPhaseService timeSpaceDiagramReportService,
             PhaseService phaseService,
             IRouteLocationsRepository routeLocationsRepository,
-            IRouteRepository routeRepository)
+            IRouteRepository routeRepository,
+            LocationPhaseService locationPhaseService)
         {
             this.controllerEventLogRepository = controllerEventLogRepository;
             LocationRepository = locationRepository;
@@ -46,6 +48,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             this.phaseService = phaseService;
             this.routeLocationsRepository = routeLocationsRepository;
             this.routeRepository = routeRepository;
+            this.LocationPhaseService = locationPhaseService;
         }
 
         /// <inheritdoc/>
@@ -200,7 +203,11 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var approachEvents = currentControllerEventLogs.GetEventsByEventCodes(
                 parameter.Start.AddMinutes(-15),
                 parameter.End.AddMinutes(15),
-                eventCodes).ToList();
+            eventCodes).ToList();
+
+            var planEvents = currentControllerEventLogs.GetPlanEvents(parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
+            var locationPhase = await LocationPhaseService.GetLocationPhaseData(currentPhase, parameter.Start, parameter.End, 0, null, currentControllerEventLogs, planEvents, false);
+
             var viewModel = timeSpaceDiagramReportService.GetChartDataForPhase(parameter,
                 currentPhase,
                 approachEvents,
@@ -209,10 +216,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 distanceToPreviousLocation,
                 isFirstElement,
                 isLastElement);
+
             viewModel.LocationDescription = currentPhase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = currentPhase.Approach.Description;
             viewModel.PhaseType = phaseType;
             viewModel.Order = order;
+            if (locationPhase != null)
+                viewModel.PercentArrivalOnGreen = locationPhase.PercentArrivalOnGreen;
             return viewModel;
         }
 
