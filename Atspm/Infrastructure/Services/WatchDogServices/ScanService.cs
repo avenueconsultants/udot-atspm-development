@@ -82,6 +82,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             //need a version of this that gets the Location version for date of the scan
             var locations = LocationRepository.GetLatestVersionOfAllLocations(emailOptions.ScanDate).ToList();
             var errors = new List<WatchDogLogEvent>();
+            //Check the date you would like to retrieve and if there is already a report return it or else generate one and save it
             if (watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.ScanDate).Any())
             {
                 errors = watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.ScanDate).ToList();
