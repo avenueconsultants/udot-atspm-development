@@ -32,14 +32,16 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         public int MinimumRecords { get; set; } = 500;
         public int MinPhaseTerminations { get; set; } = 50;
         public double PercentThreshold { get; set; } = .9;
+        public int RampMissedEventsThreshold { get; set; } = 3;
 
         public bool EmailAllErrors { get; set; }
         public string DefaultEmailAddress { get; set; }
 
         public DateTime AnalysisStart => ScanDate.Date + new TimeSpan(ScanDayStartHour, 0, 0);
         public DateTime AnalysisEnd => ScanDate.Date + new TimeSpan(ScanDayEndHour, 0, 0);
-        public DateTime RampStart { get; set; } = DateTime.Today.AddDays(-1) + new TimeSpan(7, 0, 0);
-        public DateTime RampEnd { get; set; } = DateTime.Today.AddDays(-1) + new TimeSpan(8, 0, 0);
+        public DateTime RampStart => ScanDate.Date + new TimeSpan(7, 0, 0);
+        public DateTime RampEnd => ScanDate.Date + new TimeSpan(8, 0, 0);
+        public DateTime? RampMainLineLastRun = null;
 
         public string Sort { get; set; }
     }

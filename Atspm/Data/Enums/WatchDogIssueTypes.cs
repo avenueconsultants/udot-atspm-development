@@ -71,5 +71,10 @@ namespace Utah.Udot.Atspm.Data.Enums
         /// Low Ramp Detector Hits
         /// </summary>
         LowRampDetectorHits = 10,
+
+        /// <summary>
+        /// Ramp Missed Detector Hits
+        /// </summary>
+        RampMissedDetectorHits = 11,
     }
 }

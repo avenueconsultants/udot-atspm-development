@@ -313,7 +313,6 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     null
                 );
             }
-
         }
 
         //WatchDogIssueType LowDetectorHits - 2
@@ -336,18 +335,17 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                         //Compare collected hits to low hit threshold, 
                         if (currentVolume < Convert.ToInt32(options.LowHitThreshold))
                         {
-                            var error = new WatchDogLogEvent(
-                                location.Id,
-                                location.LocationIdentifier,
-                                options.ScanDate,
-                                WatchDogComponentTypes.Detector,
-                                detector.Id,
+                            var message = $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}";
+
+                            AddDetectorError(
+                                location,
+                                options,
+                                detector,
                                 WatchDogIssueTypes.LowDetectorHits,
-                                $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}",
-                                null);
-                            if (!errors.Contains(error))
-                                errors.Add(error);
+                                message,
+                                errors);
                         }
+
                     }
                 }
                 catch (Exception ex)
@@ -361,73 +359,61 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         {
             if (phase.PedestrianEvents.Count > options.MaximumPedestrianEvents)
             {
-                var error = new WatchDogLogEvent
-                (
-                    approach.Location.Id,
-                    approach.Location.LocationIdentifier,
-                    options.ScanDate,
-                    WatchDogComponentTypes.Approach,
+                var message = $"{phase.PedestrianEvents.Count} Pedestrian Activations";
+
+                logger.LogDebug($"Location {approach.Location.LocationIdentifier} {phase.PedestrianEvents.Count} Pedestrian Activations");
+
+                AddApproachError(
+                    approach.Location,
+                    options,
                     approach.Id,
                     WatchDogIssueTypes.StuckPed,
-                    phase.PedestrianEvents.Count + " Pedestrian Activations",
-                    phase.PhaseNumber
-                );
-                if (!errors.Contains(error))
-                {
-                    logger.LogDebug($"Location {approach.Location.LocationIdentifier} {phase.PedestrianEvents.Count} Pedestrian Activations");
-                    errors.Add(error);
-                }
+                    message,
+                    phase.PhaseNumber,
+                    errors);
             }
         }
 
         //WatchDogIssueType ForceOffThreshold - 4
         private async Task CheckForForceOff(AnalysisPhaseData phase, Approach approach, WatchdogLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
         {
-            if (phase.PercentForceOffs > options.PercentThreshold &&
-                phase.TerminationEvents.Where(t => t.EventCode != 7).Count() > options.MinPhaseTerminations)
+            if (phase.PercentForceOffs > options.PercentThreshold && phase.TerminationEvents.Count(t => t.EventCode != 7) > options.MinPhaseTerminations)
             {
-                var error = new WatchDogLogEvent
-                (
-                    approach.Location.Id,
-                    approach.Location.LocationIdentifier,
-                    options.ScanDate,
-                    WatchDogComponentTypes.Approach,
+                var message = $"Force Offs {Math.Round(phase.PercentForceOffs * 100, 1)}%";
+
+                logger.LogDebug($"Location {approach.Location.LocationIdentifier} Has ForceOff Errors");
+
+                AddApproachError(
+                    approach.Location,
+                    options,
                     approach.Id,
                     WatchDogIssueTypes.ForceOffThreshold,
-                    "Force Offs " + Math.Round(phase.PercentForceOffs * 100, 1) + "%",
-                    phase.PhaseNumber
-                );
-                if (!errors.Contains(error))
-                {
-                    logger.LogDebug($"Location {approach.Location.LocationIdentifier} Has ForceOff Errors");
-                    errors.Add(error);
-                }
+                    message,
+                    phase.PhaseNumber,
+                    errors);
             }
+
         }
 
         //WatchDogIssueType MaxOutThreshold - 5
         private async Task CheckForMaxOut(AnalysisPhaseData phase, Approach approach, WatchdogLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
         {
-            if (phase.PercentMaxOuts > options.PercentThreshold &&
-                phase.TotalPhaseTerminations > options.MinPhaseTerminations)
+            if (phase.PercentMaxOuts > options.PercentThreshold && phase.TotalPhaseTerminations > options.MinPhaseTerminations)
             {
-                var error = new WatchDogLogEvent
-                (
-                    approach.Location.Id,
-                    approach.Location.LocationIdentifier,
-                    options.ScanDate,
-                    WatchDogComponentTypes.Approach,
+                var message = $"Max Outs {Math.Round(phase.PercentMaxOuts * 100, 1)}%";
+
+                logger.LogDebug($"Location {approach.Location.LocationIdentifier} Has MaxOut Errors");
+
+                AddApproachError(
+                    approach.Location,
+                    options,
                     approach.Id,
                     WatchDogIssueTypes.MaxOutThreshold,
-                    "Max Outs " + Math.Round(phase.PercentMaxOuts * 100, 1) + "%",
-                    phase.PhaseNumber
-                );
-                if (errors.Count == 0 || !errors.Contains(error))
-                {
-                    logger.LogDebug($"Location {approach.Location.LocationIdentifier} Has MaxOut Errors");
-                    errors.Add(error);
-                }
+                    message,
+                    phase.PhaseNumber,
+                    errors);
             }
+
         }
 
         //WatchDogIssueType UnconfiguredApproach - 6
@@ -440,22 +426,16 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 var phase = phaseService.GetPhases(Location).Find(p => p.PhaseNumber == phaseNumber);
                 if (phase == null)
                 {
-                    var error = new WatchDogLogEvent
-                    (
-                        Location.Id,
-                        Location.LocationIdentifier,
-                        options.ScanDate,
-                        WatchDogComponentTypes.Approach,
+                    logger.LogDebug($"Location {Location.LocationIdentifier} {phaseNumber} Not Configured");
+
+                    AddApproachError(
+                        Location,
+                        options,
                         -1,
                         WatchDogIssueTypes.UnconfiguredApproach,
-                        $"No corresponding approach configured",
-                        phaseNumber
-                    );
-                    if (!errors.Contains(error))
-                    {
-                        logger.LogDebug($"Location {Location.LocationIdentifier} {phaseNumber} Not Configured");
-                        errors.Add(error);
-                    }
+                        "No corresponding approach configured",
+                        phaseNumber,
+                        errors);
                 }
             }
         }
@@ -470,17 +450,13 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             {
                 if (!detectorChannelsFromDetectors.Contains(channel))
                 {
-                    var error = new WatchDogLogEvent(
-                                Location.Id,
-                                Location.LocationIdentifier,
-                                options.ScanDate,
-                                WatchDogComponentTypes.Detector,
-                                -1,
-                                WatchDogIssueTypes.UnconfiguredDetector,
-                                $"Unconfigured detector channel-{channel}",
-                                null);
-                    if (!errors.Contains(error))
-                        errors.Add(error);
+                    AddDetectorError(
+                        Location,
+                        options,
+                        detector: null,
+                        WatchDogIssueTypes.UnconfiguredDetector,
+                        $"Unconfigured detector channel-{channel}",
+                        errors);
                 }
             }
         }
@@ -546,17 +522,13 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     //Compare collected hits to low hit ramp threshold, 
                     if (currentVolume < Convert.ToInt32(options.LowHitRampThreshold))
                     {
-                        var error = new WatchDogLogEvent(
-                            location.Id,
-                            location.LocationIdentifier,
-                            options.ScanDate,
-                            WatchDogComponentTypes.Detector,
-                            detector.Id,
+                        AddDetectorError(
+                            location,
+                            options,
+                            detector,
                             WatchDogIssueTypes.LowRampDetectorHits,
                             $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}",
-                            null);
-                        if (!errors.Contains(error))
-                            errors.Add(error);
+                            errors);
                     }
 
                 }
@@ -566,9 +538,163 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 }
         }
 
+        //WatchDogIssueType RampMissedDetectorHits - 11
+        private void CheckRampMissedDetectorHits(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
+        {
+            if (location.LocationTypeId != 2)
+                return;
+
+            var detectors = location.GetDetectorsForLocation();
+            var validDetectionTypeIds = new HashSet<int> { 8, 9, 10, 11 };
+            var validEventCodes = new HashSet<short> { 1371, 1372, 1373 };
+            var bucketSizeSeconds = 20;
+            int wiggleSeconds = 9;
+
+            // 1️⃣ Determine ramp window
+            DateTime now = DateTime.Now;
+            DateTime rampStart = options.RampMainLineLastRun ?? now.AddHours(-24);
+            DateTime rampEnd = now;
+
+            // Ensure max 24-hour window
+            if ((rampEnd - rampStart).TotalHours > 24)
+                rampEnd = rampStart.AddHours(24);
+
+            //Go from the rampStart
+            options.ScanDate = rampStart;
+
+            // 2️⃣ Define 3-hour periods
+            var periodDefinitions = new List<(TimeSpan Start, TimeSpan End, string Label)>
+            {
+                (TimeSpan.FromHours(0), TimeSpan.FromHours(3), "12am-3am"),
+                (TimeSpan.FromHours(3), TimeSpan.FromHours(6), "3am-6am"),
+                (TimeSpan.FromHours(6), TimeSpan.FromHours(9), "6am-9am"),
+                (TimeSpan.FromHours(9), TimeSpan.FromHours(12), "9am-12pm"),
+                (TimeSpan.FromHours(12), TimeSpan.FromHours(15), "12pm-3pm"),
+                (TimeSpan.FromHours(15), TimeSpan.FromHours(18), "3pm-6pm"),
+                (TimeSpan.FromHours(18), TimeSpan.FromHours(21), "6pm-9pm"),
+                (TimeSpan.FromHours(21), TimeSpan.FromHours(24), "9pm-12am")
+            };
+
+            foreach (var detector in detectors.Where(d => d.DetectionTypes.Any(dt => validDetectionTypeIds.Contains((int)dt.Id))))
+            {
+                try
+                {
+                    var channel = detector.DetectorChannel;
+
+                    // Pull timestamps for this detector in ramp window
+                    var timestamps = locationEvents
+                        .Where(e => e.EventParam == channel && validEventCodes.Contains(e.EventCode) &&
+                                    e.Timestamp >= rampStart && e.Timestamp <= rampEnd)
+                        .Select(e => e.Timestamp)
+                        .ToList();
+
+                    if (!timestamps.Any())
+                    {
+                        AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                            $"CH: {channel} - No events received in entire ramp window", errors);
+                        continue;
+                    }
+
+                    // 3️⃣ Process each 3-hour period, clipped to ramp window
+                    var periods = new List<(DateTime Start, DateTime End, string Label)>();
+                    foreach (var (startTs, endTs, label) in periodDefinitions)
+                    {
+                        DateTime periodStart = rampStart.Date + startTs;
+                        DateTime periodEnd = rampStart.Date + endTs;
+
+                        // Skip periods outside ramp window
+                        if (periodEnd <= rampStart || periodStart >= rampEnd)
+                            continue;
+
+                        // Clip periods to ramp window
+                        periodStart = periodStart < rampStart ? rampStart : periodStart;
+                        periodEnd = periodEnd > rampEnd ? rampEnd : periodEnd;
+
+                        periods.Add((periodStart, periodEnd, label));
+                    }
+
+                    foreach (var (periodStart, periodEnd, label) in periods)
+                    {
+                        var periodTimestamps = timestamps
+                            .Where(ts => ts >= periodStart && ts < periodEnd)
+                            .ToList();
+
+                        if (!periodTimestamps.Any())
+                        {
+                            AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                                $"CH: {channel} - No events in period {label}", errors);
+                            continue;
+                        }
+
+                        int totalBuckets = (int)Math.Ceiling((periodEnd - periodStart).TotalSeconds / bucketSizeSeconds);
+                        var bucketsWithHits = new HashSet<int>();
+
+                        foreach (var ts in periodTimestamps)
+                        {
+                            int bucketIndex = (int)((ts - periodStart).TotalSeconds / bucketSizeSeconds);
+                            bucketsWithHits.Add(bucketIndex);
+
+                            // Previous bucket if within wiggle
+                            if (bucketIndex > 0 && (ts - periodStart).TotalSeconds % bucketSizeSeconds <= wiggleSeconds)
+                                bucketsWithHits.Add(bucketIndex - 1);
+
+                            // Next bucket if within wiggle
+                            if (bucketIndex < totalBuckets - 1 && (bucketSizeSeconds - (ts - periodStart).TotalSeconds % bucketSizeSeconds) <= wiggleSeconds)
+                                bucketsWithHits.Add(bucketIndex + 1);
+                        }
+
+                        int missedBuckets = totalBuckets - bucketsWithHits.Count;
+                        if (missedBuckets > options.RampMissedEventsThreshold)
+                        {
+                            AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                                $"CH: {channel} - Period {label} missed {missedBuckets} intervals", errors);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"CheckRampMissedDetectorHits {detector.Id} {ex.Message}");
+                }
+            }
+        }
 
 
 
 
+
+        ///////////////////////////////////////////////////////////
+        /////////////////////// HELPER ////////////////////////////
+        ///////////////////////////////////////////////////////////
+        private static void AddDetectorError(Location location, WatchdogLoggingOptions options, Detector detector, WatchDogIssueTypes issueType, string message, ConcurrentBag<WatchDogLogEvent> errors)
+        {
+            var error = new WatchDogLogEvent(
+                location.Id,
+                location.LocationIdentifier,
+                options.ScanDate,
+                WatchDogComponentTypes.Detector,
+                detector?.Id ?? -1,
+                issueType,
+                message,
+                null);
+
+            if (!errors.Contains(error))
+                errors.Add(error);
+        }
+
+        private static void AddApproachError(Location location, WatchdogLoggingOptions options, int approachId, WatchDogIssueTypes issueType, string message, int? phaseNumber = null, ConcurrentBag<WatchDogLogEvent> errors)
+        {
+            var error = new WatchDogLogEvent(
+                location.Id,
+                location.LocationIdentifier,
+                options.ScanDate,
+                WatchDogComponentTypes.Approach,
+                approachId,
+                issueType,
+                message,
+                phaseNumber);
+
+            if (!errors.Contains(error))
+                errors.Add(error);
+        }
     }
 }

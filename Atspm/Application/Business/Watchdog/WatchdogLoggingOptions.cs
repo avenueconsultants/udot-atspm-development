@@ -37,6 +37,7 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public int RampMainlineEndHour { get; set; }
         public int RampStuckQueueStartHour { get; set; }
         public int RampStuckQueueEndHour { get; set; }
+        public int RampMissedEventsThreshold { get; set; }
 
 
         public DateTime AnalysisStart => ScanDate.Date + new TimeSpan(ScanDayStartHour, 0, 0);
@@ -44,5 +45,6 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public DateTime AnalysisEnd => ScanDate.Date + new TimeSpan(ScanDayEndHour, 0, 0);
         public DateTime RampStart { get; set; }
         public DateTime RampEnd { get; set; }
+        public DateTime? RampMainLineLastRun { get; set; }
     }
 }
