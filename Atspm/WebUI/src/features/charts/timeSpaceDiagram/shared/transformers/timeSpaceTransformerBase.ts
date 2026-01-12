@@ -437,11 +437,74 @@ function splitPrimarySecondary(desc: string | undefined) {
   }
 }
 
+type FontSpec = {
+  ident: string
+  line: string
+}
+
+const DEFAULT_FONTS: FontSpec = {
+  ident: '700 14px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial',
+  line: '400 12px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial',
+}
+
+function measureTextWidth(text: string, font: string): number {
+  if (!text) return 0
+
+  // SSR / non-browser fallback
+  if (typeof document === 'undefined') return Math.min(500, text.length * 7)
+
+  const canvas =
+    (measureTextWidth as any)._canvas ||
+    ((measureTextWidth as any)._canvas = document.createElement('canvas'))
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return Math.min(500, text.length * 7)
+
+  ctx.font = font
+  return ctx.measureText(text).width
+}
+
+function getLongestLabelLineWidth(
+  data: TimeSpaceResponseData,
+  fonts: FontSpec = DEFAULT_FONTS
+): number {
+  let max = 0
+
+  for (const row of data) {
+    const ident = String((row as any).locationIdentifier ?? '')
+    const { primary, secondary } = splitPrimarySecondary(
+      String((row as any).locationDescription ?? '')
+    )
+
+    const line1 = ident
+    const line2 = primary ? `${primary} &` : ''
+    const line3 = secondary ?? ''
+
+    max = Math.max(
+      max,
+      measureTextWidth(line1, fonts.ident),
+      measureTextWidth(line2, fonts.line),
+      measureTextWidth(line3, fonts.line)
+    )
+  }
+
+  return Math.ceil(max)
+}
+
 export function getLocationsLabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[]
 ): SeriesOption {
-  return {
+  // x = width of longest label line
+  const x = getLongestLabelLineWidth(data)
+
+  // per your spec:
+  // text right edge at x
+  // dot at x+20
+  // grid starts at x+40
+  const DOT_OFFSET = 10
+  const GRID_GAP = 70
+
+  const series: SeriesOption = {
     name: 'Location axis',
     type: 'custom',
     silent: true,
@@ -449,10 +512,16 @@ export function getLocationsLabelOption(
     renderItem: (params, api) => {
       const idx = params.dataIndexInside ?? params.dataIndex
       const len = params.dataInsideLength ?? distanceData.length
-      const coordSys = params.coordSys
+      const coordSys = params.coordSys as any
 
       const [, y] = api.coord([api.value(0), api.value(1)])
-      const x = coordSys.x - 55
+
+      // coordSys.x === grid.left (the start of the plot area)
+      // Therefore:
+      //   xTextRight = coordSys.x - GRID_GAP === x
+      //   xDot       = coordSys.x - (GRID_GAP - DOT_OFFSET) === x+20
+      const xTextRight = coordSys.x - GRID_GAP
+      const xDot = coordSys.x - (GRID_GAP - DOT_OFFSET)
 
       const children: any[] = []
 
@@ -465,9 +534,9 @@ export function getLocationsLabelOption(
         children.push({
           type: 'line',
           shape: {
-            x1: x,
+            x1: xDot,
             y1: yTop,
-            x2: x,
+            x2: xDot,
             y2: yBottom,
           },
           style: {
@@ -477,10 +546,11 @@ export function getLocationsLabelOption(
           z2: 1,
         })
       }
+
       // Circle node
       children.push({
         type: 'circle',
-        shape: { cx: x, cy: y, r: 7 },
+        shape: { cx: xDot, cy: y, r: 7 },
         style: { fill: '#fff', stroke: Color.Orange, lineWidth: 3 },
         z2: 2,
       })
@@ -491,8 +561,8 @@ export function getLocationsLabelOption(
         String(api.value(3) ?? '')
       )
 
-      const lineGap = 14 // px between lines
-      const blockTop = y - lineGap // centers the 3-line block around the dot
+      const lineGap = 14
+      const blockTop = y - lineGap
 
       children.push({
         type: 'group',
@@ -501,7 +571,7 @@ export function getLocationsLabelOption(
           {
             type: 'text',
             style: {
-              x: x - 12,
+              x: xTextRight,
               y: blockTop,
               text: ident,
               textAlign: 'right',
@@ -513,11 +583,11 @@ export function getLocationsLabelOption(
             z2: 2,
           },
 
-          // Line 2: primary + "&" (normal)
+          // Line 2: primary + "&"
           {
             type: 'text',
             style: {
-              x: x - 12,
+              x: xTextRight,
               y: blockTop + lineGap,
               text: primary ? `${primary} &` : '',
               textAlign: 'right',
@@ -529,13 +599,13 @@ export function getLocationsLabelOption(
             z2: 2,
           },
 
-          // Line 3: secondary (normal)
+          // Line 3: secondary
           {
             type: 'text',
             style: {
-              x: x - 12,
+              x: xTextRight,
               y: blockTop + lineGap * 2,
-              text: secondary,
+              text: secondary ?? '',
               textAlign: 'right',
               textVerticalAlign: 'middle',
               fill: '#333',
@@ -557,6 +627,14 @@ export function getLocationsLabelOption(
       data[index].locationDescription,
     ]),
   }
+
+  // Parent MUST set option.grid.left = this value
+  ;(series as any).gridLeft = x + GRID_GAP // == x+40
+
+  // Optional: expose x too (handy for debugging)
+  ;(series as any).gridLeft = x // == coordSys.x - 40
+
+  return series
 }
 
 export function getOffsetAndProgramSplitLabel(
@@ -615,7 +693,8 @@ export function getOffsetAndProgramSplitLabel(
 
 export function getDistancesLabelOption(
   data: TimeSpaceResponseData,
-  distanceData: number[]
+  distanceData: number[],
+  gridLeft: number
 ): SeriesOption {
   const dataPoints = distanceData.map((distance, index) => [
     data[index].end,
@@ -637,7 +716,7 @@ export function getDistancesLabelOption(
           {
             type: 'text',
             style: {
-              x: 155,
+              x: gridLeft + 35,
               y: y - 10,
               text:
                 params.dataIndex !== dataPoints.length - 1

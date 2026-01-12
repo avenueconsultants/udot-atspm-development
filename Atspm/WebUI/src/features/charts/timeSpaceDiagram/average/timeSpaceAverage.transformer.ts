@@ -27,7 +27,6 @@ import {
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
 import {
-  generateCycles,
   generateGreenEventLines,
   generateOpposingCycleLabels,
   generatePrimaryCycleLabels,
@@ -39,6 +38,7 @@ import {
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
+import { generateCycles } from '@/features/charts/timingAndActuation/transformers'
 import { TransformedToolResponse } from '@/features/charts/types'
 import {
   SolidLineSeriesSymbol,

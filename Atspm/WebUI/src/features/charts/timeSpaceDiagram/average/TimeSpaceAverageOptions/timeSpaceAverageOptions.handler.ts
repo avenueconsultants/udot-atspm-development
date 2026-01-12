@@ -97,11 +97,8 @@ export const useAverageOptionsHandler = ({
     setStartTime(defaultStartTime)
     setEndTime(defaultEndTime)
     setSelectedDays([1, 2, 3, 4, 5])
-    // NOTE: we do NOT reset sequence/coord here because they are derived from route
-    // and will be rebuilt by the routeId effect below.
   }
 
-  // Build derived route defaults when routeId changes (unless URL provided explicit values later)
   useEffect(() => {
     const route = routes.find((r) => r.id === Number.parseInt(routeId))
     if (!route) return
@@ -154,7 +151,6 @@ export const useAverageOptionsHandler = ({
 
     if (Array.isArray(options.daysOfWeek)) setSelectedDays(options.daysOfWeek)
 
-    // IMPORTANT: these are arrays of objects; this is the real “share link” requirement.
     if (Array.isArray(options.sequence))
       setRouteLocationWithSequence(options.sequence)
     if (Array.isArray(options.coordinatedPhases))
@@ -191,11 +187,9 @@ export const useAverageOptionsHandler = ({
     if (o.endTime) p.set('endTime', o.endTime)
 
     if (Array.isArray(o.daysOfWeek)) {
-      // store as repeated params: daysOfWeek=1&daysOfWeek=2...
       o.daysOfWeek.forEach((d) => p.append('daysOfWeek', String(d)))
     }
 
-    // Store complex arrays as JSON to preserve structure across users
     if (o.sequence?.length) p.set(SEQUENCE_PARAM, JSON.stringify(o.sequence))
     if (o.coordinatedPhases?.length)
       p.set(COORD_PARAM, JSON.stringify(o.coordinatedPhases))
@@ -220,7 +214,6 @@ export const useAverageOptionsHandler = ({
       .map((x) => Number(x))
       .filter((n) => Number.isFinite(n))
 
-    // JSON complex params
     const seq = safeJsonParse<LocationWithSequence[]>(
       params.get(SEQUENCE_PARAM)
     )

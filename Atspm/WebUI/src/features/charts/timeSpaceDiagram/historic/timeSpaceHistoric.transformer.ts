@@ -48,7 +48,6 @@ import {
   EChartsOption,
   GridComponentOption,
   SeriesOption,
-  TitleComponentOption,
 } from 'echarts'
 
 export default function transformTimeSpaceHistoricData(
@@ -79,47 +78,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const titleHeader = `Time Space Diagram (Historic),\nPrimary Phase - ${primaryPhaseData[0].approachDescription}\nOpposing Phase - ${opposingPhaseData[0].approachDescription}`
   const dateRange = formatChartDateTimeRange(data[0].start, data[0].end)
 
-  const shiftTitlesDown = (
-    titles: TitleComponentOption[],
-    dy: number
-  ): TitleComponentOption[] =>
-    titles.map((t) => ({
-      ...t,
-      left: 100,
-      top: typeof t.top === 'number' ? t.top + dy : t.top,
-    }))
-
-  // --- build titles (results-side) ---
-  const baseTitles = createTitle({
-    title: 'Time Space Diagram',
+  const title = createTitle({
+    title: 'Time Space Diagram • Historic',
     location: `Primary: ${primaryPhaseData[0].approachDescription} • Opposing: ${opposingPhaseData[0].approachDescription}`,
     dateRange,
     info: `Route data from ${primaryPhaseData[0].locationDescription} to ${
       primaryPhaseData[primaryPhaseData.length - 1].locationDescription
     }`,
   })
-
-  // add new light-blue strip higher up
-  const historicStrip: TitleComponentOption = {
-    left: 100,
-    right: 10,
-    top: 0,
-    text: 'Historic',
-    backgroundColor: '#d9efff', // light blue
-    padding: [6, 6],
-    borderRadius: 8,
-    textStyle: {
-      fontSize: 16,
-      fontWeight: 500,
-      color: '#0b4f79',
-    },
-  }
-
-  // move everything else down to make room for the strip
-  const title: TitleComponentOption[] = [
-    historicStrip,
-    ...shiftTitlesDown(baseTitles, 32), // tweak this number to taste
-  ]
 
   const xAxis = createXAxis(data[0].start, data[0].end)
 
@@ -139,79 +105,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     data: distanceData,
     axisLabel: {
       show: false,
-    },
-  })
-
-  const grid: GridComponentOption = {
-    top: 190,
-    left: 200,
-    right: 250,
-    bottom: 100,
-    show: true,
-    borderWidth: 1,
-  }
-
-  const legends = createLegend({
-    top: grid.top,
-    data: [
-      {
-        name: `Cycles ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: '#f0807f' },
-      },
-      {
-        name: `Cycles ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: '#f0807f' },
-      },
-      {
-        name: `Lane by Lane Count ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'darkblue' },
-      },
-      {
-        name: `Lane by Lane Count ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Advance Count ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'darkblue' },
-      },
-      {
-        name: `Advance Count ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Stop Bar Presence ${primaryDirection}`,
-        itemStyle: { color: 'lightBlue' },
-      },
-      {
-        name: `Stop Bar Presence ${opposingDirection}`,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Green Bands ${primaryDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
-      {
-        name: `Green Bands ${opposingDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
-    ],
-    selected: {
-      [`Cycles ${primaryDirection}`]: true,
-      [`Cycles ${opposingDirection}`]: true,
-      [`Green Bands ${primaryDirection}`]: true,
-      [`Green Bands ${opposingDirection}`]: true,
-      [`Lane by Lane Count ${primaryDirection}`]: false,
-      [`Lane by Lane Count ${opposingDirection}`]: false,
-      [`Advance Count ${primaryDirection}`]: false,
-      [`Advance Count ${opposingDirection}`]: false,
-      [`Stop Bar Presence ${primaryDirection}`]: false,
-      [`Stop Bar Presence ${opposingDirection}`]: false,
     },
   })
 
@@ -316,8 +209,15 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       true
     )
   )
-  series.push(getLocationsLabelOption(primaryPhaseData, distanceData))
-  series.push(getDistancesLabelOption(primaryPhaseData, distanceData))
+  const locationLabels = getLocationsLabelOption(primaryPhaseData, distanceData)
+  series.push(locationLabels)
+  series.push(
+    getDistancesLabelOption(
+      primaryPhaseData,
+      distanceData,
+      locationLabels.gridLeft
+    )
+  )
   series.push(
     ...getDraggableOffsetabelOption(
       primaryPhaseData,
@@ -402,14 +302,86 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     position: 'top',
     min: 0,
     max: totalSeconds,
-    interval: 60,
+    minInterval: 60,
+    maxInterval: 60,
     minorTick: { show: true, splitNumber: 6 },
-    minorSplitLine: { show: false },
-    axisTick: { show: true },
     axisLabel: {
-      formatter: (v: number) => String(v),
+      formatter: (v: number) => String(Math.round(v / 1) * 1),
     },
   } as const
+
+  const grid: GridComponentOption = {
+    top: 150,
+    left: locationLabels.gridLeft + 80,
+    right: 250,
+    bottom: 100,
+    show: true,
+    borderWidth: 1,
+  }
+
+  const legends = createLegend({
+    top: grid.top,
+    data: [
+      {
+        name: `Cycles ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: '#f0807f' },
+      },
+      {
+        name: `Cycles ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: '#f0807f' },
+      },
+      {
+        name: `Lane by Lane Count ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'darkblue' },
+      },
+      {
+        name: `Lane by Lane Count ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'orange' },
+      },
+      {
+        name: `Advance Count ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'darkblue' },
+      },
+      {
+        name: `Advance Count ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'orange' },
+      },
+      {
+        name: `Stop Bar Presence ${primaryDirection}`,
+        itemStyle: { color: 'lightBlue' },
+      },
+      {
+        name: `Stop Bar Presence ${opposingDirection}`,
+        itemStyle: { color: 'orange' },
+      },
+      {
+        name: `Green Bands ${primaryDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
+      },
+      {
+        name: `Green Bands ${opposingDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
+      },
+    ],
+    selected: {
+      [`Cycles ${primaryDirection}`]: true,
+      [`Cycles ${opposingDirection}`]: true,
+      [`Green Bands ${primaryDirection}`]: true,
+      [`Green Bands ${opposingDirection}`]: true,
+      [`Lane by Lane Count ${primaryDirection}`]: false,
+      [`Lane by Lane Count ${opposingDirection}`]: false,
+      [`Advance Count ${primaryDirection}`]: false,
+      [`Advance Count ${opposingDirection}`]: false,
+      [`Stop Bar Presence ${primaryDirection}`]: false,
+      [`Stop Bar Presence ${opposingDirection}`]: false,
+    },
+  })
 
   const chartOptions: EChartsOption = {
     title: title,

@@ -1,9 +1,9 @@
 import SelectTimeSpan from '@/components/selectTimeSpan'
+import { TSHistoricHandler } from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/historicTimeSpaceOptions.handler'
 import TimeSpaceRouteSelect from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/TimeSpaceRouteSelect'
 import { Box, Paper } from '@mui/material'
 import { differenceInMinutes } from 'date-fns'
 import { useMemo } from 'react'
-import { TSHistoricHandler } from './handlers/handlers'
 
 interface Props {
   handler: TSHistoricHandler
