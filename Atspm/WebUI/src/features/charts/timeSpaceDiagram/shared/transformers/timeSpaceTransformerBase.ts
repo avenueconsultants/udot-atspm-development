@@ -173,11 +173,8 @@ function getSegmentColor(from: number, to: number): string {
 //   const startCoord = api.coord([xStart, yIndex])
 //   const endCoord = api.coord([xEnd, yIndex])
 
-//   // console.log(yIndex, startCoord, endCoord)
-
 //   // band thickness in Y units:
 //   const height = api.size([0, 1])[1] * 5 // adjust width (% of row height)
-//   console.log(height)
 
 //   const rect = graphic.clipRectByRect(
 //     {
@@ -628,9 +625,6 @@ export function getLocationsLabelOption(
     ]),
   }
 
-  // Parent MUST set option.grid.left = this value
-  ;(series as any).gridLeft = x + GRID_GAP // == x+40
-
   // Optional: expose x too (handy for debugging)
   ;(series as any).gridLeft = x // == coordSys.x - 40
 
@@ -740,8 +734,7 @@ export function getDistancesLabelOption(
 export function getDraggableOffsetabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[],
-  phaseType?: string,
-  isPrimary?: boolean
+  phaseType?: string
 ): SeriesOption[] {
   const seriesOptions: SeriesOption[] = []
   for (let i = 0; i < data.length; i++) {
@@ -761,39 +754,62 @@ export function getDraggableOffsetabelOption(
       type: 'custom',
       data: dataPoint,
       renderItem: (params, api) => {
-        const distanceToNext = isPrimary
-          ? location.distanceToNextLocation
-          : -location.distanceToNextLocation
-        const [x, y] = api.coord([
-          api.value(0),
-          (api.value(1) as number) + distanceToNext / 2,
-        ])
+        const coordSys = params.coordSys
+
+        const [, y] = api.coord([0, api.value(1) as number])
+
+        const textX = coordSys.x + coordSys.width + 40
+        const textY = y - 6
+
         const offsetValue = api.value(3)
+        const fontSize = 10
+        const text = `Offset: ${offsetValue}s`
+
+        const textHeight = fontSize
+        const lineHeight = textHeight * 2
+
+        const lineX = textX - 6
+        const textCenterY = textY - textHeight / 2 + 10
+        const lineY1 = textCenterY - lineHeight / 2
+        const lineY2 = textCenterY + lineHeight / 2
+
         return {
-          type: 'text',
-          style: {
-            x: x + 20,
-            y: y - 10,
-            text: phaseType + ' Offset: ' + offsetValue.toString() + ' seconds',
-            textFill: '#000',
-            fontSize: 10,
-          },
+          type: 'group',
+          children: [
+            {
+              type: 'line',
+              shape: { x1: lineX, y1: lineY1, x2: lineX, y2: lineY2 },
+              style: { stroke: '#000', lineWidth: 1 },
+            },
+            {
+              type: 'text',
+              style: {
+                x: textX,
+                y: textY,
+                text,
+                textFill: '#000',
+                fontSize,
+              },
+            },
+          ],
         }
       },
+      clip: false,
     }
     seriesOptions.push(seriesOption)
   }
   return seriesOptions
 }
 
-export function generatePrimaryCycleLabels(
+export function generateCycleLabels(
   distanceData: number[],
-  primaryDirection: string
+  direction: string,
+  gridLeft: number
 ): SeriesOption {
   return {
-    name: `Cycles ${primaryDirection}`,
+    name: `Cycles ${direction}`,
     type: 'custom',
-    renderItem: (params: any, api) => {
+    renderItem: (params, api) => {
       const [, y] = api.coord([0, api.value(0)])
       const width = params.coordSys.width
       return {
@@ -803,11 +819,10 @@ export function generatePrimaryCycleLabels(
           {
             type: 'text',
             style: {
-              x: 15,
-              y: -4,
+              x: gridLeft,
+              y: 0,
               textAlign: 'center',
-              text: primaryDirection,
-              textFill: '#000',
+              text: direction,
               fontSize: 10,
             },
           },
@@ -815,37 +830,5 @@ export function generatePrimaryCycleLabels(
       }
     },
     data: distanceData,
-  }
-}
-
-export function generateOpposingCycleLabels(
-  reverseDistanceData: number[],
-  opposingDirection: string
-): SeriesOption {
-  return {
-    name: `Cycles ${opposingDirection}`,
-    type: 'custom',
-    renderItem: (params: any, api) => {
-      const [, y] = api.coord([0, api.value(0)])
-      const width = params.coordSys.width
-      return {
-        type: 'group',
-        position: [width + 100, y],
-        children: [
-          {
-            type: 'text',
-            style: {
-              x: 15,
-              y: -7,
-              textAlign: 'center',
-              text: opposingDirection,
-              textFill: '#000',
-              fontSize: 10,
-            },
-          },
-        ],
-      }
-    },
-    data: reverseDistanceData,
   }
 }

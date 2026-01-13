@@ -18,17 +18,14 @@ import {
   createDisplayProps,
   createLegend,
   createTitle,
-  createToolbox,
   createXAxis,
   createYAxis,
-  formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
 import {
+  generateCycleLabels,
   generateCycles,
   generateGreenEventLines,
-  generateOpposingCycleLabels,
-  generatePrimaryCycleLabels,
   getDistancesLabelOption,
   getDraggableOffsetabelOption,
   getLocationsLabelOption,
@@ -110,7 +107,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const start = new Date(data[0].end)
   const end = new Date(data[0].start)
-  const timeDiff = (start.getTime() - end.getTime()) / 3600000
+  const timeDiff = (start.getTime() - end.getTime()) / 3_600_000
 
   let dataZoom: DataZoomComponentOption[]
 
@@ -125,12 +122,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         maxSpan: 10,
         minSpan: 0.2,
       },
-      {
-        type: 'inside',
-        filterMode: 'filter',
-        show: true,
-        minSpan: 0.2,
-      },
     ]
   } else {
     dataZoom = [
@@ -139,22 +130,18 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         filterMode: 'none',
         show: true,
       },
-      {
-        type: 'inside',
-        filterMode: 'none',
-        show: true,
-      },
     ]
   }
 
-  const toolbox = createToolbox(
-    {
-      title: formatExportFileName(titleHeader, data[0].start, data[0].end),
-      dateRange,
+  const toolbox = {
+    feature: {
+      saveAsImage: { name: title },
+      dataView: {
+        readOnly: true,
+      },
+      restore: {},
     },
-    data[0].locationIdentifier,
-    ToolType.TimeSpaceHistoric
-  )
+  }
 
   const colorMap: Map<number, string> = new Map([
     [1, 'lightgreen'],
@@ -218,16 +205,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       locationLabels.gridLeft
     )
   )
-  series.push(
-    ...getDraggableOffsetabelOption(
-      primaryPhaseData,
-      distanceData,
-      primaryDirection,
-      true
-    )
-  )
 
-  let reverseDistanceData = distanceData.reverse()
+  let reverseDistanceData = [...distanceData].reverse()
   reverseDistanceData = reverseDistanceData.map((distance) => (distance += 300))
   series.push(
     ...generateCycles(
@@ -275,16 +254,21 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     )
   )
 
-  series.push(generatePrimaryCycleLabels(distanceData, primaryDirection))
   series.push(
-    generateOpposingCycleLabels(reverseDistanceData, opposingDirection)
+    generateCycleLabels(distanceData, primaryDirection, locationLabels.gridLeft)
+  )
+  series.push(
+    generateCycleLabels(
+      reverseDistanceData,
+      opposingDirection,
+      locationLabels.gridLeft
+    )
   )
   series.push(
     ...getDraggableOffsetabelOption(
-      opposingPhaseData,
-      reverseDistanceData,
-      opposingDirection,
-      false
+      primaryPhaseData,
+      distanceData,
+      primaryDirection
     )
   )
 
@@ -302,18 +286,20 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     position: 'top',
     min: 0,
     max: totalSeconds,
+    name: 'Time Since Start (seconds)',
+    nameLocation: 'middle',
     minInterval: 60,
     maxInterval: 60,
-    minorTick: { show: true, splitNumber: 6 },
+    minorTick: { show: true, splitNumber: 4 },
     axisLabel: {
       formatter: (v: number) => String(Math.round(v / 1) * 1),
     },
   } as const
 
   const grid: GridComponentOption = {
-    top: 150,
+    top: 170,
     left: locationLabels.gridLeft + 80,
-    right: 250,
+    right: 300,
     bottom: 100,
     show: true,
     borderWidth: 1,
@@ -331,6 +317,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         name: `Cycles ${opposingDirection}`,
         icon: SolidLineSeriesSymbol,
         itemStyle: { color: '#f0807f' },
+      },
+      {
+        name: `Green Bands ${primaryDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
+      },
+      {
+        name: `Green Bands ${opposingDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
       },
       {
         name: `Lane by Lane Count ${primaryDirection}`,
@@ -360,14 +354,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         name: `Stop Bar Presence ${opposingDirection}`,
         itemStyle: { color: 'orange' },
       },
-      {
-        name: `Green Bands ${primaryDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
-      {
-        name: `Green Bands ${opposingDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
     ],
     selected: {
       [`Cycles ${primaryDirection}`]: true,
@@ -384,15 +370,15 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   })
 
   const chartOptions: EChartsOption = {
-    title: title,
+    title,
     xAxis: [xAxis, xAxisTopSeconds],
-    yAxis: yAxis,
-    grid: grid,
-    dataZoom: dataZoom,
+    yAxis,
+    grid,
+    dataZoom,
     legend: legends,
-    toolbox: toolbox,
+    toolbox,
     animation: false,
-    series: series,
+    series,
     displayProps,
   }
 

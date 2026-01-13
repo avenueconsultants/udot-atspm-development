@@ -27,9 +27,8 @@ import {
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
 import {
+  generateCycleLabels,
   generateGreenEventLines,
-  generateOpposingCycleLabels,
-  generatePrimaryCycleLabels,
   getDistancesLabelOption,
   getLocationsLabelOption,
   getOffsetAndProgramSplitLabel,
@@ -224,7 +223,7 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
       endDateFormat
     )
   )
-  series.push(generatePrimaryCycleLabels(distanceData, primaryDirection))
+  series.push(generateCycleLabels(distanceData, primaryDirection))
 
   let reverseDistanceData = distanceData.reverse()
   reverseDistanceData = reverseDistanceData.map((distance) => (distance += 120))
@@ -246,9 +245,7 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
     )
   )
 
-  series.push(
-    generateOpposingCycleLabels(reverseDistanceData, opposingDirection)
-  )
+  series.push(generateCycleLabels(reverseDistanceData, opposingDirection))
 
   const displayProps = createDisplayProps({
     description: '',

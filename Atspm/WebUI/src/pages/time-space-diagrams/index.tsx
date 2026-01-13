@@ -1,7 +1,7 @@
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useTools } from '@/features/charts/api/getTools'
 import { ToolType } from '@/features/charts/common/types'
-import DefaultChartResults from '@/features/charts/components/defaultToolResults/DefaultToolResults'
+import TimeSpaceChart from '@/features/charts/components/defaultToolResults/DefaultToolResults'
 import { AverageOptionsComponent } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions'
 import { useAverageOptionsHandler } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions/timeSpaceAverageOptions.handler'
 import HistoricOptionsComponent from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/TimeSpaceHistoricOptions'
@@ -16,7 +16,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { Alert, Box, Tab, Typography } from '@mui/material'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const TimeSpaceDiagram = () => {
   const router = useRouter()
@@ -27,7 +27,6 @@ const TimeSpaceDiagram = () => {
   const [currentTab, setCurrentTab] = useState<ToolType>(
     ToolType.TimeSpaceHistoric
   )
-  const chartRefs = useRef<RefObject<HTMLDivElement>[]>([])
   const [hasAttemptedGenerate, setHasAttemptedGenerate] = useState(false)
 
   const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute()
@@ -188,8 +187,7 @@ const TimeSpaceDiagram = () => {
             </Box>
 
             {chartData && (
-              <DefaultChartResults
-                refs={chartRefs.current}
+              <TimeSpaceChart
                 chartData={chartData as TransformedToolResponse}
               />
             )}
