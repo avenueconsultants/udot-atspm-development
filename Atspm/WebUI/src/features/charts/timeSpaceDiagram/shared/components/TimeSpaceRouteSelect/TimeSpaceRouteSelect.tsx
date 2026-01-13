@@ -1,4 +1,5 @@
-import RouteChecker from '@/features/charts/timeSpaceDiagram/components/RouteChecker'
+import { TSHistoricHandler } from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/historicTimeSpaceOptions.handler'
+import RouteChecker from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/RouteChecker'
 import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
 import {
   Alert,
@@ -10,7 +11,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect } from 'react'
-import { TSHistoricHandler } from './handlers/handlers'
 
 interface Props {
   handler: TSHistoricHandler
