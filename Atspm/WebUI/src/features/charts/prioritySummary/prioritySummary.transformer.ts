@@ -20,6 +20,7 @@ import {
   createDataZoom,
   createDisplayProps,
   createGrid,
+  createInfoString,
   createLegend,
   createSeries,
   createTitle,
@@ -37,9 +38,9 @@ import {
 } from '@/features/charts/prioritySummary/types'
 import {
   Color,
+  crossSvgSymbol,
   formatChartDateTimeRange,
   triangleSvgSymbol,
-  xSvgSymbol,
 } from '@/features/charts/utils'
 import { EChartsOption } from 'echarts'
 
@@ -57,30 +58,33 @@ export default function transformPrioritySummaryData(
   }
 }
 
+const SYMBOL_SIZE = 8
+
 function transformLocation(data: PrioritySummaryResult) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
+
+  const info = createInfoString(
+    ['Average Duration', `${data.averageDuration}`],
+    ['Total Check Ins', `${data.numberCheckins}`],
+    ['Total Check Outs', `${data.numberCheckouts}`],
+    ['Total Early Greens', `${data.numberEarlyGreens}`],
+    ['Total Extend Greens', `${data.numberExtendedGreens}`]
+  )
 
   const title = createTitle({
     title: 'Priority Summary',
     location: data.locationDescription,
     dateRange,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
-  const yAxis = createYAxis(true, { name: 'Seconds Since 112 (Check In)' })
+  const yAxis = createYAxis(true, { name: 'Seconds Since Check In' })
 
-  const grid = createGrid({ top: 100, left: 70, right: 210 })
+  const grid = createGrid({ top: 140, left: 70, right: 210 })
 
   const legend = createLegend({
     top: grid.top,
-    data: [
-      { name: 'TSP Request (112→115)' },
-      { name: 'TSP Service (118→119)' },
-      { name: 'Early Green (113)', icon: 'circle' },
-      { name: 'Extend Green (114)', icon: 'circle' },
-      { name: 'Preempt Force Off (116)', icon: 'circle' },
-      { name: 'TSP Early Force Off (117)', icon: 'circle' },
-    ],
   })
 
   const dataZoom = createDataZoom()
@@ -179,7 +183,6 @@ function transformLocation(data: PrioritySummaryResult) {
 
   if (serviceOffsetData.length > 0) {
     series.push({
-      name: '__Service Offset (hidden)',
       type: 'bar',
       data: serviceOffsetData,
       stack: 'service',
@@ -218,8 +221,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: earlyGreenPts,
       color: Color.Black,
-      symbolSize: 7,
-      symbol: 'diamond',
+      symbolSize: SYMBOL_SIZE,
+      symbol: 'circle',
       z: 4,
     })
   }
@@ -230,8 +233,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: extendGreenPts,
       color: Color.Black,
-      symbolSize: 7,
-      symbol: 'triangle',
+      symbolSize: SYMBOL_SIZE,
+      symbol: triangleSvgSymbol,
       z: 4,
     })
   }
@@ -242,8 +245,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: preemptForceOffPts,
       color: Color.Red,
-      symbolSize: 10,
-      symbol: xSvgSymbol,
+      symbolSize: SYMBOL_SIZE,
+      symbol: crossSvgSymbol,
       z: 4,
     })
   }
@@ -254,8 +257,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: tspEarlyForceOffPts,
       color: Color.Red,
-      symbolSize: 10,
-      symbol: triangleSvgSymbol,
+      symbolSize: SYMBOL_SIZE,
+      symbol: crossSvgSymbol,
       z: 4,
     })
   }
