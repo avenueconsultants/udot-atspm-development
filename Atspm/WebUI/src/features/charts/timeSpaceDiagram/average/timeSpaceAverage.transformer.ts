@@ -28,6 +28,7 @@ import {
 import { ToolType } from '@/features/charts/common/types'
 import {
   generateCycleLabels,
+  generateCycles,
   generateGreenEventLines,
   getDistancesLabelOption,
   getLocationsLabelOption,
@@ -37,7 +38,6 @@ import {
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { generateCycles } from '@/features/charts/timingAndActuation/transformers'
 import { TransformedToolResponse } from '@/features/charts/types'
 import {
   SolidLineSeriesSymbol,
