@@ -1,4 +1,4 @@
-import { getEventLogDaysWithEventLogsFromLocationIdentifier } from '@/api/data/aTSPMLogDataApi'
+import { getEventLogDaysWithEventLogsFromLocationIdentifier } from '@/api/data'
 import { dateToTimestamp } from '@/utils/dateTime'
 import {
   eachDayOfInterval,

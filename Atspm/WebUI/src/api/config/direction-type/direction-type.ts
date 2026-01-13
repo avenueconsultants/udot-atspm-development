@@ -35,7 +35,7 @@ import type {
   PostDirectionTypeParams,
   PutDirectionTypeFromKeyParams,
   RouteLocation
-} from '../aTSPMConfigurationApi.schemas';
+} from '../config-api.schemas';
 
 import { configRequest } from '../../../lib/axios';
 

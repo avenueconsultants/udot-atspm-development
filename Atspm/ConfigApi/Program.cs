@@ -92,7 +92,7 @@ builder.Host
         s.AddScoped<ILocationManager, LocationManager>();
         s.AddHealthChecks();
     });
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var app = builder.Build();
 
 #region Middleware Pipeline

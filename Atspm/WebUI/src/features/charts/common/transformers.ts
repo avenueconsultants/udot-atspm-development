@@ -39,12 +39,6 @@ import {
   YAXisComponentOption,
 } from 'echarts'
 
-const specialCasesCharts = [
-  ChartType.ApproachSpeed,
-  ChartType.GreenTimeUtilization,
-  ChartType.PreemptionDetails,
-]
-
 export function transformSeriesData(
   dataPoints: DataPoint[]
 ): (string | number)[][] {
@@ -78,9 +72,7 @@ export function createSeries(...seriesInputs: SeriesOption[]) {
 function getMidpointTimestamp(start: string, end: string): string {
   const startTime = new Date(start).getTime()
   const endTime = new Date(end).getTime()
-  const midpointTime = new Date((startTime + endTime) / 2).toISOString()
-
-  return midpointTime
+  return new Date((startTime + endTime) / 2).toISOString()
 }
 
 export function createPlans<T extends BasePlan>(
@@ -88,7 +80,8 @@ export function createPlans<T extends BasePlan>(
   planYAxisIndex: number,
   options?: PlanOptions<T>,
   yLineLength?: number,
-  xAxisIndex?: number
+  xAxisIndex?: number,
+  backgroundColor?: string
 ): SeriesOption {
   const markAreaData: MarkAreaData[] = []
   const planData: PlanData[] = []
@@ -106,7 +99,7 @@ export function createPlans<T extends BasePlan>(
       const key = option as keyof Omit<T, keyof BasePlan>
       const value = plans[i][key]
 
-      if (value === null || value === undefined) continue
+      if (value == null) continue
 
       const formatter = options[key]
       planInfo += `\n{info|${formatter(value)}}`
@@ -166,7 +159,7 @@ export function createPlans<T extends BasePlan>(
       borderRadius: 5,
       minMargin: 10,
       align: 'right',
-      backgroundColor: '#f0f0f0',
+      backgroundColor: backgroundColor ? backgroundColor : '#f0f0f0',
       rich: {
         plan: {
           fontSize: 9,
@@ -288,7 +281,7 @@ export function createYAxis(
   const defaultYAxis: YAXisComponentOption = {
     type: 'value',
     nameLocation: 'middle',
-    nameGap: 40,
+    nameGap: 30,
     min: 0,
     alignTicks: true,
     axisLabel: {
@@ -571,19 +564,42 @@ export function createToolbox(
 //     .filter((data: any) => data !== undefined)
 // }
 
+// {
+//   "orient": "vertical",
+//   "top": "middle",
+//   "right": 8,
+//   "backgroundColor": "#f2f2f2",
+//       "borderRadius": 6,
+
+//   "padding": [10, 12],
+//   "itemGap": 14,
+//   "data": [
+//     {
+//       "name": "Approach Delay\nPer Vehicle\n(per second)",
+//       "icon": "path://M180 1000 l0 -20 200 0 200 0 0 20 0 20 -200 0 -200 0 0 -20z"
+//     },
+//     {
+//       "name": "Approach Delay\n(per hour)",
+//       "icon": "path://M180 1000 l0 -20 200 0 200 0 0 20 0 20 -200 0 -200 0 0 -20z"
+//     }
+//   ]
+// }
+
 export function createLegend(legendConfig?: Partial<LegendComponentOption>) {
   const defaultLegend: LegendComponentOption = {
     orient: 'vertical' as const,
     top: 'middle',
     right: 0,
+    backgroundColor: '#f2f2f2',
+    borderRadius: 6,
+    padding: [10, 12],
+    itemGap: 14,
   }
 
-  const legend = {
+  return {
     ...defaultLegend,
     ...legendConfig,
-  }
-
-  return legend
+  } as LegendComponentOption
 }
 
 export function createTooltip(tooltip?: TooltipComponentOption) {
@@ -596,7 +612,9 @@ export function createTooltip(tooltip?: TooltipComponentOption) {
   } as TooltipComponentOption
 }
 
-export function createGrid(grid: GridComponentOption) {
+export function createGrid<T extends Partial<GridComponentOption>>(
+  grid: T
+): GridComponentOption & T {
   const defaultGrid: GridComponentOption = {
     show: true,
     bottom: 95,
@@ -609,14 +627,14 @@ export function createInfoString(...info: string[][]) {
   let infoString = ''
 
   for (const line of info) {
-    infoString += `{description|${line[0]}} {values|${line[1]}}  •  `
+    infoString += `${line[0]} {values|${line[1]}}   •   `
   }
 
-  return infoString.slice(0, -4) // remove the last "  •  " from the string
+  return infoString.slice(0, -7) // remove the last "   •   " from the string
 }
 
 interface CreateDisplayProps {
-  description: string
+  description?: string
   detectorEvents?: string[]
   numberOfLocations?: number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -625,10 +643,9 @@ interface CreateDisplayProps {
 
 export function createDisplayProps(props: CreateDisplayProps) {
   const defaultProps = {
-    height: 700,
+    height: 550,
   }
-  const displayProps = { ...defaultProps, ...props }
-  return displayProps
+  return { ...defaultProps, ...props }
 }
 
 export function formatDataPointForStepView(

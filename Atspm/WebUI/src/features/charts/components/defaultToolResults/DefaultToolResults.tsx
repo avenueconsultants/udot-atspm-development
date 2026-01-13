@@ -12,43 +12,36 @@ export default function TimeSpaceChart({ chartData }: TimeSpaceChartProps) {
   const chart = chartData.data.charts[0]
 
   return (
-    <>
-      {/* <Button onClick={() => setResetKey((k) => k + 1)}>Reset Charts</Button> */}
-      <Box
+    <Box
+      sx={{
+        overflow: 'hidden',
+        width: '100%',
+        position: 'absolute',
+        left: 0,
+      }}
+    >
+      <Paper
         sx={{
-          overflow: 'hidden',
-          width: '100%',
-          position: 'absolute',
-          left: 0,
+          p: 4,
+          mt: 3,
+          marginLeft: '2px',
+          backgroundColor: 'white',
         }}
       >
-        <Paper
-          sx={{
-            p: 4,
-            mt: 3,
-            marginLeft: '2px',
-            backgroundColor: 'white',
+        <TimeSpaceEChart
+          id={`time-space-chart`}
+          option={chart.chart}
+          theme={theme.palette.mode}
+          style={{
+            width: '100%',
+            height:
+              chart.chart.displayProps.numberOfLocations < 5
+                ? chart.chart.displayProps.numberOfLocations * 150 + 160 + 'px'
+                : chart.chart.displayProps.numberOfLocations * 70 + 160 + 'px',
+            position: 'relative',
           }}
-        >
-          <TimeSpaceEChart
-            id={`time-space-chart`}
-            option={chart.chart}
-            theme={theme.palette.mode}
-            style={{
-              width: '100%',
-              height:
-                chart.chart.displayProps.numberOfLocations < 5
-                  ? chart.chart.displayProps.numberOfLocations * 150 +
-                    160 +
-                    'px'
-                  : chart.chart.displayProps.numberOfLocations * 70 +
-                    160 +
-                    'px',
-              position: 'relative',
-            }}
-          />
-        </Paper>
-      </Box>
-    </>
+        />
+      </Paper>
+    </Box>
   )
 }
