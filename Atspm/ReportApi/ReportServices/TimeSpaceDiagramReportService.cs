@@ -17,6 +17,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using Utah.Udot.Atspm.Business.TimeSpaceDiagram;
+using Utah.Udot.Atspm.Business.TurningMovementCounts;
+using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.ReportApi.ReportServices
@@ -71,7 +73,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 }
             }
 
-            var (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength) = ProcessRouteLocations(routeLocations, parameter);
+            var (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength, primaryTmcEvents, opposingTmcEvents) = ProcessRouteLocations(routeLocations, parameter);
 
             for (int i = 0; i < routeLocations.Count; i++)
             {
@@ -82,6 +84,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     controllerEventLogsList[i],
                     primaryPhaseDetails[i],
                     programmedCycleLength[i],
+                    primaryTmcEvents[i],
                     eventCodes,
                     nextLocationDistance,
                     previousLocationDistance,
@@ -101,6 +104,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     controllerEventLogsList[i],
                     opposingPhaseDetails[i],
                     programmedCycleLength[i],
+                    opposingTmcEvents[i],
                     eventCodes,
                     nextLocationDistance,
                     previousLocationDistance,
@@ -124,13 +128,17 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private (List<List<IndianaEvent>> controllerEventLogsList,
            List<PhaseDetail> primaryPhaseDetails,
            List<PhaseDetail> opposingPhaseDetails,
-           List<int> ProgrammedCycleLength)
+           List<int> ProgrammedCycleLength,
+           List<TmcForPhaseDto> primaryTmcEvents,
+           List<TmcForPhaseDto> opposingTmcEvents)
            ProcessRouteLocations(IEnumerable<RouteLocation> routeLocations, TimeSpaceDiagramOptions parameter)
         {
             var controllerEventLogsList = new List<List<IndianaEvent>>();
             var primaryPhaseDetails = new List<PhaseDetail>();
             var opposingPhaseDetails = new List<PhaseDetail>();
             var programmedCycleLength = new List<int>();
+            var primaryTmcEvents = new List<TmcForPhaseDto>();
+            var opposingTmcEvents = new List<TmcForPhaseDto>();
 
             foreach (var routeLocation in routeLocations)
             {
@@ -173,6 +181,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     currentProgrammedCycleLength = GetEventOverlappingTime(parameter.Start, programmedCycleForPlan, "CycleLength").FirstOrDefault().EventParam;
                 }
 
+                primaryTmcEvents.Add(GetTMCDataForPhase(location, primaryPhaseDetail, controllerEventLogs, parameter));
+                opposingTmcEvents.Add(GetTMCDataForPhase(location, opposingPhaseDetail, controllerEventLogs, parameter));
                 controllerEventLogsList.Add(controllerEventLogs);
                 primaryPhaseDetails.Add(primaryPhaseDetail);
                 opposingPhaseDetails.Add(opposingPhaseDetail);
@@ -180,7 +190,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
             }
 
-            return (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength);
+            return (controllerEventLogsList, primaryPhaseDetails, opposingPhaseDetails, programmedCycleLength, primaryTmcEvents, opposingTmcEvents);
         }
 
         private async Task<TimeSpaceDiagramResultForPhase> GetChartDataForPhase(
@@ -188,6 +198,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             List<IndianaEvent> currentControllerEventLogs,
             PhaseDetail currentPhase,
             int programmedCycleLength,
+            TmcForPhaseDto tmcEventsForPhase,
             List<short> eventCodes,
             double distanceToNextLocation,
             double distanceToPreviousLocation,
@@ -209,11 +220,96 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 distanceToPreviousLocation,
                 isFirstElement,
                 isLastElement);
+
             viewModel.LocationDescription = currentPhase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = currentPhase.Approach.Description;
             viewModel.PhaseType = phaseType;
             viewModel.Order = order;
+            viewModel.TmcForPhase = tmcEventsForPhase;
             return viewModel;
+        }
+
+        private TmcForPhaseDto GetTMCDataForPhase(Location location, PhaseDetail currentPhase, List<IndianaEvent> currentControllerEventLogs, TimeSpaceDiagramOptions parameter)
+        {
+            var tasks = new List<Task<TurningMovementCountsLanesResult>>();
+            var directionType = currentPhase.Approach.DirectionTypeId;
+            var mergingApproaches = GetMergingApproaches(directionType);
+            var plans = new List<Plan>();
+
+            if (mergingApproaches == null)
+                return new TmcForPhaseDto();
+
+            var rightTurnDirection = mergingApproaches.RightTurnFrom;
+            var leftTurnDirection = mergingApproaches.LeftTurnFrom;
+
+            //Based on right turns it could be either Through Right or Right turns in the location
+            var rightTurnMovementTypes = new List<MovementTypes> { MovementTypes.TR, MovementTypes.R };
+            //Based on left turns it could be either Through Left or Left turns in the location
+            var leftTurnMovementTypes = new List<MovementTypes> { MovementTypes.TL, MovementTypes.L };
+
+            var rightTurnApproachesWithDetectors = location.Approaches
+                .Where(a => a.DirectionTypeId == rightTurnDirection)
+                .Select(a => new
+                {
+                    Approach = a,
+                    Detectors = a.Detectors
+                        .Where(d => rightTurnMovementTypes.Contains(d.MovementType) && d.DetectionTypes.Any(d => d.Id == DetectionTypes.LLC) &&
+                                    d.LaneType == LaneTypes.V)
+                        .ToList()
+                })
+                .Where(x => x.Detectors.Any()).FirstOrDefault();
+
+            var leftTurnApproachesWithDetectors = location.Approaches
+                .Where(a => a.DirectionTypeId == leftTurnDirection)
+                .Select(a => new
+                {
+                    Approach = a,
+                    Detectors = a.Detectors
+                        .Where(d => leftTurnMovementTypes.Contains(d.MovementType) && d.DetectionTypes.Any(d => d.Id == DetectionTypes.LLC) &&
+                                    d.LaneType == LaneTypes.V)
+                        .ToList()
+                })
+                .Where(x => x.Detectors.Any()).FirstOrDefault();
+
+            //var approachForRightTurn = location.Approaches.FirstOrDefault(a => a.DirectionTypeId == rightTurnDirection);
+            //var approachForLeftTurn = location.Approaches.FirstOrDefault(a => a.DirectionTypeId == leftTurnDirection);
+
+            //var rightTurnDetectors = approachForRightTurn.Detectors.Where(d => rightTurnMovementTypes.Contains(d.MovementType) && d.LaneType == LaneTypes.V).ToList();
+            //var leftTurnDetectors = approachForLeftTurn.Detectors.Where(d => leftTurnMovementTypes.Contains(d.MovementType) && d.LaneType == LaneTypes.V).ToList();
+
+            var rightTurnTmc = GetTMCEvents(parameter, currentControllerEventLogs, rightTurnApproachesWithDetectors.Detectors, LaneTypes.V, rightTurnDirection, true);
+            var leftTurnTmc = GetTMCEvents(parameter, currentControllerEventLogs, leftTurnApproachesWithDetectors.Detectors, LaneTypes.V, leftTurnDirection, false);
+
+            return new TmcForPhaseDto() { LeftTurnEvents = leftTurnTmc, RightTurnEvents = rightTurnTmc };
+        }
+
+        public List<TmcEventDto> GetTMCEvents(
+            TimeSpaceDiagramOptions parameter,
+            List<IndianaEvent> currentControllerEventLogs,
+            List<Detector> detectorsByDirection,
+            LaneTypes laneType,
+            DirectionTypes directionType,
+            bool IsRightTurn)
+        {
+            var detectorEvents = new List<IndianaEvent>();
+            var detectionEvents = new List<TmcEventDto>();
+            foreach (var detector in detectorsByDirection)
+            {
+                detectorEvents.AddRange(currentControllerEventLogs.GetEventsByEventCodesParamWithOffsetAndLatencyCorrection(
+                    parameter.Start,
+                    parameter.End,
+                    new List<short>() { 82 },
+                    detector.DetectorChannel,
+                    detector.GetOffset(),
+                    detector.LatencyCorrection).ToList());
+            }
+
+            foreach (var e in detectorEvents)
+            {
+                detectionEvents.Add(new TmcEventDto(e.Timestamp, e.EventCode) { IsRightTurnEvent = IsRightTurn, IsLeftTurnEvent = !IsRightTurn, DirectionType = directionType });
+            }
+
+            return detectionEvents;
         }
 
         //HACK: this needs to be moved into the repository
@@ -229,8 +325,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private List<IndianaEvent> GetEventOverlappingTime(DateTime start, IReadOnlyList<IndianaEvent> programmedCycleForPlan, string eventType)
         {
             var planEvent = programmedCycleForPlan.Where(e => e.Timestamp == start).ToList();
-
-
             if (planEvent.Count == 0)
             {
                 var planEventInTimeSpan = programmedCycleForPlan.Where(e => e.Timestamp < start)
@@ -243,6 +337,37 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
 
             return planEvent.ToList();
+        }
+
+        public MergingApproaches? GetMergingApproaches(DirectionTypes mainDirection)
+        {
+            return mainDirection switch
+            {
+                DirectionTypes.NB => new MergingApproaches
+                {
+                    RightTurnFrom = DirectionTypes.EB,
+                    LeftTurnFrom = DirectionTypes.WB
+                },
+
+                DirectionTypes.SB => new MergingApproaches
+                {
+                    RightTurnFrom = DirectionTypes.WB,
+                    LeftTurnFrom = DirectionTypes.EB
+                },
+
+                DirectionTypes.EB => new MergingApproaches
+                {
+                    RightTurnFrom = DirectionTypes.SB,
+                    LeftTurnFrom = DirectionTypes.NB
+                },
+
+                DirectionTypes.WB => new MergingApproaches
+                {
+                    RightTurnFrom = DirectionTypes.NB,
+                    LeftTurnFrom = DirectionTypes.SB
+                },
+                _ => null,
+            };
         }
     }
 }

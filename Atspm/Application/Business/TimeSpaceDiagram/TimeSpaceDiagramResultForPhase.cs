@@ -59,6 +59,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public double DistanceToPreviousLocation { get; set; }
         public int Order { get; set; }
         public int CycleLength { get; }
+        public TmcForPhaseDto TmcForPhase { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
         public List<TimeSpaceDetectorEventDto> LaneByLaneCountDetectors { get; set; }
