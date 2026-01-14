@@ -34,10 +34,10 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int programmedCycleLength,
             List<CycleEventsDto> cycleAllEvents,
             List<CycleEventsDto> pedIntervals,
-            List<TimeSpaceEventBase> laneByLaneCountDetectors,
-            List<TimeSpaceEventBase> advanceCountDetectors,
-            List<TimeSpaceEventBase> stopBarPresenceDetectors,
-            List<TimeSpaceEventBase> greenTimeEvents) : base(approachId, locationId, start, end)
+            List<TimeSpaceDetectorEventDto> laneByLaneCountDetectors,
+            List<TimeSpaceDetectorEventDto> advanceCountDetectors,
+            List<TimeSpaceDetectorEventDto> stopBarPresenceDetectors,
+            List<DataPointWithDetectorCheckBase> greenTimeEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
@@ -64,9 +64,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public int CycleLength { get; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<CycleEventsDto> PedestrianIntervals { get; set; }
-        public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
-        public List<TimeSpaceEventBase> LaneByLaneCountDetectors { get; set; }
-        public List<TimeSpaceEventBase> AdvanceCountDetectors { get; set; }
-        public List<TimeSpaceEventBase> StopBarPresenceDetectors { get; set; }
+        public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
+        public List<TimeSpaceDetectorEventDto> LaneByLaneCountDetectors { get; set; }
+        public List<TimeSpaceDetectorEventDto> AdvanceCountDetectors { get; set; }
+        public List<TimeSpaceDetectorEventDto> StopBarPresenceDetectors { get; set; }
     }
 }
