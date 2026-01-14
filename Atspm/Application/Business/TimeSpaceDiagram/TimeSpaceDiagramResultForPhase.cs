@@ -33,6 +33,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int speed,
             int programmedCycleLength,
             List<CycleEventsDto> cycleAllEvents,
+            List<CycleEventsDto> pedIntervals,
             List<TimeSpaceDetectorEventDto> laneByLaneCountDetectors,
             List<TimeSpaceDetectorEventDto> advanceCountDetectors,
             List<TimeSpaceDetectorEventDto> stopBarPresenceDetectors,
@@ -45,6 +46,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             Speed = speed;
             CycleLength = programmedCycleLength;
             CycleAllEvents = cycleAllEvents;
+            PedestrianIntervals = pedIntervals;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
             AdvanceCountDetectors = advanceCountDetectors;
             StopBarPresenceDetectors = stopBarPresenceDetectors;
@@ -61,6 +63,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public int Order { get; set; }
         public int CycleLength { get; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
+        public List<CycleEventsDto> PedestrianIntervals { get; set; }
         public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
         public List<TimeSpaceDetectorEventDto> LaneByLaneCountDetectors { get; set; }
         public List<TimeSpaceDetectorEventDto> AdvanceCountDetectors { get; set; }
