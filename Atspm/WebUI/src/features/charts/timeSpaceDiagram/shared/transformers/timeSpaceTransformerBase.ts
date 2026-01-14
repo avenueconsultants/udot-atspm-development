@@ -14,14 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { dateToTimestamp } from '@/utils/dateTime'
-import { CustomSeriesRenderItemReturn, SeriesOption } from 'echarts'
-import { Cycle } from '../../timingAndActuation/types'
 import {
   RawTimeSpaceAverageData,
   TimeSpaceDetectorEvent,
   TimeSpaceResponseData,
-} from '../types'
+} from '@/features/charts/timeSpaceDiagram/shared/types'
+import { Cycle } from '@/features/charts/timingAndActuation/types'
+import { Color } from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
+import { CustomSeriesRenderItemReturn, SeriesOption } from 'echarts'
 
 export function generateCycles(
   data: TimeSpaceResponseData,
@@ -172,11 +173,8 @@ function getSegmentColor(from: number, to: number): string {
 //   const startCoord = api.coord([xStart, yIndex])
 //   const endCoord = api.coord([xEnd, yIndex])
 
-//   // console.log(yIndex, startCoord, endCoord)
-
 //   // band thickness in Y units:
 //   const height = api.size([0, 1])[1] * 5 // adjust width (% of row height)
-//   console.log(height)
 
 //   const rect = graphic.clipRectByRect(
 //     {
@@ -421,55 +419,216 @@ function getSpeedInFeetPerSecond(speed: number): number {
   return (speed * 5280) / 3600
 }
 
+function splitPrimarySecondary(desc: string | undefined) {
+  const raw = (desc ?? '').trim()
+
+  // remove leading "#1234 - " (or "1234 - ")
+  const noId = raw.replace(/^\s*#?\d+\s*-\s*/, '')
+
+  // split on first " & "
+  const [primary, secondary = ''] = noId.split(/\s*&\s*/, 2)
+
+  return {
+    primary: (primary ?? '').trim(),
+    secondary: (secondary ?? '').trim(),
+  }
+}
+
+type FontSpec = {
+  ident: string
+  line: string
+}
+
+const DEFAULT_FONTS: FontSpec = {
+  ident: '700 14px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial',
+  line: '400 12px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial',
+}
+
+function measureTextWidth(text: string, font: string): number {
+  if (!text) return 0
+
+  // SSR / non-browser fallback
+  if (typeof document === 'undefined') return Math.min(500, text.length * 7)
+
+  const canvas =
+    (measureTextWidth as any)._canvas ||
+    ((measureTextWidth as any)._canvas = document.createElement('canvas'))
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return Math.min(500, text.length * 7)
+
+  ctx.font = font
+  return ctx.measureText(text).width
+}
+
+function getLongestLabelLineWidth(
+  data: TimeSpaceResponseData,
+  fonts: FontSpec = DEFAULT_FONTS
+): number {
+  let max = 0
+
+  for (const row of data) {
+    const ident = String((row as any).locationIdentifier ?? '')
+    const { primary, secondary } = splitPrimarySecondary(
+      String((row as any).locationDescription ?? '')
+    )
+
+    const line1 = ident
+    const line2 = primary ? `${primary} &` : ''
+    const line3 = secondary ?? ''
+
+    max = Math.max(
+      max,
+      measureTextWidth(line1, fonts.ident),
+      measureTextWidth(line2, fonts.line),
+      measureTextWidth(line3, fonts.line)
+    )
+  }
+
+  return Math.ceil(max)
+}
+
 export function getLocationsLabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[]
 ): SeriesOption {
-  return {
-    name: `Labels location`,
+  // x = width of longest label line
+  const x = getLongestLabelLineWidth(data)
+
+  // per your spec:
+  // text right edge at x
+  // dot at x+20
+  // grid starts at x+40
+  const DOT_OFFSET = 10
+  const GRID_GAP = 70
+
+  const series: SeriesOption = {
+    name: 'Location axis',
     type: 'custom',
+    silent: true,
+    clip: false,
     renderItem: (params, api) => {
+      const idx = params.dataIndexInside ?? params.dataIndex
+      const len = params.dataInsideLength ?? distanceData.length
+      const coordSys = params.coordSys as any
+
       const [, y] = api.coord([api.value(0), api.value(1)])
-      return {
-        type: 'group',
-        position: [0, y],
-        children: [
-          {
-            type: 'path',
-            shape: {
-              d: 'M0,0 L0,-20 L30,-20 C42,-20 38,-1 50,-1 L70,-1 L30,0 Z',
-              x: 0,
-              y: -20,
-              width: 90,
-              height: 20,
-              layout: 'cover',
-            },
-            style: {
-              fill: 'lightgreen',
-              opacity: 0.7,
-            },
+
+      // coordSys.x === grid.left (the start of the plot area)
+      // Therefore:
+      //   xTextRight = coordSys.x - GRID_GAP === x
+      //   xDot       = coordSys.x - (GRID_GAP - DOT_OFFSET) === x+20
+      const xTextRight = coordSys.x - GRID_GAP
+      const xDot = coordSys.x - (GRID_GAP - DOT_OFFSET)
+
+      const children: any[] = []
+
+      // Draw the vertical connector once
+      if (idx === 0 && len > 1) {
+        const last = len - 1
+        const [, yTop] = api.coord([api.value(0, 0), api.value(1, 0)])
+        const [, yBottom] = api.coord([api.value(0, last), api.value(1, last)])
+
+        children.push({
+          type: 'line',
+          shape: {
+            x1: xDot,
+            y1: yTop,
+            x2: xDot,
+            y2: yBottom,
           },
+          style: {
+            stroke: Color.Orange,
+            lineWidth: 3,
+          },
+          z2: 1,
+        })
+      }
+
+      // Circle node
+      children.push({
+        type: 'circle',
+        shape: { cx: xDot, cy: y, r: 7 },
+        style: { fill: '#fff', stroke: Color.Orange, lineWidth: 3 },
+        z2: 2,
+      })
+
+      // Label text
+      const ident = String(api.value(2) ?? '')
+      const { primary, secondary } = splitPrimarySecondary(
+        String(api.value(3) ?? '')
+      )
+
+      const lineGap = 14
+      const blockTop = y - lineGap
+
+      children.push({
+        type: 'group',
+        children: [
+          // Line 1: identifier (bold)
           {
             type: 'text',
             style: {
-              x: 22,
-              y: -1,
-              textVerticalAlign: 'bottom',
-              textAlign: 'center',
-              text: api.value(2).toString(),
-              textFill: '#000',
-              fontSize: 15,
+              x: xTextRight,
+              y: blockTop,
+              text: ident,
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#111',
+              fontSize: 14,
+              fontWeight: 700,
             },
+            z2: 2,
+          },
+
+          // Line 2: primary + "&"
+          {
+            type: 'text',
+            style: {
+              x: xTextRight,
+              y: blockTop + lineGap,
+              text: primary ? `${primary} &` : '',
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#333',
+              fontSize: 12,
+              fontWeight: 400,
+            },
+            z2: 2,
+          },
+
+          // Line 3: secondary
+          {
+            type: 'text',
+            style: {
+              x: xTextRight,
+              y: blockTop + lineGap * 2,
+              text: secondary ?? '',
+              textAlign: 'right',
+              textVerticalAlign: 'middle',
+              fill: '#333',
+              fontSize: 12,
+              fontWeight: 400,
+            },
+            z2: 2,
           },
         ],
-      }
+      })
+
+      return { type: 'group', children }
     },
+
     data: distanceData.map((distance, index) => [
-      data[index].start,
+      data[index].start, // any valid x for coord calc
       distance,
       data[index].locationIdentifier,
+      data[index].locationDescription,
     ]),
   }
+
+  // Optional: expose x too (handy for debugging)
+  ;(series as any).gridLeft = x // == coordSys.x - 40
+
+  return series
 }
 
 export function getOffsetAndProgramSplitLabel(
@@ -528,7 +687,8 @@ export function getOffsetAndProgramSplitLabel(
 
 export function getDistancesLabelOption(
   data: TimeSpaceResponseData,
-  distanceData: number[]
+  distanceData: number[],
+  gridLeft: number
 ): SeriesOption {
   const dataPoints = distanceData.map((distance, index) => [
     data[index].end,
@@ -550,15 +710,15 @@ export function getDistancesLabelOption(
           {
             type: 'text',
             style: {
-              x: 50,
+              x: gridLeft + 35,
               y: y - 10,
               text:
                 params.dataIndex !== dataPoints.length - 1
-                  ? api.value(2).toString() +
+                  ? api.value(2).toLocaleString() +
                     ' ft' +
                     '\n' +
                     api.value(3).toString() +
-                    'mph'
+                    ' mph'
                   : '',
               textFill: '#000',
               fontSize: 10,
@@ -574,8 +734,7 @@ export function getDistancesLabelOption(
 export function getDraggableOffsetabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[],
-  phaseType?: string,
-  isPrimary?: boolean
+  phaseType?: string
 ): SeriesOption[] {
   const seriesOptions: SeriesOption[] = []
   for (let i = 0; i < data.length; i++) {
@@ -595,39 +754,62 @@ export function getDraggableOffsetabelOption(
       type: 'custom',
       data: dataPoint,
       renderItem: (params, api) => {
-        const distanceToNext = isPrimary
-          ? location.distanceToNextLocation
-          : -location.distanceToNextLocation
-        const [x, y] = api.coord([
-          api.value(0),
-          (api.value(1) as number) + distanceToNext / 2,
-        ])
+        const coordSys = params.coordSys
+
+        const [, y] = api.coord([0, api.value(1) as number])
+
+        const textX = coordSys.x + coordSys.width + 40
+        const textY = y - 6
+
         const offsetValue = api.value(3)
+        const fontSize = 10
+        const text = `Offset: ${offsetValue}s`
+
+        const textHeight = fontSize
+        const lineHeight = textHeight * 2
+
+        const lineX = textX - 6
+        const textCenterY = textY - textHeight / 2 + 10
+        const lineY1 = textCenterY - lineHeight / 2
+        const lineY2 = textCenterY + lineHeight / 2
+
         return {
-          type: 'text',
-          style: {
-            x: x + 20,
-            y: y - 10,
-            text: phaseType + ' Offset: ' + offsetValue.toString() + ' seconds',
-            textFill: '#000',
-            fontSize: 10,
-          },
+          type: 'group',
+          children: [
+            {
+              type: 'line',
+              shape: { x1: lineX, y1: lineY1, x2: lineX, y2: lineY2 },
+              style: { stroke: '#000', lineWidth: 1 },
+            },
+            {
+              type: 'text',
+              style: {
+                x: textX,
+                y: textY,
+                text,
+                textFill: '#000',
+                fontSize,
+              },
+            },
+          ],
         }
       },
+      clip: false,
     }
     seriesOptions.push(seriesOption)
   }
   return seriesOptions
 }
 
-export function generatePrimaryCycleLabels(
+export function generateCycleLabels(
   distanceData: number[],
-  primaryDirection: string
+  direction: string,
+  gridLeft: number
 ): SeriesOption {
   return {
-    name: `Cycles ${primaryDirection}`,
+    name: `Cycles ${direction}`,
     type: 'custom',
-    renderItem: (params: any, api) => {
+    renderItem: (params, api) => {
       const [, y] = api.coord([0, api.value(0)])
       const width = params.coordSys.width
       return {
@@ -637,11 +819,10 @@ export function generatePrimaryCycleLabels(
           {
             type: 'text',
             style: {
-              x: 15,
-              y: -4,
+              x: gridLeft,
+              y: 0,
               textAlign: 'center',
-              text: primaryDirection,
-              textFill: '#000',
+              text: direction,
               fontSize: 10,
             },
           },
@@ -649,37 +830,5 @@ export function generatePrimaryCycleLabels(
       }
     },
     data: distanceData,
-  }
-}
-
-export function generateOpposingCycleLabels(
-  reverseDistanceData: number[],
-  opposingDirection: string
-): SeriesOption {
-  return {
-    name: `Cycles ${opposingDirection}`,
-    type: 'custom',
-    renderItem: (params: any, api) => {
-      const [, y] = api.coord([0, api.value(0)])
-      const width = params.coordSys.width
-      return {
-        type: 'group',
-        position: [width + 100, y],
-        children: [
-          {
-            type: 'text',
-            style: {
-              x: 15,
-              y: -7,
-              textAlign: 'center',
-              text: opposingDirection,
-              textFill: '#000',
-              fontSize: 10,
-            },
-          },
-        ],
-      }
-    },
-    data: reverseDistanceData,
   }
 }

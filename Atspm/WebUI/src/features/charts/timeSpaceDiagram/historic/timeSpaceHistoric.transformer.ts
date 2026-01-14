@@ -18,16 +18,26 @@ import {
   createDisplayProps,
   createLegend,
   createTitle,
-  createToolbox,
   createXAxis,
   createYAxis,
-  formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
+import {
+  generateCycleLabels,
+  generateCycles,
+  generateGreenEventLines,
+  getDistancesLabelOption,
+  getDraggableOffsetabelOption,
+  getLocationsLabelOption,
+} from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
+import {
+  RawTimeSpaceDiagramResponse,
+  RawTimeSpaceHistoricData,
+} from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedToolResponse } from '@/features/charts/types'
 import {
-  SolidLineSeriesSymbol,
   formatChartDateTimeRange,
+  SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
 import {
@@ -36,16 +46,6 @@ import {
   GridComponentOption,
   SeriesOption,
 } from 'echarts'
-import { RawTimeSpaceDiagramResponse, RawTimeSpaceHistoricData } from '../types'
-import {
-  generateCycles,
-  generateGreenEventLines,
-  generateOpposingCycleLabels,
-  generatePrimaryCycleLabels,
-  getDistancesLabelOption,
-  getDraggableOffsetabelOption,
-  getLocationsLabelOption,
-} from './timeSpaceTransformerBase'
 
 export default function transformTimeSpaceHistoricData(
   response: RawTimeSpaceDiagramResponse
@@ -61,6 +61,8 @@ export default function transformTimeSpaceHistoricData(
   }
 }
 
+const opacity = 0.4
+
 function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const primaryPhaseData = data.filter(
     (location) => location.phaseType === 'Primary'
@@ -72,10 +74,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const titleHeader = `Time Space Diagram (Historic),\nPrimary Phase - ${primaryPhaseData[0].approachDescription}\nOpposing Phase - ${opposingPhaseData[0].approachDescription}`
   const dateRange = formatChartDateTimeRange(data[0].start, data[0].end)
+
   const title = createTitle({
-    title: titleHeader,
+    title: 'Time Space Diagram • Historic',
+    location: `Primary: ${primaryPhaseData[0].approachDescription} • Opposing: ${opposingPhaseData[0].approachDescription}`,
     dateRange,
-    info: `Route data from ${primaryPhaseData[0].locationDescription} to ${primaryPhaseData[primaryPhaseData.length - 1].locationDescription} \n`,
+    info: `Route data from ${primaryPhaseData[0].locationDescription} to ${
+      primaryPhaseData[primaryPhaseData.length - 1].locationDescription
+    }`,
   })
 
   const xAxis = createXAxis(data[0].start, data[0].end)
@@ -99,81 +105,9 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     },
   })
 
-  const legends = createLegend({
-    top: 195,
-    data: [
-      {
-        name: `Cycles ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: '#f0807f' },
-      },
-      {
-        name: `Cycles ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: '#f0807f' },
-      },
-      {
-        name: `Lane by Lane Count ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'darkblue' },
-      },
-      {
-        name: `Lane by Lane Count ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Advance Count ${primaryDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'darkblue' },
-      },
-      {
-        name: `Advance Count ${opposingDirection}`,
-        icon: SolidLineSeriesSymbol,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Stop Bar Presence ${primaryDirection}`,
-        itemStyle: { color: 'lightBlue' },
-      },
-      {
-        name: `Stop Bar Presence ${opposingDirection}`,
-        itemStyle: { color: 'orange' },
-      },
-      {
-        name: `Green Bands ${primaryDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
-      {
-        name: `Green Bands ${opposingDirection}`,
-        itemStyle: { color: 'green', opacity: 0.3 },
-      },
-    ],
-    selected: {
-      [`Cycles ${primaryDirection}`]: true,
-      [`Cycles ${opposingDirection}`]: true,
-      [`Green Bands ${primaryDirection}`]: true,
-      [`Green Bands ${opposingDirection}`]: true,
-      [`Lane by Lane Count ${primaryDirection}`]: false,
-      [`Lane by Lane Count ${opposingDirection}`]: false,
-      [`Advance Count ${primaryDirection}`]: false,
-      [`Advance Count ${opposingDirection}`]: false,
-      [`Stop Bar Presence ${primaryDirection}`]: false,
-      [`Stop Bar Presence ${opposingDirection}`]: false,
-    },
-  })
-
-  const grid: GridComponentOption = {
-    top: 200,
-    left: 100,
-    right: 250,
-    show: true,
-    borderWidth: 1,
-  }
-
   const start = new Date(data[0].end)
   const end = new Date(data[0].start)
-  const timeDiff = (start.getTime() - end.getTime()) / 3600000
+  const timeDiff = (start.getTime() - end.getTime()) / 3_600_000
 
   let dataZoom: DataZoomComponentOption[]
 
@@ -188,12 +122,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         maxSpan: 10,
         minSpan: 0.2,
       },
-      {
-        type: 'inside',
-        filterMode: 'filter',
-        show: true,
-        minSpan: 0.2,
-      },
     ]
   } else {
     dataZoom = [
@@ -202,22 +130,18 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         filterMode: 'none',
         show: true,
       },
-      {
-        type: 'inside',
-        filterMode: 'none',
-        show: true,
-      },
     ]
   }
 
-  const toolbox = createToolbox(
-    {
-      title: formatExportFileName(titleHeader, data[0].start, data[0].end),
-      dateRange,
+  const toolbox = {
+    feature: {
+      saveAsImage: { name: title },
+      dataView: {
+        readOnly: true,
+      },
+      restore: {},
     },
-    data[0].locationIdentifier,
-    ToolType.TimeSpaceHistoric
-  )
+  }
 
   const colorMap: Map<number, string> = new Map([
     [1, 'lightgreen'],
@@ -272,18 +196,17 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       true
     )
   )
-  series.push(getLocationsLabelOption(primaryPhaseData, distanceData))
-  series.push(getDistancesLabelOption(primaryPhaseData, distanceData))
+  const locationLabels = getLocationsLabelOption(primaryPhaseData, distanceData)
+  series.push(locationLabels)
   series.push(
-    ...getDraggableOffsetabelOption(
+    getDistancesLabelOption(
       primaryPhaseData,
       distanceData,
-      primaryDirection,
-      true
+      locationLabels.gridLeft
     )
   )
 
-  let reverseDistanceData = distanceData.reverse()
+  let reverseDistanceData = [...distanceData].reverse()
   reverseDistanceData = reverseDistanceData.map((distance) => (distance += 300))
   series.push(
     ...generateCycles(
@@ -331,16 +254,21 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     )
   )
 
-  series.push(generatePrimaryCycleLabels(distanceData, primaryDirection))
   series.push(
-    generateOpposingCycleLabels(reverseDistanceData, opposingDirection)
+    generateCycleLabels(distanceData, primaryDirection, locationLabels.gridLeft)
+  )
+  series.push(
+    generateCycleLabels(
+      reverseDistanceData,
+      opposingDirection,
+      locationLabels.gridLeft
+    )
   )
   series.push(
     ...getDraggableOffsetabelOption(
-      opposingPhaseData,
-      reverseDistanceData,
-      opposingDirection,
-      false
+      primaryPhaseData,
+      distanceData,
+      primaryDirection
     )
   )
 
@@ -349,16 +277,108 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     numberOfLocations: primaryPhaseData.length,
   })
 
+  const chartStartMs = Date.parse(primaryPhaseData[0].start)
+  const chartEndMs = Date.parse(primaryPhaseData[0].end)
+  const totalSeconds = Math.floor((chartEndMs - chartStartMs) / 1000)
+
+  const xAxisTopSeconds = {
+    type: 'value',
+    position: 'top',
+    min: 0,
+    max: totalSeconds,
+    name: 'Time Since Start (seconds)',
+    nameLocation: 'middle',
+    minInterval: 60,
+    maxInterval: 60,
+    minorTick: { show: true, splitNumber: 4 },
+    axisLabel: {
+      formatter: (v: number) => String(Math.round(v / 1) * 1),
+    },
+  } as const
+
+  const grid: GridComponentOption = {
+    top: 170,
+    left: locationLabels.gridLeft + 80,
+    right: 300,
+    bottom: 100,
+    show: true,
+    borderWidth: 1,
+  }
+
+  const legends = createLegend({
+    top: grid.top,
+    data: [
+      {
+        name: `Cycles ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: '#f0807f' },
+      },
+      {
+        name: `Cycles ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: '#f0807f' },
+      },
+      {
+        name: `Green Bands ${primaryDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
+      },
+      {
+        name: `Green Bands ${opposingDirection}`,
+        itemStyle: { color: 'green', opacity: 0.3 },
+      },
+      {
+        name: `Lane by Lane Count ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'darkblue' },
+      },
+      {
+        name: `Lane by Lane Count ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'orange' },
+      },
+      {
+        name: `Advance Count ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'darkblue' },
+      },
+      {
+        name: `Advance Count ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: 'orange' },
+      },
+      {
+        name: `Stop Bar Presence ${primaryDirection}`,
+        itemStyle: { color: 'lightBlue' },
+      },
+      {
+        name: `Stop Bar Presence ${opposingDirection}`,
+        itemStyle: { color: 'orange' },
+      },
+    ],
+    selected: {
+      [`Cycles ${primaryDirection}`]: true,
+      [`Cycles ${opposingDirection}`]: true,
+      [`Green Bands ${primaryDirection}`]: true,
+      [`Green Bands ${opposingDirection}`]: true,
+      [`Lane by Lane Count ${primaryDirection}`]: false,
+      [`Lane by Lane Count ${opposingDirection}`]: false,
+      [`Advance Count ${primaryDirection}`]: false,
+      [`Advance Count ${opposingDirection}`]: false,
+      [`Stop Bar Presence ${primaryDirection}`]: false,
+      [`Stop Bar Presence ${opposingDirection}`]: false,
+    },
+  })
+
   const chartOptions: EChartsOption = {
-    title: title,
-    xAxis: xAxis,
-    yAxis: yAxis,
-    grid: grid,
-    dataZoom: dataZoom,
+    title,
+    xAxis: [xAxis, xAxisTopSeconds],
+    yAxis,
+    grid,
+    dataZoom,
     legend: legends,
-    toolbox: toolbox,
+    toolbox,
     animation: false,
-    series: series,
+    series,
     displayProps,
   }
 
@@ -381,6 +401,7 @@ function generateLaneByLaneCountEventLines(
       lineStyle: {
         width: 2,
         color,
+        opacity,
       },
       data: location.laneByLaneCountDetectors.flatMap((events) => {
         const initialX = events.detectorOn
@@ -508,6 +529,7 @@ function generateAdvanceCountEventLines(
         lineStyle: {
           width: 2,
           color,
+          opacity,
         },
         data: location.advanceCountDetectors.flatMap((events) => {
           const finalX = getArrivalTime(
@@ -687,6 +709,7 @@ function generateStopBarPresenceEventLines(
           style: {
             opacity: 1,
             fill: color,
+            fillOpacity: opacity,
             lineWidth: 3,
           },
         }

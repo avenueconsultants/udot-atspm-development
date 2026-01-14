@@ -15,7 +15,7 @@
 // limitations under the License.
 // #endregion
 import { BaseChartData, ToolType } from '@/features/charts/common/types'
-import { Cycle } from '../timingAndActuation/types'
+import { Cycle } from '@/features/charts/timingAndActuation/types'
 
 // export interface TimeSpaceDetectorEvent {
 //   initialX: string

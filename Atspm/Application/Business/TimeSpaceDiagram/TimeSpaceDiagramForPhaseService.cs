@@ -56,6 +56,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var advanceCountEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, out List<GreenToGreenCycle> resultCycles);
+            var pedIntervals = TimeSpaceService.GetPedestrianIntervals(phaseDetail.Approach, controllerEventLogs, options);
 
 
             if (isFirstElement)
@@ -103,6 +104,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 speedLimit,
                 programmedCycleLength,
                 cycleAllEvents,
+                pedIntervals,
                 countEventsTimeSpaceResult,
                 advanceCountEventsTimeSpaceResult,
                 stopBarPresenceEventsTimeSpaceResult,
@@ -348,8 +350,29 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 
         //        results.Add(resultOn);
         //    }
+        //private List<TimeSpaceEventBase> GetGreenTimeEvents(PhaseDetail phaseDetail,
+        //    List<CycleEventsDto> cycleEvents,
+        //    TimeSpaceDiagramOptions options,
+        //    double distanceToNextLocation,
+        //    int speedLimit)
+        //{
+        //    List<int> cycleGreenStartEndCodes = new List<int>() { 1, 8 };
+        //    var events = new List<CycleEventsDto>();
+        //    var greenTimeEvents = new List<TimeSpaceEventBase>();
+        //    var tempEvents = cycleEvents.Where(c => cycleGreenStartEndCodes.Contains(c.Value)).ToList();
 
-        //    return results;
+        //    foreach (var gEvent in tempEvents)
+        //    {
+        //        double speed = options.SpeedLimit ?? speedLimit;
+        //        DateTime start = gEvent.Start;
+        //        TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, start, out _, out DateTime arrivalTime);
+        //        TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
+        //            start,
+        //            arrivalTime,
+        //            gEvent.Value == 1 ? true : false);
+        //        greenTimeEvents.Add(resultOn);
+        //    }
+        //    return greenTimeEvents;
         //}
 
         //private static double GetSpeedInFeetPerSecond(double speedLimit)

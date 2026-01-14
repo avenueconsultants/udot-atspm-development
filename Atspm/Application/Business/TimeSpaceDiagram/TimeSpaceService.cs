@@ -128,5 +128,34 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                     "zOverlap - " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2")  // If true, concatenate "zOverlap - " with 'ProtectedPhaseNumber' formatted as a two-digit string
                     : "Phase = " + phaseDetail.Approach.ProtectedPhaseNumber.ToString("D2");  // If false, concatenate "Phase = " with 'ProtectedPhaseNumber' formatted as a two-digit string
         }
+
+        public static List<CycleEventsDto> GetPedestrianIntervals(
+            Approach approach,
+            List<IndianaEvent> controllerEventLogs,
+            MeasureOptionsBase options)
+        {
+            List<short> overlapCodes = GetPedestrianIntervalEventCodes(approach.IsPedestrianPhaseOverlap);
+            var pedPhase = approach.PedestrianPhaseNumber ?? approach.ProtectedPhaseNumber;
+            return controllerEventLogs.Where(c => overlapCodes.Contains(c.EventCode)
+                                                    && c.EventParam == pedPhase
+                                                    && c.Timestamp >= options.Start
+                                                    && c.Timestamp <= options.End).Select(s => new CycleEventsDto(s.Timestamp, (int)s.EventCode)).ToList();
+        }
+
+        private static List<short> GetPedestrianIntervalEventCodes(bool isPhaseOrOverlap)
+        {
+            var overlapCodes = new List<short>
+            {
+                21,
+                22,
+                23
+            };
+            if (isPhaseOrOverlap)
+            {
+                overlapCodes = new List<short> { 67, 68, 69 };
+            }
+
+            return overlapCodes;
+        }
     }
 }
