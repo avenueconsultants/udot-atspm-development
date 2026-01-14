@@ -107,7 +107,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   })
 
   const gridBottom = createGrid({
-    top: 220,
+    top: 190,
     left: 65,
     right: 210,
     bottom: 110,
@@ -137,11 +137,26 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const legend = createLegend({
     top: gridTop.top,
     data: [
-      { name: 'Green', icon: 'roundRect' },
-      { name: 'Light Green', icon: 'roundRect' },
-      { name: 'Yellow', icon: 'roundRect' },
-      { name: 'Red', icon: 'roundRect' },
-      { name: 'Light Red', icon: 'roundRect' },
+      {
+        name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
+        icon: 'roundRect',
+      },
+      {
+        name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+        icon: 'roundRect',
+      },
+      {
+        name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
+        icon: 'roundRect',
+      },
+      {
+        name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
+        icon: 'roundRect',
+      },
+      {
+        name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
+        icon: 'roundRect',
+      },
       ...legendItems,
     ],
   })
@@ -151,7 +166,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     height: '900px',
   })
 
-  const x = {
+  return {
     title,
     grid: [gridTop, gridBottom],
     xAxis: [
@@ -170,7 +185,6 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     series,
     displayProps,
   }
-  return x
 }
 
 function buildRowCategories(rows: PriorityDetailsResult[]): string[] {
@@ -219,7 +233,12 @@ function getChartRangeMs(rows: PriorityDetailsResult[]) {
   }
 }
 
-type IndicationName = 'Green' | 'Light Green' | 'Yellow' | 'Red' | 'Light Red'
+type IndicationName =
+  | 'Phase Begin Green (1)\nOverlap Begin Green (61)'
+  | 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)'
+  | 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)'
+  | 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)'
+  | 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)'
 
 function getIndicationDetails(
   value: number
@@ -227,19 +246,34 @@ function getIndicationDetails(
   switch (value) {
     case 1:
     case 61:
-      return { name: 'Green', color: Color.Green }
+      return {
+        name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
+        color: Color.Green,
+      }
     case 3:
     case 62:
-      return { name: 'Light Green', color: '#8ef08d' }
+      return {
+        name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+        color: '#8ef08d',
+      }
     case 8:
     case 63:
-      return { name: 'Yellow', color: Color.Yellow }
+      return {
+        name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
+        color: Color.Yellow,
+      }
     case 9:
     case 64:
-      return { name: 'Red', color: '#FF0000' }
+      return {
+        name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
+        color: '#FF0000',
+      }
     case 11:
     case 65:
-      return { name: 'Light Red', color: '#f0807f' }
+      return {
+        name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
+        color: '#f0807f',
+      }
     default:
       return null
   }

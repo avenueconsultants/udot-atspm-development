@@ -1,6 +1,6 @@
 import { PriorityDetailsResult } from '@/api/reports'
 import { createGrid, createYAxis } from '@/features/charts/common/transformers'
-import { Color } from '@/features/charts/utils'
+import { Color, triangleSvgSymbol } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { graphic, type SeriesOption } from 'echarts'
 
@@ -158,21 +158,6 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
     }
   }
 
-  if (checkIns.length) {
-    series.push({
-      name: 'Check In (112)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: checkIns,
-      symbol: 'circle',
-      symbolSize: 9,
-      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
   if (earlyGreens.length) {
     series.push({
       name: 'Early Green (113)',
@@ -180,7 +165,7 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
       xAxisIndex: 0,
       yAxisIndex: 0,
       data: earlyGreens,
-      symbol: 'diamond',
+      symbol: 'circle',
       symbolSize: 9,
       symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
       itemStyle: { color: Color.Black },
@@ -195,53 +180,8 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
       xAxisIndex: 0,
       yAxisIndex: 0,
       data: extendGreens,
-      symbol: 'triangle',
+      symbol: triangleSvgSymbol,
       symbolSize: 9,
-      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (checkOuts.length) {
-    series.push({
-      name: 'Check Out (115)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: checkOuts,
-      symbol: 'rect',
-      symbolSize: 9,
-      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (serviceStarts.length) {
-    series.push({
-      name: 'Service Start (118)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: serviceStarts,
-      symbol: 'circle',
-      symbolSize: 7,
-      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (serviceEnds.length) {
-    series.push({
-      name: 'Service End (119)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: serviceEnds,
-      symbol: 'circle',
-      symbolSize: 7,
       symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
       itemStyle: { color: Color.Black },
       z: 10,
@@ -250,7 +190,7 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
 
   if (intersectionLines.length) {
     series.push(
-      buildVerticalIntersectionLinesSeries(
+      ...buildVerticalIntersectionLinesSeries(
         intersectionLines,
         gridTop,
         SYMBOL_Y_OFFSET_PX
@@ -261,12 +201,8 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
   const legendItems = [
     { name: 'TSP Request (112→115)' },
     { name: 'TSP Service (118→119)' },
-    { name: 'Check In (112)', icon: 'circle' },
-    { name: 'Early Green (113)', icon: 'circle' },
-    { name: 'Extend Green (114)', icon: 'circle' },
-    { name: 'Check Out (115)', icon: 'circle' },
-    { name: 'Service Start (118)', icon: 'circle' },
-    { name: 'Service End (119)', icon: 'circle' },
+    { name: 'Early Green (113)' },
+    { name: 'Extend Green (114)' },
   ]
 
   return {
@@ -321,10 +257,11 @@ function buildRectsAndLinesFromEvents(allEvents: PriorityEvent[]) {
       })
     }
 
-    intersectionLines.push(c.checkIn)
-    if (c.serviceStart) intersectionLines.push(c.serviceStart)
-    if (c.serviceEnd) intersectionLines.push(c.serviceEnd)
-    intersectionLines.push(c.checkOut)
+    intersectionLines.push({ t: c.checkIn, y: rowIndex })
+    if (c.serviceStart)
+      intersectionLines.push({ t: c.serviceStart, y: rowIndex })
+    if (c.serviceEnd) intersectionLines.push({ t: c.serviceEnd, y: rowIndex })
+    intersectionLines.push({ t: c.checkOut, y: rowIndex })
   }
 
   return { requestRects, serviceRects, intersectionLines }
@@ -503,41 +440,108 @@ function renderThinRect(
 }
 
 function buildVerticalIntersectionLinesSeries(
-  timestamps: string[],
+  points: Array<{ t: string; y: number }>,
   gridTop: { top: number; height: number },
   symbolYOffsetPx: number
-): SeriesOption {
-  const unique = Array.from(new Set(timestamps)).filter(Boolean)
+): SeriesOption[] {
+  const uniq = new Map<string, { t: string; y: number }>()
+  for (const p of points) {
+    const k = `${p.t}|${p.y}`
+    if (!uniq.has(k)) uniq.set(k, p)
+  }
 
-  return {
+  const topData = Array.from(uniq.values()).map((p) => [p.t, p.y])
+  const bottomTimes = Array.from(
+    new Set(Array.from(uniq.values()).map((p) => p.t))
+  ).filter(Boolean)
+  const bottomData = bottomTimes.map((t) => [t])
+
+  const topGridBottomY = gridTop.top + gridTop.height
+
+  const top: SeriesOption = {
+    name: 'Priority Event Intersection',
+    type: 'custom',
+    xAxisIndex: 0,
+    yAxisIndex: 0,
+    data: topData,
+    tooltip: { show: false },
+    silent: true,
+    z: 9,
+    renderItem: (params: any, api: any) => {
+      const t = api.value(0)
+      const yCat = api.value(1)
+      if (!t && t !== 0) return null
+      if (yCat == null) return null
+
+      const p = api.coord([t, yCat])
+      const x = p[0]
+      const y1 = p[1] + symbolYOffsetPx
+      const y2 = topGridBottomY
+
+      return {
+        type: 'line',
+        shape: { x1: x, y1, x2: x, y2 },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
+        silent: true,
+        z: 9,
+      }
+    },
+  } as SeriesOption
+
+  const middle: SeriesOption = {
     name: 'Priority Event Intersection',
     type: 'custom',
     xAxisIndex: 1,
     yAxisIndex: 1,
-    data: unique.map((t) => [t]),
+    data: bottomData,
+    tooltip: { show: false },
+    silent: true,
+    z: 9,
+    clip: false,
     renderItem: (params: any, api: any) => {
       const t = api.value(0)
-      if (!t) return null
+      if (!t && t !== 0) return null
 
       const x = api.coord([t, 0])[0]
+      const y1 = topGridBottomY
+      const y2 = params.coordSys.y
 
-      const y1 = gridTop.top + gridTop.height / 2 + symbolYOffsetPx
+      return {
+        type: 'line',
+        shape: { x1: x, y1, x2: x, y2 },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
+        silent: true,
+        z: 9,
+      }
+    },
+  } as SeriesOption
+
+  const bottom: SeriesOption = {
+    name: 'Priority Event Intersection',
+    type: 'custom',
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    data: bottomData,
+    tooltip: { show: false },
+    silent: true,
+    z: 9,
+    renderItem: (params: any, api: any) => {
+      const t = api.value(0)
+      if (!t && t !== 0) return null
+
+      const x = api.coord([t, 0])[0]
+      const y1 = params.coordSys.y
       const y2 = params.coordSys.y + params.coordSys.height
 
       return {
         type: 'line',
         shape: { x1: x, y1, x2: x, y2 },
-        style: {
-          stroke: Color.Black,
-          lineWidth: 1,
-          lineDash: [4, 4],
-        },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
         silent: true,
         z: 9,
       }
     },
-    tooltip: { show: false },
-    silent: true,
-    z: 9,
   } as SeriesOption
+
+  return [top, middle, bottom]
 }
