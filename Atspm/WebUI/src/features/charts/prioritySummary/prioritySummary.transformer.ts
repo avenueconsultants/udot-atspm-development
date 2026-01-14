@@ -44,6 +44,8 @@ import {
 } from '@/features/charts/utils'
 import { EChartsOption } from 'echarts'
 
+const SYMBOL_SIZE = 8
+
 export default function transformPrioritySummaryData(
   response: RawPrioritySummaryResponse | PrioritySummaryResult
 ): TransformedPrioritySummaryResponse {
@@ -58,17 +60,22 @@ export default function transformPrioritySummaryData(
   }
 }
 
-const SYMBOL_SIZE = 8
+function durationToSeconds(duration: string): string {
+  const [h, m, s] = duration.split(':')
+  const seconds = Number(h) * 3600 + Number(m) * 60 + Number(s)
+
+  return seconds.toFixed(1)
+}
 
 function transformLocation(data: PrioritySummaryResult) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const info = createInfoString(
-    ['Average Duration', `${data.averageDuration}`],
-    ['Total Check Ins', `${data.numberCheckins}`],
-    ['Total Check Outs', `${data.numberCheckouts}`],
-    ['Total Early Greens', `${data.numberEarlyGreens}`],
-    ['Total Extend Greens', `${data.numberExtendedGreens}`]
+    ['Average duration:', `${durationToSeconds(data.averageDuration)} s`],
+    ['Total check-ins:', `${data.numberCheckins}`],
+    ['Total check-outs:', `${data.numberCheckouts}`],
+    ['Total early greens:', `${data.numberEarlyGreens}`],
+    ['Total extended greens:', `${data.numberExtendedGreens}`]
   )
 
   const title = createTitle({
@@ -79,7 +86,7 @@ function transformLocation(data: PrioritySummaryResult) {
   })
 
   const xAxis = createXAxis(data.start, data.end)
-  const yAxis = createYAxis(true, { name: 'Seconds Since Check In' })
+  const yAxis = createYAxis(true, { name: 'Seconds Since Check-In' })
 
   const grid = createGrid({ top: 140, left: 70, right: 210 })
 
@@ -115,12 +122,10 @@ function transformLocation(data: PrioritySummaryResult) {
     .filter((c) => c.requestEndOffsetSec != null && c.requestEndOffsetSec >= 0)
     .map((c) => {
       const inMs = Date.parse(c.checkIn)
-      const outMs = Number.isFinite(Date.parse(c.checkOut))
-        ? Date.parse(c.checkOut)
-        : inMs + 30_000
+      const outMs = Date.parse(c.checkOut)
 
-      const windowStart = new Date(inMs - 120_000).toISOString()
-      const windowEnd = new Date(outMs + 120_000).toISOString()
+      const windowStart = new Date(inMs - 125_000).toISOString()
+      const windowEnd = new Date(outMs + 125_000).toISOString()
 
       return [
         c.checkIn,

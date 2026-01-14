@@ -1,4 +1,3 @@
-// priorityDetails.transformer.ts
 // #region license
 // Copyright 2025 Utah Departement of Transportation
 // for WebUI - priorityDetails.transformer.ts
@@ -18,6 +17,7 @@
 
 import { PriorityDetailsResult } from '@/api/reports'
 import {
+  createDataZoom,
   createDisplayProps,
   createGrid,
   createLegend,
@@ -113,7 +113,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     bottom: 110,
   })
 
-  // const dataZoom = createDataZoom()
+  const dataZoom = createDataZoom()
 
   const toolbox = createToolbox(
     {
@@ -163,7 +163,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
       { ...yAxisBottom[0], gridIndex: 1 },
     ],
     legend,
-    // dataZoom,
+    dataZoom,
     toolbox,
     tooltip,
     animation: false,
