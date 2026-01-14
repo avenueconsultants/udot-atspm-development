@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using GreenToGreenCycle = Utah.Udot.Atspm.Business.Common.GreenToGreenCycle;
@@ -25,8 +24,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
     public class TimeSpaceDiagramForPhaseService
     {
-        private static readonly double FeetPerMile = 5280;
-        private static readonly double SecondsInHour = 3600;
+        //private static readonly double FeetPerMile = 5280;
+        //private static readonly double SecondsInHour = 3600;
         private readonly CycleService _cycleService;
 
         public TimeSpaceDiagramForPhaseService(CycleService cycleService)
@@ -38,6 +37,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
            TimeSpaceDiagramOptions options,
            PhaseDetail phaseDetail,
            List<IndianaEvent> controllerEventLogs,
+           int programmedCycleLength,
            double distanceToNextLocation,
            double distanceToPreviousLocation,
            bool isFirstElement,
@@ -51,41 +51,44 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 throw new Exception($"Speed not configured in route for all phases");
             }
 
-            var greenTimeEventsResult = new List<TimeSpaceEventBase>();
-            var countEventsTimeSpaceResult = new List<TimeSpaceEventBase>();
-            var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceEventBase>();
-            var advanceCountEventsTimeSpaceResult = new List<TimeSpaceEventBase>();
+            var greenTimeEventsResult = new List<DataPointWithDetectorCheckBase>();
+            var countEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
+            var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
+            var advanceCountEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, out List<GreenToGreenCycle> resultCycles);
             var pedIntervals = TimeSpaceService.GetPedestrianIntervals(phaseDetail.Approach, controllerEventLogs, options);
 
 
             if (isFirstElement)
             {
-                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit, distanceToNextLocation);
+                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit);
 
-                var countEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
-                countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options, distanceToNextLocation);
+                countEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
+                //countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options);
 
-                var stopBarPresenceEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.SBP);
-                stopBarPresenceEventsTimeSpaceResult = CalculateTimeSpaceResultForStopBar(stopBarPresenceEvents, options, distanceToNextLocation, resultCycles);
+                stopBarPresenceEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.SBP);
+                stopBarPresenceEventsTimeSpaceResult = CleanUpStopBarEvents(stopBarPresenceEventsTimeSpaceResult, options, resultCycles, phaseDetail.Approach);
+                //stopBarPresenceEventsTimeSpaceResult = CalculateTimeSpaceResultForStopBar(stopBarPresenceEvents, options, resultCycles);
             }
             else if (isLastElement)
             {
-                var advanceCountEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.AC);
-                advanceCountEventsTimeSpaceResult = CalculateTimeSpaceResultForAdvanceCount(advanceCountEvents, options, distanceToPreviousLocation);
+                advanceCountEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.AC);
+                //advanceCountEventsTimeSpaceResult = CalculateTimeSpaceResultForAdvanceCount(advanceCountEvents, options, distanceToPreviousLocation);
             }
             else
             {
-                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit, distanceToNextLocation);
+                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit);
 
-                var countEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
-                countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options, distanceToNextLocation);
+                countEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
+                //countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options);
 
-                var stopBarPresenceEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.SBP);
-                stopBarPresenceEventsTimeSpaceResult = CalculateTimeSpaceResultForStopBar(stopBarPresenceEvents, options, distanceToNextLocation, resultCycles);
+                stopBarPresenceEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.SBP);
+                stopBarPresenceEventsTimeSpaceResult = CleanUpStopBarEvents(stopBarPresenceEventsTimeSpaceResult, options, resultCycles, phaseDetail.Approach);
 
-                var advanceCountEvents = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.AC);
-                advanceCountEventsTimeSpaceResult = CalculateTimeSpaceResultForAdvanceCount(advanceCountEvents, options, distanceToPreviousLocation);
+                //stopBarPresenceEventsTimeSpaceResult = CalculateTimeSpaceResultForStopBar(stopBarPresenceEvents, options, resultCycles);
+
+                advanceCountEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.AC);
+                //advanceCountEventsTimeSpaceResult = CalculateTimeSpaceResultForAdvanceCount(advanceCountEvents, options, distanceToPreviousLocation);
             }
 
             var phaseNumberSort = TimeSpaceService.GetPhaseSort(phaseDetail);
@@ -97,7 +100,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 phaseDetail.PhaseNumber,
                 phaseNumberSort,
                 distanceToNextLocation,
+                distanceToPreviousLocation,
                 speedLimit,
+                programmedCycleLength,
                 cycleAllEvents,
                 pedIntervals,
                 countEventsTimeSpaceResult,
@@ -108,13 +113,13 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             return timeSpaceDiagramResult;
         }
 
-        private List<TimeSpaceEventBase> CalculateTimeSpaceResultForStopBar(
+        private List<TimeSpaceDetectorEventDto> CleanUpStopBarEvents(
             List<TimeSpaceDetectorEventDto> stopBarPresenceEvents,
             TimeSpaceDiagramOptions options,
-            double distanceToNextLocation,
-            List<GreenToGreenCycle> cycles)
+            List<GreenToGreenCycle> cycles,
+            Approach approach)
         {
-            List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
+            List<TimeSpaceDetectorEventDto> results = new List<TimeSpaceDetectorEventDto>();
 
             if (stopBarPresenceEvents == null || stopBarPresenceEvents.Count < 1)
             {
@@ -127,49 +132,139 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 {
                     continue;
                 }
-                double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
                 DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
                 DateTime currentDetectorOff = detectorEvent.DetectorOff.Value;
 
                 //Only add events that exist over the green time
-                GreenToGreenCycle isEventOnGreenTime = cycles.Find(c => currentDetectorOn >= c.StartTime && currentDetectorOn <= c.YellowEvent);
-                if (isEventOnGreenTime == null)
+                var cycle = cycles.FirstOrDefault(c =>
+                    currentDetectorOn >= c.StartTime &&
+                    currentDetectorOn <= c.YellowEvent);
+
+                if (cycle == null)
                 {
                     continue;
                 }
 
-                //If overlaps with yellow event, we want the result off to use yellow time
-                GreenToGreenCycle overlappingYellowEvent = cycles.Find(e => currentDetectorOn <= e.YellowEvent && currentDetectorOff > e.YellowEvent);
+                if (currentDetectorOff > cycle.YellowEvent)
+                {
+                    detectorEvent.DetectorOff = cycle.YellowEvent;
+                }
 
-                TimeSpaceService.GetArrivalTime(
-                    distanceToNextLocation,
-                    speedLimit,
-                    currentDetectorOn,
-                    out _,
-                    out DateTime arrivalTimeOn);
-
-                TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
-                    currentDetectorOn,
-                    arrivalTimeOn,
-                    true);
-
-                results.Add(resultOn);
-
-                TimeSpaceService.GetArrivalTime(
-                    distanceToNextLocation,
-                    speedLimit,
-                    overlappingYellowEvent == null ? currentDetectorOff : overlappingYellowEvent.YellowEvent,
-                    out _,
-                    out DateTime arrivalTimeOff);
-                TimeSpaceEventBase resultOff = new TimeSpaceEventBase(
-                    overlappingYellowEvent == null ? currentDetectorOff : overlappingYellowEvent.YellowEvent,
-                    arrivalTimeOff,
-                    false);
-                results.Add(resultOff);
+                results.Add(detectorEvent);
             }
 
-            return results;
+            return results.OrderBy(r => r.DetectorOn).ToList();
         }
+
+        //private List<TimeSpaceEventBase> CalculateTimeSpaceResultForStopBar(
+        //    List<TimeSpaceDetectorEventDto> stopBarPresenceEvents,
+        //    TimeSpaceDiagramOptions options,
+        //    double distanceToNextLocation,
+        //    List<GreenToGreenCycle> cycles)
+        //{
+        //    List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
+
+        //    if (stopBarPresenceEvents == null || stopBarPresenceEvents.Count < 1)
+        //    {
+        //        return results;
+        //    }
+
+        //    foreach (var detectorEvent in stopBarPresenceEvents)
+        //    {
+        //        if (detectorEvent.DetectorOn == null || detectorEvent.DetectorOff == null)
+        //        {
+        //            continue;
+        //        }
+        //        double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+        //        DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
+        //        DateTime currentDetectorOff = detectorEvent.DetectorOff.Value;
+
+        //        //Only add events that exist over the green time
+        //        GreenToGreenCycle isEventOnGreenTime = cycles.Find(c => currentDetectorOn >= c.StartTime && currentDetectorOn <= c.YellowEvent);
+        //        if (isEventOnGreenTime == null)
+        //        {
+        //            continue;
+        //        }
+
+        //        //If overlaps with yellow event, we want the result off to use yellow time
+        //        GreenToGreenCycle overlappingYellowEvent = cycles.Find(e => currentDetectorOn <= e.YellowEvent && currentDetectorOff > e.YellowEvent);
+
+        //        TimeSpaceService.GetArrivalTime(
+        //            distanceToNextLocation,
+        //            speedLimit,
+        //            currentDetectorOn,
+        //            out _,
+        //            out DateTime arrivalTimeOn);
+
+        //        TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
+        //            currentDetectorOn,
+        //            arrivalTimeOn,
+        //            true);
+
+        //        results.Add(resultOn);
+
+        //        TimeSpaceService.GetArrivalTime(
+        //            distanceToNextLocation,
+        //            speedLimit,
+        //            overlappingYellowEvent == null ? currentDetectorOff : overlappingYellowEvent.YellowEvent,
+        //            out _,
+        //            out DateTime arrivalTimeOff);
+        //        TimeSpaceEventBase resultOff = new TimeSpaceEventBase(
+        //            overlappingYellowEvent == null ? currentDetectorOff : overlappingYellowEvent.YellowEvent,
+        //            arrivalTimeOff,
+        //            false);
+        //        results.Add(resultOff);
+        //    }
+
+        //    return results;
+        //}
+
+        //private List<DataPointWithDetectorCheckBase> CalculateTimeSpaceResultForStopBar(
+        //    List<TimeSpaceDetectorEventDto> stopBarPresenceEvents,
+        //    TimeSpaceDiagramOptions options,
+        //    List<GreenToGreenCycle> cycles)
+        //{
+        //    List<DataPointWithDetectorCheckBase> results = new List<DataPointWithDetectorCheckBase>();
+
+        //    if (stopBarPresenceEvents == null || stopBarPresenceEvents.Count < 1)
+        //    {
+        //        return results;
+        //    }
+
+        //    foreach (var detectorEvent in stopBarPresenceEvents)
+        //    {
+        //        if (detectorEvent.DetectorOn == null || detectorEvent.DetectorOff == null)
+        //        {
+        //            continue;
+        //        }
+        //        double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+        //        DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
+        //        DateTime currentDetectorOff = detectorEvent.DetectorOff.Value;
+
+        //        //Only add events that exist over the green time
+        //        GreenToGreenCycle isEventOnGreenTime = cycles.Find(c => currentDetectorOn >= c.StartTime && currentDetectorOn <= c.YellowEvent);
+        //        if (isEventOnGreenTime == null)
+        //        {
+        //            continue;
+        //        }
+
+        //        //If overlaps with yellow event, we want the result off to use yellow time
+        //        GreenToGreenCycle overlappingYellowEvent = cycles.Find(e => currentDetectorOn <= e.YellowEvent && currentDetectorOff > e.YellowEvent);
+
+        //        DataPointWithDetectorCheckBase resultOn = new DataPointWithDetectorCheckBase(
+        //            currentDetectorOn,
+        //            true);
+
+        //        results.Add(resultOn);
+
+        //        DataPointWithDetectorCheckBase resultOff = new DataPointWithDetectorCheckBase(
+        //            overlappingYellowEvent == null ? currentDetectorOff : overlappingYellowEvent.YellowEvent,
+        //            false);
+        //        results.Add(resultOff);
+        //    }
+
+        //    return results;
+        //}
 
         //private List<TimeSpaceEventBase> GetGreenTimeEvents(PhaseDetail phaseDetail,
         //    List<CycleEventsDto> cycleEvents,
@@ -196,73 +291,153 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         //    return greenTimeEvents;
         //}
 
-        private List<TimeSpaceEventBase> CalculateTimeSpaceResult(
-            List<TimeSpaceDetectorEventDto> events,
-            TimeSpaceDiagramOptions options,
-            double distanceToNextLocation)
-        {
-            List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
+        //private List<TimeSpaceEventBase> CalculateTimeSpaceResult(
+        //    List<TimeSpaceDetectorEventDto> events,
+        //    TimeSpaceDiagramOptions options,
+        //    double distanceToNextLocation)
+        //{
+        //    List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
 
-            if (events == null || events.Count < 1)
-            {
-                return results;
-            }
+        //    if (events == null || events.Count < 1)
+        //    {
+        //        return results;
+        //    }
 
-            foreach (var detectorEvent in events)
-            {
-                if (detectorEvent.DetectorOn == null)
-                {
-                    continue;
-                }
-                double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
-                DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
-                TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, detectorEvent.DetectorOn.Value, out _, out DateTime arrivalTimeOn);
+        //    foreach (var detectorEvent in events)
+        //    {
+        //        if (detectorEvent.DetectorOn == null)
+        //        {
+        //            continue;
+        //        }
+        //        double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+        //        DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
+        //        TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, detectorEvent.DetectorOn.Value, out _, out DateTime arrivalTimeOn);
 
-                TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
-                    currentDetectorOn,
-                    arrivalTimeOn,
-                    null);
+        //        TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
+        //            currentDetectorOn,
+        //            arrivalTimeOn,
+        //            null);
 
-                results.Add(resultOn);
-            }
+        //        results.Add(resultOn);
+        //    }
 
-            return results;
-        }
+        //    return results;
+        //}
 
-        private static double GetSpeedInFeetPerSecond(double speedLimit)
-        {
-            return speedLimit * FeetPerMile / SecondsInHour;
-        }
+        //private List<DataPointWithDetectorCheckBase> CalculateTimeSpaceResult(
+        //    List<TimeSpaceDetectorEventDto> events,
+        //    TimeSpaceDiagramOptions options)
+        //{
+        //    List<DataPointWithDetectorCheckBase> results = new List<DataPointWithDetectorCheckBase>();
 
-        private List<TimeSpaceEventBase> CalculateTimeSpaceResultForAdvanceCount(
-            List<TimeSpaceDetectorEventDto> events,
-            TimeSpaceDiagramOptions options,
-            double distanceToNextLocation
-            )
-        {
-            List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
+        //    if (events == null || events.Count < 1)
+        //    {
+        //        return results;
+        //    }
 
-            if (events == null || events.Count < 1)
-            {
-                return results;
-            }
+        //    foreach (var detectorEvent in events)
+        //    {
+        //        if (detectorEvent.DetectorOn == null)
+        //        {
+        //            continue;
+        //        }
+        //        double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+        //        DateTime currentDetectorOn = detectorEvent.DetectorOn.Value;
+
+        //        DataPointWithDetectorCheckBase resultOn = new DataPointWithDetectorCheckBase(
+        //            currentDetectorOn,
+        //            null);
+
+        //        results.Add(resultOn);
+        //    }
+        //private List<TimeSpaceEventBase> GetGreenTimeEvents(PhaseDetail phaseDetail,
+        //    List<CycleEventsDto> cycleEvents,
+        //    TimeSpaceDiagramOptions options,
+        //    double distanceToNextLocation,
+        //    int speedLimit)
+        //{
+        //    List<int> cycleGreenStartEndCodes = new List<int>() { 1, 8 };
+        //    var events = new List<CycleEventsDto>();
+        //    var greenTimeEvents = new List<TimeSpaceEventBase>();
+        //    var tempEvents = cycleEvents.Where(c => cycleGreenStartEndCodes.Contains(c.Value)).ToList();
+
+        //    foreach (var gEvent in tempEvents)
+        //    {
+        //        double speed = options.SpeedLimit ?? speedLimit;
+        //        DateTime start = gEvent.Start;
+        //        TimeSpaceService.GetArrivalTime(distanceToNextLocation, speedLimit, start, out _, out DateTime arrivalTime);
+        //        TimeSpaceEventBase resultOn = new TimeSpaceEventBase(
+        //            start,
+        //            arrivalTime,
+        //            gEvent.Value == 1 ? true : false);
+        //        greenTimeEvents.Add(resultOn);
+        //    }
+        //    return greenTimeEvents;
+        //}
+
+        //private static double GetSpeedInFeetPerSecond(double speedLimit)
+        //{
+        //    return speedLimit * FeetPerMile / SecondsInHour;
+        //}
+
+        //    private List<TimeSpaceEventBase> CalculateTimeSpaceResultForAdvanceCount(
+        //        List<TimeSpaceDetectorEventDto> events,
+        //        TimeSpaceDiagramOptions options,
+        //        double distanceToNextLocation
+        //        )
+        //    {
+        //        List<TimeSpaceEventBase> results = new List<TimeSpaceEventBase>();
+
+        //        if (events == null || events.Count < 1)
+        //        {
+        //            return results;
+        //        }
 
 
-            foreach (var detectorEvent in events)
-            {
-                if (detectorEvent.DetectorOn == null)
-                {
-                    continue;
-                }
-                double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+        //        foreach (var detectorEvent in events)
+        //        {
+        //            if (detectorEvent.DetectorOn == null)
+        //            {
+        //                continue;
+        //            }
+        //            double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
 
-                TimeSpaceService.GetArrivalTime(detectorEvent.DistanceToStopBar, speedLimit, detectorEvent.DetectorOn.Value, out double speedInFeetPerSecond, out DateTime arrivalTime);
+        //            TimeSpaceService.GetArrivalTime(detectorEvent.DistanceToStopBar, speedLimit, detectorEvent.DetectorOn.Value, out double speedInFeetPerSecond, out DateTime arrivalTime);
 
-                results.Add(new TimeSpaceEventBase(arrivalTime.AddSeconds(-distanceToNextLocation / speedInFeetPerSecond), arrivalTime, null));
-            }
+        //            results.Add(new TimeSpaceEventBase(arrivalTime.AddSeconds(-distanceToNextLocation / speedInFeetPerSecond), arrivalTime, null));
+        //        }
 
-            return results;
-        }
+        //        return results;
+        //    }
+
+        //    private List<DataPointWithDetectorCheckBase> CalculateTimeSpaceResultForAdvanceCount(
+        //        List<TimeSpaceDetectorEventDto> events,
+        //        TimeSpaceDiagramOptions options
+        //)
+        //    {
+        //        List<DataPointWithDetectorCheckBase> results = new List<DataPointWithDetectorCheckBase>();
+
+        //        if (events == null || events.Count < 1)
+        //        {
+        //            return results;
+        //        }
+
+
+        //        foreach (var detectorEvent in events)
+        //        {
+        //            if (detectorEvent.DetectorOn == null)
+        //            {
+        //                continue;
+        //            }
+        //            double speedLimit = options.SpeedLimit ?? detectorEvent.SpeedLimit;
+
+        //            TimeSpaceService.GetArrivalTime(detectorEvent.DistanceToStopBar, speedLimit, detectorEvent.DetectorOn.Value, out double speedInFeetPerSecond, out DateTime arrivalTime);
+
+        //            results.Add(new TimeSpaceEventBase(arrivalTime.AddSeconds(-distanceToNextLocation / speedInFeetPerSecond), arrivalTime, null));
+        //        }
+
+        //        return results;
+        //    }
 
         //private static void GetArrivalTime(double distanceToDetector, double speedLimit, DateTime InitialTime, out double speedInFeetPerSecond, out DateTime arrivalTime)
         //{
@@ -324,6 +499,16 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                     }
                     return result;
                 });
+                if (phaseDetail.UseOverlap)
+                {
+                    bool has64 = tempEvents.Any(e => e.EventCode == 64);
+                    if (has64)
+                    {
+                        tempEvents = tempEvents
+                            .Where(e => e.EventCode != 65)
+                            .ToList();
+                    }
+                }
                 cycles = _cycleService.GetGreenToGreenCycles(options.Start.AddMinutes(-2), options.End.AddMinutes(2), tempEvents).ToList();
 
                 for (int i = 0; i < cycles.Count; i++)
@@ -379,21 +564,21 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                             {
                                 detectorEvents.Add(new TimeSpaceDetectorEventDto(filteredEvents[i].Timestamp,
                                    filteredEvents[i].Timestamp,
-                                   approach.Mph ?? 0,
+                                   //approach.Mph ?? 0,
                                    detector.DistanceFromStopBar ?? 0));
                             }
                             else if (i + 1 == filteredEvents.Count && filteredEvents[i].EventCode != 81)
                             {
                                 detectorEvents.Add(new TimeSpaceDetectorEventDto(filteredEvents[i].Timestamp,
                                     filteredEvents[i].Timestamp,
-                                    approach.Mph ?? 0,
+                                    //approach.Mph ?? 0,
                                     detector.DistanceFromStopBar ?? 0));
                             }
                             else if (filteredEvents[i].EventCode == 82 && filteredEvents[i + 1].EventCode == 81)
                             {
                                 detectorEvents.Add(new TimeSpaceDetectorEventDto(filteredEvents[i].Timestamp,
                                     filteredEvents[i + 1].Timestamp,
-                                    approach.Mph ?? 0,
+                                    //approach.Mph ?? 0,
                                     detector.DistanceFromStopBar ?? 0));
                             }
                         }

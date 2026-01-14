@@ -17,6 +17,7 @@
 
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.Business.AppoachDelay;
 using Utah.Udot.Atspm.Business.ApproachSpeed;
 using Utah.Udot.Atspm.Business.ApproachVolume;
@@ -30,6 +31,8 @@ using Utah.Udot.Atspm.Business.PhaseTermination;
 using Utah.Udot.Atspm.Business.PreempDetail;
 using Utah.Udot.Atspm.Business.PreemptService;
 using Utah.Udot.Atspm.Business.PreemptServiceRequest;
+using Utah.Udot.Atspm.Business.PriorityDetails;
+using Utah.Udot.Atspm.Business.PrioritySummary;
 using Utah.Udot.Atspm.Business.PurdueCoordinationDiagram;
 using Utah.Udot.Atspm.Business.RampMetering;
 using Utah.Udot.Atspm.Business.SplitFail;
@@ -59,7 +62,10 @@ builder.Host
             o.ReturnHttpNotAcceptable = true;
             o.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status406NotAcceptable));
             o.Filters.Add(new ProducesAttribute("application/json"));
-        });
+        }).AddJsonOptions(o =>
+         {
+             o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+         });
         s.AddProblemDetails();
         s.AddConfiguredCompression(new[] { "application/json", "application/xml", "text/csv", "application/x-ndjson" });
         s.AddConfiguredSwagger(builder.Configuration, o =>
@@ -72,6 +78,15 @@ builder.Host
 
         });
         s.AddConfiguredCors(builder.Configuration);
+        s.AddCors(options =>
+        {
+            options.AddPolicy("Default", policy =>
+                policy
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+            );
+        });
         s.AddHttpLogging(l =>
         {
             l.LoggingFields = HttpLoggingFields.All;
@@ -108,6 +123,8 @@ builder.Host
         s.AddScoped<IReportService<PreemptDetailOptions, PreemptDetailResult>, PreemptDetailReportService>();
         s.AddScoped<IReportService<PreemptServiceOptions, PreemptServiceResult>, PreemptServiceReportService>();
         s.AddScoped<IReportService<PreemptServiceRequestOptions, PreemptServiceRequestResult>, PreemptRequestReportService>();
+        s.AddScoped<IReportService<PrioritySummaryOptions, PrioritySummaryResult>, PrioritySummaryReportService>();
+        s.AddScoped<IReportService<PriorityDetailsOptions, IEnumerable<PriorityDetailsResult>>, PriorityDetailsReportService>();
         s.AddScoped<IReportService<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>>, PurdueCoordinationDiagramReportService>();
         s.AddScoped<IReportService<PurduePhaseTerminationOptions, PhaseTerminationResult>, PurduePhaseTerminationReportService>();
         s.AddScoped<IReportService<RampMeteringOptions, RampMeteringResult>, RampMeteringReportService>();
@@ -143,6 +160,8 @@ builder.Host
         s.AddScoped<LeftTurnPeakHourService>();
         s.AddScoped<PreemptServiceService>();
         s.AddScoped<PreemptServiceRequestService>();
+        s.AddScoped<PrioritySummaryService>();
+        s.AddScoped<PriorityDetailsService>();
         s.AddScoped<PurdueCoordinationDiagramService>();
         s.AddScoped<SplitFailPhaseService>();
         s.AddScoped<SplitMonitorService>();
@@ -189,6 +208,7 @@ builder.Host
         s.AddScoped<LinkPivotPcdService>();
         s.AddScoped<WatchDogIgnoreEventService>();
         s.AddScoped<RampMeteringService>();
+        s.AddScoped<DetectionService>();
 
         s.AddPathBaseFilter(h);
 
@@ -213,7 +233,7 @@ else
 
 //Security
 app.UseHttpsRedirection();
-//app.UseCors("Default");
+app.UseCors("Default");
 app.UseAuthentication();
 app.UseAuthorization();
 

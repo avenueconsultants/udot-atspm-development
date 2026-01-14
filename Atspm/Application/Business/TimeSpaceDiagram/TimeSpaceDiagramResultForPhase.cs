@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
@@ -30,7 +29,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int phaseNumber,
             string phaseNumberSort,
             double distanceToNextLocation,
+            double distanceToPreviousLocation,
             int speed,
+            int programmedCycleLength,
             List<CycleEventsDto> cycleAllEvents,
             List<CycleEventsDto> pedIntervals,
             List<TimeSpaceEventBase> laneByLaneCountDetectors,
@@ -41,7 +42,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
             DistanceToNextLocation = distanceToNextLocation;
+            DistanceToPreviousLocation = distanceToPreviousLocation;
             Speed = speed;
+            CycleLength = programmedCycleLength;
             CycleAllEvents = cycleAllEvents;
             PedestrianIntervals = pedIntervals;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
@@ -55,6 +58,10 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseType { get; set; }
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
+        public double DistanceToPreviousLocation { get; set; }
+        public double PercentArrivalOnGreen { get; set; }
+        public int Order { get; set; }
+        public int CycleLength { get; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<CycleEventsDto> PedestrianIntervals { get; set; }
         public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
