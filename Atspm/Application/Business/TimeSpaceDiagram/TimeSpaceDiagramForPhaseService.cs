@@ -27,7 +27,17 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         //private static readonly double FeetPerMile = 5280;
         //private static readonly double SecondsInHour = 3600;
         private readonly CycleService _cycleService;
-
+        private readonly Dictionary<int, short> phaseToProgramPhases = new Dictionary<int, short>()
+        {
+            { 1, 134 },
+            { 2, 135 },
+            { 3, 136 },
+            { 4, 137 },
+            { 5, 138 },
+            { 6, 139 },
+            { 7, 140 },
+            { 8, 141},
+        };
         public TimeSpaceDiagramForPhaseService(CycleService cycleService)
         {
             _cycleService = cycleService;
@@ -38,6 +48,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
            PhaseDetail phaseDetail,
            List<IndianaEvent> controllerEventLogs,
            int programmedCycleLength,
+           List<IndianaEvent> programmedSplits,
            double distanceToNextLocation,
            double distanceToPreviousLocation,
            bool isFirstElement,
@@ -51,11 +62,22 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 throw new Exception($"Speed not configured in route for all phases");
             }
 
+            int? programmedSplit = null;
+
+            if (programmedSplits != null &&
+                phaseToProgramPhases.TryGetValue(phaseDetail.PhaseNumber, out var expectedEventCode))
+            {
+                programmedSplit = programmedSplits
+                    .Where(s => s.EventCode == expectedEventCode)
+                    .Select(s => (int?)s.EventParam)
+                    .FirstOrDefault();
+            }
+
             var greenTimeEventsResult = new List<DataPointWithDetectorCheckBase>();
             var countEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var advanceCountEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
-            var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, out List<GreenToGreenCycle> resultCycles);
+            var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, programmedSplit, out List<GreenToGreenCycle> resultCycles);
             var pedIntervals = TimeSpaceService.GetPedestrianIntervals(phaseDetail.Approach, controllerEventLogs, options);
 
 
@@ -476,6 +498,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             PhaseDetail phaseDetail,
             List<IndianaEvent> controllerEventLogs,
             TimeSpaceDiagramOptions options,
+            int? programmedSplit,
             out List<GreenToGreenCycle> cycles)
         {
 
@@ -514,8 +537,20 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 for (int i = 0; i < cycles.Count; i++)
                 {
                     var cycle = cycles[i];
-
                     events.Add(new CycleEventsDto(cycle.StartTime, 1));
+
+                    if (programmedSplit.HasValue)
+                    {
+                        var remainingTime =
+                            (cycle.TotalGreenTime + cycle.TotalYellowTime) - programmedSplit.Value;
+
+                        if (remainingTime > 0)
+                        {
+                            events.Add(new CycleEventsDto(
+                                cycle.StartTime.AddSeconds(remainingTime), 3));
+                        }
+                    }
+
                     events.Add(new CycleEventsDto(cycle.YellowEvent, 8));
                     events.Add(new CycleEventsDto(cycle.RedEvent, 9));
                 }

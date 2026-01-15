@@ -78,6 +78,8 @@ export function generateCycles(
 }
 
 function getSegmentColor(from: number, to: number): string {
+  if (from === 1 && to === 3) return 'lightgreen'
+  if (from === 3 && to === 8) return 'green'
   if (from === 1 && to === 8) return 'green'
   if (from === 8 && to === 9) return 'yellow'
   if (from === 9 && to === 1) return 'red'

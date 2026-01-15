@@ -145,6 +145,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const colorMap: Map<number, string> = new Map([
     [1, 'lightgreen'],
+    [3, 'green'],
     [8, 'yellow'],
     [9, 'red'],
   ])
