@@ -63,6 +63,7 @@ const abbreviationToChartType = {
   LTGA: ChartType.LeftTurnGapAnalysis,
   PedD: ChartType.PedestrianDelay,
   PCD: ChartType.PurdueCoordinationDiagram,
+  TSPS: ChartType.PrioritySummary,
   PD: ChartType.PreemptionDetails,
   PPT: ChartType.PurduePhaseTermination,
   SF: ChartType.PurdueSplitFailure,
@@ -151,9 +152,6 @@ const SelectChart = ({
       },
       {} as Record<ChartType, React.ComponentType<any>>
     )
-
-    // just show priority summary
-    unsortedCharts[ChartType.PrioritySummary] = PrioritySummaryChartOptions // TODO: remove when ready
 
     const sortedKeys = Object.keys(unsortedCharts).sort((a, b) =>
       a.localeCompare(b)
