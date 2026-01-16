@@ -15,7 +15,12 @@
 // limitations under the License.
 // #endregion
 
-import { PriorityDetailsResult } from '@/api/reports'
+import {
+  DetectorEventBase,
+  DetectorEventDto,
+  IndianaEvent,
+  PriorityDetailsResult,
+} from '@/api/reports'
 import {
   createDisplayProps,
   createGrid,
@@ -31,7 +36,12 @@ import {
 import { ChartType } from '@/features/charts/common/types'
 import { buildPriorityOverlay } from '@/features/charts/prioritySummary/priorityDetails.priorityOverlay'
 import { TransformedChartResponse } from '@/features/charts/types'
-import { Color, formatChartDateTimeRange } from '@/features/charts/utils'
+import {
+  Color,
+  formatChartDateTimeRange,
+  hLineSvgSymbol,
+  triangleSvgSymbol,
+} from '@/features/charts/utils'
 import {
   CustomSeriesRenderItemAPI,
   CustomSeriesRenderItemParams,
@@ -46,7 +56,11 @@ type CycleIndication = {
   color: string
 }
 
-// Single source of truth for cycle legend labels + colors + event codes
+const TSP_CODES = {
+  EarlyGreen: 113,
+  ExtendGreen: 114,
+} as const
+
 const CYCLE_INDICATIONS = [
   {
     name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
@@ -123,6 +137,8 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const xAxis = {
     type: 'time',
     show: false,
+    min: chartStartIso,
+    max: chartEndIso,
   }
 
   const xAxisBottom = createXAxis(chartStartIso, chartEndIso)
@@ -212,6 +228,8 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   })
   series.push(...prioritySeries)
   series.push(...buildCycleTimelineSeries(rows, categories))
+  series.push(...buildCycleEventMarkersOnCyclesSeries(rows, categories))
+  series.push(...buildDetectorOnOffOnCyclesSeries(rows, categories))
 
   const legend = createLegend({
     top: gridTop.top,
@@ -221,6 +239,10 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
         name: x.name,
         itemStyle: { color: x.color },
       })),
+      {
+        name: 'Detection Event',
+        icon: 'image:///DetectionEvent.svg',
+      },
     ],
   })
 
@@ -228,7 +250,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     description: 'Priority Details',
   })
 
-  return {
+  const chartOptions: EChartsOption = {
     title,
     grid: [gridTop, gridBottom],
     xAxis: [
@@ -247,6 +269,8 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     series,
     displayProps,
   }
+
+  return chartOptions
 }
 
 function buildRowCategories(rows: PriorityDetailsResult[]): string[] {
@@ -349,7 +373,7 @@ function buildCycleTimelineSeries(
   return CYCLE_INDICATIONS.map((ind) => {
     const name = ind.name as IndicationName
     return {
-      name, // MUST match legend item name
+      name,
       type: 'custom',
       xAxisIndex: 1,
       yAxisIndex: 1,
@@ -357,7 +381,6 @@ function buildCycleTimelineSeries(
       tooltip: { show: false },
       encode: { x: [1, 2], y: 0 },
       data: buckets.get(name) ?? [],
-      // This is what makes the legend swatch show the correct color
       itemStyle: { color: ind.color },
       z: 1,
     } as SeriesOption
@@ -397,4 +420,227 @@ function renderCycleRect(
       style: api.style(),
     }
   )
+}
+
+function buildCycleEventMarkersOnCyclesSeries(
+  rows: PriorityDetailsResult[],
+  categories: string[]
+): SeriesOption[] {
+  const indexByCategory = new Map<string, number>()
+  categories.forEach((c, i) => indexByCategory.set(c, i))
+
+  const earlyGreens: Array<[string, number]> = []
+  const extendGreens: Array<[string, number]> = []
+
+  // Dedupe (same event can appear on multiple rows depending on payload shape)
+  const seen = new Set<string>()
+
+  for (const row of rows ?? []) {
+    const rowIndex = indexByCategory.get(categoryOfRow(row))
+    if (rowIndex == null) continue
+
+    const tspEvents = (row.tspEvents ?? []) as IndianaEvent[]
+    if (!tspEvents.length) continue
+
+    for (const e of tspEvents) {
+      if (
+        e.eventCode !== TSP_CODES.EarlyGreen &&
+        e.eventCode !== TSP_CODES.ExtendGreen
+      ) {
+        continue
+      }
+
+      const tMs = Date.parse(e.timestamp)
+      if (!Number.isFinite(tMs)) continue
+
+      if (tMs < Date.parse(row.start) || tMs > Date.parse(row.end)) continue
+
+      const k = `${e.eventCode}|${rowIndex}|${e.timestamp}`
+      if (seen.has(k)) continue
+      seen.add(k)
+
+      if (e.eventCode === TSP_CODES.EarlyGreen)
+        earlyGreens.push([e.timestamp, rowIndex])
+      else extendGreens.push([e.timestamp, rowIndex])
+    }
+  }
+
+  const common = {
+    type: 'scatter' as const,
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    symbolSize: 9,
+    itemStyle: { color: Color.Black },
+    z: 6,
+    tooltip: {
+      show: true,
+      formatter: (p: any) => {
+        const t = p?.value?.[0]
+        const phase = categories[p?.value?.[1]] ?? ''
+        return `${p.seriesName}<br/>${phase}<br/>${t ?? ''}`
+      },
+    },
+  }
+
+  const out: SeriesOption[] = []
+
+  if (earlyGreens.length) {
+    out.push({
+      ...common,
+      name: 'Early Green (113)',
+      symbol: 'circle',
+      data: earlyGreens,
+    })
+  }
+
+  if (extendGreens.length) {
+    out.push({
+      ...common,
+      name: 'Extend Green (114)',
+      symbol: triangleSvgSymbol,
+      data: extendGreens,
+    })
+  }
+
+  return out
+}
+
+type BasicDetectors = {
+  name: string
+  events: DetectorEventBase[]
+}
+
+function buildDetectorOnOffOnCyclesSeries(
+  rows: PriorityDetailsResult[],
+  categories: string[]
+): SeriesOption[] {
+  const indexByCategory = new Map<string, number>()
+  categories.forEach((c, i) => indexByCategory.set(c, i))
+
+  type seriesDataPoint = {
+    value: [string, number]
+    detectorName: string | undefined | null
+    on: string | null
+    off: string | null | undefined
+  }
+
+  const onSeriesData: seriesDataPoint[] = []
+  const offSeriesData: seriesDataPoint[] = []
+  const lineSeriesData: seriesDataPoint[][] = []
+
+  for (const row of rows ?? []) {
+    const rowLabel = categoryOfRow(row)
+    const rowIndex = indexByCategory.get(rowLabel)
+    if (rowIndex == null) continue
+
+    const detectors = row.priorityAndPreemptionEvents as
+      | DetectorEventDto[]
+      | undefined
+    if (!detectors?.length) continue
+
+    const basic = detectors.map((d) => ({
+      name: d.name,
+      events: d.events,
+    }))
+
+    basic.forEach((detector) => {
+      detector?.events?.forEach((event) => {
+        if (!event.detectorOn) return
+
+        onSeriesData.push({
+          value: [event.detectorOn, rowIndex],
+          detectorName: detector.name,
+          on: event.detectorOn,
+          off: event.detectorOff,
+        })
+
+        if (!event.detectorOff) return
+
+        offSeriesData.push({
+          value: [event.detectorOff, rowIndex],
+          detectorName: detector.name,
+          on: event.detectorOn,
+          off: event.detectorOff,
+        })
+
+        // Only connect when both exist
+        if (event.detectorOn && event.detectorOff) {
+          lineSeriesData.push([
+            {
+              coord: [event.detectorOn, rowIndex],
+              detectorName: detector.name,
+              on: event.detectorOn,
+              off: event.detectorOff,
+            },
+            {
+              coord: [event.detectorOff, rowIndex],
+              detectorName: detector.name,
+              on: event.detectorOn,
+              off: event.detectorOff,
+            },
+          ])
+        }
+      })
+    })
+  }
+
+  const formatTooltip = (p: any) => {
+    const d = p?.data
+    if (!d) return ''
+    const phase = categories[d.value?.[1]] ?? ''
+    return [
+      `<b>${d.detectorName}</b>`,
+      phase,
+      `On: ${d.on ?? ''}`,
+      `Off: ${d.off ?? ''}`,
+    ].join('<br/>')
+  }
+
+  const seriesName = 'Detection Event'
+
+  return [
+    {
+      name: seriesName,
+      type: 'scatter',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      tooltip: { confine: true, formatter: formatTooltip },
+      large: true,
+      symbol: 'circle',
+      symbolSize: 6,
+      symbolOffset: [0, 0.5],
+      itemStyle: { color: 'black' },
+      z: 8,
+      data: onSeriesData,
+    },
+    {
+      name: seriesName,
+      type: 'scatter',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      large: true,
+      tooltip: { confine: true, formatter: formatTooltip },
+      symbol: hLineSvgSymbol,
+      symbolSize: [2, 8],
+      symbolOffset: [0, 0.5],
+      itemStyle: { color: Color.Black },
+      z: 8,
+      data: offSeriesData,
+    },
+    {
+      name: seriesName,
+      type: 'lines',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      large: true,
+      coordinateSystem: 'cartesian2d',
+      lineStyle: {
+        color: 'black',
+        width: 2,
+      },
+      z: 7,
+      tooltip: {},
+      data: lineSeriesData,
+    },
+  ]
 }
