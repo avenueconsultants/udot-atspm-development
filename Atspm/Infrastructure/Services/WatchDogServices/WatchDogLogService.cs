@@ -62,21 +62,71 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     {
                         return errors.ToList();
                     }
-                    var locationEvents = controllerEventLogRepository.GetEventsBetweenDates(
-                        Location.LocationIdentifier,
-                        options.AnalysisStart,
-                        options.AnalysisEnd.AddHours(12)).ToList();
-                    var recordsError = await CheckLocationRecordCount(options.ScanDate, Location, options, locationEvents);
-                    if (recordsError != null)
+                    List<IndianaEvent> locationEvents = new List<IndianaEvent>();
+
+                    if (options.OnlyRampEmail)
                     {
-                        errors.Add(recordsError);
-                        continue;
+                        var RampMainLineLastRun = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.RampMainLineLastRunStart,
+                                options.RampMainLineLastRunEnd)
+                            .ToList();
+                        locationEvents.AddRange(RampMainLineLastRun);
+
+                        CheckRampMissedDetectorHits(Location, options, locationEvents, errors);
                     }
-                    var tasks = new List<Task>();
-                    tasks.Add(CheckLocationForPhaseErrors(Location, options, locationEvents, errors));
-                    tasks.Add(CheckDetectors(Location, options, locationEvents, errors));
-                    //CheckApplicationEvents(locations, options);
-                    await Task.WhenAll(tasks);
+                    else
+                    {
+                        var AmAnalysis = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.AmAnalysisStart,
+                                options.AmAnalysisEnd)
+                            .ToList();
+                        var PmAnalysis = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.PmAnalysisStart,
+                                options.PmAnalysisEnd)
+                            .ToList();
+                        var RampDetector = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.RampDetectorStart,
+                                options.RampDetectorEnd)
+                            .ToList();
+                        var RampMainline = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.PmScanDate.Date + new TimeSpan(options.RampMainlineStartHour, 0, 0),
+                                options.PmScanDate.Date + new TimeSpan(options.RampMainlineEndHour, 0, 0))
+                            .ToList();
+                        var RampStuckQueue = controllerEventLogRepository
+                            .GetEventsBetweenDates(
+                                Location.LocationIdentifier,
+                                options.PmScanDate.Date + new TimeSpan(options.RampStuckQueueStartHour, 0, 0),
+                                options.PmScanDate.Date + new TimeSpan(options.RampStuckQueueEndHour, 0, 0))
+                            .ToList();
+
+                        locationEvents.AddRange(AmAnalysis);
+                        locationEvents.AddRange(PmAnalysis);
+                        locationEvents.AddRange(RampDetector);
+                        locationEvents.AddRange(RampMainline);
+                        locationEvents.AddRange(RampStuckQueue);
+
+                        var recordsError = await CheckLocationRecordCount(options.AmScanDate, Location, options, locationEvents);
+                        if (recordsError != null)
+                        {
+                            errors.Add(recordsError);
+                            continue;
+                        }
+                        var tasks = new List<Task>();
+                        tasks.Add(CheckLocationForPhaseErrors(Location, options, locationEvents, errors));
+                        tasks.Add(CheckDetectors(Location, options, locationEvents, errors));
+                        //CheckApplicationEvents(locations, options);
+                        await Task.WhenAll(tasks);
+                    }
                 }
                 return errors.ToList();
             }
@@ -133,7 +183,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     var error = new WatchDogLogEvent(
                         location.Id,
                         location.LocationIdentifier,
-                        options.ScanDate,
+                        options.AmScanDate,
                         componentType,
                         location.Id,
                         issueType,
@@ -152,7 +202,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
         private (DateTime start, DateTime end) CalculateStartAndEndTime(WatchdogLoggingOptions options, int startHour, int endHour)
         {
-            var scanDate = options.ScanDate;
+            var scanDate = options.AmScanDate;
             var start = scanDate.Date.AddHours(startHour);
             var end = scanDate.Date.AddHours(endHour);
 
@@ -176,38 +226,52 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             List<IndianaEvent> LocationEvents,
             ConcurrentBag<WatchDogLogEvent> errors)
         {
-            var planEvents = LocationEvents.GetPlanEvents(
-            options.AnalysisStart,
-            options.AnalysisEnd).ToList();
-            //Do we want to use the ped events extension here?
-            var pedEvents = LocationEvents.Where(e =>
-                new List<short>
-                {
-                    21,
-                    23
-                }.Contains(e.EventCode)
-                && e.Timestamp >= options.AnalysisStart
-                && e.Timestamp <= options.AnalysisEnd).ToList();
-
-            var cycleEvents = LocationEvents.Where(e =>
+            var pmCycleEvents = LocationEvents.Where(e =>
                 new List<short>
                 {
                     1,
                     8,
                     11
                 }.Contains(e.EventCode)
-                && e.Timestamp >= options.AnalysisStart
-                && e.Timestamp <= options.AnalysisEnd).ToList();
+                && e.Timestamp >= options.PmAnalysisStart
+                && e.Timestamp <= options.PmAnalysisEnd).ToList();
+
+            CheckForUnconfiguredApproaches(Location, options, errors, pmCycleEvents);
+
+            //From now on all the things could be same day aka we use the Am
+
+            var amPlanEvents = LocationEvents.GetPlanEvents(
+            options.AmAnalysisStart,
+            options.AmAnalysisEnd).ToList();
+            //Do we want to use the ped events extension here?
+            var amPedEvents = LocationEvents.Where(e =>
+                new List<short>
+                {
+                    21,
+                    23
+                }.Contains(e.EventCode)
+                && e.Timestamp >= options.AmAnalysisStart
+                && e.Timestamp <= options.AmAnalysisEnd).ToList();
+
+            var amCycleEvents = LocationEvents.Where(e =>
+                new List<short>
+                {
+                    1,
+                    8,
+                    11
+                }.Contains(e.EventCode)
+                && e.Timestamp >= options.AmAnalysisStart
+                && e.Timestamp <= options.AmAnalysisEnd).ToList();
 
             var splitsEventCodes = new List<short>();
             for (short i = 130; i <= 149; i++)
                 splitsEventCodes.Add(i);
-            var splitsEvents = LocationEvents.Where(e =>
+            var amSplitsEvents = LocationEvents.Where(e =>
                 splitsEventCodes.Contains(e.EventCode)
-                && e.Timestamp >= options.AnalysisStart
-                && e.Timestamp <= options.AnalysisEnd).ToList();
+                && e.Timestamp >= options.AmAnalysisStart
+                && e.Timestamp <= options.AmAnalysisEnd).ToList();
 
-            var terminationEvents = LocationEvents.Where(e =>
+            var amTerminationEvents = LocationEvents.Where(e =>
             new List<short>
             {
                 4,
@@ -215,25 +279,25 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 6,
                 7
             }.Contains(e.EventCode)
-            && e.Timestamp >= options.AnalysisStart
-            && e.Timestamp <= options.AnalysisEnd).ToList();
+            && e.Timestamp >= options.AmAnalysisStart
+            && e.Timestamp <= options.AmAnalysisEnd).ToList();
 
             LocationEvents = null;
 
-            CheckForUnconfiguredApproaches(Location, options, errors, cycleEvents);
 
             AnalysisPhaseCollectionData analysisPhaseCollection = null;
             try
             {
+                //Since this is used for the am calculations we need to use that :)
                 analysisPhaseCollection = analysisPhaseCollectionService.GetAnalysisPhaseCollectionData(
                     Location.LocationIdentifier,
-                    options.AnalysisStart,
-                    options.AnalysisEnd,
-                    planEvents,
-                    cycleEvents,
-                    splitsEvents,
-                    pedEvents,
-                    terminationEvents,
+                    options.AmAnalysisStart,
+                    options.AmAnalysisEnd,
+                    amPlanEvents,
+                    amCycleEvents,
+                    amSplitsEvents,
+                    amPedEvents,
+                    amTerminationEvents,
                     Location,
                     options.ConsecutiveCount);
 
@@ -291,7 +355,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
 
-        //WatchDogIssueType RecordCount - 1
+        //WatchDogIssueType RecordCount - 1 - ALL Times
         private async Task<WatchDogLogEvent> CheckLocationRecordCount(DateTime dateToCheck, Location Location, WatchdogLoggingOptions options, List<IndianaEvent> LocationEvents)
         {
             if (LocationEvents.Count > options.MinimumRecords)
@@ -305,7 +369,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 return new WatchDogLogEvent(
                     Location.Id,
                     Location.LocationIdentifier,
-                    options.ScanDate,
+                    options.AmScanDate,
                     WatchDogComponentTypes.Location,
                     Location.Id,
                     WatchDogIssueTypes.RecordCount,
@@ -315,7 +379,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             }
         }
 
-        //WatchDogIssueType LowDetectorHits - 2
+        //WatchDogIssueType LowDetectorHits - 2 - PM
         private void CheckForLowDetectorHits(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
         {
             var detectors = location.GetDetectorsForLocationThatSupportMetric(6);
@@ -330,8 +394,9 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                         var start = new DateTime();
                         var end = new DateTime();
 
-                        var currentVolume = locationEvents.Where(e => e.EventParam == detector.DetectorChannel && detectorEventCodes.Contains(e.EventCode) && e.Timestamp >= options.AnalysisStart
-                && e.Timestamp <= options.AnalysisEnd).Count();
+                        var currentVolume = locationEvents.Where(e => e.EventParam == detector.DetectorChannel &&
+                            detectorEventCodes.Contains(e.EventCode) && e.Timestamp >= options.PmAnalysisStart
+                            && e.Timestamp <= options.PmAnalysisEnd).Count();
                         //Compare collected hits to low hit threshold, 
                         if (currentVolume < Convert.ToInt32(options.LowHitThreshold))
                         {
@@ -339,7 +404,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                             AddDetectorError(
                                 location,
-                                options,
+                                options.PmScanDate,
                                 detector,
                                 WatchDogIssueTypes.LowDetectorHits,
                                 message,
@@ -365,12 +430,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                 AddApproachError(
                     approach.Location,
-                    options,
+                    options.PmScanDate,
                     approach.Id,
                     WatchDogIssueTypes.StuckPed,
                     message,
-                    phase.PhaseNumber,
-                    errors);
+                    errors,
+                    phase.PhaseNumber);
             }
         }
 
@@ -385,12 +450,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                 AddApproachError(
                     approach.Location,
-                    options,
+                    options.PmScanDate,
                     approach.Id,
                     WatchDogIssueTypes.ForceOffThreshold,
                     message,
-                    phase.PhaseNumber,
-                    errors);
+                    errors,
+                    phase.PhaseNumber);
             }
 
         }
@@ -406,12 +471,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                 AddApproachError(
                     approach.Location,
-                    options,
+                    options.PmScanDate,
                     approach.Id,
                     WatchDogIssueTypes.MaxOutThreshold,
                     message,
-                    phase.PhaseNumber,
-                    errors);
+                    errors,
+                    phase.PhaseNumber);
             }
 
         }
@@ -419,8 +484,8 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         //WatchDogIssueType UnconfiguredApproach - 6
         private void CheckForUnconfiguredApproaches(Location Location, WatchdogLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors, List<IndianaEvent> cycleEvents)
         {
-            var phasesInUse = cycleEvents.Where(d => d.EventCode == 1 && d.Timestamp >= options.AnalysisStart
-                && d.Timestamp <= options.AnalysisEnd).Select(d => d.EventParam).Distinct();
+            var phasesInUse = cycleEvents.Where(d => d.EventCode == 1 && d.Timestamp >= options.PmAnalysisStart
+                && d.Timestamp <= options.PmAnalysisEnd).Select(d => d.EventParam).Distinct();
             foreach (var phaseNumber in phasesInUse)
             {
                 var phase = phaseService.GetPhases(Location).Find(p => p.PhaseNumber == phaseNumber);
@@ -430,21 +495,22 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                     AddApproachError(
                         Location,
-                        options,
+                        options.PmScanDate,
                         -1,
                         WatchDogIssueTypes.UnconfiguredApproach,
                         "No corresponding approach configured",
-                        phaseNumber,
-                        errors);
+                        errors,
+                        phaseNumber);
                 }
             }
         }
 
-        //WatchDogIssueType UnconfiguredDetector - 7
+        //WatchDogIssueType UnconfiguredDetector - 7 - PM
         private static void CheckForUnconfiguredDetectors(Location Location, WatchdogLoggingOptions options, List<IndianaEvent> LocationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
         {
-            var detectorChannelsFromEvents = LocationEvents.Where(e => detectorEventCodes.Contains(e.EventCode) && e.Timestamp >= options.AnalysisStart
-                && e.Timestamp <= options.AnalysisEnd).Select(e => e.EventParam).Distinct().ToList();
+            var detectorChannelsFromEvents = LocationEvents.Where(e => detectorEventCodes.Contains(e.EventCode)
+            && e.Timestamp >= options.PmAnalysisStart && e.Timestamp <= options.PmAnalysisEnd)
+                .Select(e => e.EventParam).Distinct().ToList();
             var detectorChannelsFromDetectors = Location.GetDetectorsForLocation().Select(d => d.DetectorChannel).Distinct().ToList();
             foreach (var channel in detectorChannelsFromEvents)
             {
@@ -452,7 +518,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 {
                     AddDetectorError(
                         Location,
-                        options,
+                        options.PmScanDate,
                         detector: null,
                         WatchDogIssueTypes.UnconfiguredDetector,
                         $"Unconfigured detector channel-{channel}",
@@ -461,7 +527,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             }
         }
 
-        //WatchDogIssueType MissingMainlineData - 8
+        //WatchDogIssueType MissingMainlineData - 8 - PM
         private void CheckMainlineDetections(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
         {
             var mainlineEventCodes = new List<short> { 1371, 1372, 1373 };
@@ -479,7 +545,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 checkMissing: true);
         }
 
-        //WatchDogIssueType StuckQueueDetection - 9
+        //WatchDogIssueType StuckQueueDetection - 9 - PM
         private void CheckStuckQueueDetections(Location location, WatchdogLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
         {
             var eventCodes = Enumerable.Range(1171, 31).Where(i => i % 2 != 0).Select(i => (short)i).ToList();
@@ -516,15 +582,15 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     var channel = detector.DetectorChannel;
                     var currentVolume = locationEvents.Where(e => e.EventParam == detector.DetectorChannel &&
                         detectorEventCodes.Contains(e.EventCode) &&
-                        e.Timestamp >= options.RampStart &&
-                        e.Timestamp <= options.RampEnd
+                        e.Timestamp >= options.RampDetectorStart &&
+                        e.Timestamp <= options.RampDetectorEnd
                         ).Count();
                     //Compare collected hits to low hit ramp threshold, 
                     if (currentVolume < Convert.ToInt32(options.LowHitRampThreshold))
                     {
                         AddDetectorError(
                             location,
-                            options,
+                            options.PmScanDate,
                             detector,
                             WatchDogIssueTypes.LowRampDetectorHits,
                             $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}",
@@ -552,15 +618,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
             // 1️⃣ Determine ramp window
             DateTime now = DateTime.Now;
-            DateTime rampStart = options.RampMainLineLastRun ?? now.AddHours(-24);
-            DateTime rampEnd = now;
+            DateTime rampStart = options.RampMainlineLastRunStartScanDate;
+            DateTime rampEnd = options.RampMainlineLastRunEndScanDate;
 
             // Ensure max 24-hour window
             if ((rampEnd - rampStart).TotalHours > 24)
                 rampEnd = rampStart.AddHours(24);
-
-            //Go from the rampStart
-            options.ScanDate = rampStart;
 
             // 2️⃣ Define 3-hour periods
             var periodDefinitions = new List<(TimeSpan Start, TimeSpan End, string Label)>
@@ -590,7 +653,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                     if (!timestamps.Any())
                     {
-                        AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                        AddDetectorError(location, options.RampMainlineLastRunStartScanDate, detector, WatchDogIssueTypes.RampMissedDetectorHits,
                             $"CH: {channel} - No events received in entire ramp window", errors);
                         continue;
                     }
@@ -621,7 +684,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                         if (!periodTimestamps.Any())
                         {
-                            AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                            AddDetectorError(location, options.RampMainlineLastRunStartScanDate, detector, WatchDogIssueTypes.RampMissedDetectorHits,
                                 $"CH: {channel} - No events in period {label}", errors);
                             continue;
                         }
@@ -646,7 +709,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                         int missedBuckets = totalBuckets - bucketsWithHits.Count;
                         if (missedBuckets > options.RampMissedEventsThreshold)
                         {
-                            AddDetectorError(location, options, detector, WatchDogIssueTypes.RampMissedDetectorHits,
+                            AddDetectorError(location, options.RampMainlineLastRunStartScanDate, detector, WatchDogIssueTypes.RampMissedDetectorHits,
                                 $"CH: {channel} - Period {label} missed {missedBuckets} intervals", errors);
                         }
                     }
@@ -665,12 +728,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         ///////////////////////////////////////////////////////////
         /////////////////////// HELPER ////////////////////////////
         ///////////////////////////////////////////////////////////
-        private static void AddDetectorError(Location location, WatchdogLoggingOptions options, Detector detector, WatchDogIssueTypes issueType, string message, ConcurrentBag<WatchDogLogEvent> errors)
+        private static void AddDetectorError(Location location, DateTime timestamp, Detector detector, WatchDogIssueTypes issueType, string message, ConcurrentBag<WatchDogLogEvent> errors)
         {
             var error = new WatchDogLogEvent(
                 location.Id,
                 location.LocationIdentifier,
-                options.ScanDate,
+                timestamp,
                 WatchDogComponentTypes.Detector,
                 detector?.Id ?? -1,
                 issueType,
@@ -681,12 +744,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 errors.Add(error);
         }
 
-        private static void AddApproachError(Location location, WatchdogLoggingOptions options, int approachId, WatchDogIssueTypes issueType, string message, int? phaseNumber = null, ConcurrentBag<WatchDogLogEvent> errors)
+        private static void AddApproachError(Location location, DateTime timestamp, int approachId, WatchDogIssueTypes issueType, string message, ConcurrentBag<WatchDogLogEvent> errors, int? phaseNumber = null)
         {
             var error = new WatchDogLogEvent(
                 location.Id,
                 location.LocationIdentifier,
-                options.ScanDate,
+                timestamp,
                 WatchDogComponentTypes.Approach,
                 approachId,
                 issueType,

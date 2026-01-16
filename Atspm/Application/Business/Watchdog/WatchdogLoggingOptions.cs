@@ -20,31 +20,41 @@ namespace Utah.Udot.Atspm.Business.Watchdog
     //TODO: this needs to be added into WatchdogConfiguration and config json needs to be changed from flat
     public class WatchdogLoggingOptions
     {
-        public DateTime ScanDate { get; set; }
-        public int ScanDayStartHour { get; set; }
-        public int ScanDayEndHour { get; set; }
-        public int ConsecutiveCount { get; set; }
-        public int MinPhaseTerminations { get; set; }
-        public double PercentThreshold { get; set; }
-        public int PreviousDayPMPeakStart { get; set; }
-        public int PreviousDayPMPeakEnd { get; set; }
-        public int MinimumRecords { get; set; }
-        public int LowHitThreshold { get; set; }
-        public int LowHitRampThreshold { get; set; }
-        public int MaximumPedestrianEvents { get; set; }
-        public bool WeekdayOnly { get; set; }
+        public DateTime PmScanDate { get; set; }
+        public DateTime AmScanDate { get; set; }
+        public DateTime RampMainlineLastRunStartScanDate { get; set; }
+        public DateTime RampMainlineLastRunEndScanDate { get; set; }
+        public int AmStartHour { get; set; }
+        public int AmEndHour { get; set; }
+        public int PmPeakStartHour { get; set; }
+        public int PmPeakEndHour { get; set; }
+        public int RampDetectorStartHour { get; set; }
+        public int RampDetectorEndHour { get; set; }
+        public int RampMainLineLastRunStartHour { get; set; }
+        public int RampMainLineLastRunEndHour { get; set; }
         public int RampMainlineStartHour { get; set; }
         public int RampMainlineEndHour { get; set; }
         public int RampStuckQueueStartHour { get; set; }
         public int RampStuckQueueEndHour { get; set; }
+        public bool WeekdayOnly { get; set; }
+        public int ConsecutiveCount { get; set; }
+        public int MinPhaseTerminations { get; set; }
+        public double PercentThreshold { get; set; }
+        public int MinimumRecords { get; set; }
+        public int LowHitThreshold { get; set; }
+        public int LowHitRampThreshold { get; set; }
+        public int MaximumPedestrianEvents { get; set; }
         public int RampMissedEventsThreshold { get; set; }
+        public bool OnlyRampEmail { get; set; }
 
 
-        public DateTime AnalysisStart => ScanDate.Date + new TimeSpan(ScanDayStartHour, 0, 0);
-
-        public DateTime AnalysisEnd => ScanDate.Date + new TimeSpan(ScanDayEndHour, 0, 0);
-        public DateTime RampStart { get; set; }
-        public DateTime RampEnd { get; set; }
-        public DateTime? RampMainLineLastRun { get; set; }
+        public DateTime AmAnalysisStart => AmScanDate.Date + new TimeSpan(AmStartHour, 0, 0);
+        public DateTime AmAnalysisEnd => AmScanDate.Date + new TimeSpan(AmEndHour, 0, 0);
+        public DateTime PmAnalysisStart => PmScanDate.Date + new TimeSpan(PmPeakStartHour, 0, 0);
+        public DateTime PmAnalysisEnd => PmScanDate.Date + new TimeSpan(PmPeakEndHour, 0, 0);
+        public DateTime RampDetectorStart => PmScanDate.Date + new TimeSpan(RampDetectorStartHour, 0, 0);
+        public DateTime RampDetectorEnd => PmScanDate.Date + new TimeSpan(RampDetectorEndHour, 0, 0);
+        public DateTime RampMainLineLastRunStart => RampMainlineLastRunStartScanDate.Date + new TimeSpan(RampMainLineLastRunStartHour, 0, 0);
+        public DateTime RampMainLineLastRunEnd => RampMainlineLastRunEndScanDate.Date + new TimeSpan(RampMainLineLastRunEndHour, 0, 0);
     }
 }

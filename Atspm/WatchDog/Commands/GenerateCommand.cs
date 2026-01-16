@@ -30,6 +30,9 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
         public GenerateCommand() : base("generate", "To generate watchdog")
         {
             AddOption(ScanDateOption);
+            AddOption(RampStartOption);
+            AddOption(RampEndOption);
+            AddOption(RampMainLineLastRunOption);
             AddOption(PreviousDayPMPeakStartOption);
             AddOption(PreviousDayPMPeakEndOption);
             AddOption(WeekdayOnlyOption);
@@ -37,11 +40,14 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
             AddOption(ScanDayEndHourOption);
             AddOption(ConsecutiveCountOption);
             AddOption(LowHitThresholdOption);
+            AddOption(LowHitRampThresholdOption);
+            AddOption(RampMissedEventsThresholdOption);
             AddOption(MaximumPedestrianEventsOption);
             AddOption(MinimumRecordsOption);
             AddOption(MinPhaseTerminationsOption);
             AddOption(PercentThresholdOption);
             AddOption(EmailAllErrorsOption);
+            AddOption(OnlyRampEmailOption);
             AddOption(DefaultEmailAddressOption);
             AddOption(SortOption);
         }
@@ -49,7 +55,7 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
         public Option<DateTime> ScanDateOption { get; set; } = new("--scanDate", "Scan Date");
         public Option<DateTime> RampStartOption { get; set; } = new("--rampStart", "Ramp Start");
         public Option<DateTime> RampEndOption { get; set; } = new("--rampEnd", "Ramp End");
-        public Option<DateTime> RampMainLineLastRunOption { get; set; } = new("--RampMainLineLastRun", "Ramp MainLine Last Run");
+        public Option<DateTime> RampMainLineLastRunOption { get; set; } = new("--rampMainLineLastRun", "Ramp MainLine Last Run");
         public Option<int> PreviousDayPMPeakStartOption { get; set; } = new("--previousDayPmPeakStart", "Previous Day Pm Peak Start");
         public Option<int> PreviousDayPMPeakEndOption { get; set; } = new("--previousDayPmPeakEnd", "Previous Day Pm Peak End");
         public Option<bool> WeekdayOnlyOption { get; set; } = new("--weekdayOnly", "Weekday Only");
@@ -66,6 +72,7 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
         public Option<double> PercentThresholdOption { get; set; } = new("--percentThreshold", "Percent Threshold");
         public Option<int> RampMissedEventsThresholdOption { get; set; } = new("--rampMissedEventsThreshold", "Ramp Missed Events Threshold");
 
+        public Option<bool> OnlyRampEmailOption { get; set; } = new("--onlyRampEmail", "Only Ramp Email");
         public Option<bool> EmailAllErrorsOption { get; set; } = new("--emailAllErrors", "Email All Errors");
         public Option<string> DefaultEmailAddressOption { get; set; } = new("--defaultEmailAddress", "Default Email Address");
         public Option<string> SortOption { get; set; } = new("--sort", "Sort column");
@@ -74,15 +81,12 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
         {
             var binder = new ModelBinder<WatchdogConfiguration>();
 
-            binder.BindMemberFromValue(b => b.ScanDate, ScanDateOption);
-            binder.BindMemberFromValue(b => b.RampStart, RampStartOption);
-            binder.BindMemberFromValue(b => b.RampEnd, RampEndOption);
-            binder.BindMemberFromValue(b => b.RampMainLineLastRun, RampMainLineLastRunOption);
-            binder.BindMemberFromValue(b => b.PreviousDayPMPeakStart, PreviousDayPMPeakStartOption);
-            binder.BindMemberFromValue(b => b.PreviousDayPMPeakEnd, PreviousDayPMPeakEndOption);
+            binder.BindMemberFromValue(b => b.PmScanDate, ScanDateOption);
+            binder.BindMemberFromValue(b => b.PmPeakStartHour, PreviousDayPMPeakStartOption);
+            binder.BindMemberFromValue(b => b.PmPeakEndHour, PreviousDayPMPeakEndOption);
             binder.BindMemberFromValue(b => b.WeekdayOnly, WeekdayOnlyOption);
-            binder.BindMemberFromValue(b => b.ScanDayStartHour, ScanDayStartHourOption);
-            binder.BindMemberFromValue(b => b.ScanDayEndHour, ScanDayEndHourOption);
+            binder.BindMemberFromValue(b => b.AmStartHour, ScanDayStartHourOption);
+            binder.BindMemberFromValue(b => b.AmEndHour, ScanDayEndHourOption);
             binder.BindMemberFromValue(b => b.ConsecutiveCount, ConsecutiveCountOption);
             binder.BindMemberFromValue(b => b.LowHitThreshold, LowHitThresholdOption);
             binder.BindMemberFromValue(b => b.LowHitRampThreshold, LowHitRampThresholdOption);
@@ -94,6 +98,10 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
             binder.BindMemberFromValue(b => b.EmailAllErrors, EmailAllErrorsOption);
             binder.BindMemberFromValue(b => b.DefaultEmailAddress, DefaultEmailAddressOption);
             binder.BindMemberFromValue(b => b.Sort, SortOption);
+            binder.BindMemberFromValue(b => b.OnlyRampEmail, OnlyRampEmailOption);
+            binder.BindMemberFromValue(b => b.RampStartOverride, RampStartOption);
+            binder.BindMemberFromValue(b => b.RampEndOverride, RampEndOption);
+            binder.BindMemberFromValue(b => b.RampMainLineLastRunStart, RampMainLineLastRunOption);
 
             return binder;
         }

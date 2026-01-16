@@ -79,13 +79,17 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             WatchdogEmailOptions emailOptions,
             CancellationToken cancellationToken)
         {
+            if (emailOptions.OnlyRampEmail)
+                emailOptions.EmailScanDate = emailOptions.RampMainlineLastRunStartScanDate;
+
             //need a version of this that gets the Location version for date of the scan
-            var locations = LocationRepository.GetLatestVersionOfAllLocations(emailOptions.ScanDate).ToList();
+            var locations = LocationRepository.GetLatestVersionOfAllLocations(emailOptions.EmailScanDate).ToList();
+
             var errors = new List<WatchDogLogEvent>();
             //Check the date you would like to retrieve and if there is already a report return it or else generate one and save it
-            if (watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.ScanDate).Any())
+            if (watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.EmailScanDate).Any())
             {
-                errors = watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.ScanDate).ToList();
+                errors = watchDogLogEventRepository.GetList().Where(e => e.Timestamp == emailOptions.EmailScanDate).ToList();
             }
             else
             {
@@ -104,25 +108,26 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
             var users = await GetUsersWithWatchDogClaimAsync();
 
-            var filteredErrors = ignoreEventService.GetFilteredWatchDogEventsForEmail(errors, emailOptions.ScanDate);
+
+            var filteredErrors = ignoreEventService.GetFilteredWatchDogEventsForEmail(errors, emailOptions.EmailScanDate);
             var (newErrors, dailyRecurringErrors, recurringErrors) = segmentedErrorsService.GetSegmentedErrors(filteredErrors, emailOptions);
 
 
-            if (!emailOptions.WeekdayOnly || emailOptions.WeekdayOnly && emailOptions.ScanDate.DayOfWeek != DayOfWeek.Saturday &&
-               emailOptions.ScanDate.DayOfWeek != DayOfWeek.Sunday)
+            if (!emailOptions.WeekdayOnly || emailOptions.WeekdayOnly && emailOptions.EmailScanDate.DayOfWeek != DayOfWeek.Saturday &&
+               emailOptions.EmailScanDate.DayOfWeek != DayOfWeek.Sunday)
             {
                 var recordsFromTheDayBefore = new List<WatchDogLogEvent>();
                 if (!emailOptions.EmailAllErrors)
                 {
                     //compare to error log to see if this was failing yesterday
-                    if (emailOptions.WeekdayOnly && emailOptions.ScanDate.DayOfWeek == DayOfWeek.Monday)
+                    if (emailOptions.WeekdayOnly && emailOptions.EmailScanDate.DayOfWeek == DayOfWeek.Monday)
                         recordsFromTheDayBefore =
-                            watchDogLogEventRepository.GetList(w => w.Timestamp >= emailOptions.ScanDate.AddDays(-3) &&
-                                w.Timestamp < emailOptions.ScanDate.AddDays(-2)).ToList();
+                            watchDogLogEventRepository.GetList(w => w.Timestamp >= emailOptions.EmailScanDate.AddDays(-3) &&
+                                w.Timestamp < emailOptions.EmailScanDate.AddDays(-2)).ToList();
                     else
                         recordsFromTheDayBefore =
-                            watchDogLogEventRepository.GetList(w => w.Timestamp >= emailOptions.ScanDate.AddDays(-1) &&
-                                w.Timestamp < emailOptions.ScanDate).ToList();
+                            watchDogLogEventRepository.GetList(w => w.Timestamp >= emailOptions.EmailScanDate.AddDays(-1) &&
+                                w.Timestamp < emailOptions.EmailScanDate).ToList();
                 }
 
 

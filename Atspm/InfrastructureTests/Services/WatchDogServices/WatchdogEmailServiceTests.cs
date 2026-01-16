@@ -53,19 +53,16 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 new WatchDogLogEventWithCountAndDate(1, "Loc4", DateTime.UtcNow, WatchDogComponentTypes.Location, 103, WatchDogIssueTypes.LowDetectorHits, "Low detector hits issue", 1),
                 new WatchDogLogEventWithCountAndDate(1, "Loc5", DateTime.UtcNow, WatchDogComponentTypes.Location, 104, WatchDogIssueTypes.StuckPed, "Stuck ped issue", 1),
                 new WatchDogLogEventWithCountAndDate(1, "Loc6", DateTime.UtcNow, WatchDogComponentTypes.Location, 105, WatchDogIssueTypes.UnconfiguredApproach, "Unconfigured approach issue", 1),
-                new WatchDogLogEventWithCountAndDate(1, "Loc7", DateTime.UtcNow, WatchDogComponentTypes.Location, 106, WatchDogIssueTypes.UnconfiguredDetector, "Unconfigured detector issue", 1)
+                new WatchDogLogEventWithCountAndDate(1, "Loc7", DateTime.UtcNow, WatchDogComponentTypes.Location, 106, WatchDogIssueTypes.UnconfiguredDetector, "Unconfigured detector issue", 1),
+                new WatchDogLogEventWithCountAndDate(1, "Loc8", DateTime.UtcNow, WatchDogComponentTypes.Location, 107, WatchDogIssueTypes.LowRampDetectorHits, "Ramp Detectors Threshold issue", 1),
+                new WatchDogLogEventWithCountAndDate(1, "Loc9", DateTime.UtcNow, WatchDogComponentTypes.Location, 108, WatchDogIssueTypes.RampMissedDetectorHits, "Ramp Missed Detectors issue", 1)
             };
 
             // Act
             WatchdogEmailService.GetEventsByIssueType(
-                eventsContainer,
-                out var missingErrorsLogs,
-                out var forceErrorsLogs,
-                out var maxErrorsLogs,
-                out var countErrorsLogs,
-                out var stuckpedErrorsLogs,
-                out var configurationErrorsLogs,
-                out var unconfiguredDetectorErrorsLogs);
+                eventsContainer, out var missingErrorsLogs, out var forceErrorsLogs, out var maxErrorsLogs,
+                out var countErrorsLogs, out var stuckPedErrorsLogs, out var configurationErrorsLogs,
+                out var unconfiguredDetectorErrorsLogs, out var rampDetectorThresholdErrorsLogs, out var rampMainlineErrorsLogs);
 
             // Assert
             Assert.Single(missingErrorsLogs);
@@ -80,14 +77,20 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             Assert.Single(countErrorsLogs);
             Assert.Equal(WatchDogIssueTypes.LowDetectorHits, countErrorsLogs.First().IssueType);
 
-            Assert.Single(stuckpedErrorsLogs);
-            Assert.Equal(WatchDogIssueTypes.StuckPed, stuckpedErrorsLogs.First().IssueType);
+            Assert.Single(stuckPedErrorsLogs);
+            Assert.Equal(WatchDogIssueTypes.StuckPed, stuckPedErrorsLogs.First().IssueType);
 
             Assert.Single(configurationErrorsLogs);
             Assert.Equal(WatchDogIssueTypes.UnconfiguredApproach, configurationErrorsLogs.First().IssueType);
 
             Assert.Single(unconfiguredDetectorErrorsLogs);
             Assert.Equal(WatchDogIssueTypes.UnconfiguredDetector, unconfiguredDetectorErrorsLogs.First().IssueType);
+
+            Assert.Single(rampDetectorThresholdErrorsLogs);
+            Assert.Equal(WatchDogIssueTypes.LowRampDetectorHits, rampDetectorThresholdErrorsLogs.First().IssueType);
+
+            Assert.Single(rampMainlineErrorsLogs);
+            Assert.Equal(WatchDogIssueTypes.RampMissedDetectorHits, rampMainlineErrorsLogs.First().IssueType);
         }
 
         [Fact]
@@ -99,22 +102,20 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             // Act
             WatchdogEmailService.GetEventsByIssueType(
                 eventsContainer,
-                out var missingErrorsLogs,
-                out var forceErrorsLogs,
-                out var maxErrorsLogs,
-                out var countErrorsLogs,
-                out var stuckpedErrorsLogs,
-                out var configurationErrorsLogs,
-                out var unconfiguredDetectorErrorsLogs);
+                out var missingErrorsLogs, out var forceErrorsLogs, out var maxErrorsLogs,
+                out var countErrorsLogs, out var stuckPedErrorsLogs, out var configurationErrorsLogs,
+                out var unconfiguredDetectorErrorsLogs, out var rampDetectorThresholdErrorsLogs, out var rampMainlineErrorsLogs);
 
             // Assert
             Assert.Empty(missingErrorsLogs);
             Assert.Empty(forceErrorsLogs);
             Assert.Empty(maxErrorsLogs);
             Assert.Empty(countErrorsLogs);
-            Assert.Empty(stuckpedErrorsLogs);
+            Assert.Empty(stuckPedErrorsLogs);
             Assert.Empty(configurationErrorsLogs);
             Assert.Empty(unconfiguredDetectorErrorsLogs);
+            Assert.Empty(rampDetectorThresholdErrorsLogs);
+            Assert.Empty(rampMainlineErrorsLogs);
         }
 
         [Fact]
@@ -132,13 +133,9 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             // Act
             WatchdogEmailService.GetEventsByIssueType(
                 eventsContainer,
-                out var missingErrorsLogs,
-                out var forceErrorsLogs,
-                out var maxErrorsLogs,
-                out var countErrorsLogs,
-                out var stuckpedErrorsLogs,
-                out var configurationErrorsLogs,
-                out var unconfiguredDetectorErrorsLogs);
+                out var missingErrorsLogs, out var forceErrorsLogs, out var maxErrorsLogs,
+                out var countErrorsLogs, out var stuckPedErrorsLogs, out var configurationErrorsLogs,
+                out var unconfiguredDetectorErrorsLogs, out var rampDetectorThresholdErrorsLogs, out var rampMainlineErrorsLogs);
 
             // Assert
             Assert.Equal(2, missingErrorsLogs.Count);
@@ -149,9 +146,11 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
 
             Assert.Empty(maxErrorsLogs);
             Assert.Empty(countErrorsLogs);
-            Assert.Empty(stuckpedErrorsLogs);
+            Assert.Empty(stuckPedErrorsLogs);
             Assert.Empty(configurationErrorsLogs);
             Assert.Empty(unconfiguredDetectorErrorsLogs);
+            Assert.Empty(rampDetectorThresholdErrorsLogs);
+            Assert.Empty(rampMainlineErrorsLogs);
         }
 
         [Fact]
@@ -163,22 +162,20 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             // Act
             WatchdogEmailService.GetEventsByIssueType(
                 eventsContainer,
-                out var missingErrorsLogs,
-                out var forceErrorsLogs,
-                out var maxErrorsLogs,
-                out var countErrorsLogs,
-                out var stuckpedErrorsLogs,
-                out var configurationErrorsLogs,
-                out var unconfiguredDetectorErrorsLogs);
+                out var missingErrorsLogs, out var forceErrorsLogs, out var maxErrorsLogs,
+                out var countErrorsLogs, out var stuckPedErrorsLogs, out var configurationErrorsLogs,
+                out var unconfiguredDetectorErrorsLogs, out var rampDetectorThresholdErrorsLogs, out var rampMainlineErrorsLogs);
 
             // Assert
             Assert.Empty(missingErrorsLogs);
             Assert.Empty(forceErrorsLogs);
             Assert.Empty(maxErrorsLogs);
             Assert.Empty(countErrorsLogs);
-            Assert.Empty(stuckpedErrorsLogs);
+            Assert.Empty(stuckPedErrorsLogs);
             Assert.Empty(configurationErrorsLogs);
             Assert.Empty(unconfiguredDetectorErrorsLogs);
+            Assert.Empty(rampDetectorThresholdErrorsLogs);
+            Assert.Empty(rampMainlineErrorsLogs);
         }
 
         [Fact]
@@ -195,22 +192,20 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             // Act
             WatchdogEmailService.GetEventsByIssueType(
                 eventsContainer,
-                out var missingErrorsLogs,
-                out var forceErrorsLogs,
-                out var maxErrorsLogs,
-                out var countErrorsLogs,
-                out var stuckpedErrorsLogs,
-                out var configurationErrorsLogs,
-                out var unconfiguredDetectorErrorsLogs);
+                out var missingErrorsLogs, out var forceErrorsLogs, out var maxErrorsLogs,
+                out var countErrorsLogs, out var stuckPedErrorsLogs, out var configurationErrorsLogs,
+                out var unconfiguredDetectorErrorsLogs, out var rampDetectorThresholdErrorsLogs, out var rampMainlineErrorsLogs);
 
             // Assert
             Assert.Single(missingErrorsLogs);
             Assert.Empty(forceErrorsLogs);
             Assert.Empty(maxErrorsLogs);
             Assert.Empty(countErrorsLogs);
-            Assert.Empty(stuckpedErrorsLogs);
+            Assert.Empty(stuckPedErrorsLogs);
             Assert.Empty(configurationErrorsLogs);
             Assert.Empty(unconfiguredDetectorErrorsLogs);
+            Assert.Empty(rampDetectorThresholdErrorsLogs);
+            Assert.Empty(rampMainlineErrorsLogs);
         }
 
         [Fact]
@@ -372,7 +367,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 sectionTimeDescription,
                 errorLogs,
                 locations,
-                options,
+                options.EmailAllErrors,
                 logsFromPreviousDay,
                 includeErrorCounts,
                 includeConsecutive);
@@ -409,7 +404,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 sectionTimeDescription,
                 errorLogs,
                 locations,
-                options,
+                options.EmailAllErrors,
                 logsFromPreviousDay,
                 includeErrorCounts,
                 includeConsecutive);
@@ -439,7 +434,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 sectionTimeDescription,
                 errorLogs,
                 locations,
-                options,
+                options.EmailAllErrors,
                 logsFromPreviousDay,
                 includeErrorCounts,
                 includeConsecutive);
@@ -480,7 +475,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 sectionTimeDescription,
                 errorLogs,
                 locations,
-                options,
+                options.EmailAllErrors,
                 logsFromPreviousDay,
                 includeErrorCounts,
                 includeConsecutive);
@@ -500,7 +495,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var errors = new List<WatchDogLogEventWithCountAndDate>();
             var options = new WatchdogEmailOptions
             {
-                ScanDate = DateTime.UtcNow
+                PmScanDate = DateTime.UtcNow
             };
             var locations = new List<Location>();
             var logsFromPreviousDay = new List<WatchDogLogEvent>();
@@ -525,7 +520,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             List<WatchDogLogEventWithCountAndDate> errors = null;
             var options = new WatchdogEmailOptions
             {
-                ScanDate = DateTime.UtcNow
+                PmScanDate = DateTime.UtcNow
             };
             var locations = new List<Location>();
             var logsFromPreviousDay = new List<WatchDogLogEvent>();
@@ -553,7 +548,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             };
             var options = new WatchdogEmailOptions
             {
-                ScanDate = DateTime.UtcNow
+                PmScanDate = DateTime.UtcNow
             };
             var locations = new List<Location>
             {
@@ -585,9 +580,9 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             };
             var options = new WatchdogEmailOptions
             {
-                ScanDate = DateTime.UtcNow,
-                ScanDayStartHour = 8,
-                ScanDayEndHour = 16
+                PmScanDate = DateTime.UtcNow,
+                AmStartHour = 8,
+                AmEndHour = 16
             };
             var locations = new List<Location>
             {
@@ -624,7 +619,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var includeConsecutive = false;
 
             // Act
-            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
+            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options.EmailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
 
             // Assert
             Assert.Equal(string.Empty, result);
@@ -643,7 +638,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var includeConsecutive = false;
 
             // Act
-            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
+            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options.EmailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
 
             // Assert
             Assert.Equal(string.Empty, result);
@@ -661,7 +656,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var includeConsecutive = true;
 
             // Act
-            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
+            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options.EmailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
 
             // Assert
             Assert.Contains("<td>Loc1</td>", result);
@@ -686,7 +681,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var includeConsecutive = true;
 
             // Act
-            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
+            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options.EmailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
 
             // Assert
             Assert.DoesNotContain("<td>Loc1</td>", result);
@@ -705,7 +700,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             var includeConsecutive = false;
 
             // Act
-            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
+            var result = _watchdogEmailService.GetMessage(locationDictionary, issues, options.EmailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive);
 
             // Assert
             Assert.Contains("<td>1</td>", result); // Phase
