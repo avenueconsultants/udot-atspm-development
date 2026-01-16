@@ -1,12 +1,9 @@
-import { getPriorityDetailsReportData } from '@/api/reports'
 import { ChartType } from '@/features/charts/common/types'
-import transformPriorityDetailsData from '@/features/charts/prioritySummary/priorityDetails.transformer'
 import {
   adjustPlanPositions,
   handleGreenTimeUtilizationDataZoom,
 } from '@/features/charts/utils'
 import { useChartsStore } from '@/stores/charts'
-import { dateToTimestamp } from '@/utils/dateTime'
 import type {
   DataZoomComponentOption,
   DatasetComponentOption,
@@ -47,130 +44,50 @@ export default function ApacheEChart({
   const [isScrolling, setIsScrolling] = useState(false)
   const chartInstance = useRef<ECharts | null>(null)
 
-  // Drilldown override (local option swap)
-  const [overrideOption, setOverrideOption] = useState<EChartsOption | null>(
-    null
-  )
-  const effectiveOption = overrideOption ?? option
-
   const isActive = activeChart === id || hideInteractionMessage
 
   const initChart = useCallback(() => {
-    if (chartRef.current === null) return
+    if (chartRef.current !== null) {
+      chartInstance.current = init(chartRef.current, theme, {
+        useDirtyRect: true,
+      })
 
-    chartInstance.current = init(chartRef.current, theme, {
-      useDirtyRect: true,
-    })
-
-    if (syncZoom || chartType === ChartType.TimingAndActuation) {
-      chartInstance.current.group = 'group1'
-      connect('group1')
-    }
-
-    // --- Click: Priority Summary -> fetch Priority Details + swap chart ---
-    chartInstance.current.off('click')
-    chartInstance.current.on('click', async (p: any) => {
-      if (!isActive) return
-
-      const isPrioritySummary =
-        chartType === ChartType.PrioritySummary &&
-        p?.seriesType === 'bar' &&
-        typeof p?.seriesName === 'string' &&
-        (p.seriesName.includes('TSP Request') ||
-          p.seriesName.includes('TSP Service')) &&
-        !p.seriesName.startsWith('__') // ignore hidden offset bar
-
-      // if already drilled down, clicking anything else toggles back
-      if (!isPrioritySummary && overrideOption) {
-        setOverrideOption(null)
-        return
+      if (syncZoom || chartType === ChartType.TimingAndActuation) {
+        chartInstance.current.group = 'group1'
+        connect('group1')
       }
 
-      if (!isPrioritySummary) return
+      if (option?.dataZoom === undefined) return
 
-      const d = p?.data
-      if (!Array.isArray(d)) return
-
-      // IMPORTANT:
-      // This expects Priority Summary bar data payload to include drilldown metadata.
-      //
-      // Request bar:
-      //   [checkIn, durSec, tsp, checkOut, locationIdentifier, windowStart, windowEnd, binSize?]
-      // Service duration bar:
-      //   [checkIn, durSec, tsp, serviceStart, serviceEnd, startOffset, checkOut, locationIdentifier, windowStart, windowEnd, binSize?]
-      //
-      const seriesIsRequest = p.seriesName.includes('TSP Request')
-
-      const locationIdentifier = seriesIsRequest
-        ? (d[4] as string)
-        : (d[7] as string)
-      const start = seriesIsRequest ? (d[5] as string) : (d[8] as string)
-      const end = seriesIsRequest ? (d[6] as string) : (d[9] as string)
-
-      if (!locationIdentifier || !start || !end) return
-
-      try {
-        chartInstance.current?.showLoading()
-
-        const detailsResponse = await getPriorityDetailsReportData({
-          locationIdentifier,
-          start: dateToTimestamp(start),
-          end: dateToTimestamp(end),
-        })
-
-        console.log('Priority Details drilldown response:', detailsResponse)
-
-        const transformed = transformPriorityDetailsData(detailsResponse)
-        const nextOption = transformed?.data?.charts?.[0]?.chart
-
-        console.log('Priority Details drilldown option:', nextOption)
-
-        if (nextOption) setOverrideOption(nextOption)
-      } catch (err) {
-        console.error('Priority Details drilldown failed:', err)
-      } finally {
-        chartInstance.current?.hideLoading()
+      // Set initial options with zooming disabled
+      const disabledZoomOption: EChartsOption = {
+        ...option,
+        dataZoom: (option.dataZoom as DataZoomComponentOption[])?.map(
+          (zoom) => ({
+            ...zoom,
+            disabled: true,
+            zoomLock: true,
+          })
+        ),
+        series: (option.series as SeriesOption[])?.map((series) => ({
+          ...series,
+          silent: true,
+        })),
       }
-    })
 
-    if (effectiveOption?.dataZoom === undefined) return
+      chartInstance.current.setOption(disabledZoomOption, settings)
 
-    // Set initial options with zooming disabled
-    const disabledZoomOption: EChartsOption = {
-      ...effectiveOption,
-      dataZoom: (effectiveOption.dataZoom as DataZoomComponentOption[])?.map(
-        (zoom) => ({
-          ...zoom,
-          disabled: true,
-          zoomLock: true,
-        })
-      ),
-      series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
-        ...series,
-        silent: true,
-      })),
+      if (chartType === ChartType.GreenTimeUtilization) {
+        chartInstance.current.on('datazoom', () =>
+          handleGreenTimeUtilizationDataZoom(chartInstance.current!)
+        )
+      } else {
+        chartInstance.current.on('datazoom', () =>
+          adjustPlanPositions(chartInstance.current!)
+        )
+      }
     }
-
-    chartInstance.current.setOption(disabledZoomOption, settings)
-
-    if (chartType === ChartType.GreenTimeUtilization) {
-      chartInstance.current.on('datazoom', () =>
-        handleGreenTimeUtilizationDataZoom(chartInstance.current!)
-      )
-    } else {
-      chartInstance.current.on('datazoom', () =>
-        adjustPlanPositions(chartInstance.current!)
-      )
-    }
-  }, [
-    effectiveOption,
-    settings,
-    theme,
-    chartType,
-    syncZoom,
-    isActive,
-    overrideOption,
-  ])
+  }, [option, settings, theme, chartType, syncZoom])
 
   useEffect(() => {
     initChart()
@@ -187,34 +104,38 @@ export default function ApacheEChart({
   }, [theme, chartType, initChart, syncZoom])
 
   useEffect(() => {
-    if (!chartInstance.current) return
+    if (chartInstance.current) {
+      const adjustedDataZoom = (
+        option.dataZoom as DataZoomComponentOption[]
+      )?.map((zoom) => ({
+        ...zoom,
+        // Only modify endValue if yAxisMaxStore exists
+        endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
+        disabled: !isActive,
+        zoomLock: !isActive,
+      }))
 
-    const adjustedDataZoom = (
-      effectiveOption.dataZoom as DataZoomComponentOption[]
-    )?.map((zoom) => ({
-      ...zoom,
-      endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
-      disabled: !isActive,
-      zoomLock: !isActive,
-    }))
+      // Use adjusted dataZoom in the chart options
+      const updatedOption: EChartsOption = {
+        ...option,
+        dataZoom: adjustedDataZoom,
+        series: (option.series as SeriesOption[])?.map((series) => ({
+          ...series,
+          silent: !isActive,
+        })),
+      }
 
-    const updatedOption: EChartsOption = {
-      ...effectiveOption,
-      dataZoom: adjustedDataZoom,
-      series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
-        ...series,
-        silent: !isActive,
-      })),
+      // Apply the updated option to the chart
+      chartInstance.current.setOption(updatedOption, settings)
     }
-
-    chartInstance.current.setOption(updatedOption, settings)
-  }, [effectiveOption, settings, theme, isActive, yAxisMaxStore])
+  }, [option, settings, theme, isActive, yAxisMaxStore])
 
   useEffect(() => {
-    if (!chartInstance.current) return
-    loading
-      ? chartInstance.current.showLoading()
-      : chartInstance.current.hideLoading()
+    if (chartInstance.current) {
+      loading
+        ? chartInstance.current.showLoading()
+        : chartInstance.current.hideLoading()
+    }
   }, [loading])
 
   useEffect(() => {
@@ -223,10 +144,13 @@ export default function ApacheEChart({
     const handleScroll = () => {
       setIsScrolling(true)
       clearTimeout(scrollTimeout)
-      scrollTimeout = setTimeout(() => setIsScrolling(false), 700)
+      scrollTimeout = setTimeout(() => {
+        setIsScrolling(false)
+      }, 700)
     }
 
     window.addEventListener('scroll', handleScroll)
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
       clearTimeout(scrollTimeout)
@@ -235,7 +159,9 @@ export default function ApacheEChart({
 
   useEffect(() => {
     const handleSaveAsImage = (event: Event) => {
-      const customEvent = event as CustomEvent<{ text: string }>
+      const customEvent = event as CustomEvent<{
+        text: string
+      }>
       const clickedChart = customEvent.detail.text
       const currentChart = chartInstance.current
       if (!clickedChart || !currentChart) return
@@ -243,6 +169,7 @@ export default function ApacheEChart({
       const chartOptions = currentChart.getOption() as EChartsOption
       if (chartOptions.title[0].text !== clickedChart) return
 
+      // Temporarily remove grouping to prevent all charts from saving
       const originalGroup = currentChart.group
       currentChart.group = ''
 
@@ -256,14 +183,18 @@ export default function ApacheEChart({
       link.download = `${clickedChart}.png`
       document.body.appendChild(link)
       link.click()
-      document.body.removeChild(link)
+      document.body.removeChild(link) // Clean up
 
+      // Restore the group after saving
       setTimeout(() => {
-        currentChart.group = originalGroup
+        if (clickedChart) {
+          currentChart.group = originalGroup
+        }
       }, 100)
     }
 
     window.addEventListener('saveChartImage', handleSaveAsImage)
+
     return () => {
       window.removeEventListener('saveChartImage', handleSaveAsImage)
     }
@@ -274,15 +205,15 @@ export default function ApacheEChart({
       setActiveChart(id)
       if (chartInstance.current) {
         chartInstance.current.setOption({
-          ...effectiveOption,
-          dataZoom: (effectiveOption.dataZoom as DatasetComponentOption[])?.map(
+          ...option,
+          dataZoom: (option.dataZoom as DatasetComponentOption[])?.map(
             (zoom) => ({
               ...zoom,
               disabled: false,
               zoomLock: false,
             })
           ),
-          series: (effectiveOption.series as SeriesOption[])?.map((series) => ({
+          series: (option.series as SeriesOption[])?.map((series) => ({
             ...series,
             silent: false,
           })),
@@ -318,10 +249,10 @@ export default function ApacheEChart({
           <div
             style={{
               position: 'absolute',
-              top: (effectiveOption as any)?.grid?.top || 0,
-              left: (effectiveOption as any)?.grid?.left || 0,
-              right: (effectiveOption as any)?.grid?.right || 0,
-              bottom: (effectiveOption as any)?.grid?.bottom || 0,
+              top: option?.grid?.top || 0,
+              left: option?.grid?.left || 0,
+              right: option?.grid?.right || 0,
+              bottom: option?.grid?.bottom || 0,
               background: 'rgba(0, 0, 0, 0.3)',
               display: 'flex',
               visibility:
@@ -341,10 +272,11 @@ export default function ApacheEChart({
               style={{
                 display: isActive ? 'block' : 'none',
                 position: 'absolute',
-                top: (effectiveOption as any)?.grid?.top || 0,
-                left: (effectiveOption as any)?.grid?.left || 0,
-                right: (effectiveOption as any)?.grid?.right || 0,
-                bottom: (effectiveOption as any)?.grid?.bottom || 0,
+                top: option?.grid?.top || 0,
+                left: option?.grid?.left || 0,
+                right: option?.grid?.right || 0,
+                bottom: option?.grid?.bottom || 0,
+                // outline: '2px solid #0060df80',
                 zIndex: 1,
                 pointerEvents: 'none',
               }}

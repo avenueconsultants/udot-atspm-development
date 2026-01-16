@@ -80,7 +80,7 @@ function transformData(data: RawSplitMonitorData) {
 
   const title = createTitle({
     title: 'Split Monitor',
-    location: data.locationDescription,
+    location: `${data.locationDescription} - ${data.phaseDescription}`,
     dateRange,
   })
 
