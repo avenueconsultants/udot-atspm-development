@@ -158,7 +158,6 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     top: 230,
     left: 65,
     right: 330,
-    bottom: 110,
   })
 
   const dataZoom: EChartsOption['dataZoom'] = [
