@@ -2,7 +2,12 @@ import { PriorityDetailsResult } from '@/api/reports'
 import { createGrid, createYAxis } from '@/features/charts/common/transformers'
 import { Color, triangleSvgSymbol } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { graphic, type SeriesOption } from 'echarts'
+import {
+  CustomSeriesRenderItemAPI,
+  CustomSeriesRenderItemParams,
+  graphic,
+  type SeriesOption,
+} from 'echarts'
 
 const TSP_CODES = {
   CheckIn: 112,
@@ -65,19 +70,24 @@ function flattenTspEvents(rows: PriorityDetailsResult[]): PriorityEvent[] {
 
 export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
   const gridTop = createGrid({
-    top: 95,
+    top: 140,
     left: 65,
-    right: 210,
+    right: 330,
     height: 70,
   })
 
   const yAxisTop = createYAxis(false, {
     type: 'category',
-    name: '',
-    boundaryGap: true,
-    axisPointer: { show: false },
-    splitLine: { show: false },
-    axisTick: { show: false },
+    name: 'TSP Number',
+    splitArea: {
+      show: true,
+      areaStyle: {
+        color: [Color.PlanA, Color.PlanB],
+      },
+    },
+    axisLine: {
+      show: false,
+    },
     data: [...TSP_Y_CATEGORIES],
   })
 
@@ -216,7 +226,7 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
 function buildRectsAndLinesFromEvents(allEvents: PriorityEvent[]) {
   const requestRects: RectDatum[] = []
   const serviceRects: RectDatum[] = []
-  const intersectionLines: string[] = []
+  const intersectionLines: Array<{ t: string; y: number }> = []
 
   const cycles = buildCycleWindowsFromEvents(allEvents)
 
@@ -262,6 +272,18 @@ function buildRectsAndLinesFromEvents(allEvents: PriorityEvent[]) {
       intersectionLines.push({ t: c.serviceStart, y: rowIndex })
     if (c.serviceEnd) intersectionLines.push({ t: c.serviceEnd, y: rowIndex })
     intersectionLines.push({ t: c.checkOut, y: rowIndex })
+    if (c.earlyGreenMs) {
+      for (const tMs of c.earlyGreenMs) {
+        const t = dateToTimestamp(new Date(tMs).toISOString())
+        if (t) intersectionLines.push({ t, y: rowIndex })
+      }
+    }
+    if (c.extendGreenMs) {
+      for (const tMs of c.extendGreenMs) {
+        const t = dateToTimestamp(new Date(tMs).toISOString())
+        if (t) intersectionLines.push({ t, y: rowIndex })
+      }
+    }
   }
 
   return { requestRects, serviceRects, intersectionLines }
@@ -467,7 +489,10 @@ function buildVerticalIntersectionLinesSeries(
     tooltip: { show: false },
     silent: true,
     z: 9,
-    renderItem: (params: any, api: any) => {
+    renderItem: (
+      _: CustomSeriesRenderItemParams,
+      api: CustomSeriesRenderItemAPI
+    ) => {
       const t = api.value(0)
       const yCat = api.value(1)
       if (!t && t !== 0) return null

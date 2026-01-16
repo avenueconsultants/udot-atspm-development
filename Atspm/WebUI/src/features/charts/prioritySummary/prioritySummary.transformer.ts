@@ -71,7 +71,7 @@ function transformLocation(data: PrioritySummaryResult) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const info = createInfoString(
-    ['Average duration:', `${durationToSeconds(data.averageDuration)} s`],
+    ['Average duration:', `${durationToSeconds(data.averageDuration)}s`],
     ['Total check-ins:', `${data.numberCheckins}`],
     ['Total check-outs:', `${data.numberCheckouts}`],
     ['Total early greens:', `${data.numberEarlyGreens}`],
@@ -268,6 +268,10 @@ function transformLocation(data: PrioritySummaryResult) {
     })
   }
 
+  const hintGraphic = buildLegendWidthHintGraphic(
+    'Click a cycle to see more details'
+  )
+
   const displayProps = createDisplayProps({
     description: 'Summary',
   })
@@ -280,10 +284,104 @@ function transformLocation(data: PrioritySummaryResult) {
     legend,
     dataZoom,
     toolbox,
+    graphic: [hintGraphic],
     tooltip,
     series,
     displayProps,
   }
 
   return chartOptions
+}
+
+function buildLegendWidthHintGraphic(text: string) {
+  const right = 0
+  const bottom = 110
+  const padding = [10, 12]
+
+  const bg = '#d8e2f9'
+  const radius = 6
+  const width = 190
+
+  const borderBlue = '#9ca3ba'
+
+  const fontSize = 13
+  const lineHeight = 16
+
+  // --- left icon + divider layout ---
+  const iconRadius = 10
+  const iconCx = padding[1] + iconRadius
+  const iconCy = padding[0] + iconRadius + 12
+
+  const dividerX = iconCx + iconRadius + 10
+  const textX = dividerX + 12
+
+  const maxTextWidth = Math.max(0, width - textX - padding[1])
+
+  const lines = 3
+  const height = padding[0] * 2 + lines * lineHeight
+
+  return {
+    type: 'group',
+    right,
+    bottom,
+    silent: true,
+    z: 100,
+    children: [
+      {
+        type: 'rect',
+        shape: { x: 0, y: 0, width, height, r: radius },
+        style: { fill: bg, lineWidth: 1 },
+      },
+
+      // circle
+      {
+        type: 'circle',
+        shape: { cx: iconCx, cy: iconCy, r: iconRadius },
+        style: { fill: 'transparent', stroke: '#3c3c41', lineWidth: 2 },
+      },
+
+      // exclamation inside circle
+      {
+        type: 'text',
+        style: {
+          x: iconCx,
+          y: iconCy + 1,
+          text: '!',
+          fill: '#3c3c41',
+          fontSize: 16,
+          fontWeight: 800,
+          align: 'center',
+          verticalAlign: 'middle',
+        },
+      },
+
+      // vertical divider line
+      {
+        type: 'line',
+        shape: {
+          x1: dividerX,
+          y1: padding[0],
+          x2: dividerX,
+          y2: height - padding[0],
+        },
+        style: { stroke: borderBlue, lineWidth: 1 },
+      },
+
+      // message text
+      {
+        type: 'text',
+        style: {
+          x: textX,
+          y: padding[0] + 8,
+          text,
+          fontSize,
+          lineHeight,
+          fill: '#3c3c41',
+          width: maxTextWidth,
+          overflow: 'break',
+          textVerticalAlign: 'top',
+        },
+      },
+    ],
+  } as const
 }

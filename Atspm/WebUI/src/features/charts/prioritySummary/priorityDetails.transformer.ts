@@ -17,7 +17,6 @@
 
 import { PriorityDetailsResult } from '@/api/reports'
 import {
-  createDataZoom,
   createDisplayProps,
   createGrid,
   createLegend,
@@ -33,7 +32,59 @@ import { ChartType } from '@/features/charts/common/types'
 import { buildPriorityOverlay } from '@/features/charts/prioritySummary/priorityDetails.priorityOverlay'
 import { TransformedChartResponse } from '@/features/charts/types'
 import { Color, formatChartDateTimeRange } from '@/features/charts/utils'
-import { graphic, type EChartsOption, type SeriesOption } from 'echarts'
+import {
+  CustomSeriesRenderItemAPI,
+  CustomSeriesRenderItemParams,
+  graphic,
+  type EChartsOption,
+  type SeriesOption,
+} from 'echarts'
+
+type CycleIndication = {
+  name: string
+  codes: number[]
+  color: string
+}
+
+// Single source of truth for cycle legend labels + colors + event codes
+const CYCLE_INDICATIONS = [
+  {
+    name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
+    codes: [1, 61],
+    color: Color.Green,
+  },
+  {
+    name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+    codes: [3, 62],
+    color: '#8ef08d',
+  },
+  {
+    name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
+    codes: [8, 63],
+    color: Color.Yellow,
+  },
+  {
+    name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
+    codes: [9, 64],
+    color: '#FF0000',
+  },
+  {
+    name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
+    codes: [11, 65],
+    color: '#f0807f',
+  },
+] as const satisfies readonly CycleIndication[]
+
+type IndicationName = (typeof CYCLE_INDICATIONS)[number]['name']
+
+function getIndicationDetails(
+  value: number
+): { name: IndicationName; color: string } | null {
+  const found = CYCLE_INDICATIONS.find((x) => x.codes.includes(value))
+  return found
+    ? { name: found.name as IndicationName, color: found.color }
+    : null
+}
 
 export interface RawPriorityDetailsResponse {
   data: PriorityDetailsResult[]
@@ -59,8 +110,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const locationDescription = first?.locationDescription ?? ''
   const locationIdentifier = first?.locationIdentifier ?? ''
 
-  const { chartStartMs, chartEndMs, chartStartIso, chartEndIso } =
-    getChartRangeMs(rows)
+  const { chartStartIso, chartEndIso } = getChartRangeMs(rows)
 
   const dateRange = formatChartDateTimeRange(chartStartIso, chartEndIso)
 
@@ -72,8 +122,6 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
 
   const xAxis = {
     type: 'time',
-    min: chartStartIso,
-    max: chartEndIso,
     show: false,
   }
 
@@ -91,7 +139,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
 
   const yAxisBottom = createYAxis(false, {
     type: 'category',
-    name: 'Phase',
+    name: 'Phase Number',
     gridIndex: 1,
     boundaryGap: true,
     axisPointer: {
@@ -107,13 +155,27 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   })
 
   const gridBottom = createGrid({
-    top: 190,
+    top: 230,
     left: 65,
-    right: 210,
+    right: 330,
     bottom: 110,
   })
 
-  const dataZoom = createDataZoom()
+  const dataZoom: EChartsOption['dataZoom'] = [
+    {
+      type: 'inside',
+      show: true,
+      filterMode: 'weakFilter',
+      minSpan: 0.2,
+    },
+    {
+      type: 'slider',
+      show: true,
+      filterMode: 'weakFilter',
+      minSpan: 0.2,
+      xAxisIndex: [0, 1],
+    },
+  ]
 
   const toolbox = createToolbox(
     {
@@ -131,39 +193,40 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
   const tooltip = createTooltip({ trigger: 'item', confine: true })
 
   const series = createSeries()
+
+  /* For some reason the datazoom will act funny if the first 
+  scatter series has a single value. This is just to prevent that.*/
+  series.push({
+    name: '__extent__',
+    type: 'scatter',
+    xAxisIndex: 0,
+    yAxisIndex: 0,
+    data: [
+      [chartStartIso, 0],
+      [chartEndIso, 0],
+    ],
+    symbolSize: 0,
+    itemStyle: { opacity: 0 },
+    tooltip: { show: false },
+    silent: true,
+    z: -1,
+  })
   series.push(...prioritySeries)
-  series.push(buildCycleTimelineSeries(rows, categories))
+  series.push(...buildCycleTimelineSeries(rows, categories))
 
   const legend = createLegend({
     top: gridTop.top,
     data: [
-      {
-        name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
-        icon: 'roundRect',
-      },
-      {
-        name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
-        icon: 'roundRect',
-      },
-      {
-        name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
-        icon: 'roundRect',
-      },
-      {
-        name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
-        icon: 'roundRect',
-      },
-      {
-        name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
-        icon: 'roundRect',
-      },
       ...legendItems,
+      ...CYCLE_INDICATIONS.map((x) => ({
+        name: x.name,
+        itemStyle: { color: x.color },
+      })),
     ],
   })
 
   const displayProps = createDisplayProps({
     description: 'Priority Details',
-    height: '900px',
   })
 
   return {
@@ -233,64 +296,25 @@ function getChartRangeMs(rows: PriorityDetailsResult[]) {
   }
 }
 
-type IndicationName =
-  | 'Phase Begin Green (1)\nOverlap Begin Green (61)'
-  | 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)'
-  | 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)'
-  | 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)'
-  | 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)'
-
-function getIndicationDetails(
-  value: number
-): { name: IndicationName; color: string } | null {
-  switch (value) {
-    case 1:
-    case 61:
-      return {
-        name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
-        color: Color.Green,
-      }
-    case 3:
-    case 62:
-      return {
-        name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
-        color: '#8ef08d',
-      }
-    case 8:
-    case 63:
-      return {
-        name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
-        color: Color.Yellow,
-      }
-    case 9:
-    case 64:
-      return {
-        name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
-        color: '#FF0000',
-      }
-    case 11:
-    case 65:
-      return {
-        name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
-        color: '#f0807f',
-      }
-    default:
-      return null
-  }
-}
-
 function buildCycleTimelineSeries(
   rows: PriorityDetailsResult[],
   categories: string[]
-): SeriesOption {
+): SeriesOption[] {
   const indexByCategory = new Map<string, number>()
   categories.forEach((c, i) => indexByCategory.set(c, i))
 
-  const data: Array<{
-    name: string
-    value: [number, number, number, number]
-    itemStyle: { color: string }
-  }> = []
+  const buckets = new Map<
+    IndicationName,
+    Array<{
+      name: string
+      value: [number, number, number, number]
+      itemStyle: { color: string }
+    }>
+  >()
+
+  for (const ind of CYCLE_INDICATIONS) {
+    buckets.set(ind.name as IndicationName, [])
+  }
 
   for (const row of rows) {
     const yCat = categoryOfRow(row)
@@ -312,7 +336,10 @@ function buildCycleTimelineSeries(
       if (!Number.isFinite(startMs) || !Number.isFinite(endMs)) continue
       if (endMs <= startMs) continue
 
-      data.push({
+      const arr = buckets.get(details.name)
+      if (!arr) continue
+
+      arr.push({
         name: details.name,
         value: [rowIndex, startMs, endMs, endMs - startMs],
         itemStyle: { color: details.color },
@@ -320,32 +347,28 @@ function buildCycleTimelineSeries(
     }
   }
 
-  return {
-    name: 'Cycles',
-    type: 'custom',
-    xAxisIndex: 1,
-    yAxisIndex: 1,
-    renderItem: renderCycleRect,
-    itemStyle: { opacity: 0.95 },
-    encode: {
-      x: [1, 2],
-      y: 0,
-    },
-    tooltip: {
-      formatter: (p: any) => {
-        const v = p?.value as [number, number, number, number]
-        if (!v) return ''
-        const [, startMs, endMs, dur] = v
-        const startIso = new Date(startMs).toISOString()
-        const endIso = new Date(endMs).toISOString()
-        return `${p.marker}${p.name}<br/>${startIso}<br/>${endIso}<br/>${dur} ms`
-      },
-    },
-    data,
-  } as SeriesOption
+  return CYCLE_INDICATIONS.map((ind) => {
+    const name = ind.name as IndicationName
+    return {
+      name, // MUST match legend item name
+      type: 'custom',
+      xAxisIndex: 1,
+      yAxisIndex: 1,
+      renderItem: renderCycleRect,
+      tooltip: { show: false },
+      encode: { x: [1, 2], y: 0 },
+      data: buckets.get(name) ?? [],
+      // This is what makes the legend swatch show the correct color
+      itemStyle: { color: ind.color },
+      z: 1,
+    } as SeriesOption
+  })
 }
 
-function renderCycleRect(params: any, api: any) {
+function renderCycleRect(
+  params: CustomSeriesRenderItemParams,
+  api: CustomSeriesRenderItemAPI
+) {
   const categoryIndex = api.value(0)
   const start = api.coord([api.value(1), categoryIndex])
   const end = api.coord([api.value(2), categoryIndex])
