@@ -32,7 +32,10 @@ import transformPrioritySummaryData from '@/features/charts/prioritySummary/prio
 import transformPurdueCoordinationDiagramData from '@/features/charts/purdueCoordinationDiagram/purdueCoordinationDiagram.transformer'
 import transformPurduePhaseTerminationData from '@/features/charts/purduePhaseTermination/purduePhaseTermination.transformer'
 import transformPurdueSplitFailureData from '@/features/charts/purdueSplitFailure/purdueSplitFailure.transformer'
+import transformRampMeteringData from '@/features/charts/rampMetering/rampMetering.transformer'
 import transformSplitMonitorData from '@/features/charts/splitMonitor/splitMonitor.tranformer'
+import transformTimeSpaceAverageData from '@/features/charts/timeSpaceDiagram/average/timeSpaceAverage.transformer'
+import transformTimeSpaceHistoricData from '@/features/charts/timeSpaceDiagram/historic/timeSpaceHistoric.transformer'
 import transformTimingAndActuationData from '@/features/charts/timingAndActuation/timingAndActuation.transformer'
 import transformTurningMovementCountsData from '@/features/charts/turningMovementCounts/turningMovementCounts.transformer'
 import {
@@ -41,9 +44,6 @@ import {
 } from '@/features/charts/types'
 import transformWaitTimeData from '@/features/charts/waitTime/waitTime.transformer'
 import transformYellowAndRedActuationsData from '@/features/charts/yellowAndRedActuations/yellowAndRedActuations.transformer'
-import transformRampMeteringData from '../rampMetering/rampMetering.transformer'
-import transformTimeSpaceAverageData from '../timeSpaceDiagram/transformers/timeSpaceAverageTransformer'
-import transformTimeSpaceHistoricData from '../timeSpaceDiagram/transformers/timeSpaceHistoricTransformer'
 
 export const transformChartData = (
   response: RawChartResponse
