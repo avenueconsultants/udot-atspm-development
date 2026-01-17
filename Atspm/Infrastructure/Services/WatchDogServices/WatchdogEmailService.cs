@@ -58,7 +58,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             //{
             //    var otherUsers = users.Where(u => !userRegions.Any(ur => ur.UserId == u.Id)
             //&& !userJurisdictions.Any(uj => uj.UserId == u.Id)
-            //&& !userAreas.Any(ua => ua.UserId == u.Id)).ToList();
+            //&& !userAreas.Any(ua => ua.UserId == u.Id)).ToList(); //Ramp jurisdiction add -- 
             //    await SendRampEmails(options, newErrors, dailyRecurringErrors, recurringErrors, Locations, "All Ramp Locations", otherUsers, logsFromPreviousDay);
             //}
             //else
@@ -286,7 +286,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             bodyBuilder.Append($"<h2 class='shaded-header'>{errorTitle} ({errorSubHeader})</h2>");
             var locationDictionary = locations.ToDictionary(l => l.Id, l => l);
             // Build HTML sections for each error type
-            if (options.OnlyRampEmail)
+            if (options.EmailRampErrors)
             {
                 bodyBuilder.Append(BuildErrorSection("Ramp Mainline Errors", $"The following Locations had too many records failure in the database on {emailScanDate}", rampMainlineErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
             }

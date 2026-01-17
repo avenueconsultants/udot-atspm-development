@@ -20,26 +20,27 @@ namespace Utah.Udot.Atspm.Business.Watchdog
     //TODO: this needs to be added into WatchdogConfiguration and config json needs to be changed from flat
     public class WatchdogEmailOptions
     {
-        public DateTime EmailScanDate { get; set; }
+        //public DateTime EmailScanDate { get; set; }
         public DateTime PmScanDate { get; set; }
         public DateTime AmScanDate { get; set; }
-        public DateTime RampMainlineLastRunStartScanDate { get; set; }
-        public DateTime RampMainlineLastRunEndScanDate { get; set; }
+        public DateTime RampMissedDetectorHitsStartScanDate { get; set; }
         public int AmStartHour { get; set; }
         public int AmEndHour { get; set; }
         public int PmPeakStartHour { get; set; }
         public int PmPeakEndHour { get; set; }
         public int RampDetectorStartHour { get; set; }
         public int RampDetectorEndHour { get; set; }
-        public int RampMainLineLastRunStartHour { get; set; }
-        public int RampMainLineLastRunEndHour { get; set; }
+        public int RampMissedDetectorHitStartHour { get; set; }
+        public int RampMissedDetectorHitEndHour { get; set; }
         public int RampMainlineStartHour { get; set; }
         public int RampMainlineEndHour { get; set; }
         public int RampStuckQueueStartHour { get; set; }
         public int RampStuckQueueEndHour { get; set; }
 
         public bool EmailAllErrors { get; set; }
-        public bool OnlyRampEmail { get; set; }
+        public bool EmailAmErrors { get; set; }
+        public bool EmailPmErrors { get; set; }
+        public bool EmailRampErrors { get; set; }
         public string DefaultEmailAddress { get; set; }
         public bool WeekdayOnly { get; set; }
         public string Sort { get; set; }

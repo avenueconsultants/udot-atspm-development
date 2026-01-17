@@ -60,7 +60,7 @@ cmdBuilder.UseHost(hostBuilder =>
         s.AddAtspmEFEventLogRepositories();
         s.AddAtspmEFAggregationRepositories();
         s.AddScoped<IWatchdogEmailService, WatchdogEmailService>();
-        s.AddScoped<WatchDogLogService>();
+        s.AddScoped<WatchDogRampLogService>();
         s.AddScoped<ScanService>();
         s.AddScoped<PlanService>();
         s.AddScoped<AnalysisPhaseCollectionService>();

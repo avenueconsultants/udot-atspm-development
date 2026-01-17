@@ -98,10 +98,10 @@ namespace Utah.Udot.ATSPM.WatchDog.Commands
             binder.BindMemberFromValue(b => b.EmailAllErrors, EmailAllErrorsOption);
             binder.BindMemberFromValue(b => b.DefaultEmailAddress, DefaultEmailAddressOption);
             binder.BindMemberFromValue(b => b.Sort, SortOption);
-            binder.BindMemberFromValue(b => b.OnlyRampEmail, OnlyRampEmailOption);
+            binder.BindMemberFromValue(b => b.EmailRampErrors, OnlyRampEmailOption);
             binder.BindMemberFromValue(b => b.RampStartOverride, RampStartOption);
             binder.BindMemberFromValue(b => b.RampEndOverride, RampEndOption);
-            binder.BindMemberFromValue(b => b.RampMainLineLastRunStart, RampMainLineLastRunOption);
+            binder.BindMemberFromValue(b => b.RampMissedDetectorHitStart, RampMainLineLastRunOption);
 
             return binder;
         }

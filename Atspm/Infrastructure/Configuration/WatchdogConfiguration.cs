@@ -21,16 +21,16 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
     {
         public DateTime PmScanDate { get; set; } = DateTime.Today.AddDays(-1);
         public DateTime AmScanDate { get; set; } = DateTime.Today;
-        public DateTime RampMainlineLastRunStartScanDate { get; set; } = DateTime.Today.AddDays(-1);
-        public DateTime RampMainlineLastRunEndScanDate { get; set; } = DateTime.Today;
+        public DateTime RampMissedDetectorHitsStartScanDate { get; set; } = DateTime.Today.AddDays(-1);
+        public DateTime RampMissedDetectorHitsEndScanDate { get; set; } = DateTime.Today;
         public int AmStartHour { get; set; } = 1;
         public int AmEndHour { get; set; } = 5;
         public int PmPeakStartHour { get; set; } = 18;
         public int PmPeakEndHour { get; set; } = 17;
         public int RampDetectorStartHour { get; set; } = 7;
         public int RampDetectorEndHour { get; set; } = 8;
-        public int RampMainLineLastRunStartHour { get; set; } = 15;
-        public int RampMainLineLastRunEndHour { get; set; } = 7;
+        public int RampMissedDetectorHitStartHour { get; set; } = 15;
+        public int RampMissedDetectorHitEndHour { get; set; } = 7;
         public int RampMainlineStartHour { get; set; } = 15;
         public int RampMainlineEndHour { get; set; } = 19;
         public int RampStuckQueueStartHour { get; set; } = 1;
@@ -46,19 +46,10 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         public int RampMissedEventsThreshold { get; set; } = 3;
 
         public bool EmailAllErrors { get; set; }
-        public bool OnlyRampEmail { get; set; } = false;
+        public bool EmailPmErrors { get; set; } = true;
+        public bool EmailAmErrors { get; set; } = true;
+        public bool EmailRampErrors { get; set; } = true;
         public string DefaultEmailAddress { get; set; }
-
-
-
-        public DateTime AmAnalysisStart => AmScanDate.Date + new TimeSpan(AmStartHour, 0, 0);
-        public DateTime AmAnalysisEnd => AmScanDate.Date + new TimeSpan(AmEndHour, 0, 0);
-        public DateTime PmAnalysisStart => PmScanDate.Date + new TimeSpan(PmPeakStartHour, 0, 0);
-        public DateTime PmAnalysisEnd => PmScanDate.Date + new TimeSpan(PmPeakEndHour, 0, 0);
-        public DateTime RampDetectorStart => PmScanDate.Date + new TimeSpan(RampDetectorStartHour, 0, 0);
-        public DateTime RampDetectorEnd => PmScanDate.Date + new TimeSpan(RampStuckQueueStartHour, 0, 0);
-        public DateTime RampMainLineLastRunStart => RampMainlineLastRunStartScanDate.Date + new TimeSpan(RampMainLineLastRunStartHour, 0, 0);
-        public DateTime RampMainLineLastRunEnd => RampMainlineLastRunEndScanDate.Date + new TimeSpan(RampMainLineLastRunEndHour, 0, 0);
 
         public string Sort { get; set; }
     }
