@@ -63,4 +63,3 @@ namespace Utah.Udot.Atspm.Data.Enums
         EdgeProcessor
     }
 }
-}
