@@ -20,6 +20,8 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using Utah.Udot.Atspm.Business.Watchdog;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models;
@@ -751,6 +753,492 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 }
             };
         }
+
+        [Fact]
+        public async Task SendAllEmails_ShouldSendAdminEmail_ForUsersWithoutAssignments()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = true,
+                DefaultEmailAddress = "from@test.com",
+                PmScanDate = DateTime.Today
+            };
+
+            var users = new List<ApplicationUser>
+            {
+                new ApplicationUser { Id = "1", Email = "admin@test.com" }
+            };
+
+            var emailServiceMock = new Mock<IEmailService>();
+            emailServiceMock.Setup(m => m.SendEmailAsync(It.IsAny<MailMessage>()))
+                            .ReturnsAsync(true);
+
+            var service = new WatchdogEmailService(_loggerMock.Object, emailServiceMock.Object);
+
+            // Act
+            await service.SendAllEmails(
+                options,
+                new(), new(), new(),
+                new(), users,
+                new(), new(),
+                new(), new(),
+                new(), new(),
+                new());
+
+            // Assert
+            emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.Is<MailMessage>(msg =>
+                    msg.From.Address == "from@test.com" &&
+                    msg.Subject.Contains("All Locations ATSPM Alerts") &&
+                    msg.To.Cast<MailAddress>().Any(to => to.Address == "admin@test.com")
+                )),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task SendRegionEmails_ShouldNotSend_WhenPmAndAmDisabled()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = false,
+                EmailAmErrors = false,
+                EmailRampErrors = false,
+                DefaultEmailAddress = "from@test.com"
+            };
+
+            // Act
+            await _watchdogEmailService.SendAllEmails(
+                options,
+                new(), new(), new(),      // newErrors, dailyRecurringErrors, recurringErrors
+                new(),                     // Locations
+                new(),                     // Users
+                new(), new(),              // Jurisdictions, UserJurisdictions
+                new(), new(),              // Areas, UserAreas
+                new(), new(),              // Regions, UserRegions
+                new()                      // Logs from previous day
+            );
+
+            // Assert
+            _emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.IsAny<MailMessage>()),
+                Times.Never
+            );
+        }
+
+
+        [Fact]
+        public async Task SendJurisdictionEmails_ShouldSendRampEmail_WhenJurisdictionContainsRamp()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = true,
+                RampMissedDetectorHitsStartScanDate = DateTime.Today,
+                DefaultEmailAddress = "from@test.com"
+            };
+
+            var jurisdiction = new Jurisdiction { Id = 1, Name = "I-15 Ramp" };
+            var user = new ApplicationUser { Id = "1", Email = "ramp@test.com" };
+
+            // Act
+            await _watchdogEmailService.SendAllEmails(
+                options,
+                new(), new(), new(), // newErrors, dailyRecurringErrors, recurringErrors
+                new List<Location> { new Location { JurisdictionId = 1 } },
+                new List<ApplicationUser> { user },
+                new List<Jurisdiction> { jurisdiction },
+                new List<UserJurisdiction> { new UserJurisdiction { JurisdictionId = 1, UserId = "1" } },
+                new(), new(), // Areas, UserAreas
+                new(), new(), // Regions, UserRegions
+                new()         // Logs from previous day
+            );
+
+            // Assert
+            _emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.Is<MailMessage>(msg =>
+                    msg.From.Address == "from@test.com" &&
+                    msg.Subject.Contains("Ramp") &&
+                    msg.To.Cast<MailAddress>().Any(to => to.Address == "ramp@test.com")
+                )),
+                Times.Once
+            );
+        }
+
+
+        [Fact]
+        public async Task CreateEmailBody_ShouldIncludeAllThreeSections()
+        {
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = true,
+                PmScanDate = DateTime.Today
+            };
+
+            var body = await _watchdogEmailService.CreateEmailBody(
+                options,
+                new(), new(), new(),
+                new(),
+                new());
+
+            Assert.Contains("New Errors", body);
+            Assert.Contains("Daily Recurring Errors", body);
+            Assert.Contains("Recurring Errors", body);
+        }
+
+        [Fact]
+        public async Task CreateEmailBody_ShouldUseRampScanDate_WhenRampEmailTrue()
+        {
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = true,
+                RampMissedDetectorHitsStartScanDate = new DateTime(2024, 1, 15)
+            };
+
+            var body = await _watchdogEmailService.CreateEmailBody(
+                options,
+                new(), new(), new(),
+                new(),
+                new(),
+                rampEmail: true);
+
+            Assert.Contains("Ramp 1/15/2024", body);
+        }
+
+        [Fact]
+        public void ProcessErrorList_ShouldOnlyRenderPmSections_WhenAmDisabled()
+        {
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = true,
+                EmailAmErrors = false,
+                PmScanDate = DateTime.Today
+            };
+
+            var result = _watchdogEmailService.ProcessErrorList(
+                "Errors",
+                "Sub",
+                new List<WatchDogLogEventWithCountAndDate>
+                {
+            new WatchDogLogEventWithCountAndDate(1, "Loc", DateTime.UtcNow,
+                WatchDogComponentTypes.Location, 1, WatchDogIssueTypes.RecordCount, "Details", null)
+                },
+                options,
+                new List<Location> { new Location { Id = 1 } },
+                new(),
+                false,
+                false);
+
+            Assert.Contains("Missing Records Errors", result);
+            Assert.DoesNotContain("Force Off Errors", result);
+        }
+
+        [Fact]
+        public void ProcessErrorList_ShouldOnlyRenderRampMainline_WhenRampEmail()
+        {
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = true,
+                RampMissedDetectorHitsStartScanDate = DateTime.Today
+            };
+
+            var result = _watchdogEmailService.ProcessErrorList(
+                "Errors",
+                "Sub",
+                new List<WatchDogLogEventWithCountAndDate>
+                {
+            new WatchDogLogEventWithCountAndDate(1, "Loc", DateTime.UtcNow,
+                WatchDogComponentTypes.Location, 1, WatchDogIssueTypes.RampMissedDetectorHits, "Details", null)
+                },
+                options,
+                new List<Location> { new Location { Id = 1 } },
+                new(),
+                false,
+                false,
+                rampEmail: true);
+
+            Assert.Contains("Ramp Mainline Errors", result);
+            Assert.DoesNotContain("Missing Records Errors", result);
+        }
+
+        [Fact]
+        public void GetMessage_ShouldSkipIssue_WhenLocationNotFound()
+        {
+            var result = _watchdogEmailService.GetMessage(
+                new Dictionary<int, Location>(),
+                new List<WatchDogLogEventWithCountAndDate>
+                {
+            new WatchDogLogEventWithCountAndDate(99, "LocX", DateTime.UtcNow,
+                WatchDogComponentTypes.Location, 1, WatchDogIssueTypes.RecordCount, "Details", null)
+                },
+                true,
+                new(),
+                false,
+                false);
+
+            Assert.Equal(string.Empty, result);
+        }
+
+        [Fact]
+        public void GetMessage_ShouldNotIncludePhase_WhenPhaseIsZero()
+        {
+            var locations = GetMockLocations();
+            var issues = new List<WatchDogLogEventWithCountAndDate>
+    {
+        new WatchDogLogEventWithCountAndDate(1, "Loc1", DateTime.UtcNow,
+            WatchDogComponentTypes.Location, 1, WatchDogIssueTypes.RecordCount, "Details", 0)
+    };
+
+            var result = _watchdogEmailService.GetMessage(
+                locations,
+                issues,
+                true,
+                new(),
+                false,
+                false);
+
+            Assert.DoesNotContain("<td>0</td>", result);
+        }
+
+        [Fact]
+        public async Task SendAdminEmail_ShouldIncludePmAndAmDatesInSubject()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = true,
+                EmailAmErrors = true,
+                PmScanDate = new DateTime(2024, 1, 1),
+                AmScanDate = new DateTime(2024, 1, 2),
+                DefaultEmailAddress = "from@test.com"
+            };
+
+            var users = new List<ApplicationUser>
+    {
+        new ApplicationUser { Id = "1", Email = "admin@test.com" }
+    };
+
+            // Act
+            await _watchdogEmailService.SendAllEmails(
+                options,
+                new(), new(), new(), // newErrors, dailyRecurringErrors, recurringErrors
+                new(),                // Locations
+                users,                // Users
+                new(), new(),         // Jurisdictions, UserJurisdictions
+                new(), new(),         // Areas, UserAreas
+                new(), new(),         // Regions, UserRegions
+                new()                 // Logs from previous day
+            );
+
+            // Assert
+            _emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.Is<MailMessage>(msg =>
+                    msg.From.Address == "from@test.com" &&
+                    msg.Subject.Contains("All Locations ATSPM Alerts") &&
+                    msg.Subject.Contains("1/1/2024") &&  // PM date
+                    msg.Subject.Contains("1/2/2024") &&  // AM date
+                    msg.To.Cast<MailAddress>().Any(to => to.Address == "admin@test.com")
+                )),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task SendAdminEmail_ShouldSendTwoEmails_WhenPmAmAndRampEnabled()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailPmErrors = true,
+                EmailAmErrors = true,
+                EmailRampErrors = true,
+                PmScanDate = new DateTime(2024, 1, 1),
+                AmScanDate = new DateTime(2024, 1, 2),
+                RampMissedDetectorHitsStartScanDate = new DateTime(2024, 1, 3),
+                DefaultEmailAddress = "from@test.com"
+            };
+
+            var users = new List<ApplicationUser>
+            {
+                new ApplicationUser { Id = "1", Email = "admin@test.com" }
+            };
+
+            // Act
+            await _watchdogEmailService.SendAllEmails(
+                options,
+                new(), new(), new(), // newErrors, dailyRecurringErrors, recurringErrors
+                new(),                // Locations
+                users,                // Users
+                new(), new(),         // Jurisdictions, UserJurisdictions
+                new(), new(),         // Areas, UserAreas
+                new(), new(),         // Regions, UserRegions
+                new()                 // Logs from previous day
+            );
+
+            // Assert
+            // Verify email for PM/AM errors
+            _emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.Is<MailMessage>(msg =>
+                    msg.From.Address == "from@test.com" &&
+                    msg.Subject.Contains("All Locations ATSPM Alerts") &&
+                    msg.Subject.Contains("1/1/2024") &&  // PM date
+                    msg.Subject.Contains("1/2/2024") &&  // AM date
+                    msg.To.Cast<MailAddress>().Any(to => to.Address == "admin@test.com")
+                )),
+                Times.Once
+            );
+
+            // Verify separate email for Ramp errors
+            _emailServiceMock.Verify(m =>
+                m.SendEmailAsync(It.Is<MailMessage>(msg =>
+                    msg.From.Address == "from@test.com" &&
+                    msg.Subject.Contains("All Ramp ATSPM Alerts") &&
+                    msg.Subject.Contains("1/3/2024") &&  // Ramp date
+                    msg.To.Cast<MailAddress>().Any(to => to.Address == "admin@test.com")
+                )),
+                Times.Once
+            );
+
+            // Verify exactly 2 emails were sent total
+            _emailServiceMock.Verify(m => m.SendEmailAsync(It.IsAny<MailMessage>()), Times.Exactly(2));
+        }
+
+        [Fact]
+        public void ProcessErrorList_ShouldIncludeOnlyRampErrors_WhenRampEmailOnly()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = true,
+                EmailPmErrors = false,
+                EmailAmErrors = false,
+                RampMissedDetectorHitsStartScanDate = DateTime.Today
+            };
+
+            var locations = new List<Location>
+    {
+        new Location { Id = 1, PrimaryName = "Loc1", SecondaryName = "Sec1" }
+    };
+
+            var rampError = new WatchDogLogEventWithCountAndDate(
+                1, "Loc1", DateTime.Parse("2026-01-20T21:07:41Z"),
+                WatchDogComponentTypes.Location, 100,
+                WatchDogIssueTypes.RampMissedDetectorHits, "Ramp error details", null)
+            {
+                EventCount = 5,
+                ConsecutiveOccurenceCount = 3,
+                DateOfFirstInstance = new DateTime(2024, 1, 1)
+            };
+
+            // Act
+            var result = _watchdogEmailService.ProcessErrorList(
+                "Ramp Errors",
+                "Ramp error subheader",
+                new List<WatchDogLogEventWithCountAndDate> { rampError },
+                options,
+                locations,
+                new List<WatchDogLogEvent>(),
+                includeErrorCounts: true,
+                includeConsecutive: true,
+                rampEmail: true);
+
+            // Assert
+            Assert.Contains("Ramp error details", result);
+            Assert.DoesNotContain("Force Off", result); // PM/AM errors
+            Assert.DoesNotContain("Unconfigured", result); // PM/AM errors
+        }
+
+        [Fact]
+        public void ProcessErrorList_ShouldIncludeOnlyPmErrors_WhenPmEmailOnly()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = false,
+                EmailPmErrors = true,
+                EmailAmErrors = false,
+                PmScanDate = DateTime.Today
+            };
+
+            var locations = new List<Location>
+    {
+        new Location { Id = 1, PrimaryName = "Loc1", SecondaryName = "Sec1" }
+    };
+
+            var pmError = new WatchDogLogEventWithCountAndDate(
+                1, "Loc1", DateTime.Parse("2026-01-20T21:07:41Z"),
+                WatchDogComponentTypes.Location, 100,
+                WatchDogIssueTypes.RecordCount, "PM error details", null)
+            {
+                EventCount = 5,
+                ConsecutiveOccurenceCount = 3,
+                DateOfFirstInstance = new DateTime(2024, 1, 1)
+            };
+
+            // Act
+            var result = _watchdogEmailService.ProcessErrorList(
+                "PM Errors",
+                "PM error subheader",
+                new List<WatchDogLogEventWithCountAndDate> { pmError },
+                options,
+                locations,
+                new List<WatchDogLogEvent>(),
+                includeErrorCounts: true,
+                includeConsecutive: true,
+                rampEmail: false);
+
+            // Assert
+            Assert.Contains("PM error details", result);
+            Assert.DoesNotContain("Mainline", result); // Ramp errors should not appear
+        }
+
+        [Fact]
+        public void ProcessErrorList_ShouldIncludeOnlyAmErrors_WhenAmEmailOnly()
+        {
+            // Arrange
+            var options = new WatchdogEmailOptions
+            {
+                EmailRampErrors = false,
+                EmailPmErrors = false,
+                EmailAmErrors = true,
+                AmScanDate = DateTime.Today
+            };
+
+            var locations = new List<Location>
+    {
+        new Location { Id = 1, PrimaryName = "Loc1", SecondaryName = "Sec1" }
+    };
+
+            var amError = new WatchDogLogEventWithCountAndDate(
+                1, "Loc1", DateTime.Parse("2026-01-20T21:07:41Z"),
+                WatchDogComponentTypes.Location, 100,
+                WatchDogIssueTypes.ForceOffThreshold, "AM error details", null)
+            {
+                EventCount = 5,
+                ConsecutiveOccurenceCount = 3,
+                DateOfFirstInstance = new DateTime(2024, 1, 1)
+            };
+
+            // Act
+            var result = _watchdogEmailService.ProcessErrorList(
+                "AM Errors",
+                "AM error subheader",
+                new List<WatchDogLogEventWithCountAndDate> { amError },
+                options,
+                locations,
+                new List<WatchDogLogEvent>(),
+                includeErrorCounts: true,
+                includeConsecutive: true,
+                rampEmail: false);
+
+            // Assert
+            Assert.Contains("AM error details", result);
+            Assert.DoesNotContain("Ramp", result);
+            Assert.DoesNotContain("PM", result);
+        }
+
+
 
     }
 }

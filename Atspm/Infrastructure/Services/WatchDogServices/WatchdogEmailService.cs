@@ -87,7 +87,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             if (options.EmailRampErrors)
             {
                 var emailScanDatesString = BuildEmailScanDatesShortString(options, true);
-                var rampsubject = $"All Locations ATSPM Alerts for {emailScanDatesString}";
+                var rampsubject = $"All Ramp ATSPM Alerts for {emailScanDatesString}";
                 var rampEmailBody = await CreateEmailBody(options, newErrors, dailyRecurringErrors, recurringErrors
                     , locations, logsFromPreviousDay, true);
 
@@ -118,10 +118,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
                 string emailScanDatesString = BuildEmailScanDatesShortString(options);
                 //This is the ramp email.
-                if (jurisdiction.Name.Contains("ramp"))
+                if (jurisdiction.Name.ToLower().Contains("ramp"))
                 {
                     emailScanDatesString = BuildEmailScanDatesShortString(options, true);
-                    var subject = $"{jurisdiction.Name} ATSPM Alerts for {emailScanDatesString}";
+                    var subject = $"{jurisdiction.Name} ATSPM Ramp Alerts for {emailScanDatesString}";
                     if (!userIdsByJurisdiction.IsNullOrEmpty() && !LocationsByJurisdiction.IsNullOrEmpty())
                     {
                         var emailBody = await CreateEmailBody(
@@ -640,13 +640,5 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
             return string.Empty;
         }
-
-
-        private string BuildScanLabelString(IEnumerable<WatchdogScanType> scanTypes)
-        {
-            return string.Join(", ", scanTypes.Select(s => s.ToString().ToUpper()));
-        }
-
-
     }
 }
