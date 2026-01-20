@@ -61,6 +61,8 @@ cmdBuilder.UseHost(hostBuilder =>
         s.AddAtspmEFAggregationRepositories();
         s.AddScoped<IWatchdogEmailService, WatchdogEmailService>();
         s.AddScoped<WatchDogRampLogService>();
+        s.AddScoped<WatchDogAmLogService>();
+        s.AddScoped<WatchDogPmLogService>();
         s.AddScoped<ScanService>();
         s.AddScoped<PlanService>();
         s.AddScoped<AnalysisPhaseCollectionService>();
