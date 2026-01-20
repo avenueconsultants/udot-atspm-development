@@ -73,17 +73,20 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             List<ApplicationUser> users,
             List<WatchDogLogEvent> logsFromPreviousDay)
         {
-            string emailScanDatesString = BuildEmailScanDatesShortString(options);
-            var subject = $"All Locations ATSPM Alerts for {emailScanDatesString}";
-            var emailBody = await CreateEmailBody(options, newErrors, dailyRecurringErrors, recurringErrors
-                , locations, logsFromPreviousDay);
+            if (options.EmailPmErrors || options.EmailAmErrors)
+            {
+                string emailScanDatesString = BuildEmailScanDatesShortString(options);
+                var subject = $"All Locations ATSPM Alerts for {emailScanDatesString}";
+                var emailBody = await CreateEmailBody(options, newErrors, dailyRecurringErrors, recurringErrors
+                    , locations, logsFromPreviousDay);
 
-            await mailService.SendEmailAsync(new MailAddress(options.DefaultEmailAddress), users.GetMailingAddresses(), subject, emailBody, true);
+                await mailService.SendEmailAsync(new MailAddress(options.DefaultEmailAddress), users.GetMailingAddresses(), subject, emailBody, true);
+            }
 
             //This will send the ramp email.
             if (options.EmailRampErrors)
             {
-                emailScanDatesString = BuildEmailScanDatesShortString(options, true);
+                var emailScanDatesString = BuildEmailScanDatesShortString(options, true);
                 var rampsubject = $"All Locations ATSPM Alerts for {emailScanDatesString}";
                 var rampEmailBody = await CreateEmailBody(options, newErrors, dailyRecurringErrors, recurringErrors
                     , locations, logsFromPreviousDay, true);
@@ -130,8 +133,9 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                         await mailService.SendEmailAsync(new MailAddress(options.DefaultEmailAddress), usersByJurisdiction.GetMailingAddresses(), subject, emailBody, true);
                     }
                 }
-                else
+                else if (options.EmailPmErrors || options.EmailAmErrors)
                 {
+
                     var subject = $"{jurisdiction.Name} ATSPM Alerts for {emailScanDatesString}";
                     if (!userIdsByJurisdiction.IsNullOrEmpty() && !LocationsByJurisdiction.IsNullOrEmpty())
                     {
@@ -159,6 +163,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             List<UserArea> userAreas,
             List<WatchDogLogEvent> logsFromPreviousDay)
         {
+            if (!(options.EmailPmErrors || options.EmailAmErrors))
+            {
+                return;
+            }
             foreach (var area in areas)
             {
                 var userIdsByArea = userAreas.Where(ua => ua.AreaId == area.Id).ToList();
@@ -193,6 +201,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             List<UserRegion> userRegions,
                 List<WatchDogLogEvent> logsFromPreviousDay)
         {
+            if (!(options.EmailPmErrors || options.EmailAmErrors))
+            {
+                return;
+            }
             foreach (var region in regions)
             {
                 var userIdsByRegion = userRegions.Where(ur => ur.RegionId == region.Id).ToList();

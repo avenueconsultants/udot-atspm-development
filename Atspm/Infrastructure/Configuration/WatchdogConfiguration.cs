@@ -23,6 +23,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         public DateTime AmScanDate { get; set; } = DateTime.Today;
         public DateTime RampMissedDetectorHitsStartScanDate { get; set; } = DateTime.Today.AddDays(-1);
         public DateTime RampMissedDetectorHitsEndScanDate { get; set; } = DateTime.Today;
+
         public int AmStartHour { get; set; } = 1;
         public int AmEndHour { get; set; } = 5;
         public int PmPeakStartHour { get; set; } = 18;
@@ -35,6 +36,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         public int RampMainlineEndHour { get; set; } = 19;
         public int RampStuckQueueStartHour { get; set; } = 1;
         public int RampStuckQueueEndHour { get; set; } = 4;
+
         public bool WeekdayOnly { get; set; } = true;
         public int ConsecutiveCount { get; set; } = 3;
         public int MinPhaseTerminations { get; set; } = 50;
