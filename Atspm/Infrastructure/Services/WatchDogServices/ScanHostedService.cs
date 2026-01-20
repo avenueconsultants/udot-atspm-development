@@ -69,7 +69,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             };
             var emailOptions = new WatchdogEmailOptions
             {
-                EmailScanDate = _options.PmScanDate,
+                //EmailScanDate = _options.PmScanDate,
                 AmScanDate = _options.AmScanDate,
                 PmScanDate = _options.PmScanDate,
                 RampMissedDetectorHitsStartScanDate = _options.RampMissedDetectorHitsStartScanDate,

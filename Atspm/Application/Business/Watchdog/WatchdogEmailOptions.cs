@@ -45,4 +45,11 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public bool WeekdayOnly { get; set; }
         public string Sort { get; set; }
     }
+
+    public enum WatchdogScanType
+    {
+        Pm,
+        Am,
+        Ramp
+    }
 }
