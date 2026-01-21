@@ -44,13 +44,13 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
             linkPivotPair.UpstreamLocationApproach = signalApproach;
             linkPivotPair.DownstreamLocationApproach = downSignalApproach;
-            linkPivotPair.StartDate = options.StartDate;
+            linkPivotPair.StartDate = DateOnly.FromDateTime(options.Start);
             linkPivotPair.LinkNumber = linkNumber;
             if (IsApproachNull(linkPivotPair))
             {
                 throw new Exception("Route approaches are misconfigured");
             }
-            await SetPcds(options.StartTime, options.EndTime, daysToInclude, options.CycleLength, linkPivotPair);
+            await SetPcds(TimeOnly.FromDateTime(options.Start), TimeOnly.FromDateTime(options.End), daysToInclude, options.CycleLength, linkPivotPair);
             //Check to see if both directions have detection if so analyze both
             if (linkPivotPair.UpstreamPcd.Count > 0 && linkPivotPair.DownstreamPcd.Count > 0)
                 if (options.Bias.AreNotEqual(0d))

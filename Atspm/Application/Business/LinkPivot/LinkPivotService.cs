@@ -34,7 +34,7 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
         public async Task<LinkPivotResult> GetData(LinkPivotOptions options, List<RouteLocation> routeLocations)
         {
-            LinkPivot linkPivot = new LinkPivot(options.StartDate.ToDateTime(options.StartTime), options.EndDate.ToDateTime(options.EndTime));
+            LinkPivot linkPivot = new LinkPivot(options.Start, options.End);
             var (lp, pairedApproches) = await GetAdjustmentObjectsAsync(options, routeLocations);
 
             if (lp.Count == 0 || pairedApproches.Count == 0)
@@ -148,7 +148,7 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
                 }
             }
 
-            var daysToInclude = GetDaysToProcess(options.StartDate, options.EndDate, options.DaysOfWeek);
+            var daysToInclude = GetDaysToProcess(DateOnly.FromDateTime(options.Start), DateOnly.FromDateTime(options.End), options.DaysOfWeek);
             await CreatePairedApproaches(options, routeLocations, pairedApproaches, indices, daysToInclude);
 
             //Cycle through the LinkPivotPair list and add the statistics to the LinkPivotadjustmentTable
