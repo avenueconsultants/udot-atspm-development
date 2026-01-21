@@ -80,7 +80,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         ////////////////////////////////////////////////////////////
 
         //WatchDogIssueType RampMissedDetectorHits - 11
-        private void CheckRampMissedDetectorHits(Location location, WatchdogRampLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
+        public void CheckRampMissedDetectorHits(Location location, WatchdogRampLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
         {
             if (location.LocationTypeId != 2)
                 return;

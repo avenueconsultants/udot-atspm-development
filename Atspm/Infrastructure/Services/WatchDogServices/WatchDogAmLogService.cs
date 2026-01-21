@@ -203,7 +203,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         ////////////////////////////////////////////////////////////
 
         //WatchDogIssueType StuckPed - 3 - AM
-        private async Task CheckForStuckPed(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
+        public async Task CheckForStuckPed(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
         {
             if (phase.PedestrianEvents.Count > options.MaximumPedestrianEvents)
             {
@@ -223,7 +223,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType ForceOffThreshold - 4 - AM
-        private async Task CheckForForceOff(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
+        public async Task CheckForForceOff(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
         {
             if (phase.PercentForceOffs > options.PercentThreshold && phase.TerminationEvents.Count(t => t.EventCode != 7) > options.MinPhaseTerminations)
             {
@@ -244,7 +244,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType MaxOutThreshold - 5 - AM
-        private async Task CheckForMaxOut(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
+        public async Task CheckForMaxOut(AnalysisPhaseData phase, Approach approach, WatchdogAmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors)
         {
             if (phase.PercentMaxOuts > options.PercentThreshold && phase.TotalPhaseTerminations > options.MinPhaseTerminations)
             {

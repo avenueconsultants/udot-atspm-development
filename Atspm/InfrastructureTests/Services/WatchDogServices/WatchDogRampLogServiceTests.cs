@@ -1,5 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
 using Moq;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Utah.Udot.Atspm.Business.Watchdog;
+using Utah.Udot.Atspm.Data.Enums;
+using Utah.Udot.Atspm.Data.Models;
+using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using Utah.Udot.Atspm.Repositories.EventLogRepositories;
 using Xunit;
 
@@ -27,5 +37,88 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
         {
             Assert.NotNull(_watchDogRampLogService);
         }
+
+        [Fact]
+        public async Task GetWatchDogIssues_Should_ReturnEmptyList_WhenLocationsEmpty()
+        {
+            // Arrange
+            var options = new WatchdogRampLoggingOptions();
+            var locations = new List<Location>();
+
+            // Act
+            var result = await _watchDogRampLogService.GetWatchDogIssues(options, locations, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void CheckRampMissedDetectorHits_Should_AddError_WhenNoEventsDetected()
+        {
+            // Arrange
+            var options = new WatchdogRampLoggingOptions
+            {
+                RampMissedDetectorHitsStartScanDate = DateTime.Today.AddHours(6),
+                RampMissedDetectorHitsEndScanDate = DateTime.Today.AddHours(9),
+                RampMissedEventsThreshold = 0
+            };
+
+            var detector = new Detector
+            {
+                Id = 1,
+                DetectorChannel = 1,
+                DetectionTypes = new List<DetectionType>
+        {
+            new DetectionType { Id = (DetectionTypes)8 } // valid type
+        }
+            };
+
+            var approach = new Approach
+            {
+                Id = 1,
+                LocationId = 1,
+                Detectors = new List<Detector> { detector } // detectors belong to approach
+            };
+
+            var location = new Location
+            {
+                Id = 1,
+                LocationIdentifier = "LOC1",
+                LocationTypeId = 2, // RM type required
+                Approaches = new List<Approach> { approach } // approaches belong to location
+            };
+
+            var errors = new ConcurrentBag<WatchDogLogEvent>();
+            var events = new List<IndianaEvent>(); // empty -> should trigger RampMissedDetectorHits
+
+            // Act
+            _watchDogRampLogService.CheckRampMissedDetectorHits(location, options, events, errors);
+
+            // Assert
+            Assert.Single(errors);
+            var error = errors.First();
+            Assert.Equal(WatchDogIssueTypes.RampMissedDetectorHits, error.IssueType);
+            Assert.Equal(detector.Id, error.ComponentId);
+            //Assert.Contains("No events received", error.Message);
+        }
+
+        [Fact]
+        public async Task GetWatchDogIssues_Should_HonorCancellationToken()
+        {
+            // Arrange
+            var options = new WatchdogRampLoggingOptions();
+            var location = new Location { Id = 1, LocationIdentifier = "LOC1" };
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            // Act
+            var result = await _watchDogRampLogService.GetWatchDogIssues(options, new List<Location> { location }, cts.Token);
+
+            // Assert
+            Assert.Empty(result); // Should return immediately due to cancellation
+        }
+
+
     }
 }

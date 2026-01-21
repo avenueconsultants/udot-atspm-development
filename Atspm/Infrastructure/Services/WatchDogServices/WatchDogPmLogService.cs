@@ -222,7 +222,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         ////////////////////////////////////////////////////////////
 
         //WatchDogIssueType RecordCount - 1 - ALL Times
-        private async Task<WatchDogLogEvent> CheckLocationRecordCount(DateTime dateToCheck, Location Location, WatchdogPmLoggingOptions options, List<IndianaEvent> LocationEvents)
+        public async Task<WatchDogLogEvent> CheckLocationRecordCount(DateTime dateToCheck, Location Location, WatchdogPmLoggingOptions options, List<IndianaEvent> LocationEvents)
         {
             if (LocationEvents.Count > options.MinimumRecords)
             {
@@ -246,7 +246,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType LowDetectorHits - 2 - PM
-        private void CheckForLowDetectorHits(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
+        public void CheckForLowDetectorHits(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
         {
             var detectors = location.GetDetectorsForLocationThatSupportMetric(6);
             //Parallel.ForEach(detectors, options, detector =>
@@ -286,7 +286,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType UnconfiguredApproach - 6 - PM
-        private void CheckForUnconfiguredApproaches(Location Location, WatchdogPmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors, List<IndianaEvent> cycleEvents)
+        public void CheckForUnconfiguredApproaches(Location Location, WatchdogPmLoggingOptions options, ConcurrentBag<WatchDogLogEvent> errors, List<IndianaEvent> cycleEvents)
         {
             var phasesInUse = cycleEvents.Where(d => d.EventCode == 1 && d.Timestamp >= options.PmAnalysisStart
                 && d.Timestamp <= options.PmAnalysisEnd).Select(d => d.EventParam).Distinct();
@@ -310,7 +310,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType UnconfiguredDetector - 7 - PM
-        private static void CheckForUnconfiguredDetectors(Location Location, WatchdogPmLoggingOptions options, List<IndianaEvent> LocationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
+        public static void CheckForUnconfiguredDetectors(Location Location, WatchdogPmLoggingOptions options, List<IndianaEvent> LocationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
         {
             var detectorChannelsFromEvents = LocationEvents.Where(e => detectorEventCodes.Contains(e.EventCode)
             && e.Timestamp >= options.PmAnalysisStart && e.Timestamp <= options.PmAnalysisEnd)
@@ -332,7 +332,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType MissingMainlineData - 8 - PM
-        private void CheckMainlineDetections(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
+        public void CheckMainlineDetections(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
         {
             var mainlineEventCodes = new List<short> { 1371, 1372, 1373 };
             CheckDetections(
@@ -350,7 +350,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType StuckQueueDetection - 9 - PM
-        private void CheckStuckQueueDetections(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
+        public void CheckStuckQueueDetections(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
         {
             var eventCodes = Enumerable.Range(1171, 31).Where(i => i % 2 != 0).Select(i => (short)i).ToList();
             CheckDetections(
@@ -368,7 +368,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         }
 
         //WatchDogIssueType LowRampDetectorHits - 10 - PM
-        private void CheckForLowRampDetectorHits(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
+        public void CheckForLowRampDetectorHits(Location location, WatchdogPmLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
         {
             if (location.LocationTypeId != 2)
             {
