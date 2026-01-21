@@ -26,6 +26,18 @@ import {
   formatExportFileName,
 } from '@/features/charts/common/transformers'
 import { ToolType } from '@/features/charts/common/types'
+import {
+  generateCycleLabels,
+  generateCycles,
+  generateGreenEventLines,
+  getDistancesLabelOption,
+  getLocationsLabelOption,
+  getOffsetAndProgramSplitLabel,
+} from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
+import {
+  RawTimeSpaceAverageData,
+  RawTimeSpaceDiagramResponse,
+} from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedToolResponse } from '@/features/charts/types'
 import {
   SolidLineSeriesSymbol,
@@ -38,16 +50,6 @@ import {
   GridComponentOption,
   SeriesOption,
 } from 'echarts'
-import { RawTimeSpaceAverageData, RawTimeSpaceDiagramResponse } from '../types'
-import {
-  generateCycles,
-  generateGreenEventLines,
-  generateOpposingCycleLabels,
-  generatePrimaryCycleLabels,
-  getDistancesLabelOption,
-  getLocationsLabelOption,
-  getOffsetAndProgramSplitLabel,
-} from './timeSpaceTransformerBase'
 
 export default function transformTimeSpaceAverageData(
   response: RawTimeSpaceDiagramResponse
@@ -221,7 +223,7 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
       endDateFormat
     )
   )
-  series.push(generatePrimaryCycleLabels(distanceData, primaryDirection))
+  series.push(generateCycleLabels(distanceData, primaryDirection))
 
   let reverseDistanceData = distanceData.reverse()
   reverseDistanceData = reverseDistanceData.map((distance) => (distance += 120))
@@ -243,9 +245,7 @@ function transformData(data: RawTimeSpaceAverageData[]): EChartsOption {
     )
   )
 
-  series.push(
-    generateOpposingCycleLabels(reverseDistanceData, opposingDirection)
-  )
+  series.push(generateCycleLabels(reverseDistanceData, opposingDirection))
 
   const displayProps = createDisplayProps({
     description: '',

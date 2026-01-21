@@ -1,9 +1,9 @@
 import SelectDateTime from '@/components/selectTimeSpan'
 import { MultiSelectCheckbox } from '@/features/aggregateData/components/chartOptions/MultiSelectCheckbox'
-import TimeSpaceRouteSelect from '@/features/charts/timeSpaceDiagram/components/TimeSpaceRouteSelect'
+import { TSAverageHandler } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions/timeSpaceAverageOptions.handler'
+import TimeSpaceRouteSelect from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/TimeSpaceRouteSelect'
 import { Box, Paper } from '@mui/material'
-import SequenceAndCoordinationComponent from './SequenceAndCoordinationComponent'
-import { TSAverageHandler } from './handlers/handlers'
+import SequenceAndCoordinationComponent from './SequenceAndCoordinationSelector'
 
 interface Props {
   handler: TSAverageHandler

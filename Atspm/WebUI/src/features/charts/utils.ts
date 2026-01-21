@@ -59,10 +59,54 @@ export const SolidLineSeriesSymbol =
   'path://M180 1000 l0 -20 200 0 200 0 0 20 0 20 -200 0 -200 0 0 -20z'
 
 export function formatChartDateTimeRange(startDate: string, endDate: string) {
-  return `${new Date(startDate).toLocaleString(
-    'en-US',
-    dateFormat
-  )} - ${new Date(endDate).toLocaleString('en-US', dateFormat)}`
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return `${startDate} - ${endDate}`
+  }
+
+  const sameDay =
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate()
+
+  const dayLabel = start.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
+  const timeFmt: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }
+
+  const startTime = start.toLocaleTimeString('en-US', timeFmt)
+  const endTime = end.toLocaleTimeString('en-US', timeFmt)
+
+  if (sameDay) {
+    return `${dayLabel} • ${startTime}–${endTime}`
+  }
+
+  const startFull = start.toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    ...timeFmt,
+  })
+  const endFull = end.toLocaleString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    ...timeFmt,
+  })
+
+  return `${startFull} - ${endFull}`
 }
 
 export function adjustPlanPositions(chart: ECharts) {
