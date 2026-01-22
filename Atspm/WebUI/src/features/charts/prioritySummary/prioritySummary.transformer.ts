@@ -20,6 +20,7 @@ import {
   createDataZoom,
   createDisplayProps,
   createGrid,
+  createInfoString,
   createLegend,
   createSeries,
   createTitle,
@@ -37,11 +38,13 @@ import {
 } from '@/features/charts/prioritySummary/types'
 import {
   Color,
+  crossSvgSymbol,
   formatChartDateTimeRange,
   triangleSvgSymbol,
-  xSvgSymbol,
 } from '@/features/charts/utils'
 import { EChartsOption } from 'echarts'
+
+const SYMBOL_SIZE = 8
 
 export default function transformPrioritySummaryData(
   response: RawPrioritySummaryResponse | PrioritySummaryResult
@@ -57,30 +60,38 @@ export default function transformPrioritySummaryData(
   }
 }
 
+function durationToSeconds(duration: string): string {
+  const [h, m, s] = duration.split(':')
+  const seconds = Number(h) * 3600 + Number(m) * 60 + Number(s)
+
+  return seconds.toFixed(1)
+}
+
 function transformLocation(data: PrioritySummaryResult) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
+
+  const info = createInfoString(
+    ['Average duration:', `${durationToSeconds(data.averageDuration)}s`],
+    ['Total check-ins:', `${data.numberCheckins}`],
+    ['Total check-outs:', `${data.numberCheckouts}`],
+    ['Total early greens:', `${data.numberEarlyGreens}`],
+    ['Total extended greens:', `${data.numberExtendedGreens}`]
+  )
 
   const title = createTitle({
     title: 'Priority Summary',
     location: data.locationDescription,
     dateRange,
+    info,
   })
 
   const xAxis = createXAxis(data.start, data.end)
-  const yAxis = createYAxis(true, { name: 'Seconds Since 112 (Check In)' })
+  const yAxis = createYAxis(true, { name: 'Seconds Since Check-In' })
 
-  const grid = createGrid({ top: 100, left: 70, right: 210 })
+  const grid = createGrid({ top: 140, left: 70, right: 210 })
 
   const legend = createLegend({
     top: grid.top,
-    data: [
-      { name: 'TSP Request (112→115)' },
-      { name: 'TSP Service (118→119)' },
-      { name: 'Early Green (113)', icon: 'circle' },
-      { name: 'Extend Green (114)', icon: 'circle' },
-      { name: 'Preempt Force Off (116)', icon: 'circle' },
-      { name: 'TSP Early Force Off (117)', icon: 'circle' },
-    ],
   })
 
   const dataZoom = createDataZoom()
@@ -105,18 +116,16 @@ function transformLocation(data: PrioritySummaryResult) {
   const series = createSeries()
 
   const barWidthRequest = 5
-  const barWidthService = 2
+  const barWidthService = 3
 
   const requestBar = cycles
     .filter((c) => c.requestEndOffsetSec != null && c.requestEndOffsetSec >= 0)
     .map((c) => {
       const inMs = Date.parse(c.checkIn)
-      const outMs = Number.isFinite(Date.parse(c.checkOut))
-        ? Date.parse(c.checkOut)
-        : inMs + 30_000
+      const outMs = Date.parse(c.checkOut)
 
-      const windowStart = new Date(inMs - 120_000).toISOString()
-      const windowEnd = new Date(outMs + 120_000).toISOString()
+      const windowStart = new Date(inMs - 125_000).toISOString()
+      const windowEnd = new Date(outMs + 125_000).toISOString()
 
       return [
         c.checkIn,
@@ -179,7 +188,6 @@ function transformLocation(data: PrioritySummaryResult) {
 
   if (serviceOffsetData.length > 0) {
     series.push({
-      name: '__Service Offset (hidden)',
       type: 'bar',
       data: serviceOffsetData,
       stack: 'service',
@@ -218,8 +226,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: earlyGreenPts,
       color: Color.Black,
-      symbolSize: 7,
-      symbol: 'diamond',
+      symbolSize: SYMBOL_SIZE,
+      symbol: 'circle',
       z: 4,
     })
   }
@@ -230,8 +238,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: extendGreenPts,
       color: Color.Black,
-      symbolSize: 7,
-      symbol: 'triangle',
+      symbolSize: SYMBOL_SIZE,
+      symbol: triangleSvgSymbol,
       z: 4,
     })
   }
@@ -242,8 +250,8 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: preemptForceOffPts,
       color: Color.Red,
-      symbolSize: 10,
-      symbol: xSvgSymbol,
+      symbolSize: SYMBOL_SIZE,
+      symbol: crossSvgSymbol,
       z: 4,
     })
   }
@@ -254,11 +262,15 @@ function transformLocation(data: PrioritySummaryResult) {
       type: 'scatter',
       data: tspEarlyForceOffPts,
       color: Color.Red,
-      symbolSize: 10,
-      symbol: triangleSvgSymbol,
+      symbolSize: SYMBOL_SIZE,
+      symbol: crossSvgSymbol,
       z: 4,
     })
   }
+
+  const hintGraphic = buildLegendWidthHintGraphic(
+    'Click a cycle to see more details'
+  )
 
   const displayProps = createDisplayProps({
     description: 'Summary',
@@ -272,10 +284,104 @@ function transformLocation(data: PrioritySummaryResult) {
     legend,
     dataZoom,
     toolbox,
+    graphic: [hintGraphic],
     tooltip,
     series,
     displayProps,
   }
 
   return chartOptions
+}
+
+function buildLegendWidthHintGraphic(text: string) {
+  const right = 0
+  const bottom = 110
+  const padding = [10, 12]
+
+  const bg = '#d8e2f9'
+  const radius = 6
+  const width = 190
+
+  const borderBlue = '#9ca3ba'
+
+  const fontSize = 13
+  const lineHeight = 16
+
+  // --- left icon + divider layout ---
+  const iconRadius = 10
+  const iconCx = padding[1] + iconRadius
+  const iconCy = padding[0] + iconRadius + 12
+
+  const dividerX = iconCx + iconRadius + 10
+  const textX = dividerX + 12
+
+  const maxTextWidth = Math.max(0, width - textX - padding[1])
+
+  const lines = 3
+  const height = padding[0] * 2 + lines * lineHeight
+
+  return {
+    type: 'group',
+    right,
+    bottom,
+    silent: true,
+    z: 100,
+    children: [
+      {
+        type: 'rect',
+        shape: { x: 0, y: 0, width, height, r: radius },
+        style: { fill: bg, lineWidth: 1 },
+      },
+
+      // circle
+      {
+        type: 'circle',
+        shape: { cx: iconCx, cy: iconCy, r: iconRadius },
+        style: { fill: 'transparent', stroke: '#3c3c41', lineWidth: 2 },
+      },
+
+      // exclamation inside circle
+      {
+        type: 'text',
+        style: {
+          x: iconCx,
+          y: iconCy + 1,
+          text: '!',
+          fill: '#3c3c41',
+          fontSize: 16,
+          fontWeight: 800,
+          align: 'center',
+          verticalAlign: 'middle',
+        },
+      },
+
+      // vertical divider line
+      {
+        type: 'line',
+        shape: {
+          x1: dividerX,
+          y1: padding[0],
+          x2: dividerX,
+          y2: height - padding[0],
+        },
+        style: { stroke: borderBlue, lineWidth: 1 },
+      },
+
+      // message text
+      {
+        type: 'text',
+        style: {
+          x: textX,
+          y: padding[0] + 8,
+          text,
+          fontSize,
+          lineHeight,
+          fill: '#3c3c41',
+          width: maxTextWidth,
+          overflow: 'break',
+          textVerticalAlign: 'top',
+        },
+      },
+    ],
+  } as const
 }
