@@ -82,7 +82,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Green Time Utilization',
+    title: ['Green Time Utilization', data.approachDescription],
     location: data.locationDescription,
     dateRange,
   })

@@ -76,7 +76,7 @@ function transformData(data: RawArrivalsOnRedData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Arrivals on Red',
+    title: ['Arrivals on Red', data.phaseDescription],
     location: data.locationDescription,
     dateRange,
     info,
