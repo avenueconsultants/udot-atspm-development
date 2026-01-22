@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
@@ -30,17 +29,21 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int phaseNumber,
             string phaseNumberSort,
             double distanceToNextLocation,
+            double distanceToPreviousLocation,
             int speed,
+            int programmedCycleLength,
             List<CycleEventsDto> cycleAllEvents,
-            List<TimeSpaceEventBase> laneByLaneCountDetectors,
-            List<TimeSpaceEventBase> advanceCountDetectors,
-            List<TimeSpaceEventBase> stopBarPresenceDetectors,
-            List<TimeSpaceEventBase> greenTimeEvents) : base(approachId, locationId, start, end)
+            List<TimeSpaceDetectorEventDto> laneByLaneCountDetectors,
+            List<TimeSpaceDetectorEventDto> advanceCountDetectors,
+            List<TimeSpaceDetectorEventDto> stopBarPresenceDetectors,
+            List<DataPointWithDetectorCheckBase> greenTimeEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
             DistanceToNextLocation = distanceToNextLocation;
+            DistanceToPreviousLocation = distanceToPreviousLocation;
             Speed = speed;
+            CycleLength = programmedCycleLength;
             CycleAllEvents = cycleAllEvents;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
             AdvanceCountDetectors = advanceCountDetectors;
@@ -53,10 +56,13 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseType { get; set; }
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
+        public double DistanceToPreviousLocation { get; set; }
+        public int Order { get; set; }
+        public int CycleLength { get; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
-        public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
-        public List<TimeSpaceEventBase> LaneByLaneCountDetectors { get; set; }
-        public List<TimeSpaceEventBase> AdvanceCountDetectors { get; set; }
-        public List<TimeSpaceEventBase> StopBarPresenceDetectors { get; set; }
+        public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
+        public List<TimeSpaceDetectorEventDto> LaneByLaneCountDetectors { get; set; }
+        public List<TimeSpaceDetectorEventDto> AdvanceCountDetectors { get; set; }
+        public List<TimeSpaceDetectorEventDto> StopBarPresenceDetectors { get; set; }
     }
 }

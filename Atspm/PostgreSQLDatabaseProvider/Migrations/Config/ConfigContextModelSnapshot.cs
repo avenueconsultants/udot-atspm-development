@@ -139,6 +139,9 @@ namespace Utah.Udot.ATSPM.PostgreSQLDatabaseProvider.Migrations
                     b.Property<int>("ProtectedPhaseNumber")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("TransitSignalPriorityNumber")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DirectionTypeId");
@@ -313,6 +316,13 @@ namespace Utah.Udot.ATSPM.PostgreSQLDatabaseProvider.Migrations
                             Abbreviation = "EQ",
                             Description = "Excessive Queue",
                             DisplayOrder = 11
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Abbreviation = "PP",
+                            Description = "Priority and Preemption",
+                            DisplayOrder = 12
                         });
                 });
 
@@ -1614,6 +1624,20 @@ namespace Utah.Udot.ATSPM.PostgreSQLDatabaseProvider.Migrations
                             MeasureTypeId = 5,
                             Option = "yAxisDefault",
                             Value = "300"
+                        },
+                        new
+                        {
+                            Id = 121,
+                            MeasureTypeId = 39,
+                            Option = "binSize",
+                            Value = "15"
+                        },
+                        new
+                        {
+                            Id = 122,
+                            MeasureTypeId = 40,
+                            Option = "binSize",
+                            Value = "15"
                         });
                 });
 
@@ -2032,6 +2056,24 @@ namespace Utah.Udot.ATSPM.PostgreSQLDatabaseProvider.Migrations
                             Name = "Transit Signal Priority",
                             ShowOnAggregationSite = false,
                             ShowOnWebsite = false
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Abbreviation = "TSPS",
+                            DisplayOrder = 133,
+                            Name = "Transit Signal Priority Summary",
+                            ShowOnAggregationSite = false,
+                            ShowOnWebsite = true
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Abbreviation = "TSPD",
+                            DisplayOrder = 134,
+                            Name = "Transit Signal Priority Details",
+                            ShowOnAggregationSite = false,
+                            ShowOnWebsite = true
                         });
                 });
 

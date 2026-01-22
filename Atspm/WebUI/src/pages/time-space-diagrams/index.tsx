@@ -1,83 +1,51 @@
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useTools } from '@/features/charts/api/getTools'
 import { ToolType } from '@/features/charts/common/types'
-import DefaultChartResults from '@/features/charts/components/defaultToolResults/DefaultToolResults'
-import { TimeSpaceAverageContainer } from '@/features/charts/timeSpaceDiagram/components/containers/TimeSpaceAverageContainer'
-import { TimeSpaceHistoricContainer } from '@/features/charts/timeSpaceDiagram/components/containers/TimeSpaceHistoricContainer'
+import TimeSpaceChart from '@/features/charts/components/defaultToolResults/DefaultToolResults'
+import { AverageOptionsComponent } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions'
+import { useAverageOptionsHandler } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions/timeSpaceAverageOptions.handler'
+import HistoricOptionsComponent from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/TimeSpaceHistoricOptions'
+import { useHistoricOptionsHandler } from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/historicTimeSpaceOptions.handler'
 import {
   TimeSpaceAverageOptions,
   TimeSpaceOptions,
-} from '@/features/charts/timeSpaceDiagram/types'
+} from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedToolResponse } from '@/features/charts/types'
 import { useGetRoute } from '@/features/routes/api/getRoutes'
-import { toUTCDateWithTimeStamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { Alert, Box, Tab, Typography } from '@mui/material'
-import { AxiosError, AxiosResponse } from 'axios'
-import { set, subDays, subMonths } from 'date-fns'
-import { RefObject, useRef, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const TimeSpaceDiagram = () => {
-  const [currentTab, setCurrentTab] = useState(ToolType.TimeSpaceHistoric)
-  const chartRefs = useRef<RefObject<HTMLDivElement>[]>([])
-  const [hasAttemptedGenerate, setHasAttemptedGenerate] = useState(false)
-  const [routeId, setRouteId] = useState('')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const appliedUrlRef = useRef(false)
 
-  // Dynamic default options generation based on selected tab
-  const getDefaultChartOptions = (tab: ToolType): TimeSpaceOptions => {
-    const yesterday = subDays(new Date(), 1)
-
-    if (tab === ToolType.TimeSpaceHistoric) {
-      return {
-        extendStartStopSearch: 2,
-        showAllLanesInfo: true,
-        start: set(yesterday, { hours: 16, minutes: 0, seconds: 0 }),
-        end: set(yesterday, { hours: 16, minutes: 20, seconds: 0 }),
-        routeId: routeId || '',
-        chartType: '',
-        speedLimit: null,
-        locationIdentifier: '',
-      }
-    }
-
-    const formatTimestampToYYYYMMDD = (timestamp: string | Date) => {
-      const date =
-        typeof timestamp === 'string' ? new Date(timestamp) : timestamp
-
-      const day = String(date.getDate()).padStart(2, '0')
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const year = date.getFullYear()
-
-      return `${year}-${month}-${day}`
-    }
-
-    const formattedStartTime = toUTCDateWithTimeStamp(
-      set(new Date(), { hours: 16, minutes: 0, seconds: 0 })
-    )
-    const formattedEndTime = toUTCDateWithTimeStamp(
-      set(new Date(), { hours: 16, minutes: 20, seconds: 0 })
-    )
-    return {
-      startDate: formatTimestampToYYYYMMDD(subMonths(yesterday, 1)),
-      endDate: formatTimestampToYYYYMMDD(yesterday),
-      startTime: formattedStartTime,
-      endTime: formattedEndTime,
-      routeId: routeId || '',
-      speedLimit: null,
-      daysOfWeek: [1, 2, 3, 4, 5],
-      sequence: [],
-      coordinatedPhases: [],
-    }
-  }
-  const [toolOptions, setToolOptions] = useState<TimeSpaceOptions>(
-    getDefaultChartOptions(ToolType.TimeSpaceHistoric)
+  const [currentTab, setCurrentTab] = useState<ToolType>(
+    ToolType.TimeSpaceHistoric
   )
+  const [hasAttemptedGenerate, setHasAttemptedGenerate] = useState(false)
 
-  const handleRouteIdChange = (routeId: string) => {
-    setRouteId(routeId)
-    setToolOptions((prev) => ({ ...prev, routeId }))
-  }
+  const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute()
+
+  const routes = useMemo(() => {
+    const list = routesData?.value ?? []
+    return [...list].sort((a, b) => a.name.localeCompare(b.name))
+  }, [routesData])
+
+  const historicHandler = useHistoricOptionsHandler({ routes })
+  const averageHandler = useAverageOptionsHandler({ routes })
+
+  const activeHandler =
+    currentTab === ToolType.TimeSpaceHistoric ? historicHandler : averageHandler
+
+  const [submittedOptions, setSubmittedOptions] = useState<TimeSpaceOptions>(
+    () => historicHandler.toOptions()
+  )
+  const [shouldFetch, setShouldFetch] = useState(false)
 
   const {
     refetch,
@@ -87,91 +55,107 @@ const TimeSpaceDiagram = () => {
     error,
   } = useTools({
     toolType: currentTab,
-    toolOptions,
+    toolOptions: submittedOptions,
   })
 
-  const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute()
+  useEffect(() => {
+    if (!searchParams) return
+    if (appliedUrlRef.current) return
+    if (isLoadingRoutes) return
+    if (!routesData) return
+
+    const toolTypeParam = searchParams.get('toolType') as ToolType | null
+    const nextTab =
+      toolTypeParam === ToolType.TimeSpaceAverage
+        ? ToolType.TimeSpaceAverage
+        : ToolType.TimeSpaceHistoric
+
+    setCurrentTab(nextTab)
+
+    historicHandler.applyFromSearchParams(searchParams)
+    averageHandler.applyFromSearchParams(searchParams)
+
+    appliedUrlRef.current = true
+  }, [
+    searchParams,
+    isLoadingRoutes,
+    routesData,
+    historicHandler,
+    averageHandler,
+  ])
+
+  useEffect(() => {
+    if (!shouldFetch) return
+    refetch()
+    setShouldFetch(false)
+  }, [shouldFetch, refetch])
+
+  const handleChange = (_: React.SyntheticEvent, newValue: ToolType) => {
+    setCurrentTab(newValue)
+    setHasAttemptedGenerate(false)
+  }
+
+  const isTimeSpaceAverageInvalidOptions = useMemo(() => {
+    if (currentTab !== ToolType.TimeSpaceAverage) return false
+    const opts = averageHandler.toOptions() as TimeSpaceAverageOptions
+    return (opts.startTime ?? '') === '' || (opts.endTime ?? '') === ''
+  }, [currentTab, averageHandler])
+
+  const pushActiveParamsToUrl = () => {
+    const params = activeHandler.toSearchParams()
+    params.set('toolType', String(currentTab))
+
+    const qs = params.toString()
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false })
+  }
+
+  const handleGenerateCharts = () => {
+    setHasAttemptedGenerate(true)
+
+    const options = activeHandler.toOptions() as TimeSpaceOptions
+    if (!options.routeId) return
+    if (isTimeSpaceAverageInvalidOptions) return
+
+    pushActiveParamsToUrl()
+
+    setSubmittedOptions(options)
+    setShouldFetch(true)
+  }
 
   if (isLoadingRoutes) {
     return <Typography>Loading...</Typography>
   }
 
-  if (routesData === undefined) {
+  if (!routesData) {
     return <Typography>Error retrieving routes</Typography>
-  }
-
-  const routes = routesData?.value?.sort((a, b) => a.name.localeCompare(b.name))
-
-  const handleGenerateCharts = () => {
-    setHasAttemptedGenerate(true)
-    if (toolOptions.routeId) {
-      refetch()
-    }
-  }
-
-  const handleChange = (_: React.SyntheticEvent, newValue: ToolType) => {
-    setCurrentTab(newValue)
-    setToolOptions(getDefaultChartOptions(newValue))
-    setHasAttemptedGenerate(false)
-  }
-
-  const handleToolOptions = (value: Partial<TimeSpaceOptions>) => {
-    const [key, val] = Object.entries(value)[0]
-    setToolOptions((prev) => ({ ...prev, [key]: val }))
-  }
-
-  const handleChartType = () => {
-    return (
-      <Box>
-        <TabList
-          onChange={handleChange}
-          aria-label="Location options"
-          textColor="primary"
-          indicatorColor="primary"
-        >
-          <Tab label="Historic" value={ToolType.TimeSpaceHistoric} />
-          <Tab label="50th Percentile" value={ToolType.TimeSpaceAverage} />
-        </TabList>
-      </Box>
-    )
-  }
-
-  const isTimeSpaceAverageValidOptions = () => {
-    return (
-      (currentTab === ToolType.TimeSpaceAverage &&
-        (toolOptions as TimeSpaceAverageOptions).startTime === '') ||
-      (toolOptions as TimeSpaceAverageOptions).endTime === ''
-    )
   }
 
   return (
     <ResponsivePageLayout title={'Time-Space Diagrams'} noBottomMargin>
       <TabContext value={currentTab}>
-        {handleChartType()}
+        <Box>
+          <TabList
+            onChange={handleChange}
+            aria-label="Location options"
+            textColor="primary"
+            indicatorColor="primary"
+          >
+            <Tab label="Historic" value={ToolType.TimeSpaceHistoric} />
+            <Tab label="50th Percentile" value={ToolType.TimeSpaceAverage} />
+          </TabList>
+        </Box>
+
         <Box>
           <TabPanel value={ToolType.TimeSpaceHistoric} sx={{ padding: '0px' }}>
-            <TimeSpaceHistoricContainer
-              handleToolOptions={handleToolOptions}
-              routes={routes}
-              routeId={routeId}
-              setRouteId={handleRouteIdChange}
-            />
+            <HistoricOptionsComponent handler={historicHandler} />
           </TabPanel>
+
           <TabPanel value={ToolType.TimeSpaceAverage} sx={{ padding: '0px' }}>
-            <TimeSpaceAverageContainer
-              handleToolOptions={handleToolOptions}
-              routes={routes}
-              routeId={routeId}
-              setRouteId={handleRouteIdChange}
-            />
+            <AverageOptionsComponent handler={averageHandler} />
           </TabPanel>
+
           <Box>
-            <Box
-              display={'flex'}
-              alignItems={'center'}
-              height={'50px'}
-              marginTop={2}
-            >
+            <Box display="flex" alignItems="center" height="50px" marginTop={2}>
               <LoadingButton
                 loading={isLoading}
                 loadingPosition="start"
@@ -182,36 +166,28 @@ const TimeSpaceDiagram = () => {
               >
                 Generate Charts
               </LoadingButton>
+
               {isError && (
                 <Alert severity="error" sx={{ marginLeft: 1 }}>
-                  {(
-                    ((error as AxiosError).response as unknown as AxiosResponse)
-                      ?.data as string
-                  ).includes('Controller')
-                    ? ((
-                        (error as AxiosError)
-                          .response as unknown as AxiosResponse
-                      )?.data as string)
-                    : ((
-                        (error as AxiosError)
-                          .response as unknown as AxiosResponse
-                      )?.data as string) + '. Verify in Configuration'}
+                  {String((error as any)?.message ?? 'Error')}
                 </Alert>
               )}
-              {hasAttemptedGenerate && toolOptions.routeId === '' && (
+
+              {hasAttemptedGenerate && activeHandler.routeId === '' && (
                 <Alert severity="error" sx={{ marginLeft: 1 }}>
                   Please Select a route
                 </Alert>
               )}
-              {isTimeSpaceAverageValidOptions() && (
+
+              {isTimeSpaceAverageInvalidOptions && (
                 <Alert severity="error" sx={{ marginLeft: 1 }}>
                   Select start and end time ranges
                 </Alert>
               )}
             </Box>
+
             {chartData && (
-              <DefaultChartResults
-                refs={chartRefs.current}
+              <TimeSpaceChart
                 chartData={chartData as TransformedToolResponse}
               />
             )}

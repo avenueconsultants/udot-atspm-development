@@ -16,7 +16,6 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
-using Utah.Udot.Atspm.Business.TimingAndActuation;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
@@ -30,13 +29,14 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int phaseNumber,
             string phaseNumberSort,
             double distanceToNextLocation,
+            double distanceToPreviousLocation,
             int speed,
             double refPoint,
             int programmedSplit,
             bool coordinatedPhases,
             int cycleLength,
             List<CycleEventsDto> cycleAllEvents,
-            List<TimeSpaceEventBase> greenTimeEvents) : base(approachId, locationId, start, end)
+            List<DataPointWithDetectorCheckBase> greenTimeEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
@@ -59,7 +59,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public int CycleLength { get; }
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
+        public double DistanceToPreviousLocation { get; set; }
+        public int Order { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
-        public List<TimeSpaceEventBase> GreenTimeEvents { get; set; }
+        public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
     }
 }
