@@ -3,6 +3,7 @@ import ApproachVolumeChartResults from '@/features/charts/approachVolume/compone
 import { ChartOptions, ChartType } from '@/features/charts/common/types'
 import ChartsToolbox from '@/features/charts/components/chartsToolbox'
 import DefaultChartResults from '@/features/charts/components/defaultChartResults'
+import PrioritySummaryDetailsChart from '@/features/charts/prioritySummary/components/PrioritySummaryChart'
 import PhaseTable from '@/features/charts/splitMonitor/components/PhaseTable'
 import TimingAndActuationChartsResults from '@/features/charts/timingAndActuation/components/timingAndActuationChartsResults/TimingAndActuationChartsResults'
 import TimingAndActuationChartsToolbox from '@/features/charts/timingAndActuation/components/timingAndActuationChartsToolbox/TimingAndActuationChartsToolbox'
@@ -206,6 +207,14 @@ export default function ChartsContainer({
             />
             <PhaseTable phases={chartData.data.charts} />
           </>
+        )
+      case ChartType.PrioritySummary:
+        return (
+          <DefaultChartResults
+            refs={chartRefs.current}
+            chartData={chartData}
+            chartComponent={PrioritySummaryDetailsChart}
+          />
         )
       default:
         return (

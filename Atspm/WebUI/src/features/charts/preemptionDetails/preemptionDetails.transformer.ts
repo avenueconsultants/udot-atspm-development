@@ -70,8 +70,8 @@ function transformDetailsData(data: LocationDetail) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Preemption Details',
-    location: `${data.locationDescription} - Preempt Number ${data.preemptionNumber}`,
+    title: ['Preemption Details', `Preempt Number ${data.preemptionNumber}`],
+    location: data.locationDescription,
     dateRange,
   })
 

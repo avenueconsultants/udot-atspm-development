@@ -136,7 +136,10 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Turning Movement Counts',
+    title: [
+      'Turning Movement Counts',
+      `${data.direction} ${data.movementType} - ${data.laneType}`,
+    ],
     location: data.locationDescription,
     dateRange,
     info,
@@ -146,7 +149,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const yAxis = createYAxis(true, { name: 'Volume Per Hour' })
 
   const grid = createGrid({
-    top: 180,
+    top: 170,
     left: 70,
     right: 190,
   })

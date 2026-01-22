@@ -88,7 +88,8 @@ function transformData(data: RawPurdueSplitFailureData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: ['Purdue Split Failure', data.approachDescription],
+    location: data.locationDescription,
     dateRange,
     info,
   })
@@ -101,7 +102,7 @@ function transformData(data: RawPurdueSplitFailureData) {
   })
 
   const grid = createGrid({
-    top: 210,
+    top: 190,
     left: 65,
     right: 165,
   })
