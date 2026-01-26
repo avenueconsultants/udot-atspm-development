@@ -126,7 +126,12 @@ export default function Sidebar() {
               <NavItem
                 icon={<FileDownloadIcon />}
                 text={'Export'}
-                url={'/export'}
+                url={'/data/export'}
+              />
+              <NavItem
+                icon={<FileDownloadIcon />}
+                text={'Usage'}
+                url={'/data/usage'}
               />
             </SubMenu>
           )}
