@@ -16,11 +16,8 @@ import React from 'react'
 
 export default function UsageTable({
   isLoading,
-  page,
-  pageSize,
   rows,
   setPage,
-  setPageSize,
   total,
 }: {
   isLoading: boolean
@@ -102,10 +99,8 @@ export default function UsageTable({
         loading={isLoading}
         rowCount={total}
         paginationMode="server"
-        paginationModel={{ page, pageSize }}
         onPaginationModelChange={(m) => {
           setPage(m.page)
-          setPageSize(m.pageSize)
         }}
         onRowClick={(p) => setActive(p.row)}
         slots={{ toolbar: UsageGridToolbar }}

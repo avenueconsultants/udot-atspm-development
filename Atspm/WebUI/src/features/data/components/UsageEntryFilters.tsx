@@ -1,6 +1,7 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import {
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -14,6 +15,7 @@ import {
   Typography,
 } from '@mui/material'
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import * as React from 'react'
 
 function toIsoUtcOrUndefined(d: Date | null): string | undefined {
   if (!d) return undefined
@@ -23,6 +25,17 @@ function toDateOrNull(iso?: string): Date | null {
   if (!iso) return null
   const d = new Date(iso)
   return Number.isNaN(d.getTime()) ? null : d
+}
+
+export type IdentityUserLite = {
+  firstName?: string | null
+  lastName?: string | null
+  agency?: string | null
+  email?: string | null
+  userName?: string | null
+  userId: string
+  fullName?: string | null
+  roles?: string[] | null
 }
 
 export type UsageEntryFiltersState = {
@@ -39,16 +52,33 @@ export default function UsageEntryFilters({
   value,
   onChange,
   onReset,
+  users,
+  usersLoading,
 }: {
   value: UsageEntryFiltersState
   onChange: (next: UsageEntryFiltersState) => void
   onReset: () => void
+  users?: IdentityUserLite[]
+  usersLoading?: boolean
 }) {
   const set = <K extends keyof UsageEntryFiltersState>(
     key: K,
     nextValue: UsageEntryFiltersState[K]
   ) => {
     onChange({ ...value, [key]: nextValue })
+  }
+
+  const selectedUser = React.useMemo(() => {
+    if (!value.userId) return null
+    return users?.find((u) => u.userId === value.userId) ?? null
+  }, [value.userId, users])
+
+  const userLabel = (u: IdentityUserLite) => {
+    const name =
+      u.fullName?.trim() || `${u.firstName ?? ''} ${u.lastName ?? ''}`.trim()
+    const email = u.email || u.userName || ''
+    if (name && email) return `${name} — ${email}`
+    return name || email || u.userId
   }
 
   return (
@@ -150,12 +180,18 @@ export default function UsageEntryFilters({
               </Select>
             </FormControl>
 
-            <TextField
+            <Autocomplete
               size="small"
-              label="UserId"
-              value={value.userId}
-              onChange={(e) => set('userId', e.target.value)}
-              sx={{ minWidth: 200 }}
+              sx={{ minWidth: 340 }}
+              options={users ?? []}
+              loading={Boolean(usersLoading)}
+              value={selectedUser}
+              onChange={(_, next) => set('userId', next?.userId ?? '')}
+              isOptionEqualToValue={(a, b) => a.userId === b.userId}
+              getOptionLabel={userLabel}
+              renderInput={(params) => (
+                <TextField {...params} label="User" placeholder="All users" />
+              )}
             />
           </Stack>
         </Stack>
