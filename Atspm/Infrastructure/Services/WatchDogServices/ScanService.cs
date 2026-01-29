@@ -310,15 +310,12 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 PmScanDate = options.PmScanDate,
                 PmPeakStartHour = options.PmPeakStartHour,
                 PmPeakEndHour = options.PmPeakEndHour,
-                RampDetectorStartHour = options.RampDetectorStartHour,
-                RampDetectorEndHour = options.RampDetectorEndHour,
                 RampMainlineStartHour = options.RampMainlineStartHour,
                 RampMainlineEndHour = options.RampMainlineEndHour,
                 RampStuckQueueStartHour = options.RampStuckQueueStartHour,
                 RampStuckQueueEndHour = options.RampStuckQueueEndHour,
                 MinimumRecords = options.MinimumRecords,
-                LowHitThreshold = options.LowHitThreshold,
-                LowHitRampThreshold = options.LowHitRampThreshold
+                LowHitThreshold = options.LowHitThreshold
             };
         }
 
@@ -330,7 +327,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 RampMissedDetectorHitsEndScanDate = options.RampMissedDetectorHitsEndScanDate,
                 RampMissedDetectorHitStartHour = options.RampMissedDetectorHitStartHour,
                 RampMissedDetectorHitEndHour = options.RampMissedDetectorHitEndHour,
-                RampMissedEventsThreshold = options.RampMissedEventsThreshold
+                RampDetectorStartHour = options.RampDetectorStartHour,
+                RampDetectorEndHour = options.RampDetectorEndHour,
+                RampMissedEventsThreshold = options.RampMissedEventsThreshold,
+                LowHitRampThreshold = options.LowHitRampThreshold
             };
         }
 

@@ -63,21 +63,79 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                             options.RampMissedDetectorHitStart,
                             options.RampMissedDetectorHitEnd)
                         .ToList();
-                    locationEvents.AddRange(RampMainLineLastRun);
 
+                    var RampDetector = controllerEventLogRepository
+                        .GetEventsBetweenDates(
+                            Location.LocationIdentifier,
+                            options.RampDetectorStart,
+                            options.RampDetectorEnd)
+                        .ToList();
+
+                    locationEvents.AddRange(RampMainLineLastRun);
+                    locationEvents.AddRange(RampDetector);
+
+                    CheckDetectors(Location, options, locationEvents, errors);
                     CheckRampMissedDetectorHits(Location, options, locationEvents, errors);
+
 
                 }
                 return errors.ToList();
             }
         }
 
+        private async Task CheckDetectors(Location location, WatchdogRampLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)
+        {
+            var detectorEventCodes = new List<short> { 82, 81 };
+            //Check for low Ramp hits
+            CheckForLowRampDetectorHits(location, options, locationEvents, errors, detectorEventCodes);
+        }
 
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
         ///////////////////// WATCH DOG ERRORS /////////////////////
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
+
+        //WatchDogIssueType LowRampDetectorHits - 10 - PM
+        public void CheckForLowRampDetectorHits(Location location, WatchdogRampLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors, List<short> detectorEventCodes)
+        {
+            if (location.LocationTypeId != 2)
+            {
+                return;
+            }
+            var detectors = location.GetDetectorsForLocation();
+            var detectionTypeValidIds = new List<int> { 8, 9, 10, 11 };
+
+            var result = detectors
+                .Where(d => d.DetectionTypes.Any(i => detectionTypeValidIds.Contains((int)i.Id)));
+
+            foreach (var detector in detectors)
+                try
+                {
+                    var channel = detector.DetectorChannel;
+                    var currentVolume = locationEvents.Where(e => e.EventParam == detector.DetectorChannel &&
+                        detectorEventCodes.Contains(e.EventCode) &&
+                        e.Timestamp >= options.RampDetectorStart &&
+                        e.Timestamp <= options.RampDetectorEnd
+                        ).Count();
+                    //Compare collected hits to low hit ramp threshold, 
+                    if (currentVolume < Convert.ToInt32(options.LowHitRampThreshold))
+                    {
+                        AddDetectorError(
+                            location,
+                            options.RampMissedDetectorHitsStartScanDate,
+                            detector,
+                            WatchDogIssueTypes.LowRampDetectorHits,
+                            $"CH: {channel} - Count: {currentVolume.ToString().ToLowerInvariant()}",
+                            errors);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"CheckForLowRampDetectorHits {detector.Id} {ex.Message}");
+                }
+        }
 
         //WatchDogIssueType RampMissedDetectorHits - 11
         public void CheckRampMissedDetectorHits(Location location, WatchdogRampLoggingOptions options, List<IndianaEvent> locationEvents, ConcurrentBag<WatchDogLogEvent> errors)

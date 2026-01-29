@@ -105,15 +105,15 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 PmScanDate = DateTime.Today,
                 PmPeakStartHour = 6,
                 PmPeakEndHour = 9,
-                RampDetectorStartHour = 6,
-                RampDetectorEndHour = 9,
                 RampMainlineStartHour = 6,
                 RampMainlineEndHour = 9,
                 RampStuckQueueStartHour = 6,
                 RampStuckQueueEndHour = 9,
                 MinimumRecords = 5,
                 LowHitThreshold = 0,
-                LowHitRampThreshold = 0
+                //RampDetectorStartHour = 6,
+                //RampDetectorEndHour = 9,
+                //LowHitRampThreshold = 0
             };
 
             var errors = new ConcurrentBag<WatchDogLogEvent>();
@@ -149,15 +149,15 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
                 PmScanDate = DateTime.Today,
                 PmPeakStartHour = 6,
                 PmPeakEndHour = 9,
-                RampDetectorStartHour = 6,
-                RampDetectorEndHour = 9,
                 RampMainlineStartHour = 6,
                 RampMainlineEndHour = 9,
                 RampStuckQueueStartHour = 6,
                 RampStuckQueueEndHour = 9,
                 MinimumRecords = 5,
                 LowHitThreshold = 0,
-                LowHitRampThreshold = 0
+                //RampDetectorStartHour = 6,
+                //RampDetectorEndHour = 9,
+                //LowHitRampThreshold = 0
             };
 
             var errors = new ConcurrentBag<WatchDogLogEvent>();

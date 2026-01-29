@@ -61,7 +61,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             {
                 RampMissedDetectorHitsStartScanDate = DateTime.Today.AddHours(6),
                 RampMissedDetectorHitsEndScanDate = DateTime.Today.AddHours(9),
-                RampMissedEventsThreshold = 0
+                RampMissedEventsThreshold = 0,
+                RampDetectorStartHour = 6,
+                RampDetectorEndHour = 9,
+                LowHitRampThreshold = 0
             };
 
             var detector = new Detector
@@ -111,7 +114,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             {
                 RampMissedDetectorHitsStartScanDate = DateTime.Today.AddHours(6),
                 RampMissedDetectorHitsEndScanDate = DateTime.Today.AddHours(9),
-                RampMissedEventsThreshold = 0
+                RampMissedEventsThreshold = 0,
+                RampDetectorStartHour = 6,
+                RampDetectorEndHour = 9,
+                LowHitRampThreshold = 0
             };
 
             var detector = new Detector
@@ -168,6 +174,85 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
             Assert.Equal(detector.Id, error.ComponentId);
         }
 
+        [Fact]
+        public void CheckForLowRampDetectorHits_Should_AddError_WhenHitsBelowThreshold()
+        {
+            // Arrange
+            var options = new WatchdogRampLoggingOptions
+            {
+
+                RampMissedDetectorHitsStartScanDate = DateTime.Today.AddHours(6),
+                RampMissedDetectorHitsEndScanDate = DateTime.Today.AddHours(9),
+                RampMissedEventsThreshold = 0,
+                RampDetectorStartHour = 6,
+                RampDetectorEndHour = 9,
+                LowHitRampThreshold = 5
+            };
+
+            var detector = new Detector
+            {
+                Id = 1,
+                DetectorChannel = 1,
+                DetectionTypes = new List<DetectionType>
+        {
+            new DetectionType { Id = (DetectionTypes)8 } // valid detection type
+        }
+            };
+
+            var approach = new Approach
+            {
+                Id = 1,
+                LocationId = 1,
+                Detectors = new List<Detector> { detector }
+            };
+
+            var location = new Location
+            {
+                Id = 1,
+                LocationIdentifier = "LOC1",
+                LocationTypeId = 2, // required for ramp logic
+                Approaches = new List<Approach> { approach }
+            };
+
+            var detectorEventCodes = new List<short> { 1371 };
+
+            var locationEvents = new List<IndianaEvent>
+            {
+                new IndianaEvent
+                {
+                    LocationIdentifier = location.LocationIdentifier,
+                    Timestamp = options.RampDetectorStart.AddMinutes(10),
+                    EventCode = 81,
+                    EventParam = 1
+                },
+                new IndianaEvent
+                {
+                    LocationIdentifier = location.LocationIdentifier,
+                    Timestamp = options.RampDetectorStart.AddMinutes(20),
+                    EventCode = 82,
+                    EventParam = 1
+                }
+                // Only 2 hits, below threshold of 5
+            };
+
+            var errors = new ConcurrentBag<WatchDogLogEvent>();
+
+            // Act
+            _watchDogRampLogService.CheckForLowRampDetectorHits(
+                location,
+                options,
+                locationEvents,
+                errors,
+                detectorEventCodes);
+
+            // Assert
+            Assert.Single(errors);
+
+            var error = errors.First();
+            Assert.Equal(WatchDogIssueTypes.LowRampDetectorHits, error.IssueType);
+            Assert.Equal(detector.Id, error.ComponentId);
+            //Assert.Contains("CH: 1", error.Message);
+        }
 
         [Fact]
         public async Task GetWatchDogIssues_Should_HonorCancellationToken()

@@ -310,6 +310,8 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 var emailScanDate = options.RampMissedDetectorHitsStartScanDate.Date.ToShortDateString();
                 bodyBuilder.Append(BuildErrorSection("Ramp Mainline Errors", $"The following Ramps had too many records failure in the database on {emailScanDate}",
                     rampMainlineErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
+                bodyBuilder.Append(BuildErrorSection("Ramp Detectors Threshold Errors", $"The following Ramps encountered errors above the set threshold on {emailScanDate} between {options.RampDetectorStartHour}:00 and {options.RampDetectorEndHour}:00",
+                    rampDetectorThresholdErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
             }
             if (options.EmailPmErrors && !rampEmail)
             {
@@ -322,8 +324,6 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     configurationErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
                 bodyBuilder.Append(BuildErrorSection("Unconfigured Detectors Errors", $"The following Detectors flagged as unconfigured on {emailScanDate}",
                     unconfiguredDetectorErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
-                bodyBuilder.Append(BuildErrorSection("Ramp Detectors Threshold Errors", $"The following Ramps encountered errors above the set threshold on {emailScanDate} between {options.RampDetectorStartHour}:00 and {options.RampDetectorEndHour}:00",
-                    rampDetectorThresholdErrorsLogs, locationDictionary, emailAllErrors, logsFromPreviousDay, includeErrorCounts, includeConsecutive));
             }
             if (options.EmailAmErrors && !rampEmail)
             {

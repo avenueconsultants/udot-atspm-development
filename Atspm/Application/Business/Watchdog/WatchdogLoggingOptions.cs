@@ -52,20 +52,15 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public DateTime PmScanDate { get; set; }
         public int PmPeakStartHour { get; set; }
         public int PmPeakEndHour { get; set; }
-        public int RampDetectorStartHour { get; set; }
-        public int RampDetectorEndHour { get; set; }
         public int RampMainlineStartHour { get; set; }
         public int RampMainlineEndHour { get; set; }
         public int RampStuckQueueStartHour { get; set; }
         public int RampStuckQueueEndHour { get; set; }
         public int MinimumRecords { get; set; }
         public int LowHitThreshold { get; set; }
-        public int LowHitRampThreshold { get; set; }
 
         public DateTime PmAnalysisStart => PmScanDate.Date + new TimeSpan(PmPeakStartHour, 0, 0);
         public DateTime PmAnalysisEnd => PmScanDate.Date + new TimeSpan(PmPeakEndHour, 0, 0);
-        public DateTime RampDetectorStart => PmScanDate.Date + new TimeSpan(RampDetectorStartHour, 0, 0);
-        public DateTime RampDetectorEnd => PmScanDate.Date + new TimeSpan(RampDetectorEndHour, 0, 0);
     }
 
     public class WatchdogAmLoggingOptions
@@ -89,8 +84,13 @@ namespace Utah.Udot.Atspm.Business.Watchdog
         public int RampMissedDetectorHitStartHour { get; set; }
         public int RampMissedDetectorHitEndHour { get; set; }
         public int RampMissedEventsThreshold { get; set; }
+        public int RampDetectorStartHour { get; set; }
+        public int RampDetectorEndHour { get; set; }
+        public int LowHitRampThreshold { get; set; }
 
         public DateTime RampMissedDetectorHitStart => RampMissedDetectorHitsStartScanDate.Date + new TimeSpan(RampMissedDetectorHitStartHour, 0, 0);
         public DateTime RampMissedDetectorHitEnd => RampMissedDetectorHitsEndScanDate.Date + new TimeSpan(RampMissedDetectorHitEndHour, 0, 0);
+        public DateTime RampDetectorStart => RampMissedDetectorHitsStartScanDate.Date + new TimeSpan(RampDetectorStartHour, 0, 0);
+        public DateTime RampDetectorEnd => RampMissedDetectorHitsStartScanDate.Date + new TimeSpan(RampDetectorEndHour, 0, 0);
     }
 }
