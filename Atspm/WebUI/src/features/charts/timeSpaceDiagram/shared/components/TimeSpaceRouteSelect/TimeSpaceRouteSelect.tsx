@@ -1,4 +1,4 @@
-import { TSHistoricHandler } from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/historicTimeSpaceOptions.handler'
+import { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/historic/TimeSpaceHistoricOptions/historicTimeSpaceOptions.handler'
 import RouteChecker from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/RouteChecker'
 import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
 import {
@@ -13,7 +13,7 @@ import {
 import { useEffect } from 'react'
 
 interface Props {
-  handler: TSHistoricHandler
+  handler: TSBaseHandler
 }
 
 interface RouteRow {

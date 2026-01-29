@@ -15,6 +15,7 @@ import type {
 import { connect, init } from 'echarts'
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { GpxUploadOptions } from '../../timeSpaceDiagram/shared/types'
 
 export interface ApacheEChartsProps {
   id: string
@@ -26,6 +27,7 @@ export interface ApacheEChartsProps {
   theme?: 'light' | 'dark'
   hideInteractionMessage?: boolean
   resetKey?: boolean
+  gpxEntries?: GpxUploadOptions[]
 }
 
 export default function ApacheEChart({

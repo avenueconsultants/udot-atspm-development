@@ -3,15 +3,28 @@ import { useTimeSpaceHandler } from '@/features/charts/timeSpaceDiagram/shared/h
 import type { ECharts } from 'echarts'
 import { init } from 'echarts'
 import { useEffect, useRef, useState } from 'react'
+import { useGpxAnimationHandler } from '../handlers/gpxAnimation.handler'
+import { GpxUploadOptions } from '../types'
 
 export default function TimeSpaceEChart(prop: ApacheEChartsProps) {
-  const { id, option, style, theme } = prop
+  const { id, option, style, theme, gpxEntries } = prop
 
   const chartRef = useRef<HTMLDivElement>(null)
   const chartInstanceRef = useRef<ECharts | null>(null)
   const [chart, setChart] = useState<ECharts | null>(null)
 
   useTimeSpaceHandler(chart)
+  const animator = useGpxAnimationHandler(
+    chart,
+    gpxEntries as GpxUploadOptions[]
+  )
+
+  useEffect(() => {
+    if (gpxEntries) {
+      animator.play()
+      // animator.stepForward()
+    }
+  }, [animator, gpxEntries])
 
   useEffect(() => {
     const dom = chartRef.current
