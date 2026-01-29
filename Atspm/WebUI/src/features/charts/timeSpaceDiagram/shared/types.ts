@@ -16,6 +16,7 @@
 // #endregion
 import { BaseChartData, ToolType } from '@/features/charts/common/types'
 import { Cycle } from '@/features/charts/timingAndActuation/types'
+import { GpxPoint } from './gpxFileParser'
 
 // export interface TimeSpaceDetectorEvent {
 //   initialX: string
@@ -112,4 +113,14 @@ export type TimeSpaceOptions =
 export interface RawTimeSpaceDiagramResponse {
   type: ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage
   data: TimeSpaceResponseData
+}
+
+export interface GpxUploadOptions {
+  id: string
+  file?: File
+  parsedData?: GpxPoint[]
+  startLocation: string
+  endLocation: string
+  primary?: boolean
+  error?: string | null
 }
