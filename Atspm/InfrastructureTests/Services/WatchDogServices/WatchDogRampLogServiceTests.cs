@@ -104,6 +104,72 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
         }
 
         [Fact]
+        public void CheckRampMissedDetectorHits_Should_AddError_WhenMissingData()
+        {
+            // Arrange
+            var options = new WatchdogRampLoggingOptions
+            {
+                RampMissedDetectorHitsStartScanDate = DateTime.Today.AddHours(6),
+                RampMissedDetectorHitsEndScanDate = DateTime.Today.AddHours(9),
+                RampMissedEventsThreshold = 0
+            };
+
+            var detector = new Detector
+            {
+                Id = 1,
+                DetectorChannel = 1,
+                DetectionTypes = new List<DetectionType>
+        {
+            new DetectionType { Id = (DetectionTypes)8 } // valid type
+        }
+            };
+
+            var approach = new Approach
+            {
+                Id = 1,
+                LocationId = 1,
+                Detectors = new List<Detector> { detector } // detectors belong to approach
+            };
+
+            var location = new Location
+            {
+                Id = 1,
+                LocationIdentifier = "LOC1",
+                LocationTypeId = 2, // RM type required
+                Approaches = new List<Approach> { approach } // approaches belong to location
+            };
+
+            var errors = new ConcurrentBag<WatchDogLogEvent>();
+            var events = new List<IndianaEvent>
+            {
+                new IndianaEvent
+                {
+                    LocationIdentifier = location.LocationIdentifier,
+                    Timestamp = options.RampMissedDetectorHitsStartScanDate.AddMinutes(5),
+                    EventCode = 1371,      // example detector on / hit event code
+                    EventParam = 1
+                },
+                new IndianaEvent
+                {
+                    LocationIdentifier = location.LocationIdentifier,
+                    Timestamp = options.RampMissedDetectorHitsStartScanDate.AddMinutes(10),
+                    EventCode = 1372,
+                    EventParam = 1
+                }
+            };
+
+            // Act
+            _watchDogRampLogService.CheckRampMissedDetectorHits(location, options, events, errors);
+
+            // Assert
+            Assert.Single(errors);
+            var error = errors.First();
+            Assert.Equal(WatchDogIssueTypes.RampMissedDetectorHits, error.IssueType);
+            Assert.Equal(detector.Id, error.ComponentId);
+        }
+
+
+        [Fact]
         public async Task GetWatchDogIssues_Should_HonorCancellationToken()
         {
             // Arrange
