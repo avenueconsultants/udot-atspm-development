@@ -72,7 +72,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     (location) => location.phaseType === 'Opposing'
   )
 
-  const titleHeader = `Time Space Diagram (Historic),\nPrimary Phase - ${primaryPhaseData[0].approachDescription}\nOpposing Phase - ${opposingPhaseData[0].approachDescription}`
   const dateRange = formatChartDateTimeRange(data[0].start, data[0].end)
 
   const title = createTitle({
@@ -145,6 +144,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const colorMap: Map<number, string> = new Map([
     [1, 'lightgreen'],
+    [3, 'green'],
     [8, 'yellow'],
     [9, 'red'],
   ])
@@ -275,6 +275,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const displayProps = createDisplayProps({
     description: '',
     numberOfLocations: primaryPhaseData.length,
+    locations: primaryPhaseData.map((p) => p.locationIdentifier),
   })
 
   const chartStartMs = Date.parse(primaryPhaseData[0].start)
@@ -377,9 +378,10 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     dataZoom,
     legend: legends,
     toolbox,
-    animation: false,
+    // animation: false,
     series,
     displayProps,
+    animation: true,
   }
 
   return chartOptions

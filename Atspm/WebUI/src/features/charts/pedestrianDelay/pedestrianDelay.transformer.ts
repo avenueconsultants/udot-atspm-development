@@ -91,8 +91,8 @@ function transformData(data: RawPedestrianDelayData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Pedestrian Delay',
-    location: `${data.locationDescription} - ${data.phaseDescription}`,
+    title: ['Pedestrian Delay', data.phaseDescription],
+    location: data.locationDescription,
     dateRange,
     info,
   })

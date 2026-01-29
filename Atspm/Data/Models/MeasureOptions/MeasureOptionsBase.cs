@@ -104,15 +104,12 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
         //public string LocationIdentifier { get; set; }
     }
 
-    public class PrioritySummaryOptions : MeasureOptionsBase, IBinSize
+    public class PrioritySummaryOptions : MeasureOptionsBase
     {
-        public int BinSize { get; set; }
-        //public string LocationIdentifier { get; set; }
     }
 
-    public class PriorityDetailsOptions : MeasureOptionsBase, IBinSize
+    public class PriorityDetailsOptions : MeasureOptionsBase
     {
-        public int BinSize { get; set; }
     }
 
 
@@ -363,15 +360,13 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
     public class LinkPivotOptions : AtspmOptionsBase
     {
         public int RouteId { get; set; }
-        public int CycleLength { get; set; }
-        public string Direction { get; set; }
-        public double Bias { get; set; }
-        public string BiasDirection { get; set; }
-        public int[] DaysOfWeek { get; set; }
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public int? CycleLength { get; set; }
+        public string? Direction { get; set; } // Primary and Opposing instead of Upstream and DownStream; Primary = DownStream & Opposing = Upstream; Default Primary
+        public double? Bias { get; set; }
+        public string? BiasDirection { get; set; }
+        public int[]? DaysOfWeek { get; set; }
     }
 
     public class LinkPivotPcdOptions : AtspmOptionsBase

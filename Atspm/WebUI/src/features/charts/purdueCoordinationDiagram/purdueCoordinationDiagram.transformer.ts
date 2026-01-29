@@ -84,7 +84,7 @@ export function transformPcdData(
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Purdue Coordination Diagram',
+    title: ['Purdue Coordination Diagram', data.phaseDescription],
     location: data.locationDescription,
     dateRange,
     info,
