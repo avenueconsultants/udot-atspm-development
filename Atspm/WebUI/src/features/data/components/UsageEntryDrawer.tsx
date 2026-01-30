@@ -1,5 +1,5 @@
 import { UsageEntry } from '@/api/config/aTSPMConfigurationApi.schemas'
-import { formatMs } from '@/pages/data/usage'
+import { formatBytes, formatMs } from '@/utils/formatting'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import {
   Box,
@@ -94,7 +94,10 @@ export default function UsageEntryDrawer({
                 <Row label="Controller" value={active.controller} />
                 <Row label="Action" value={active.action} />
                 <Row label="ResultCount" value={active.resultCount} />
-                <Row label="ResultSizeBytes" value={active.resultSizeBytes} />
+                <Row
+                  label="ResultSizeBytes"
+                  value={formatBytes(active.resultSizeBytes ?? 0)}
+                />
                 <Row label="TraceId" value={active.traceId} />
                 <Row label="ConnectionId" value={active.connectionId} />
               </Stack>

@@ -1,6 +1,6 @@
 import { UsageEntry } from '@/api/config'
 import UsageEntryDrawer from '@/features/data/components/UsageEntryDrawer'
-import { formatMs } from '@/pages/data/usage'
+import { formatMs } from '@/utils/formatting'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { Box, Chip } from '@mui/material'
@@ -17,16 +17,9 @@ import React from 'react'
 export default function UsageTable({
   isLoading,
   rows,
-  setPage,
-  total,
 }: {
   isLoading: boolean
-  page: number
-  pageSize: number
   rows: UsageEntry[]
-  setPage: React.Dispatch<React.SetStateAction<number>>
-  setPageSize: React.Dispatch<React.SetStateAction<number>>
-  total: number
 }) {
   const [active, setActive] = React.useState<UsageEntry | null>(null)
 
@@ -77,7 +70,7 @@ export default function UsageTable({
         type: 'number',
         valueFormatter: (v) => formatMs(Number(v)),
       },
-      { field: 'userId', headerName: 'User', width: 160 },
+      { field: 'user', headerName: 'User', width: 160 },
       { field: 'route', headerName: 'Route', width: 280 },
       { field: 'controller', headerName: 'Controller', width: 160 },
       { field: 'action', headerName: 'Action', width: 160 },
@@ -97,11 +90,7 @@ export default function UsageTable({
         rows={rows}
         columns={columns}
         loading={isLoading}
-        rowCount={total}
         paginationMode="server"
-        onPaginationModelChange={(m) => {
-          setPage(m.page)
-        }}
         onRowClick={(p) => setActive(p.row)}
         slots={{ toolbar: UsageGridToolbar }}
         sx={{

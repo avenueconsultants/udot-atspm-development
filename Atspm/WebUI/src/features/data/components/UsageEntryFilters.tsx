@@ -6,21 +6,18 @@ import {
   Button,
   Card,
   CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
 } from '@mui/material'
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import * as React from 'react'
 
 function toIsoUtcOrUndefined(d: Date | null): string | undefined {
   if (!d) return undefined
   return d.toISOString()
 }
+
 function toDateOrNull(iso?: string): Date | null {
   if (!iso) return null
   const d = new Date(iso)
@@ -49,18 +46,28 @@ export type UsageEntryFiltersState = {
 }
 
 export default function UsageEntryFilters({
-  value,
+  value: valueProp,
   onChange,
   onReset,
   users,
   usersLoading,
 }: {
-  value: UsageEntryFiltersState
+  value?: UsageEntryFiltersState
   onChange: (next: UsageEntryFiltersState) => void
   onReset: () => void
   users?: IdentityUserLite[]
   usersLoading?: boolean
 }) {
+  const value: UsageEntryFiltersState = valueProp ?? {
+    fromUtc: undefined,
+    toUtc: undefined,
+    userId: '',
+    apiName: '',
+    method: '',
+    success: 'all',
+    statusClass: 'all',
+  }
+
   const set = <K extends keyof UsageEntryFiltersState>(
     key: K,
     nextValue: UsageEntryFiltersState[K]
@@ -69,8 +76,9 @@ export default function UsageEntryFilters({
   }
 
   const selectedUser = React.useMemo(() => {
-    if (!value.userId) return null
-    return users?.find((u) => u.userId === value.userId) ?? null
+    const uid = value.userId
+    if (!uid) return null
+    return users?.find((u) => u.userId === uid) ?? null
   }, [value.userId, users])
 
   const userLabel = (u: IdentityUserLite) => {
@@ -81,121 +89,70 @@ export default function UsageEntryFilters({
     return name || email || u.userId
   }
 
+  const content = (
+    <Stack spacing={2}>
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        sx={{ flexWrap: 'wrap' }}
+      >
+        <FilterAltIcon fontSize="small" />
+        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+          Filters
+        </Typography>
+
+        <Box sx={{ flex: 1 }} />
+
+        <Button size="small" startIcon={<RestartAltIcon />} onClick={onReset}>
+          Reset
+        </Button>
+      </Stack>
+
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        sx={{ flexWrap: 'wrap' }}
+      >
+        <DatePicker
+          label="From"
+          value={toDateOrNull(value.fromUtc)}
+          onChange={(v) => set('fromUtc', toIsoUtcOrUndefined(v))}
+          slotProps={{
+            textField: { size: 'small', sx: { minWidth: 220 } },
+          }}
+        />
+
+        <DatePicker
+          label="To"
+          value={toDateOrNull(value.toUtc)}
+          onChange={(v) => set('toUtc', toIsoUtcOrUndefined(v))}
+          slotProps={{
+            textField: { size: 'small', sx: { minWidth: 220 } },
+          }}
+        />
+
+        <Autocomplete
+          size="small"
+          sx={{ minWidth: 320 }}
+          options={users ?? []}
+          loading={Boolean(usersLoading)}
+          value={selectedUser}
+          onChange={(_, next) => set('userId', next?.userId ?? '')}
+          isOptionEqualToValue={(a, b) => a.userId === b.userId}
+          getOptionLabel={userLabel}
+          renderInput={(params) => (
+            <TextField {...params} label="User" placeholder="All users" />
+          )}
+        />
+      </Stack>
+    </Stack>
+  )
+
   return (
-    <Card>
-      <CardContent>
-        <Stack spacing={2}>
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            sx={{ flexWrap: 'wrap' }}
-          >
-            <FilterAltIcon fontSize="small" />
-            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-              Filters
-            </Typography>
-
-            <Box sx={{ flex: 1 }} />
-
-            <Button
-              size="small"
-              startIcon={<RestartAltIcon />}
-              onClick={onReset}
-            >
-              Reset
-            </Button>
-          </Stack>
-
-          <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap' }}>
-            <DateTimePicker
-              label="From (UTC)"
-              value={toDateOrNull(value.fromUtc)}
-              onChange={(v) => set('fromUtc', toIsoUtcOrUndefined(v))}
-              slotProps={{
-                textField: { size: 'small', sx: { minWidth: 240 } },
-              }}
-            />
-
-            <DateTimePicker
-              label="To (UTC)"
-              value={toDateOrNull(value.toUtc)}
-              onChange={(v) => set('toUtc', toIsoUtcOrUndefined(v))}
-              slotProps={{
-                textField: { size: 'small', sx: { minWidth: 240 } },
-              }}
-            />
-
-            <TextField
-              size="small"
-              label="API name"
-              value={value.apiName}
-              onChange={(e) => set('apiName', e.target.value)}
-              sx={{ minWidth: 220 }}
-            />
-
-            <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel id="method-lbl">Method</InputLabel>
-              <Select
-                labelId="method-lbl"
-                label="Method"
-                value={value.method}
-                onChange={(e) => set('method', String(e.target.value))}
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="GET">GET</MenuItem>
-                <MenuItem value="POST">POST</MenuItem>
-                <MenuItem value="PUT">PUT</MenuItem>
-                <MenuItem value="PATCH">PATCH</MenuItem>
-                <MenuItem value="DELETE">DELETE</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel id="success-lbl">Success</InputLabel>
-              <Select
-                labelId="success-lbl"
-                label="Success"
-                value={value.success}
-                onChange={(e) => set('success', e.target.value as any)}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="true">Success</MenuItem>
-                <MenuItem value="false">Failed</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel id="status-lbl">Status class</InputLabel>
-              <Select
-                labelId="status-lbl"
-                label="Status class"
-                value={value.statusClass}
-                onChange={(e) => set('statusClass', e.target.value as any)}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="2xx">2xx</MenuItem>
-                <MenuItem value="4xx">4xx</MenuItem>
-                <MenuItem value="5xx">5xx</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Autocomplete
-              size="small"
-              sx={{ minWidth: 340 }}
-              options={users ?? []}
-              loading={Boolean(usersLoading)}
-              value={selectedUser}
-              onChange={(_, next) => set('userId', next?.userId ?? '')}
-              isOptionEqualToValue={(a, b) => a.userId === b.userId}
-              getOptionLabel={userLabel}
-              renderInput={(params) => (
-                <TextField {...params} label="User" placeholder="All users" />
-              )}
-            />
-          </Stack>
-        </Stack>
-      </CardContent>
+    <Card sx={{ mt: 0, pt: 0 }}>
+      <CardContent>{content}</CardContent>
     </Card>
   )
 }
