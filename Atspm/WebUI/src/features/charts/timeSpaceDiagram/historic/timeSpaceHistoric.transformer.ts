@@ -34,7 +34,7 @@ import {
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { TransformedToolResponse } from '@/features/charts/types'
+import { TransformedTimeSpaceResponse } from '@/features/charts/types'
 import {
   formatChartDateTimeRange,
   SolidLineSeriesSymbol,
@@ -55,15 +55,13 @@ import { PedestrianInterval } from '../../timingAndActuation/types'
 
 export default function transformTimeSpaceHistoricData(
   response: RawTimeSpaceDiagramResponse
-): TransformedToolResponse {
-  const chart = {
+): TransformedTimeSpaceResponse {
+  const data = {
     chart: transformData(response.data as RawTimeSpaceHistoricData[]),
   }
   return {
     type: ToolType.TimeSpaceHistoric,
-    data: {
-      charts: [chart],
-    },
+    data,
   }
 }
 
@@ -509,6 +507,7 @@ function generateAdvanceCountEventLines(
 ): SeriesOption[] {
   const seriesOptions: SeriesOption[] = []
   data.forEach((location, i) => {
+    if (i === 0) return
     if (location.advanceCountDetectors.length) {
       const series: SeriesOption = {
         name: `Advance Count ${phaseType?.length && phaseType}`,
