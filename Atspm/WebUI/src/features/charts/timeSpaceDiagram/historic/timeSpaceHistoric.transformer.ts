@@ -594,6 +594,7 @@ function generateStopBarPresenceEventLines(
           api.coord([nextPointFinalX, (y2 as number) + distanceToNext]),
           api.coord([currPointFinalX, (y1 as number) + distanceToNext]),
         ]
+        console.log('this is stopbar', points[0], points[1])
         return {
           type: 'polygon',
           transition: ['shape'],
