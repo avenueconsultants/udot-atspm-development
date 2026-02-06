@@ -7,6 +7,7 @@ import { IgnoreLocationsAccordion } from '../../timeSpaceDiagram/shared/componen
 import {
   GpxUploadOptions,
   RawTimeSpaceDiagramResponse,
+  TimeSpaceBaseData,
 } from '../../timeSpaceDiagram/shared/types'
 
 export interface TimeSpaceChartProps {
@@ -26,14 +27,10 @@ function createEmptyEntry(
   }
 }
 
-function recomputeTimeSpaceData<
-  T extends {
-    locationIdentifier: string
-    phaseType: 'Primary' | 'Opposing'
-    distanceToNextLocation: number
-    distanceToPreviousLocation: number
-  },
->(baseData: T[], ignoredLocations: string[]): T[] {
+function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
+  baseData: T[],
+  ignoredLocations: string[]
+): T[] {
   const isIgnored = (id: string) => ignoredLocations.includes(id)
 
   const recomputeLane = (lane: T[]): T[] => {
@@ -48,6 +45,23 @@ function recomputeTimeSpaceData<
       const current = lane[i]
 
       if (isIgnored(current.locationIdentifier)) {
+        recomputed.push({
+          start: current.start,
+          end: current.end,
+          locationIdentifier: current.locationIdentifier,
+          locationDescription: current.locationDescription,
+          phaseType: current.phaseType,
+          distanceToNextLocation: current.distanceToNextLocation,
+          distanceToPreviousLocation: current.distanceToPreviousLocation,
+          phaseNumber: current.phaseNumber,
+          phaseNumberSort: current.phaseNumberSort,
+          speed: current.speed,
+          approachId: current.approachId,
+          approachDescription: current.approachDescription,
+          calculatedDistanceToNext: 0,
+          calculatedDistanceToPrevious: 0,
+        } as T)
+
         continue
       }
 
@@ -71,8 +85,8 @@ function recomputeTimeSpaceData<
 
       recomputed.push({
         ...current,
-        distanceToPreviousLocation: distanceToPrevious,
-        distanceToNextLocation: distanceToNext,
+        calculatedDistanceToPrevious: distanceToPrevious,
+        calculatedDistanceToNext: distanceToNext,
       })
     }
 
@@ -85,10 +99,24 @@ function recomputeTimeSpaceData<
   return [...recomputeLane(primaryLane), ...recomputeLane(opposingLane)]
 }
 
+function addDefaultValues(
+  timeSpaceData: RawTimeSpaceDiagramResponse
+): RawTimeSpaceDiagramResponse {
+  const data = timeSpaceData.data
+  data.forEach((lane) => {
+    lane.calculatedDistanceToNext = lane.distanceToNextLocation
+    lane.calculatedDistanceToPrevious = lane.distanceToPreviousLocation
+  })
+  return {
+    type: timeSpaceData.type,
+    data,
+  }
+}
+
 export default function TimeSpaceChart({ timeSpaceData }: TimeSpaceChartProps) {
   const theme = useTheme()
   const [baseTimeSpaceData, setBaseTimeSpaceData] =
-    useState<RawTimeSpaceDiagramResponse>(timeSpaceData)
+    useState<RawTimeSpaceDiagramResponse>(addDefaultValues(timeSpaceData))
   const [transformedData, setTransformedData] = useState(() =>
     transformTimeSpaceData(timeSpaceData)
   )
@@ -178,8 +206,8 @@ export default function TimeSpaceChart({ timeSpaceData }: TimeSpaceChartProps) {
                 width: '100%',
                 height:
                   locations.length < 5
-                    ? locations.length * 150 + 160 + 'px'
-                    : locations.length * 70 + 160 + 'px',
+                    ? locations.length * 200 + 160 + 'px'
+                    : locations.length * 150 + 160 + 'px',
                 position: 'relative',
               }}
               gpxEntries={gpxEntries}

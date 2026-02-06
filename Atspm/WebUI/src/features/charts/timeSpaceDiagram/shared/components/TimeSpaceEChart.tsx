@@ -41,7 +41,6 @@ export default function TimeSpaceEChart(prop: TimeSpaceChartProps) {
     const c = init(dom, theme, { useDirtyRect: true })
     chartInstanceRef.current = c
     setChart(c)
-    console.log(option)
     if (option)
       c.setOption(option, {
         notMerge: true,
