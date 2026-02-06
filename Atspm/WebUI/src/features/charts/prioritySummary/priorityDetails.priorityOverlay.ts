@@ -69,11 +69,17 @@ function flattenTspEvents(rows: PriorityDetailsResult[]): PriorityEvent[] {
 }
 
 export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
+  const tspNumbers = new Set(
+    rows
+      .map((r) => r.transitSignalPriorityNumber)
+      .filter((n): n is number => typeof n === 'number')
+  )
+
   const gridTop = createGrid({
     top: 140,
     left: 65,
-    right: 330,
-    height: 70,
+    right: 210,
+    height: tspNumbers.size * 20,
   })
 
   const yAxisTop = createYAxis(false, {
@@ -88,7 +94,7 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
     axisLine: {
       show: false,
     },
-    data: [...TSP_Y_CATEGORIES],
+    data: Array.from(tspNumbers).sort((a, b) => a - b),
   })
 
   const allEvents = flattenTspEvents(rows)
