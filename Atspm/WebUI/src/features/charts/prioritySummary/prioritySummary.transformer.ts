@@ -184,6 +184,15 @@ function transformLocation(data: PrioritySummaryResult) {
           return Number.isFinite(n) ? `${n.toFixed(1)} s` : ''
         },
       },
+      label: {
+        show: true,
+        position: 'top',
+        formatter: (p) => {
+          const v = Array.isArray(p?.value) ? p.value : []
+          const sec = Number(v?.[2])
+          return Number.isFinite(sec) && sec > 1 ? `${sec.toFixed(1)} s` : ''
+        },
+      },
     })
   }
 
