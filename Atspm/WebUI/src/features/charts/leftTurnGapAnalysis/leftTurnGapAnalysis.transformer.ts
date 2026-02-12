@@ -83,7 +83,7 @@ function transformData(data: RawLeftTurnGapData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Left Turn Gap Analysis',
+    title: ['Left Turn Gap Analysis', data.phaseDescription],
     location: data.locationDescription,
     dateRange,
     info,

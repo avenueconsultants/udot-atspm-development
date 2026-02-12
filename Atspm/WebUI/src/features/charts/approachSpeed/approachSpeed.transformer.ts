@@ -83,7 +83,8 @@ function transformData(data: RawApproachSpeedData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: titleHeader,
+    title: [titleHeader, data.phaseDescription],
+    location: data.locationDescription,
     dateRange,
     info: `${infoA}\n${infoB}`,
   })

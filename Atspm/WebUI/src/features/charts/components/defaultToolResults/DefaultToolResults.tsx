@@ -1,68 +1,221 @@
-import { TransformedToolResponse } from '@/features/charts/types'
-import { Box, Button, Paper, useTheme } from '@mui/material'
-import { useState } from 'react'
-import TimeSpaceEChart from '../timeSpaceEChart/TimeSpaceEChart'
+import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceEChart'
+import { Box, Paper, useTheme } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { transformTimeSpaceData } from '../../api'
+import { GpxUploadAccordion } from '../../timeSpaceDiagram/shared/components/GpxUploader/GpxUploadAccordion'
+import { IgnoreLocationsAccordion } from '../../timeSpaceDiagram/shared/components/IgnoredLocations/IgnoredLocations'
+import {
+  GpxUploadOptions,
+  RawTimeSpaceDiagramResponse,
+  TimeSpaceBaseData,
+} from '../../timeSpaceDiagram/shared/types'
 
-export interface DefaultToolResultsProps {
-  chartData: TransformedToolResponse
-  refs: React.RefObject<HTMLDivElement>[]
+export interface TimeSpaceChartProps {
+  timeSpaceData: RawTimeSpaceDiagramResponse
 }
 
-export default function TimeSpaceToolResults({
-  chartData,
-  refs,
-}: DefaultToolResultsProps) {
-  const theme = useTheme()
+function createEmptyEntry(
+  locations: string[],
+  primary = false
+): GpxUploadOptions {
+  return {
+    id: '',
+    startLocation: locations[0],
+    endLocation: locations[locations.length - 1],
+    error: null,
+    primary,
+  }
+}
 
-  const [resetKey, setResetKey] = useState(0)
+function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
+  baseData: T[],
+  ignoredLocations: string[]
+): T[] {
+  const isIgnored = (id: string) => ignoredLocations.includes(id)
+
+  const recomputeLane = (lane: T[]): T[] => {
+    // If nothing ignored, just return non-ignored nodes unchanged
+    if (!lane.some((l) => isIgnored(l.locationIdentifier))) {
+      return lane
+    }
+
+    const recomputed: T[] = []
+
+    for (let i = 0; i < lane.length; i++) {
+      const current = lane[i]
+
+      if (isIgnored(current.locationIdentifier)) {
+        recomputed.push({
+          start: current.start,
+          end: current.end,
+          locationIdentifier: current.locationIdentifier,
+          locationDescription: current.locationDescription,
+          phaseType: current.phaseType,
+          distanceToNextLocation: current.distanceToNextLocation,
+          distanceToPreviousLocation: current.distanceToPreviousLocation,
+          phaseNumber: current.phaseNumber,
+          phaseNumberSort: current.phaseNumberSort,
+          speed: current.speed,
+          approachId: current.approachId,
+          approachDescription: current.approachDescription,
+          calculatedDistanceToNext: 0,
+          calculatedDistanceToPrevious: 0,
+        } as T)
+
+        continue
+      }
+
+      // ---- distance to previous non-ignored ----
+      let distanceToPrevious = 0
+      for (let j = i - 1; j >= 0; j--) {
+        distanceToPrevious += lane[j].distanceToNextLocation
+        if (!isIgnored(lane[j].locationIdentifier)) {
+          break
+        }
+      }
+
+      // ---- distance to next non-ignored ----
+      let distanceToNext = 0
+      for (let j = i; j < lane.length - 1; j++) {
+        distanceToNext += lane[j].distanceToNextLocation
+        if (!isIgnored(lane[j + 1].locationIdentifier)) {
+          break
+        }
+      }
+
+      recomputed.push({
+        ...current,
+        calculatedDistanceToPrevious: distanceToPrevious,
+        calculatedDistanceToNext: distanceToNext,
+      })
+    }
+
+    return recomputed
+  }
+
+  const primaryLane = baseData.filter((p) => p.phaseType === 'Primary')
+  const opposingLane = baseData.filter((p) => p.phaseType === 'Opposing')
+
+  return [...recomputeLane(primaryLane), ...recomputeLane(opposingLane)]
+}
+
+function addDefaultValues(
+  timeSpaceData: RawTimeSpaceDiagramResponse
+): RawTimeSpaceDiagramResponse {
+  const data = timeSpaceData.data
+  data.forEach((lane) => {
+    lane.calculatedDistanceToNext = lane.distanceToNextLocation
+    lane.calculatedDistanceToPrevious = lane.distanceToPreviousLocation
+  })
+  return {
+    type: timeSpaceData.type,
+    data,
+  }
+}
+
+export default function TimeSpaceChart({ timeSpaceData }: TimeSpaceChartProps) {
+  const theme = useTheme()
+  const [baseTimeSpaceData, setBaseTimeSpaceData] =
+    useState<RawTimeSpaceDiagramResponse>(addDefaultValues(timeSpaceData))
+  const [transformedData, setTransformedData] = useState(() =>
+    transformTimeSpaceData(timeSpaceData)
+  )
+
+  const locations = timeSpaceData.data
+    .filter((p) => p.phaseType === 'Primary')
+    .map((p) => p.locationIdentifier)
+
+  const [gpxEntries, setGpxEntries] = useState<GpxUploadOptions[]>([
+    createEmptyEntry(locations),
+  ])
+  const [ignoredLocations, setIgnoredLocation] = useState<string[]>([])
+
+  useEffect(() => {
+    // Only recompute if there are ignored locations
+    const recalculatedData =
+      ignoredLocations.length > 0
+        ? recomputeTimeSpaceData(baseTimeSpaceData.data, ignoredLocations)
+        : baseTimeSpaceData.data
+
+    const updatedResponse: RawTimeSpaceDiagramResponse = {
+      type: baseTimeSpaceData.type,
+      data: recalculatedData,
+    }
+
+    setTransformedData(transformTimeSpaceData(updatedResponse))
+  }, [ignoredLocations, baseTimeSpaceData])
 
   return (
-    <>
-      {chartData.data.charts.map((chartWrapper, index) => (
-        <>
-          <Button onClick={() => setResetKey((k) => k + 1)}>
-            Reset Charts
-          </Button>
+    <Box
+      sx={{
+        overflow: 'hidden',
+        width: '100%',
+        position: 'absolute',
+        left: 0,
+      }}
+    >
+      <Paper
+        sx={{
+          p: 0,
+          mt: 3,
+          marginLeft: '2px',
+          backgroundColor: 'white',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            minHeight: '100%',
+          }}
+        >
+          {/* LEFT SIDE — GPX OPTIONS */}
           <Box
-            key={index}
-            ref={refs[index]}
             sx={{
-              overflow: 'hidden',
-              minWidth: '600px',
+              width: '20%', // 👈 20–30% sweet spot
+              minWidth: 260,
+              borderRight: '1px solid',
+              borderColor: 'divider',
+              p: 2,
             }}
           >
-            <Paper
-              sx={{
-                p: 4,
-                my: 3,
-                width: '99%',
-                marginLeft: '2px',
-                backgroundColor: 'white',
-              }}
-            >
-              <TimeSpaceEChart
-                id={`chart-${index}`}
-                option={chartWrapper.chart}
-                theme={theme.palette.mode}
-                style={{
-                  width: '100%',
-                  height:
-                    chartWrapper.chart.displayProps.numberOfLocations < 5
-                      ? chartWrapper.chart.displayProps.numberOfLocations *
-                          150 +
-                        160 +
-                        'px'
-                      : chartWrapper.chart.displayProps.numberOfLocations * 70 +
-                        160 +
-                        'px',
-                  position: 'relative',
-                }}
-                resetKey={resetKey}
-              />
-            </Paper>
+            <GpxUploadAccordion
+              locations={locations}
+              entries={gpxEntries}
+              setEntries={setGpxEntries}
+            />
+            <IgnoreLocationsAccordion
+              locations={locations}
+              ignoredLocations={ignoredLocations}
+              setIgnoredLocations={setIgnoredLocation}
+            />
           </Box>
-        </>
-      ))}
-    </>
+
+          {/* RIGHT SIDE — CHART */}
+          <Box
+            sx={{
+              width: '80%',
+              p: 2,
+            }}
+          >
+            <TimeSpaceEChart
+              id="time-space-chart"
+              option={transformedData.data.chart}
+              theme={theme.palette.mode}
+              style={{
+                width: '100%',
+                height:
+                  locations.length < 5
+                    ? locations.length * 200 + 160 + 'px'
+                    : locations.length * 150 + 160 + 'px',
+                position: 'relative',
+              }}
+              gpxEntries={gpxEntries}
+              ignoredLocations={ignoredLocations}
+            />
+          </Box>
+        </Box>
+      </Paper>
+    </Box>
   )
 }

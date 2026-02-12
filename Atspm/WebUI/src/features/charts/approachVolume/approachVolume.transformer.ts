@@ -99,8 +99,11 @@ function transformData(data: RawApproachVolumeData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Approach Volume',
-    location: `${data.locationDescription} - ${data.primaryDirectionName}/${data.opposingDirectionName}`,
+    title: [
+      'Approach Volume',
+      `${data.primaryDirectionName}/${data.opposingDirectionName}`,
+    ],
+    location: `${data.locationDescription}`,
     dateRange,
     info,
   })

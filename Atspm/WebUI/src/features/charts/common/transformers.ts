@@ -139,7 +139,7 @@ export function createPlans<T extends BasePlan>(
       show: false,
     },
     labelLayout: {
-      y: yLineLength ? yLineLength : 145,
+      y: yLineLength ? yLineLength : 130,
       moveOverlap: 'shiftX',
       hideOverlap: plans.length > 10,
       draggable: true,
@@ -184,7 +184,7 @@ export function createPlans<T extends BasePlan>(
 }
 
 interface TitleProps {
-  title: string
+  title: string | string[]
   location?: string
   dateRange?: string
   info?: string
@@ -204,7 +204,7 @@ export function createTitle({
   titles.push({
     left: 10,
     top: 0,
-    text: title,
+    text: Array.isArray(title) ? title.join(' • ') : title,
     textStyle: {
       fontSize: 18,
       fontWeight: 600,

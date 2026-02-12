@@ -70,7 +70,7 @@ function transformData(data: RawPurduePhaseTerminationData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Phase Termination',
+    title: 'Purdue Phase Termination',
     location: data.locationDescription,
     dateRange,
     info,

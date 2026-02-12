@@ -79,7 +79,7 @@ function transformData(data: RawSplitMonitorData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Split Monitor',
+    title: ['Split Monitor', data.phaseDescription],
     location: data.locationDescription,
     dateRange,
   })

@@ -79,8 +79,8 @@ function transformData(data: RawApproachDelayData) {
   const titleHeader = `Approach Delay\n${data.locationDescription} - ${data.phaseDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
   const title = createTitle({
-    title: 'Approach Delay',
-    location: `${data.locationDescription} - ${data.phaseDescription}`,
+    title: ['Approach Delay', data.phaseDescription],
+    location: `${data.locationDescription}`,
     dateRange,
     info,
   })

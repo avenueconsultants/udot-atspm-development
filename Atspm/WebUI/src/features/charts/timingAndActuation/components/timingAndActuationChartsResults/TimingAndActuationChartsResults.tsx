@@ -22,7 +22,7 @@ export default function TimingAndActuationChartsResults({
             pb: 1,
             my: 1,
             mt: 3,
-            width: '99%',
+            width: '100%',
             marginLeft: '2px',
           }}
         >
@@ -46,7 +46,6 @@ export default function TimingAndActuationChartsResults({
           key={index}
           ref={refs[index]}
           sx={{
-            overflow: 'hidden',
             maxHeight: '1000px',
             transition: 'max-height .3s',
           }}
@@ -57,7 +56,7 @@ export default function TimingAndActuationChartsResults({
               pb: 1,
               my: 1,
               mt: 1,
-              width: '99%',
+              width: '100%',
               marginLeft: '2px',
               backgroundColor:
                 chartWrapper.chart.displayProps?.phaseType == 'Permissive'

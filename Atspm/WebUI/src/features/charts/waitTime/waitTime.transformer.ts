@@ -75,7 +75,7 @@ function transformData(data: RawWaitTimeData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
-    title: 'Wait Time',
+    title: ['Wait Time', data.approachDescription],
     location: data.locationDescription,
     dateRange,
     info,

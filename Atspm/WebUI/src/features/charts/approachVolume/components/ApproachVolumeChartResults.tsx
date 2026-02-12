@@ -20,12 +20,11 @@ export default function ApproachVolumeChartResults({
           key={index}
           ref={refs[index]}
           sx={{
-            overflow: 'hidden',
             maxHeight: '1500px',
             transition: 'max-height .5s',
           }}
         >
-          <Paper sx={{ p: 2, my: 2, width: '99%', marginLeft: '2px' }}>
+          <Paper sx={{ p: 2, my: 2, width: '100%', marginLeft: '2px' }}>
             <ApacheEChart
               id={`chart-${index}`}
               option={chartWrapper.chart}

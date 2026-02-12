@@ -1,8 +1,13 @@
 import { PriorityDetailsResult } from '@/api/reports'
 import { createGrid, createYAxis } from '@/features/charts/common/transformers'
-import { Color } from '@/features/charts/utils'
+import { Color, triangleSvgSymbol } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { graphic, type SeriesOption } from 'echarts'
+import {
+  CustomSeriesRenderItemAPI,
+  CustomSeriesRenderItemParams,
+  graphic,
+  type SeriesOption,
+} from 'echarts'
 
 const TSP_CODES = {
   CheckIn: 112,
@@ -67,20 +72,25 @@ function flattenTspEvents(rows: PriorityDetailsResult[]): PriorityEvent[] {
 
 export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
   const gridTop = createGrid({
-    top: 95,
+    top: 140,
     left: 65,
-    right: 210,
+    right: 330,
     height: 70,
   })
 
   // y-axis is now TSP eventParam categories (hard-coded)
   const yAxisTop = createYAxis(false, {
     type: 'category',
-    name: '',
-    boundaryGap: true,
-    axisPointer: { show: false },
-    splitLine: { show: false },
-    axisTick: { show: false },
+    name: 'TSP Number',
+    splitArea: {
+      show: true,
+      areaStyle: {
+        color: [Color.PlanA, Color.PlanB],
+      },
+    },
+    axisLine: {
+      show: false,
+    },
     data: [...TSP_Y_CATEGORIES],
   })
 
@@ -92,13 +102,36 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
 
   const series: SeriesOption[] = []
 
-  // bars (thickness must be 5 and 2)
+  const REQUEST_OFFSET_PX = -3
+  const SERVICE_OFFSET_PX = 3
+  const SYMBOL_Y_OFFSET_PX = -6
+
   if (requestRects.length) {
-    series.push(buildRectSeries('TSP Request (112→115)', requestRects, 5, 0, 0))
+    series.push(
+      buildRectSeries(
+        'TSP Request (112→115)',
+        requestRects,
+        5,
+        0,
+        0,
+        Color.Red,
+        REQUEST_OFFSET_PX
+      )
+    )
   }
 
   if (serviceRects.length) {
-    series.push(buildRectSeries('TSP Service (118→119)', serviceRects, 2, 0, 0))
+    series.push(
+      buildRectSeries(
+        'TSP Service (118→119)',
+        serviceRects,
+        3,
+        0,
+        0,
+        Color.LightBlue,
+        SERVICE_OFFSET_PX
+      )
+    )
   }
 
   // event markers (112/113/114/115/118/119)
@@ -161,8 +194,9 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
       xAxisIndex: 0,
       yAxisIndex: 0,
       data: earlyGreens,
-      symbol: 'diamond',
+      symbol: 'circle',
       symbolSize: 9,
+      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
       itemStyle: { color: Color.Black },
       z: 10,
     })
@@ -175,50 +209,9 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
       xAxisIndex: 0,
       yAxisIndex: 0,
       data: extendGreens,
-      symbol: 'triangle',
+      symbol: triangleSvgSymbol,
       symbolSize: 9,
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (checkOuts.length) {
-    series.push({
-      name: 'Check Out (115)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: checkOuts,
-      symbol: 'rect',
-      symbolSize: 9,
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (serviceStarts.length) {
-    series.push({
-      name: 'Service Start (118)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: serviceStarts,
-      symbol: 'circle',
-      symbolSize: 7,
-      itemStyle: { color: Color.Black },
-      z: 10,
-    })
-  }
-
-  if (serviceEnds.length) {
-    series.push({
-      name: 'Service End (119)',
-      type: 'scatter',
-      xAxisIndex: 0,
-      yAxisIndex: 0,
-      data: serviceEnds,
-      symbol: 'circle',
-      symbolSize: 7,
+      symbolOffset: [0, SYMBOL_Y_OFFSET_PX],
       itemStyle: { color: Color.Black },
       z: 10,
     })
@@ -226,18 +219,20 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
 
   // dashed intersection lines down into the phase chart
   if (intersectionLines.length) {
-    series.push(buildVerticalIntersectionLinesSeries(intersectionLines))
+    series.push(
+      ...buildVerticalIntersectionLinesSeries(
+        intersectionLines,
+        gridTop,
+        SYMBOL_Y_OFFSET_PX
+      )
+    )
   }
 
   const legendItems = [
     { name: 'TSP Request (112→115)' },
     { name: 'TSP Service (118→119)' },
-    { name: 'Check In (112)', icon: 'circle' },
-    { name: 'Early Green (113)', icon: 'circle' },
-    { name: 'Extend Green (114)', icon: 'circle' },
-    { name: 'Check Out (115)', icon: 'circle' },
-    { name: 'Service Start (118)', icon: 'circle' },
-    { name: 'Service End (119)', icon: 'circle' },
+    { name: 'Early Green (113)' },
+    { name: 'Extend Green (114)' },
   ]
 
   return {
@@ -251,7 +246,7 @@ export function buildPriorityOverlay(rows: PriorityDetailsResult[]) {
 function buildRectsAndLinesFromEvents(allEvents: PriorityEvent[]) {
   const requestRects: RectDatum[] = []
   const serviceRects: RectDatum[] = []
-  const intersectionLines: Array<{ xAxis: string }> = []
+  const intersectionLines: Array<{ t: string; y: number }> = []
 
   const cycles = buildCycleWindowsFromEvents(allEvents)
 
@@ -287,15 +282,28 @@ function buildRectsAndLinesFromEvents(allEvents: PriorityEvent[]) {
           c.serviceEndMs - c.serviceStartMs,
         ],
         itemStyle: { color: Color.LightBlue },
-        _thickness: 2,
+        _thickness: 3,
         _tspNumber: c.tspNumber,
       })
     }
 
-    intersectionLines.push({ xAxis: c.checkIn })
-    if (c.serviceStart) intersectionLines.push({ xAxis: c.serviceStart })
-    if (c.serviceEnd) intersectionLines.push({ xAxis: c.serviceEnd })
-    intersectionLines.push({ xAxis: c.checkOut })
+    intersectionLines.push({ t: c.checkIn, y: rowIndex })
+    if (c.serviceStart)
+      intersectionLines.push({ t: c.serviceStart, y: rowIndex })
+    if (c.serviceEnd) intersectionLines.push({ t: c.serviceEnd, y: rowIndex })
+    intersectionLines.push({ t: c.checkOut, y: rowIndex })
+    if (c.earlyGreenMs) {
+      for (const tMs of c.earlyGreenMs) {
+        const t = dateToTimestamp(new Date(tMs).toISOString())
+        if (t) intersectionLines.push({ t, y: rowIndex })
+      }
+    }
+    if (c.extendGreenMs) {
+      for (const tMs of c.extendGreenMs) {
+        const t = dateToTimestamp(new Date(tMs).toISOString())
+        if (t) intersectionLines.push({ t, y: rowIndex })
+      }
+    }
   }
 
   return { requestRects, serviceRects, intersectionLines }
@@ -319,6 +327,15 @@ function buildCycleWindowsFromEvents(
 
   const out: CycleWindow[] = []
 
+  const orderAtSameTime: Record<number, number> = {
+    [TSP_CODES.CheckIn]: 0,
+    [TSP_CODES.EarlyGreen]: 1,
+    [TSP_CODES.ExtendGreen]: 2,
+    [TSP_CODES.ServiceStart]: 3,
+    [TSP_CODES.ServiceEnd]: 4,
+    [TSP_CODES.CheckOut]: 5,
+  }
+
   for (const [tspNumber, events] of byTsp.entries()) {
     const sorted = [...events]
       .map((e) => ({
@@ -329,16 +346,30 @@ function buildCycleWindowsFromEvents(
         t: dateToTimestamp(e.timestamp),
       }))
       .filter((e) => Number.isFinite(e.tMs))
-      .sort((a, b) => a.tMs - b.tMs)
+      .sort((a, b) => {
+        const dt = a.tMs - b.tMs
+        if (dt !== 0) return dt
+
+        const oa = orderAtSameTime[a.eventCode] ?? 99
+        const ob = orderAtSameTime[b.eventCode] ?? 99
+        if (oa !== ob) return oa - ob
+
+        return a.eventCode - b.eventCode
+      })
 
     let current: CycleWindow | null = null
 
     for (const e of sorted) {
       if (e.eventCode === TSP_CODES.CheckIn) {
-        if (current && current.checkInMs && current.checkOutMs)
+        if (
+          current &&
+          Number.isFinite(current.checkInMs) &&
+          Number.isFinite(current.checkOutMs)
+        ) {
           out.push(current)
+        }
         current = {
-          phaseKey: '', // unused now
+          phaseKey: '',
           tspNumber,
           checkInMs: e.tMs,
           checkOutMs: NaN,
@@ -392,10 +423,12 @@ function buildRectSeries(
   data: RectDatum[],
   thicknessPx: number,
   xAxisIndex: number,
-  yAxisIndex: number
+  yAxisIndex: number,
+  color: string,
+  yOffsetPx = 0
 ): SeriesOption {
   const renderItem = (params: any, api: any) =>
-    renderThinRect(params, api, thicknessPx)
+    renderThinRect(params, api, thicknessPx, yOffsetPx)
 
   return {
     name,
@@ -405,12 +438,18 @@ function buildRectSeries(
     renderItem,
     encode: { x: [1, 2], y: 0 },
     data,
+    color,
     itemStyle: { opacity: 0.95 },
     z: 8,
   } as SeriesOption
 }
 
-function renderThinRect(params: any, api: any, thicknessPx: number) {
+function renderThinRect(
+  params: any,
+  api: any,
+  thicknessPx: number,
+  yOffsetPx: number
+) {
   const categoryIndex = api.value(0)
   const start = api.coord([api.value(1), categoryIndex])
   const end = api.coord([api.value(2), categoryIndex])
@@ -421,7 +460,7 @@ function renderThinRect(params: any, api: any, thicknessPx: number) {
   const rectShape = graphic.clipRectByRect(
     {
       x: start[0],
-      y: start[1] - height / 2,
+      y: start[1] - height / 2 + yOffsetPx,
       width: Math.max(0, end[0] - start[0]),
       height,
       r: 1,
@@ -445,27 +484,111 @@ function renderThinRect(params: any, api: any, thicknessPx: number) {
 }
 
 function buildVerticalIntersectionLinesSeries(
-  lines: Array<{ xAxis: string }>
-): SeriesOption {
-  return {
+  points: Array<{ t: string; y: number }>,
+  gridTop: { top: number; height: number },
+  symbolYOffsetPx: number
+): SeriesOption[] {
+  const uniq = new Map<string, { t: string; y: number }>()
+  for (const p of points) {
+    const k = `${p.t}|${p.y}`
+    if (!uniq.has(k)) uniq.set(k, p)
+  }
+
+  const topData = Array.from(uniq.values()).map((p) => [p.t, p.y])
+  const bottomTimes = Array.from(
+    new Set(Array.from(uniq.values()).map((p) => p.t))
+  ).filter(Boolean)
+  const bottomData = bottomTimes.map((t) => [t])
+
+  const topGridBottomY = gridTop.top + gridTop.height
+
+  const top: SeriesOption = {
     name: 'Priority Event Intersection',
-    type: 'scatter',
-    xAxisIndex: 1,
-    yAxisIndex: 1,
-    data: [],
-    symbolSize: 1,
-    itemStyle: { opacity: 0 },
-    markLine: {
-      symbol: ['none', 'none'],
-      silent: true,
-      lineStyle: {
-        type: 'dashed',
-        width: 1,
-        color: Color.Black,
-      },
-      data: lines,
-    },
+    type: 'custom',
+    xAxisIndex: 0,
+    yAxisIndex: 0,
+    data: topData,
+    tooltip: { show: false },
     silent: true,
     z: 9,
+    renderItem: (
+      _: CustomSeriesRenderItemParams,
+      api: CustomSeriesRenderItemAPI
+    ) => {
+      const t = api.value(0)
+      const yCat = api.value(1)
+      if (!t && t !== 0) return null
+      if (yCat == null) return null
+
+      const p = api.coord([t, yCat])
+      const x = p[0]
+      const y1 = p[1] + symbolYOffsetPx
+      const y2 = topGridBottomY
+
+      return {
+        type: 'line',
+        shape: { x1: x, y1, x2: x, y2 },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
+        silent: true,
+        z: 9,
+      }
+    },
   } as SeriesOption
+
+  const middle: SeriesOption = {
+    name: 'Priority Event Intersection',
+    type: 'custom',
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    data: bottomData,
+    tooltip: { show: false },
+    silent: true,
+    z: 9,
+    clip: false,
+    renderItem: (params: any, api: any) => {
+      const t = api.value(0)
+      if (!t && t !== 0) return null
+
+      const x = api.coord([t, 0])[0]
+      const y1 = topGridBottomY
+      const y2 = params.coordSys.y
+
+      return {
+        type: 'line',
+        shape: { x1: x, y1, x2: x, y2 },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
+        silent: true,
+        z: 9,
+      }
+    },
+  } as SeriesOption
+
+  const bottom: SeriesOption = {
+    name: 'Priority Event Intersection',
+    type: 'custom',
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    data: bottomData,
+    tooltip: { show: false },
+    silent: true,
+    z: 9,
+    renderItem: (params: any, api: any) => {
+      const t = api.value(0)
+      if (!t && t !== 0) return null
+
+      const x = api.coord([t, 0])[0]
+      const y1 = params.coordSys.y
+      const y2 = params.coordSys.y + params.coordSys.height
+
+      return {
+        type: 'line',
+        shape: { x1: x, y1, x2: x, y2 },
+        style: { stroke: Color.Black, lineWidth: 1, lineDash: [4, 4] },
+        silent: true,
+        z: 9,
+      }
+    },
+  } as SeriesOption
+
+  return [top, middle, bottom]
 }
