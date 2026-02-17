@@ -16,6 +16,7 @@
 #endregion
 
 using Utah.Udot.Atspm.Business.Common;
+using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
@@ -33,10 +34,18 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int speed,
             int programmedCycleLength,
             List<CycleEventsDto> cycleAllEvents,
+            List<CycleEventsDto> pedIntervals,
             List<TimeSpaceDetectorEventDto> laneByLaneCountDetectors,
             List<TimeSpaceDetectorEventDto> advanceCountDetectors,
             List<TimeSpaceDetectorEventDto> stopBarPresenceDetectors,
-            List<DataPointWithDetectorCheckBase> greenTimeEvents) : base(approachId, locationId, start, end)
+            List<DataPointWithDetectorCheckBase> greenTimeEvents,
+            bool phaseOrOverlap,
+            double tspnNumberCheckins,
+            double tspNumberCheckouts,
+            double tspNumberEarlyGreens,
+            double tspNumberExtendedGreens,
+            ICollection<IndianaEvent> tspEvents,
+            List<DetectorEventDto> priorityAndPreemptionEvents) : base(approachId, locationId, start, end)
         {
             PhaseNumber = phaseNumber;
             PhaseNumberSort = phaseNumberSort;
@@ -45,10 +54,18 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             Speed = speed;
             CycleLength = programmedCycleLength;
             CycleAllEvents = cycleAllEvents;
+            PedestrianIntervals = pedIntervals;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
             AdvanceCountDetectors = advanceCountDetectors;
             StopBarPresenceDetectors = stopBarPresenceDetectors;
             GreenTimeEvents = greenTimeEvents;
+            IsPhaseOverLap = phaseOrOverlap;
+            TSPNumberCheckins = tspnNumberCheckins;
+            TSPNumberCheckouts = tspNumberCheckouts;
+            TSPNumberEarlyGreens = tspNumberEarlyGreens;
+            TSPNumberExtendedGreens = tspNumberExtendedGreens;
+            PriorityAndPreemptionEvents = priorityAndPreemptionEvents;
+            TspEvents = tspEvents;
         }
 
         public int PhaseNumber { get; set; }
@@ -57,12 +74,22 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string PhaseNumberSort { get; set; }
         public double DistanceToNextLocation { get; set; }
         public double DistanceToPreviousLocation { get; set; }
+        public double PercentArrivalOnGreen { get; set; }
         public int Order { get; set; }
         public int CycleLength { get; }
+        public TmcForPhaseDto TmcForPhase { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
+        public List<CycleEventsDto> PedestrianIntervals { get; set; }
         public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
         public List<TimeSpaceDetectorEventDto> LaneByLaneCountDetectors { get; set; }
         public List<TimeSpaceDetectorEventDto> AdvanceCountDetectors { get; set; }
         public List<TimeSpaceDetectorEventDto> StopBarPresenceDetectors { get; set; }
+        public bool IsPhaseOverLap { get; set; }
+        public double TSPNumberCheckins { get; set; }
+        public double TSPNumberCheckouts { get; set; }
+        public double TSPNumberEarlyGreens { get; set; }
+        public double TSPNumberExtendedGreens { get; set; }
+        public ICollection<IndianaEvent> TspEvents { get; set; }
+        public List<DetectorEventDto> PriorityAndPreemptionEvents { get; set; }
     }
 }

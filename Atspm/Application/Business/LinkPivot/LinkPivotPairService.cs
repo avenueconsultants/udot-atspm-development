@@ -50,11 +50,14 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
             {
                 throw new Exception("Route approaches are misconfigured");
             }
+
+            string biasDirection = options.BiasDirection ?? "Primary";
+
             await SetPcds(options.StartTime, options.EndTime, daysToInclude, options.CycleLength, linkPivotPair);
             //Check to see if both directions have detection if so analyze both
             if (linkPivotPair.UpstreamPcd.Count > 0 && linkPivotPair.DownstreamPcd.Count > 0)
                 if (options.Bias.AreNotEqual(0d))
-                    GetBiasedLinkPivot(options.CycleLength, options.Bias, options.BiasDirection, daysToInclude, linkPivotPair);
+                    GetBiasedLinkPivot(options.CycleLength, options.Bias, biasDirection, daysToInclude, linkPivotPair);
                 //If no bias is provided
                 else
                     GetUnbiasedLinkPivot(options.CycleLength, daysToInclude, linkPivotPair);

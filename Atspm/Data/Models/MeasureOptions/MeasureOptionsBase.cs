@@ -357,13 +357,13 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
         public int[] CoordinatedPhases { get; set; }
     }
 
-    public class LinkPivotOptions : AtspmOptionsBase
+    public class LinkPivotOptions
     {
         public int RouteId { get; set; }
         public int CycleLength { get; set; }
-        public string Direction { get; set; }
+        public string Direction { get; set; } // Primary and Opposing instead of Upstream and DownStream; Primary = DownStream & Opposing = Upstream; Default Primary
         public double Bias { get; set; }
-        public string BiasDirection { get; set; }
+        public string? BiasDirection { get; set; }
         public int[] DaysOfWeek { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }

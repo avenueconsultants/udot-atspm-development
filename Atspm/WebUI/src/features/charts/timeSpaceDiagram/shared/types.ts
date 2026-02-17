@@ -15,7 +15,11 @@
 // limitations under the License.
 // #endregion
 import { BaseChartData, ToolType } from '@/features/charts/common/types'
-import { Cycle } from '@/features/charts/timingAndActuation/types'
+import {
+  Cycle,
+  PedestrianInterval,
+} from '@/features/charts/timingAndActuation/types'
+import { GpxPoint } from './gpxFileParser'
 
 // export interface TimeSpaceDetectorEvent {
 //   initialX: string
@@ -84,7 +88,13 @@ export interface RawTimeSpaceBaseData extends BaseChartData {
   phaseType: 'Primary' | 'Opposing'
 }
 
-export interface RawTimeSpaceAverageData extends RawTimeSpaceBaseData {
+export interface TimeSpaceBaseData extends RawTimeSpaceBaseData {
+  calculatedDistanceToNext: number
+  calculatedDistanceToPrevious: number
+  isIgnoredLocation: boolean
+}
+
+export interface RawTimeSpaceAverageData extends TimeSpaceBaseData {
   offset: number
   cycleLength: number
   programmedSplit: number
@@ -93,12 +103,29 @@ export interface RawTimeSpaceAverageData extends RawTimeSpaceBaseData {
   cycleAllEvents: Cycle[] | null
 }
 
-export interface RawTimeSpaceHistoricData extends RawTimeSpaceBaseData {
+export interface RawTimeSpaceHistoricData extends TimeSpaceBaseData {
   greenTimeEvents: TimeSpaceDetectorEvent[] | []
   laneByLaneCountDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
   advanceCountDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
   stopBarPresenceDetectors: TimeSpaceDetectorEventWithDistanceDTO[] | []
   cycleAllEvents: Cycle[] | null
+  pedestrianIntervals: PedestrianInterval[] | []
+  percentArrivalOnGreen: number
+  tmcForPhase: TmcForPhaseDto
+}
+
+export interface TmcForPhaseDto {
+  leftTurnEvents: TmcEventDto[]
+  rightTurnEvents: TmcEventDto[]
+}
+
+export interface TmcEventDto {
+  start: string
+  value: number
+  isRightTurnEvent: boolean
+  isLeftTurnEvent: boolean
+  laneType: string
+  directionTypes: string
 }
 
 export type TimeSpaceResponseData =
@@ -112,4 +139,14 @@ export type TimeSpaceOptions =
 export interface RawTimeSpaceDiagramResponse {
   type: ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage
   data: TimeSpaceResponseData
+}
+
+export interface GpxUploadOptions {
+  id: string
+  file?: File
+  parsedData?: GpxPoint[]
+  startLocation: string
+  endLocation: string
+  primary?: boolean
+  error?: string | null
 }

@@ -20,10 +20,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Retry;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Utah.Udot.Atspm.DataApi.CustomOperations;
+using Utah.Udot.ATSPM.DataApi.Services;
 using Utah.Udot.NetStandardToolkit.Configuration;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -69,6 +72,11 @@ builder.Host
             l.RequestBodyLogLimit = 4096;
             l.ResponseBodyLogLimit = 4096;
         });
+        s.AddScoped<AsyncRetryPolicy>(sp =>
+            Policy.Handle<Exception>()
+                  .WaitAndRetryAsync(3, retry => TimeSpan.FromSeconds(2))
+        );
+        s.AddScoped<EventLogImporterService, EventLogImporterService>();
         s.AddAtspmDbContext(h);
         s.AddAtspmEFConfigRepositories();
         s.AddAtspmEFEventLogRepositories();
@@ -121,7 +129,7 @@ app.Run();
 
 public static class TempCorsExtension
 {
-    public static IServiceCollection AddConfiguredCors( this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddConfiguredCors(this IServiceCollection services, IConfiguration config)
     {
         var corsPolicies = config.GetSection("CorsPolicies").Get<Dictionary<string, CorsPolicyConfiguration>>();
 

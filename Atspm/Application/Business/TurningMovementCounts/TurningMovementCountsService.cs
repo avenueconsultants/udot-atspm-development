@@ -120,7 +120,6 @@ namespace Utah.Udot.Atspm.Business.TurningMovementCounts
 
 
 
-
         private Dictionary<Detector, VolumeCollection> GetVolumeDictionaryByDetector(
             List<Detector> tmcDetectors,
             DateTime start,

@@ -18,6 +18,7 @@
 using Microsoft.EntityFrameworkCore;
 using Utah.Udot.Atspm.Extensions;
 using Utah.Udot.Atspm.Repositories.ConfigurationRepositories;
+using Utah.Udot.Atspm.Repositories.EventLogRepositories;
 
 namespace Utah.Udot.Atspm.Business.LinkPivot
 {
@@ -25,9 +26,11 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
     {
         private readonly ILocationRepository locationRepository;
         private readonly LinkPivotPairService linkPivotPairService;
+        private readonly IIndianaEventLogRepository controllerEventLogRepository;
 
-        public LinkPivotService(ILocationRepository locationRepository, LinkPivotPairService linkPivotPairService)
+        public LinkPivotService(IIndianaEventLogRepository controllerEventLogRepository, ILocationRepository locationRepository, LinkPivotPairService linkPivotPairService)
         {
+            this.controllerEventLogRepository = controllerEventLogRepository;
             this.locationRepository = locationRepository;
             this.linkPivotPairService = linkPivotPairService;
         }
@@ -41,6 +44,7 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
             {
                 throw new Exception("Issue grabbing approach data for route locations.");
             }
+
 
             linkPivot.Adjustments = lp;
             linkPivot.PairedApproaches = pairedApproches;
@@ -148,6 +152,7 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
                 }
             }
 
+            int[] daysOfWeek = options.DaysOfWeek ?? Array.Empty<int>();
             var daysToInclude = GetDaysToProcess(options.StartDate, options.EndDate, options.DaysOfWeek);
             await CreatePairedApproaches(options, routeLocations, pairedApproaches, indices, daysToInclude);
 
@@ -298,13 +303,14 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
         private List<DateOnly> GetDaysToProcess(DateOnly startDate, DateOnly endDate, int[] daysOfWeek)
         {
+            bool addAllDays = daysOfWeek.Length == 0;
             List<DateOnly> datesToInclude = new List<DateOnly>();
             var days = endDate.DayNumber - startDate.DayNumber;
 
             for (int i = 0; i <= days; i++)
             {
                 var date = startDate.AddDays(i);
-                if (daysOfWeek.Contains((int)date.DayOfWeek))
+                if (daysOfWeek.Contains((int)date.DayOfWeek) || addAllDays)
                 {
                     datesToInclude.Add(date);
                 }
