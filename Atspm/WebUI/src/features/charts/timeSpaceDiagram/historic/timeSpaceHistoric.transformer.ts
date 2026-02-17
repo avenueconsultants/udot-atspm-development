@@ -27,7 +27,6 @@ import {
   generateCycles,
   generateGreenEventLines,
   getDistancesLabelOption,
-  getDraggableOffsetabelOption,
   getLocationsLabelOption,
 } from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
 import {
@@ -80,7 +79,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const xAxis = createXAxis(data[0].start, data[0].end)
 
-  let initialDistance = 250
+  let initialDistance = 0
 
   const primaryDirection = primaryPhaseData[0].approachDescription.split(' ')[0]
   const opposingDirection =
@@ -97,25 +96,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     axisLabel: {
       show: false,
     },
-  })
-
-  const primaryPOG = primaryPhaseData.map((phase, index) => {
-    return `  ${phase.locationIdentifier} => ${phase.percentArrivalOnGreen}s`
-  })
-
-  const opposingPOG = opposingPhaseData.map((phase, index) => {
-    return `  ${phase.locationIdentifier} => ${phase.percentArrivalOnGreen}s`
+    max: distanceData[distanceData.length - 1] + 350,
+    min: -250,
   })
 
   const title = createTitle({
     title: 'Time Space Diagram • Historic',
     location: `Primary: ${primaryPhaseData[0].approachDescription} • Opposing: ${opposingPhaseData[0].approachDescription}`,
     dateRange,
-    info: `Route data from ${primaryPhaseData[0].locationDescription} to ${
-      primaryPhaseData[primaryPhaseData.length - 1].locationDescription
-    } \n 
-    POG for ${primaryDirection}: ${primaryPOG} \n
-    POG for ${opposingDirection}: ${opposingPOG}`,
   })
 
   const start = new Date(data[0].end)
@@ -156,22 +144,10 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     },
   }
 
-  const colorMap: Map<number, string> = new Map([
-    [1, 'lightgreen'],
-    [3, 'green'],
-    [8, 'yellow'],
-    [9, 'red'],
-  ])
-
   const series: SeriesOption[] = []
 
   series.push(
-    ...generateCycles(
-      primaryPhaseData,
-      distanceData,
-      colorMap,
-      primaryDirection
-    )
+    ...generateCycles(primaryPhaseData, distanceData, primaryDirection)
   )
 
   series.push(
@@ -236,12 +212,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   let reverseDistanceData = [...distanceData].reverse()
   reverseDistanceData = reverseDistanceData.map((distance) => (distance += 300))
   series.push(
-    ...generateCycles(
-      opposingPhaseData,
-      reverseDistanceData,
-      colorMap,
-      opposingDirection
-    )
+    ...generateCycles(opposingPhaseData, reverseDistanceData, opposingDirection)
   )
 
   series.push(
@@ -289,27 +260,48 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     )
   )
 
-  series.push(
-    generateCycleLabels(distanceData, primaryDirection, locationLabels.gridLeft)
+  const formatPct = (v?: number | null) =>
+    v === null || v === undefined ? '—' : `${Math.round(v)}%`
+
+  const primaryLinesByIndex = primaryPhaseData.map((p) => [
+    `%AOG: ${formatPct(p.percentArrivalOnGreen)}`,
+  ])
+
+  const opposingLinesByIndex = opposingPhaseData.map((p) => [
+    `%AOG: ${formatPct(p.percentArrivalOnGreen)}`,
+  ])
+
+  const primaryLabelSeries = generateCycleLabels(
+    distanceData,
+    primaryDirection,
+    locationLabels.gridLeft,
+    primaryLinesByIndex,
+    'down'
   )
-  series.push(
-    generateCycleLabels(
-      reverseDistanceData,
-      opposingDirection,
-      locationLabels.gridLeft
-    )
+
+  const opposingLabelSeries = generateCycleLabels(
+    distanceData,
+    opposingDirection,
+    locationLabels.gridLeft,
+    opposingLinesByIndex,
+    'up'
   )
-  series.push(
-    ...getDraggableOffsetabelOption(
-      primaryPhaseData,
-      distanceData,
-      primaryDirection
-    )
-  )
+
+  series.push(primaryLabelSeries)
+  series.push(opposingLabelSeries)
+
+  // series.push(
+  //   ...getDraggableOffsetabelOption(
+  //     primaryPhaseData,
+  //     distanceData,
+  //     primaryDirection
+  //   )
+  // )
 
   const displayProps = createDisplayProps({
     description: '',
     numberOfLocations: primaryPhaseData.length,
+    height: distanceData[distanceData.length - 1] / 19 + 220,
     locations: primaryPhaseData.map((p) => p.locationIdentifier),
   })
 
@@ -333,9 +325,9 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   } as const
 
   const grid: GridComponentOption = {
-    top: 210,
+    top: 120,
     left: locationLabels.gridLeft + 80,
-    right: 300,
+    right: 320,
     bottom: 100,
     show: true,
     borderWidth: 1,
@@ -437,6 +429,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     series,
     displayProps,
     animation: true,
+    responsive: true,
+    maintainAspectRatio: false,
   }
 
   return chartOptions

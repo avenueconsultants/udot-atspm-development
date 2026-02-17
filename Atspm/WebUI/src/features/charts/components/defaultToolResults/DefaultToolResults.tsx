@@ -2,12 +2,22 @@ import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/component
 import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/LinkPivotAdjustmentTable'
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
-import { Box, Paper, Tab, Tabs, Typography, useTheme } from '@mui/material'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import {
+  Box,
+  IconButton,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { transformTimeSpaceData } from '../../api'
 import { GpxUploadAccordion } from '../../timeSpaceDiagram/shared/components/GpxUploader/GpxUploadAccordion'
 import { IgnoreLocationsAccordion } from '../../timeSpaceDiagram/shared/components/IgnoredLocations/IgnoredLocations'
-import {
+import type {
   GpxUploadOptions,
   RawTimeSpaceDiagramResponse,
   TimeSpaceBaseData,
@@ -17,6 +27,8 @@ export interface TimeSpaceChartProps {
   timeSpaceData: RawTimeSpaceDiagramResponse
   linkPivotTsdData: RawLinkPivotForTsdData[]
 }
+
+const STICKY_TOP = 12 // px
 
 function createEmptyEntry(
   locations: string[],
@@ -38,10 +50,7 @@ function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
   const isIgnored = (id: string) => ignoredLocations.includes(id)
 
   const recomputeLane = (lane: T[]): T[] => {
-    // If nothing ignored, just return non-ignored nodes unchanged
-    if (!lane.some((l) => isIgnored(l.locationIdentifier))) {
-      return lane
-    }
+    if (!lane.some((l) => isIgnored(l.locationIdentifier))) return lane
 
     const recomputed: T[] = []
 
@@ -65,26 +74,19 @@ function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
           calculatedDistanceToNext: 0,
           calculatedDistanceToPrevious: 0,
         } as T)
-
         continue
       }
 
-      // ---- distance to previous non-ignored ----
       let distanceToPrevious = 0
       for (let j = i - 1; j >= 0; j--) {
         distanceToPrevious += lane[j].distanceToNextLocation
-        if (!isIgnored(lane[j].locationIdentifier)) {
-          break
-        }
+        if (!isIgnored(lane[j].locationIdentifier)) break
       }
 
-      // ---- distance to next non-ignored ----
       let distanceToNext = 0
       for (let j = i; j < lane.length - 1; j++) {
         distanceToNext += lane[j].distanceToNextLocation
-        if (!isIgnored(lane[j + 1].locationIdentifier)) {
-          break
-        }
+        if (!isIgnored(lane[j + 1].locationIdentifier)) break
       }
 
       recomputed.push({
@@ -111,10 +113,7 @@ function addDefaultValues(
     lane.calculatedDistanceToNext = lane.distanceToNextLocation
     lane.calculatedDistanceToPrevious = lane.distanceToPreviousLocation
   })
-  return {
-    type: timeSpaceData.type,
-    data,
-  }
+  return { type: timeSpaceData.type, data }
 }
 
 export default function TimeSpaceChart({
@@ -124,12 +123,22 @@ export default function TimeSpaceChart({
   const theme = useTheme()
   const [activeTab, setActiveTab] = useState(0)
 
-  const [baseTimeSpaceData, setBaseTimeSpaceData] =
-    useState<RawTimeSpaceDiagramResponse>(addDefaultValues(timeSpaceData))
+  const [baseTimeSpaceData] = useState<RawTimeSpaceDiagramResponse>(
+    addDefaultValues(timeSpaceData)
+  )
 
   const [transformedData, setTransformedData] = useState(() =>
     transformTimeSpaceData(timeSpaceData)
   )
+
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  const SIDEBAR_WIDTH = 320
+  const SIDEBAR_MIN_WIDTH = 260
+
+  // one place to tune animation timing/easing for BOTH panes
+  const TRANSITION_MS = 200
+  const EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 
   const locations = timeSpaceData.data
     .filter((p) => p.phaseType === 'Primary')
@@ -154,69 +163,128 @@ export default function TimeSpaceChart({
     setTransformedData(transformTimeSpaceData(updatedResponse))
   }, [ignoredLocations, baseTimeSpaceData])
 
+  const chartHeight = transformedData.data.chart.displayProps.height
+
   return (
-    <Box
-      sx={{
-        overflow: 'hidden',
-        width: '100%',
-        position: 'absolute',
-        left: 0,
-      }}
-    >
-      {/* 🔹 Tabs Outside Paper */}
+    <Box sx={{ width: '100%', position: 'relative' }}>
       <Tabs
         value={activeTab}
-        onChange={(_, newValue) => setActiveTab(newValue)}
+        onChange={(_, v) => setActiveTab(v)}
         sx={{ mt: 2 }}
       >
         <Tab label="Time Space Chart" />
         <Tab label="Link Pivot" />
       </Tabs>
-
-      {/* 🔹 Default Tab — Existing Paper Layout */}
       {activeTab === 0 && (
-        <Paper
-          sx={{
-            p: 0,
-            mt: 2,
-            marginLeft: '2px',
-            backgroundColor: 'white',
-          }}
-        >
+        <Paper sx={{ p: 0, mt: 2, ml: '2px', bgcolor: 'white' }}>
           <Box
             sx={{
               display: 'flex',
               width: '100%',
               minHeight: '100%',
+              position: 'relative',
             }}
           >
-            {/* LEFT SIDE — GPX OPTIONS */}
+            {/* LEFT — STICKY SHELL (sidebar + button stick together) */}
             <Box
               sx={{
-                width: '20%',
-                minWidth: 260,
-                borderRight: '1px solid',
-                borderColor: 'divider',
-                p: 2,
+                position: 'sticky',
+                top: `${STICKY_TOP}px`,
+                alignSelf: 'flex-start',
+                height: `calc(100vh - ${STICKY_TOP}px)`,
+                maxHeight: `calc(100vh - ${STICKY_TOP}px)`,
+                zIndex: 3,
+                overflow: 'visible',
+                // the shell itself animates width so the chart doesn't jump
+                width: sidebarOpen ? SIDEBAR_WIDTH : 0,
+                minWidth: sidebarOpen ? SIDEBAR_MIN_WIDTH : 0,
+                willChange: 'width, min-width',
+                transition: `width ${TRANSITION_MS}ms ${EASING}, min-width ${TRANSITION_MS}ms ${EASING}`,
               }}
             >
-              <GpxUploadAccordion
-                locations={locations}
-                entries={gpxEntries}
-                setEntries={setGpxEntries}
-              />
-              <IgnoreLocationsAccordion
-                locations={locations}
-                ignoredLocations={ignoredLocations}
-                setIgnoredLocations={setIgnoredLocation}
-              />
+              {/* SIDEBAR PANEL */}
+              <Box
+                sx={{
+                  height: '100%',
+                  borderRight: sidebarOpen ? '1px solid' : 'none',
+                  borderColor: 'divider',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* scroll the content, not the page */}
+                <Box
+                  sx={{
+                    height: '100%',
+                    overflowY: 'auto',
+                    p: 2,
+                    opacity: sidebarOpen ? 1 : 0,
+                    transform: sidebarOpen
+                      ? 'translateX(0)'
+                      : 'translateX(-8px)',
+                    transition: `opacity ${TRANSITION_MS}ms ${EASING}, transform ${TRANSITION_MS}ms ${EASING}`,
+                    willChange: 'opacity, transform',
+                    pointerEvents: sidebarOpen ? 'auto' : 'none',
+                  }}
+                >
+                  <GpxUploadAccordion
+                    locations={locations}
+                    entries={gpxEntries}
+                    setEntries={setGpxEntries}
+                  />
+                  <IgnoreLocationsAccordion
+                    locations={locations}
+                    ignoredLocations={ignoredLocations}
+                    setIgnoredLocations={setIgnoredLocation}
+                  />
+                </Box>
+              </Box>
+
+              {/* TOGGLE BUTTON — sticks because it's inside the sticky shell */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  left: sidebarOpen ? SIDEBAR_WIDTH : 0,
+                  top: 12,
+                  transform: 'translateX(-50%)',
+                  zIndex: 4,
+                  transition: `left ${TRANSITION_MS}ms ${EASING}`,
+                  willChange: 'left',
+                }}
+              >
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    setSidebarOpen((v) => !v)
+                    requestAnimationFrame(() => {
+                      window.dispatchEvent(new Event('resize'))
+                    })
+                  }}
+                  sx={{
+                    bgcolor: 'background.paper',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    boxShadow: 1,
+                    '&:hover': { bgcolor: 'background.paper' },
+                  }}
+                >
+                  {sidebarOpen ? (
+                    <ChevronLeftIcon fontSize="small" />
+                  ) : (
+                    <ChevronRightIcon fontSize="small" />
+                  )}
+                </IconButton>
+              </Box>
             </Box>
 
-            {/* RIGHT SIDE — CHART */}
+            {/* RIGHT — CHART */}
             <Box
               sx={{
-                width: '80%',
+                flex: 1,
+                minWidth: 0,
                 p: 2,
+                willChange: 'transform',
+                transition: `transform ${TRANSITION_MS}ms ${EASING}`,
+                transform: sidebarOpen ? 'translateX(0)' : 'translateX(-4px)',
               }}
             >
               <TimeSpaceEChart
@@ -225,10 +293,7 @@ export default function TimeSpaceChart({
                 theme={theme.palette.mode}
                 style={{
                   width: '100%',
-                  height:
-                    locations.length < 5
-                      ? locations.length * 200 + 160 + 'px'
-                      : locations.length * 150 + 160 + 'px',
+                  height: `${chartHeight}px`,
                   position: 'relative',
                 }}
                 gpxEntries={gpxEntries}
@@ -238,8 +303,6 @@ export default function TimeSpaceChart({
           </Box>
         </Paper>
       )}
-
-      {/* 🔹 Second Tab — LinkPivot (Outside Paper) */}
       {activeTab === 1 && (
         <Box>
           {linkPivotTsdData.map((pivot) => (
@@ -248,7 +311,6 @@ export default function TimeSpaceChart({
                 {pivot.direction} Direction
               </Typography>
 
-              {/* Adjustments */}
               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                 Adjustments
               </Typography>
@@ -259,7 +321,6 @@ export default function TimeSpaceChart({
                 />
               </Paper>
 
-              {/* Approach Link Comparison */}
               <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                 Approach Link Comparison
               </Typography>

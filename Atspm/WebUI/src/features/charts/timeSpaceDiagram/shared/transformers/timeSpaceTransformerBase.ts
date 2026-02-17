@@ -19,7 +19,6 @@ import {
   TimeSpaceDetectorEvent,
   TimeSpaceResponseData,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { Cycle } from '@/features/charts/timingAndActuation/types'
 import { Color } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
 import {
@@ -32,7 +31,6 @@ import {
 // export function generateCycles(
 //   data: TimeSpaceResponseData,
 //   distanceData: number[],
-//   colorMap: Map<number, string>,
 //   phaseType?: string
 // ): SeriesOption[] {
 //   const seriesOptions: SeriesOption[] = []
@@ -83,10 +81,56 @@ import {
 //   return seriesOptions
 // }
 
+type CycleIndication = {
+  name: string
+  codes: number[]
+  color: string
+}
+
+export const CYCLE_INDICATIONS: readonly CycleIndication[] = [
+  {
+    name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
+    codes: [1, 61],
+    color: Color.Green,
+  },
+  {
+    name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+    codes: [3, 62],
+    color: '#8ef08d',
+  },
+  {
+    name: 'Phase Begin Yellow Clearance (8)\nBegin Overlap Yellow (63)',
+    codes: [8, 63],
+    color: Color.Yellow,
+  },
+  {
+    name: 'Phase End Yellow Clearance (9)\nOverlap Begin Red Clearance (64)',
+    codes: [9, 64],
+    color: '#FF0000',
+  },
+  {
+    name: 'Phase End Red Clearance (11)\nOverlap Off (Inactive with Red Indication) (65)',
+    codes: [11, 65],
+    color: '#f0807f',
+  },
+] as const
+
+function getCycleColor(value: number): string {
+  const found = CYCLE_INDICATIONS.find((x) => x.codes.includes(value))
+  return found?.color ?? '#999'
+}
+
+function getCycleEvents(
+  data: { start: string; value: number }[] | null,
+  distanceData: number
+): [string, number, number][] {
+  if (!data) return []
+  return data.map((e) => [e.start, distanceData, e.value])
+}
+
 export function generateCycles(
   data: TimeSpaceResponseData,
   distanceData: number[],
-  colorMap: Map<number, string>,
   phaseType?: string
 ): SeriesOption[] {
   return data.map((phase, index) => {
@@ -104,8 +148,8 @@ export function generateCycles(
       type: 'custom',
       clip: true,
       z: 5,
-      silent: true,
       data: cycleEvents,
+
       renderItem: (param, api): CustomSeriesRenderItemReturn => {
         if (!hasData) {
           // console.log(
@@ -139,8 +183,11 @@ function renderCycleSegment(
   const p1 = api.coord([x1, y1])
   const p2 = api.coord([new Date(x2).getTime(), y2])
 
+  const fill = getCycleColor(v1)
+
   return {
     type: 'rect',
+    cursor: 'pointer',
     shape: {
       x: p1[0],
       y: p1[1],
@@ -148,8 +195,8 @@ function renderCycleSegment(
       height: 10,
     },
     style: {
-      fill: getSegmentColor(v1 as number, v2 as number),
-      opacity: 0.9,
+      fill,
+      opacity: 1,
     },
   }
 }
@@ -210,19 +257,9 @@ function renderMissingCycle(
 //   }
 // }
 
-function getSegmentColor(from: number, to: number): string {
-  if (from === 1 && to === 3) return 'lightgreen'
-  if (from === 3 && to === 8) return 'green'
-  if (from === 1 && to === 8) return 'green'
-  if (from === 8 && to === 9) return 'yellow'
-  if (from === 9 && to === 1) return 'red'
-  return '#999' // fallback
-}
-
 // export function generateCycles(
 //   data: TimeSpaceResponseData,
 //   distanceData: number[],
-//   colorMap: Map<number, string>,
 //   phaseType?: string
 // ): SeriesOption[] {
 //   const series: SeriesOption[] = []
@@ -230,12 +267,6 @@ function getSegmentColor(from: number, to: number): string {
 //   const greenBands = getBandData(data, distanceData, 1)
 //   const yellowBands = getBandData(data, distanceData, 8)
 //   const redBands = getBandData(data, distanceData, 9)
-
-//   const bandSpecs = [
-//     { items: greenBands, color: colorMap.get(1) },
-//     { items: yellowBands, color: colorMap.get(8) },
-//     { items: redBands, color: colorMap.get(9) },
-//   ]
 
 //   for (const band of bandSpecs) {
 //     series.push({
@@ -335,15 +366,6 @@ function getSegmentColor(from: number, to: number): string {
 //   )
 // }
 
-function getCycleEvents(
-  data: Cycle[] | null,
-  distanceData: number
-): [string, number, number][] {
-  if (!data) return
-
-  return data.map((e) => [e.start, distanceData, e.value])
-}
-
 function getDataByValue(
   data: TimeSpaceResponseData,
   distanceData: number[],
@@ -431,8 +453,8 @@ export function generateGreenEventLines(
           },
           style: {
             z: -1,
-            opacity: 0.2,
-            fill: 'green',
+            opacity: 0.3,
+            fill: CYCLE_INDICATIONS[0].color,
           },
         }
       },
@@ -891,20 +913,24 @@ export function getDistancesLabelOption(
 export function getDraggableOffsetabelOption(
   data: TimeSpaceResponseData,
   distanceData: number[],
-  phaseType?: string
+  phaseType?: string,
+  extraLinesByIndex?: Array<string[] | undefined> // optional future lines per row
 ): SeriesOption[] {
   const seriesOptions: SeriesOption[] = []
+
   for (let i = 0; i < data.length; i++) {
     const location = data[i]
     const distance = distanceData[i]
+
     const dataPoint: [string, number, number, number][] = [
       [
         location.end,
         distance,
         i !== distanceData.length - 1 ? location.distanceToNextLocation : 0,
-        0,
+        0, // offset value
       ],
     ]
+
     const seriesOption: SeriesOption = {
       name: `Offset amount`,
       id: `Offset ${location.locationIdentifier} ${phaseType?.length ? phaseType : ''}`,
@@ -912,23 +938,24 @@ export function getDraggableOffsetabelOption(
       data: dataPoint,
       renderItem: (params, api) => {
         const coordSys = params.coordSys
-
         const [, y] = api.coord([0, api.value(1) as number])
 
         const textX = coordSys.x + coordSys.width + 40
-        const textY = y - 6
-
         const offsetValue = api.value(3)
+
         const fontSize = 10
-        const text = `Offset: ${offsetValue}s`
+        const lineGap = 12
 
-        const textHeight = fontSize
-        const lineHeight = textHeight * 2
+        const extra = extraLinesByIndex?.[params.dataIndex] ?? []
+        const lines = [`Offset: ${offsetValue}s`, ...extra]
 
+        // Anchor block so it sits nicely next to the row.
+        const blockTopY = y - 6
+
+        // vertical divider should span the full block height
         const lineX = textX - 6
-        const textCenterY = textY - textHeight / 2 + 10
-        const lineY1 = textCenterY - lineHeight / 2
-        const lineY2 = textCenterY + lineHeight / 2
+        const lineY1 = blockTopY - 2
+        const lineY2 = blockTopY + (lines.length - 1) * lineGap + fontSize + 2
 
         return {
           type: 'group',
@@ -938,52 +965,77 @@ export function getDraggableOffsetabelOption(
               shape: { x1: lineX, y1: lineY1, x2: lineX, y2: lineY2 },
               style: { stroke: '#000', lineWidth: 1 },
             },
-            {
+            ...lines.map((text, idx) => ({
               type: 'text',
               style: {
                 x: textX,
-                y: textY,
+                y: blockTopY + idx * lineGap,
                 text,
                 textFill: '#000',
                 fontSize,
               },
-            },
+            })),
           ],
         }
       },
       clip: false,
     }
+
     seriesOptions.push(seriesOption)
   }
+
   return seriesOptions
 }
+
+type ExpandDir = 'up' | 'down'
 
 export function generateCycleLabels(
   distanceData: number[],
   direction: string,
-  gridLeft: number
+  gridLeft: number,
+  linesByIndex?: Array<string[] | undefined>,
+  expand: ExpandDir = 'down'
 ): SeriesOption {
   return {
     name: `Cycles ${direction}`,
     type: 'custom',
     renderItem: (params, api) => {
+      const rowIndex = params.dataIndex
       const [, y] = api.coord([0, api.value(0)])
       const width = params.coordSys.width
+
+      const fontSize = 10
+      const lineGap = 20
+
+      const extra = linesByIndex?.[rowIndex] ?? []
+      const lines = [direction, ...extra] // direction always first
+
+      // Anchor at the row baseline and choose whether the block grows up or down
+      const startY = expand === 'down' ? 0 : -(lines.length * lineGap) - 15 // move up so the last line ends at y=0
+
       return {
         type: 'group',
         position: [width + 100, y],
-        children: [
-          {
-            type: 'text',
-            style: {
-              x: gridLeft,
-              y: 0,
-              textAlign: 'center',
-              text: direction,
-              fontSize: 10,
+
+        children: lines.map((text, i) => ({
+          type: 'text',
+          style: {
+            backgroundColor: '#f2f2f2',
+            padding: [8, 12],
+            borderRadius: 6,
+            textStyle: {
+              fontWeight: 400,
+              fontSize: 12,
+              rich: {
+                values: { fontWeight: 600 },
+              },
             },
+            x: gridLeft,
+            y: startY + i * lineGap,
+            text,
+            fontSize,
           },
-        ],
+        })),
       }
     },
     data: distanceData,

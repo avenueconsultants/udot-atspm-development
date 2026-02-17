@@ -79,6 +79,7 @@ export const GpxUploadRow = ({
         <TextField
           select
           label="Start Location"
+          size="small"
           value={entry.startLocation}
           onChange={(e) =>
             onChange({
@@ -98,6 +99,7 @@ export const GpxUploadRow = ({
         <TextField
           select
           label="End Location"
+          size="small"
           value={entry.endLocation}
           onChange={(e) =>
             onChange({
