@@ -160,7 +160,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (location == null)
                 {
-                    throw new Exception("Issue fetching location from route");
+                    throw new Exception($"Issue fetching location details for {routeLocation.LocationIdentifier}");
                 }
 
                 var phases = phaseService.GetPhases(location);
@@ -175,14 +175,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (primaryPhaseDetail == null || opposingPhaseDetail == null)
                 {
-                    throw new Exception("Error grabbing phase details");
+                    throw new Exception($"Error grabbing phase details for Location {location.LocationDescription()}");
                 }
 
                 if (parameter.SpeedLimit == null &&
                     (primaryPhaseDetail.Approach.Mph == null ||
                      opposingPhaseDetail.Approach.Mph == null))
                 {
-                    throw new Exception("Speed not configured in route for all phases");
+                    throw new Exception($"Speed not configured in route for all phases");
                 }
 
                 var controllerEventLogs =
@@ -240,21 +240,30 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 programmedSplitsForTimePeriod);
         }
 
-        private List<IndianaEvent> GetEventOverallapingTime(DateTime start, IReadOnlyList<IndianaEvent> programmedCycleForPlan, string eventType)
+        private List<IndianaEvent> GetEventOverallapingTime(
+            DateTime start,
+            IReadOnlyList<IndianaEvent> programmedCycleForPlan,
+            string eventType)
         {
-            var planEvent = programmedCycleForPlan.Where(e => e.Timestamp == start).ToList();
+            if (programmedCycleForPlan == null || programmedCycleForPlan.Count == 0)
+                return new List<IndianaEvent>();
 
+            // First try: exact timestamp match
+            var exactMatches = programmedCycleForPlan
+                .Where(e => e.Timestamp == start)
+                .ToList();
 
-            if (!planEvent.Any())
-                planEvent = programmedCycleForPlan.Where(e => e.Timestamp < start)
-                    ?.GroupBy(log => log.EventCode)
-                    ?.Select(group => group.OrderByDescending(e => e.Timestamp).FirstOrDefault())
-                    ?.ToList();
+            if (exactMatches.Count > 0)
+                return exactMatches;
 
-            if (!planEvent.Any())
-                throw new NullReferenceException($"Error grabbing {eventType}");
+            // Fallback: latest event per EventCode before the given start
+            var fallbackMatches = programmedCycleForPlan
+                .Where(e => e.Timestamp < start)
+                .GroupBy(e => e.EventCode)
+                .Select(g => g.OrderByDescending(e => e.Timestamp).First())
+                .ToList();
 
-            return planEvent.ToList();
+            return fallbackMatches; // will be empty if nothing found
         }
 
         private async Task<TimeSpaceDiagramResultForPhase> GetChartDataForPhase(
