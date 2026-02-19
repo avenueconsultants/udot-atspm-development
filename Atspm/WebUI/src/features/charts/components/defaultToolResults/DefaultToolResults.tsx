@@ -10,6 +10,7 @@ import {
   Paper,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
@@ -131,7 +132,7 @@ export default function TimeSpaceChart({
     transformTimeSpaceData(timeSpaceData)
   )
 
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const SIDEBAR_WIDTH = 320
   const SIDEBAR_MIN_WIDTH = 260
@@ -166,7 +167,14 @@ export default function TimeSpaceChart({
   const chartHeight = transformedData.data.chart.displayProps.height
 
   return (
-    <Box sx={{ width: '100%', position: 'relative' }}>
+    <Box
+      sx={{
+        width: '100%',
+        position: 'relative',
+        position: 'absolute',
+        left: 0,
+      }}
+    >
       <Tabs
         value={activeTab}
         onChange={(_, v) => setActiveTab(v)}
@@ -181,7 +189,6 @@ export default function TimeSpaceChart({
             sx={{
               display: 'flex',
               width: '100%',
-              minHeight: '100%',
               position: 'relative',
             }}
           >
@@ -191,8 +198,8 @@ export default function TimeSpaceChart({
                 position: 'sticky',
                 top: `${STICKY_TOP}px`,
                 alignSelf: 'flex-start',
-                height: `calc(100vh - ${STICKY_TOP}px)`,
-                maxHeight: `calc(100vh - ${STICKY_TOP}px)`,
+                maxHeight: `100vh`,
+                height: '100%',
                 zIndex: 3,
                 overflow: 'visible',
                 // the shell itself animates width so the chart doesn't jump
@@ -206,8 +213,6 @@ export default function TimeSpaceChart({
               <Box
                 sx={{
                   height: '100%',
-                  borderRight: sidebarOpen ? '1px solid' : 'none',
-                  borderColor: 'divider',
                   overflow: 'hidden',
                 }}
               >
@@ -243,8 +248,8 @@ export default function TimeSpaceChart({
               <Box
                 sx={{
                   position: 'absolute',
-                  left: sidebarOpen ? SIDEBAR_WIDTH : 0,
-                  top: 12,
+                  left: sidebarOpen ? SIDEBAR_WIDTH : 15,
+                  top: 300,
                   transform: 'translateX(-50%)',
                   zIndex: 4,
                   transition: `left ${TRANSITION_MS}ms ${EASING}`,
@@ -268,9 +273,13 @@ export default function TimeSpaceChart({
                   }}
                 >
                   {sidebarOpen ? (
-                    <ChevronLeftIcon fontSize="small" />
+                    <Tooltip title="Hide options" placement="right">
+                      <ChevronLeftIcon fontSize="small" />
+                    </Tooltip>
                   ) : (
-                    <ChevronRightIcon fontSize="small" />
+                    <Tooltip title="Show options" placement="right">
+                      <ChevronRightIcon fontSize="small" />
+                    </Tooltip>
                   )}
                 </IconButton>
               </Box>
@@ -285,6 +294,8 @@ export default function TimeSpaceChart({
                 willChange: 'transform',
                 transition: `transform ${TRANSITION_MS}ms ${EASING}`,
                 transform: sidebarOpen ? 'translateX(0)' : 'translateX(-4px)',
+                borderLeft: sidebarOpen ? '1px solid' : 'none',
+                borderColor: 'divider',
               }}
             >
               <TimeSpaceEChart

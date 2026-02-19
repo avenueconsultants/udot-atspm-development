@@ -77,7 +77,31 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const dateRange = formatChartDateTimeRange(data[0].start, data[0].end)
 
-  const xAxis = createXAxis(data[0].start, data[0].end)
+  const chartStartMs = Date.parse(primaryPhaseData[0].start)
+  const chartEndMs = Date.parse(primaryPhaseData[0].end)
+  const totalSeconds = Math.floor((chartEndMs - chartStartMs) / 1000)
+
+  const xAxisTopSeconds = {
+    type: 'value',
+    position: 'top',
+    nameGap: 25,
+    min: 0,
+    max: totalSeconds,
+    name: 'Time Since Start (seconds)',
+    nameLocation: 'middle',
+    minInterval: 60,
+    maxInterval: 60,
+    minorTick: { show: true, splitNumber: 4 },
+    axisLabel: {
+      formatter: (v: number) => String(Math.round(v / 1) * 1),
+    },
+  } as const
+
+  const xAxis = [
+    createXAxis(data[0].start, data[0].end),
+    { min: 0, max: 1, show: false },
+    xAxisTopSeconds,
+  ]
 
   let initialDistance = 0
 
@@ -93,9 +117,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const yAxis = createYAxis(false, {
     show: false,
     data: distanceData,
-    axisLabel: {
-      show: false,
-    },
+    axisTick: { show: true },
     max: distanceData[distanceData.length - 1] + 350,
     min: -250,
   })
@@ -105,6 +127,15 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     location: `Primary: ${primaryPhaseData[0].approachDescription} • Opposing: ${opposingPhaseData[0].approachDescription}`,
     dateRange,
   })
+
+  const grid: GridComponentOption = {
+    top: 120,
+    left: 270,
+    right: 300,
+    bottom: 100,
+    show: true,
+    borderWidth: 1,
+  }
 
   const start = new Date(data[0].end)
   const end = new Date(data[0].start)
@@ -199,14 +230,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     ...generateTMCEvent(primaryPhaseData, distanceData, primaryDirection)
   )
 
-  const locationLabels = getLocationsLabelOption(primaryPhaseData, distanceData)
+  const locationLabels = getLocationsLabelOption(
+    primaryPhaseData,
+    distanceData,
+    grid
+  )
   series.push(locationLabels)
   series.push(
-    getDistancesLabelOption(
-      primaryPhaseData,
-      distanceData,
-      locationLabels.gridLeft
-    )
+    getDistancesLabelOption(primaryPhaseData, distanceData, grid.left as number)
   )
 
   let reverseDistanceData = [...distanceData].reverse()
@@ -260,21 +291,26 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     )
   )
 
+  // for each series set the xAxisIndex to 0
+  series.forEach((s) => {
+    s.xAxisIndex = 0
+  })
+
   const formatPct = (v?: number | null) =>
     v === null || v === undefined ? '—' : `${Math.round(v)}%`
 
   const primaryLinesByIndex = primaryPhaseData.map((p) => [
-    `%AOG: ${formatPct(p.percentArrivalOnGreen)}`,
+    `AOG: ${formatPct(p.percentArrivalOnGreen)}`,
   ])
 
   const opposingLinesByIndex = opposingPhaseData.map((p) => [
-    `%AOG: ${formatPct(p.percentArrivalOnGreen)}`,
+    `AOG: ${formatPct(p.percentArrivalOnGreen)}`,
   ])
 
   const primaryLabelSeries = generateCycleLabels(
     distanceData,
     primaryDirection,
-    locationLabels.gridLeft,
+    grid.left,
     primaryLinesByIndex,
     'down'
   )
@@ -282,13 +318,13 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const opposingLabelSeries = generateCycleLabels(
     distanceData,
     opposingDirection,
-    locationLabels.gridLeft,
+    grid.left,
     opposingLinesByIndex,
     'up'
   )
 
-  series.push(primaryLabelSeries)
-  series.push(opposingLabelSeries)
+  // series.push(primaryLabelSeries)
+  // series.push(opposingLabelSeries)
 
   // series.push(
   //   ...getDraggableOffsetabelOption(
@@ -298,40 +334,28 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   //   )
   // )
 
+  const MIN_SEGMENT = 1600
+
+  const segments = distanceData.map((v, i) => v - (distanceData[i - 1] ?? 0))
+
+  const positiveSegments = segments.filter((d) => Number.isFinite(d) && d > 0)
+  const minSegment = positiveSegments.length ? Math.min(...positiveSegments) : 0
+
+  const scale =
+    minSegment > 0 && minSegment < MIN_SEGMENT ? MIN_SEGMENT / minSegment : 1
+
+  const scaledCumulative = distanceData.map((d) =>
+    Number.isFinite(d) ? d * scale : d
+  )
+
+  const totalDistance = scaledCumulative[scaledCumulative.length - 1] ?? 0
+
   const displayProps = createDisplayProps({
     description: '',
     numberOfLocations: primaryPhaseData.length,
-    height: distanceData[distanceData.length - 1] / 19 + 220,
+    height: totalDistance / 19 + 220,
     locations: primaryPhaseData.map((p) => p.locationIdentifier),
   })
-
-  const chartStartMs = Date.parse(primaryPhaseData[0].start)
-  const chartEndMs = Date.parse(primaryPhaseData[0].end)
-  const totalSeconds = Math.floor((chartEndMs - chartStartMs) / 1000)
-
-  const xAxisTopSeconds = {
-    type: 'value',
-    position: 'top',
-    min: 0,
-    max: totalSeconds,
-    name: 'Time Since Start (seconds)',
-    nameLocation: 'middle',
-    minInterval: 60,
-    maxInterval: 60,
-    minorTick: { show: true, splitNumber: 4 },
-    axisLabel: {
-      formatter: (v: number) => String(Math.round(v / 1) * 1),
-    },
-  } as const
-
-  const grid: GridComponentOption = {
-    top: 120,
-    left: locationLabels.gridLeft + 80,
-    right: 320,
-    bottom: 100,
-    show: true,
-    borderWidth: 1,
-  }
 
   const legends = createLegend({
     top: grid.top,
@@ -419,7 +443,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const chartOptions: EChartsOption = {
     title,
-    xAxis: [xAxis, xAxisTopSeconds],
+    xAxis: xAxis,
     yAxis,
     grid,
     dataZoom,
@@ -587,7 +611,6 @@ function generateStopBarPresenceEventLines(
           api.coord([nextPointFinalX, (y2 as number) + distanceToNext]),
           api.coord([currPointFinalX, (y1 as number) + distanceToNext]),
         ]
-        console.log('this is stopbar', points[0], points[1])
         return {
           type: 'polygon',
           transition: ['shape'],
