@@ -98,6 +98,9 @@ export const DottedLineSeriesSymbol =
 export const SolidLineSeriesSymbol =
   'path://M180 1000 l0 -20 200 0 200 0 0 20 0 20 -200 0 -200 0 0 -20z'
 
+export const detectionSeriesSymbol =
+  'path://M82 32 A50 50 0 1 0 -18 32 A50 50 0 1 0 82 32 Z M82 23 H210 V41 H82 Z M210 -18 H226 V82 H210 Z'
+
 export function formatChartDateTimeRange(startDate: string, endDate: string) {
   const start = new Date(startDate)
   const end = new Date(endDate)

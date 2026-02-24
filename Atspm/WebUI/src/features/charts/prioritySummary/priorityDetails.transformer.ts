@@ -37,6 +37,7 @@ import { buildPriorityOverlay } from '@/features/charts/prioritySummary/priority
 import { TransformedChartResponse } from '@/features/charts/types'
 import {
   Color,
+  detectionSeriesSymbol,
   formatChartDateTimeRange,
   hLineSvgSymbol,
   triangleSvgSymbol,
@@ -244,7 +245,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
         })),
         {
           name: 'Detection Event',
-          icon: 'image:///DetectionEvent.svg',
+          icon: detectionSeriesSymbol,
         },
       ],
     }),
