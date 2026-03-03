@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { IndianaEvent } from '@/api/data'
 import {
   createDisplayProps,
   createLegend,
@@ -35,8 +36,10 @@ import {
 } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedTimeSpaceResponse } from '@/features/charts/types'
 import {
+  Color,
   formatChartDateTimeRange,
   SolidLineSeriesSymbol,
+  triangleSvgSymbol,
 } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
 import {
@@ -46,6 +49,7 @@ import {
   GridComponentOption,
   SeriesOption,
 } from 'echarts'
+import { TSP_CODES } from '../../prioritySummary/priorityDetails.transformer'
 import {
   CycleColor,
   EVENT_GROUPS,
@@ -175,6 +179,8 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     },
   }
 
+  // const { requestRects, serviceRects, intersectionLines } =
+  //   buildRectsAndLinesForTSD(primaryPhaseData)
   const series: SeriesOption[] = []
 
   series.push(
@@ -225,9 +231,20 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       primaryDirection
     )
   )
+  series.push(
+    ...generateSrmEntityLines(primaryPhaseData, distanceData, primaryDirection)
+  )
 
   series.push(
     ...generateTMCEvent(primaryPhaseData, distanceData, primaryDirection)
+  )
+
+  series.push(
+    ...buildCycleEventMarkersOnCyclesSeries(primaryPhaseData, distanceData)
+  )
+
+  series.push(
+    ...buildTspRequestAndServiceLineSeries(primaryPhaseData, distanceData)
   )
 
   const locationLabels = getLocationsLabelOption(
@@ -288,6 +305,28 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       opposingPhaseData,
       reverseDistanceData,
       opposingDirection
+    )
+  )
+
+  series.push(
+    ...generateSrmEntityLines(
+      opposingPhaseData,
+      reverseDistanceData,
+      opposingDirection
+    )
+  )
+
+  series.push(
+    ...buildCycleEventMarkersOnCyclesSeries(
+      opposingPhaseData,
+      reverseDistanceData
+    )
+  )
+
+  series.push(
+    ...buildTspRequestAndServiceLineSeries(
+      opposingPhaseData,
+      reverseDistanceData
     )
   )
 
@@ -415,12 +454,41 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         itemStyle: { color: 'grey' },
       },
       {
+        name: `SRM Entity ${primaryDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: Color.Black },
+      },
+      {
+        name: `SRM Entity ${opposingDirection}`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: Color.Black },
+      },
+      {
         name: `Left Turn ${primaryDirection}`,
         itemStyle: { color: 'black' },
       },
       {
         name: `Right Turn ${primaryDirection}`,
         itemStyle: { color: 'black' },
+      },
+      {
+        name: `Early Green (113)`,
+        icon: triangleSvgSymbol,
+        itemStyle: { color: Color.Black },
+      },
+      {
+        name: `Extend Green (114)`,
+        itemStyle: { color: 'black' },
+      },
+      {
+        name: `TSP Request (112-115)`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: Color.Red },
+      },
+      {
+        name: `TSP Service (118-119)`,
+        icon: SolidLineSeriesSymbol,
+        itemStyle: { color: Color.LightBlue },
       },
     ],
     selected: {
@@ -436,8 +504,14 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       [`Stop Bar Presence ${opposingDirection}`]: false,
       [`Pedestrian Interval ${primaryDirection}`]: false,
       [`Pedestrian Interval ${opposingDirection}`]: false,
+      [`SRM Entity ${primaryDirection}`]: true,
+      [`SRM Entity ${opposingDirection}`]: true,
       [`Left Turn ${primaryDirection}`]: false,
       [`Right Turn ${primaryDirection}`]: false,
+      [`Early Green (113)`]: false,
+      [`Extend Green (114)`]: false,
+      [`TSP Request (112-115)`]: false,
+      [`TSP Service (118-119)`]: false,
     },
   })
 
@@ -789,4 +863,275 @@ function generateTMCEvent(
   )
 
   return seriesOptions
+}
+
+function generateSrmEntityLines(
+  data: RawTimeSpaceHistoricData[],
+  distanceData: number[],
+  phaseType?: string
+): SeriesOption[] {
+  const isOpposing = (phaseType ?? '').toLowerCase().includes('opposing')
+  const directionMultiplier = isOpposing ? -1 : 1
+  const seriesOptions: SeriesOption[] = []
+
+  data.forEach((location, i) => {
+    const tracks = location.srmEntityTracks ?? []
+    if (!tracks.length) return
+
+    tracks.forEach((track, trackIndex) => {
+      if (!track?.points?.length) return
+      const baseDistance = distanceData[i] ?? 0
+      const points = track.points.map((point) => [
+        point.time,
+        baseDistance + directionMultiplier * point.distance,
+      ])
+
+      seriesOptions.push({
+        name: `SRM Entity ${phaseType?.length ? phaseType : ''}`,
+        id: `SRM ${location.locationIdentifier} ${track.entityId} ${trackIndex} ${
+          phaseType ?? ''
+        }`,
+        type: 'line',
+        symbol: 'none',
+        lineStyle: {
+          width: 2,
+          color: Color.Black,
+          opacity: 0.85,
+        },
+        data: points,
+        z: 9,
+      })
+    })
+  })
+
+  return seriesOptions
+}
+
+function buildCycleEventMarkersOnCyclesSeries(
+  rows: RawTimeSpaceHistoricData[] = [],
+  distanceData: number[] = []
+): SeriesOption[] {
+  const earlyGreens: Array<[string, number]> = []
+  const extendGreens: Array<[string, number]> = []
+  const seen = new Set<string>()
+
+  rows.forEach((row, i) => {
+    const yValue = distanceData[i]
+    if (yValue == null) return
+
+    const rowStart = Date.parse(row.start)
+    const rowEnd = Date.parse(row.end)
+    if (!Number.isFinite(rowStart) || !Number.isFinite(rowEnd)) return
+
+    const tspEvents = (row.tspEvents ?? []) as IndianaEvent[]
+    if (!tspEvents.length) return
+
+    tspEvents.forEach((e) => {
+      if (
+        e.eventCode !== TSP_CODES.EarlyGreen &&
+        e.eventCode !== TSP_CODES.ExtendGreen
+      ) {
+        return
+      }
+
+      const tMs = Date.parse(e.timestamp as string)
+      if (!Number.isFinite(tMs)) return
+      if (tMs < rowStart || tMs > rowEnd) return
+
+      const key = `${e.eventCode}|${i}|${e.timestamp}`
+      if (seen.has(key)) return
+      seen.add(key)
+
+      const point: [string, number] = [e.timestamp, yValue - 100]
+
+      if (e.eventCode === TSP_CODES.EarlyGreen) {
+        earlyGreens.push(point)
+      } else {
+        extendGreens.push(point)
+      }
+    })
+  })
+
+  const createSeries = (
+    name: string,
+    symbol: string,
+    data: Array<[string, number]>
+  ): SeriesOption => ({
+    type: 'scatter',
+    name,
+    symbol,
+    symbolSize: 9,
+    itemStyle: { color: Color.Black },
+    z: 6,
+    tooltip: {
+      show: true,
+      formatter: (p: any) => `${p.seriesName} ${p?.value?.[0] ?? ''}`,
+    },
+    data,
+  })
+
+  const result: SeriesOption[] = []
+
+  if (earlyGreens.length) {
+    result.push(createSeries('Early Green (113)', 'circle', earlyGreens))
+  }
+
+  if (extendGreens.length) {
+    result.push(
+      createSeries('Extend Green (114)', triangleSvgSymbol, extendGreens)
+    )
+  }
+
+  return result
+}
+
+type TspHistoricEvent = {
+  code: number
+  timestamp: string
+  timestampMs: number
+}
+
+const CYCLE_BAND_HEIGHT = 10
+const TSP_OVERLAY_Z = 7
+
+function buildTspRequestAndServiceLineSeries(
+  rows: RawTimeSpaceHistoricData[] = [],
+  distanceData: number[] = []
+): SeriesOption[] {
+  const tspRequestData: ((string | number)[] | null)[] = []
+  const tspServiceData: ((string | number)[] | null)[] = []
+
+  rows.forEach((row, i) => {
+    const yValue = distanceData[i]
+    if (yValue == null) return
+
+    const rowStartMs = Date.parse(row.start)
+    const rowEndMs = Date.parse(row.end)
+    if (!Number.isFinite(rowStartMs) || !Number.isFinite(rowEndMs)) return
+
+    const tspEvents = (row.tspEvents ?? []) as IndianaEvent[]
+    if (!tspEvents.length) return
+
+    const relevantEvents: TspHistoricEvent[] = tspEvents
+      .map((event) => {
+        const code = event.eventCode
+        const timestampRaw = event.timestamp
+        const timestampMs = Date.parse(timestampRaw as string)
+
+        if (
+          !Number.isFinite(code) ||
+          !timestampRaw ||
+          !Number.isFinite(timestampMs)
+        ) {
+          return null
+        }
+
+        if (
+          code !== TSP_CODES.CheckIn &&
+          code !== TSP_CODES.CheckOut &&
+          code !== TSP_CODES.ServiceStart &&
+          code !== TSP_CODES.ServiceEnd
+        ) {
+          return null
+        }
+
+        if (timestampMs < rowStartMs || timestampMs > rowEndMs) return null
+
+        const timestamp = dateToTimestamp(timestampRaw)
+        if (!timestamp) return null
+
+        return { code, timestamp, timestampMs }
+      })
+      .filter((event): event is TspHistoricEvent => event !== null)
+      .sort((a, b) => {
+        const dt = a.timestampMs - b.timestampMs
+        if (dt !== 0) return dt
+
+        const sameTimeOrder: Record<number, number> = {
+          [TSP_CODES.CheckIn]: 0,
+          [TSP_CODES.ServiceStart]: 1,
+          [TSP_CODES.ServiceEnd]: 2,
+          [TSP_CODES.CheckOut]: 3,
+        }
+
+        const aOrder = sameTimeOrder[a.code] ?? 99
+        const bOrder = sameTimeOrder[b.code] ?? 99
+        if (aOrder !== bOrder) return aOrder - bOrder
+        return a.code - b.code
+      })
+
+    let requestStart: TspHistoricEvent | null = null
+    let serviceStart: TspHistoricEvent | null = null
+
+    relevantEvents.forEach((event) => {
+      if (event.code === TSP_CODES.CheckIn) {
+        requestStart = event
+        return
+      }
+
+      if (event.code === TSP_CODES.CheckOut) {
+        if (requestStart && event.timestampMs > requestStart.timestampMs) {
+          tspRequestData.push(
+            [requestStart.timestamp, yValue - 60],
+            [event.timestamp, yValue - 60],
+            null
+          )
+        }
+        requestStart = null
+        return
+      }
+
+      if (event.code === TSP_CODES.ServiceStart) {
+        serviceStart = event
+        return
+      }
+
+      if (event.code === TSP_CODES.ServiceEnd) {
+        if (serviceStart && event.timestampMs > serviceStart.timestampMs) {
+          tspServiceData.push(
+            [serviceStart.timestamp, yValue],
+            [event.timestamp, yValue],
+            null
+          )
+        }
+        serviceStart = null
+      }
+    })
+  })
+
+  const series: SeriesOption[] = []
+
+  if (tspRequestData.length) {
+    series.push({
+      name: 'TSP Request (112-115)',
+      type: 'line',
+      data: tspRequestData,
+      symbol: 'none',
+      lineStyle: {
+        width: CYCLE_BAND_HEIGHT,
+        color: Color.Red,
+        opacity: 0.95,
+      },
+      z: TSP_OVERLAY_Z,
+      tooltip: { show: false },
+    })
+  }
+
+  if (tspServiceData.length) {
+    series.push({
+      name: 'TSP Service (118-119)',
+      type: 'line',
+      data: tspServiceData,
+      symbol: 'none',
+      lineStyle: {
+        width: CYCLE_BAND_HEIGHT,
+        color: Color.LightBlue,
+        opacity: 0.95,
+      },
+      z: TSP_OVERLAY_Z,
+      tooltip: { show: false },
+    })
+  }
+
+  return series
 }

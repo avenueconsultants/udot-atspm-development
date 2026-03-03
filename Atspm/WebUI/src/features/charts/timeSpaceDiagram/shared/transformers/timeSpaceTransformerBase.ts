@@ -197,7 +197,7 @@ function renderCycleSegment(
     },
     style: {
       fill,
-      opacity: 1,
+      opacity: 0.6,
     },
   }
 }
