@@ -2,7 +2,15 @@ import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/component
 import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/LinkPivotAdjustmentTable'
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
-import { Box, Paper, Tab, Tabs, Typography, useTheme } from '@mui/material'
+import {
+  Alert,
+  Box,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { transformTimeSpaceData } from '../../api'
 import { GpxUploadAccordion } from '../../timeSpaceDiagram/shared/components/GpxUploader/GpxUploadAccordion'
@@ -103,17 +111,54 @@ function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
   return [...recomputeLane(primaryLane), ...recomputeLane(opposingLane)]
 }
 
+// Helper function to unwrap, recompute, and re-wrap data
+function recomputeWrappedTimeSpaceData(
+  wrappedData: any[],
+  ignoredLocations: string[]
+): any[] {
+  // Extract successful results
+  const unwrappedData = wrappedData
+    .filter((item) => item.isSuccess && item.result)
+    .map((item) => item.result)
+
+  // Recompute with ignored locations
+  const recomputed = recomputeTimeSpaceData(unwrappedData, ignoredLocations)
+
+  // Re-wrap the recomputed data
+  return recomputed.map((result) => ({
+    error: null,
+    result: result,
+    isSuccess: true,
+  }))
+}
+
 function addDefaultValues(
   timeSpaceData: RawTimeSpaceDiagramResponse
 ): RawTimeSpaceDiagramResponse {
-  const data = timeSpaceData.data
-  data.forEach((lane) => {
-    lane.calculatedDistanceToNext = lane.distanceToNextLocation
-    lane.calculatedDistanceToPrevious = lane.distanceToPreviousLocation
+  const wrappedData = timeSpaceData.data
+
+  // Process each wrapped result
+  const processedData = wrappedData.map((wrappedItem) => {
+    // If this is an error result, return it unchanged
+    if (!wrappedItem.isSuccess || !wrappedItem.result) {
+      return wrappedItem
+    }
+
+    // For successful results, add calculated distance values
+    const lane = wrappedItem.result
+    return {
+      ...wrappedItem,
+      result: {
+        ...lane,
+        calculatedDistanceToNext: lane.distanceToNextLocation,
+        calculatedDistanceToPrevious: lane.distanceToPreviousLocation,
+      },
+    }
   })
+
   return {
     type: timeSpaceData.type,
-    data,
+    data: processedData as any,
   }
 }
 
@@ -123,17 +168,35 @@ export default function TimeSpaceChart({
 }: TimeSpaceChartProps) {
   const theme = useTheme()
   const [activeTab, setActiveTab] = useState(0)
+  const [transformErrors, setTransformErrors] = useState<string[]>([])
 
   const [baseTimeSpaceData, setBaseTimeSpaceData] =
     useState<RawTimeSpaceDiagramResponse>(addDefaultValues(timeSpaceData))
 
-  const [transformedData, setTransformedData] = useState(() =>
-    transformTimeSpaceData(timeSpaceData)
-  )
+  const [transformedData, setTransformedData] = useState(() => {
+    try {
+      const result = transformTimeSpaceData(timeSpaceData)
+      // Check if transformation returned errors
+      if ('errors' in result && result.errors) {
+        setTransformErrors(result.errors)
+      }
+      return result
+    } catch (error) {
+      console.error('Error transforming time space data:', error)
+      setTransformErrors([
+        error instanceof Error ? error.message : 'Unknown transformation error',
+      ])
+      // Return empty chart on error
+      return {
+        type: timeSpaceData.type,
+        data: { chart: {} },
+      }
+    }
+  })
 
   const locations = timeSpaceData.data
-    .filter((p) => p.phaseType === 'Primary')
-    .map((p) => p.locationIdentifier)
+    .filter((p) => p.isSuccess && p.result && p.result.phaseType === 'Primary')
+    .map((p) => p.result!.locationIdentifier)
 
   const [gpxEntries, setGpxEntries] = useState<GpxUploadOptions[]>([
     createEmptyEntry(locations),
@@ -143,7 +206,10 @@ export default function TimeSpaceChart({
   useEffect(() => {
     const recalculatedData =
       ignoredLocations.length > 0
-        ? recomputeTimeSpaceData(baseTimeSpaceData.data, ignoredLocations)
+        ? recomputeWrappedTimeSpaceData(
+            baseTimeSpaceData.data,
+            ignoredLocations
+          )
         : baseTimeSpaceData.data
 
     const updatedResponse: RawTimeSpaceDiagramResponse = {
@@ -151,7 +217,25 @@ export default function TimeSpaceChart({
       data: recalculatedData,
     }
 
-    setTransformedData(transformTimeSpaceData(updatedResponse))
+    try {
+      const result = transformTimeSpaceData(updatedResponse)
+      setTransformedData(result)
+      // Check if transformation returned errors
+      if ('errors' in result && result.errors) {
+        setTransformErrors(result.errors)
+      } else {
+        setTransformErrors([])
+      }
+    } catch (error) {
+      console.error('Error transforming time space data:', error)
+      setTransformErrors([
+        error instanceof Error ? error.message : 'Unknown transformation error',
+      ])
+      setTransformedData({
+        type: baseTimeSpaceData.type,
+        data: { chart: {} },
+      })
+    }
   }, [ignoredLocations, baseTimeSpaceData])
 
   return (
@@ -163,6 +247,24 @@ export default function TimeSpaceChart({
         left: 0,
       }}
     >
+      {/* Display errors if any */}
+      {transformErrors.length > 0 && (
+        <Box sx={{ mt: 2, mx: 2 }}>
+          <Alert severity="warning" sx={{ mb: 2 }}>
+            <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
+              Some phases failed to process:
+            </Typography>
+            <Box component="ul" sx={{ m: 0, pl: 2 }}>
+              {transformErrors.map((error, index) => (
+                <li key={index}>
+                  <Typography variant="body2">{error}</Typography>
+                </li>
+              ))}
+            </Box>
+          </Alert>
+        </Box>
+      )}
+
       {/* 🔹 Tabs Outside Paper */}
       <Tabs
         value={activeTab}
@@ -255,7 +357,10 @@ export default function TimeSpaceChart({
               <Paper sx={{ mb: 3 }}>
                 <LinkPivotAdjustmentTable
                   data={pivot.data.adjustments}
-                  cycleLength={baseTimeSpaceData.data[0].cycleLength}
+                  cycleLength={
+                    baseTimeSpaceData.data.find((d) => d.isSuccess && d.result)
+                      ?.result?.cycleLength || 0
+                  }
                 />
               </Paper>
 

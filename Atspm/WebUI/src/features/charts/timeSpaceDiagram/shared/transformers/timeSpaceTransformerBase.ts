@@ -17,7 +17,7 @@
 import {
   RawTimeSpaceAverageData,
   TimeSpaceDetectorEvent,
-  TimeSpaceResponseData,
+  TimeSpaceUnwrappedData,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { Cycle } from '@/features/charts/timingAndActuation/types'
 import { Color } from '@/features/charts/utils'
@@ -30,7 +30,7 @@ import {
 } from 'echarts'
 
 // export function generateCycles(
-//   data: TimeSpaceResponseData,
+//   data: TimeSpaceUnwrappedData,
 //   distanceData: number[],
 //   colorMap: Map<number, string>,
 //   phaseType?: string
@@ -84,7 +84,7 @@ import {
 // }
 
 export function generateCycles(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[],
   colorMap: Map<number, string>,
   phaseType?: string
@@ -220,7 +220,7 @@ function getSegmentColor(from: number, to: number): string {
 }
 
 // export function generateCycles(
-//   data: TimeSpaceResponseData,
+//   data: TimeSpaceUnwrappedData,
 //   distanceData: number[],
 //   colorMap: Map<number, string>,
 //   phaseType?: string
@@ -265,7 +265,7 @@ function getSegmentColor(from: number, to: number): string {
 // }
 
 // function getBandData(
-//   data: TimeSpaceResponseData,
+//   data: TimeSpaceUnwrappedData,
 //   distanceData: number[],
 //   value: number
 // ) {
@@ -345,7 +345,7 @@ function getCycleEvents(
 }
 
 function getDataByValue(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[],
   value: number
 ) {
@@ -372,7 +372,7 @@ function getDataByValue(
 }
 
 export function generateGreenEventLines(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[],
   phaseType?: string,
   isPrimary?: boolean
@@ -443,7 +443,7 @@ export function generateGreenEventLines(
 }
 
 export function getEffectiveDistanceToNext(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   index: number,
   isPrimary?: boolean
 ): number {
@@ -498,7 +498,7 @@ function getGreenEventsDataPoints(
 }
 
 // function getGreenEventsDataPoints(
-//   data: TimeSpaceResponseData,
+//   data: TimeSpaceUnwrappedData,
 //   distanceData: number[]
 // ) {
 //   return data.reduce((result, location, index) => {
@@ -618,7 +618,7 @@ function measureTextWidth(text: string, font: string): number {
 }
 
 function getLongestLabelLineWidth(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   fonts: FontSpec = DEFAULT_FONTS
 ): number {
   let max = 0
@@ -645,7 +645,7 @@ function getLongestLabelLineWidth(
 }
 
 export function getLocationsLabelOption(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[]
 ): SeriesOption {
   // x = width of longest label line
@@ -843,7 +843,7 @@ export function getOffsetAndProgramSplitLabel(
 }
 
 export function getDistancesLabelOption(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[],
   gridLeft: number
 ): SeriesOption {
@@ -889,7 +889,7 @@ export function getDistancesLabelOption(
 }
 
 export function getDraggableOffsetabelOption(
-  data: TimeSpaceResponseData,
+  data: TimeSpaceUnwrappedData,
   distanceData: number[],
   phaseType?: string
 ): SeriesOption[] {
