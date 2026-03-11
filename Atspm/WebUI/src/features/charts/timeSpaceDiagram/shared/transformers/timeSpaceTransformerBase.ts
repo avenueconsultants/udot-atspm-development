@@ -19,6 +19,7 @@ import {
   TimeSpaceDetectorEvent,
   TimeSpaceUnwrappedData,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
+import { Cycle } from '@/features/charts/timingAndActuation/types'
 import { Color } from '@/features/charts/utils'
 import { dateToTimestamp } from '@/utils/dateTime'
 import {
@@ -136,7 +137,7 @@ export function generateCycles(
 ): SeriesOption[] {
   return data.map((phase, index) => {
     const distance = distanceData[index]
-    const nextDistance = distanceData[index + 1] ?? distance + 300 // or whatever spacing you use
+    // const nextDistance = distanceData[index + 1] ?? distance + 300 // or whatever spacing you use
     const hasData = hasCycleData(phase.cycleAllEvents)
 
     const cycleEvents = hasData
@@ -150,13 +151,12 @@ export function generateCycles(
       clip: true,
       z: 5,
       data: cycleEvents,
-
       renderItem: (param, api): CustomSeriesRenderItemReturn => {
         if (!hasData) {
           // console.log(
           //   `${phase.locationIdentifier} has no cycles for ${phaseType}`
           // )
-          return renderMissingCycle(api, param, distance, nextDistance)
+          return renderMissingCycle(api, param, distance)
           // return renderMissingCycle(param, distance)
         }
 
@@ -184,11 +184,10 @@ function renderCycleSegment(
   const p1 = api.coord([x1, y1])
   const p2 = api.coord([new Date(x2).getTime(), y2])
 
-  const fill = getCycleColor(v1)
+  const fill = getCycleColor(v1 as number)
 
   return {
     type: 'rect',
-    cursor: 'pointer',
     shape: {
       x: p1[0],
       y: p1[1],
@@ -647,6 +646,34 @@ function getLongestLabelLineWidth(
 ): number {
   let max = 0
 
+  for (const row of data) {
+    const ident = String((row as any).locationIdentifier ?? '')
+    const { primary, secondary } = splitPrimarySecondary(
+      String((row as any).locationDescription ?? '')
+    )
+
+    const line1 = ident
+    const line2 = primary ? `${primary} &` : ''
+    const line3 = secondary ?? ''
+
+    max = Math.max(
+      max,
+      measureTextWidth(line1, fonts.ident),
+      measureTextWidth(line2, fonts.line),
+      measureTextWidth(line3, fonts.line)
+    )
+  }
+
+  return Math.ceil(max)
+}
+
+export function getLocationsLabelOption(
+  data: TimeSpaceUnwrappedData,
+  distanceData: number[],
+  grid: GridComponentOption
+): SeriesOption {
+  const gridLeft = (grid.left as number) ?? 0
+
   const GRID_GAP = 70 // distance from grid start (left) to the "label anchor" line
   const DOT_OFFSET = 10 // dot sits DOT_OFFSET to the right of the label anchor
   const CARD_GAP_TO_DOT = 12 // gap between card and dot
@@ -659,20 +686,6 @@ function getLongestLabelLineWidth(
   const CARD_H = HEADER_H + BODY_H
 
   const BODY_PAD_LEFT = 12
-
-export function getLocationsLabelOption(
-  data: TimeSpaceUnwrappedData,
-  distanceData: number[]
-): SeriesOption {
-  // x = width of longest label line
-  const x = getLongestLabelLineWidth(data)
-
-  // per your spec:
-  // text right edge at x
-  // dot at x+20
-  // grid starts at x+40
-  const DOT_OFFSET = 10
-  const GRID_GAP = 70
 
   const series: SeriesOption = {
     name: 'Location axis',

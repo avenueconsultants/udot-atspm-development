@@ -57,6 +57,8 @@ import {
 } from '../../timingAndActuation/timingAndActuation.transformer'
 import { PedestrianInterval } from '../../timingAndActuation/types'
 
+const opacity = 0.4
+
 export default function transformTimeSpaceHistoricData(
   response: RawTimeSpaceDiagramResponse
 ): TransformedTimeSpaceResponse & { errors?: string[] } {
@@ -102,8 +104,6 @@ export default function transformTimeSpaceHistoricData(
 
   return result
 }
-
-const opacity = 0.4
 
 function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const primaryPhaseData = data.filter(
@@ -384,7 +384,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const primaryLabelSeries = generateCycleLabels(
     distanceData,
     primaryDirection,
-    grid.left,
+    grid.left as number,
     primaryLinesByIndex,
     'down'
   )
@@ -392,7 +392,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
   const opposingLabelSeries = generateCycleLabels(
     distanceData,
     opposingDirection,
-    grid.left,
+    grid.left as number,
     opposingLinesByIndex,
     'up'
   )

@@ -2,12 +2,16 @@ import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/component
 import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/LinkPivotAdjustmentTable'
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import {
   Alert,
   Box,
+  IconButton,
   Paper,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material'
@@ -17,8 +21,11 @@ import { GpxUploadAccordion } from '../../timeSpaceDiagram/shared/components/Gpx
 import { IgnoreLocationsAccordion } from '../../timeSpaceDiagram/shared/components/IgnoredLocations/IgnoredLocations'
 import type {
   GpxUploadOptions,
+  RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
+  RawTimeSpaceHistoricData,
   TimeSpaceBaseData,
+  TimeSpaceDiagramPhaseResult,
 } from '../../timeSpaceDiagram/shared/types'
 
 export interface TimeSpaceChartProps {
@@ -105,23 +112,41 @@ function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
 
 // Helper function to unwrap, recompute, and re-wrap data
 function recomputeWrappedTimeSpaceData(
-  wrappedData: any[],
+  wrappedData: RawTimeSpaceDiagramResponse['data'],
   ignoredLocations: string[]
-): any[] {
+): RawTimeSpaceDiagramResponse['data'] {
+  type WrappedResult =
+    | TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>
+    | TimeSpaceDiagramPhaseResult<RawTimeSpaceAverageData>
+  type SuccessfulWrappedResult = WrappedResult & {
+    isSuccess: true
+    result: RawTimeSpaceHistoricData | RawTimeSpaceAverageData
+  }
+
   // Extract successful results
   const unwrappedData = wrappedData
-    .filter((item) => item.isSuccess && item.result)
+    .filter(
+      (item): item is SuccessfulWrappedResult => item.isSuccess && !!item.result
+    )
     .map((item) => item.result)
 
   // Recompute with ignored locations
   const recomputed = recomputeTimeSpaceData(unwrappedData, ignoredLocations)
 
-  // Re-wrap the recomputed data
-  return recomputed.map((result) => ({
-    error: null,
-    result: result,
-    isSuccess: true,
-  }))
+  // Re-wrap the recomputed data while preserving original error entries.
+  let recomputedIndex = 0
+  return wrappedData.map((item) => {
+    if (!item.isSuccess || !item.result) {
+      return item
+    }
+
+    const nextResult = recomputed[recomputedIndex++] ?? item.result
+    return {
+      error: null,
+      result: nextResult,
+      isSuccess: true,
+    }
+  })
 }
 
 function addDefaultValues(
@@ -150,7 +175,7 @@ function addDefaultValues(
 
   return {
     type: timeSpaceData.type,
-    data: processedData as any,
+    data: processedData as RawTimeSpaceDiagramResponse['data'],
   }
 }
 
@@ -197,8 +222,10 @@ export default function TimeSpaceChart({
   const EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 
   const locations = timeSpaceData.data
-    .filter((p) => p.isSuccess && p.result && p.result.phaseType === 'Primary')
-    .map((p) => p.result!.locationIdentifier)
+    .filter(
+      (p) => p.isSuccess && !!p.result && p.result.phaseType === 'Primary'
+    )
+    .map((p) => p.result.locationIdentifier)
 
   const [gpxEntries, setGpxEntries] = useState<GpxUploadOptions[]>([
     createEmptyEntry(locations),
@@ -240,13 +267,12 @@ export default function TimeSpaceChart({
     }
   }, [ignoredLocations, baseTimeSpaceData])
 
-  const chartHeight = transformedData.data.chart.displayProps.height
+  const chartHeight = transformedData.data.chart.displayProps?.height ?? 500
 
   return (
     <Box
       sx={{
         width: '100%',
-        position: 'relative',
         position: 'absolute',
         left: 0,
       }}
