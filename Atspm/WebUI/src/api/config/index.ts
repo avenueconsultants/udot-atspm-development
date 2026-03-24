@@ -40,3 +40,5 @@ export * from './route-location/route-location';
 export * from './version-history/version-history';
 export * from './watch-dog-ignore-event/watch-dog-ignore-event';
 export * from './usage-entry/usage-entry';
+export * from './config-api.schemas';
+export * from './version/version';

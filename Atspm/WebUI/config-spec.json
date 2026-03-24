@@ -9,8 +9,8 @@
       "email": "udotdevelopment@gmail.com"
     },
     "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
+      "name": "Apache",
+      "url": "http://www.apache.org/licenses/LICENSE-2."
     },
     "version": "1.0"
   },
@@ -64041,6 +64041,198 @@
         }
       }
     },
+    "/GetCurrentVersion": {
+      "get": {
+        "tags": ["Version"],
+        "summary": "Retrieves the specific release details for the version currently running in this environment.",
+        "description": "This method identifies the current version by inspecting the assembly's Informational Version attribute. \r\nIt then queries GitHub for the corresponding tag. If the assembly version cannot be determined or \r\nthe tag does not exist on GitHub, an error is returned.",
+        "operationId": "GetVersionCurrentVersion",
+        "parameters": [
+          {
+            "name": "select",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "200": {
+            "description": "Returns the release details matching the current assembly version.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GitHubReleaseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if the assembly version metadata is missing or malformed."
+          },
+          "404": {
+            "description": "Returned if no matching release tag was found in the GitHub repository."
+          },
+          "502": {
+            "description": "Returned if there was a communication failure or rate-limit issue with the GitHub API."
+          }
+        }
+      }
+    },
+    "/GetLatestVersion(PreRelease={PreRelease})": {
+      "get": {
+        "tags": ["Version"],
+        "summary": "Retrieves the most recent release published to the GitHub repository.",
+        "description": "Use this endpoint to check for updates. By default, this only returns stable releases. \r\nSet the PreRelease parameter to true if you wish to include beta or release candidate versions.",
+        "operationId": "GetVersionLatestVersionFromPreRelease",
+        "parameters": [
+          {
+            "name": "PreRelease",
+            "in": "path",
+            "description": "A boolean flag indicating whether to include versions marked as 'Pre-release' on GitHub. Defaults to false.",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "select",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "200": {
+            "description": "Returns the latest release matching the specified criteria.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GitHubReleaseDto"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Returned if the upstream GitHub API is unavailable or returns an error."
+          }
+        }
+      }
+    },
+    "/GetVersionHistory(PreRelease={PreRelease})": {
+      "get": {
+        "tags": ["Version"],
+        "summary": "Retrieves a complete historical list of all releases associated with this project.",
+        "description": "This endpoint supports standard OData query options such as $filter, $orderby, and $top. \r\nIt provides a chronological history of all versions, including their respective release notes and assets.",
+        "operationId": "GetVersionVersionHistoryFromPreRelease",
+        "parameters": [
+          {
+            "name": "PreRelease",
+            "in": "path",
+            "description": "A boolean flag; if true, the history will include pre-release versions (RC, Beta, etc.). Defaults to false.",
+            "required": true,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "select",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expand",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "top",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "406": {
+            "description": "Not Acceptable"
+          },
+          "200": {
+            "description": "Returns the requested list of releases.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GitHubReleaseDto"
+                  }
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Returned if the project's release history cannot be retrieved from GitHub."
+          }
+        }
+      }
+    },
     "/WatchDogIgnoreEvent": {
       "get": {
         "tags": ["WatchDogIgnoreEvent"],
@@ -65950,6 +66142,24 @@
             "format": "int32",
             "nullable": true
           },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "description": {
             "type": "string",
             "nullable": true
@@ -66410,6 +66620,24 @@
             "format": "int32",
             "nullable": true
           },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "dectectorIdentifier": {
             "type": "string",
             "nullable": true
@@ -66822,6 +67050,130 @@
           }
         },
         "additionalProperties": false
+      },
+      "GitHubAssetDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The file name of the asset.",
+            "nullable": true
+          },
+          "browserDownloadUrl": {
+            "type": "string",
+            "description": "The public URL for downloading the asset.",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "description": "The size of the asset in bytes.",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The timestamp when the asset was created.",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The timestamp when the asset was last updated.",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a downloadable asset attached to a GitHub release,\r\nsimplified for API responses."
+      },
+      "GitHubAuthorDto": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "description": "The GitHub username.",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "description": "The numeric GitHub user identifier.",
+            "format": "int64"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "The URL of the user's avatar image.",
+            "nullable": true
+          },
+          "htmlUrl": {
+            "type": "string",
+            "description": "The public HTML URL for the user's GitHub profile.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a simplified view of a GitHub user who authored a release\r\nor uploaded an associated asset."
+      },
+      "GitHubReleaseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique numeric identifier for the release.",
+            "format": "int64"
+          },
+          "tagName": {
+            "type": "string",
+            "description": "The tag name associated with the release (e.g., `v5.2.0-rc2`).",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "The display name of the release.",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "description": "The release notes or description text.",
+            "nullable": true
+          },
+          "htmlUrl": {
+            "type": "string",
+            "description": "The public HTML URL for viewing the release on GitHub.",
+            "nullable": true
+          },
+          "draft": {
+            "type": "boolean",
+            "description": "Indicates whether the release is a draft."
+          },
+          "prerelease": {
+            "type": "boolean",
+            "description": "Indicates whether the release is marked as a prerelease."
+          },
+          "isLatest": {
+            "type": "boolean",
+            "description": "Indicates whether this release is the newest release\r\naccording to the server's versioning logic."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The timestamp when the release was created.",
+            "format": "date-time"
+          },
+          "publishedAt": {
+            "type": "string",
+            "description": "The timestamp when the release was published.",
+            "format": "date-time"
+          },
+          "author": {
+            "$ref": "#/components/schemas/GitHubAuthorDto"
+          },
+          "assets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GitHubAssetDto"
+            },
+            "description": "A collection of assets attached to the release.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a simplified, API‑friendly view of a GitHub release,\r\nsuitable for returning to clients without exposing internal GitHub URLs."
       },
       "GreenTimeUtilizationOptions": {
         "type": "object",
@@ -68500,6 +68852,24 @@
             "format": "int32",
             "nullable": true
           },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "modifiedBy": {
+            "type": "string",
+            "nullable": true
+          },
           "name": {
             "type": "string",
             "nullable": true
@@ -69288,7 +69658,7 @@
         "additionalProperties": false
       },
       "WatchDogIssueTypes": {
-        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         "type": "integer",
         "format": "int32"
       },
