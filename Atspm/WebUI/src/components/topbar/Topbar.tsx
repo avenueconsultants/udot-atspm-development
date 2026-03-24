@@ -23,6 +23,11 @@ const infoItems = [
     link: '/about',
   },
   {
+    name: 'Version History',
+    icon: <InfoOutlinedIcon fontSize="small" />,
+    link: '/version-history',
+  },
+  {
     name: 'FAQ',
     icon: <QuestionAnswerOutlinedIcon fontSize="small" />,
     link: '/faq',
@@ -54,7 +59,7 @@ export default function Topbar() {
       // Invalidate the query when the component unmounts or if there's a condition where you want to force refresh
       queryClient.invalidateQueries({ queryKey: ['/MenuItems'] })
     }
-  }, [])
+  }, [queryClient])
 
   return (
     <Box

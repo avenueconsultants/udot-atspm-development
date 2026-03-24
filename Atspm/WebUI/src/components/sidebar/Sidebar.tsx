@@ -1,3 +1,4 @@
+import { useGetVersionCurrentVersion } from '@/api/config'
 import NavItemWithSubMenu from '@/components/sidebar/NavItemWithSubMenu'
 import { topbarHeight } from '@/components/topbar'
 import { useSideBarPermission } from '@/features/identity/pagesCheck'
@@ -24,6 +25,10 @@ export default function Sidebar() {
   const hasDataViewPermission = useSideBarPermission('data:view')
   const hasWatchDogPermission = useSideBarPermission('watchdog:view')
   const hasLTGRPermission = useSideBarPermission('Report:view')
+
+  const { data: currentVersion } = useGetVersionCurrentVersion()
+
+  const versionLabel = currentVersion?.tagName ?? currentVersion?.name
 
   const reportsList = [
     {
@@ -141,13 +146,36 @@ export default function Sidebar() {
         <Box
           sx={{
             marginTop: 'auto',
-            marginBottom: '40px',
+            marginBottom: '12px',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'flex-end',
+            alignItems: 'center',
           }}
         >
-          <Sponsor />
+          <Box
+            sx={{
+              width: '200px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'stretch',
+            }}
+          >
+            <Sponsor />
+            {versionLabel && (
+              <Box
+                sx={{
+                  fontFamily: 'monospace',
+                  fontSize: '0.7rem',
+                  color: 'text.secondary',
+                  textAlign: 'center',
+                  px: 2,
+                  pt: 1,
+                }}
+              >
+                version {versionLabel}
+              </Box>
+            )}
+          </Box>
         </Box>
       </Drawer>
       {isSidebarOpen && (
