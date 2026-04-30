@@ -410,6 +410,37 @@ function getLegendSelectedMap(option?: EChartsOption): Record<string, boolean> {
   return selected ? { ...selected } : {}
 }
 
+function isSeriesOption(
+  value: SeriesOption | null | undefined
+): value is SeriesOption {
+  return Boolean(value && typeof value === 'object')
+}
+
+function getOptionSeries(option?: EChartsOption): SeriesOption[] {
+  if (!option?.series) {
+    return []
+  }
+
+  return (Array.isArray(option.series) ? option.series : [option.series]).filter(
+    isSeriesOption
+  )
+}
+
+function hasRenderableSeriesData(series: SeriesOption) {
+  return Array.isArray(series.data) && series.data.some((entry) => entry != null)
+}
+
+function hasSrmSeriesData(option?: EChartsOption) {
+  return getOptionSeries(option).some((series) => {
+    const name = typeof series.name === 'string' ? series.name : ''
+
+    return (
+      SRM_ENTITY_LEGEND_PREFIXES.some((prefix) => name.startsWith(prefix)) &&
+      hasRenderableSeriesData(series)
+    )
+  })
+}
+
 function getPrimaryToolbox(
   option?: EChartsOption
 ): ToolboxComponentOption | undefined {
@@ -422,6 +453,10 @@ function getPrimaryToolbox(
 
 const CYCLE_PREFIX = 'Cycles '
 const CYCLE_DURATION_PREFIX = 'Cycle Durations '
+const SRM_ENTITY_LEGEND_PREFIXES = [
+  'SRM Entity Continuous ',
+  'SRM Entity Gap ',
+] as const
 const GUIDE_TRANSITION_MS = 200
 const GUIDE_EASING = 'cubic-bezier(0.2, 0, 0, 1)'
 const MIN_RIGHT_PLOT_GUTTER = 10
@@ -1395,13 +1430,14 @@ export default function TimeSpaceEChart(prop: TimeSpaceChartProps) {
   )
   const hasSrmTracks = useMemo(
     () =>
+      hasSrmSeriesData(option) ||
       (gpxEntries ?? []).some(
         (entry) =>
           !entry?.error &&
           Array.isArray(entry.parsedEntityData) &&
           entry.parsedEntityData.length > 0
       ),
-    [gpxEntries]
+    [gpxEntries, option]
   )
   const baseSelectedSeries = useMemo(() => getLegendSelectedMap(option), [option])
   const defaultSelectedSeries = useMemo(() => {

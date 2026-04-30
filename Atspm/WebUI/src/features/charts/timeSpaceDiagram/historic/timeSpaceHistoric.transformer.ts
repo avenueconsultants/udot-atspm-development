@@ -43,6 +43,7 @@ import {
 import { TransformedTimeSpaceResponse } from '@/features/charts/types'
 import {
   Color,
+  DottedLineSeriesSymbol,
   formatChartDateTimeRange,
   SolidLineSeriesSymbol,
   triangleSvgSymbol,
@@ -70,6 +71,8 @@ const PASSIVE_DETECTION_SERIES_PROPS = {
   silent: true,
   tooltip: { show: false },
 } as const
+const SRM_CONTINUOUS_LEGEND_PREFIX = 'SRM Entity Continuous'
+const SRM_GAP_LEGEND_PREFIX = 'SRM Entity Gap'
 
 export default function transformTimeSpaceHistoricData(
   response: RawTimeSpaceDiagramResponse
@@ -619,13 +622,23 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
         itemStyle: { color: Color.Black },
       },
       {
-        name: `SRM Entity ${primaryDirection}`,
+        name: `${SRM_CONTINUOUS_LEGEND_PREFIX} ${primaryDirection}`,
         icon: SolidLineSeriesSymbol,
         itemStyle: { color: Color.Black },
       },
       {
-        name: `SRM Entity ${opposingDirection}`,
+        name: `${SRM_CONTINUOUS_LEGEND_PREFIX} ${opposingDirection}`,
         icon: SolidLineSeriesSymbol,
+        itemStyle: { color: Color.Black },
+      },
+      {
+        name: `${SRM_GAP_LEGEND_PREFIX} ${primaryDirection}`,
+        icon: DottedLineSeriesSymbol,
+        itemStyle: { color: Color.Black },
+      },
+      {
+        name: `${SRM_GAP_LEGEND_PREFIX} ${opposingDirection}`,
+        icon: DottedLineSeriesSymbol,
         itemStyle: { color: Color.Black },
       },
       {
@@ -679,8 +692,10 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
       [`Stop Bar Presence ${opposingDirection}`]: false,
       [`Pedestrian Interval ${primaryDirection}`]: false,
       [`Pedestrian Interval ${opposingDirection}`]: false,
-      [`SRM Entity ${primaryDirection}`]: true,
-      [`SRM Entity ${opposingDirection}`]: true,
+      [`${SRM_CONTINUOUS_LEGEND_PREFIX} ${primaryDirection}`]: true,
+      [`${SRM_CONTINUOUS_LEGEND_PREFIX} ${opposingDirection}`]: true,
+      [`${SRM_GAP_LEGEND_PREFIX} ${primaryDirection}`]: true,
+      [`${SRM_GAP_LEGEND_PREFIX} ${opposingDirection}`]: true,
       [`Left Turn ${primaryDirection}`]: false,
       [`Right Turn ${primaryDirection}`]: false,
       [`Early Green (113)`]: false,
@@ -1225,9 +1240,34 @@ function generateSrmEntityLines(
   distanceScale = 1,
   idScope = 'default'
 ): SeriesOption[] {
-  const isOpposing = (phaseType ?? '').toLowerCase().includes('opposing')
+  type SrmDisplayPoint = [string, number]
+
+  const isOpposing =
+    idScope === 'opposing' || (phaseType ?? '').toLowerCase().includes('opposing')
   const directionMultiplier = isOpposing ? -1 : 1
   const seriesOptions: SeriesOption[] = []
+  const normalizeIntersectionId = (value?: string | null) =>
+    (value ?? '').trim().toUpperCase()
+  const hasIntersectionChange = (
+    previous?: string | null,
+    current?: string | null
+  ) => {
+    const previousId = normalizeIntersectionId(previous)
+    const currentId = normalizeIntersectionId(current)
+
+    return Boolean(previousId && currentId && previousId !== currentId)
+  }
+  const getDisplayPoints = (
+    location: RawTimeSpaceHistoricData,
+    locationIndex: number,
+    track: NonNullable<RawTimeSpaceHistoricData['srmEntityTracks']>[number]
+  ): SrmDisplayPoint[] => {
+    const baseDistance = distanceData[locationIndex] ?? 0
+    return track.points.map((point): SrmDisplayPoint => [
+      point.time,
+      baseDistance + directionMultiplier * point.distance * distanceScale,
+    ])
+  }
 
   data.forEach((location, i) => {
     const tracks = location.srmEntityTracks ?? []
@@ -1235,26 +1275,85 @@ function generateSrmEntityLines(
 
     tracks.forEach((track, trackIndex) => {
       if (!track?.points?.length) return
-      const baseDistance = distanceData[i] ?? 0
-      const points = track.points.map((point) => [
-        point.time,
-        baseDistance + directionMultiplier * point.distance * distanceScale,
-      ])
+      const displayPoints = getDisplayPoints(location, i, track)
+      const solidSegments: SrmDisplayPoint[][] = []
+      const gapSegments: SrmDisplayPoint[][] = []
+      let currentSegment: SrmDisplayPoint[] = []
 
-      seriesOptions.push({
-        name: `SRM Entity ${phaseType?.length ? phaseType : ''}`,
-        id: `SRM ${location.locationIdentifier} ${track.entityId} ${trackIndex} ${
-          phaseType ?? ''
-        } row-${i} ${idScope}`,
-        type: 'line',
-        symbol: 'none',
-        z: TIME_SPACE_MOVEMENT_SERIES_Z,
-        lineStyle: {
-          width: 2,
-          color: Color.Black,
-          opacity: 0.85,
-        },
-        data: points,
+      displayPoints.forEach((point, pointIndex) => {
+        if (pointIndex === 0) {
+          currentSegment = [point]
+          return
+        }
+
+        const previousRawPoint = track.points[pointIndex - 1]
+        const currentRawPoint = track.points[pointIndex]
+
+        if (
+          hasIntersectionChange(
+            previousRawPoint?.intersectionId,
+            currentRawPoint?.intersectionId
+          )
+        ) {
+          if (currentSegment.length) {
+            solidSegments.push(currentSegment)
+          }
+
+          gapSegments.push([displayPoints[pointIndex - 1], point])
+          currentSegment = [point]
+          return
+        }
+
+        currentSegment.push(point)
+      })
+
+      if (currentSegment.length) {
+        solidSegments.push(currentSegment)
+      }
+
+      solidSegments.forEach((points, segmentIndex) => {
+        seriesOptions.push({
+          name: `${SRM_CONTINUOUS_LEGEND_PREFIX} ${
+            phaseType?.length ? phaseType : ''
+          }`,
+          id: `SRM Continuous ${location.locationIdentifier} ${
+            track.entityId
+          } ${trackIndex} segment-${segmentIndex} ${
+            phaseType ?? ''
+          } row-${i} ${idScope}`,
+          type: 'line',
+          symbol: 'none',
+          z: TIME_SPACE_MOVEMENT_SERIES_Z,
+          lineStyle: {
+            width: 2,
+            color: Color.Black,
+            opacity: 0.85,
+          },
+          data: points,
+        })
+      })
+
+      gapSegments.forEach((points, gapIndex) => {
+        seriesOptions.push({
+          name: `${SRM_GAP_LEGEND_PREFIX} ${
+            phaseType?.length ? phaseType : ''
+          }`,
+          id: `SRM Gap ${location.locationIdentifier} ${
+            track.entityId
+          } ${trackIndex} transition-${gapIndex} ${
+            phaseType ?? ''
+          } row-${i} ${idScope}`,
+          type: 'line',
+          symbol: 'none',
+          z: TIME_SPACE_MOVEMENT_SERIES_Z,
+          lineStyle: {
+            width: 2,
+            color: Color.Black,
+            opacity: 0.85,
+            type: 'dotted',
+          },
+          data: points,
+        })
       })
     })
   })

@@ -143,6 +143,7 @@ export interface SrmHistoricPoint {
   time: string
   distance: number
   timestampMs: number
+  intersectionId?: string | null
 }
 
 export interface SrmHistoricEntityTrack {

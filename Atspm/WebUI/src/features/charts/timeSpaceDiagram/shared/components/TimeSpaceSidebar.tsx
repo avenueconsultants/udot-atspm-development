@@ -37,6 +37,7 @@ type PreviewKind =
   | 'right-turn'
   | 'gpx-track'
   | 'srm'
+  | 'srm-gap'
   | 'triangle'
   | 'circle'
   | 'tsp-request'
@@ -147,7 +148,8 @@ const ITEM_NO_DATA_MESSAGES: Record<string, string> = {
   'left-turn': 'No left turns found.',
   'right-turn': 'No right turns found.',
   'gpx-tracks': 'No GPX tracks found.',
-  'srm-entity': 'No SRM entity tracks found.',
+  'srm-entity-continuous': 'No SRM continuous tracks found.',
+  'srm-entity-gap': 'No SRM intersection-change gaps found.',
   'early-green': 'No early greens found.',
   'extend-green': 'No extend greens found.',
   'tsp-request': 'No transit-signal priority requests found.',
@@ -280,13 +282,22 @@ const SIDEBAR_ITEM_DEFINITIONS: SidebarItemDefinition[] = [
     match: (name) => (name === TIME_SPACE_GPX_TRACKS_LEGEND_NAME ? '' : null),
   },
   {
-    key: 'srm-entity',
-    label: 'SRM Entity',
+    key: 'srm-entity-continuous',
+    label: 'SRM Entity Continuous',
     category: 'Movements & Tracks',
     description:
-      'SRM or connected-vehicle entity tracks drawn through the corridor.',
+      'SRM or connected-vehicle entity tracks drawn within each location row.',
     preview: 'srm',
-    match: (name) => matchDirectionalPrefix(name, 'SRM Entity'),
+    match: (name) => matchDirectionalPrefix(name, 'SRM Entity Continuous'),
+  },
+  {
+    key: 'srm-entity-gap',
+    label: 'SRM Entity Gap',
+    category: 'Movements & Tracks',
+    description:
+      'Dotted connectors where an SRM entity changes intersection.',
+    preview: 'srm-gap',
+    match: (name) => matchDirectionalPrefix(name, 'SRM Entity Gap'),
   },
   {
     key: 'early-green',
@@ -420,19 +431,25 @@ function hasSeriesDataForDefinition(
 }
 
 type SidebarAvailabilityOverrides = Partial<
-  Record<'gpx-tracks' | 'srm-entity', boolean>
+  Record<'gpx-tracks' | 'srm-entity-continuous' | 'srm-entity-gap', boolean>
 >
+
+function isSrmSidebarKey(key: string) {
+  return key === 'srm-entity-continuous' || key === 'srm-entity-gap'
+}
 
 function hasSidebarItemData(
   definition: SidebarItemDefinition,
   option: EChartsOption | undefined,
   availabilityOverrides?: SidebarAvailabilityOverrides
 ) {
-  const availabilityOverride = availabilityOverrides?.[definition.key as
-    | 'gpx-tracks'
-    | 'srm-entity']
+  const availabilityOverride =
+    availabilityOverrides?.[definition.key as 'gpx-tracks']
 
-  if (typeof availabilityOverride === 'boolean') {
+  if (
+    definition.key === 'gpx-tracks' &&
+    typeof availabilityOverride === 'boolean'
+  ) {
     return availabilityOverride
   }
 
@@ -450,8 +467,16 @@ function getSidebarItemNote(
       : 'Upload GPX data from the Uploads tab to show these tracks.'
   }
 
-  if (definition.key === 'srm-entity') {
-    return hasSidebarItemData(definition, option, availabilityOverrides)
+  if (isSrmSidebarKey(definition.key)) {
+    if (hasSidebarItemData(definition, option, availabilityOverrides)) {
+      return undefined
+    }
+
+    const hasUploadedSrm = availabilityOverrides?.[
+      definition.key as 'srm-entity-continuous' | 'srm-entity-gap'
+    ]
+
+    return hasUploadedSrm
       ? undefined
       : 'Upload SRM data from the Uploads tab to show these tracks.'
   }
@@ -1027,6 +1052,17 @@ function PreviewCard({
             stroke="#111827"
             strokeWidth="2.5"
             strokeLinecap="round"
+          />
+        )}
+
+        {kind === 'srm-gap' && (
+          <path
+            d="M10 31 C18 27, 26 14, 34 16 S50 33, 68 17"
+            fill="none"
+            stroke="#111827"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeDasharray="1.4 3.2"
           />
         )}
 
@@ -1753,7 +1789,8 @@ export default function TimeSpaceSidebar({
 }: TimeSpaceSidebarProps) {
   const availabilityOverrides = {
     'gpx-tracks': gpxTracksAvailable,
-    'srm-entity': srmTracksAvailable,
+    'srm-entity-continuous': srmTracksAvailable,
+    'srm-entity-gap': srmTracksAvailable,
   } satisfies SidebarAvailabilityOverrides
   const { directionControls, items } = buildSidebarModel(
     option,
