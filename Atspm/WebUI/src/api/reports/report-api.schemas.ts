@@ -817,6 +817,7 @@ export interface LinkPivotAdjustment {
   /** @nullable */
   location?: string | null;
   delta?: number;
+  existingOffset?: number;
   adjustment?: number;
 }
 
@@ -1405,6 +1406,13 @@ export interface PrioritySummaryResult {
   cycles?: PrioritySummaryCycleDto[] | null;
 }
 
+export interface PrioritySummaryUnassignedEventsDto {
+  /** @nullable */
+  earlyGreen?: string[] | null;
+  /** @nullable */
+  extendGreen?: string[] | null;
+}
+
 export interface ProblemDetails {
   /** @nullable */
   type?: string | null;
@@ -1639,6 +1647,8 @@ export interface SrmEntityTrackPoint {
   time?: string | null;
   distance?: number;
   timestampMs?: number;
+  /** @nullable */
+  intersectionId?: string | null;
 }
 
 export interface SummaryData {
