@@ -5732,6 +5732,1252 @@
             "type": "number",
             "format": "double"
           },
+          "percentArrivalOnGreen": {
+            "type": "number",
+            "format": "double"
+          },
+          "platoonRatio": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Phase": {
+        "type": "object",
+        "properties": {
+          "phaseNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gapOuts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "maxOuts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "forceOffs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "pedWalkBegins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "unknownTerminations": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PhaseTerminationResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "consecutiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Plan"
+            },
+            "nullable": true
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phase"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlanSplitFail": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "totalCycles": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "failsInPlan": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "percentFails": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlanSplitMonitorDTO": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "percentSkips": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentGapOuts": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentMaxOuts": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentForceOffs": {
+            "type": "number",
+            "format": "double"
+          },
+          "averageSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "minTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "programmedSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit85th": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit50th": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlanSplitMonitorData": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "splits": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "cycleLength": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offsetLength": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "highCycleCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "percentSkips": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentGapOuts": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentMaxOuts": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentForceOffs": {
+            "type": "number",
+            "format": "double"
+          },
+          "averageSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "minTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "programmedSplit": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit85th": {
+            "type": "number",
+            "format": "double"
+          },
+          "percentileSplit50th": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PlanWaitTime": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "averageWaitTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxWaitTime": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptCycleResult": {
+        "type": "object",
+        "properties": {
+          "inputOff": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "inputOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "gateDown": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "callMaxOut": {
+            "type": "number",
+            "format": "double"
+          },
+          "delay": {
+            "type": "number",
+            "format": "double"
+          },
+          "timeToService": {
+            "type": "number",
+            "format": "double"
+          },
+          "dwellTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "trackClear": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptDetail": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "preemptionNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cycles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreemptCycleResult"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptDetailOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptDetailResult": {
+        "type": "object",
+        "properties": {
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreemptDetail"
+            },
+            "nullable": true
+          },
+          "summary": {
+            "$ref": "#/components/schemas/PreemptRequestAndServices"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptPlan": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "preemptCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptRequestAndServices": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestAndServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RequestAndServices"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptServiceOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptServiceRequestOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptServiceRequestResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Plan"
+            },
+            "nullable": true
+          },
+          "preemptRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForInt"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreemptServiceResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PreemptPlan"
+            },
+            "nullable": true
+          },
+          "preemptServiceEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForInt"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriorityDetailsOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PriorityDetailsResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "approachId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approachDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "phaseNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transitSignalPriorityNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isPhaseOverLap": {
+            "type": "boolean"
+          },
+          "phaseNumberSort": {
+            "type": "string",
+            "nullable": true
+          },
+          "phaseType": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberCheckins": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberCheckouts": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberEarlyGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberExtendedGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "tspEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndianaEvent"
+            },
+            "nullable": true
+          },
+          "cycleEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CycleEventsDto"
+            },
+            "nullable": true
+          },
+          "priorityAndPreemptionEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DetectorEventDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrioritySummaryCycleDto": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "tspNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "checkIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "checkOut": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "serviceStart": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "serviceEnd": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "earlyGreen": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "extendGreen": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "preemptForceOff": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "tspEarlyForceOff": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "nullable": true
+          },
+          "requestEndOffsetSec": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "serviceStartOffsetSec": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "serviceEndOffsetSec": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrioritySummaryOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrioritySummaryResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "averageDuration": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "numberCheckins": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberCheckouts": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberEarlyGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "numberExtendedGreens": {
+            "type": "number",
+            "format": "double"
+          },
+          "unassigned": {
+            "$ref": "#/components/schemas/PrioritySummaryUnassignedEventsDto"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndianaEvent"
+            },
+            "nullable": true
+          },
+          "cycles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrioritySummaryCycleDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrioritySummaryUnassignedEventsDto": {
+        "type": "object",
+        "properties": {
+          "earlyGreen": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForInt"
+            },
+            "nullable": true
+          },
+          "extendGreen": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForInt"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "PurdueCoordinationDiagramOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "binSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "getVolume": {
+            "type": "boolean"
+          },
+          "showPlanStatistics": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PurdueCoordinationDiagramResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "approachId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approachDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "phaseNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "phaseDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalOnGreenEvents": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalDetectorHits": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "percentArrivalOnGreen": {
+            "type": "number",
+            "format": "double"
+          },
+          "plans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PerdueCoordinationPlanViewModel"
+            },
+            "nullable": true
+          },
+          "volumePerHour": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "redSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "yellowSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "greenSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "detectorEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PurduePhaseTerminationOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "selectedConsecutiveCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "selectedPhaseNumber": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RampMeteringOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "combineLanes": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RampMeteringResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "mainlineAvgFlow": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "mainlineAvgOcc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "mainlineAvgSpeed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataPointForDouble"
+            },
+            "nullable": true
+          },
+          "startUpWarning": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeSpaceEventBase"
+            },
+            "nullable": true
+          },
+          "averageVolumeByHourOfDay": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndexedVolume"
+            },
+            "nullable": true
+          },
+          "averageVolumeByDayOfWeek": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndexedVolume"
+            },
+            "nullable": true
+          },
+          "averageVolumeByMonthOfYear": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IndexedVolume"
+            },
+            "nullable": true
+          },
+          "rawData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RawDataPoint"
+            },
+            "nullable": true
+          },
+          "statisticData": {
+            "$ref": "#/components/schemas/StatisticsDataPoint"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PedatLocationDataQuery": {
+        "type": "object",
+        "properties": {
+          "locationIdentifiers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timeUnit": {
+            "$ref": "#/components/schemas/PedestrianTimeUnit"
+          },
+          "phase": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PedestrianTimeUnit": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "PerdueCoordinationPlanViewModel": {
+        "type": "object",
+        "properties": {
+          "planNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "planDescription": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "percentGreenTime": {
+            "type": "number",
+            "format": "double"
+          },
           "vcRatio": {
             "type": "number",
             "format": "double"
