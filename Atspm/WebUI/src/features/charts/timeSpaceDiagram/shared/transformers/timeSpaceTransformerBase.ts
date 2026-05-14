@@ -79,13 +79,12 @@ type CycleIndication = {
 
 export const CYCLE_INDICATIONS: readonly CycleIndication[] = [
   {
-    name: 'Phase Begin Green (1)\nOverlap Begin Green (61)',
+    name: 'Programmed Split Green',
     codes: [1, 61],
     color: '#0CC078',
   },
   {
-    name:
-      'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+    name: 'Early Green',
     codes: [3, 62],
     color: '#79DE79',
   },

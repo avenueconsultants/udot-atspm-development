@@ -25,6 +25,12 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
     public class TimeSpaceDiagramForPhaseService
     {
+        private sealed class TimeSpaceCycleBuildResult
+        {
+            public List<GreenToGreenCycle> GreenToGreenCycles { get; set; } = new List<GreenToGreenCycle>();
+            public List<CycleEventsDto> CycleEvents { get; set; } = new List<CycleEventsDto>();
+        }
+
         //private static readonly double FeetPerMile = 5280;
         //private static readonly double SecondsInHour = 3600;
         private readonly CycleService _cycleService;
@@ -79,13 +85,16 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             var countEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var stopBarPresenceEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
             var advanceCountEventsTimeSpaceResult = new List<TimeSpaceDetectorEventDto>();
-            var cycleAllEvents = GetCycleEvents(phaseDetail, controllerEventLogs, options, programmedSplit, out List<GreenToGreenCycle> resultCycles);
+            var cycleData = BuildCycleData(phaseDetail, controllerEventLogs, options, programmedSplit);
+            var cycleAllEvents = cycleData.CycleEvents;
+            var resultCycles = cycleData.GreenToGreenCycles;
+            var greenTimeCycleEvents = GetActualGreenCycleEvents(resultCycles, phaseDetail.UseOverlap);
             var pedIntervals = TimeSpaceService.GetPedestrianIntervals(phaseDetail.Approach, controllerEventLogs, options);
 
 
             if (isFirstElement)
             {
-                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit);
+                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(greenTimeCycleEvents, speedLimit);
 
                 countEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
                 //countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options);
@@ -101,7 +110,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             }
             else
             {
-                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(cycleAllEvents, speedLimit);
+                greenTimeEventsResult = TimeSpaceService.GetGreenTimeEvents(greenTimeCycleEvents, speedLimit);
 
                 countEventsTimeSpaceResult = GetDetectionEvents(phaseDetail.Approach, options, controllerEventLogs, DetectionTypes.LLC);
                 //countEventsTimeSpaceResult = CalculateTimeSpaceResult(countEvents, options);
@@ -493,10 +502,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 phaseEventCodesForCycles = new List<short>
                 {
                     61,
-                    62,
                     63,
-                    64,
-                    65
+                    64
                 };
             }
 
@@ -510,61 +517,157 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             int? programmedSplit,
             out List<GreenToGreenCycle> cycles)
         {
+            var cycleData = BuildCycleData(phaseDetail, controllerEventLogs, options, programmedSplit);
+            cycles = cycleData.GreenToGreenCycles;
+            return cycleData.CycleEvents;
+        }
 
-            List<short> cycleEventCodes = TimeSpaceService.GetCycleCodes(phaseDetail.UseOverlap);
-            var overlapLabel = phaseDetail.UseOverlap == true ? "Overlap" : "";
-            string keyLabel = $"Cycles Intervals {phaseDetail.PhaseNumber} {overlapLabel}";
+        private TimeSpaceCycleBuildResult BuildCycleData(
+            PhaseDetail phaseDetail,
+            List<IndianaEvent> controllerEventLogs,
+            TimeSpaceDiagramOptions options,
+            int? programmedSplit)
+        {
+            var greenCode = phaseDetail.UseOverlap ? (short)61 : (short)1;
+            var earlyGreenCode = phaseDetail.UseOverlap ? 62 : 3;
+            var yellowCode = phaseDetail.UseOverlap ? (short)63 : (short)8;
+            var redCode = phaseDetail.UseOverlap ? (short)64 : (short)9;
+            var redEndCode = phaseDetail.UseOverlap ? (short)65 : (short)11;
+            var cycleEventCodes = new List<short> { greenCode, yellowCode, redCode };
+            var result = new TimeSpaceCycleBuildResult();
             var events = new List<CycleEventsDto>();
-            cycles = new List<GreenToGreenCycle>();
-            if (controllerEventLogs.Any())
+
+            if (controllerEventLogs == null || !controllerEventLogs.Any())
             {
-                var distinctTimeStamps = new HashSet<string>();
-                var tempEvents = controllerEventLogs.Aggregate(new List<IndianaEvent>(), (result, c) =>
+                return result;
+            }
+
+            var distinctTimeStamps = new HashSet<string>();
+            var tempEvents = controllerEventLogs.Aggregate(new List<IndianaEvent>(), (matchingEvents, c) =>
+            {
+                if (cycleEventCodes.Contains(c.EventCode) && c.EventParam == phaseDetail.PhaseNumber)
                 {
-                    if (cycleEventCodes.Contains(c.EventCode) && c.EventParam == phaseDetail.PhaseNumber)
+                    if (!distinctTimeStamps.Contains(c.ToString()))
                     {
-                        if (!distinctTimeStamps.Contains(c.ToString()))
-                        {
-                            result.Add(c);
-                            distinctTimeStamps.Add(c.ToString());
-                        }
-                    }
-                    return result;
-                });
-                if (phaseDetail.UseOverlap)
-                {
-                    bool has64 = tempEvents.Any(e => e.EventCode == 64);
-                    if (has64)
-                    {
-                        tempEvents = tempEvents
-                            .Where(e => e.EventCode != 65)
-                            .ToList();
+                        matchingEvents.Add(c);
+                        distinctTimeStamps.Add(c.ToString());
                     }
                 }
-                cycles = _cycleService.GetGreenToGreenCycles(options.Start.AddMinutes(-2), options.End.AddMinutes(2), tempEvents).ToList();
+                return matchingEvents;
+            });
+            tempEvents = tempEvents.OrderBy(e => e.Timestamp).ToList();
+            result.GreenToGreenCycles = _cycleService.GetGreenToGreenCycles(options.Start.AddMinutes(-2), options.End.AddMinutes(2), tempEvents).ToList();
 
-                for (int i = 0; i < cycles.Count; i++)
+            for (int i = 0; i < result.GreenToGreenCycles.Count; i++)
+            {
+                var cycle = result.GreenToGreenCycles[i];
+                var redClearanceEnd = GetRedClearanceEnd(
+                    controllerEventLogs,
+                    phaseDetail.PhaseNumber,
+                    redEndCode,
+                    cycle.RedEvent,
+                    cycle.EndTime);
+
+                AddGreenCycleEvents(
+                    events,
+                    cycle,
+                    programmedSplit,
+                    redClearanceEnd,
+                    earlyGreenCode,
+                    greenCode);
+
+                events.Add(new CycleEventsDto(cycle.YellowEvent, yellowCode));
+                events.Add(new CycleEventsDto(cycle.RedEvent, redCode));
+
+                if (redClearanceEnd.HasValue)
                 {
-                    var cycle = cycles[i];
-                    events.Add(new CycleEventsDto(cycle.StartTime, 1));
-
-                    if (programmedSplit.HasValue)
-                    {
-                        var remainingTime =
-                            (cycle.TotalGreenTime + cycle.TotalYellowTime) - programmedSplit.Value;
-
-                        if (remainingTime > 0)
-                        {
-                            events.Add(new CycleEventsDto(
-                                cycle.StartTime.AddSeconds(remainingTime), 3));
-                        }
-                    }
-
-                    events.Add(new CycleEventsDto(cycle.YellowEvent, 8));
-                    events.Add(new CycleEventsDto(cycle.RedEvent, 9));
+                    events.Add(new CycleEventsDto(redClearanceEnd.Value, redEndCode));
                 }
             }
+
+            result.CycleEvents = events.OrderBy(e => e.Start).ToList();
+            return result;
+        }
+
+        private static List<CycleEventsDto> GetActualGreenCycleEvents(List<GreenToGreenCycle> cycles, bool useOverlap)
+        {
+            var greenCode = useOverlap ? 61 : 1;
+            var yellowCode = useOverlap ? 63 : 8;
+            var events = new List<CycleEventsDto>();
+
+            foreach (var cycle in cycles)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, greenCode));
+                events.Add(new CycleEventsDto(cycle.YellowEvent, yellowCode));
+            }
+
             return events;
+        }
+
+        private static void AddGreenCycleEvents(
+            List<CycleEventsDto> events,
+            GreenToGreenCycle cycle,
+            int? programmedSplit,
+            DateTime? redClearanceEnd,
+            int earlyGreenCode,
+            int programmedGreenCode)
+        {
+            if (!programmedSplit.HasValue || !redClearanceEnd.HasValue)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, programmedGreenCode));
+                return;
+            }
+
+            var yellowClearanceSeconds = (cycle.RedEvent - cycle.YellowEvent).TotalSeconds;
+            var redClearanceSeconds = (redClearanceEnd.Value - cycle.RedEvent).TotalSeconds;
+
+            if (yellowClearanceSeconds < 0 || redClearanceSeconds < 0)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, programmedGreenCode));
+                return;
+            }
+
+            var programmedGreenSeconds = programmedSplit.Value - yellowClearanceSeconds - redClearanceSeconds;
+
+            if (programmedGreenSeconds <= 0)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, earlyGreenCode));
+                return;
+            }
+
+            var programmedGreenStart = cycle.YellowEvent.AddSeconds(-programmedGreenSeconds);
+
+            if (programmedGreenStart <= cycle.StartTime)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, programmedGreenCode));
+                return;
+            }
+
+            if (programmedGreenStart >= cycle.YellowEvent)
+            {
+                events.Add(new CycleEventsDto(cycle.StartTime, earlyGreenCode));
+                return;
+            }
+
+            events.Add(new CycleEventsDto(cycle.StartTime, earlyGreenCode));
+            events.Add(new CycleEventsDto(programmedGreenStart, programmedGreenCode));
+        }
+
+        private static DateTime? GetRedClearanceEnd(
+            IEnumerable<IndianaEvent> controllerEventLogs,
+            int phaseNumber,
+            short redEndCode,
+            DateTime redEvent,
+            DateTime nextGreenEvent)
+        {
+            return controllerEventLogs
+                .Where(e => e.EventCode == redEndCode
+                            && e.EventParam == phaseNumber
+                            && e.Timestamp > redEvent
+                            && e.Timestamp < nextGreenEvent)
+                .OrderBy(e => e.Timestamp)
+                .Select(e => (DateTime?)e.Timestamp)
+                .FirstOrDefault();
         }
 
         //private string GetPhaseSort(PhaseDetail phaseDetail)
