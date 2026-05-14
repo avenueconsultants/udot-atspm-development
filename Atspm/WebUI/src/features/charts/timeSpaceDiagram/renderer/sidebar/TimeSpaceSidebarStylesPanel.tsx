@@ -259,8 +259,8 @@ function CycleAppearancePreview({
   colors: TimeSpaceAppearanceSettings['cycles']['indicationColors']
 }) {
   const segments = [
-    { color: colors.beginGreen, flex: 14 },
     { color: colors.trailingGreen, flex: 10 },
+    { color: colors.beginGreen, flex: 14 },
     { color: colors.yellowClearance, flex: 8 },
     { color: colors.redClearance, flex: 10 },
     { color: colors.redIndication, flex: 22 },
@@ -433,26 +433,9 @@ export default function TimeSpaceSidebarStylesPanel({
                   }}
                 >
                   <ColorInputControl
-                    label="Begin green"
-                    value={cycleColors.beginGreen}
-                    ariaLabel="Cycles begin green color"
-                    onChange={(value) =>
-                      updateAppearance((current) => ({
-                        ...current,
-                        cycles: {
-                          ...current.cycles,
-                          indicationColors: {
-                            ...current.cycles.indicationColors,
-                            beginGreen: value,
-                          },
-                        },
-                      }))
-                    }
-                  />
-                  <ColorInputControl
-                    label="Trailing green"
+                    label="Early green"
                     value={cycleColors.trailingGreen}
-                    ariaLabel="Cycles trailing green color"
+                    ariaLabel="Cycles early green color"
                     onChange={(value) =>
                       updateAppearance((current) => ({
                         ...current,
@@ -461,6 +444,23 @@ export default function TimeSpaceSidebarStylesPanel({
                           indicationColors: {
                             ...current.cycles.indicationColors,
                             trailingGreen: value,
+                          },
+                        },
+                      }))
+                    }
+                  />
+                  <ColorInputControl
+                    label="Programmed split green"
+                    value={cycleColors.beginGreen}
+                    ariaLabel="Cycles programmed split green color"
+                    onChange={(value) =>
+                      updateAppearance((current) => ({
+                        ...current,
+                        cycles: {
+                          ...current.cycles,
+                          indicationColors: {
+                            ...current.cycles.indicationColors,
+                            beginGreen: value,
                           },
                         },
                       }))

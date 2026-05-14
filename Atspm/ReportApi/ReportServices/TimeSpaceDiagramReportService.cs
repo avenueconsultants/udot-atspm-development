@@ -36,6 +36,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             public PhaseDetail? PrimaryPhaseDetail { get; set; }
             public PhaseDetail? OpposingPhaseDetail { get; set; }
             public int? ProgrammedCycleLength { get; set; }
+            public List<IndianaEvent> ProgrammedSplits { get; set; } = [];
             public TmcForPhaseDto PrimaryTmcEvents { get; set; } = new();
             public TmcForPhaseDto OpposingTmcEvents { get; set; } = new();
             public string? ErrorMessage { get; set; }
@@ -85,8 +86,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var eventCodes = new List<short>() { 82, 81 };
             var tasks = new List<Task<TimeSpaceDiagramPhaseResult>>();
             routeLocations.Sort((r1, r2) => r1.Order - r2.Order);
-            var (processedRouteLocations, programmedSplits) =
-                ProcessRouteLocations(routeLocations, parameter, routeLabel);
+            var processedRouteLocations = ProcessRouteLocations(routeLocations, parameter, routeLabel);
 
             for (int i = 0; i < routeLocations.Count; i++)
             {
@@ -122,7 +122,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                         processedRouteLocation.PrimaryTmcEvents,
                         routeLocations[i],
                         srmTracks,
-                        programmedSplits,
+                        processedRouteLocation.ProgrammedSplits,
                         eventCodes,
                         nextLocationDistance,
                         previousLocationDistance,
@@ -167,7 +167,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                         processedRouteLocation.OpposingTmcEvents,
                         routeLocations[i],
                         srmTracks,
-                        programmedSplits,
+                        processedRouteLocation.ProgrammedSplits,
                         eventCodes,
                         nextLocationDistance,
                         previousLocationDistance,
@@ -195,16 +195,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 : $"route '{routeName}' (id {routeId})";
         }
 
-        private (
-            List<ProcessedRouteLocation> processedRouteLocations,
-            List<IndianaEvent> programmedSplits)
-        ProcessRouteLocations(
+        private List<ProcessedRouteLocation> ProcessRouteLocations(
             IEnumerable<RouteLocation> routeLocations,
             TimeSpaceDiagramOptions parameter,
             string routeLabel)
         {
             var processedRouteLocations = new List<ProcessedRouteLocation>();
-            var programmedSplitsForTimePeriod = new List<IndianaEvent>();
 
             foreach (var routeLocation in routeLocations)
             {
@@ -298,16 +294,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                             GetEventOverlappingTime(parameter.Start, programmedCycleEvents, "CycleLength")
                                 .FirstOrDefault()?.EventParam;
 
-                        if (!programmedSplitsForTimePeriod.Any())
-                        {
-                            var splitEvents = controllerEventLogs.GetEventsByEventCodes(
+                        var splitEvents = controllerEventLogs
+                            .GetEventsByEventCodes(
                                 parameter.Start.AddHours(-12),
                                 parameter.End.AddHours(12),
-                                new List<short> { 134, 135, 136, 137, 138, 139, 140 });
+                                new List<short> { 134, 135, 136, 137, 138, 139, 140, 141 })
+                            .Where(e => e.LocationIdentifier == location.LocationIdentifier)
+                            .ToList();
 
-                            programmedSplitsForTimePeriod.AddRange(
-                                GetEventOverallapingTime(parameter.Start, splitEvents, "Program Splits"));
-                        }
+                        processedRouteLocation.ProgrammedSplits.AddRange(
+                            GetEventOverallapingTime(parameter.Start, splitEvents, "Program Splits"));
                     }
 
                     processedRouteLocation.ControllerEventLogs = controllerEventLogs;
@@ -328,7 +324,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 }
             }
 
-            return (processedRouteLocations, programmedSplitsForTimePeriod);
+            return processedRouteLocations;
         }
 
         private List<IndianaEvent> GetEventOverallapingTime(

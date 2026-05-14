@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   env:
-    if: ${{ github.repository == 'avenueconsultants/udot-atspm-development' }}
+    if: ${{ github.repository == 'utahudot/udot-atspm' }}
     name: Determine ENV
     runs-on: ubuntu-latest
     steps:
