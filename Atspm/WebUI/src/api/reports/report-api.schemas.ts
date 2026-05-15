@@ -1895,6 +1895,8 @@ export interface TimeSpaceDiagramResultForPhase {
   order?: number;
   /** @nullable */
   readonly cycleLength?: number | null;
+  /** @nullable */
+  programmedSplit?: number | null;
   tmcForPhase?: TmcForPhaseDto;
   /** @nullable */
   cycleAllEvents?: CycleEventsDto[] | null;

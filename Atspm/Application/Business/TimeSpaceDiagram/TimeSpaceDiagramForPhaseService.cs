@@ -136,6 +136,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 distanceToPreviousLocation,
                 speedLimit,
                 programmedCycleLength,
+                programmedSplit,
                 cycleAllEvents,
                 pedIntervals,
                 countEventsTimeSpaceResult,
