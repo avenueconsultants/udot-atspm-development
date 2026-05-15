@@ -356,7 +356,6 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     v === null || v === undefined ? '—' : `${Math.round(v)}%`
 
   const primaryLinesByIndex = primaryPhaseData.map((p) => [
-    `Split: ${formatSecondsDetail(p.programmedSplit)}`,
     `AOG: ${formatPct(p.percentArrivalOnGreen)}`,
   ])
 
@@ -370,10 +369,7 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
 
   const opposingLinesByIndex = [...opposingPhaseData]
     .reverse()
-    .map((p) => [
-      `Split: ${formatSecondsDetail(p.programmedSplit)}`,
-      `AOG: ${formatPct(p.percentArrivalOnGreen)}`,
-    ])
+    .map((p) => [`AOG: ${formatPct(p.percentArrivalOnGreen)}`])
 
   const primaryIgnoredByIndex = primaryPhaseData.map((p) =>
     Boolean(p.isIgnoredLocation)
@@ -597,12 +593,4 @@ function transformData(data: RawTimeSpaceHistoricData[]): EChartsOption {
     displayProps,
     animation: true,
   })
-}
-
-function formatSecondsDetail(value: number | null | undefined) {
-  if (typeof value !== 'number' || !Number.isFinite(value)) {
-    return 'unknown'
-  }
-
-  return `${value}s`
 }
