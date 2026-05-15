@@ -15,6 +15,25 @@ type GraphicNode = {
   children?: GraphicNode[]
 }
 
+function collectRenderTexts(node: unknown): string[] {
+  if (!node || typeof node !== 'object') {
+    return []
+  }
+
+  const candidate = node as {
+    children?: unknown[]
+    style?: { text?: unknown }
+  }
+
+  const ownText =
+    typeof candidate.style?.text === 'string' ? [candidate.style.text] : []
+  const childTexts = Array.isArray(candidate.children)
+    ? candidate.children.flatMap((child) => collectRenderTexts(child))
+    : []
+
+  return [...ownText, ...childTexts]
+}
+
 function buildHistoricLocation(
   phaseType: 'Primary' | 'Opposing',
   overrides: Partial<RawTimeSpaceHistoricData> = {}
@@ -67,6 +86,7 @@ function buildHistoricLocation(
     },
     order: phaseType === 'Primary' ? 1 : 2,
     cycleLength: null,
+    programmedSplit: 45,
     isPhaseOverLap: false,
     tspNumberCheckins: 0,
     tspNumberCheckouts: 0,
@@ -223,6 +243,58 @@ describe('transformTimeSpaceHistoricData detection series interaction', () => {
 
     expect(distanceLabels?.silent).toBe(true)
     expect(distanceLabels?.tooltip).toMatchObject({ show: false })
+  })
+
+  it('includes programmed split in phase labels', () => {
+    const response: RawTimeSpaceDiagramResponse = {
+      type: ToolType.TimeSpaceHistoric,
+      data: [
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Primary', {
+            programmedSplit: 47,
+          }),
+        },
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Opposing'),
+        },
+      ],
+    }
+
+    const result = transformTimeSpaceHistoricData(response)
+    const chart = result.data.chart as EChartsOption
+    const series = Array.isArray(chart.series)
+      ? (chart.series as SeriesOption[])
+      : []
+    const primaryLabelSeries = series.find(
+      (entry) =>
+        String(entry.id).startsWith('Cycle Labels ') &&
+        String(entry.id).endsWith(' left')
+    ) as
+      | (SeriesOption & {
+          renderItem?: (
+            params: {
+              dataIndex: number
+              coordSys: { x: number; width: number }
+            },
+            api: {
+              coord: (value: unknown[]) => [number, number]
+            }
+          ) => unknown
+        })
+      | undefined
+
+    const node = primaryLabelSeries?.renderItem?.(
+      { dataIndex: 0, coordSys: { x: 0, width: 400 } },
+      {
+        coord: (value) => [Number(value[0] ?? 0), Number(value[1] ?? 0)],
+      }
+    )
+
+    expect(collectRenderTexts(node)).toContain('Split: 47s')
   })
 
   it('marks turn series as non-interactable', () => {

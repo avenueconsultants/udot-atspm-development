@@ -128,6 +128,7 @@ export interface RawTimeSpaceHistoricData extends TimeSpaceBaseData {
 
   order: number
   cycleLength: number | null
+  programmedSplit: number | null
   isPhaseOverLap: boolean
 
   tspNumberCheckins: number
