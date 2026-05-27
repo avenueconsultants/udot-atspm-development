@@ -17,7 +17,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks.Dataflow;
-using Utah.Udot.Atspm.Analysis.Plans;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.Analysis.Workflows
