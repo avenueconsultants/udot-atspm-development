@@ -147,6 +147,7 @@ export function transformPcdData(
       name: volumePerHourText,
       data: transformSeriesData(volumePerHour),
       type: 'line',
+      step: 'start',
       color: Color.Pink,
       yAxisIndex: 1,
       tooltip: {
@@ -158,6 +159,7 @@ export function transformPcdData(
       name: redSeriesText,
       data: transformSeriesData(redSeries),
       type: 'line',
+      step: 'start',
       color: Color.Red,
       symbolSize: 0,
       tooltip: {
@@ -168,6 +170,7 @@ export function transformPcdData(
       name: yellowSeriesText,
       data: transformSeriesData(yellowSeries),
       type: 'line',
+      step: 'start',
       color: Color.Yellow,
       symbolSize: 0,
       tooltip: {
@@ -178,6 +181,7 @@ export function transformPcdData(
       name: greenSeriesText,
       data: transformSeriesData(greenSeries),
       type: 'line',
+      step: 'start',
       color: Color.Green,
       symbolSize: 0,
       tooltip: {

@@ -167,6 +167,7 @@ function transformData(data: RawApproachVolumeData) {
       name: data.primaryDirectionName,
       data: transformSeriesData(primaryDirectionVolumes),
       type: 'line',
+      step: 'start',
       color: Color.Red,
       tooltip: {
         valueFormatter: (val) =>
@@ -177,6 +178,7 @@ function transformData(data: RawApproachVolumeData) {
       name: data.opposingDirectionName,
       data: transformSeriesData(opposingDirectionVolumes),
       type: 'line',
+      step: 'start',
       color: Color.Blue,
       tooltip: {
         valueFormatter: (val) =>
@@ -187,6 +189,7 @@ function transformData(data: RawApproachVolumeData) {
       name: combinedValueText,
       data: transformSeriesData(combinedDirectionVolumes),
       type: 'line',
+      step: 'start',
       color: Color.Green,
       tooltip: {
         valueFormatter: (val) =>
@@ -197,6 +200,7 @@ function transformData(data: RawApproachVolumeData) {
       name: `${data.primaryDirectionName} ${dFactorText}`,
       data: transformSeriesData(primaryDFactors),
       type: 'line',
+      step: 'start',
       color: Color.Red,
       yAxisIndex: 1,
       lineStyle: {
@@ -207,6 +211,7 @@ function transformData(data: RawApproachVolumeData) {
       name: `${data.opposingDirectionName} ${dFactorText}`,
       data: transformSeriesData(opposingDFactors),
       type: 'line',
+      step: 'start',
       color: Color.Blue,
       yAxisIndex: 1,
       lineStyle: {

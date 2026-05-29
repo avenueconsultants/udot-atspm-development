@@ -1,3 +1,4 @@
+import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
 import { ChartType } from '@/features/charts/common/types'
 import {
   adjustPlanPositions,
@@ -6,7 +7,6 @@ import {
 import { useChartsStore } from '@/stores/charts'
 import type {
   DataZoomComponentOption,
-  DatasetComponentOption,
   ECharts,
   EChartsOption,
   SeriesOption,
@@ -14,7 +14,7 @@ import type {
 } from 'echarts'
 import { connect, init } from 'echarts'
 import type { CSSProperties } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 export interface ApacheEChartsProps {
   id: string
@@ -28,6 +28,54 @@ export interface ApacheEChartsProps {
   resetKey?: boolean
 }
 
+function asArray<T>(value: T | T[] | undefined): T[] | undefined {
+  if (value == null) return undefined
+  return Array.isArray(value) ? value : [value]
+}
+
+function getPrimaryTitleText(option: EChartsOption) {
+  const title = Array.isArray(option.title) ? option.title[0] : option.title
+  return (title as { text?: string } | undefined)?.text
+}
+
+function getPrimaryGrid(option: EChartsOption) {
+  const grid = Array.isArray(option.grid) ? option.grid[0] : option.grid
+  return (
+    (grid as
+      | {
+          top?: string | number
+          left?: string | number
+          right?: string | number
+          bottom?: string | number
+        }
+      | undefined) ?? {}
+  )
+}
+
+function applyStepChartPreference(
+  option: EChartsOption,
+  chartType: ChartType | undefined,
+  useStepCharts: boolean
+) {
+  if (!supportsStepChartToggle(chartType)) return option
+
+  const series = option.series
+  const seriesList = asArray(series)
+  if (!seriesList) return option
+
+  return {
+    ...option,
+    series: seriesList.map((seriesOption) => {
+      if (seriesOption.type !== 'line') return seriesOption
+
+      return {
+        ...seriesOption,
+        step: useStepCharts ? 'start' : false,
+      } as SeriesOption
+    }),
+  }
+}
+
 export default function ApacheEChart({
   id,
   option,
@@ -39,13 +87,22 @@ export default function ApacheEChart({
   hideInteractionMessage = false,
 }: ApacheEChartsProps) {
   const chartRef = useRef<HTMLDivElement>(null)
-  const { activeChart, setActiveChart, syncZoom, yAxisMaxStore } =
-    useChartsStore()
+  const {
+    activeChart,
+    setActiveChart,
+    syncZoom,
+    useStepCharts,
+    yAxisMaxStore,
+  } = useChartsStore()
   const [isHovered, setIsHovered] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
   const chartInstance = useRef<ECharts | null>(null)
 
   const isActive = activeChart === id || hideInteractionMessage
+  const effectiveOption = useMemo(
+    () => applyStepChartPreference(option, chartType, useStepCharts),
+    [option, chartType, useStepCharts]
+  )
 
   const initChart = useCallback(() => {
     if (chartRef.current !== null) {
@@ -58,19 +115,24 @@ export default function ApacheEChart({
         connect('group1')
       }
 
-      if (option?.dataZoom === undefined) return
+      if (effectiveOption?.dataZoom === undefined) return
 
       // Set initial options with zooming disabled
       const disabledZoomOption: EChartsOption = {
-        ...option,
-        dataZoom: (option.dataZoom as DataZoomComponentOption[])?.map(
-          (zoom) => ({
+        ...effectiveOption,
+        dataZoom: asArray(
+          effectiveOption.dataZoom as
+            | DataZoomComponentOption
+            | DataZoomComponentOption[]
+            | undefined
+        )?.map((zoom) => ({
             ...zoom,
             disabled: true,
             zoomLock: true,
-          })
-        ),
-        series: (option.series as SeriesOption[])?.map((series) => ({
+          })),
+        series: asArray(
+          effectiveOption.series as SeriesOption | SeriesOption[] | undefined
+        )?.map((series) => ({
           ...series,
           silent: true,
         })),
@@ -88,7 +150,7 @@ export default function ApacheEChart({
         )
       }
     }
-  }, [option, settings, theme, chartType, syncZoom])
+  }, [effectiveOption, settings, theme, chartType, syncZoom])
 
   useEffect(() => {
     initChart()
@@ -106,21 +168,25 @@ export default function ApacheEChart({
 
   useEffect(() => {
     if (chartInstance.current) {
-      const adjustedDataZoom = (
-        option.dataZoom as DataZoomComponentOption[]
+      const adjustedDataZoom = asArray(
+        effectiveOption.dataZoom as
+          | DataZoomComponentOption
+          | DataZoomComponentOption[]
+          | undefined
       )?.map((zoom) => ({
         ...zoom,
-        // Only modify endValue if yAxisMaxStore exists
-        endValue: yAxisMaxStore !== undefined ? yAxisMaxStore : zoom.endValue,
+        endValue: yAxisMaxStore != null ? yAxisMaxStore : zoom.endValue,
         disabled: !isActive,
         zoomLock: !isActive,
       }))
 
       // Use adjusted dataZoom in the chart options
       const updatedOption: EChartsOption = {
-        ...option,
+        ...effectiveOption,
         dataZoom: adjustedDataZoom,
-        series: (option.series as SeriesOption[])?.map((series) => ({
+        series: asArray(
+          effectiveOption.series as SeriesOption | SeriesOption[] | undefined
+        )?.map((series) => ({
           ...series,
           silent: !isActive,
         })),
@@ -129,7 +195,7 @@ export default function ApacheEChart({
       // Apply the updated option to the chart
       chartInstance.current.setOption(updatedOption, settings)
     }
-  }, [option, settings, theme, isActive, yAxisMaxStore])
+  }, [effectiveOption, settings, theme, isActive, yAxisMaxStore])
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -168,7 +234,7 @@ export default function ApacheEChart({
       if (!clickedChart || !currentChart) return
 
       const chartOptions = currentChart.getOption() as EChartsOption
-      if (chartOptions.title[0].text !== clickedChart) return
+      if (getPrimaryTitleText(chartOptions) !== clickedChart) return
 
       // Temporarily remove grouping to prevent all charts from saving
       const originalGroup = currentChart.group
@@ -206,15 +272,20 @@ export default function ApacheEChart({
       setActiveChart(id)
       if (chartInstance.current) {
         chartInstance.current.setOption({
-          ...option,
-          dataZoom: (option.dataZoom as DatasetComponentOption[])?.map(
-            (zoom) => ({
+          ...effectiveOption,
+          dataZoom: asArray(
+            effectiveOption.dataZoom as
+              | DataZoomComponentOption
+              | DataZoomComponentOption[]
+              | undefined
+          )?.map((zoom) => ({
               ...zoom,
               disabled: false,
               zoomLock: false,
-            })
-          ),
-          series: (option.series as SeriesOption[])?.map((series) => ({
+            })),
+          series: asArray(
+            effectiveOption.series as SeriesOption | SeriesOption[] | undefined
+          )?.map((series) => ({
             ...series,
             silent: false,
           })),
@@ -222,6 +293,8 @@ export default function ApacheEChart({
       }
     }
   }
+
+  const grid = getPrimaryGrid(effectiveOption)
 
   return (
     <div
@@ -250,10 +323,10 @@ export default function ApacheEChart({
           <div
             style={{
               position: 'absolute',
-              top: option?.grid?.top || 0,
-              left: option?.grid?.left || 0,
-              right: option?.grid?.right || 0,
-              bottom: option?.grid?.bottom || 0,
+              top: grid.top || 0,
+              left: grid.left || 0,
+              right: grid.right || 0,
+              bottom: grid.bottom || 0,
               background: 'rgba(0, 0, 0, 0.3)',
               display: 'flex',
               visibility:
@@ -273,10 +346,10 @@ export default function ApacheEChart({
               style={{
                 display: isActive ? 'block' : 'none',
                 position: 'absolute',
-                top: option?.grid?.top || 0,
-                left: option?.grid?.left || 0,
-                right: option?.grid?.right || 0,
-                bottom: option?.grid?.bottom || 0,
+                top: grid.top || 0,
+                left: grid.left || 0,
+                right: grid.right || 0,
+                bottom: grid.bottom || 0,
                 // outline: '2px solid #0060df80',
                 zIndex: 1,
                 pointerEvents: 'none',

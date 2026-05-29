@@ -1,3 +1,5 @@
+import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
+import { ChartType } from '@/features/charts/common/types'
 import { useChartsStore } from '@/stores/charts'
 import {
   Box,
@@ -16,6 +18,7 @@ import IndividualChartControls from './IndividualChartControls'
 interface GeneralChartsControllerProps {
   chartRefs: React.RefObject<HTMLDivElement>[]
   chartData: any
+  chartType: ChartType
   toggleConfigLabel: string
   toggleConfig: () => void
 }
@@ -23,12 +26,16 @@ interface GeneralChartsControllerProps {
 export default function ChartsToolbox({
   chartRefs,
   chartData,
+  chartType,
   toggleConfigLabel,
   toggleConfig,
 }: GeneralChartsControllerProps) {
   const theme = useTheme()
 
-  const { syncZoom, setSyncZoom } = useChartsStore()
+  const { syncZoom, setSyncZoom, useStepCharts, setUseStepCharts } =
+    useChartsStore()
+  const showStepChartToggle = supportsStepChartToggle(chartType)
+
   return (
     <Paper
       sx={{
@@ -64,6 +71,29 @@ export default function ChartsToolbox({
             }
             sx={{ flexGrow: 1 }}
           />
+          {showStepChartToggle && (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={useStepCharts}
+                  onChange={() => setUseStepCharts(!useStepCharts)}
+                  name="useStepCharts"
+                  color="default"
+                  size="small"
+                />
+              }
+              label={
+                <Typography
+                  fontWeight={400}
+                  fontSize={'.8rem'}
+                  sx={{ textTransform: 'none' }}
+                >
+                  Step Charts
+                </Typography>
+              }
+              sx={{ flexGrow: 1 }}
+            />
+          )}
           <Button
             onClick={toggleConfig}
             sx={{

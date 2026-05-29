@@ -189,6 +189,7 @@ function transformData(data: RawLeftTurnGapData) {
       data: transformSeriesData(percentTurnableSeries),
       yAxisIndex: 1,
       type: 'line',
+      step: 'start',
       color: Color.Black,
       lineStyle: { type: 'dashed' },
       tooltip: {

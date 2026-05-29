@@ -22,6 +22,7 @@ import {
   PlanData,
   PlanOptions,
 } from '@/features/charts/common/types'
+import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
 import { Color } from '@/features/charts/utils'
 import { format } from 'date-fns'
 import {
@@ -392,10 +393,15 @@ export function formatExportFileName(
   )
 }
 
+interface ToolboxProps {
+  title: string
+  dateRange?: string
+}
+
 export function createToolbox(
-  { title }: titleProps
-  // locationIdentifier?: string,
-  // type?: ChartType | ToolType
+  { title }: ToolboxProps,
+  _locationIdentifier?: string | null,
+  chartType?: ChartType | string
 ) {
   const toolbox: ToolboxComponentOption = {
     feature: {
@@ -405,6 +411,16 @@ export function createToolbox(
       },
     },
   }
+
+  if (supportsStepChartToggle(chartType)) {
+    toolbox.feature = {
+      ...toolbox.feature,
+      magicType: {
+        type: ['line', 'bar'],
+      },
+    }
+  }
+
   return toolbox
 }
 
