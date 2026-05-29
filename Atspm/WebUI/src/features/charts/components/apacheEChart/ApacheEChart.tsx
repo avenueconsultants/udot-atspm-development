@@ -74,7 +74,7 @@ function applyStepChartPreference(
 
       return {
         ...seriesOption,
-        step: useStepCharts ? seriesStep ?? 'end' : false,
+        step: useStepCharts ? seriesStep ?? 'start' : false,
       } as SeriesOption
     }),
   }

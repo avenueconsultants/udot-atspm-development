@@ -132,7 +132,7 @@ function transformData(data: RawArrivalsOnRedData) {
       name: percentArrivalsOnRedText,
       data: transformSeriesData(percentArrivalsOnRed),
       type: 'line',
-      step: 'end',
+      step: 'start',
       yAxisIndex: 1,
       color: Color.Red,
       lineStyle: {
@@ -146,7 +146,7 @@ function transformData(data: RawArrivalsOnRedData) {
       name: totalVehiclesText,
       data: transformSeriesData(totalVehicles),
       type: 'line',
-      step: 'end',
+      step: 'start',
       color: Color.Blue,
       tooltip: {
         valueFormatter: (value) =>
@@ -157,7 +157,7 @@ function transformData(data: RawArrivalsOnRedData) {
       name: arrivalsOnRedText,
       data: transformSeriesData(arrivalsOnRed),
       type: 'line',
-      step: 'end',
+      step: 'start',
       color: Color.Red,
       tooltip: {
         valueFormatter: (value) =>
