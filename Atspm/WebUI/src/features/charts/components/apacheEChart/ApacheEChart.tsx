@@ -16,6 +16,8 @@ import { connect, init } from 'echarts'
 import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+type LineStep = boolean | 'start' | 'middle' | 'end'
+
 export interface ApacheEChartsProps {
   id: string
   option: EChartsOption
@@ -67,10 +69,12 @@ function applyStepChartPreference(
     ...option,
     series: seriesList.map((seriesOption) => {
       if (seriesOption.type !== 'line') return seriesOption
+      const seriesStep = (seriesOption as SeriesOption & { step?: LineStep })
+        .step
 
       return {
         ...seriesOption,
-        step: useStepCharts ? 'start' : false,
+        step: useStepCharts ? seriesStep ?? 'end' : false,
       } as SeriesOption
     }),
   }

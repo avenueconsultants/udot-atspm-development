@@ -147,7 +147,7 @@ export function transformPcdData(
       name: volumePerHourText,
       data: transformSeriesData(volumePerHour),
       type: 'line',
-      step: 'start',
+      step: 'end',
       color: Color.Pink,
       yAxisIndex: 1,
       tooltip: {

@@ -144,7 +144,7 @@ function transformData(data: RawWaitTimeData) {
       name: volumePerHourText,
       data: transformSeriesData(volumes),
       type: 'line',
-      step: 'start',
+      step: 'end',
       color: Color.Blue,
       yAxisIndex: 1,
     },
@@ -187,7 +187,7 @@ function transformData(data: RawWaitTimeData) {
       name: programmedSplitsText,
       data: transformSeriesData(planSplits),
       type: 'line',
-      step: 'start',
+      step: 'end',
       color: Color.Red,
     }
   )
