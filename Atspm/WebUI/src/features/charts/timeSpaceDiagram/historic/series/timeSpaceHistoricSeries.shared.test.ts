@@ -1,6 +1,6 @@
 // #region license
 // Copyright 2026 Utah Departement of Transportation
-// for WebUI - index.ts
+// for WebUI - timeSpaceHistoricSeries.shared.test.ts
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,5 +14,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-export * from './RoutesToggle'
-export { default } from './RoutesToggle'
+import { PASSIVE_DETECTION_SERIES_PROPS } from './timeSpaceHistoricSeries.shared'
+
+describe('PASSIVE_DETECTION_SERIES_PROPS', () => {
+  it('disables animation for passive detection series', () => {
+    expect(PASSIVE_DETECTION_SERIES_PROPS).toMatchObject({
+      animation: false,
+      animationDelay: 0,
+      animationDelayUpdate: 0,
+      animationDuration: 0,
+      animationDurationUpdate: 0,
+      silent: true,
+      tooltip: { show: false },
+    })
+  })
+})
