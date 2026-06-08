@@ -42,13 +42,8 @@ export const TIME_SPACE_LOCATION_CARD_LAYOUT = {
   cardWidth: 200,
   cardRadius: 4,
   verticalOffsetY: 15,
-<<<<<<< HEAD
-  headerHeight: 44,
-  bodyHeight: 60,
-=======
   headerHeight: 40,
   bodyHeight: 52,
->>>>>>> additional-bug-fixes
   bodyPaddingLeft: 8,
   bodyPaddingRight: 8,
   headerActionSize: 12,
@@ -180,8 +175,6 @@ export function buildIdentifierAndNameTitle(
   return ''
 }
 
-<<<<<<< HEAD
-=======
 function truncateWithEllipsis(text: string, maxCharacters: number) {
   if (text.length <= maxCharacters) {
     return text
@@ -194,7 +187,6 @@ function truncateWithEllipsis(text: string, maxCharacters: number) {
   return `${text.slice(0, maxCharacters - 3).trimEnd()}...`
 }
 
->>>>>>> additional-bug-fixes
 function getTimeSpaceLocationCardGeometry(
   gridLeft: number,
   y: number
@@ -226,15 +218,9 @@ function getTimeSpaceLocationCardGeometry(
   const leftMetricWidth = Math.round(topMetricContentWidth * 0.45)
   const rightMetricWidth = topMetricContentWidth - leftMetricWidth
   const offsetMetricX = textX + leftMetricWidth + TIME_SPACE_LOCATION_METRIC_GAP
-<<<<<<< HEAD
-  const topMetricRowY = bodyTop + 10
-  const middleMetricRowY = bodyTop + bodyHeight / 2
-  const bottomMetricRowY = bodyTop + bodyHeight - 10
-=======
   const topMetricRowY = bodyTop + 8
   const middleMetricRowY = bodyTop + bodyHeight / 2
   const bottomMetricRowY = bodyTop + bodyHeight - 8
->>>>>>> additional-bug-fixes
 
   return {
     bodyContentWidth,
