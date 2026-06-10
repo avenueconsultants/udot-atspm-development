@@ -1,4 +1,4 @@
-import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
+import { supportsBinStepLineToggle } from '@/features/charts/common/chartFeatureFlags'
 import { ChartType } from '@/features/charts/common/types'
 import {
   adjustPlanPositions,
@@ -17,6 +17,11 @@ import type { CSSProperties } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 type LineStep = boolean | 'start' | 'middle' | 'end'
+type LineSeriesOption = SeriesOption & {
+  data?: unknown
+  step?: LineStep
+  binStepLineToggle?: boolean
+}
 
 export interface ApacheEChartsProps {
   id: string
@@ -54,27 +59,142 @@ function getPrimaryGrid(option: EChartsOption) {
   )
 }
 
-function applyStepChartPreference(
+function getPrimaryXAxisMax(option: EChartsOption) {
+  const xAxis = Array.isArray(option.xAxis) ? option.xAxis[0] : option.xAxis
+  return (xAxis as { max?: unknown } | undefined)?.max
+}
+
+function getPrimaryHorizontalDataZoomEndValue(option: EChartsOption) {
+  const dataZoom = asArray(
+    option.dataZoom as
+      | DataZoomComponentOption
+      | DataZoomComponentOption[]
+      | undefined
+  )
+  const horizontalZoom = dataZoom?.find(
+    (zoom) => (zoom.orient ?? 'horizontal') === 'horizontal'
+  )
+
+  return horizontalZoom?.endValue
+}
+
+function getStepExtensionTarget(option: EChartsOption) {
+  return getPrimaryHorizontalDataZoomEndValue(option) ?? getPrimaryXAxisMax(option)
+}
+
+function getDataPointX(dataPoint: unknown) {
+  if (Array.isArray(dataPoint)) return dataPoint[0]
+
+  if (dataPoint && typeof dataPoint === 'object' && 'value' in dataPoint) {
+    const value = (dataPoint as { value?: unknown }).value
+    if (Array.isArray(value)) return value[0]
+  }
+
+  return undefined
+}
+
+function cloneDataPointAtX(dataPoint: unknown, xAxisMax: unknown) {
+  if (Array.isArray(dataPoint)) {
+    const nextPoint = [...dataPoint]
+    nextPoint[0] = xAxisMax
+    return nextPoint
+  }
+
+  if (dataPoint && typeof dataPoint === 'object' && 'value' in dataPoint) {
+    const value = (dataPoint as { value?: unknown }).value
+    if (Array.isArray(value)) {
+      return {
+        ...dataPoint,
+        value: [xAxisMax, ...value.slice(1)],
+      }
+    }
+  }
+
+  return undefined
+}
+
+function getComparableAxisValue(value: unknown) {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (value instanceof Date) return value.getTime()
+  if (typeof value !== 'string') return undefined
+
+  const parsedDate = Date.parse(value)
+  if (Number.isFinite(parsedDate)) return parsedDate
+
+  const parsedNumber = Number(value)
+  return Number.isFinite(parsedNumber) ? parsedNumber : undefined
+}
+
+function isAtOrBeyondAxisMax(dataPointX: unknown, xAxisMax: unknown) {
+  const dataPointValue = getComparableAxisValue(dataPointX)
+  const maxValue = getComparableAxisValue(xAxisMax)
+
+  if (dataPointValue != null && maxValue != null) {
+    return dataPointValue >= maxValue
+  }
+
+  return dataPointX === xAxisMax
+}
+
+function extendStepDataToXAxisMax(data: unknown, xAxisMax: unknown) {
+  if (!Array.isArray(data) || data.length === 0 || xAxisMax == null) {
+    return data
+  }
+
+  const lastPoint = data[data.length - 1]
+  const lastPointX = getDataPointX(lastPoint)
+
+  if (lastPointX == null || isAtOrBeyondAxisMax(lastPointX, xAxisMax)) {
+    return data
+  }
+
+  const finalPoint = cloneDataPointAtX(lastPoint, xAxisMax)
+  return finalPoint == null ? data : [...data, finalPoint]
+}
+
+function getSetOptionSettings(
+  settings: SetOptionOpts | undefined,
+  replaceSeries: boolean
+) {
+  if (!replaceSeries) return settings
+
+  const replaceMerge = asArray(settings?.replaceMerge)
+  return {
+    ...settings,
+    replaceMerge: replaceMerge?.includes('series')
+      ? replaceMerge
+      : [...(replaceMerge ?? []), 'series'],
+  } satisfies SetOptionOpts
+}
+
+function applyBinStepLinePreference(
   option: EChartsOption,
   chartType: ChartType | undefined,
-  useStepCharts: boolean
+  showBinStepLines: boolean
 ) {
-  if (!supportsStepChartToggle(chartType)) return option
+  if (!supportsBinStepLineToggle(chartType)) return option
 
   const series = option.series
   const seriesList = asArray(series)
   if (!seriesList) return option
+  const xAxisMax = getStepExtensionTarget(option)
 
   return {
     ...option,
     series: seriesList.map((seriesOption) => {
       if (seriesOption.type !== 'line') return seriesOption
-      const seriesStep = (seriesOption as SeriesOption & { step?: LineStep })
-        .step
+      const lineSeriesOption = seriesOption as LineSeriesOption
+      const { binStepLineToggle, ...echartsLineSeriesOption } = lineSeriesOption
+      if (binStepLineToggle !== true) return echartsLineSeriesOption
+
+      const seriesStep = lineSeriesOption.step ?? 'end'
 
       return {
-        ...seriesOption,
-        step: useStepCharts ? seriesStep ?? 'start' : false,
+        ...echartsLineSeriesOption,
+        data: showBinStepLines
+          ? extendStepDataToXAxisMax(lineSeriesOption.data, xAxisMax)
+          : lineSeriesOption.data,
+        step: showBinStepLines ? seriesStep : false,
       } as SeriesOption
     }),
   }
@@ -95,7 +215,7 @@ export default function ApacheEChart({
     activeChart,
     setActiveChart,
     syncZoom,
-    useStepCharts,
+    showBinStepLines,
     yAxisMaxStore,
   } = useChartsStore()
   const [isHovered, setIsHovered] = useState(false)
@@ -103,9 +223,14 @@ export default function ApacheEChart({
   const chartInstance = useRef<ECharts | null>(null)
 
   const isActive = activeChart === id || hideInteractionMessage
+  const shouldReplaceSeries = supportsBinStepLineToggle(chartType)
   const effectiveOption = useMemo(
-    () => applyStepChartPreference(option, chartType, useStepCharts),
-    [option, chartType, useStepCharts]
+    () => applyBinStepLinePreference(option, chartType, showBinStepLines),
+    [option, chartType, showBinStepLines]
+  )
+  const setOptionSettings = useMemo(
+    () => getSetOptionSettings(settings, shouldReplaceSeries),
+    [settings, shouldReplaceSeries]
   )
 
   const initChart = useCallback(() => {
@@ -119,31 +244,6 @@ export default function ApacheEChart({
         connect('group1')
       }
 
-      if (effectiveOption?.dataZoom === undefined) return
-
-      // Set initial options with zooming disabled
-      const disabledZoomOption: EChartsOption = {
-        ...effectiveOption,
-        dataZoom: asArray(
-          effectiveOption.dataZoom as
-            | DataZoomComponentOption
-            | DataZoomComponentOption[]
-            | undefined
-        )?.map((zoom) => ({
-            ...zoom,
-            disabled: true,
-            zoomLock: true,
-          })),
-        series: asArray(
-          effectiveOption.series as SeriesOption | SeriesOption[] | undefined
-        )?.map((series) => ({
-          ...series,
-          silent: true,
-        })),
-      }
-
-      chartInstance.current.setOption(disabledZoomOption, settings)
-
       if (chartType === ChartType.GreenTimeUtilization) {
         chartInstance.current.on('datazoom', () =>
           handleGreenTimeUtilizationDataZoom(chartInstance.current!)
@@ -154,7 +254,7 @@ export default function ApacheEChart({
         )
       }
     }
-  }, [effectiveOption, settings, theme, chartType, syncZoom])
+  }, [theme, chartType, syncZoom])
 
   useEffect(() => {
     initChart()
@@ -168,7 +268,7 @@ export default function ApacheEChart({
       chartInstance.current?.dispose()
       window.removeEventListener('resize', resizeChart)
     }
-  }, [theme, chartType, initChart, syncZoom])
+  }, [initChart])
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -197,9 +297,17 @@ export default function ApacheEChart({
       }
 
       // Apply the updated option to the chart
-      chartInstance.current.setOption(updatedOption, settings)
+      chartInstance.current.setOption(updatedOption, setOptionSettings)
     }
-  }, [effectiveOption, settings, theme, isActive, yAxisMaxStore])
+  }, [
+    effectiveOption,
+    setOptionSettings,
+    theme,
+    chartType,
+    syncZoom,
+    isActive,
+    yAxisMaxStore,
+  ])
 
   useEffect(() => {
     if (chartInstance.current) {
@@ -275,25 +383,28 @@ export default function ApacheEChart({
     if (!isActive) {
       setActiveChart(id)
       if (chartInstance.current) {
-        chartInstance.current.setOption({
-          ...effectiveOption,
-          dataZoom: asArray(
-            effectiveOption.dataZoom as
-              | DataZoomComponentOption
-              | DataZoomComponentOption[]
-              | undefined
-          )?.map((zoom) => ({
+        chartInstance.current.setOption(
+          {
+            ...effectiveOption,
+            dataZoom: asArray(
+              effectiveOption.dataZoom as
+                | DataZoomComponentOption
+                | DataZoomComponentOption[]
+                | undefined
+            )?.map((zoom) => ({
               ...zoom,
               disabled: false,
               zoomLock: false,
             })),
-          series: asArray(
-            effectiveOption.series as SeriesOption | SeriesOption[] | undefined
-          )?.map((series) => ({
-            ...series,
-            silent: false,
-          })),
-        })
+            series: asArray(
+              effectiveOption.series as SeriesOption | SeriesOption[] | undefined
+            )?.map((series) => ({
+              ...series,
+              silent: false,
+            })),
+          },
+          setOptionSettings
+        )
       }
     }
   }

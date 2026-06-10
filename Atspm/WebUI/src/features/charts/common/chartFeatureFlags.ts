@@ -11,7 +11,7 @@ const binStepChartTypes = new Set<ChartType>([
   ChartType.WaitTime,
 ])
 
-export function supportsStepChartToggle(
+export function supportsBinStepLineToggle(
   chartType?: ChartType | string | null
 ) {
   return chartType != null && binStepChartTypes.has(chartType as ChartType)

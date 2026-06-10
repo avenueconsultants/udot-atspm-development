@@ -1,6 +1,6 @@
 import { useCharts } from '@/features/charts/api'
 import ApproachVolumeChartResults from '@/features/charts/approachVolume/components/ApproachVolumeChartResults'
-import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
+import { supportsBinStepLineToggle } from '@/features/charts/common/chartFeatureFlags'
 import { ChartOptions, ChartType } from '@/features/charts/common/types'
 import ChartsToolbox from '@/features/charts/components/chartsToolbox'
 import DefaultChartResults from '@/features/charts/components/defaultChartResults'
@@ -163,7 +163,7 @@ export default function ChartsContainer({
   useChartsController = Boolean(
     chartData?.data?.charts &&
       chartData.data.charts.length > 0 &&
-      (chartData.data.charts.length > 1 || supportsStepChartToggle(chartType))
+      (chartData.data.charts.length > 1 || supportsBinStepLineToggle(chartType))
   )
 
   const displayStyle = (shouldShow: boolean) => ({

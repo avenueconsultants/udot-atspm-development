@@ -1,4 +1,4 @@
-import { supportsStepChartToggle } from '@/features/charts/common/chartFeatureFlags'
+import { supportsBinStepLineToggle } from '@/features/charts/common/chartFeatureFlags'
 import { ChartType } from '@/features/charts/common/types'
 import { useChartsStore } from '@/stores/charts'
 import {
@@ -32,9 +32,14 @@ export default function ChartsToolbox({
 }: GeneralChartsControllerProps) {
   const theme = useTheme()
 
-  const { syncZoom, setSyncZoom, useStepCharts, setUseStepCharts } =
+  const {
+    syncZoom,
+    setSyncZoom,
+    showBinStepLines,
+    setShowBinStepLines,
+  } =
     useChartsStore()
-  const showStepChartToggle = supportsStepChartToggle(chartType)
+  const showBinStepLineToggle = supportsBinStepLineToggle(chartType)
 
   return (
     <Paper
@@ -55,7 +60,7 @@ export default function ChartsToolbox({
               <Checkbox
                 checked={syncZoom}
                 onChange={() => setSyncZoom(!syncZoom)}
-                name="showPermissivePhases"
+                name="syncZoom"
                 color="default"
                 size="small"
               />
@@ -71,13 +76,13 @@ export default function ChartsToolbox({
             }
             sx={{ flexGrow: 1 }}
           />
-          {showStepChartToggle && (
+          {showBinStepLineToggle && (
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={useStepCharts}
-                  onChange={() => setUseStepCharts(!useStepCharts)}
-                  name="useStepCharts"
+                  checked={showBinStepLines}
+                  onChange={() => setShowBinStepLines(!showBinStepLines)}
+                  name="showBinStepLines"
                   color="default"
                   size="small"
                 />
@@ -88,7 +93,7 @@ export default function ChartsToolbox({
                   fontSize={'.8rem'}
                   sx={{ textTransform: 'none' }}
                 >
-                  Step Charts
+                  Bin Step Lines
                 </Typography>
               }
               sx={{ flexGrow: 1 }}
