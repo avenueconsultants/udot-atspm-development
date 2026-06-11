@@ -36,6 +36,7 @@ using Utah.Udot.Atspm.Business.PurdueCoordinationDiagram;
 using Utah.Udot.Atspm.Business.RampMetering;
 using Utah.Udot.Atspm.Business.SplitFail;
 using Utah.Udot.Atspm.Business.SplitMonitor;
+using Utah.Udot.Atspm.Business.TimeOfDay;
 using Utah.Udot.Atspm.Business.TimeSpaceDiagram;
 using Utah.Udot.Atspm.Business.TimingAndActuation;
 using Utah.Udot.Atspm.Business.TransitSignalPriority;
@@ -125,6 +126,7 @@ builder.Host
         s.AddScoped<IReportService<SplitMonitorOptions, IEnumerable<SplitMonitorResult>>, SplitMonitorReportService>();
         s.AddScoped<IReportService<TimeSpaceDiagramOptions, IEnumerable<TimeSpaceDiagramResultForPhase>>, TimeSpaceDiagramReportService>();
         s.AddScoped<IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAverageResult>>, TimeSpaceDiagramAverageReportService>();
+        s.AddScoped<IReportService<TimeOfDayOptions, TimeOfDayResult>, TimeOfDayReportService>();
         s.AddScoped<IReportService<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>>, TransitSignalPriorityReportService>();
         s.AddScoped<IReportService<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>>, TimingAndActuactionReportService>();
         s.AddScoped<IReportService<TurningMovementCountsOptions, TurningMovementCountsResult>, TurningMovementCountReportService>();
@@ -159,6 +161,15 @@ builder.Host
         s.AddScoped<SplitMonitorService>();
         s.AddScoped<TimeSpaceDiagramForPhaseService>();
         s.AddScoped<TimeSpaceAverageService>();
+        s.AddScoped<TimeOfDayService>();
+        s.AddScoped<ITimeOfDayObservationService, TimeOfDayObservationService>();
+        s.AddScoped<ITimeOfDayProfileService, TimeOfDayProfileService>();
+        s.AddScoped<ITimeOfDayRecommendationService, TimeOfDayRecommendationService>();
+        s.AddScoped<ITimeOfDayPlanScheduleService, TimeOfDayPlanScheduleService>();
+        s.AddScoped<ITimeOfDayPlanProfileService, TimeOfDayPlanProfileService>();
+        s.AddScoped<ITimeOfDaySplitPressureService, TimeOfDaySplitPressureService>();
+        s.Configure<TimeOfDayThresholdOptions>(
+            h.Configuration.GetSection("TimeOfDay:Thresholds"));
         s.AddScoped<TimingAndActuationsForPhaseService>();
         s.AddScoped<TransitSignalPriorityService>();
         s.AddScoped<TurningMovementCountsService>();
