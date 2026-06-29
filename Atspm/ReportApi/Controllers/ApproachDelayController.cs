@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/ApproachDelayController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Approach delay report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class ApproachDelayController : ReportControllerBase<ApproachDelayOptions, IEnumerable<ApproachDelayResult>>
+    public class ApproachDelayController : ReportControllerBase<ApproachDelayOptions, IEnumerable<ReportResult<ApproachDelayResult>>>
     {
         /// <inheritdoc/>
-        public ApproachDelayController(IReportService<ApproachDelayOptions, IEnumerable<ApproachDelayResult>> reportService, ILogger<ApproachDelayController> logger) : base(reportService, logger) { }
+        public ApproachDelayController(IReportService<ApproachDelayOptions, IEnumerable<ReportResult<ApproachDelayResult>>> reportService, ILogger<ApproachDelayController> logger) : base(reportService, logger) { }
     }
 }

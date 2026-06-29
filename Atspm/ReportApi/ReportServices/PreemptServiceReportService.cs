@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/PreemptServiceReportService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class PreemptServiceReportService : ReportServiceBase<PreemptServiceOptions, PreemptServiceResult>
+    public class PreemptServiceReportService : ReportServiceBase<PreemptServiceOptions, ReportResult<PreemptServiceResult>>
     {
         private readonly PreemptServiceService preemptServiceService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -41,19 +41,19 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<PreemptServiceResult> ExecuteAsync(PreemptServiceOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<PreemptServiceResult>> ExecuteAsync(PreemptServiceOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<PreemptServiceResult>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(PreemptServiceReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResult<PreemptServiceResult>();
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(parameter.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<PreemptServiceResult>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(PreemptServiceReportService), location: Location).ToFailureReportResult<PreemptServiceResult>();
             }
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),

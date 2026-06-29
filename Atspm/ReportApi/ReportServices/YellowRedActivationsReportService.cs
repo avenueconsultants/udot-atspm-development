@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Yellow and red activations report service
     /// </summary>
-    public class YellowRedActivationsReportService : ReportServiceBase<YellowRedActivationsOptions, IEnumerable<YellowRedActivationsResult>>
+    public class YellowRedActivationsReportService : ReportServiceBase<YellowRedActivationsOptions, IEnumerable<ReportResult<YellowRedActivationsResult>>>
     {
         private readonly YellowRedActivationsService yellowRedActivationsService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -44,14 +44,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<YellowRedActivationsResult>> ExecuteAsync(YellowRedActivationsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<YellowRedActivationsResult>>> ExecuteAsync(YellowRedActivationsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<YellowRedActivationsResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(YellowRedActivationsReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<YellowRedActivationsResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
@@ -59,26 +59,28 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<YellowRedActivationsResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(YellowRedActivationsReportService), location: Location).ToFailureReportResults<YellowRedActivationsResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<YellowRedActivationsResult>>();
+            var tasks = new List<Task<ReportResult<YellowRedActivationsResult>>>();
             foreach (var phaseDetail in phaseDetails)
             {
-                tasks.Add(GetChartDataForApproach(parameter, phaseDetail, controllerEventLogs, planEvents, Location.LocationDescription()));
+                tasks.Add(GetChartDataForApproach(parameter, phaseDetail, controllerEventLogs, planEvents, Location.LocationDescription())
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(YellowRedActivationsReportService), phase: phaseDetail, sortOrder: phaseDetail.PhaseNumber)));
             }
 
             var results = await Task.WhenAll(tasks);
 
             // Only send back data where detector events exists
-            var finalResultcheck = results//.Where(result => result.DetectorEvents.Count != 0)
-                .OrderBy(r => r.PhaseType)
-                .ThenBy(r => r.ProtectedPhaseNumber)
-                .ThenBy(r => r.IsPermissivePhase)
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseType ?? r.Error?.PhaseType)
+                .ThenBy(r => r.Result?.ProtectedPhaseNumber ?? r.Error?.PhaseNumber ?? int.MaxValue)
+                .ThenBy(r => r.Result?.IsPermissivePhase ?? false)
                 .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())

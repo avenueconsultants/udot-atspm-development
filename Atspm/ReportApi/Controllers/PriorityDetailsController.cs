@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PriorityDetailsController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Priority Details report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PriorityDetailsController : ReportControllerBase<PriorityDetailsOptions, IEnumerable<PriorityDetailsResult>>
+    public class PriorityDetailsController : ReportControllerBase<PriorityDetailsOptions, IEnumerable<ReportResult<PriorityDetailsResult>>>
     {
         /// <inheritdoc/>
-        public PriorityDetailsController(IReportService<PriorityDetailsOptions, IEnumerable<PriorityDetailsResult>> reportService, ILogger<PriorityDetailsController> logger) : base(reportService, logger) { }
+        public PriorityDetailsController(IReportService<PriorityDetailsOptions, IEnumerable<ReportResult<PriorityDetailsResult>>> reportService, ILogger<PriorityDetailsController> logger) : base(reportService, logger) { }
     }
 }

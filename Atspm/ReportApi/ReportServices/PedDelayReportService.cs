@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Ped delay report service
     /// </summary>
-    public class PedDelayReportService : ReportServiceBase<PedDelayOptions, IEnumerable<PedDelayResult>>
+    public class PedDelayReportService : ReportServiceBase<PedDelayOptions, IEnumerable<ReportResult<PedDelayResult>>>
     {
         private readonly PedDelayService pedDelayService;
         private readonly PedPhaseService pedPhaseService;
@@ -50,34 +50,38 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<PedDelayResult>> ExecuteAsync(PedDelayOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<PedDelayResult>>> ExecuteAsync(PedDelayOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<PedDelayResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(PedDelayReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<PedDelayResult>();
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<PedDelayResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(PedDelayReportService), location: Location).ToFailureReportResults<PedDelayResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<PedDelayResult>>();
+            var tasks = new List<Task<ReportResult<PedDelayResult>>>();
             foreach (var phase in phaseDetails)
             {
-                tasks.Add(GetChartDataForApproach(parameter, phase, planEvents, controllerEventLogs));
+                tasks.Add(GetChartDataForApproach(parameter, phase, planEvents, controllerEventLogs)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(PedDelayReportService), phase: phase, sortOrder: phase.PhaseNumber)));
             }
 
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

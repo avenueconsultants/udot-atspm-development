@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/WatchDogController.cs
 // 
@@ -26,10 +26,10 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Preempt request report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class WatchdogController : ReportControllerBase<WatchDogOptions, WatchDogResult>
+    public class WatchdogController : ReportControllerBase<WatchDogOptions, ReportResult<WatchDogResult>>
     {
         /// <inheritdoc/>
-        public WatchdogController(IReportService<WatchDogOptions, WatchDogResult> reportService, ILogger<WatchdogController> logger) : base(reportService, logger) { }
+        public WatchdogController(IReportService<WatchDogOptions, ReportResult<WatchDogResult>> reportService, ILogger<WatchdogController> logger) : base(reportService, logger) { }
         [HttpGet("GetIssueTypes")]
         public IEnumerable<WatchDogIssueTypeDTO> GetIssueTypes()
         {

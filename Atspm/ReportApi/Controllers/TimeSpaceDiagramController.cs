@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/TimeSpaceDiagramController.cs
 // 
@@ -25,13 +25,13 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Time space diagram report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class TimeSpaceDiagramController : ReportControllerBase<TimeSpaceDiagramOptions, IEnumerable<TimeSpaceDiagramPhaseResult>>
+    public class TimeSpaceDiagramController : ReportControllerBase<TimeSpaceDiagramOptions, IEnumerable<ReportResult<TimeSpaceDiagramResultForPhase>>>
     {
         private readonly TimeSpaceDiagramSrmService timeSpaceDiagramSrmService;
 
         /// <inheritdoc/>
         public TimeSpaceDiagramController(
-            IReportService<TimeSpaceDiagramOptions, IEnumerable<TimeSpaceDiagramPhaseResult>> reportService,
+            IReportService<TimeSpaceDiagramOptions, IEnumerable<ReportResult<TimeSpaceDiagramResultForPhase>>> reportService,
             ILogger<TimeSpaceDiagramController> logger,
             TimeSpaceDiagramSrmService timeSpaceDiagramSrmService) : base(reportService, logger)
         {

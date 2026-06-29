@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/TimeSpaceDiagramAverageReportService.cs
 // 
@@ -24,7 +24,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Time space diagram average report service
     /// </summary>
-    public class TimeSpaceDiagramAverageReportService : ReportServiceBase<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAveragePhaseResult>>
+    public class TimeSpaceDiagramAverageReportService : ReportServiceBase<TimeSpaceDiagramAverageOptions, IEnumerable<ReportResult<TimeSpaceDiagramAverageResult>>>
     {
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
         private readonly ILocationRepository locationRepository;
@@ -55,13 +55,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<TimeSpaceDiagramAveragePhaseResult>> ExecuteAsync(TimeSpaceDiagramAverageOptions parameter, IProgress<int>? progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<TimeSpaceDiagramAverageResult>>> ExecuteAsync(TimeSpaceDiagramAverageOptions parameter, IProgress<int>? progress = null, CancellationToken cancelToken = default)
         {
             var routeLocations = GetLocationsFromRouteId(parameter.RouteId);
             var routeName = GetRouteNameFromId(parameter.RouteId);
             if (routeLocations.Count == 0)
             {
-                throw new Exception($"No locations present for route");
+                return ReportErrorFactory.Create("NoRouteLocations", "No locations present for route", nameof(TimeSpaceDiagramAverageReportService)).ToFailureReportResults<TimeSpaceDiagramAverageResult>();
             }
 
             var eventCodes = new List<short>() { 81, 82 };
@@ -72,11 +72,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             {
                 if (routeLocation.NextLocationDistance == null && routeLocation.PreviousLocationDistance == null)
                 {
-                    throw new Exception($"Distance not configured for route: {routeName}");
+                    return ReportErrorFactory.Create("MissingRouteDistance", $"Distance not configured for route: {routeName}", nameof(TimeSpaceDiagramAverageReportService), locationIdentifier: routeLocation.LocationIdentifier).ToFailureReportResults<TimeSpaceDiagramAverageResult>();
                 }
             }
 
-            var averageParamsBase = ProcessRouteLocations(routeLocations, parameter);
+            if (!TryProcessRouteLocations(routeLocations, parameter, out var averageParamsBase, out var setupError))
+            {
+                return setupError.ToFailureReportResults<TimeSpaceDiagramAverageResult>();
+            }
 
             var results = await Task.WhenAll(GetChartData(parameter, routeLocations, averageParamsBase, eventCodes));
             return results;
@@ -205,9 +208,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             return results;
         }
 
-        private TimeSpaceAverageBase ProcessRouteLocations(IEnumerable<RouteLocation> routeLocations,
-            TimeSpaceDiagramAverageOptions parameter)
+        private bool TryProcessRouteLocations(
+            IEnumerable<RouteLocation> routeLocations,
+            TimeSpaceDiagramAverageOptions parameter,
+            out TimeSpaceAverageBase averageParamsBase,
+            out ReportError error)
         {
+            averageParamsBase = null;
+            error = null;
             var controllerEventLogsList = new List<List<IndianaEvent>>();
             var primaryPhaseDetails = new List<PhaseDetail>();
             var opposingPhaseDetails = new List<PhaseDetail>();
@@ -218,7 +226,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
             if (daysToProcess.Count == 0)
             {
-                throw new Exception("No Data for Days Selected");
+                error = ReportErrorFactory.Create("NoDataForDaysSelected", "No Data for Days Selected", nameof(TimeSpaceDiagramAverageReportService));
+                return false;
             }
 
             foreach (var routeLocation in routeLocations)
@@ -228,7 +237,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (location == null)
                 {
-                    throw new Exception("Issue fetching location from route");
+                    error = ReportErrorFactory.Create("LocationNotFound", "Issue fetching location from route", nameof(TimeSpaceDiagramAverageReportService), locationIdentifier: routeLocation.LocationIdentifier);
+                    return false;
                 }
 
                 var controllerEventLogs = new List<IndianaEvent>();
@@ -243,17 +253,20 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (primaryPhaseDetail == null || opposingPhaseDetail == null)
                 {
-                    throw new Exception("Error grabbing phase details");
+                    error = ReportErrorFactory.Create("PhaseDetailsNotFound", "Error grabbing phase details", nameof(TimeSpaceDiagramAverageReportService), location: location, locationIdentifier: routeLocation.LocationIdentifier);
+                    return false;
                 }
 
                 if (parameter.SpeedLimit == null && primaryPhaseDetail.Approach.Mph == null)
                 {
-                    throw new Exception($"Speed not configured for phase {opposingPhaseDetail.Approach.Description} in {routeLocation.LocationIdentifier}");
+                    error = ReportErrorFactory.Create("SpeedNotConfigured", $"Speed not configured for phase {primaryPhaseDetail.Approach.Description} in {routeLocation.LocationIdentifier}", nameof(TimeSpaceDiagramAverageReportService), phase: primaryPhaseDetail);
+                    return false;
                 }
 
                 if (parameter.SpeedLimit == null && opposingPhaseDetail.Approach.Mph == null)
                 {
-                    throw new Exception($"Speed not configured for phase {opposingPhaseDetail.Approach.Description} in {routeLocation.LocationIdentifier}");
+                    error = ReportErrorFactory.Create("SpeedNotConfigured", $"Speed not configured for phase {opposingPhaseDetail.Approach.Description} in {routeLocation.LocationIdentifier}", nameof(TimeSpaceDiagramAverageReportService), phase: opposingPhaseDetail);
+                    return false;
                 }
 
                 foreach (DateOnly date in daysToProcess)
@@ -263,7 +276,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     var logs = controllerEventLogRepository.GetEventsBetweenDates(location.LocationIdentifier, start.AddHours(-12), end.AddHours(12)).ToList();
                     if (logs.IsNullOrEmpty())
                     {
-                        throw new NullReferenceException("No Controller Event Logs found for Location");
+                        error = ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(TimeSpaceDiagramAverageReportService), location: location);
+                        return false;
                     }
                     var planEvents = logs.GetPlanEvents(start.AddHours(-12), end.AddHours(12));
                     var plan = planService.GetBasicPlans(start, end, routeLocation.LocationIdentifier, planEvents).FirstOrDefault();
@@ -276,7 +290,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                         var cycleEvent = GetEventOverallapingTime(start, programmedCycleForPlan, "CycleLength").FirstOrDefault();
                         if (cycleEvent == null)
                         {
-                            throw new NullReferenceException("Error grabbing CycleLength");
+                            error = ReportErrorFactory.Create("CycleLengthNotFound", "Error grabbing CycleLength", nameof(TimeSpaceDiagramAverageReportService), location: location);
+                            return false;
                         }
 
                         currentProgrammedCycleLength = cycleEvent.EventParam;
@@ -288,7 +303,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                         var offsetEvent = GetEventOverallapingTime(start, offsets, "Offset").FirstOrDefault();
                         if (offsetEvent == null)
                         {
-                            throw new NullReferenceException("Error grabbing Offset");
+                            error = ReportErrorFactory.Create("OffsetNotFound", "Error grabbing Offset", nameof(TimeSpaceDiagramAverageReportService), location: location);
+                            return false;
                         }
 
                         currentOffset = offsetEvent.EventParam;
@@ -320,7 +336,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (!IsPlanSameForTimePeriod(planEventsForPeriod))
                 {
-                    throw new NullReferenceException("Select different time period since plans dont match for each day");
+                    error = ReportErrorFactory.Create("PlansDoNotMatch", "Select different time period since plans dont match for each day", nameof(TimeSpaceDiagramAverageReportService), location: location);
+                    return false;
                 }
 
 
@@ -333,7 +350,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 programmedSplitsForTimePeriod.Add(currentProgrammedSplitsForTimePeriod);
             }
 
-            return new TimeSpaceAverageBase()
+            averageParamsBase = new TimeSpaceAverageBase()
             {
                 ControllerEventLogsList = controllerEventLogsList,
                 PrimaryPhaseDetails = primaryPhaseDetails,
@@ -342,6 +359,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 ProgramSplits = programmedSplitsForTimePeriod,
                 Offset = offset,
             };
+            return true;
         }
 
         private List<DateOnly> GetDaysToProcess(DateOnly startDate, DateOnly endDate, int[] daysOfWeek)
@@ -375,9 +393,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     .Cast<IndianaEvent>()
                     .ToList();
             }
-
-            if (!planEvent.Any())
-                throw new NullReferenceException($"Error grabbing {eventType}");
 
             return planEvent.ToList();
         }

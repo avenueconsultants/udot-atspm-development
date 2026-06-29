@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LeftTurnPeakHoursController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LeftTurnPeakHoursController : ReportControllerBase<PeakHourOptions, PeakHourResult>
+    public class LeftTurnPeakHoursController : ReportControllerBase<PeakHourOptions, ReportResult<PeakHourResult>>
     {
         /// <inheritdoc/>
-        public LeftTurnPeakHoursController(IReportService<PeakHourOptions, PeakHourResult> reportService, ILogger<LeftTurnPeakHoursController> logger) : base(reportService, logger) { }
+        public LeftTurnPeakHoursController(IReportService<PeakHourOptions, ReportResult<PeakHourResult>> reportService, ILogger<LeftTurnPeakHoursController> logger) : base(reportService, logger) { }
     }
 }

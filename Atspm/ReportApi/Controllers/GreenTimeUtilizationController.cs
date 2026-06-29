@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/GreenTimeUtilizationController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Green time utilization report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class GreenTimeUtilizationController : ReportControllerBase<GreenTimeUtilizationOptions, IEnumerable<GreenTimeUtilizationResult>>
+    public class GreenTimeUtilizationController : ReportControllerBase<GreenTimeUtilizationOptions, IEnumerable<ReportResult<GreenTimeUtilizationResult>>>
     {
         /// <inheritdoc/>
-        public GreenTimeUtilizationController(IReportService<GreenTimeUtilizationOptions, IEnumerable<GreenTimeUtilizationResult>> reportService, ILogger<GreenTimeUtilizationController> logger) : base(reportService, logger) { }
+        public GreenTimeUtilizationController(IReportService<GreenTimeUtilizationOptions, IEnumerable<ReportResult<GreenTimeUtilizationResult>>> reportService, ILogger<GreenTimeUtilizationController> logger) : base(reportService, logger) { }
     }
 }

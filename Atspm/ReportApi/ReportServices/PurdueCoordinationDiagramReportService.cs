@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Purdue coordination diagram report service
     /// </summary>
-    public class PurdueCoordinationDiagramReportService : ReportServiceBase<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>>
+    public class PurdueCoordinationDiagramReportService : ReportServiceBase<PurdueCoordinationDiagramOptions, IEnumerable<ReportResult<PurdueCoordinationDiagramResult>>>
     {
         private readonly PurdueCoordinationDiagramService perdueCoordinationDiagramService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -47,34 +47,38 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<PurdueCoordinationDiagramResult>> ExecuteAsync(PurdueCoordinationDiagramOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<PurdueCoordinationDiagramResult>>> ExecuteAsync(PurdueCoordinationDiagramOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<PurdueCoordinationDiagramResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(PurdueCoordinationDiagramReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<PurdueCoordinationDiagramResult>();
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<PurdueCoordinationDiagramResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(PurdueCoordinationDiagramReportService), location: Location).ToFailureReportResults<PurdueCoordinationDiagramResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<PurdueCoordinationDiagramResult>>();
+            var tasks = new List<Task<ReportResult<PurdueCoordinationDiagramResult>>>();
             foreach (var phase in phaseDetails)
             {
-                tasks.Add(GetChartDataForApproach(parameter, phase, controllerEventLogs, planEvents));
+                tasks.Add(GetChartDataForApproach(parameter, phase, controllerEventLogs, planEvents)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(PurdueCoordinationDiagramReportService), phase: phase, sortOrder: phase.PhaseNumber)));
             }
 
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

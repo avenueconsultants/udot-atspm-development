@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LeftTurnPedActuationController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LeftTurnPedActuationController : ReportControllerBase<PedActuationOptions, PedActuationResult>
+    public class LeftTurnPedActuationController : ReportControllerBase<PedActuationOptions, ReportResult<PedActuationResult>>
     {
         /// <inheritdoc/>
-        public LeftTurnPedActuationController(IReportService<PedActuationOptions, PedActuationResult> reportService, ILogger<LeftTurnPedActuationController> logger) : base(reportService, logger) { }
+        public LeftTurnPedActuationController(IReportService<PedActuationOptions, ReportResult<PedActuationResult>> reportService, ILogger<LeftTurnPedActuationController> logger) : base(reportService, logger) { }
     }
 }

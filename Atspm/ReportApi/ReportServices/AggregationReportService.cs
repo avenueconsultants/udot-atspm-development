@@ -24,7 +24,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class AggregationReportService : ReportServiceBase<AggregationOptions, IEnumerable<AggregationResult>>
+    public class AggregationReportService : ReportServiceBase<AggregationOptions, IEnumerable<ReportResult<AggregationResult>>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly DetectorVolumeAggregationOptions detectorVolumeAggregationOptions;
@@ -82,38 +82,41 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<AggregationResult>> ExecuteAsync(AggregationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<AggregationResult>>> ExecuteAsync(AggregationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             switch (options.AggregationType)
             {
                 case AggregationType.DetectorEventCount:
-                    return detectorVolumeAggregationOptions.CreateMetric(options);
+                    return detectorVolumeAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.Speed:
-                    return approachSpeedAggregationOptions.CreateMetric(options);
+                    return approachSpeedAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.Pcd:
-                    return approachPcdAggregationOptions.CreateMetric(options);
+                    return approachPcdAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.PhaseCycle:
-                    return phaseCycleAggregationOptions.CreateMetric(options);
+                    return phaseCycleAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.SplitFail:
-                    return approachSplitFailAggregationOptions.CreateMetric(options);
+                    return approachSplitFailAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.YellowRedActivation:
-                    return approachYellowRedActivationsAggregationOptions.CreateMetric(options);
+                    return approachYellowRedActivationsAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.Preemption:
-                    return preemptionAggregationOptions.CreateMetric(options);
+                    return preemptionAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.Priority:
-                    return priorityAggregationOptions.CreateMetric(options);
+                    return priorityAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.SignalEventCount:
-                    return signalEventCountAggregationOptions.CreateMetric(options);
+                    return signalEventCountAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.PhaseTermination:
-                    return phaseTerminationAggregationOptions.CreateMetric(options);
+                    return phaseTerminationAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.Ped:
-                    return phasePedAggregationOptions.CreateMetric(options);
+                    return phasePedAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.PhaseLeftTurn:
-                    return phaseLeftTurnGapAggregationOptions.CreateMetric(options);
+                    return phaseLeftTurnGapAggregationOptions.CreateMetric(options).ToReportResults();
                 case AggregationType.SplitMonitor:
-                    return phaseSplitMonitorAggregationOptions.CreateMetric(options);
+                    return phaseSplitMonitorAggregationOptions.CreateMetric(options).ToReportResults();
                 default:
-                    throw new Exception("Unknown Chart Type");
+                    return ReportErrorFactory.Create(
+                        "UnknownChartType",
+                        "Unknown Chart Type",
+                        nameof(AggregationReportService)).ToFailureReportResults<AggregationResult>();
             }
 
         }

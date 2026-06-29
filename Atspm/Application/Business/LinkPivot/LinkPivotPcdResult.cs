@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using Utah.Udot.Atspm.Business.Common;
 using Utah.Udot.Atspm.Business.PurdueCoordinationDiagram;
 
 namespace Utah.Udot.Atspm.Business.LinkPivot
@@ -23,8 +24,8 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
     {
         public LinkPivotPcdResult()
         {
-            pcdExisting = new List<PurdueCoordinationDiagramResult>();
-            pcdPredicted = new List<PurdueCoordinationDiagramResult>();
+            pcdExisting = new List<ReportResult<PurdueCoordinationDiagramResult>>();
+            pcdPredicted = new List<ReportResult<PurdueCoordinationDiagramResult>>();
         }
         public double ExistingTotalAOG { get; set; }
         public double ExistingTotalPAOG { get; set; } = 0;
@@ -32,7 +33,7 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
         public double PredictedTotalPAOG { get; set; } = 0;
         public double PredictedVolume { get; set; }
         public double ExistingVolume { get; set; }
-        public List<PurdueCoordinationDiagramResult> pcdExisting { get; set; }
-        public List<PurdueCoordinationDiagramResult> pcdPredicted { get; set; }
+        public List<ReportResult<PurdueCoordinationDiagramResult>> pcdExisting { get; set; }
+        public List<ReportResult<PurdueCoordinationDiagramResult>> pcdPredicted { get; set; }
     }
 }

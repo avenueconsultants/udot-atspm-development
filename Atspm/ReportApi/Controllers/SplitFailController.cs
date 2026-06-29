@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/SplitFailController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Split fail report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class SplitFailController : ReportControllerBase<SplitFailOptions, IEnumerable<SplitFailsResult>>
+    public class SplitFailController : ReportControllerBase<SplitFailOptions, IEnumerable<ReportResult<SplitFailsResult>>>
     {
         /// <inheritdoc/>
-        public SplitFailController(IReportService<SplitFailOptions, IEnumerable<SplitFailsResult>> reportService, ILogger<SplitFailController> logger) : base(reportService, logger) { }
+        public SplitFailController(IReportService<SplitFailOptions, IEnumerable<ReportResult<SplitFailsResult>>> reportService, ILogger<SplitFailController> logger) : base(reportService, logger) { }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LeftTurnSplitFailController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LeftTurnSplitFailController : ReportControllerBase<LeftTurnSplitFailOptions, LeftTurnSplitFailResult>
+    public class LeftTurnSplitFailController : ReportControllerBase<LeftTurnSplitFailOptions, ReportResult<LeftTurnSplitFailResult>>
     {
         /// <inheritdoc/>
-        public LeftTurnSplitFailController(IReportService<LeftTurnSplitFailOptions, LeftTurnSplitFailResult> reportService, ILogger<LeftTurnSplitFailController> logger) : base(reportService, logger) { }
+        public LeftTurnSplitFailController(IReportService<LeftTurnSplitFailOptions, ReportResult<LeftTurnSplitFailResult>> reportService, ILogger<LeftTurnSplitFailController> logger) : base(reportService, logger) { }
     }
 }

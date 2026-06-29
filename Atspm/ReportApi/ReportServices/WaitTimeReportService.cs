@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Wait time report service
     /// </summary>
-    public class WaitTimeReportService : ReportServiceBase<WaitTimeOptions, IEnumerable<WaitTimeResult>>
+    public class WaitTimeReportService : ReportServiceBase<WaitTimeOptions, IEnumerable<ReportResult<WaitTimeResult>>>
     {
         private readonly AnalysisPhaseCollectionService analysisPhaseCollectionService;
         private readonly WaitTimeService waitTimeService;
@@ -47,14 +47,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<WaitTimeResult>> ExecuteAsync(WaitTimeOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<WaitTimeResult>>> ExecuteAsync(WaitTimeOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<WaitTimeResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(WaitTimeReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<WaitTimeResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
@@ -62,7 +62,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<WaitTimeResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(WaitTimeReportService), location: Location).ToFailureReportResults<WaitTimeResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
@@ -99,20 +99,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 Location,
                 1);
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<WaitTimeResult>>();
+            var tasks = new List<Task<ReportResult<WaitTimeResult>>>();
             foreach (var phaseDetail in phaseDetails)
             {
-                tasks.Add(waitTimeService.GetChartData(
-                parameter,
-                phaseDetail,
-                events,
-                analysisPhaseDataCollection.AnalysisPhases.Where(a => a.PhaseNumber == phaseDetail.PhaseNumber).First(),
-                analysisPhaseDataCollection.Plans
-                ));
+                tasks.Add(GetChartDataForPhase(phaseDetail)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(WaitTimeReportService), phase: phaseDetail, sortOrder: phaseDetail.PhaseNumber)));
             }
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{
@@ -121,6 +119,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             //return Ok(finalResultcheck);
 
             return finalResultcheck;
+
+            async Task<WaitTimeResult> GetChartDataForPhase(PhaseDetail phaseDetail)
+            {
+                return await waitTimeService.GetChartData(
+                    parameter,
+                    phaseDetail,
+                    events,
+                    analysisPhaseDataCollection.AnalysisPhases.Where(a => a.PhaseNumber == phaseDetail.PhaseNumber).First(),
+                    analysisPhaseDataCollection.Plans);
+            }
         }
     }
 }

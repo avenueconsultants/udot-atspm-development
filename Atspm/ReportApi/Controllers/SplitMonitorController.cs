@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/SplitMonitorController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Split monitor report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class SplitMonitorController : ReportControllerBase<SplitMonitorOptions, IEnumerable<SplitMonitorResult>>
+    public class SplitMonitorController : ReportControllerBase<SplitMonitorOptions, IEnumerable<ReportResult<SplitMonitorResult>>>
     {
         /// <inheritdoc/>
-        public SplitMonitorController(IReportService<SplitMonitorOptions, IEnumerable<SplitMonitorResult>> reportService, ILogger<SplitMonitorController> logger) : base(reportService, logger) { }
+        public SplitMonitorController(IReportService<SplitMonitorOptions, IEnumerable<ReportResult<SplitMonitorResult>>> reportService, ILogger<SplitMonitorController> logger) : base(reportService, logger) { }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnGapDurationService.cs
 // 
@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnGapDurationService : ReportServiceBase<GapDurationOptions, GapDurationResult>
+    public class LeftTurnGapDurationService : ReportServiceBase<GapDurationOptions, ReportResult<GapDurationResult>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly IPhaseLeftTurnGapAggregationRepository phaseLeftTurnGapAggregationRepository;
@@ -50,7 +50,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<GapDurationResult> ExecuteAsync(GapDurationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<GapDurationResult>> ExecuteAsync(GapDurationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();

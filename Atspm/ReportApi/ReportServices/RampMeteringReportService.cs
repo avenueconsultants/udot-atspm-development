@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.ATSPM.ReportApi.ReportServices/RampMeteringReportService.cs
 // 
@@ -19,7 +19,7 @@ using Utah.Udot.Atspm.Business.RampMetering;
 
 namespace Utah.Udot.ATSPM.ReportApi.ReportServices
 {
-    public class RampMeteringReportService : ReportServiceBase<RampMeteringOptions, RampMeteringResult>
+    public class RampMeteringReportService : ReportServiceBase<RampMeteringOptions, ReportResult<RampMeteringResult>>
     {
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
         private readonly ILocationRepository locationRepository;
@@ -32,17 +32,17 @@ namespace Utah.Udot.ATSPM.ReportApi.ReportServices
             this.rampMeteringService = rampMeteringService;
         }
 
-        public override async Task<RampMeteringResult> ExecuteAsync(RampMeteringOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<RampMeteringResult>> ExecuteAsync(RampMeteringOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var location = locationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (location == null)
             {
-                return await Task.FromException<RampMeteringResult>(new NullReferenceException("Location not found"));
+                return ReportResult<RampMeteringResult>.Failure(ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(RampMeteringReportService), locationIdentifier: parameter.LocationIdentifier));
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
-                return await Task.FromException<RampMeteringResult>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportResult<RampMeteringResult>.Failure(ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(RampMeteringReportService), location: location));
             }
 
             var result = rampMeteringService.GetChartData(location, parameter, controllerEventLogs);

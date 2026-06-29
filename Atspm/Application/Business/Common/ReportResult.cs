@@ -1,13 +1,13 @@
 #region license
 // Copyright 2026 Utah Departement of Transportation
-// for ReportApi - Utah.Udot.ATSPM.ReportApi.Controllers/RampMeteringController.cs
-// 
+// for Application - Utah.Udot.Atspm.Business.Common/ReportResult.cs
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,17 +15,23 @@
 // limitations under the License.
 #endregion
 
-using Asp.Versioning;
-using Utah.Udot.Atspm.Business.RampMetering;
-using Utah.Udot.Atspm.ReportApi.Controllers;
-
-namespace Utah.Udot.ATSPM.ReportApi.Controllers
+namespace Utah.Udot.Atspm.Business.Common
 {
-    [ApiVersion(1.0)]
-    public class RampMeteringController : ReportControllerBase<RampMeteringOptions, ReportResult<RampMeteringResult>>
+    public class ReportResult<T>
     {
-        public RampMeteringController(IReportService<RampMeteringOptions, ReportResult<RampMeteringResult>> reportService, ILogger<RampMeteringController> logger) : base(reportService, logger)
-        {
-        }
+        public ReportError Error { get; set; }
+
+        public T Result { get; set; }
+
+        public bool IsSuccess => Error == null;
+
+        public static ReportResult<T> Success(T result)
+            => new() { Result = result };
+
+        public static ReportResult<T> Failure(ReportError error)
+            => new() { Error = error };
+
+        public static implicit operator ReportResult<T>(T result)
+            => Success(result);
     }
 }

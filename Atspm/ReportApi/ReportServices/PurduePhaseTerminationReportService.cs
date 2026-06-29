@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Purdue phase termination report service
     /// </summary>
-    public class PurduePhaseTerminationReportService : ReportServiceBase<PurduePhaseTerminationOptions, PhaseTerminationResult>
+    public class PurduePhaseTerminationReportService : ReportServiceBase<PurduePhaseTerminationOptions, ReportResult<PhaseTerminationResult>>
     {
         private readonly AnalysisPhaseCollectionService analysisPhaseCollectionService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -40,19 +40,19 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<PhaseTerminationResult> ExecuteAsync(PurduePhaseTerminationOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<PhaseTerminationResult>> ExecuteAsync(PurduePhaseTerminationOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<PhaseTerminationResult>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(PurduePhaseTerminationReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResult<PhaseTerminationResult>();
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<PhaseTerminationResult>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(PurduePhaseTerminationReportService), location: Location).ToFailureReportResult<PhaseTerminationResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(

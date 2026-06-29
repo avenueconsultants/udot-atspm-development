@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/ApproachVolumeController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Approach volume report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class ApproachVolumeController : ReportControllerBase<ApproachVolumeOptions, IEnumerable<ApproachVolumeResult>>
+    public class ApproachVolumeController : ReportControllerBase<ApproachVolumeOptions, IEnumerable<ReportResult<ApproachVolumeResult>>>
     {
         /// <inheritdoc/>
-        public ApproachVolumeController(IReportService<ApproachVolumeOptions, IEnumerable<ApproachVolumeResult>> reportService, ILogger<ApproachVolumeController> logger) : base(reportService, logger) { }
+        public ApproachVolumeController(IReportService<ApproachVolumeOptions, IEnumerable<ReportResult<ApproachVolumeResult>>> reportService, ILogger<ApproachVolumeController> logger) : base(reportService, logger) { }
     }
 }

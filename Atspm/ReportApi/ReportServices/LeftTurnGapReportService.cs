@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnGapReportService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnGapReportService : ReportServiceBase<LeftTurnGapReportOptions, IEnumerable<LeftTurnGapReportResult>>
+    public class LeftTurnGapReportService : ReportServiceBase<LeftTurnGapReportOptions, IEnumerable<ReportResult<LeftTurnGapReportResult>>>
     {
         private readonly IApproachRepository approachRepository;
         private readonly ILocationRepository locationRepository;
@@ -76,27 +76,39 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<LeftTurnGapReportResult>> ExecuteAsync(LeftTurnGapReportOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<LeftTurnGapReportResult>>> ExecuteAsync(LeftTurnGapReportOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
-            var results = new List<LeftTurnGapReportResult>();
+            var results = new List<ReportResult<LeftTurnGapReportResult>>();
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
+            if (location == null)
+            {
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(LeftTurnGapReportService), locationIdentifier: options.LocationIdentifier).ToFailureReportResults<LeftTurnGapReportResult>();
+            }
+
             foreach (int approachId in options.ApproachIds)
             {
                 var approach = location.Approaches.Where(a => a.Id == approachId).FirstOrDefault();
                 if (approach == null)
                 {
+                    results.Add(ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("ApproachNotFound", "Approach not found", nameof(LeftTurnGapReportService), location: location, approachId: approachId)));
                     continue;
                 }
                 if (options.GetAMPMPeakPeriod)
                 {
                     SetHoursAndMinutes(options, 6, 0, 9, 0);
                     var approachResultAM = await GetApproachResult(options, approach, approachId);
-                    approachResultAM.PeakPeriodDescription = "AM Peak";
+                    if (approachResultAM.IsSuccess)
+                    {
+                        approachResultAM.Result.PeakPeriodDescription = "AM Peak";
+                    }
                     results.Add(approachResultAM);
 
                     SetHoursAndMinutes(options, 15, 0, 18, 0);
                     var approachResultPM = await GetApproachResult(options, approach, approachId);
-                    approachResultPM.PeakPeriodDescription = "PM Peak";
+                    if (approachResultPM.IsSuccess)
+                    {
+                        approachResultPM.Result.PeakPeriodDescription = "PM Peak";
+                    }
                     results.Add(approachResultPM);
                 }
                 else if (options.GetAMPMPeakHour)
@@ -110,29 +122,53 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                         End = options.End
 
                     };
-                    var peakResult = await leftTurnPeakHourService.ExecuteAsync(peakHourOptions, null);
+                    var peakResultWrapper = await leftTurnPeakHourService.ExecuteAsync(peakHourOptions, null);
+                    if (!peakResultWrapper.IsSuccess)
+                    {
+                        results.Add(ReportResult<LeftTurnGapReportResult>.Failure(peakResultWrapper.Error));
+                        continue;
+                    }
+
+                    var peakResult = peakResultWrapper.Result;
+                    if (peakResult == null)
+                    {
+                        results.Add(ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("NoPeakHourData", "Peak hour data was not available", nameof(LeftTurnGapReportService), location: location, approach: approach)));
+                        continue;
+                    }
 
                     SetHoursAndMinutes(options, peakResult.AmStartHour, peakResult.AmStartMinute, peakResult.AmEndHour, peakResult.AmEndMinute);
                     var approachResultAM = await GetApproachResult(options, approach, approachId);
-                    approachResultAM.PeakPeriodDescription = "AM Peak";
+                    if (approachResultAM.IsSuccess)
+                    {
+                        approachResultAM.Result.PeakPeriodDescription = "AM Peak";
+                    }
                     results.Add(approachResultAM);
 
 
                     SetHoursAndMinutes(options, peakResult.PmStartHour, peakResult.PmStartMinute, peakResult.PmEndHour, peakResult.PmEndMinute);
                     var approachResultPM = await GetApproachResult(options, approach, approachId);
-                    approachResultPM.PeakPeriodDescription = "PM Peak";
+                    if (approachResultPM.IsSuccess)
+                    {
+                        approachResultPM.Result.PeakPeriodDescription = "PM Peak";
+                    }
                     results.Add(approachResultPM);
                 }
                 else if (options.Get24HourPeriod)
                 {
                     var approachResult = await GetApproachResult(options, approach, approachId);
-                    approachResult.Get24HourPeriod = true;
+                    if (approachResult.IsSuccess)
+                    {
+                        approachResult.Result.Get24HourPeriod = true;
+                    }
                     results.Add(approachResult);
                 }
                 else
                 {
                     var approachResult = await GetApproachResult(options, approach, approachId);
-                    approachResult.PeakPeriodDescription = "Custom";
+                    if (approachResult.IsSuccess)
+                    {
+                        approachResult.Result.PeakPeriodDescription = "Custom";
+                    }
                     results.Add(approachResult);
                 }
             }
@@ -149,7 +185,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             options.EndMinute = endMinute;
         }
 
-        private async Task<LeftTurnGapReportResult> GetApproachResult(LeftTurnGapReportOptions options, Approach approach, int approachId)
+        private async Task<ReportResult<LeftTurnGapReportResult>> GetApproachResult(LeftTurnGapReportOptions options, Approach approach, int approachId)
         {
             LeftTurnGapReportResult approachResult = new LeftTurnGapReportResult
             {
@@ -179,7 +215,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     EndMinute = options.EndMinute == null ? 59 : options.EndMinute.Value,
                     LocationIdentifier = approach.Location.LocationIdentifier
                 };
-                var gapResult = await leftTurnGapDurationService.ExecuteAsync(leftTurnGapOptions, null);
+                var gapResultWrapper = await leftTurnGapDurationService.ExecuteAsync(leftTurnGapOptions, null);
+                if (!gapResultWrapper.IsSuccess)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(gapResultWrapper.Error);
+                }
+
+                var gapResult = gapResultWrapper.Result;
+                if (gapResult == null)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("NoGapDurationData", "Gap duration data was not available", nameof(LeftTurnGapReportService), approach: approach));
+                }
+
                 approachResult.GapDurationConsiderForStudy = gapResult.GapDurationPercent > options.AcceptableGapPercentage;
                 approachResult.Capacity = gapResult.Capacity;
                 approachResult.Demand = gapResult.Demand;
@@ -202,7 +249,17 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     LocationIdentifier = approach.Location.LocationIdentifier
                 };
 
-                var splitFailResult = await leftTurnSplitFailService.ExecuteAsync(leftTurnSplitFailOptions, null);
+                var splitFailResultWrapper = await leftTurnSplitFailService.ExecuteAsync(leftTurnSplitFailOptions, null);
+                if (!splitFailResultWrapper.IsSuccess)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(splitFailResultWrapper.Error);
+                }
+
+                var splitFailResult = splitFailResultWrapper.Result;
+                if (splitFailResult == null)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("NoSplitFailData", "Split fail data was not available", nameof(LeftTurnGapReportService), approach: approach));
+                }
 
                 approachResult.SplitFailsConsiderForStudy = splitFailResult.SplitFailPercent > options.AcceptableSplitFailPercentage;
                 approachResult.CyclesWithSplitFailNum = splitFailResult.CyclesWithSplitFails;
@@ -225,7 +282,17 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     LocationIdentifier = approach.Location.LocationIdentifier
                 };
 
-                var PedResult = await leftTurnPedActuationService.ExecuteAsync(pedActuationOptions, null);
+                var pedResultWrapper = await leftTurnPedActuationService.ExecuteAsync(pedActuationOptions, null);
+                if (!pedResultWrapper.IsSuccess)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(pedResultWrapper.Error);
+                }
+
+                var PedResult = pedResultWrapper.Result;
+                if (PedResult == null)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("NoPedActuationData", "Pedestrian actuation data was not available", nameof(LeftTurnGapReportService), approach: approach));
+                }
 
                 approachResult.CyclesWithPedCallNum = PedResult.CyclesWithPedCallsNum;
                 approachResult.CyclesWithPedCallPercent = PedResult.CyclesWithPedCallsPercent;
@@ -248,7 +315,17 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     EndMinute = options.EndMinute == null ? 59 : options.EndMinute.Value,
                     LocationIdentifier = approach.Location.LocationIdentifier
                 };
-                var volumeResult = await leftTurnVolumeService.ExecuteAsync(volumeOptions, null);
+                var volumeResultWrapper = await leftTurnVolumeService.ExecuteAsync(volumeOptions, null);
+                if (!volumeResultWrapper.IsSuccess)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(volumeResultWrapper.Error);
+                }
+
+                var volumeResult = volumeResultWrapper.Result;
+                if (volumeResult == null)
+                {
+                    return ReportResult<LeftTurnGapReportResult>.Failure(ReportErrorFactory.Create("NoVolumeData", "Volume data was not available", nameof(LeftTurnGapReportService), approach: approach));
+                }
 
                 if (options.GetConflictingVolume)
                 {

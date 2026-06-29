@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Timing and actuation report service
     /// </summary>
-    public class TimingAndActuactionReportService : ReportServiceBase<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>>
+    public class TimingAndActuactionReportService : ReportServiceBase<TimingAndActuationsOptions, IEnumerable<ReportResult<TimingAndActuationsForPhaseResult>>>
     {
         private readonly TimingAndActuationsForPhaseService timingAndActuationsForPhaseService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -48,14 +48,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<TimingAndActuationsForPhaseResult>> ExecuteAsync(TimingAndActuationsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<TimingAndActuationsForPhaseResult>>> ExecuteAsync(TimingAndActuationsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<TimingAndActuationsForPhaseResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(TimingAndActuactionReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<TimingAndActuationsForPhaseResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
@@ -63,11 +63,11 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<TimingAndActuationsForPhaseResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(TimingAndActuactionReportService), location: Location).ToFailureReportResults<TimingAndActuationsForPhaseResult>();
             }
 
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<TimingAndActuationsForPhaseResult>>();
+            var tasks = new List<Task<ReportResult<TimingAndActuationsForPhaseResult>>>();
 
             foreach (var phase in phaseDetails)
             {
@@ -77,11 +77,15 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 eventCodes.AddRange(_cycleService.GetPedestrianIntervalEventCodes(phase.Approach.IsPedestrianPhaseOverlap));
                 if (parameter.PhaseEventCodesList != null)
                     eventCodes.AddRange(parameter.PhaseEventCodesList);
-                tasks.Add(GetChartDataForPhase(parameter, controllerEventLogs, phase, eventCodes, phase.IsPermissivePhase));
+                tasks.Add(GetChartDataForPhase(parameter, controllerEventLogs, phase, eventCodes, phase.IsPermissivePhase)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(TimingAndActuactionReportService), phase: phase, sortOrder: phase.PhaseNumber)));
             }
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumberSort).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumberSort ?? r.Error?.SortOrder?.ToString() ?? string.Empty)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

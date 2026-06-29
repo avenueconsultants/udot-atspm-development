@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/AggregationController.cs
 // 
@@ -24,10 +24,10 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Approach delay report controller.
     /// </summary>
     [ApiVersion(1.0)]
-    public class AggregationController : ReportControllerBase<AggregationOptions, IEnumerable<AggregationResult>>
+    public class AggregationController : ReportControllerBase<AggregationOptions, IEnumerable<ReportResult<AggregationResult>>>
     {
         /// <inheritdoc/>
-        public AggregationController(IReportService<AggregationOptions, IEnumerable<AggregationResult>> reportService, ILogger<AggregationController> logger) : base(reportService, logger) { }
+        public AggregationController(IReportService<AggregationOptions, IEnumerable<ReportResult<AggregationResult>>> reportService, ILogger<AggregationController> logger) : base(reportService, logger) { }
 
     }
 }

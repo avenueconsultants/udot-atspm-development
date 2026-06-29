@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Arrival on red report service
     /// </summary>
-    public class ArrivalOnRedReportService : ReportServiceBase<ArrivalOnRedOptions, IEnumerable<ArrivalOnRedResult>>
+    public class ArrivalOnRedReportService : ReportServiceBase<ArrivalOnRedOptions, IEnumerable<ReportResult<ArrivalOnRedResult>>>
     {
         private readonly ArrivalOnRedService arrivalOnRedService;
         private readonly LocationPhaseService LocationPhaseService;
@@ -48,41 +48,45 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<ArrivalOnRedResult>> ExecuteAsync(ArrivalOnRedOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<ArrivalOnRedResult>>> ExecuteAsync(ArrivalOnRedOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
 
-                return await Task.FromException<IEnumerable<ArrivalOnRedResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(ArrivalOnRedReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<ArrivalOnRedResult>();
             }
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
 
-                return await Task.FromException<IEnumerable<ArrivalOnRedResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(ArrivalOnRedReportService), location: Location).ToFailureReportResults<ArrivalOnRedResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<ArrivalOnRedResult>>();
+            var tasks = new List<Task<ReportResult<ArrivalOnRedResult>>>();
             foreach (var phase in phaseDetails)
             {
                 if (phase.IsPermissivePhase && parameter.GetPermissivePhase || !phase.IsPermissivePhase)
                 {
                     tasks.Add(
-                   GetChartDataByApproach(parameter, phase, controllerEventLogs, planEvents, Location.LocationDescription()));
+                   GetChartDataByApproach(parameter, phase, controllerEventLogs, planEvents, Location.LocationDescription())
+                       .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(ArrivalOnRedReportService), phase: phase, sortOrder: phase.PhaseNumber)));
                 }
 
             }
 
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

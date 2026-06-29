@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnPeakHourService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnPeakHourService : ReportServiceBase<PeakHourOptions, PeakHourResult>
+    public class LeftTurnPeakHourService : ReportServiceBase<PeakHourOptions, ReportResult<PeakHourResult>>
     {
         private readonly IDetectorEventCountAggregationRepository detectorEventCountAggregationRepository;
         private readonly ILocationRepository locationRepository;
@@ -43,7 +43,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<PeakHourResult> ExecuteAsync(PeakHourOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<PeakHourResult>> ExecuteAsync(PeakHourOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var amStartTime = new TimeSpan(6, 0, 0);
             var amEndTime = new TimeSpan(9, 0, 0);
@@ -53,7 +53,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();
             var detectorAggregations = detectorEventCountAggregationRepository.GetAggregationsBetweenDates(options.LocationIdentifier, options.Start, options.End).ToList();
-            PeakHourResult result = new PeakHourResult();
+            var result = new PeakHourResult();
             var peakResult = leftTurnReportService.GetAMPMPeakFlowRate(
                 approach,
                 options.Start,

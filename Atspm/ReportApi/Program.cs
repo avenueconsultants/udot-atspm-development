@@ -77,7 +77,7 @@ builder.Host
         {
             o.IncludeXmlComments(typeof(Program).Assembly);
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
-            o.CustomSchemaIds(type => type.Name);
+            o.CustomSchemaIds(GetSchemaId);
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
 
@@ -99,42 +99,42 @@ builder.Host
         s.AddAtspmEFAggregationRepositories();
 
         //report services
-        s.AddScoped<IReportService<AggregationOptions, IEnumerable<AggregationResult>>, AggregationReportService>();
-        s.AddScoped<IReportService<ApproachDelayOptions, IEnumerable<ApproachDelayResult>>, ApproachDelayReportService>();
-        s.AddScoped<IReportService<PedatLocationDataQuery, IEnumerable<PedatLocationData>>, PedestrianAggregationService>();
-        s.AddScoped<IReportService<ApproachSpeedOptions, IEnumerable<ApproachSpeedResult>>, ApproachSpeedReportService>();
-        s.AddScoped<IReportService<ApproachVolumeOptions, IEnumerable<ApproachVolumeResult>>, ApproachVolumeReportService>();
-        s.AddScoped<IReportService<ArrivalOnRedOptions, IEnumerable<ArrivalOnRedResult>>, ArrivalOnRedReportService>();
-        s.AddScoped<IReportService<GapDurationOptions, GapDurationResult>, LeftTurnGapDurationService>();
-        s.AddScoped<IReportService<GreenTimeUtilizationOptions, IEnumerable<GreenTimeUtilizationResult>>, GreenTimeUtilizationReportService>();
-        s.AddScoped<IReportService<LeftTurnGapAnalysisOptions, IEnumerable<LeftTurnGapAnalysisResult>>, LeftTurnGapAnalysisReportService>();
-        s.AddScoped<IReportService<LeftTurnGapDataCheckOptions, LeftTurnGapDataCheckResult>, LeftTurnGapReportDataCheckService>();
-        s.AddScoped<IReportService<LeftTurnSplitFailOptions, LeftTurnSplitFailResult>, LeftTurnSplitFailService>();
-        s.AddScoped<IReportService<LeftTurnGapReportOptions, IEnumerable<LeftTurnGapReportResult>>, LeftTurnGapReportService>();
-        s.AddScoped<IReportService<LinkPivotOptions, LinkPivotResult>, LinkPivotReportService>();
+        s.AddScoped<IReportService<AggregationOptions, IEnumerable<ReportResult<AggregationResult>>>, AggregationReportService>();
+        s.AddScoped<IReportService<ApproachDelayOptions, IEnumerable<ReportResult<ApproachDelayResult>>>, ApproachDelayReportService>();
+        s.AddScoped<IReportService<PedatLocationDataQuery, IEnumerable<ReportResult<PedatLocationData>>>, PedestrianAggregationService>();
+        s.AddScoped<IReportService<ApproachSpeedOptions, IEnumerable<ReportResult<ApproachSpeedResult>>>, ApproachSpeedReportService>();
+        s.AddScoped<IReportService<ApproachVolumeOptions, IEnumerable<ReportResult<ApproachVolumeResult>>>, ApproachVolumeReportService>();
+        s.AddScoped<IReportService<ArrivalOnRedOptions, IEnumerable<ReportResult<ArrivalOnRedResult>>>, ArrivalOnRedReportService>();
+        s.AddScoped<IReportService<GapDurationOptions, ReportResult<GapDurationResult>>, LeftTurnGapDurationService>();
+        s.AddScoped<IReportService<GreenTimeUtilizationOptions, IEnumerable<ReportResult<GreenTimeUtilizationResult>>>, GreenTimeUtilizationReportService>();
+        s.AddScoped<IReportService<LeftTurnGapAnalysisOptions, IEnumerable<ReportResult<LeftTurnGapAnalysisResult>>>, LeftTurnGapAnalysisReportService>();
+        s.AddScoped<IReportService<LeftTurnGapDataCheckOptions, ReportResult<LeftTurnGapDataCheckResult>>, LeftTurnGapReportDataCheckService>();
+        s.AddScoped<IReportService<LeftTurnSplitFailOptions, ReportResult<LeftTurnSplitFailResult>>, LeftTurnSplitFailService>();
+        s.AddScoped<IReportService<LeftTurnGapReportOptions, IEnumerable<ReportResult<LeftTurnGapReportResult>>>, LeftTurnGapReportService>();
+        s.AddScoped<IReportService<LinkPivotOptions, ReportResult<LinkPivotResult>>, LinkPivotReportService>();
         s.AddScoped<LinkPivotReportService>();
-        s.AddScoped<IReportService<VolumeOptions, VolumeResult>, LeftTurnVolumeService>();
-        s.AddScoped<IReportService<PedActuationOptions, PedActuationResult>, LeftTurnPedActuationService>();
-        s.AddScoped<IReportService<PedDelayOptions, IEnumerable<PedDelayResult>>, PedDelayReportService>();
-        s.AddScoped<IReportService<PeakHourOptions, PeakHourResult>, LeftTurnPeakHourService>();
-        s.AddScoped<IReportService<PreemptDetailOptions, PreemptDetailResult>, PreemptDetailReportService>();
-        s.AddScoped<IReportService<PreemptServiceOptions, PreemptServiceResult>, PreemptServiceReportService>();
-        s.AddScoped<IReportService<PreemptServiceRequestOptions, PreemptServiceRequestResult>, PreemptRequestReportService>();
-        s.AddScoped<IReportService<PrioritySummaryOptions, PrioritySummaryResult>, PrioritySummaryReportService>();
-        s.AddScoped<IReportService<PriorityDetailsOptions, IEnumerable<PriorityDetailsResult>>, PriorityDetailsReportService>();
-        s.AddScoped<IReportService<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>>, PurdueCoordinationDiagramReportService>();
-        s.AddScoped<IReportService<PurduePhaseTerminationOptions, PhaseTerminationResult>, PurduePhaseTerminationReportService>();
-        s.AddScoped<IReportService<RampMeteringOptions, RampMeteringResult>, RampMeteringReportService>();
-        s.AddScoped<IReportService<SplitFailOptions, IEnumerable<SplitFailsResult>>, SplitFailReportService>();
-        s.AddScoped<IReportService<SplitMonitorOptions, IEnumerable<SplitMonitorResult>>, SplitMonitorReportService>();
-        s.AddScoped<IReportService<TimeSpaceDiagramOptions, IEnumerable<TimeSpaceDiagramPhaseResult>>, TimeSpaceDiagramReportService>();
-        s.AddScoped<IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAveragePhaseResult>>, TimeSpaceDiagramAverageReportService>();
-        s.AddScoped<IReportService<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>>, TransitSignalPriorityReportService>();
-        s.AddScoped<IReportService<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>>, TimingAndActuactionReportService>();
-        s.AddScoped<IReportService<TurningMovementCountsOptions, TurningMovementCountsResult>, TurningMovementCountReportService>();
-        s.AddScoped<IReportService<YellowRedActivationsOptions, IEnumerable<YellowRedActivationsResult>>, YellowRedActivationsReportService>();
-        s.AddScoped<IReportService<WaitTimeOptions, IEnumerable<WaitTimeResult>>, WaitTimeReportService>();
-        s.AddScoped<IReportService<WatchDogOptions, WatchDogResult>, WatchDogReportService>();
+        s.AddScoped<IReportService<VolumeOptions, ReportResult<VolumeResult>>, LeftTurnVolumeService>();
+        s.AddScoped<IReportService<PedActuationOptions, ReportResult<PedActuationResult>>, LeftTurnPedActuationService>();
+        s.AddScoped<IReportService<PedDelayOptions, IEnumerable<ReportResult<PedDelayResult>>>, PedDelayReportService>();
+        s.AddScoped<IReportService<PeakHourOptions, ReportResult<PeakHourResult>>, LeftTurnPeakHourService>();
+        s.AddScoped<IReportService<PreemptDetailOptions, ReportResult<PreemptDetailResult>>, PreemptDetailReportService>();
+        s.AddScoped<IReportService<PreemptServiceOptions, ReportResult<PreemptServiceResult>>, PreemptServiceReportService>();
+        s.AddScoped<IReportService<PreemptServiceRequestOptions, ReportResult<PreemptServiceRequestResult>>, PreemptRequestReportService>();
+        s.AddScoped<IReportService<PrioritySummaryOptions, ReportResult<PrioritySummaryResult>>, PrioritySummaryReportService>();
+        s.AddScoped<IReportService<PriorityDetailsOptions, IEnumerable<ReportResult<PriorityDetailsResult>>>, PriorityDetailsReportService>();
+        s.AddScoped<IReportService<PurdueCoordinationDiagramOptions, IEnumerable<ReportResult<PurdueCoordinationDiagramResult>>>, PurdueCoordinationDiagramReportService>();
+        s.AddScoped<IReportService<PurduePhaseTerminationOptions, ReportResult<PhaseTerminationResult>>, PurduePhaseTerminationReportService>();
+        s.AddScoped<IReportService<RampMeteringOptions, ReportResult<RampMeteringResult>>, RampMeteringReportService>();
+        s.AddScoped<IReportService<SplitFailOptions, IEnumerable<ReportResult<SplitFailsResult>>>, SplitFailReportService>();
+        s.AddScoped<IReportService<SplitMonitorOptions, IEnumerable<ReportResult<SplitMonitorResult>>>, SplitMonitorReportService>();
+        s.AddScoped<IReportService<TimeSpaceDiagramOptions, IEnumerable<ReportResult<TimeSpaceDiagramResultForPhase>>>, TimeSpaceDiagramReportService>();
+        s.AddScoped<IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<ReportResult<TimeSpaceDiagramAverageResult>>>, TimeSpaceDiagramAverageReportService>();
+        s.AddScoped<IReportService<TransitSignalPriorityOptions, IEnumerable<ReportResult<TransitSignalPriorityResult>>>, TransitSignalPriorityReportService>();
+        s.AddScoped<IReportService<TimingAndActuationsOptions, IEnumerable<ReportResult<TimingAndActuationsForPhaseResult>>>, TimingAndActuactionReportService>();
+        s.AddScoped<IReportService<TurningMovementCountsOptions, ReportResult<TurningMovementCountsResult>>, TurningMovementCountReportService>();
+        s.AddScoped<IReportService<YellowRedActivationsOptions, IEnumerable<ReportResult<YellowRedActivationsResult>>>, YellowRedActivationsReportService>();
+        s.AddScoped<IReportService<WaitTimeOptions, IEnumerable<ReportResult<WaitTimeResult>>>, WaitTimeReportService>();
+        s.AddScoped<IReportService<WatchDogOptions, ReportResult<WatchDogResult>>, WatchDogReportService>();
         s.AddScoped<WatchDogDashboardReportService>();
 
         //AggregationResult Services
@@ -272,3 +272,16 @@ app.MapJsonHealthChecks();
 #endregion
 
 app.Run();
+
+static string GetSchemaId(Type type)
+{
+    if (!type.IsGenericType)
+    {
+        return type.Name;
+    }
+
+    var genericName = type.Name[..type.Name.IndexOf('`')];
+    var genericArguments = string.Join("And", type.GetGenericArguments().Select(GetSchemaId));
+
+    return $"{genericName}Of{genericArguments}";
+}

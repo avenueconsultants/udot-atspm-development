@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/SplitMonitorReportService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Split monitor report service
     /// </summary>
-    public class SplitMonitorReportService : ReportServiceBase<SplitMonitorOptions, IEnumerable<SplitMonitorResult>>
+    public class SplitMonitorReportService : ReportServiceBase<SplitMonitorOptions, IEnumerable<ReportResult<SplitMonitorResult>>>
     {
         private readonly SplitMonitorService splitMonitorService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -40,14 +40,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<SplitMonitorResult>> ExecuteAsync(SplitMonitorOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<SplitMonitorResult>>> ExecuteAsync(SplitMonitorOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<SplitMonitorResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(SplitMonitorReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<SplitMonitorResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
@@ -55,7 +55,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<SplitMonitorResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(SplitMonitorReportService), location: Location).ToFailureReportResults<SplitMonitorResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
@@ -120,7 +120,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             //}
 
             //return Ok(finalResultcheck);
-            return finalResultcheck;
+            return finalResultcheck.ToReportResults();
         }
     }
 }

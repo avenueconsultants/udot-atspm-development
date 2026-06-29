@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LinkPivotController.cs
 // 
@@ -26,11 +26,11 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LinkPivotController : ReportControllerBase<LinkPivotOptions, LinkPivotResult>
+    public class LinkPivotController : ReportControllerBase<LinkPivotOptions, ReportResult<LinkPivotResult>>
     {
         private readonly LinkPivotReportService linkPivotReportService;
         /// <inheritdoc/>
-        public LinkPivotController(IReportService<LinkPivotOptions, LinkPivotResult> reportService, LinkPivotReportService linkPivotReportService, ILogger<LinkPivotController> logger) : base(reportService, logger)
+        public LinkPivotController(IReportService<LinkPivotOptions, ReportResult<LinkPivotResult>> reportService, LinkPivotReportService linkPivotReportService, ILogger<LinkPivotController> logger) : base(reportService, logger)
         {
             this.linkPivotReportService = linkPivotReportService;
         }
@@ -39,7 +39,7 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
         //[Produces("application/json", "application/xml")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<LinkPivotPcdResult>> GetPcdData(LinkPivotPcdOptions options)
+        public async Task<ActionResult<ReportResult<LinkPivotPcdResult>>> GetPcdData(LinkPivotPcdOptions options)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return Ok(ReportResult<LinkPivotPcdResult>.Failure(ReportErrorFactory.FromException(e, nameof(LinkPivotController))));
             }
         }
 
@@ -57,7 +57,7 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
         //[Produces("application/json", "application/xml")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<List<LinkPivotForTsd>>> GetLinkPivotForTSD(TimeSpaceDiagramOptions options)
+        public async Task<ActionResult<IEnumerable<ReportResult<LinkPivotForTsd>>>> GetLinkPivotForTSD(TimeSpaceDiagramOptions options)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return Ok(ReportErrorFactory.FromException(e, nameof(LinkPivotController)).ToFailureReportResults<LinkPivotForTsd>());
             }
         }
     }

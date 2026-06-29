@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class PedestrianAggregationService : ReportServiceBase<PedatLocationDataQuery, IEnumerable<PedatLocationData>>
+    public class PedestrianAggregationService : ReportServiceBase<PedatLocationDataQuery, IEnumerable<ReportResult<PedatLocationData>>>
     {
         private readonly ILocationRepository _LocationRepository;
         private readonly IPhasePedAggregationRepository _PhasePedAggregationRepository;
@@ -41,18 +41,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<PedatLocationData>> ExecuteAsync(PedatLocationDataQuery parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<PedatLocationData>>> ExecuteAsync(PedatLocationDataQuery parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             return await ExecutePedAgg(parameter);
         }
 
-        public async Task<IEnumerable<PedatLocationData>> ExecutePedAgg(PedatLocationDataQuery parameter)
+        public async Task<IEnumerable<ReportResult<PedatLocationData>>> ExecutePedAgg(PedatLocationDataQuery parameter)
         {
             var locations = new List<Location>();
             var pedatLocations = new List<PedatLocationData>();
             if (parameter == null || parameter.EndDate == null || parameter.StartDate == null || parameter.LocationIdentifiers == null)
             {
-                return pedatLocations;
+                return pedatLocations.ToReportResults();
             }
             if (parameter.TimeUnit == null)
             {
@@ -67,7 +67,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
             if (locations.IsNullOrEmpty())
             {
-                return await Task.FromException<IEnumerable<PedatLocationData>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(PedestrianAggregationService)).ToFailureReportResults<PedatLocationData>();
             }
             foreach (var location in locations)
             {
@@ -168,7 +168,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 };
                 pedatLocations.Add(pedatLocationData);
             }
-            return pedatLocations;
+            return pedatLocations.ToReportResults();
         }
 
         public StatisticsDataPoint CalculateStatistics(List<RawDataPoint> rawData, DateTime start, DateTime end, TimeSpan interval)

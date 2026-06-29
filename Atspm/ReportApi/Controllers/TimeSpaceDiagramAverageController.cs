@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/TimeSpaceDiagramAverageController.cs
 // 
@@ -21,9 +21,9 @@ using Utah.Udot.Atspm.Business.TimeSpaceDiagram;
 namespace Utah.Udot.Atspm.ReportApi.Controllers
 {
     [ApiVersion(1.0)]
-    public class TimeSpaceDiagramAverageController : ReportControllerBase<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAveragePhaseResult>>
+    public class TimeSpaceDiagramAverageController : ReportControllerBase<TimeSpaceDiagramAverageOptions, IEnumerable<ReportResult<TimeSpaceDiagramAverageResult>>>
     {
         /// <inheritdoc/>
-        public TimeSpaceDiagramAverageController(IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAveragePhaseResult>> reportService, ILogger<TimeSpaceDiagramAverageController> logger) : base(reportService, logger) { }
+        public TimeSpaceDiagramAverageController(IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<ReportResult<TimeSpaceDiagramAverageResult>>> reportService, ILogger<TimeSpaceDiagramAverageController> logger) : base(reportService, logger) { }
     }
 }

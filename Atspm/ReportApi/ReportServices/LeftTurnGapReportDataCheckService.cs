@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnGapReportDataCheckService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnGapReportDataCheckService : ReportServiceBase<LeftTurnGapDataCheckOptions, LeftTurnGapDataCheckResult>
+    public class LeftTurnGapReportDataCheckService : ReportServiceBase<LeftTurnGapDataCheckOptions, ReportResult<LeftTurnGapDataCheckResult>>
     {
         private readonly IApproachRepository approachRepository;
         private readonly ILocationRepository locationRepository;
@@ -61,7 +61,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<LeftTurnGapDataCheckResult> ExecuteAsync(LeftTurnGapDataCheckOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<LeftTurnGapDataCheckResult>> ExecuteAsync(LeftTurnGapDataCheckOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
 
             var amStartTime = new TimeSpan(6, 0, 0);
@@ -73,8 +73,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             options.PedestrianThreshold = options.PedestrianThreshold / 100;
 
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
+            if (location == null)
+            {
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(LeftTurnGapReportDataCheckService), locationIdentifier: options.LocationIdentifier).ToFailureReportResult<LeftTurnGapDataCheckResult>();
+            }
+
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();
-            LeftTurnGapDataCheckResult dataCheck = InitializeDataCheckObject(approach, options);
+            if (approach == null)
+            {
+                return ReportErrorFactory.Create("ApproachNotFound", "Approach not found", nameof(LeftTurnGapReportDataCheckService), location: location, approachId: options.ApproachId).ToFailureReportResult<LeftTurnGapDataCheckResult>();
+            }
+
+            var dataCheck = InitializeDataCheckObject(approach, options);
             var detectors = new List<Detector>();
             List<DetectorEventCountAggregation> detectorAggregations;
             List<PhaseCycleAggregation> cycleAggregations;
@@ -83,14 +93,22 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             List<PhaseLeftTurnGapAggregation> leftTurnAggregations;
             List<PhasePedAggregation> pedAggregations;
 
-            GetAggregations(
-                options,
-                out detectorAggregations,
-                out cycleAggregations,
-                out terminationAggregations,
-                out splitFailAggregations,
-                out leftTurnAggregations,
-                out pedAggregations);
+            try
+            {
+                GetAggregations(
+                    options,
+                    out detectorAggregations,
+                    out cycleAggregations,
+                    out terminationAggregations,
+                    out splitFailAggregations,
+                    out leftTurnAggregations,
+                    out pedAggregations);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error getting left turn gap report aggregations");
+                return ReportResult<LeftTurnGapDataCheckResult>.Failure(ReportErrorFactory.Create("AggregationLookupFailed", "Error getting aggregations", nameof(LeftTurnGapReportDataCheckService), location: location, approach: approach));
+            }
 
             if (!detectorAggregations.Any())
             {
@@ -197,7 +215,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             dataCheck.InsufficientLeftTurnGapAggregations = CheckDataForPeakPeriods(leftTurnAggregations.Where(a => a.PhaseNumber == opposingPhase), options.Start, options.End, amStartTime, amEndTime, pmStartTime, pmEndTime);
         }
 
-        private static LeftTurnGapDataCheckResult InitializeDataCheckObject(Approach? approach, LeftTurnGapDataCheckOptions options)
+        private static LeftTurnGapDataCheckResult InitializeDataCheckObject(Approach approach, LeftTurnGapDataCheckOptions options)
         {
             var dataCheck = new LeftTurnGapDataCheckResult();
             dataCheck.ApproachId = approach.Id;
@@ -235,7 +253,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
             catch (Exception ex)
             {
-                throw new Exception("Error getting aggregations", ex);
+                throw;
             }
         }
 

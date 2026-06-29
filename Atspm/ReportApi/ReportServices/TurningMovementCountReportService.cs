@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/TurningMovementCountReportService.cs
 // 
@@ -25,7 +25,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Turning movement count report service
     /// </summary>
-    public class TurningMovementCountReportService : ReportServiceBase<TurningMovementCountsOptions, TurningMovementCountsResult>
+    public class TurningMovementCountReportService : ReportServiceBase<TurningMovementCountsOptions, ReportResult<TurningMovementCountsResult>>
     {
         private const string CombinedThruRightMovementType = "Thru + Thru-Right";
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -48,29 +48,27 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<TurningMovementCountsResult> ExecuteAsync(TurningMovementCountsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<TurningMovementCountsResult>> ExecuteAsync(TurningMovementCountsOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
-                //return BadRequest("Location not found");
-                return await Task.FromException<TurningMovementCountsResult>(new NullReferenceException("Location not found"));
+                return ReportResult<TurningMovementCountsResult>.Failure(ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(TurningMovementCountReportService), locationIdentifier: parameter.LocationIdentifier));
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
 
             if (controllerEventLogs.IsNullOrEmpty())
             {
-                //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<TurningMovementCountsResult>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportResult<TurningMovementCountsResult>.Failure(ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(TurningMovementCountReportService), location: Location));
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var plans = planService.GetBasicPlans(parameter.Start, parameter.End, parameter.LocationIdentifier, planEvents);
-            var tasks = new List<Task<IEnumerable<TurningMovementCountsLanesResult>>>();
+            var tasks = new List<Task<IEnumerable<ReportResult<TurningMovementCountsLanesResult>>>>();
             foreach (var laneType in Enum.GetValues(typeof(LaneTypes)))
             {
                 tasks.Add(
@@ -84,11 +82,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
             var results = await Task.WhenAll(tasks);
 
-            var finalLaneResultcheck = results.Where(result => result != null).SelectMany(r => r).ToList();
+            var chartResults = results.Where(result => result != null).SelectMany(r => r).Where(r => r != null).ToList();
+            var finalLaneResultcheck = chartResults.Where(r => r.IsSuccess && r.Result != null).Select(r => r.Result).ToList();
 
             var finalResultcheck = new TurningMovementCountsResult
             {
-                Charts = finalLaneResultcheck,
+                Charts = chartResults,
                 Table = new List<TurningMovementCountData>()
             };
 
@@ -162,7 +161,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
 
         private void ComputePeakHourAndFactor(
-             TurningMovementCountsResult result,
+              TurningMovementCountsResult result,
              DateTime periodStart,
              DateTime periodEnd,
              int binSizeMinutes)
@@ -265,7 +264,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             };
         }
 
-        private async Task<IEnumerable<TurningMovementCountsLanesResult>> GetChartDataForLaneType(
+        private async Task<IEnumerable<ReportResult<TurningMovementCountsLanesResult>>> GetChartDataForLaneType(
             Location Location,
             LaneTypes laneType,
             TurningMovementCountsOptions options,
@@ -277,7 +276,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 return null;
             }
             var directions = Location.Approaches.Select(a => a.DirectionTypeId).Distinct().ToList();
-            var tasks = new List<Task<TurningMovementCountsLanesResult>>();
+            var tasks = new List<Task<ReportResult<TurningMovementCountsLanesResult>>>();
             foreach (var direction in directions)
             {
                 var detectorsForDirection = Location.Approaches.Where(a => a.DirectionTypeId == direction).SelectMany(a => a.GetDetectorsForMetricType(options.MetricTypeId)).ToList();
@@ -299,14 +298,18 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                             laneType,
                             Location.LocationIdentifier,
                             Location.LocationDescription(),
-                            direction));
+                            direction)
+                            .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(TurningMovementCountReportService), location: Location, direction: direction.ToString(), sortOrder: (int)laneType)));
                     }
                 }
             }
 
             var results = await Task.WhenAll(tasks);
 
-            return results.Where(result => result != null).OrderBy(r => r.Direction).ThenBy(r => r.MovementType);
+            return results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.Direction ?? r.Error?.Direction)
+                .ThenBy(r => r.Result?.MovementType ?? string.Empty);
         }
 
         private async Task<TurningMovementCountsLanesResult> GetChartDataByMovementType(

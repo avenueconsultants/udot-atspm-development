@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/TurningMovementCountsController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Turning movement count report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class TurningMovementCountsController : ReportControllerBase<TurningMovementCountsOptions, TurningMovementCountsResult>
+    public class TurningMovementCountsController : ReportControllerBase<TurningMovementCountsOptions, ReportResult<TurningMovementCountsResult>>
     {
         /// <inheritdoc/>
-        public TurningMovementCountsController(IReportService<TurningMovementCountsOptions, TurningMovementCountsResult> reportService, ILogger<TurningMovementCountsController> logger) : base(reportService, logger) { }
+        public TurningMovementCountsController(IReportService<TurningMovementCountsOptions, ReportResult<TurningMovementCountsResult>> reportService, ILogger<TurningMovementCountsController> logger) : base(reportService, logger) { }
     }
 }

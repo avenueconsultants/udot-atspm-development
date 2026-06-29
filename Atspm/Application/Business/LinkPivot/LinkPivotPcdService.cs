@@ -52,8 +52,12 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
             if (upApproachToAnalyze != null)
                 await GeneratePcdAsync(result, upApproachToAnalyze, options.Delta, startDate, endDate, true);
+            else
+                AddPcdFailure(result, ReportErrorFactory.Create("ApproachNotFound", "Upstream approach not found", nameof(LinkPivotPcdService), location: upstreamLocation, locationIdentifier: options.LocationIdentifier, direction: options.UpstreamApproachDirection));
             if (downApproachToAnalyze != null)
                 await GeneratePcdAsync(result, downApproachToAnalyze, options.Delta, startDate, endDate, false);
+            else
+                AddPcdFailure(result, ReportErrorFactory.Create("ApproachNotFound", "Downstream approach not found", nameof(LinkPivotPcdService), location: downstreamLocation, locationIdentifier: options.DownstreamLocationIdentifier, direction: options.DownstreamApproachDirection));
 
             result.ExistingTotalPAOG = (int)(Math.Round(result.ExistingTotalAOG / result.ExistingVolume, 2) * 100);
             result.PredictedTotalPAOG = (int)(Math.Round(result.PredictedTotalAOG / result.PredictedVolume, 2) * 100);
@@ -63,6 +67,11 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
         private Approach GetApproachToAnalyze(Location location, string direction)
         {
+            if (location == null)
+            {
+                return null;
+            }
+
             Approach approachToAnalyze = null;
             var approaches = location.Approaches.Where(a => a.DirectionType.Description == direction).ToList();
             foreach (var approach in approaches)
@@ -73,73 +82,54 @@ namespace Utah.Udot.Atspm.Business.LinkPivot
 
         private async Task GeneratePcdAsync(LinkPivotPcdResult result, Approach approach, int delta, DateTime startDate, DateTime endDate, bool upstream)
         {
-            var chartName = string.Empty;
-            //find the upstream approach
-            if (!string.IsNullOrEmpty(approach.DirectionType.Description))
+            try
             {
-                var logs = controllerEventLogRepository.GetEventsBetweenDates(approach.Location.LocationIdentifier, startDate, endDate).ToList();
-                var plans = logs.GetPlanEvents(startDate, endDate).ToList();
-                var lp = await locationPhaseService.GetLocationPhaseDataWithApproach(approach, startDate, endDate, 15, 13, logs, plans, true, null, 90);
-                var pcdOptions = new PurdueCoordinationDiagramOptions()
+                var chartName = string.Empty;
+                //find the upstream approach
+                if (!string.IsNullOrEmpty(approach.DirectionType.Description))
                 {
-                    BinSize = 15,
-                    GetVolume = true,
-                    ShowPlanStatistics = true,
-                    Start = startDate,
-                    End = endDate,
-                    LocationIdentifier = approach.Location.LocationIdentifier
-                };
+                    var logs = controllerEventLogRepository.GetEventsBetweenDates(approach.Location.LocationIdentifier, startDate, endDate).ToList();
+                    var plans = logs.GetPlanEvents(startDate, endDate).ToList();
+                    var lp = await locationPhaseService.GetLocationPhaseDataWithApproach(approach, startDate, endDate, 15, 13, logs, plans, true, null, 90);
+                    var pcdOptions = new PurdueCoordinationDiagramOptions()
+                    {
+                        BinSize = 15,
+                        GetVolume = true,
+                        ShowPlanStatistics = true,
+                        Start = startDate,
+                        End = endDate,
+                        LocationIdentifier = approach.Location.LocationIdentifier
+                    };
 
-                //Check the direction of the Link Pivot
-                if (upstream)
-                {
-                    //Create a chart for the upstream detector before adjustments
-                    result.pcdExisting.Add(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp));
+                    result.pcdExisting.Add(ReportResult<PurdueCoordinationDiagramResult>.Success(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp)));
 
-                    //Add the total arrival on green before adjustments to the running total
                     result.ExistingTotalAOG += lp.TotalArrivalOnGreen;
-
-                    //Add the volume from the signal phase to the running total
                     result.ExistingVolume += lp.TotalVolume;
 
-                    //Re run the signal phase by the optimized delta change to get the adjusted pcd
-                    locationPhaseService.LinkPivotAddSeconds(lp, delta * -1);
+                    locationPhaseService.LinkPivotAddSeconds(lp, upstream ? delta * -1 : delta);
 
-                    //Create a chart for the upstream detector after adjustments
                     pcdOptions.GetVolume = false;
-                    result.pcdPredicted.Add(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp));
+                    result.pcdPredicted.Add(ReportResult<PurdueCoordinationDiagramResult>.Success(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp)));
 
-                    //Add the total arrival on green after adjustments to the running total
                     result.PredictedTotalAOG += lp.TotalArrivalOnGreen;
-
-                    //Add the volume from the signal phase to the running total
-                    result.PredictedVolume += lp.TotalVolume;
-                }
-                else
-                {
-                    //Create a chart for downstream detector before adjustments
-                    result.pcdExisting.Add(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp));
-
-                    //Add the arrivals on green to the total arrivals on green running total
-                    result.ExistingTotalAOG += lp.TotalArrivalOnGreen;
-
-                    //Add the volume before adjustments to the running total volume
-                    result.ExistingVolume += lp.TotalVolume;
-
-                    //Re run the signal phase by the optimized delta change to get the adjusted pcd
-                    locationPhaseService.LinkPivotAddSeconds(lp, delta);
-
-                    //Create a pcd chart for downstream after adjustments
-                    pcdOptions.GetVolume = false;
-                    result.pcdPredicted.Add(purdueCoordinationDiagramService.GetChartData(pcdOptions, approach, lp));
-
-                    //Add the total arrivals on green to the running total
-                    result.PredictedTotalAOG += lp.TotalArrivalOnGreen;
-
-                    //Add the total volume to the running total after adjustments
                     result.PredictedVolume += lp.TotalVolume;
                 }
             }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                AddPcdFailure(result, ReportErrorFactory.FromException(ex, nameof(LinkPivotPcdService), approach: approach, direction: approach?.DirectionType?.Description));
+            }
+        }
+
+        private static void AddPcdFailure(LinkPivotPcdResult result, ReportError error)
+        {
+            var failure = ReportResult<PurdueCoordinationDiagramResult>.Failure(error);
+            result.pcdExisting.Add(failure);
+            result.pcdPredicted.Add(ReportResult<PurdueCoordinationDiagramResult>.Failure(error));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LeftTurnVolumeController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LeftTurnVolumeController : ReportControllerBase<VolumeOptions, VolumeResult>
+    public class LeftTurnVolumeController : ReportControllerBase<VolumeOptions, ReportResult<VolumeResult>>
     {
         /// <inheritdoc/>
-        public LeftTurnVolumeController(IReportService<VolumeOptions, VolumeResult> reportService, ILogger<LeftTurnVolumeController> logger) : base(reportService, logger) { }
+        public LeftTurnVolumeController(IReportService<VolumeOptions, ReportResult<VolumeResult>> reportService, ILogger<LeftTurnVolumeController> logger) : base(reportService, logger) { }
     }
 }

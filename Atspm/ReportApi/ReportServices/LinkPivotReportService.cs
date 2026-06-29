@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LinkPivotReportService.cs
 // 
@@ -20,7 +20,7 @@ using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.ReportApi.ReportServices
 {
-    public class LinkPivotReportService : ReportServiceBase<LinkPivotOptions, LinkPivotResult>
+    public class LinkPivotReportService : ReportServiceBase<LinkPivotOptions, ReportResult<LinkPivotResult>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly IRouteLocationsRepository routeLocationsRepository;
@@ -41,38 +41,46 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             this.controllerEventLogRepository = controllerEventLogRepository;
         }
 
-        public override async Task<LinkPivotResult> ExecuteAsync(LinkPivotOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<LinkPivotResult>> ExecuteAsync(LinkPivotOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var routeLocations = GetLocationsFromRouteId(parameter.RouteId);
             if (routeLocations == null || routeLocations.Count == 0)
             {
-                throw new Exception($"No Route Locations configured for route");
+                return ReportResult<LinkPivotResult>.Failure(ReportErrorFactory.Create("NoRouteLocations", "No Route Locations configured for route", nameof(LinkPivotReportService)));
             }
-            var result = await Task.Run(() => linkPivotService.GetData(parameter, routeLocations, new LinkPivotRequestCache()));
-
-            return result;
+            return await Task.Run(() => linkPivotService.GetData(parameter, routeLocations, new LinkPivotRequestCache()))
+                .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LinkPivotReportService)));
         }
 
-        public async Task<List<LinkPivotForTsd>> GetLinkPivotForTSD(TimeSpaceDiagramOptions options)
+        public async Task<IEnumerable<ReportResult<LinkPivotForTsd>>> GetLinkPivotForTSD(TimeSpaceDiagramOptions options)
         {
             var routeLocations = GetLocationsFromRouteId(options.RouteId);
             if (routeLocations == null || routeLocations.Count == 0)
             {
-                throw new Exception($"No Route Locations configured for route");
+                return ReportErrorFactory.Create("NoRouteLocations", "No Route Locations configured for route", nameof(LinkPivotReportService)).ToFailureReportResults<LinkPivotForTsd>();
             }
             var cache = new LinkPivotRequestCache();
-            var linkPivotOptions = TransformOptions(options);
-            linkPivotOptions.CycleLength = GetModeCycleLength(linkPivotOptions, routeLocations, cache);
-            var result = await Task.Run(() => linkPivotService.GetData(linkPivotOptions, routeLocations, cache));
+            var cycleLength = GetModeCycleLength(TransformOptions(options), routeLocations, cache, out var cycleLengthError);
+            if (cycleLengthError != null)
+            {
+                return [ReportResult<LinkPivotForTsd>.Failure(cycleLengthError)];
+            }
 
-            linkPivotOptions.Direction = "Upstream";
-            linkPivotOptions.BiasDirection = "Upstream";
+            var primaryOptions = TransformOptions(options);
+            primaryOptions.CycleLength = cycleLength;
 
-            var opposingResult = await Task.Run(() => linkPivotService.GetData(linkPivotOptions, routeLocations, cache));
+            var opposingOptions = TransformOptions(options);
+            opposingOptions.CycleLength = cycleLength;
+            opposingOptions.Direction = "Upstream";
+            opposingOptions.BiasDirection = "Upstream";
 
-            var primaryData = new LinkPivotForTsd("Primary", result);
-            var opposingData = new LinkPivotForTsd("Opposing", opposingResult);
-            return [primaryData, opposingData];
+            var results = await Task.WhenAll(
+                GetLinkPivotForTsdResult("Primary", primaryOptions, routeLocations, cache)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LinkPivotReportService))),
+                GetLinkPivotForTsdResult("Opposing", opposingOptions, routeLocations, cache)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LinkPivotReportService))));
+
+            return results;
         }
 
         private LinkPivotOptions TransformOptions(TimeSpaceDiagramOptions options)
@@ -93,11 +101,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             return linkPivotOptions;
         }
 
-        public async Task<LinkPivotPcdResult> GetPcdData(LinkPivotPcdOptions options)
+        public async Task<ReportResult<LinkPivotPcdResult>> GetPcdData(LinkPivotPcdOptions options)
         {
-            var result = await Task.Run(() => linkPivotPcdService.GetData(options));
+            return await Task.Run(() => linkPivotPcdService.GetData(options))
+                .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LinkPivotReportService), locationIdentifier: options.LocationIdentifier));
+        }
 
-            return result;
+        private async Task<LinkPivotForTsd> GetLinkPivotForTsdResult(string name, LinkPivotOptions options, List<RouteLocation> routeLocations, LinkPivotRequestCache cache)
+        {
+            var result = await Task.Run(() => linkPivotService.GetData(options, routeLocations, cache));
+            return new LinkPivotForTsd(name, result);
         }
 
         public List<Location> FillSignals(int routeId)
@@ -120,8 +133,9 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             return routeLocations ?? new List<RouteLocation>();
         }
 
-        private int GetModeCycleLength(LinkPivotOptions options, List<RouteLocation> routeLocations, LinkPivotRequestCache cache = null)
+        private int GetModeCycleLength(LinkPivotOptions options, List<RouteLocation> routeLocations, LinkPivotRequestCache cache, out ReportError error)
         {
+            error = null;
             List<int> cycleLengths = new List<int>();
             var locationIdentifiers = routeLocations.Select(i => i.LocationIdentifier).ToList();
             foreach (var locationIdentifier in locationIdentifiers)
@@ -132,7 +146,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
                 if (controllerEventLogs.IsNullOrEmpty())
                 {
-                    throw new Exception($"No Controller Event Logs found for Location {locationIdentifier}");
+                    error = ReportErrorFactory.Create("NoControllerEventLogs", $"No Controller Event Logs found for Location {locationIdentifier}", nameof(LinkPivotReportService), locationIdentifier: locationIdentifier);
+                    return 0;
                 }
                 var programmedCycleForPlan = controllerEventLogs
                     .GetEventsByEventCodes(start, end, new List<short>() { 132 });

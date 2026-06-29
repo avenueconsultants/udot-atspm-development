@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PedDelayController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Ped delay report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PedDelayController : ReportControllerBase<PedDelayOptions, IEnumerable<PedDelayResult>>
+    public class PedDelayController : ReportControllerBase<PedDelayOptions, IEnumerable<ReportResult<PedDelayResult>>>
     {
         /// <inheritdoc/>
-        public PedDelayController(IReportService<PedDelayOptions, IEnumerable<PedDelayResult>> reportService, ILogger<PedDelayController> logger) : base(reportService, logger) { }
+        public PedDelayController(IReportService<PedDelayOptions, IEnumerable<ReportResult<PedDelayResult>>> reportService, ILogger<PedDelayController> logger) : base(reportService, logger) { }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PurdueCoordinationDiagramController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Purdue coordination diagram report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PurdueCoordinationDiagramController : ReportControllerBase<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>>
+    public class PurdueCoordinationDiagramController : ReportControllerBase<PurdueCoordinationDiagramOptions, IEnumerable<ReportResult<PurdueCoordinationDiagramResult>>>
     {
         /// <inheritdoc/>
-        public PurdueCoordinationDiagramController(IReportService<PurdueCoordinationDiagramOptions, IEnumerable<PurdueCoordinationDiagramResult>> reportService, ILogger<PurdueCoordinationDiagramController> logger) : base(reportService, logger) { }
+        public PurdueCoordinationDiagramController(IReportService<PurdueCoordinationDiagramOptions, IEnumerable<ReportResult<PurdueCoordinationDiagramResult>>> reportService, ILogger<PurdueCoordinationDiagramController> logger) : base(reportService, logger) { }
     }
 }

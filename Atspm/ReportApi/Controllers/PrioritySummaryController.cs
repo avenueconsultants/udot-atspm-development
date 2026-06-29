@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PrioritySummaryController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Priority Summary report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PrioritySummaryController : ReportControllerBase<PrioritySummaryOptions, PrioritySummaryResult>
+    public class PrioritySummaryController : ReportControllerBase<PrioritySummaryOptions, ReportResult<PrioritySummaryResult>>
     {
         /// <inheritdoc/>
-        public PrioritySummaryController(IReportService<PrioritySummaryOptions, PrioritySummaryResult> reportService, ILogger<PrioritySummaryController> logger) : base(reportService, logger) { }
+        public PrioritySummaryController(IReportService<PrioritySummaryOptions, ReportResult<PrioritySummaryResult>> reportService, ILogger<PrioritySummaryController> logger) : base(reportService, logger) { }
     }
 }

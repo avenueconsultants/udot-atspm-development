@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/TransitSignalPriorityController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Preempt request report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class TransitSignalPriorityController : ReportControllerBase<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>>
+    public class TransitSignalPriorityController : ReportControllerBase<TransitSignalPriorityOptions, IEnumerable<ReportResult<TransitSignalPriorityResult>>>
     {
         /// <inheritdoc/>
-        public TransitSignalPriorityController(IReportService<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>> reportService, ILogger<TransitSignalPriorityController> logger) : base(reportService, logger) { }
+        public TransitSignalPriorityController(IReportService<TransitSignalPriorityOptions, IEnumerable<ReportResult<TransitSignalPriorityResult>>> reportService, ILogger<TransitSignalPriorityController> logger) : base(reportService, logger) { }
     }
 }

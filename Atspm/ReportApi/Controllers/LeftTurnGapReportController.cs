@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/LeftTurnGapReportController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Left turn gap analysis report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class LeftTurnGapReportController : ReportControllerBase<LeftTurnGapReportOptions, IEnumerable<LeftTurnGapReportResult>>
+    public class LeftTurnGapReportController : ReportControllerBase<LeftTurnGapReportOptions, IEnumerable<ReportResult<LeftTurnGapReportResult>>>
     {
         /// <inheritdoc/>
-        public LeftTurnGapReportController(IReportService<LeftTurnGapReportOptions, IEnumerable<LeftTurnGapReportResult>> reportService, ILogger<LeftTurnGapReportController> logger) : base(reportService, logger) { }
+        public LeftTurnGapReportController(IReportService<LeftTurnGapReportOptions, IEnumerable<ReportResult<LeftTurnGapReportResult>>> reportService, ILogger<LeftTurnGapReportController> logger) : base(reportService, logger) { }
     }
 }

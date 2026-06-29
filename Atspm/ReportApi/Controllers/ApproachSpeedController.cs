@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/ApproachSpeedController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Approach speed report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class ApproachSpeedController : ReportControllerBase<ApproachSpeedOptions, IEnumerable<ApproachSpeedResult>>
+    public class ApproachSpeedController : ReportControllerBase<ApproachSpeedOptions, IEnumerable<ReportResult<ApproachSpeedResult>>>
     {
         /// <inheritdoc/>
-        public ApproachSpeedController(IReportService<ApproachSpeedOptions, IEnumerable<ApproachSpeedResult>> reportService, ILogger<ApproachSpeedController> logger) : base(reportService, logger) { }
+        public ApproachSpeedController(IReportService<ApproachSpeedOptions, IEnumerable<ReportResult<ApproachSpeedResult>>> reportService, ILogger<ApproachSpeedController> logger) : base(reportService, logger) { }
     }
 }

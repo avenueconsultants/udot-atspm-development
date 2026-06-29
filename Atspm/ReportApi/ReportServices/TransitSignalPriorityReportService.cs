@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/TransitSignalPriorityReportService.cs
 // 
@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class TransitSignalPriorityReportService : ReportServiceBase<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>>
+    public class TransitSignalPriorityReportService : ReportServiceBase<TransitSignalPriorityOptions, IEnumerable<ReportResult<TransitSignalPriorityResult>>>
     {
         private readonly TransitSignalPriorityService _transitSignalPriorityService;
 
@@ -36,9 +36,10 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<List<TransitSignalPriorityResult>> ExecuteAsync(TransitSignalPriorityOptions parameters, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<TransitSignalPriorityResult>>> ExecuteAsync(TransitSignalPriorityOptions parameters, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
-            return await _transitSignalPriorityService.GetChartDataAsync(parameters);
+            var results = await _transitSignalPriorityService.GetChartDataAsync(parameters);
+            return results.ToReportResults();
         }
 
     }

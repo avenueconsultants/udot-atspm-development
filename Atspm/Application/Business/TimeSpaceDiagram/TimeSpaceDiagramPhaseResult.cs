@@ -15,28 +15,15 @@
 // limitations under the License.
 #endregion
 
+using Utah.Udot.Atspm.Business.Common;
+
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
     /// <summary>
     /// Wrapper for time space diagram phase results that can represent either a successful result or an error
     /// </summary>
-    public class TimeSpaceDiagramPhaseResult
+    public class TimeSpaceDiagramPhaseResult : ReportResult<TimeSpaceDiagramResultForPhase>
     {
-        /// <summary>
-        /// Error message if the operation failed, null if successful
-        /// </summary>
-        public string Error { get; set; }
-
-        /// <summary>
-        /// The phase result data if available, null if there was an error without phase metadata
-        /// </summary>
-        public TimeSpaceDiagramResultForPhase Result { get; set; }
-
-        /// <summary>
-        /// Indicates whether the operation was successful (no error)
-        /// </summary>
-        public bool IsSuccess => Error == null;
-
         /// <summary>
         /// Creates a successful result wrapper
         /// </summary>
@@ -47,12 +34,18 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         /// Creates a failed result wrapper with an error message
         /// </summary>
         public static TimeSpaceDiagramPhaseResult Failure(string error)
+            => new() { Error = ReportErrorFactory.Create("TimeSpaceDiagramError", error, "TimeSpaceDiagram") };
+
+        public static TimeSpaceDiagramPhaseResult Failure(ReportError error)
             => new() { Error = error };
 
         /// <summary>
         /// Creates a failed result wrapper with phase metadata for rendering an empty/no-data row
         /// </summary>
         public static TimeSpaceDiagramPhaseResult Failure(string error, TimeSpaceDiagramResultForPhase result)
+            => new() { Error = ReportErrorFactory.Create("TimeSpaceDiagramError", error, "TimeSpaceDiagram"), Result = result };
+
+        public static TimeSpaceDiagramPhaseResult Failure(ReportError error, TimeSpaceDiagramResultForPhase result)
             => new() { Error = error, Result = result };
     }
 }

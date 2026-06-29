@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class ApproachDelayReportService : ReportServiceBase<ApproachDelayOptions, IEnumerable<ApproachDelayResult>>
+    public class ApproachDelayReportService : ReportServiceBase<ApproachDelayOptions, IEnumerable<ReportResult<ApproachDelayResult>>>
     {
         private readonly ApproachDelayService _approachDelayService;
         private readonly LocationPhaseService _LocationPhaseService;
@@ -48,14 +48,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<ApproachDelayResult>> ExecuteAsync(ApproachDelayOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<ApproachDelayResult>>> ExecuteAsync(ApproachDelayOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = _LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<ApproachDelayResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(ApproachDelayReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<ApproachDelayResult>();
             }
 
             var controllerEventLogs = _controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier,
@@ -65,25 +65,29 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                await Task.FromException<IEnumerable<Analysis.ApproachDelay.ApproachDelayResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(ApproachDelayReportService), location: Location).ToFailureReportResults<ApproachDelayResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
                 parameter.Start.AddHours(-12),
                 parameter.End.AddHours(12)).ToList();
             var phaseDetails = _phaseService.GetPhases(Location);
-            var tasks = new List<Task<ApproachDelayResult>>();
+            var tasks = new List<Task<ReportResult<ApproachDelayResult>>>();
 
             foreach (var phase in phaseDetails)
             {
                 if (phase.IsPermissivePhase && parameter.GetPermissivePhase || !phase.IsPermissivePhase)
                 {
-                    tasks.Add(GetChartDataByApproach(parameter, phase, controllerEventLogs, planEvents, Location.LocationDescription()));
+                    tasks.Add(GetChartDataByApproach(parameter, phase, controllerEventLogs, planEvents, Location.LocationDescription())
+                        .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(ApproachDelayReportService), phase: phase, sortOrder: phase.PhaseNumber)));
                 }
             }
 
             var results = await Task.WhenAll(tasks);
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             return finalResultcheck;
         }

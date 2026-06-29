@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnGapAnalysisReportService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnGapAnalysisReportService : ReportServiceBase<LeftTurnGapAnalysisOptions, IEnumerable<LeftTurnGapAnalysisResult>>
+    public class LeftTurnGapAnalysisReportService : ReportServiceBase<LeftTurnGapAnalysisOptions, IEnumerable<ReportResult<LeftTurnGapAnalysisResult>>>
     {
         private readonly LeftTurnGapAnalysisService leftTurnGapAnalysisService;
         private readonly IApproachRepository approachRepository;
@@ -43,13 +43,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<LeftTurnGapAnalysisResult>> ExecuteAsync(LeftTurnGapAnalysisOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<LeftTurnGapAnalysisResult>>> ExecuteAsync(LeftTurnGapAnalysisOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<LeftTurnGapAnalysisResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(LeftTurnGapAnalysisReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<LeftTurnGapAnalysisResult>();
             }
             var eventCodes = new List<int> { 1, 10, 81 };
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(
@@ -61,10 +61,10 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<LeftTurnGapAnalysisResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(LeftTurnGapAnalysisReportService), location: Location).ToFailureReportResults<LeftTurnGapAnalysisResult>();
             }
 
-            var tasks = new List<Task<LeftTurnGapAnalysisResult>>();
+            var tasks = new List<Task<ReportResult<LeftTurnGapAnalysisResult>>>();
             var leftTurnGapData = new List<LeftTurnGapAnalysisResult>();
             //Get phase + check for opposing phase before creating chart
             var ebPhase = Location.Approaches.FirstOrDefault(x => x.ProtectedPhaseNumber == 6);
@@ -75,7 +75,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     ebPhase,
                     controllerEventLogs,
                     parameter,
-                    leftTurnApproach));
+                    leftTurnApproach)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LeftTurnGapAnalysisReportService), approach: leftTurnApproach, sortOrder: leftTurnApproach.ProtectedPhaseNumber)));
             }
 
             var nbPhase = Location.Approaches.FirstOrDefault(x => x.ProtectedPhaseNumber == 8);
@@ -87,7 +88,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     nbPhase,
                     controllerEventLogs,
                     parameter,
-                    leftTurnApproach));
+                    leftTurnApproach)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LeftTurnGapAnalysisReportService), approach: leftTurnApproach, sortOrder: leftTurnApproach.ProtectedPhaseNumber)));
             }
 
             var wbPhase = Location.Approaches.FirstOrDefault(x => x.ProtectedPhaseNumber == 2);
@@ -99,7 +101,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     wbPhase,
                     controllerEventLogs,
                     parameter,
-                    leftTurnApproach));
+                    leftTurnApproach)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LeftTurnGapAnalysisReportService), approach: leftTurnApproach, sortOrder: leftTurnApproach.ProtectedPhaseNumber)));
             }
 
             var sbPhase = Location.Approaches.FirstOrDefault(x => x.ProtectedPhaseNumber == 4);
@@ -110,11 +113,15 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     sbPhase,
                     controllerEventLogs,
                     parameter,
-                    leftTurnApproach));
+                    leftTurnApproach)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(LeftTurnGapAnalysisReportService), approach: leftTurnApproach, sortOrder: leftTurnApproach.ProtectedPhaseNumber)));
             }
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+using Utah.Udot.Atspm.Business.Common;
+
 namespace Utah.Udot.Atspm.Business.TurningMovementCounts
 {
     /// <summary>
@@ -22,7 +24,7 @@ namespace Utah.Udot.Atspm.Business.TurningMovementCounts
     /// </summary>
     public class TurningMovementCountsResult
     {
-        public List<TurningMovementCountsLanesResult> Charts { get; set; }
+        public List<ReportResult<TurningMovementCountsLanesResult>> Charts { get; set; }
         public List<TurningMovementCountData> Table { get; set; }
         public KeyValuePair<DateTime, int>? PeakHour { get; set; }
         public double? PeakHourFactor { get; set; }

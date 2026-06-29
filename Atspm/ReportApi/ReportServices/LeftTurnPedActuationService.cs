@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnPedActuationService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnPedActuationService : ReportServiceBase<PedActuationOptions, PedActuationResult>
+    public class LeftTurnPedActuationService : ReportServiceBase<PedActuationOptions, ReportResult<PedActuationResult>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly PedActuationService pedActuationService;
@@ -49,13 +49,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<PedActuationResult> ExecuteAsync(PedActuationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<PedActuationResult>> ExecuteAsync(PedActuationOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();
             var startTime = new TimeSpan(options.StartHour, options.StartMinute, 0);
             var endTime = new TimeSpan(options.EndHour, options.EndMinute, 0);
-            var pedActuationResult = new PedActuationResult();
+            var pedActuationResult = new ReportResult<PedActuationResult>();
             var pedAggregations = phasePedAggregationRepository.GetAggregationsBetweenDates(options.LocationIdentifier, options.Start, options.End).ToList();
             var cycelAggregations = phaseCycleAggregationRepository.GetAggregationsBetweenDates(options.LocationIdentifier, options.Start, options.End).ToList();
             var opposingPhase = leftTurnReportService.GetOpposingPhase(approach);

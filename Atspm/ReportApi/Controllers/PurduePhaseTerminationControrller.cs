@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PurduePhaseTerminationControrller.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Purdue phase termination report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PurduePhaseTerminationController : ReportControllerBase<PurduePhaseTerminationOptions, PhaseTerminationResult>
+    public class PurduePhaseTerminationController : ReportControllerBase<PurduePhaseTerminationOptions, ReportResult<PhaseTerminationResult>>
     {
         /// <inheritdoc/>
-        public PurduePhaseTerminationController(IReportService<PurduePhaseTerminationOptions, PhaseTerminationResult> reportService, ILogger<PurduePhaseTerminationController> logger) : base(reportService, logger) { }
+        public PurduePhaseTerminationController(IReportService<PurduePhaseTerminationOptions, ReportResult<PhaseTerminationResult>> reportService, ILogger<PurduePhaseTerminationController> logger) : base(reportService, logger) { }
     }
 }

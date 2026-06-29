@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnSplitFailService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnSplitFailService : ReportServiceBase<LeftTurnSplitFailOptions, LeftTurnSplitFailResult>
+    public class LeftTurnSplitFailService : ReportServiceBase<LeftTurnSplitFailOptions, ReportResult<LeftTurnSplitFailResult>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly IApproachSplitFailAggregationRepository approachSplitFailAggregationRepository;
@@ -43,11 +43,11 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<LeftTurnSplitFailResult> ExecuteAsync(LeftTurnSplitFailOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<LeftTurnSplitFailResult>> ExecuteAsync(LeftTurnSplitFailOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();
-            var splitFailResult = new LeftTurnSplitFailResult();
+            var splitFailResult = new ReportResult<LeftTurnSplitFailResult>();
             var splitfailaggregations = GetSplitFailAggregates(options, approach);
             splitFailResult = splitFailService.GetSplitFailPercent(options, splitfailaggregations);
             return splitFailResult;

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/LeftTurnVolumeService.cs
 // 
@@ -22,7 +22,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Left turn gap analysis report service
     /// </summary>
-    public class LeftTurnVolumeService : ReportServiceBase<VolumeOptions, VolumeResult>
+    public class LeftTurnVolumeService : ReportServiceBase<VolumeOptions, ReportResult<VolumeResult>>
     {
         private readonly ILocationRepository locationRepository;
         private readonly IDetectorEventCountAggregationRepository detectorEventCountAggregationRepository;
@@ -43,7 +43,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<VolumeResult> ExecuteAsync(VolumeOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<VolumeResult>> ExecuteAsync(VolumeOptions options, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var location = locationRepository.GetLatestVersionOfLocation(options.LocationIdentifier, options.Start);
             var approach = location.Approaches.Where(a => a.Id == options.ApproachId).FirstOrDefault();

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/SplitFailReportService.cs
 // 
@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Split fail report service
     /// </summary>
-    public class SplitFailReportService : ReportServiceBase<SplitFailOptions, IEnumerable<SplitFailsResult>>
+    public class SplitFailReportService : ReportServiceBase<SplitFailOptions, IEnumerable<ReportResult<SplitFailsResult>>>
     {
         private readonly SplitFailPhaseService splitFailPhaseService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -45,36 +45,39 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<SplitFailsResult>> ExecuteAsync(SplitFailOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<SplitFailsResult>>> ExecuteAsync(SplitFailOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
-                //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<SplitFailsResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(SplitFailReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<SplitFailsResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
 
             if (controllerEventLogs.IsNullOrEmpty())
             {
-                //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<SplitFailsResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(SplitFailReportService), location: Location).ToFailureReportResults<SplitFailsResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(
             parameter.Start.AddHours(-12),
                parameter.End.AddHours(12)).ToList();
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<IEnumerable<SplitFailsResult>>>();
+            var tasks = new List<Task<IEnumerable<ReportResult<SplitFailsResult>>>>();
             foreach (var phase in phaseDetails)
             {
-                tasks.Add(GetChartDataForApproach(parameter, phase, controllerEventLogs, planEvents));
+                tasks.Add(GetChartDataForApproach(parameter, phase, controllerEventLogs, planEvents)
+                    .ToReportResultsAsync(ex => ReportErrorFactory.FromException(ex, nameof(SplitFailReportService), phase: phase, sortOrder: phase.PhaseNumber)));
             }
 
             var results = await Task.WhenAll(tasks);
-            var finalResultcheck = results.Where(result => result != null).SelectMany(r => r).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .SelectMany(r => r)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{
@@ -85,7 +88,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             return finalResultcheck;
         }
 
-        private async Task<IEnumerable<SplitFailsResult>> GetChartDataForApproach(
+        private async Task<IEnumerable<ReportResult<SplitFailsResult>>> GetChartDataForApproach(
             SplitFailOptions options,
             PhaseDetail phaseDetail,
             List<IndianaEvent> controllerEventLogs,
@@ -110,16 +113,19 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                  },
                  phaseDetail.PhaseNumber);
             var detectors = phaseDetail.Approach.GetDetectorsForMetricType(options.MetricTypeId);
-            var tasks = new List<Task<SplitFailsResult>>();
+            var tasks = new List<Task<ReportResult<SplitFailsResult>>>();
             var stopbarDetector = detectors
             .SelectMany(d => d.DetectionTypes)
             .FirstOrDefault(dt => dt.Id == Data.Enums.DetectionTypes.SBP);
             if (stopbarDetector != null)
             {
-                tasks.Add(GetChartDataByDetectionType(options, phaseDetail, controllerEventLogs, planEvents, cycleEvents, terminationEvents, detectors, stopbarDetector));
+                tasks.Add(GetChartDataByDetectionType(options, phaseDetail, controllerEventLogs, planEvents, cycleEvents, terminationEvents, detectors, stopbarDetector)
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(SplitFailReportService), phase: phaseDetail, sortOrder: phaseDetail.PhaseNumber)));
             }
             var results = await Task.WhenAll(tasks);
-            return results.Where(result => result != null).OrderBy(r => r.PhaseNumber);
+            return results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue);
         }
 
         private async Task<SplitFailsResult> GetChartDataByDetectionType(

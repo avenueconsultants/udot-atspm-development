@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/ApproachVolumeReportService.cs
 // 
@@ -24,7 +24,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach delay report service
     /// </summary>
-    public class ApproachVolumeReportService : ReportServiceBase<ApproachVolumeOptions, IEnumerable<ApproachVolumeResult>>
+    public class ApproachVolumeReportService : ReportServiceBase<ApproachVolumeOptions, IEnumerable<ReportResult<ApproachVolumeResult>>>
     {
         private readonly ILocationRepository LocationRepository;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -42,14 +42,14 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<ApproachVolumeResult>> ExecuteAsync(ApproachVolumeOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<ApproachVolumeResult>>> ExecuteAsync(ApproachVolumeOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
 
             if (Location == null)
             {
                 //return BadRequest("Location not found");
-                return await Task.FromException<IEnumerable<ApproachVolumeResult>>(new NullReferenceException("Location not found"));
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(ApproachVolumeReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<ApproachVolumeResult>();
             }
 
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
@@ -57,10 +57,10 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No Controller Event Logs found for Location");
-                return await Task.FromException<IEnumerable<ApproachVolumeResult>>(new NullReferenceException("No Controller Event Logs found for Location"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for Location", nameof(ApproachVolumeReportService), location: Location).ToFailureReportResults<ApproachVolumeResult>();
             }
 
-            var tasks = new List<Task<ApproachVolumeResult>>();
+            var tasks = new List<Task<ReportResult<ApproachVolumeResult>>>();
             var nbSbApproaches = Location.Approaches.Where(a => a.ProtectedPhaseNumber != 0 && (a.DirectionTypeId == DirectionTypes.NB || a.DirectionTypeId == DirectionTypes.SB)).ToList();
             GetApproachVolume(parameter, Location, controllerEventLogs, tasks, nbSbApproaches, DirectionTypes.NB, DirectionTypes.SB);
             var ebWbApproaches = Location.Approaches.Where(a => a.ProtectedPhaseNumber != 0 && (a.DirectionTypeId == DirectionTypes.EB || a.DirectionTypeId == DirectionTypes.WB)).ToList();
@@ -71,7 +71,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             GetApproachVolume(parameter, Location, controllerEventLogs, tasks, nebSwbApproaches, DirectionTypes.NE, DirectionTypes.SW);
             var results = await Task.WhenAll(tasks);
 
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PrimaryDirectionName).ToList();
+            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.Result?.PrimaryDirectionName ?? r.Error?.Direction).ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{
@@ -86,7 +86,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             ApproachVolumeOptions options,
             Location Location,
             List<IndianaEvent> controllerEventLogs,
-            List<Task<ApproachVolumeResult>> tasks,
+            List<Task<ReportResult<ApproachVolumeResult>>> tasks,
             List<Approach> approaches,
             DirectionTypes primaryDirection,
             DirectionTypes opposingDirection
@@ -106,7 +106,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             ApproachVolumeOptions options,
             Location Location,
             List<IndianaEvent> controllerEventLogs,
-            List<Task<ApproachVolumeResult>> tasks,
+            List<Task<ReportResult<ApproachVolumeResult>>> tasks,
             List<Approach> approaches,
             DetectionType detectionType,
             DirectionTypes primaryDirection,
@@ -124,7 +124,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 detectionType,
                 primaryDirection,
                 opposingDirection
-                ));
+                ).ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(ApproachVolumeReportService), location: Location, approach: primaryApproaches.FirstOrDefault() ?? opposingApproaches.FirstOrDefault(), direction: primaryDirection.ToString())));
         }
 
         private async Task<ApproachVolumeResult> GetApproachVolumeByDetectionType(

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/YellowRedActivationsController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Yellow and red activations report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class YellowRedActivationsController : ReportControllerBase<YellowRedActivationsOptions, IEnumerable<YellowRedActivationsResult>>
+    public class YellowRedActivationsController : ReportControllerBase<YellowRedActivationsOptions, IEnumerable<ReportResult<YellowRedActivationsResult>>>
     {
         /// <inheritdoc/>
-        public YellowRedActivationsController(IReportService<YellowRedActivationsOptions, IEnumerable<YellowRedActivationsResult>> reportService, ILogger<YellowRedActivationsController> logger) : base(reportService, logger) { }
+        public YellowRedActivationsController(IReportService<YellowRedActivationsOptions, IEnumerable<ReportResult<YellowRedActivationsResult>>> reportService, ILogger<YellowRedActivationsController> logger) : base(reportService, logger) { }
     }
 }

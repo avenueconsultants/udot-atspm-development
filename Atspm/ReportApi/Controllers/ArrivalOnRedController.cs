@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/ArrivalOnRedController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Arrival on red report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class ArrivalOnRedController : ReportControllerBase<ArrivalOnRedOptions, IEnumerable<ArrivalOnRedResult>>
+    public class ArrivalOnRedController : ReportControllerBase<ArrivalOnRedOptions, IEnumerable<ReportResult<ArrivalOnRedResult>>>
     {
         /// <inheritdoc/>
-        public ArrivalOnRedController(IReportService<ArrivalOnRedOptions, IEnumerable<ArrivalOnRedResult>> reportService, ILogger<ArrivalOnRedController> logger) : base(reportService, logger) { }
+        public ArrivalOnRedController(IReportService<ArrivalOnRedOptions, IEnumerable<ReportResult<ArrivalOnRedResult>>> reportService, ILogger<ArrivalOnRedController> logger) : base(reportService, logger) { }
     }
 }

@@ -80,9 +80,20 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
                 _reportsLogMessages.ReportCompletedMessage(DateTime.Now, controllerName);
                 return Ok(result);
             }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
             catch (Exception e)
             {
                 _reportsLogMessages.ReportExecutionException(e);
+                var controllerName = ControllerContext.RouteData.Values["controller"]?.ToString();
+                var error = ReportErrorFactory.FromException(e, controllerName ?? GetType().Name);
+                if (ReportFailureResultFactory.TryCreateFailureResult(typeof(Tout), error, out var failureResult))
+                {
+                    return Ok(failureResult);
+                }
+
                 return BadRequest(e.Message);
             }
         }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/WaitTimeController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Wait time report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class WaitTimeController : ReportControllerBase<WaitTimeOptions, IEnumerable<WaitTimeResult>>
+    public class WaitTimeController : ReportControllerBase<WaitTimeOptions, IEnumerable<ReportResult<WaitTimeResult>>>
     {
         /// <inheritdoc/>
-        public WaitTimeController(IReportService<WaitTimeOptions, IEnumerable<WaitTimeResult>> reportService, ILogger<WaitTimeController> logger) : base(reportService, logger) { }
+        public WaitTimeController(IReportService<WaitTimeOptions, IEnumerable<ReportResult<WaitTimeResult>>> reportService, ILogger<WaitTimeController> logger) : base(reportService, logger) { }
     }
 }

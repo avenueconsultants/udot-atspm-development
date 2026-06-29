@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/TimingAndActuationController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Timing and actuation report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class TimingAndActuationController : ReportControllerBase<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>>
+    public class TimingAndActuationController : ReportControllerBase<TimingAndActuationsOptions, IEnumerable<ReportResult<TimingAndActuationsForPhaseResult>>>
     {
         /// <inheritdoc/>
-        public TimingAndActuationController(IReportService<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>> reportService, ILogger<TimingAndActuationController> logger) : base(reportService, logger) { }
+        public TimingAndActuationController(IReportService<TimingAndActuationsOptions, IEnumerable<ReportResult<TimingAndActuationsForPhaseResult>>> reportService, ILogger<TimingAndActuationController> logger) : base(reportService, logger) { }
     }
 }

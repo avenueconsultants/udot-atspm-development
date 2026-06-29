@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/ApproachSpeedReportService.cs
 // 
@@ -23,7 +23,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Approach speed report service
     /// </summary>
-    public class ApproachSpeedReportService : ReportServiceBase<ApproachSpeedOptions, IEnumerable<ApproachSpeedResult>>
+    public class ApproachSpeedReportService : ReportServiceBase<ApproachSpeedOptions, IEnumerable<ReportResult<ApproachSpeedResult>>>
     {
         private readonly ApproachSpeedService approachSpeedService;
         private readonly IIndianaEventLogRepository controllerEventLogRepository;
@@ -53,28 +53,37 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<IEnumerable<ApproachSpeedResult>> ExecuteAsync(ApproachSpeedOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<IEnumerable<ReportResult<ApproachSpeedResult>>> ExecuteAsync(ApproachSpeedOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             var Location = LocationRepository.GetLatestVersionOfLocation(parameter.LocationIdentifier, parameter.Start);
+            if (Location == null)
+            {
+                return ReportErrorFactory.Create("LocationNotFound", "Location not found", nameof(ApproachSpeedReportService), locationIdentifier: parameter.LocationIdentifier).ToFailureReportResults<ApproachSpeedResult>();
+            }
+
             var controllerEventLogs = controllerEventLogRepository.GetEventsBetweenDates(Location.LocationIdentifier, parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
 
             if (controllerEventLogs.IsNullOrEmpty())
             {
                 //return Ok("No data found");
-                return await Task.FromException<IEnumerable<ApproachSpeedResult>>(new NullReferenceException("No Controller Event Logs found for this signal on this date"));
+                return ReportErrorFactory.Create("NoControllerEventLogs", "No Controller Event Logs found for this signal on this date", nameof(ApproachSpeedReportService), location: Location).ToFailureReportResults<ApproachSpeedResult>();
             }
 
             var planEvents = controllerEventLogs.GetPlanEvents(parameter.Start.AddHours(-12), parameter.End.AddHours(12)).ToList();
 
             var phaseDetails = phaseService.GetPhases(Location);
-            var tasks = new List<Task<ApproachSpeedResult>>();
+            var tasks = new List<Task<ReportResult<ApproachSpeedResult>>>();
 
             foreach (var phaseDetail in phaseDetails)
             {
-                tasks.Add(GetChartDataByApproach(parameter, controllerEventLogs, planEvents, phaseDetail, Location.LocationDescription()));
+                tasks.Add(GetChartDataByApproach(parameter, controllerEventLogs, planEvents, phaseDetail, Location.LocationDescription())
+                    .ToReportResultAsync(ex => ReportErrorFactory.FromException(ex, nameof(ApproachSpeedReportService), phase: phaseDetail, sortOrder: phaseDetail.PhaseNumber)));
             }
             var results = await Task.WhenAll(tasks);
-            var finalResultcheck = results.Where(result => result != null).OrderBy(r => r.PhaseNumber).ToList();
+            var finalResultcheck = results
+                .Where(result => result != null)
+                .OrderBy(r => r.Result?.PhaseNumber ?? r.Error?.SortOrder ?? int.MaxValue)
+                .ToList();
 
             //if (finalResultcheck.IsNullOrEmpty())
             //{

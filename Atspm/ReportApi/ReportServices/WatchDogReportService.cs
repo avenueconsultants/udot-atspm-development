@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.ReportServices/WatchDogReportService.cs
 // 
@@ -25,7 +25,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
     /// <summary>
     /// Preempt request report service
     /// </summary>
-    public class WatchDogReportService : ReportServiceBase<WatchDogOptions, WatchDogResult>
+    public class WatchDogReportService : ReportServiceBase<WatchDogOptions, ReportResult<WatchDogResult>>
     {
         private readonly IWatchDogEventLogRepository watchDogLogEventRepository;
         private readonly ILocationRepository locationRepository;
@@ -46,7 +46,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         }
 
         /// <inheritdoc/>
-        public override async Task<WatchDogResult> ExecuteAsync(WatchDogOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
+        public override async Task<ReportResult<WatchDogResult>> ExecuteAsync(WatchDogOptions parameter, IProgress<int> progress = null, CancellationToken cancelToken = default)
         {
             IEnumerable<WatchDogLogEvent> query;
             if (parameter.IsFilteredEvents)

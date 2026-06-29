@@ -1,4 +1,5 @@
 using Moq;
+using Utah.Udot.Atspm.Business.Common;
 using Utah.Udot.Atspm.Data.Models;
 using Utah.Udot.Atspm.ReportApi.ReportServices;
 using Utah.Udot.Atspm.Repositories.AggregationRepositories;
@@ -19,6 +20,12 @@ namespace ReportApiTests
                 _locationRepo.Object,
                 _pedRepo.Object,
                 _cycleRepo.Object);
+        }
+
+        private static PedatLocationData Success(ReportResult<PedatLocationData> result)
+        {
+            Assert.True(result.IsSuccess, result.Error?.Message);
+            return result.Result;
         }
 
         private PedatLocationDataQuery CreateValidQuery()
@@ -119,7 +126,7 @@ namespace ReportApiTests
         }
 
         [Fact]
-        public async Task ExecutePedAgg_NoLocations_Throws()
+        public async Task ExecutePedAgg_NoLocations_ReturnsFailure()
         {
             var service = CreateService();
             var query = CreateValidQuery();
@@ -127,7 +134,10 @@ namespace ReportApiTests
             _locationRepo.Setup(x => x.GetLatestVersionOfLocation(It.IsAny<string>(), It.IsAny<DateTime>()))
                          .Returns((Location)null);
 
-            await Assert.ThrowsAsync<NullReferenceException>(() => service.ExecutePedAgg(query));
+            var result = Assert.Single(await service.ExecutePedAgg(query));
+
+            Assert.False(result.IsSuccess);
+            Assert.Equal("LocationNotFound", result.Error.Code);
         }
 
         [Fact]
@@ -148,7 +158,7 @@ namespace ReportApiTests
             var result = (await service.ExecutePedAgg(query)).ToList();
 
             Assert.Single(result);
-            Assert.True(result[0].TotalVolume >= 0);
+            Assert.True(Success(result[0]).TotalVolume >= 0);
         }
 
         [Fact]
@@ -172,7 +182,7 @@ namespace ReportApiTests
 
             var result = (await service.ExecutePedAgg(query)).ToList();
 
-            Assert.Equal(0, result[0].TotalVolume);
+            Assert.Equal(0, Success(result[0]).TotalVolume);
         }
 
         // ---------------------------
@@ -195,7 +205,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("1", It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(CreateCycleData());
 
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             Assert.True(result.TotalVolume > 0);
         }
@@ -217,7 +227,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("1", It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(CreateCycleData(1));
 
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             Assert.True(result.TotalVolume >= 0);
         }
@@ -279,7 +289,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("1", It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(CreateCycleData());
 
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             Assert.NotNull(result.RawData);
         }
@@ -303,7 +313,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("1", It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Returns(CreateCycleData());
 
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             Assert.NotEmpty(result.AverageVolumeByHourOfDay);
             Assert.NotEmpty(result.AverageVolumeByDayOfWeek);
@@ -428,7 +438,7 @@ namespace ReportApiTests
         }
 
         [Fact]
-        public async Task ExecutePedAgg_LocationNotFound_ThrowsException2()
+        public async Task ExecutePedAgg_LocationNotFound_ReturnsFailure2()
         {
             // Arrange
             var service = CreateService();
@@ -443,7 +453,10 @@ namespace ReportApiTests
                              .Returns((Location)null);
 
             // Act & Assert
-            await Assert.ThrowsAsync<NullReferenceException>(() => service.ExecutePedAgg(query));
+            var result = Assert.Single(await service.ExecutePedAgg(query));
+
+            Assert.False(result.IsSuccess);
+            Assert.Equal("LocationNotFound", result.Error.Code);
         }
 
         [Fact]
@@ -490,7 +503,7 @@ namespace ReportApiTests
 
             // Assert
             Assert.Single(result);
-            var data = result[0];
+            var data = Success(result[0]);
 
             // Check location info
             Assert.Equal("LOC1", data.LocationIdentifier);
@@ -558,7 +571,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("LOC2", query.StartDate, query.EndDate)).Returns(cycleEvents);
 
             // Act
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             // Assert
             Assert.Equal("LOC2", result.LocationIdentifier);
@@ -628,7 +641,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("LOC3", startDate, endDate)).Returns(cycleEvents);
 
             // Act
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             // Assert location info
             Assert.Equal("LOC3", result.LocationIdentifier);
@@ -736,7 +749,7 @@ namespace ReportApiTests
             _cycleRepo.Setup(x => x.GetAggregationsBetweenDates("LOC_TEST", startDate, endDate)).Returns(cycleEvents);
 
             // Act
-            var result = (await service.ExecutePedAgg(query)).First();
+            var result = Success((await service.ExecutePedAgg(query)).First());
 
             // Assert Location Info
             Assert.Equal("LOC_TEST", result.LocationIdentifier);

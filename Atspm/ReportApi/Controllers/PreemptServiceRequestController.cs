@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ReportApi - Utah.Udot.Atspm.ReportApi.Controllers/PreemptServiceRequestController.cs
 // 
@@ -24,9 +24,9 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
     /// Preempt request report controller
     /// </summary>
     [ApiVersion(1.0)]
-    public class PreemptServiceRequestController : ReportControllerBase<PreemptServiceRequestOptions, PreemptServiceRequestResult>
+    public class PreemptServiceRequestController : ReportControllerBase<PreemptServiceRequestOptions, ReportResult<PreemptServiceRequestResult>>
     {
         /// <inheritdoc/>
-        public PreemptServiceRequestController(IReportService<PreemptServiceRequestOptions, PreemptServiceRequestResult> reportService, ILogger<PreemptServiceRequestController> logger) : base(reportService, logger) { }
+        public PreemptServiceRequestController(IReportService<PreemptServiceRequestOptions, ReportResult<PreemptServiceRequestResult>> reportService, ILogger<PreemptServiceRequestController> logger) : base(reportService, logger) { }
     }
 }

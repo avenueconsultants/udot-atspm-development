@@ -15,28 +15,15 @@
 // limitations under the License.
 #endregion
 
+using Utah.Udot.Atspm.Business.Common;
+
 namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
     /// <summary>
     /// Wrapper for time space diagram average results that can represent either a successful result or an error
     /// </summary>
-    public class TimeSpaceDiagramAveragePhaseResult
+    public class TimeSpaceDiagramAveragePhaseResult : ReportResult<TimeSpaceDiagramAverageResult>
     {
-        /// <summary>
-        /// Error message if the operation failed, null if successful
-        /// </summary>
-        public string Error { get; set; }
-
-        /// <summary>
-        /// The average phase result data if successful, null if there was an error
-        /// </summary>
-        public TimeSpaceDiagramAverageResult Result { get; set; }
-
-        /// <summary>
-        /// Indicates whether the operation was successful (no error)
-        /// </summary>
-        public bool IsSuccess => Error == null;
-
         /// <summary>
         /// Creates a successful result wrapper
         /// </summary>
@@ -47,6 +34,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         /// Creates a failed result wrapper with an error message
         /// </summary>
         public static TimeSpaceDiagramAveragePhaseResult Failure(string error)
+            => new() { Error = ReportErrorFactory.Create("TimeSpaceDiagramAverageError", error, "TimeSpaceDiagramAverage") };
+
+        public static TimeSpaceDiagramAveragePhaseResult Failure(ReportError error)
             => new() { Error = error };
     }
 }
