@@ -122,7 +122,8 @@
     ],
     "ignorePatterns": [
       "next.config.js",
-      "src/mocks/data/*"
+      "src/mocks/data/*",
+      "src/api/**"
     ],
     "rules": {
       "@typescript-eslint/no-unused-vars": [

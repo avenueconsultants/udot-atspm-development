@@ -14,11 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const path = require('path')
+const licenseHeaderHook = `node ${JSON.stringify(path.join(__dirname, 'scripts', 'add-orval-license-header.js'))}`
+
+const withLicenseHeader = {
+  afterAllFilesWrite: licenseHeaderHook,
+}
+
 module.exports = {
   config: {
     input: {
       target: './api-specs/config-spec.json',
     },
+    hooks: withLicenseHeader,
     output: {
       workspace: './src/api/config',
       target: './config-api.ts',
@@ -34,62 +43,45 @@ module.exports = {
       },
     },
   },
-  // reports: {
-  //   input: {
-  //     target: './api-specs/reports-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/reports',
-  //     target: './report-api.ts',
-  //     client: 'react-query',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'reportsRequest',
-  //       },
-  //     },
-  //   },
-  // },
-  // data: {
-  //   input: {
-  //     target: './api-specs/reports-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/reports',
-  //     target: './report-api.ts',
-  //     client: 'react-query',
-  //     httpClient: 'axios',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'reportsRequest',
-  //       },
-  //     },
-  //   },
-  // },
-  // data: {
-  //   input: {
-  //     target: './api-specs/data-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/data',
-  //     target: './data-api.ts',
-  //     client: 'react-query',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'dataRequest',
-  //       },
-  //     },
-  //   },
-  // },
+  reports: {
+    input: {
+      target: './api-specs/reports-spec.json',
+    },
+    hooks: withLicenseHeader,
+    output: {
+      workspace: './src/api/reports',
+      target: './report-api.ts',
+      client: 'react-query',
+      mock: true,
+      templates: './orval-templates',
+      mode: 'tags-split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'reportsRequest',
+        },
+      },
+    },
+  },
+  data: {
+    input: {
+      target: './api-specs/data-spec.json',
+    },
+    hooks: withLicenseHeader,
+    output: {
+      workspace: './src/api/data',
+      target: './data-api.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mock: true,
+      templates: './orval-templates',
+      mode: 'tags-split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'dataRequest',
+        },
+      },
+    },
+  },
 }
