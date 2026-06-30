@@ -1,11 +1,11 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ATSPM Configuration Api",
-    "description": "ATSPM Configuration with OData, OpenAPI, Swashbuckle, and API versioning.",
+    "title": "Atspm Configuration Api",
+    "description": "Atspm Device and Location Configuration",
     "contact": {
       "name": "udotdevelopment",
-      "url": "https://udottraffic.utah.gov/atspm/",
+      "url": "https://github.com/opensourcetransportation/atspm",
       "email": "udotdevelopment@gmail.com"
     },
     "license": {
@@ -20,7 +20,7 @@
     }
   ],
   "paths": {
-    "/Approach/{key}/detectors": {
+    "/api/v1/Approach/{key}/detectors": {
       "get": {
         "tags": [
           "Approach"
@@ -421,7 +421,7 @@
         }
       }
     },
-    "/Approach/{key}/detectors/$count": {
+    "/api/v1/Approach/{key}/detectors/$count": {
       "get": {
         "tags": [
           "Approach"
@@ -822,7 +822,7 @@
         }
       }
     },
-    "/UpsertApproach": {
+    "/api/v1/UpsertApproach": {
       "post": {
         "tags": [
           "Approach"
@@ -1068,7 +1068,7 @@
         }
       }
     },
-    "/GetApproachDto/{id}": {
+    "/api/v1/GetApproachDto/{id}": {
       "get": {
         "tags": [
           "Approach"
@@ -1119,7 +1119,7 @@
         }
       }
     },
-    "/Approach": {
+    "/api/v1/Approach": {
       "get": {
         "tags": [
           "Approach"
@@ -1750,7 +1750,7 @@
         }
       }
     },
-    "/Approach/$count": {
+    "/api/v1/Approach/$count": {
       "get": {
         "tags": [
           "Approach"
@@ -2144,7 +2144,7 @@
         }
       }
     },
-    "/Approach/{key}": {
+    "/api/v1/Approach/{key}": {
       "get": {
         "tags": [
           "Approach"
@@ -2919,7 +2919,7 @@
         }
       }
     },
-    "/Area/{key}/locations": {
+    "/api/v1/Area/{key}/locations": {
       "get": {
         "tags": [
           "Area"
@@ -3320,7 +3320,7 @@
         }
       }
     },
-    "/Area/{key}/locations/$count": {
+    "/api/v1/Area/{key}/locations/$count": {
       "get": {
         "tags": [
           "Area"
@@ -3721,7 +3721,7 @@
         }
       }
     },
-    "/Area": {
+    "/api/v1/Area": {
       "get": {
         "tags": [
           "Area"
@@ -4352,7 +4352,7 @@
         }
       }
     },
-    "/Area/$count": {
+    "/api/v1/Area/$count": {
       "get": {
         "tags": [
           "Area"
@@ -4746,7 +4746,7 @@
         }
       }
     },
-    "/Area/{key}": {
+    "/api/v1/Area/{key}": {
       "get": {
         "tags": [
           "Area"
@@ -5521,7 +5521,7 @@
         }
       }
     },
-    "/DetectionType/{key}/detectors": {
+    "/api/v1/DetectionType/{key}/detectors": {
       "get": {
         "tags": [
           "DetectionType"
@@ -5921,7 +5921,7 @@
         }
       }
     },
-    "/DetectionType/{key}/detectors/$count": {
+    "/api/v1/DetectionType/{key}/detectors/$count": {
       "get": {
         "tags": [
           "DetectionType"
@@ -6321,7 +6321,7 @@
         }
       }
     },
-    "/DetectionType/{key}/measureTypes": {
+    "/api/v1/DetectionType/{key}/measureTypes": {
       "get": {
         "tags": [
           "DetectionType"
@@ -6721,7 +6721,7 @@
         }
       }
     },
-    "/DetectionType/{key}/measureTypes/$count": {
+    "/api/v1/DetectionType/{key}/measureTypes/$count": {
       "get": {
         "tags": [
           "DetectionType"
@@ -7121,7 +7121,7 @@
         }
       }
     },
-    "/DetectionType": {
+    "/api/v1/DetectionType": {
       "get": {
         "tags": [
           "DetectionType"
@@ -7752,7 +7752,7 @@
         }
       }
     },
-    "/DetectionType/$count": {
+    "/api/v1/DetectionType/$count": {
       "get": {
         "tags": [
           "DetectionType"
@@ -8146,7 +8146,7 @@
         }
       }
     },
-    "/DetectionType/{key}": {
+    "/api/v1/DetectionType/{key}": {
       "get": {
         "tags": [
           "DetectionType"
@@ -8917,7 +8917,7 @@
         }
       }
     },
-    "/Detector/{key}/detectorComments": {
+    "/api/v1/Detector/{key}/detectorComments": {
       "get": {
         "tags": [
           "Detector"
@@ -9318,7 +9318,7 @@
         }
       }
     },
-    "/Detector/{key}/detectorComments/$count": {
+    "/api/v1/Detector/{key}/detectorComments/$count": {
       "get": {
         "tags": [
           "Detector"
@@ -9719,7 +9719,7 @@
         }
       }
     },
-    "/Detector/{key}/detectionTypes": {
+    "/api/v1/Detector/{key}/detectionTypes": {
       "get": {
         "tags": [
           "Detector"
@@ -10120,7 +10120,7 @@
         }
       }
     },
-    "/Detector/{key}/detectionTypes/$count": {
+    "/api/v1/Detector/{key}/detectionTypes/$count": {
       "get": {
         "tags": [
           "Detector"
@@ -10521,7 +10521,7 @@
         }
       }
     },
-    "/Detector": {
+    "/api/v1/Detector": {
       "get": {
         "tags": [
           "Detector"
@@ -11152,7 +11152,7 @@
         }
       }
     },
-    "/Detector/$count": {
+    "/api/v1/Detector/$count": {
       "get": {
         "tags": [
           "Detector"
@@ -11546,7 +11546,7 @@
         }
       }
     },
-    "/Detector/{key}": {
+    "/api/v1/Detector/{key}": {
       "get": {
         "tags": [
           "Detector"
@@ -12321,7 +12321,7 @@
         }
       }
     },
-    "/DetectorComment": {
+    "/api/v1/DetectorComment": {
       "get": {
         "tags": [
           "DetectorComment"
@@ -12952,7 +12952,7 @@
         }
       }
     },
-    "/DetectorComment/$count": {
+    "/api/v1/DetectorComment/$count": {
       "get": {
         "tags": [
           "DetectorComment"
@@ -13346,7 +13346,7 @@
         }
       }
     },
-    "/DetectorComment/{key}": {
+    "/api/v1/DetectorComment/{key}": {
       "get": {
         "tags": [
           "DetectorComment"
@@ -14121,7 +14121,7 @@
         }
       }
     },
-    "/Device/GetActiveDevicesByLocation(locationId={locationId})": {
+    "/api/v1/Device/GetActiveDevicesByLocation(locationId={locationId})": {
       "get": {
         "tags": [
           "Device"
@@ -14515,7 +14515,7 @@
         }
       }
     },
-    "/Device/GetActiveDevicesCount": {
+    "/api/v1/Device/GetActiveDevicesCount": {
       "get": {
         "tags": [
           "Device"
@@ -14900,7 +14900,7 @@
         }
       }
     },
-    "/Device": {
+    "/api/v1/Device": {
       "get": {
         "tags": [
           "Device"
@@ -15531,7 +15531,7 @@
         }
       }
     },
-    "/Device/$count": {
+    "/api/v1/Device/$count": {
       "get": {
         "tags": [
           "Device"
@@ -15925,7 +15925,7 @@
         }
       }
     },
-    "/Device/{key}": {
+    "/api/v1/Device/{key}": {
       "get": {
         "tags": [
           "Device"
@@ -16700,7 +16700,7 @@
         }
       }
     },
-    "/DeviceConfiguration/{key}/devices": {
+    "/api/v1/DeviceConfiguration/{key}/devices": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -17101,7 +17101,7 @@
         }
       }
     },
-    "/DeviceConfiguration/{key}/devices/$count": {
+    "/api/v1/DeviceConfiguration/{key}/devices/$count": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -17502,7 +17502,7 @@
         }
       }
     },
-    "/DeviceConfiguration/GetEventLogDecoders": {
+    "/api/v1/DeviceConfiguration/GetEventLogDecoders": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -17887,7 +17887,7 @@
         }
       }
     },
-    "/DeviceConfiguration": {
+    "/api/v1/DeviceConfiguration": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -18518,7 +18518,7 @@
         }
       }
     },
-    "/DeviceConfiguration/$count": {
+    "/api/v1/DeviceConfiguration/$count": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -18912,7 +18912,7 @@
         }
       }
     },
-    "/DeviceConfiguration/{key}": {
+    "/api/v1/DeviceConfiguration/{key}": {
       "get": {
         "tags": [
           "DeviceConfiguration"
@@ -19687,7 +19687,7 @@
         }
       }
     },
-    "/DirectionType/{key}/approaches": {
+    "/api/v1/DirectionType/{key}/approaches": {
       "get": {
         "tags": [
           "DirectionType"
@@ -20087,7 +20087,7 @@
         }
       }
     },
-    "/DirectionType/{key}/approaches/$count": {
+    "/api/v1/DirectionType/{key}/approaches/$count": {
       "get": {
         "tags": [
           "DirectionType"
@@ -20487,7 +20487,7 @@
         }
       }
     },
-    "/DirectionType/{key}/primaryDirections": {
+    "/api/v1/DirectionType/{key}/primaryDirections": {
       "get": {
         "tags": [
           "DirectionType"
@@ -20887,7 +20887,7 @@
         }
       }
     },
-    "/DirectionType/{key}/primaryDirections/$count": {
+    "/api/v1/DirectionType/{key}/primaryDirections/$count": {
       "get": {
         "tags": [
           "DirectionType"
@@ -21287,7 +21287,7 @@
         }
       }
     },
-    "/DirectionType/{key}/opposingDirections": {
+    "/api/v1/DirectionType/{key}/opposingDirections": {
       "get": {
         "tags": [
           "DirectionType"
@@ -21687,7 +21687,7 @@
         }
       }
     },
-    "/DirectionType/{key}/opposingDirections/$count": {
+    "/api/v1/DirectionType/{key}/opposingDirections/$count": {
       "get": {
         "tags": [
           "DirectionType"
@@ -22087,7 +22087,7 @@
         }
       }
     },
-    "/DirectionType": {
+    "/api/v1/DirectionType": {
       "get": {
         "tags": [
           "DirectionType"
@@ -22718,7 +22718,7 @@
         }
       }
     },
-    "/DirectionType/$count": {
+    "/api/v1/DirectionType/$count": {
       "get": {
         "tags": [
           "DirectionType"
@@ -23112,7 +23112,7 @@
         }
       }
     },
-    "/DirectionType/{key}": {
+    "/api/v1/DirectionType/{key}": {
       "get": {
         "tags": [
           "DirectionType"
@@ -23883,7 +23883,7 @@
         }
       }
     },
-    "/Faq": {
+    "/api/v1/Faq": {
       "get": {
         "tags": [
           "Faq"
@@ -24514,7 +24514,7 @@
         }
       }
     },
-    "/Faq/$count": {
+    "/api/v1/Faq/$count": {
       "get": {
         "tags": [
           "Faq"
@@ -24908,7 +24908,7 @@
         }
       }
     },
-    "/Faq/{key}": {
+    "/api/v1/Faq/{key}": {
       "get": {
         "tags": [
           "Faq"
@@ -25683,7 +25683,7 @@
         }
       }
     },
-    "/Jurisdiction/{key}/locations": {
+    "/api/v1/Jurisdiction/{key}/locations": {
       "get": {
         "tags": [
           "Jurisdiction"
@@ -26084,7 +26084,7 @@
         }
       }
     },
-    "/Jurisdiction/{key}/locations/$count": {
+    "/api/v1/Jurisdiction/{key}/locations/$count": {
       "get": {
         "tags": [
           "Jurisdiction"
@@ -26485,7 +26485,7 @@
         }
       }
     },
-    "/Jurisdiction": {
+    "/api/v1/Jurisdiction": {
       "get": {
         "tags": [
           "Jurisdiction"
@@ -27116,7 +27116,7 @@
         }
       }
     },
-    "/Jurisdiction/$count": {
+    "/api/v1/Jurisdiction/$count": {
       "get": {
         "tags": [
           "Jurisdiction"
@@ -27510,7 +27510,7 @@
         }
       }
     },
-    "/Jurisdiction/{key}": {
+    "/api/v1/Jurisdiction/{key}": {
       "get": {
         "tags": [
           "Jurisdiction"
@@ -28285,7 +28285,7 @@
         }
       }
     },
-    "/Location/{key}/approaches": {
+    "/api/v1/Location/{key}/approaches": {
       "get": {
         "tags": [
           "Location"
@@ -28693,7 +28693,7 @@
         }
       }
     },
-    "/Location/{key}/approaches/$count": {
+    "/api/v1/Location/{key}/approaches/$count": {
       "get": {
         "tags": [
           "Location"
@@ -29101,7 +29101,7 @@
         }
       }
     },
-    "/Location/{key}/areas": {
+    "/api/v1/Location/{key}/areas": {
       "get": {
         "tags": [
           "Location"
@@ -29509,7 +29509,7 @@
         }
       }
     },
-    "/Location/{key}/areas/$count": {
+    "/api/v1/Location/{key}/areas/$count": {
       "get": {
         "tags": [
           "Location"
@@ -29917,7 +29917,7 @@
         }
       }
     },
-    "/Location/{key}/devices": {
+    "/api/v1/Location/{key}/devices": {
       "get": {
         "tags": [
           "Location"
@@ -30325,7 +30325,7 @@
         }
       }
     },
-    "/Location/{key}/devices/$count": {
+    "/api/v1/Location/{key}/devices/$count": {
       "get": {
         "tags": [
           "Location"
@@ -30733,7 +30733,7 @@
         }
       }
     },
-    "/Location/{key}/CopyLocationToNewVersion": {
+    "/api/v1/Location/{key}/CopyLocationToNewVersion": {
       "post": {
         "tags": [
           "Location"
@@ -30989,7 +30989,7 @@
         }
       }
     },
-    "/Location/{key}/SetLocationToDeleted": {
+    "/api/v1/Location/{key}/SetLocationToDeleted": {
       "post": {
         "tags": [
           "Location"
@@ -31035,7 +31035,7 @@
         }
       }
     },
-    "/Location/{key}/DeleteAllVersions": {
+    "/api/v1/Location/{key}/DeleteAllVersions": {
       "post": {
         "tags": [
           "Location"
@@ -31087,7 +31087,7 @@
         }
       }
     },
-    "/Location/GetLatestVersionOfLocation(identifier={identifier})": {
+    "/api/v1/Location/GetLatestVersionOfLocation(identifier={identifier})": {
       "get": {
         "tags": [
           "Location"
@@ -31334,7 +31334,7 @@
         }
       }
     },
-    "/Location/GetAllVersionsOfLocation(identifier={identifier})": {
+    "/api/v1/Location/GetAllVersionsOfLocation(identifier={identifier})": {
       "get": {
         "tags": [
           "Location"
@@ -31731,7 +31731,7 @@
         }
       }
     },
-    "/Location/GetLatestVersionOfAllLocations": {
+    "/api/v1/Location/GetLatestVersionOfAllLocations": {
       "get": {
         "tags": [
           "Location"
@@ -32116,7 +32116,7 @@
         }
       }
     },
-    "/Location/GetDetectionTypeCount": {
+    "/api/v1/Location/GetDetectionTypeCount": {
       "get": {
         "tags": [
           "Location"
@@ -32509,7 +32509,7 @@
         }
       }
     },
-    "/Location/GetLocationsForSearch": {
+    "/api/v1/Location/GetLocationsForSearch": {
       "get": {
         "tags": [
           "Location"
@@ -32933,7 +32933,7 @@
         }
       }
     },
-    "/Location": {
+    "/api/v1/Location": {
       "get": {
         "tags": [
           "Location"
@@ -33564,7 +33564,7 @@
         }
       }
     },
-    "/Location/$count": {
+    "/api/v1/Location/$count": {
       "get": {
         "tags": [
           "Location"
@@ -33958,7 +33958,7 @@
         }
       }
     },
-    "/Location/{key}": {
+    "/api/v1/Location/{key}": {
       "get": {
         "tags": [
           "Location"
@@ -34733,7 +34733,7 @@
         }
       }
     },
-    "/LocationType/{key}/locations": {
+    "/api/v1/LocationType/{key}/locations": {
       "get": {
         "tags": [
           "LocationType"
@@ -35134,7 +35134,7 @@
         }
       }
     },
-    "/LocationType/{key}/locations/$count": {
+    "/api/v1/LocationType/{key}/locations/$count": {
       "get": {
         "tags": [
           "LocationType"
@@ -35535,7 +35535,7 @@
         }
       }
     },
-    "/LocationType": {
+    "/api/v1/LocationType": {
       "get": {
         "tags": [
           "LocationType"
@@ -36166,7 +36166,7 @@
         }
       }
     },
-    "/LocationType/$count": {
+    "/api/v1/LocationType/$count": {
       "get": {
         "tags": [
           "LocationType"
@@ -36560,7 +36560,7 @@
         }
       }
     },
-    "/LocationType/{key}": {
+    "/api/v1/LocationType/{key}": {
       "get": {
         "tags": [
           "LocationType"
@@ -37335,7 +37335,7 @@
         }
       }
     },
-    "/MeasureComment/{key}/measureTypes": {
+    "/api/v1/MeasureComment/{key}/measureTypes": {
       "get": {
         "tags": [
           "MeasureComment"
@@ -37736,7 +37736,7 @@
         }
       }
     },
-    "/MeasureComment/{key}/measureTypes/$count": {
+    "/api/v1/MeasureComment/{key}/measureTypes/$count": {
       "get": {
         "tags": [
           "MeasureComment"
@@ -38137,7 +38137,7 @@
         }
       }
     },
-    "/MeasureComment": {
+    "/api/v1/MeasureComment": {
       "get": {
         "tags": [
           "MeasureComment"
@@ -38768,7 +38768,7 @@
         }
       }
     },
-    "/MeasureComment/$count": {
+    "/api/v1/MeasureComment/$count": {
       "get": {
         "tags": [
           "MeasureComment"
@@ -39162,7 +39162,7 @@
         }
       }
     },
-    "/MeasureComment/{key}": {
+    "/api/v1/MeasureComment/{key}": {
       "get": {
         "tags": [
           "MeasureComment"
@@ -39937,7 +39937,7 @@
         }
       }
     },
-    "/MeasureOption": {
+    "/api/v1/MeasureOption": {
       "get": {
         "tags": [
           "MeasureOption"
@@ -40568,7 +40568,7 @@
         }
       }
     },
-    "/MeasureOption/$count": {
+    "/api/v1/MeasureOption/$count": {
       "get": {
         "tags": [
           "MeasureOption"
@@ -40962,7 +40962,7 @@
         }
       }
     },
-    "/MeasureOption/{key}": {
+    "/api/v1/MeasureOption/{key}": {
       "get": {
         "tags": [
           "MeasureOption"
@@ -41737,7 +41737,7 @@
         }
       }
     },
-    "/MeasureOptionPreset/GetMeasureOptionPresetTypes": {
+    "/api/v1/MeasureOptionPreset/GetMeasureOptionPresetTypes": {
       "get": {
         "tags": [
           "MeasureOptionPreset"
@@ -42122,7 +42122,7 @@
         }
       }
     },
-    "/MeasureOptionPreset": {
+    "/api/v1/MeasureOptionPreset": {
       "get": {
         "tags": [
           "MeasureOptionPreset"
@@ -42753,7 +42753,7 @@
         }
       }
     },
-    "/MeasureOptionPreset/$count": {
+    "/api/v1/MeasureOptionPreset/$count": {
       "get": {
         "tags": [
           "MeasureOptionPreset"
@@ -43147,7 +43147,7 @@
         }
       }
     },
-    "/MeasureOptionPreset/{key}": {
+    "/api/v1/MeasureOptionPreset/{key}": {
       "get": {
         "tags": [
           "MeasureOptionPreset"
@@ -43922,7 +43922,7 @@
         }
       }
     },
-    "/MeasureType/{key}/detectionTypes": {
+    "/api/v1/MeasureType/{key}/detectionTypes": {
       "get": {
         "tags": [
           "MeasureType"
@@ -44323,7 +44323,7 @@
         }
       }
     },
-    "/MeasureType/{key}/detectionTypes/$count": {
+    "/api/v1/MeasureType/{key}/detectionTypes/$count": {
       "get": {
         "tags": [
           "MeasureType"
@@ -44724,7 +44724,7 @@
         }
       }
     },
-    "/MeasureType/{key}/measureComments": {
+    "/api/v1/MeasureType/{key}/measureComments": {
       "get": {
         "tags": [
           "MeasureType"
@@ -45125,7 +45125,7 @@
         }
       }
     },
-    "/MeasureType/{key}/measureComments/$count": {
+    "/api/v1/MeasureType/{key}/measureComments/$count": {
       "get": {
         "tags": [
           "MeasureType"
@@ -45526,7 +45526,7 @@
         }
       }
     },
-    "/MeasureType/{key}/measureOptionPresets": {
+    "/api/v1/MeasureType/{key}/measureOptionPresets": {
       "get": {
         "tags": [
           "MeasureType"
@@ -45927,7 +45927,7 @@
         }
       }
     },
-    "/MeasureType/{key}/measureOptionPresets/$count": {
+    "/api/v1/MeasureType/{key}/measureOptionPresets/$count": {
       "get": {
         "tags": [
           "MeasureType"
@@ -46328,7 +46328,7 @@
         }
       }
     },
-    "/MeasureType": {
+    "/api/v1/MeasureType": {
       "get": {
         "tags": [
           "MeasureType"
@@ -46959,7 +46959,7 @@
         }
       }
     },
-    "/MeasureType/$count": {
+    "/api/v1/MeasureType/$count": {
       "get": {
         "tags": [
           "MeasureType"
@@ -47353,7 +47353,7 @@
         }
       }
     },
-    "/MeasureType/{key}": {
+    "/api/v1/MeasureType/{key}": {
       "get": {
         "tags": [
           "MeasureType"
@@ -48128,7 +48128,7 @@
         }
       }
     },
-    "/MenuItems": {
+    "/api/v1/MenuItems": {
       "get": {
         "tags": [
           "MenuItems"
@@ -48759,7 +48759,7 @@
         }
       }
     },
-    "/MenuItems/$count": {
+    "/api/v1/MenuItems/$count": {
       "get": {
         "tags": [
           "MenuItems"
@@ -49153,7 +49153,7 @@
         }
       }
     },
-    "/MenuItems/{key}": {
+    "/api/v1/MenuItems/{key}": {
       "get": {
         "tags": [
           "MenuItems"
@@ -49928,7 +49928,7 @@
         }
       }
     },
-    "/Product": {
+    "/api/v1/Product": {
       "get": {
         "tags": [
           "Product"
@@ -50559,7 +50559,7 @@
         }
       }
     },
-    "/Product/$count": {
+    "/api/v1/Product/$count": {
       "get": {
         "tags": [
           "Product"
@@ -50953,7 +50953,7 @@
         }
       }
     },
-    "/Product/{key}": {
+    "/api/v1/Product/{key}": {
       "get": {
         "tags": [
           "Product"
@@ -51728,7 +51728,7 @@
         }
       }
     },
-    "/Region/{key}/locations": {
+    "/api/v1/Region/{key}/locations": {
       "get": {
         "tags": [
           "Region"
@@ -52129,7 +52129,7 @@
         }
       }
     },
-    "/Region/{key}/locations/$count": {
+    "/api/v1/Region/{key}/locations/$count": {
       "get": {
         "tags": [
           "Region"
@@ -52530,7 +52530,7 @@
         }
       }
     },
-    "/Region": {
+    "/api/v1/Region": {
       "get": {
         "tags": [
           "Region"
@@ -53161,7 +53161,7 @@
         }
       }
     },
-    "/Region/$count": {
+    "/api/v1/Region/$count": {
       "get": {
         "tags": [
           "Region"
@@ -53555,7 +53555,7 @@
         }
       }
     },
-    "/Region/{key}": {
+    "/api/v1/Region/{key}": {
       "get": {
         "tags": [
           "Region"
@@ -54330,7 +54330,7 @@
         }
       }
     },
-    "/Route/{key}/routeLocations": {
+    "/api/v1/Route/{key}/routeLocations": {
       "get": {
         "tags": [
           "Route"
@@ -54731,7 +54731,7 @@
         }
       }
     },
-    "/Route/{key}/routeLocations/$count": {
+    "/api/v1/Route/{key}/routeLocations/$count": {
       "get": {
         "tags": [
           "Route"
@@ -55132,7 +55132,7 @@
         }
       }
     },
-    "/UpsertRoute": {
+    "/api/v1/UpsertRoute": {
       "post": {
         "tags": [
           "Route"
@@ -55380,7 +55380,7 @@
         }
       }
     },
-    "/GetRouteView/{id}": {
+    "/api/v1/GetRouteView/{id}": {
       "get": {
         "tags": [
           "Route"
@@ -55441,7 +55441,7 @@
         }
       }
     },
-    "/Route": {
+    "/api/v1/Route": {
       "get": {
         "tags": [
           "Route"
@@ -56072,7 +56072,7 @@
         }
       }
     },
-    "/Route/$count": {
+    "/api/v1/Route/$count": {
       "get": {
         "tags": [
           "Route"
@@ -56466,7 +56466,7 @@
         }
       }
     },
-    "/Route/{key}": {
+    "/api/v1/Route/{key}": {
       "get": {
         "tags": [
           "Route"
@@ -57241,7 +57241,7 @@
         }
       }
     },
-    "/RouteDistance/{key}/previousLocations": {
+    "/api/v1/RouteDistance/{key}/previousLocations": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -57642,7 +57642,7 @@
         }
       }
     },
-    "/RouteDistance/{key}/previousLocations/$count": {
+    "/api/v1/RouteDistance/{key}/previousLocations/$count": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -58043,7 +58043,7 @@
         }
       }
     },
-    "/RouteDistance/{key}/nextLocations": {
+    "/api/v1/RouteDistance/{key}/nextLocations": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -58444,7 +58444,7 @@
         }
       }
     },
-    "/RouteDistance/{key}/nextLocations/$count": {
+    "/api/v1/RouteDistance/{key}/nextLocations/$count": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -58845,7 +58845,7 @@
         }
       }
     },
-    "/RouteDistance/GetRouteDistanceByLocationIdentifiers(locationA={locationA},locationB={locationB})": {
+    "/api/v1/RouteDistance/GetRouteDistanceByLocationIdentifiers(locationA={locationA},locationB={locationB})": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -59092,7 +59092,7 @@
         }
       }
     },
-    "/RouteDistance": {
+    "/api/v1/RouteDistance": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -59723,7 +59723,7 @@
         }
       }
     },
-    "/RouteDistance/$count": {
+    "/api/v1/RouteDistance/$count": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -60117,7 +60117,7 @@
         }
       }
     },
-    "/RouteDistance/{key}": {
+    "/api/v1/RouteDistance/{key}": {
       "get": {
         "tags": [
           "RouteDistance"
@@ -60892,7 +60892,7 @@
         }
       }
     },
-    "/RouteLocation": {
+    "/api/v1/RouteLocation": {
       "get": {
         "tags": [
           "RouteLocation"
@@ -61523,7 +61523,7 @@
         }
       }
     },
-    "/RouteLocation/$count": {
+    "/api/v1/RouteLocation/$count": {
       "get": {
         "tags": [
           "RouteLocation"
@@ -61917,7 +61917,7 @@
         }
       }
     },
-    "/RouteLocation/{key}": {
+    "/api/v1/RouteLocation/{key}": {
       "get": {
         "tags": [
           "RouteLocation"
@@ -62692,7 +62692,7 @@
         }
       }
     },
-    "/UsageEntry": {
+    "/api/v1/UsageEntry": {
       "get": {
         "tags": [
           "UsageEntry"
@@ -63323,7 +63323,7 @@
         }
       }
     },
-    "/UsageEntry/$count": {
+    "/api/v1/UsageEntry/$count": {
       "get": {
         "tags": [
           "UsageEntry"
@@ -63717,7 +63717,7 @@
         }
       }
     },
-    "/UsageEntry/{key}": {
+    "/api/v1/UsageEntry/{key}": {
       "get": {
         "tags": [
           "UsageEntry"
@@ -64492,7 +64492,7 @@
         }
       }
     },
-    "/GetCurrentVersion": {
+    "/api/v1/GetCurrentVersion": {
       "get": {
         "tags": [
           "Version"
@@ -64542,7 +64542,7 @@
         }
       }
     },
-    "/GetLatestVersion(PreRelease={PreRelease})": {
+    "/api/v1/GetLatestVersion(PreRelease={PreRelease})": {
       "get": {
         "tags": [
           "Version"
@@ -64596,7 +64596,7 @@
         }
       }
     },
-    "/GetVersionHistory(PreRelease={PreRelease})": {
+    "/api/v1/GetVersionHistory(PreRelease={PreRelease})": {
       "get": {
         "tags": [
           "Version"
@@ -64690,7 +64690,7 @@
         }
       }
     },
-    "/WatchDogIgnoreEvent": {
+    "/api/v1/WatchDogIgnoreEvent": {
       "get": {
         "tags": [
           "WatchDogIgnoreEvent"
@@ -65321,7 +65321,7 @@
         }
       }
     },
-    "/WatchDogIgnoreEvent/$count": {
+    "/api/v1/WatchDogIgnoreEvent/$count": {
       "get": {
         "tags": [
           "WatchDogIgnoreEvent"
@@ -65715,7 +65715,7 @@
         }
       }
     },
-    "/WatchDogIgnoreEvent/{key}": {
+    "/api/v1/WatchDogIgnoreEvent/{key}": {
       "get": {
         "tags": [
           "WatchDogIgnoreEvent"
@@ -67414,7 +67414,8 @@
           3,
           4,
           5,
-          6
+          6,
+          7
         ],
         "type": "integer",
         "format": "int32"
