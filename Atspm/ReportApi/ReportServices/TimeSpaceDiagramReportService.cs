@@ -33,11 +33,9 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         {
             public required RouteLocation RouteLocation { get; set; }
             public List<IndianaEvent> ControllerEventLogs { get; set; } = [];
-            public IReadOnlyList<Plan> Plans { get; set; } = [];
             public PhaseDetail? PrimaryPhaseDetail { get; set; }
             public PhaseDetail? OpposingPhaseDetail { get; set; }
             public int? ProgrammedCycleLength { get; set; }
-            public List<IndianaEvent> ProgrammedSplits { get; set; } = [];
             public TmcForPhaseDto PrimaryTmcEvents { get; set; } = new();
             public TmcForPhaseDto OpposingTmcEvents { get; set; } = new();
             public string? ErrorMessage { get; set; }
@@ -51,7 +49,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private readonly IRouteLocationsRepository routeLocationsRepository;
         private readonly IRouteRepository routeRepository;
         private readonly PriorityDetailsReportService priorityDetailsReportService;
-        private readonly PlanService planService;
 
         public TimeSpaceDiagramReportService(IIndianaEventLogRepository controllerEventLogRepository,
             ILocationRepository locationRepository,
@@ -60,8 +57,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             IRouteLocationsRepository routeLocationsRepository,
             IRouteRepository routeRepository,
             LocationPhaseService locationPhaseService,
-            PriorityDetailsReportService priorityDetailsReportService,
-            PlanService planService)
+            PriorityDetailsReportService priorityDetailsReportService)
         {
             this.controllerEventLogRepository = controllerEventLogRepository;
             LocationRepository = locationRepository;
@@ -71,7 +67,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             this.routeRepository = routeRepository;
             this.LocationPhaseService = locationPhaseService;
             this.priorityDetailsReportService = priorityDetailsReportService;
-            this.planService = planService;
         }
 
         /// <inheritdoc/>
@@ -90,11 +85,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var eventCodes = new List<short>() { 82, 81 };
             var tasks = new List<Task<TimeSpaceDiagramPhaseResult>>();
             routeLocations.Sort((r1, r2) => r1.Order - r2.Order);
-            var processedRouteLocations = await ProcessRouteLocations(
-                routeLocations,
-                parameter,
-                routeLabel,
-                cancelToken);
+            var (processedRouteLocations, programmedSplits) =
+                ProcessRouteLocations(routeLocations, parameter, routeLabel);
 
             for (int i = 0; i < routeLocations.Count; i++)
             {
@@ -125,13 +117,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     tasks.Add(GetChartDataForPhase(
                         parameter,
                         processedRouteLocation.ControllerEventLogs,
-                        processedRouteLocation.Plans,
                         processedRouteLocation.PrimaryPhaseDetail,
                         processedRouteLocation.ProgrammedCycleLength,
                         processedRouteLocation.PrimaryTmcEvents,
                         routeLocations[i],
                         srmTracks,
-                        processedRouteLocation.ProgrammedSplits,
+                        programmedSplits,
                         eventCodes,
                         nextLocationDistance,
                         previousLocationDistance,
@@ -171,13 +162,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     tasks.Add(GetChartDataForPhase(
                         parameter,
                         processedRouteLocation.ControllerEventLogs,
-                        processedRouteLocation.Plans,
                         processedRouteLocation.OpposingPhaseDetail,
                         processedRouteLocation.ProgrammedCycleLength,
                         processedRouteLocation.OpposingTmcEvents,
                         routeLocations[i],
                         srmTracks,
-                        processedRouteLocation.ProgrammedSplits,
+                        programmedSplits,
                         eventCodes,
                         nextLocationDistance,
                         previousLocationDistance,
@@ -205,13 +195,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 : $"route '{routeName}' (id {routeId})";
         }
 
-        private async Task<List<ProcessedRouteLocation>> ProcessRouteLocations(
+        private (
+            List<ProcessedRouteLocation> processedRouteLocations,
+            List<IndianaEvent> programmedSplits)
+        ProcessRouteLocations(
             IEnumerable<RouteLocation> routeLocations,
             TimeSpaceDiagramOptions parameter,
-            string routeLabel,
-            CancellationToken cancelToken)
+            string routeLabel)
         {
             var processedRouteLocations = new List<ProcessedRouteLocation>();
+            var programmedSplitsForTimePeriod = new List<IndianaEvent>();
 
             foreach (var routeLocation in routeLocations)
             {
@@ -292,17 +285,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                                 parameter.End.AddHours(12))
                             .ToList();
 
-                    var planFallbackEvents = controllerEventLogs
-                        .Where(e => e.Timestamp >= parameter.Start && e.Timestamp < parameter.End)
-                        .ToList();
-
-                    processedRouteLocation.Plans = await planService.GetPlansAsync(
-                        location.LocationIdentifier,
-                        parameter.Start,
-                        parameter.End,
-                        planFallbackEvents,
-                        cancelToken);
-
                     int? currentProgrammedCycleLength = null;
 
                     if (controllerEventLogs.Any())
@@ -316,16 +298,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                             GetEventOverlappingTime(parameter.Start, programmedCycleEvents, "CycleLength")
                                 .FirstOrDefault()?.EventParam;
 
-                        var splitEvents = controllerEventLogs
-                            .GetEventsByEventCodes(
+                        if (!programmedSplitsForTimePeriod.Any())
+                        {
+                            var splitEvents = controllerEventLogs.GetEventsByEventCodes(
                                 parameter.Start.AddHours(-12),
                                 parameter.End.AddHours(12),
-                                new List<short> { 134, 135, 136, 137, 138, 139, 140, 141 })
-                            .Where(e => e.LocationIdentifier == location.LocationIdentifier)
-                            .ToList();
+                                new List<short> { 134, 135, 136, 137, 138, 139, 140 });
 
-                        processedRouteLocation.ProgrammedSplits.AddRange(
-                            GetEventOverallapingTime(parameter.Start, splitEvents, "Program Splits"));
+                            programmedSplitsForTimePeriod.AddRange(
+                                GetEventOverallapingTime(parameter.Start, splitEvents, "Program Splits"));
+                        }
                     }
 
                     processedRouteLocation.ControllerEventLogs = controllerEventLogs;
@@ -346,7 +328,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 }
             }
 
-            return processedRouteLocations;
+            return (processedRouteLocations, programmedSplitsForTimePeriod);
         }
 
         private List<IndianaEvent> GetEventOverallapingTime(
@@ -378,7 +360,6 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private async Task<TimeSpaceDiagramPhaseResult> GetChartDataForPhase(
             TimeSpaceDiagramOptions parameter,
             List<IndianaEvent> currentControllerEventLogs,
-            IReadOnlyList<Plan> plans,
             PhaseDetail currentPhase,
             int? programmedCycleLength,
             TmcForPhaseDto tmcEventsForPhase,
@@ -413,6 +394,10 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
             try
             {
+                var planEvents = currentControllerEventLogs
+                    .GetPlanEvents(parameter.Start.AddHours(-12), parameter.End.AddHours(12))
+                    .ToList();
+
                 var locationPhase = await LocationPhaseService.GetLocationPhaseData(
                     currentPhase,
                     parameter.Start,
@@ -420,7 +405,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     0,
                     null,
                     currentControllerEventLogs,
-                    plans,
+                    planEvents,
                     false);
 
                 PriorityDetailsOptions priorityDetailsOptions = new PriorityDetailsOptions
@@ -594,6 +579,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             var tasks = new List<Task<TurningMovementCountsLanesResult>>();
             var directionType = currentPhase.Approach.DirectionTypeId;
             var mergingApproaches = GetMergingApproaches(directionType);
+            var plans = new List<Plan>();
 
             if (mergingApproaches == null || currentControllerEventLogs.IsNullOrEmpty())
                 return new TmcForPhaseDto();

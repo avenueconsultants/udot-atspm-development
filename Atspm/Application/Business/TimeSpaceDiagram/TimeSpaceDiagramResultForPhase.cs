@@ -33,7 +33,6 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             double distanceToPreviousLocation,
             int speed,
             int? programmedCycleLength,
-            int? programmedSplit,
             List<CycleEventsDto> cycleAllEvents,
             List<CycleEventsDto> pedIntervals,
             List<TimeSpaceDetectorEventDto> laneByLaneCountDetectors,
@@ -54,7 +53,6 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             DistanceToPreviousLocation = distanceToPreviousLocation;
             Speed = speed;
             CycleLength = programmedCycleLength;
-            ProgrammedSplit = programmedSplit;
             CycleAllEvents = cycleAllEvents;
             PedestrianIntervals = pedIntervals;
             LaneByLaneCountDetectors = laneByLaneCountDetectors;
@@ -79,7 +77,6 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public double? PercentArrivalOnGreen { get; set; }
         public int Order { get; set; }
         public int? CycleLength { get; }
-        public int? ProgrammedSplit { get; set; }
         public TmcForPhaseDto TmcForPhase { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<CycleEventsDto> PedestrianIntervals { get; set; }
