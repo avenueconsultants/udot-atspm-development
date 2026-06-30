@@ -14,7 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+
 export * from './aggregation/aggregation';
+export * from './report-api.schemas';
 export * from './approach-delay/approach-delay';
 export * from './approach-speed/approach-speed';
 export * from './approach-volume/approach-volume';
@@ -34,6 +36,8 @@ export * from './pedestrian-aggregation/pedestrian-aggregation';
 export * from './preempt-detail/preempt-detail';
 export * from './preempt-service/preempt-service';
 export * from './preempt-service-request/preempt-service-request';
+export * from './priority-details/priority-details';
+export * from './priority-summary/priority-summary';
 export * from './purdue-coordination-diagram/purdue-coordination-diagram';
 export * from './purdue-phase-termination/purdue-phase-termination';
 export * from './ramp-metering/ramp-metering';
@@ -45,9 +49,6 @@ export * from './timing-and-actuation/timing-and-actuation';
 export * from './transit-signal-priority/transit-signal-priority';
 export * from './turning-movement-counts/turning-movement-counts';
 export * from './wait-time/wait-time';
-export * from './watchdog/watchdog';
 export * from './watch-dog-dashboard/watch-dog-dashboard';
+export * from './watchdog/watchdog';
 export * from './yellow-red-activations/yellow-red-activations';
-export * from './report-api.schemas';
-export * from './priority-details/priority-details';
-export * from './priority-summary/priority-summary';
