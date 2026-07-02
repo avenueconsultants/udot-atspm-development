@@ -140,6 +140,7 @@ jobs:
           gcloud run jobs update "$SERVICE_NAME" \
             --image "$IMAGE" \
             --update-secrets "/app/Configuration/secrets.json=watchdogSecrets:latest,/app/Configuration/Connection/connectionStrings.json=New-Connection-String:latest" \
+            --update-env-vars "TZ=America/Denver,WatchdogConfiguration__TimeZoneId=America/Denver" \
             --region "${{ secrets.GCP_REGION }}"
         env:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
