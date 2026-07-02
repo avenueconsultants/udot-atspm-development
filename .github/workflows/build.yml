@@ -139,8 +139,7 @@ jobs:
           fi
           gcloud run jobs update "$SERVICE_NAME" \
             --image "$IMAGE" \
-            --update-env-vars "PathBaseSettings__ApplicationPathBase=/config" \
-            --update-secrets "/config/secrets.json=watchdogSecrets:latest" \
+            --update-secrets "/app/Configuration/secrets.json=watchdogSecrets:latest" \
             --region "${{ secrets.GCP_REGION }}"
         env:
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
