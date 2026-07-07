@@ -189,7 +189,7 @@ namespace DatabaseInstaller.Services
             }
         }
 
-        private async Task GetLogsAsync(
+        protected virtual async Task GetLogsAsync(
             DateTime startUtc,
             DateTime endUtc,
             string sourceConnectionString,
