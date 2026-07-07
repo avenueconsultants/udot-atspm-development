@@ -92,12 +92,74 @@ public class TransferSpeedEventsHostedServiceTests
     }
 
     [Fact]
-    public async Task FlushLogsAsync_PersistsCompressedEventLogsToEventLogContext()
+    public async Task StartAsync_WithStartAfterEnd_DoesNotCallLocationRepository()
     {
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 8),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+
+        var serviceProvider = new ServiceCollection()
+            .BuildServiceProvider();
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        await service.StartAsync(CancellationToken.None);
+
+        locationRepository.Verify(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task StartAsync_WithNoSpeedDevices_DoesNotPersistLogs()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+        var options = new DbContextOptionsBuilder<EventLogContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var testContext = new EventLogContext(options);
+        var services = new ServiceCollection();
+        services.AddSingleton<EventLogContext>(testContext);
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>
+            {
+                CreateLocation("1001", CreateDevice(1, DeviceTypes.SignalController))
+            });
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        await service.StartAsync(CancellationToken.None);
+
+        Assert.Empty(testContext.CompressedEvents.Local);
+        locationRepository.Verify(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()), Times.Exactly(24));
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_WithBulkInsertFailure_FallsBackToIndividualInserts()
+    {
+        FailingEventLogContext.Reset();
+
         var databaseName = Guid.NewGuid().ToString();
         var services = new ServiceCollection();
         services.AddDbContext<EventLogContext>(options =>
             options.UseInMemoryDatabase(databaseName));
+        services.AddScoped<EventLogContext, FailingEventLogContext>();
 
         var serviceProvider = services.BuildServiceProvider();
 
@@ -121,13 +183,231 @@ public class TransferSpeedEventsHostedServiceTests
 
         await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
 
-        using var scope = serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<EventLogContext>();
+        Assert.Equal(3, FailingEventLogContext.SaveCalls);
+    }
 
-        var persisted = await context.CompressedEvents.OfType<CompressedEventLogs<SpeedEvent>>().ToListAsync();
+    [Fact]
+    public async Task FlushLogsAsync_WithLargeBatch_PersistsAllEvents()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+        var options = new DbContextOptionsBuilder<EventLogContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var testContext = new EventLogContext(options);
+        var services = new ServiceCollection();
+        services.AddSingleton<EventLogContext>(testContext);
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        var archiveLogs = new ConcurrentBag<CompressedEventLogs<SpeedEvent>>(
+            Enumerable.Range(1, 200).Select(i => CreateLog($"L{i:D3}", i, new[] {
+                CreateSpeedEvent($"L{i:D3}A", 45 + (i % 10), 72 + (i % 10), new DateTimeOffset(2026, 7, 7, 0, 0, 0, TimeSpan.Zero))
+            })));
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
+
+        var persisted = testContext.CompressedEvents.Local.OfType<CompressedEventLogs<SpeedEvent>>().ToList();
+        Assert.Equal(200, persisted.Count);
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_WithEmptyArchive_DoesNotThrow()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+        var options = new DbContextOptionsBuilder<EventLogContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var testContext = new EventLogContext(options);
+        var services = new ServiceCollection();
+        services.AddSingleton<EventLogContext>(testContext);
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", new ConcurrentBag<CompressedEventLogs<SpeedEvent>>());
+
+        Assert.Empty(testContext.CompressedEvents.Local);
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_PersistsCompressedEventLogsToEventLogContext()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+        var options = new DbContextOptionsBuilder<EventLogContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var testContext = new EventLogContext(options);
+        var services = new ServiceCollection();
+        services.AddSingleton<EventLogContext>(testContext);
+
+        var serviceProvider = services.BuildServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        var archiveLogs = new ConcurrentBag<CompressedEventLogs<SpeedEvent>>();
+        archiveLogs.Add(CreateLog("1001", 1, new[] { CreateSpeedEvent("1001A", 45, 72, new DateTimeOffset(2026, 7, 7, 0, 0, 0, TimeSpan.Zero)) }));
+        archiveLogs.Add(CreateLog("1002", 2, new[] { CreateSpeedEvent("1002A", 50, 80, new DateTimeOffset(2026, 7, 7, 0, 30, 0, TimeSpan.Zero)) }));
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
+
+        var persisted = testContext.CompressedEvents.Local
+            .OfType<CompressedEventLogs<SpeedEvent>>()
+            .ToList();
+
         Assert.Equal(2, persisted.Count);
         Assert.Contains(persisted, item => item.LocationIdentifier == "1001" && item.DeviceId == 1);
         Assert.Contains(persisted, item => item.LocationIdentifier == "1002" && item.DeviceId == 2);
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_WithSingleCompressedEventLog_Succeeds()
+    {
+        var (serviceProvider, testContext) = CreateTestServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        var archiveLogs = new ConcurrentBag<CompressedEventLogs<SpeedEvent>>
+        {
+            CreateLog("1001", 1, new[]
+            {
+                CreateSpeedEvent("1001A", 35, 56, new DateTimeOffset(2026, 7, 7, 0, 5, 0, TimeSpan.Zero))
+            })
+        };
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
+
+        var persisted = testContext.CompressedEvents.Local.OfType<CompressedEventLogs<SpeedEvent>>().ToList();
+        Assert.Single(persisted);
+        Assert.Equal("1001", persisted[0].LocationIdentifier);
+        Assert.Equal(1, persisted[0].DeviceId);
+        Assert.Single(persisted[0].Data);
+        Assert.Equal("1001A", persisted[0].Data.First().DetectorId);
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_WithMultipleCompressedEventLogs_Succeeds()
+    {
+        var (serviceProvider, testContext) = CreateTestServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        var archiveLogs = new ConcurrentBag<CompressedEventLogs<SpeedEvent>>(
+            new[]
+            {
+                CreateLog("1001", 1, new[]
+                {
+                    CreateSpeedEvent("1001A", 41, 66, new DateTimeOffset(2026, 7, 7, 0, 0, 0, TimeSpan.Zero)),
+                    CreateSpeedEvent("1001B", 42, 68, new DateTimeOffset(2026, 7, 7, 0, 15, 0, TimeSpan.Zero))
+                }),
+                CreateLog("1002", 2, new[]
+                {
+                    CreateSpeedEvent("1002A", 55, 88, new DateTimeOffset(2026, 7, 7, 0, 30, 0, TimeSpan.Zero)),
+                    CreateSpeedEvent("1002B", 60, 96, new DateTimeOffset(2026, 7, 7, 0, 45, 0, TimeSpan.Zero))
+                })
+            });
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
+
+        var persisted = testContext.CompressedEvents.Local.OfType<CompressedEventLogs<SpeedEvent>>().ToList();
+        Assert.Equal(2, persisted.Count);
+        Assert.Contains(persisted, item => item.LocationIdentifier == "1001" && item.DeviceId == 1 && item.Data.Count == 2);
+        Assert.Contains(persisted, item => item.LocationIdentifier == "1002" && item.DeviceId == 2 && item.Data.Count == 2);
+    }
+
+    [Fact]
+    public async Task FlushLogsAsync_WithLargeDiverseCompressedEventLogs_Succeeds()
+    {
+        var (serviceProvider, testContext) = CreateTestServiceProvider();
+
+        var config = new TransferCommandConfiguration
+        {
+            Source = "Data Source=fake;Initial Catalog=fake;Integrated Security=True",
+            Start = new DateTime(2026, 7, 7),
+            End = new DateTime(2026, 7, 7)
+        };
+
+        var locationRepository = new Mock<ILocationRepository>(MockBehavior.Strict);
+        locationRepository
+            .Setup(x => x.GetLatestVersionOfAllLocations(It.IsAny<DateTime>()))
+            .Returns(new List<Location>());
+
+        var service = CreateHostedService(serviceProvider, locationRepository.Object, config);
+
+        var archiveLogs = new ConcurrentBag<CompressedEventLogs<SpeedEvent>>(
+            Enumerable.Range(1, 50).Select(i => CreateLog($"L{i:D3}", i, Enumerable.Range(0, 5).Select(j =>
+                CreateSpeedEvent($"L{i:D3}_{j}", 20 + i + j, 32 + i + j, new DateTimeOffset(2026, 7, 7, j, i % 60, 0, TimeSpan.Zero))).ToList())));
+
+        await InvokePrivateAsync(service, "FlushLogsAsync", archiveLogs);
+
+        var persisted = testContext.CompressedEvents.Local.OfType<CompressedEventLogs<SpeedEvent>>().ToList();
+        Assert.Equal(50, persisted.Count);
+        Assert.All(persisted, item => Assert.Equal(5, item.Data.Count));
     }
 
     private static TransferSpeedEventsHostedService CreateHostedService(
@@ -146,8 +426,44 @@ public class TransferSpeedEventsHostedServiceTests
         Assert.NotNull(method);
 
         var result = method!.Invoke(instance, args);
-        var task = Assert.IsType<Task>(result);
+        var task = Assert.IsAssignableFrom<Task>(result);
         await task;
+    }
+
+    private static Location CreateLocation(string locationIdentifier, params Device[] devices)
+    {
+        return new Location
+        {
+            LocationIdentifier = locationIdentifier,
+            Devices = new HashSet<Device>(devices)
+        };
+    }
+
+    private static Device CreateDevice(int id, DeviceTypes deviceType)
+    {
+        return new Device
+        {
+            Id = id,
+            DeviceIdentifier = $"DEV{id}",
+            DeviceType = deviceType,
+            DeviceStatus = DeviceStatus.Active,
+            Ipaddress = "127.0.0.1",
+            DeviceProperties = new Dictionary<string, object>()
+        };
+    }
+
+    private static (IServiceProvider serviceProvider, EventLogContext testContext) CreateTestServiceProvider()
+    {
+        var databaseName = Guid.NewGuid().ToString();
+        var options = new DbContextOptionsBuilder<EventLogContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var testContext = new EventLogContext(options);
+        var services = new ServiceCollection();
+        services.AddSingleton<EventLogContext>(testContext);
+
+        return (services.BuildServiceProvider(), testContext);
     }
 
     private static CompressedEventLogs<SpeedEvent> CreateLog(string locationIdentifier, int deviceId, IEnumerable<SpeedEvent> events)
@@ -171,5 +487,28 @@ public class TransferSpeedEventsHostedServiceTests
             Kph = kph,
             Timestamp = timestamp.UtcDateTime
         };
+    }
+
+    private class FailingEventLogContext : EventLogContext
+    {
+        public static int SaveCalls { get; private set; }
+
+        public FailingEventLogContext(DbContextOptions<EventLogContext> options)
+            : base(options)
+        {
+        }
+
+        public static void Reset() => SaveCalls = 0;
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            SaveCalls++;
+            if (SaveCalls == 1)
+            {
+                throw new InvalidOperationException("Simulated bulk insert failure");
+            }
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
     }
 }
