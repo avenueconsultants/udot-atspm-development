@@ -139,6 +139,7 @@ jobs:
           fi
           gcloud run jobs update "$SERVICE_NAME" \
             --image "$IMAGE" \
+            --args "generate" \
             --update-secrets "/app/Configuration/secrets.json=watchdogSecrets:latest,/app/Configuration/Connection/connectionStrings.json=New-Connection-String:latest" \
             --update-env-vars "TZ=America/Denver,WatchdogConfiguration__TimeZoneId=America/Denver" \
             --task-timeout "7200s" \
