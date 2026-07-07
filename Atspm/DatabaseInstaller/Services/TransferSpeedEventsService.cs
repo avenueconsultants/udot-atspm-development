@@ -54,7 +54,7 @@ namespace DatabaseInstaller.Services
             {
                 for (int hour = 0; hour < 24; hour++)
                 {
-                    var periodStart = new DateTime(DateOnly.FromDateTime(date), new TimeOnly(hour, 0));
+                    var periodStart = DateTime.SpecifyKind(date.Date.AddHours(hour), DateTimeKind.Utc);
                     var periodEnd = periodStart.AddHours(1);
 
                     _logger.LogInformation(
@@ -218,12 +218,21 @@ namespace DatabaseInstaller.Services
                 using var reader = await cmd.ExecuteReaderAsync(cancellationToken);
                 while (await reader.ReadAsync(cancellationToken))
                 {
+                    var timestampOrdinal = reader.GetOrdinal("Timestamp");
+                    var timestampValue = reader.GetValue(timestampOrdinal);
+                    var timestamp = timestampValue switch
+                    {
+                        DateTimeOffset dto => dto.UtcDateTime,
+                        DateTime dt => DateTime.SpecifyKind(dt, DateTimeKind.Utc),
+                        _ => reader.GetDateTime(timestampOrdinal).ToUniversalTime()
+                    };
+
                     eventLogs.Add(new SpeedEvent
                     {
                         DetectorId = reader.GetString(reader.GetOrdinal("DetectorID")),
                         Mph = reader.GetInt32(reader.GetOrdinal("MPH")),
                         Kph = reader.GetInt32(reader.GetOrdinal("KPH")),
-                        Timestamp = reader.GetDateTime(reader.GetOrdinal("Timestamp"))
+                        Timestamp = timestamp
                     });
                 }
             }

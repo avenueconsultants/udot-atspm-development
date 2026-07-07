@@ -37,13 +37,13 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices.Tests
     {
         private readonly Mock<IIndianaEventLogRepository> _controllerEventLogRepositoryMock;
         private readonly AnalysisPhaseCollectionService _analysisPhaseCollectionService;
-        private readonly Mock<ILogger<WatchDogRampLogService>> _loggerMock;
+        private readonly Mock<ILogger<WatchDogAmLogService>> _loggerMock;
         private readonly WatchDogAmLogService _watchDogAmLogService;
 
         public WatchDogAmLogServiceTests()
         {
             _controllerEventLogRepositoryMock = new Mock<IIndianaEventLogRepository>();
-            _loggerMock = new Mock<ILogger<WatchDogRampLogService>>();
+            _loggerMock = new Mock<ILogger<WatchDogAmLogService>>();
 
             // Real instances for dependencies
             var planService = new PlanService();
