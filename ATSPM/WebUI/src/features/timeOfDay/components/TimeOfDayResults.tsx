@@ -1,7 +1,7 @@
 import type {
+  Plan,
   TimeOfDayCrossTrafficLocationDto,
   TimeOfDayMovementPressureDto,
-  TimeOfDayPeakEventDto,
   TimeOfDayResult,
 } from '@/api/reports'
 import ApacheEChart from '@/features/charts/components/apacheEChart'
@@ -19,11 +19,14 @@ import {
   Typography,
 } from '@mui/material'
 import { useMemo } from 'react'
+import type { TimeOfDayNumberedPeakEvent } from '../transformers'
 import {
   buildPlanProfileOption,
   buildScheduleRows,
   buildSplitPressureOption,
   formatNumber,
+  formatPlanNumber,
+  formatPlanTime,
   getCrossTrafficLocations,
   getLocationPeakEvents,
   getMovementPressures,
@@ -51,6 +54,93 @@ const formatValueWithUnits = (
     .join(' ')
 }
 
+const formatLocationLabel = (
+  identifier?: string | null,
+  description?: string | null
+) => {
+  if (identifier && description) {
+    return description.includes(identifier)
+      ? description
+      : `${identifier} - ${description}`
+  }
+
+  return description ?? identifier ?? '-'
+}
+
+const formatBoolean = (value?: boolean | null) => {
+  if (value === undefined || value === null) return '-'
+
+  return value ? 'Yes' : 'No'
+}
+
+const formatMeasurement = (
+  value?: number | null,
+  units?: string,
+  maximumFractionDigits = 0
+) => {
+  if (value === undefined || value === null) return null
+
+  if (units === '%') return `${formatNumber(value, maximumFractionDigits)}%`
+
+  return [formatNumber(value, maximumFractionDigits), units]
+    .filter(Boolean)
+    .join(' ')
+}
+
+const formatPeakSummaryLabel = (
+  label: string,
+  time?: string | null,
+  value?: number | null,
+  units?: string,
+  maximumFractionDigits = 0
+) =>
+  [label, time, formatMeasurement(value, units, maximumFractionDigits)]
+    .filter(Boolean)
+    .join(' ')
+
+const formatPlanSchedule = (plans?: Plan[] | null) => {
+  if (!plans?.length) return '-'
+
+  return plans
+    .map((plan) =>
+      `${formatPlanNumber(plan.planNumber)} ${formatPlanTime(
+        plan.start
+      )}-${formatPlanTime(plan.end)}`
+    )
+    .join('; ')
+}
+
+function SignalPeakBadge({
+  badgeNumber,
+  color,
+}: {
+  badgeNumber: number
+  color: string
+}) {
+  return (
+    <Box
+      component="span"
+      sx={{
+        alignItems: 'center',
+        bgcolor: color,
+        borderRadius: '50%',
+        color: 'common.white',
+        display: 'inline-flex',
+        flexShrink: 0,
+        fontSize: 11,
+        fontWeight: 700,
+        height: 20,
+        justifyContent: 'center',
+        lineHeight: 1,
+        minWidth: 20,
+        width: 20,
+      }}
+    >
+      {badgeNumber}
+    </Box>
+  )
+}
+
 const renderTextBlock = (label: string, text?: string | null) => {
   if (!text) return null
 
@@ -69,7 +159,7 @@ function PeakList({
   peaks,
 }: {
   title: string
-  peaks: TimeOfDayPeakEventDto[]
+  peaks: TimeOfDayNumberedPeakEvent[]
 }) {
   return (
     <Box>
@@ -84,6 +174,7 @@ function PeakList({
         <Table size="small" aria-label={`${title} peak list`}>
           <TableHead>
             <TableRow>
+              <TableCell sx={{ width: 32 }} />
               <TableCell>Location</TableCell>
               <TableCell>Time</TableCell>
               <TableCell align="right">Value</TableCell>
@@ -92,11 +183,23 @@ function PeakList({
           <TableBody>
             {peaks.map((peak, index) => (
               <TableRow key={`${title}-${peak.locationIdentifier}-${index}`}>
-                <TableCell>
-                  {peak.locationIdentifier ?? peak.locationDescription ?? '-'}
+                <TableCell sx={{ py: 0.75 }}>
+                  <SignalPeakBadge
+                    badgeNumber={peak.badgeNumber}
+                    color={peak.badgeColor}
+                  />
                 </TableCell>
-                <TableCell>{peak.timeOfDay ?? '-'}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ fontWeight: 600, py: 0.75 }}>
+                  {formatLocationLabel(
+                    peak.locationIdentifier,
+                    peak.locationDescription
+                  )}
+                </TableCell>
+                <TableCell sx={{ py: 0.75 }}>{peak.timeOfDay ?? '-'}</TableCell>
+                <TableCell
+                  align="right"
+                  sx={{ fontVariantNumeric: 'tabular-nums', py: 0.75 }}
+                >
                   {formatValueWithUnits(peak.value, peak.valueUnits)}
                 </TableCell>
               </TableRow>
@@ -140,9 +243,10 @@ function CrossTrafficLocationList({
                 key={`${title}-${location.locationIdentifier}-${index}`}
               >
                 <TableCell>
-                  {location.locationIdentifier ??
-                    location.locationDescription ??
-                    '-'}
+                  {formatLocationLabel(
+                    location.locationIdentifier,
+                    location.locationDescription
+                  )}
                 </TableCell>
                 <TableCell>{location.peakTime ?? '-'}</TableCell>
                 <TableCell align="right">
@@ -294,12 +398,17 @@ function LocationSupportingTable({ result }: { result: TimeOfDayResult }) {
                 <TableCell>Location</TableCell>
                 <TableCell>Location Name</TableCell>
                 <TableCell align="right">Days With Data</TableCell>
+                <TableCell>Fallback Used</TableCell>
+                <TableCell>Existing TOD Plans</TableCell>
                 <TableCell align="right">Peak Raw Volume</TableCell>
                 <TableCell align="right">Peak Smoothed Volume</TableCell>
                 <TableCell align="right">Peak Hourly Rate</TableCell>
                 <TableCell align="right">Peak Occupancy</TableCell>
                 <TableCell align="right">AM Peak Occupancy</TableCell>
                 <TableCell align="right">PM Peak Occupancy</TableCell>
+                <TableCell>AM Direction Exception</TableCell>
+                <TableCell>PM Direction Exception</TableCell>
+                <TableCell>Cross Traffic Review</TableCell>
                 <TableCell>Data Quality Flag</TableCell>
                 <TableCell>Notes</TableCell>
               </TableRow>
@@ -311,6 +420,12 @@ function LocationSupportingTable({ result }: { result: TimeOfDayResult }) {
                   <TableCell>{location.locationDescription ?? '-'}</TableCell>
                   <TableCell align="right">
                     {formatNumber(location.daysWithData)}
+                  </TableCell>
+                  <TableCell>
+                    {formatBoolean(location.coverageFallbackUsed)}
+                  </TableCell>
+                  <TableCell>
+                    {formatPlanSchedule(location.currentPlanSchedule)}
                   </TableCell>
                   <TableCell align="right">
                     {formatNumber(location.summary?.peakRawVolume)}
@@ -348,6 +463,15 @@ function LocationSupportingTable({ result }: { result: TimeOfDayResult }) {
                           1
                         )}%`}
                   </TableCell>
+                  <TableCell>
+                    {location.summary?.amDirectionExceptionMessage ?? '-'}
+                  </TableCell>
+                  <TableCell>
+                    {location.summary?.pmDirectionExceptionMessage ?? '-'}
+                  </TableCell>
+                  <TableCell>
+                    {location.summary?.crossTrafficReview ?? '-'}
+                  </TableCell>
                   <TableCell>{location.dataQualityFlag ?? '-'}</TableCell>
                   <TableCell>{location.summary?.notes ?? '-'}</TableCell>
                 </TableRow>
@@ -369,7 +493,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     () => buildSplitPressureOption(result),
     [result]
   )
-
   const warnings = result.warnings ?? []
 
   return (
@@ -390,7 +513,7 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 360px' },
+            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 430px' },
             gap: 3,
             alignItems: 'start',
           }}
@@ -431,11 +554,11 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               )}
             </Stack>
             <PeakList
-              title="AM Location Peaks"
+              title="AM Signal Peaks"
               peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
             />
             <PeakList
-              title="PM Location Peaks"
+              title="PM Signal Peaks"
               peaks={getLocationPeakEvents(result.planProfile?.peaks, 'PM')}
             />
           </Stack>
@@ -470,19 +593,35 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               {result.splitPressure?.primaryPeakTime && (
                 <Chip
                   size="small"
-                  label={`Primary ${result.splitPressure.primaryPeakTime}`}
+                  label={formatPeakSummaryLabel(
+                    'Primary',
+                    result.splitPressure.primaryPeakTime,
+                    result.splitPressure.primaryPeakVolume,
+                    'vph'
+                  )}
                 />
               )}
               {result.splitPressure?.crossStreetPeakTime && (
                 <Chip
                   size="small"
-                  label={`Cross ${result.splitPressure.crossStreetPeakTime}`}
+                  label={formatPeakSummaryLabel(
+                    'Cross',
+                    result.splitPressure.crossStreetPeakTime,
+                    result.splitPressure.crossStreetPeakVolume,
+                    'vph'
+                  )}
                 />
               )}
               {result.splitPressure?.peakCrossTrafficPercentTime && (
                 <Chip
                   size="small"
-                  label={`Peak Cross ${result.splitPressure.peakCrossTrafficPercentTime}`}
+                  label={formatPeakSummaryLabel(
+                    'Peak Cross',
+                    result.splitPressure.peakCrossTrafficPercentTime,
+                    result.splitPressure.peakCrossTrafficPercent,
+                    '%',
+                    1
+                  )}
                 />
               )}
             </Stack>
