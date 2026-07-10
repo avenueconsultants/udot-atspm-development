@@ -22,15 +22,15 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         public string AlgorithmVersion { get; set; } = "tod-v1";
         public double AmEntryPctOfPeak { get; set; } = 0.55;
         public double AmExitPctOfPeak { get; set; } = 0.40;
-        public double PmEntryPctOfPeak { get; set; } = 0.55;
-        public double PmExitPctOfPeak { get; set; } = 0.40;
-        public double FreeEntryPctOfDailyPeak { get; set; } = 0.25;
-        public double FreeEntryPctOfDynamicRange { get; set; } = 0.20;
+        public double PmEntryPctOfPeak { get; set; } = 0.68;
+        public double PmExitPctOfPeak { get; set; } = 0.38;
+        public double FreeEntryPctOfDailyPeak { get; set; } = 0.22;
+        public double FreeEntryPctOfDynamicRange { get; set; } = 0.18;
         public int EntrySustainedBins { get; set; } = 2;
-        public int FreeSustainedBins { get; set; } = 3;
-        public string FreeFallbackTime { get; set; } = "22:00";
-        public string MaxAmEndTime { get; set; } = "11:00";
-        public string MaxPmEndTime { get; set; } = "19:00";
+        public int FreeSustainedBins { get; set; } = 4;
+        public string FreeFallbackTime { get; set; } = "23:30";
+        public string MaxAmEndTime { get; set; } = "10:00";
+        public string MaxPmEndTime { get; set; } = "20:00";
         public double SplitReviewThresholdPercent { get; set; } = 35;
         public double ShoulderReviewThresholdPercent { get; set; } = 45;
     }
