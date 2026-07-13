@@ -11,7 +11,8 @@ const getSeries = (option: EChartsOption) => option.series as SeriesOption[]
 const getLegendData = (option: EChartsOption) => {
   const legend = Array.isArray(option.legend) ? option.legend[0] : option.legend
 
-  return (legend as { data?: Array<string | { name?: string; icon?: string }> }).data
+  return (legend as { data?: Array<string | { name?: string; icon?: string }> })
+    .data
 }
 
 const getLegend = (option: EChartsOption) =>
@@ -96,8 +97,9 @@ describe('timeOfDay transformers', () => {
       expect.objectContaining({
         orient: 'vertical',
         right: 0,
-        top: 72,
+        top: 124,
         type: 'scroll',
+        backgroundColor: '#f0f0f0',
       })
     )
     expect(series.map((entry) => entry.name)).toEqual(
@@ -140,12 +142,21 @@ describe('timeOfDay transformers', () => {
         badgeNumber: 2,
       }),
     ])
-    expect((series[0] as SeriesOption & { markArea?: { data?: unknown[] } }).markArea?.data).toEqual([
+    expect(
+      (series[0] as SeriesOption & { markArea?: { data?: unknown[] } }).markArea
+        ?.data
+    ).toEqual([
       [
         expect.objectContaining({ name: 'Recommended FREE' }),
         expect.any(Object),
       ],
     ])
+    expect(series.find((entry) => entry.name === 'Plans')).toEqual(
+      expect.objectContaining({
+        yAxisIndex: 1,
+        label: expect.objectContaining({ backgroundColor: '#f0f0f0' }),
+      })
+    )
   })
 
   it('builds Data-Importer-style split pressure legend and threshold series', () => {
@@ -166,6 +177,58 @@ describe('timeOfDay transformers', () => {
           SplitReview: 35,
           ShoulderReview: 45,
         },
+        crossTrafficLocations: [
+          {
+            period: 'Midday',
+            locationIdentifier: '7193',
+            locationDescription: '#7193 - 700 East & 4500 South',
+            peakTime: '11:15',
+            minutes: 675,
+            totalVehiclesPerHour: 3200,
+          },
+          {
+            period: 'PM',
+            locationIdentifier: '7192',
+            locationDescription: '#7192 - 700 East & 3900 South',
+            peakTime: '17:00',
+            minutes: 1020,
+            totalVehiclesPerHour: 4764,
+          },
+        ],
+        movementPressures: [
+          {
+            period: 'AM',
+            locationIdentifier: '7190',
+            movement: 'WBT',
+            peakTime: '08:00',
+            volume: 2975,
+          },
+          {
+            period: 'PM',
+            locationIdentifier: '7191',
+            movement: 'EBT',
+            peakTime: '17:00',
+            volume: 4005,
+          },
+        ],
+        periodPeaks: [
+          {
+            series: 'CrossTrafficPercent',
+            period: 'PM',
+            locationIdentifier: '7192',
+            minutes: 1020,
+            value: 45,
+            valueUnits: 'percent',
+          },
+          {
+            series: 'Volume',
+            period: 'PM',
+            locationIdentifier: '7191',
+            minutes: 1020,
+            value: 4005,
+            valueUnits: 'vph',
+          },
+        ],
       },
     }
 
@@ -178,6 +241,9 @@ describe('timeOfDay transformers', () => {
       'Cross-traffic percent',
       '35% split review',
       '45% shoulder review',
+      'AM Location Peaks',
+      'Midday Location Peaks',
+      'PM Location Peaks',
     ])
     expect(series.map((entry) => entry.name)).toEqual(
       expect.arrayContaining([
@@ -186,7 +252,50 @@ describe('timeOfDay transformers', () => {
         'Cross-traffic percent',
         '35% split review',
         '45% shoulder review',
+        'AM Location Peaks',
+        'Midday Location Peaks',
+        'PM Location Peaks',
       ])
     )
+    expect(
+      (
+        series.find(
+          (entry) => entry.name === 'AM Location Peaks'
+        ) as SeriesOption
+      ).data
+    ).toEqual([
+      expect.objectContaining({
+        itemStyle: { color: '#ef6c00' },
+        name: '3',
+      }),
+    ])
+    expect(
+      (
+        series.find(
+          (entry) => entry.name === 'Midday Location Peaks'
+        ) as SeriesOption
+      ).data
+    ).toEqual([
+      expect.objectContaining({
+        itemStyle: { color: '#2e7d32' },
+        name: '1',
+      }),
+    ])
+    expect(
+      (
+        series.find(
+          (entry) => entry.name === 'PM Location Peaks'
+        ) as SeriesOption
+      ).data
+    ).toEqual([
+      expect.objectContaining({
+        itemStyle: { color: '#1565c0' },
+        name: '2',
+      }),
+      expect.objectContaining({
+        itemStyle: { color: '#1565c0' },
+        name: '4',
+      }),
+    ])
   })
 })

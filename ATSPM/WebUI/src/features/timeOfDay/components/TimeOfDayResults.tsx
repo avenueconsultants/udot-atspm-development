@@ -14,22 +14,29 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from '@mui/material'
 import { useMemo } from 'react'
-import type { TimeOfDayNumberedPeakEvent } from '../transformers'
+import type {
+  TimeOfDayLocationNumberMap,
+  TimeOfDayNumberedPeakEvent,
+} from '../transformers'
 import {
   buildPlanProfileOption,
   buildScheduleRows,
+  buildSplitPressureLocationNumberMap,
   buildSplitPressureOption,
   formatNumber,
   formatPlanNumber,
   formatPlanTime,
   getCrossTrafficLocations,
+  getLocationNumber,
   getLocationPeakEvents,
   getMovementPressures,
+  getTimeOfDayPeriodBadgeColor,
   hasPlanProfileData,
   hasSplitPressureData,
 } from '../transformers'
@@ -40,18 +47,41 @@ interface TimeOfDayResultsProps {
 
 const periods = ['AM', 'Midday', 'PM']
 
-const formatValueWithUnits = (
-  value?: number | null,
-  units?: string | null,
-  maximumFractionDigits = 0
-) => {
-  if (units?.toLowerCase().includes('percent')) {
-    return `${formatNumber(value, 1)}%`
-  }
+const compactReportTableContainerSx = {
+  borderRadius: 2,
+  borderColor: 'grey.200',
+  overflowX: 'auto',
+}
 
-  return [formatNumber(value, maximumFractionDigits), units]
-    .filter(Boolean)
-    .join(' ')
+const compactReportTableHeadSx = {
+  '& .MuiTableCell-head': {
+    fontSize: '0.8rem',
+    bgcolor: 'grey.100',
+    lineHeight: '1rem',
+    padding: '0.5rem',
+    borderBottom: '1px solid',
+    borderColor: 'divider',
+    fontWeight: 600,
+    whiteSpace: 'nowrap',
+  },
+}
+
+const compactReportTableRowSx = {
+  '& .MuiTableCell-body': {
+    fontSize: '0.9rem',
+    borderRight: '1px solid #e0e0e0',
+    padding: '.7rem',
+    verticalAlign: 'middle',
+  },
+  '&:nth-of-type(odd)': { backgroundColor: '#f4f4f4' },
+}
+
+const chartSidePanelSx = {
+  maxHeight: { xs: 720, md: 840 },
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  pr: 1,
+  minWidth: 0,
 }
 
 const formatLocationLabel = (
@@ -102,10 +132,11 @@ const formatPlanSchedule = (plans?: Plan[] | null) => {
   if (!plans?.length) return '-'
 
   return plans
-    .map((plan) =>
-      `${formatPlanNumber(plan.planNumber)} ${formatPlanTime(
-        plan.start
-      )}-${formatPlanTime(plan.end)}`
+    .map(
+      (plan) =>
+        `${formatPlanNumber(plan.planNumber)} ${formatPlanTime(
+          plan.start
+        )}-${formatPlanTime(plan.end)}`
     )
     .join('; ')
 }
@@ -171,41 +202,59 @@ function PeakList({
           No peaks
         </Typography>
       ) : (
-        <Table size="small" aria-label={`${title} peak list`}>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ width: 32 }} />
-              <TableCell>Location</TableCell>
-              <TableCell>Time</TableCell>
-              <TableCell align="right">Value</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {peaks.map((peak, index) => (
-              <TableRow key={`${title}-${peak.locationIdentifier}-${index}`}>
-                <TableCell sx={{ py: 0.75 }}>
-                  <SignalPeakBadge
-                    badgeNumber={peak.badgeNumber}
-                    color={peak.badgeColor}
-                  />
-                </TableCell>
-                <TableCell sx={{ fontWeight: 600, py: 0.75 }}>
-                  {formatLocationLabel(
-                    peak.locationIdentifier,
-                    peak.locationDescription
-                  )}
-                </TableCell>
-                <TableCell sx={{ py: 0.75 }}>{peak.timeOfDay ?? '-'}</TableCell>
-                <TableCell
-                  align="right"
-                  sx={{ fontVariantNumeric: 'tabular-nums', py: 0.75 }}
-                >
-                  {formatValueWithUnits(peak.value, peak.valueUnits)}
-                </TableCell>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={compactReportTableContainerSx}
+        >
+          <Table
+            size="small"
+            aria-label={`${title} peak list`}
+            sx={{ minWidth: 480 }}
+          >
+            <TableHead sx={compactReportTableHeadSx}>
+              <TableRow>
+                <TableCell sx={{ width: 40 }} />
+                <TableCell>Location</TableCell>
+                <TableCell>Time</TableCell>
+                <TableCell align="right">vph</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {peaks.map((peak, index) => (
+                <TableRow
+                  key={`${title}-${peak.locationIdentifier}-${index}`}
+                  sx={compactReportTableRowSx}
+                >
+                  <TableCell>
+                    <SignalPeakBadge
+                      badgeNumber={peak.badgeNumber}
+                      color={peak.badgeColor}
+                    />
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {formatLocationLabel(
+                      peak.locationIdentifier,
+                      peak.locationDescription
+                    )}
+                  </TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                    {peak.timeOfDay ?? '-'}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {formatNumber(peak.value)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Box>
   )
@@ -213,10 +262,14 @@ function PeakList({
 
 function CrossTrafficLocationList({
   title,
+  period,
   locations,
+  locationNumberMap,
 }: {
   title: string
+  period: string
   locations: TimeOfDayCrossTrafficLocationDto[]
+  locationNumberMap: TimeOfDayLocationNumberMap
 }) {
   return (
     <Box>
@@ -228,40 +281,82 @@ function CrossTrafficLocationList({
           No locations
         </Typography>
       ) : (
-        <Table size="small" aria-label={`${title} cross traffic locations`}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Location</TableCell>
-              <TableCell>Peak</TableCell>
-              <TableCell align="right">VPH</TableCell>
-              <TableCell align="right">Share</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {locations.map((location, index) => (
-              <TableRow
-                key={`${title}-${location.locationIdentifier}-${index}`}
-              >
-                <TableCell>
-                  {formatLocationLabel(
-                    location.locationIdentifier,
-                    location.locationDescription
-                  )}
-                </TableCell>
-                <TableCell>{location.peakTime ?? '-'}</TableCell>
-                <TableCell align="right">
-                  {formatNumber(location.totalVehiclesPerHour)}
-                </TableCell>
-                <TableCell align="right">
-                  {location.percentOfCrossTraffic === undefined ||
-                  location.percentOfCrossTraffic === null
-                    ? '-'
-                    : `${formatNumber(location.percentOfCrossTraffic, 1)}%`}
-                </TableCell>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={compactReportTableContainerSx}
+        >
+          <Table
+            size="small"
+            aria-label={`${title} cross traffic locations`}
+            sx={{ minWidth: 520 }}
+          >
+            <TableHead sx={compactReportTableHeadSx}>
+              <TableRow>
+                <TableCell sx={{ width: 40 }} />
+                <TableCell>Location</TableCell>
+                <TableCell>Peak</TableCell>
+                <TableCell align="right">VPH</TableCell>
+                <TableCell align="right">Share</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {locations.map((location, index) => (
+                <TableRow
+                  key={`${title}-${location.locationIdentifier}-${index}`}
+                  sx={compactReportTableRowSx}
+                >
+                  <TableCell>
+                    {getLocationNumber(
+                      locationNumberMap,
+                      location.locationIdentifier
+                    ) ? (
+                      <SignalPeakBadge
+                        badgeNumber={
+                          getLocationNumber(
+                            locationNumberMap,
+                            location.locationIdentifier
+                          ) as number
+                        }
+                        color={getTimeOfDayPeriodBadgeColor(period)}
+                      />
+                    ) : null}
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {formatLocationLabel(
+                      location.locationIdentifier,
+                      location.locationDescription
+                    )}
+                  </TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                    {location.peakTime ?? '-'}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {formatNumber(location.totalVehiclesPerHour)}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {location.percentOfCrossTraffic === undefined ||
+                    location.percentOfCrossTraffic === null
+                      ? '-'
+                      : `${formatNumber(location.percentOfCrossTraffic, 1)}%`}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Box>
   )
@@ -269,10 +364,14 @@ function CrossTrafficLocationList({
 
 function MovementPressureList({
   title,
+  period,
   movements,
+  locationNumberMap,
 }: {
   title: string
+  period: string
   movements: TimeOfDayMovementPressureDto[]
+  locationNumberMap: TimeOfDayLocationNumberMap
 }) {
   return (
     <Box>
@@ -284,32 +383,70 @@ function MovementPressureList({
           No movements
         </Typography>
       ) : (
-        <Table size="small" aria-label={`${title} movement pressure`}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Location</TableCell>
-              <TableCell>Movement</TableCell>
-              <TableCell>Peak</TableCell>
-              <TableCell align="right">VPH</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {movements.map((movement, index) => (
-              <TableRow
-                key={`${title}-${movement.locationIdentifier}-${movement.movement}-${index}`}
-              >
-                <TableCell>{movement.locationIdentifier ?? '-'}</TableCell>
-                <TableCell>
-                  {movement.movementLabel ?? movement.movement ?? '-'}
-                </TableCell>
-                <TableCell>{movement.peakTime ?? '-'}</TableCell>
-                <TableCell align="right">
-                  {formatNumber(movement.volume)}
-                </TableCell>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={compactReportTableContainerSx}
+        >
+          <Table
+            size="small"
+            aria-label={`${title} movement pressure`}
+            sx={{ minWidth: 520 }}
+          >
+            <TableHead sx={compactReportTableHeadSx}>
+              <TableRow>
+                <TableCell sx={{ width: 40 }} />
+                <TableCell>Location</TableCell>
+                <TableCell>Movement</TableCell>
+                <TableCell>Peak</TableCell>
+                <TableCell align="right">VPH</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {movements.map((movement, index) => (
+                <TableRow
+                  key={`${title}-${movement.locationIdentifier}-${movement.movement}-${index}`}
+                  sx={compactReportTableRowSx}
+                >
+                  <TableCell>
+                    {getLocationNumber(
+                      locationNumberMap,
+                      movement.locationIdentifier
+                    ) ? (
+                      <SignalPeakBadge
+                        badgeNumber={
+                          getLocationNumber(
+                            locationNumberMap,
+                            movement.locationIdentifier
+                          ) as number
+                        }
+                        color={getTimeOfDayPeriodBadgeColor(period)}
+                      />
+                    ) : null}
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                    {movement.locationIdentifier ?? '-'}
+                  </TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                    {movement.movementLabel ?? movement.movement ?? '-'}
+                  </TableCell>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                    {movement.peakTime ?? '-'}
+                  </TableCell>
+                  <TableCell
+                    align="right"
+                    sx={{
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {formatNumber(movement.volume)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </Box>
   )
@@ -327,7 +464,10 @@ function PlanComparisonTable({ result }: { result: TimeOfDayResult }) {
       </Typography>
       <Stack spacing={1.5} sx={{ mb: 2 }}>
         {renderTextBlock('Recommendation', result.recommendation?.summaryText)}
-        {renderTextBlock('Current Schedule', result.planComparison?.summaryText)}
+        {renderTextBlock(
+          'Current Schedule',
+          result.planComparison?.summaryText
+        )}
         {renderTextBlock('Exceptions', result.planComparison?.exceptionsText)}
         {exceptionLocations.length > 0 && (
           <Stack direction="row" gap={1} flexWrap="wrap">
@@ -344,7 +484,8 @@ function PlanComparisonTable({ result }: { result: TimeOfDayResult }) {
       </Stack>
       {rows.length === 0 ? (
         <Alert severity="warning">
-          {result.planComparison?.summaryText || 'Current schedule unavailable.'}
+          {result.planComparison?.summaryText ||
+            'Current schedule unavailable.'}
         </Alert>
       ) : (
         <Table size="small" aria-label="time of day plan comparison">
@@ -493,6 +634,10 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     () => buildSplitPressureOption(result),
     [result]
   )
+  const splitPressureLocationNumberMap = useMemo(
+    () => buildSplitPressureLocationNumberMap(result),
+    [result]
+  )
   const warnings = result.warnings ?? []
 
   return (
@@ -513,14 +658,14 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 430px' },
+            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 560px' },
             gap: 3,
             alignItems: 'start',
           }}
         >
           <Box>
             {hasPlanProfileData(result) ? (
-              <Box sx={{ height: { xs: 420, md: 540 }, minWidth: 600 }}>
+              <Box sx={{ height: { xs: 720, md: 840 }, minWidth: 600 }}>
                 <ApacheEChart
                   id="time-of-day-plan-profile"
                   option={planProfileOption}
@@ -532,7 +677,7 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               <Alert severity="warning">No Data Available</Alert>
             )}
           </Box>
-          <Stack spacing={2}>
+          <Stack spacing={2} sx={chartSidePanelSx}>
             <Stack direction="row" gap={1} flexWrap="wrap">
               {result.recommendation?.amPeakTime && (
                 <Chip
@@ -569,14 +714,14 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 420px' },
+            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 560px' },
             gap: 3,
             alignItems: 'start',
           }}
         >
           <Box>
             {hasSplitPressureData(result) ? (
-              <Box sx={{ height: { xs: 420, md: 540 }, minWidth: 600 }}>
+              <Box sx={{ height: { xs: 720, md: 840 }, minWidth: 600 }}>
                 <ApacheEChart
                   id="time-of-day-split-pressure"
                   option={splitPressureOption}
@@ -588,7 +733,7 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               <Alert severity="warning">No Data Available</Alert>
             )}
           </Box>
-          <Stack spacing={2}>
+          <Stack spacing={2} sx={chartSidePanelSx}>
             <Stack direction="row" gap={1} flexWrap="wrap">
               {result.splitPressure?.primaryPeakTime && (
                 <Chip
@@ -629,20 +774,24 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               <CrossTrafficLocationList
                 key={period}
                 title={`${period} Cross Traffic Locations`}
+                period={period}
                 locations={getCrossTrafficLocations(
                   result.splitPressure?.crossTrafficLocations,
                   period
                 )}
+                locationNumberMap={splitPressureLocationNumberMap}
               />
             ))}
             {['AM', 'PM'].map((period) => (
               <MovementPressureList
                 key={period}
                 title={`${period} Movement Pressure`}
+                period={period}
                 movements={getMovementPressures(
                   result.splitPressure?.movementPressures,
                   period
                 )}
+                locationNumberMap={splitPressureLocationNumberMap}
               />
             ))}
             <Stack spacing={1}>

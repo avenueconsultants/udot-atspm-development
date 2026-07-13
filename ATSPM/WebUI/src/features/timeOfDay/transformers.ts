@@ -1,8 +1,3 @@
-import { createLegend } from '@/features/charts/common/transformers'
-import {
-  DashedLineSeriesSymbol,
-  SolidLineSeriesSymbol,
-} from '@/features/charts/utils'
 import type {
   Plan,
   TimeOfDayCrossTrafficLocationDto,
@@ -12,6 +7,16 @@ import type {
   TimeOfDayProfilePointDto,
   TimeOfDayResult,
 } from '@/api/reports'
+import {
+  createDataZoom,
+  createGrid,
+  createLegend,
+  createYAxis,
+} from '@/features/charts/common/transformers'
+import {
+  DashedLineSeriesSymbol,
+  SolidLineSeriesSymbol,
+} from '@/features/charts/utils'
 import type {
   EChartsOption,
   LegendComponentOption,
@@ -39,6 +44,8 @@ export type TimeOfDayNumberedPeakEvent = TimeOfDayPeakEventDto & {
   badgeColor: string
 }
 
+export type TimeOfDayLocationNumberMap = Record<string, number>
+
 const chartColors = {
   raw: '#455a64',
   smooth: '#1565c0',
@@ -48,6 +55,7 @@ const chartColors = {
   amPeak: '#ef6c00',
   pmPeak: '#c62828',
   amSignalPeak: '#ef6c00',
+  middaySignalPeak: '#2e7d32',
   pmSignalPeak: '#1565c0',
   volumePeak: '#ef6c00',
   splitReview: '#f9a825',
@@ -88,9 +96,10 @@ export const minutesToTimeLabel = (minutes: number) => {
   const hours = Math.floor(clampedMinutes / 60)
   const remainingMinutes = clampedMinutes % 60
 
-  return `${String(hours).padStart(2, '0')}:${String(
-    remainingMinutes
-  ).padStart(2, '0')}`
+  return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(
+    2,
+    '0'
+  )}`
 }
 
 export const formatPlanTime = (value?: string) => {
@@ -200,7 +209,9 @@ const crossesMidnight = (start?: string, end?: string) => {
     return false
   }
 
-  return endDate.toDateString() !== startDate.toDateString() && endDate > startDate
+  return (
+    endDate.toDateString() !== startDate.toDateString() && endDate > startDate
+  )
 }
 
 const getPlanIntervalMinutes = (plan: Plan) => {
@@ -287,10 +298,12 @@ const buildPeakScatterSeries = (
 const buildNumberedSignalPeakSeries = (
   peaks: TimeOfDayNumberedPeakEvent[],
   name: string,
-  color: string
+  color: string,
+  yAxisIndex = 0
 ): SeriesOption => ({
   name,
   type: 'scatter',
+  yAxisIndex,
   data: peaks.map((peak) => ({
     name: String(peak.badgeNumber),
     value: [
@@ -318,6 +331,86 @@ const buildNumberedSignalPeakSeries = (
       typeof value === 'number' ? numberFormatter.format(value) : String(value),
   },
 })
+
+const formatPlanLabel = (plan: Plan) => {
+  const planNumber = formatPlanNumber(plan.planNumber)
+  const planName = planNumber === 'FREE' ? 'Free' : `Plan ${planNumber}`
+
+  return plan.planDescription
+    ? `{plan|${planName}}\n{info|${plan.planDescription}}`
+    : `{plan|${planName}}`
+}
+
+const buildPlanLabelSeries = (
+  plans: Plan[] | null | undefined,
+  yAxisIndex: number
+): SeriesOption | null => {
+  const data =
+    plans
+      ?.map((plan) => {
+        const interval = getPlanIntervalMinutes(plan)
+        if (!interval) return null
+
+        return [
+          (interval.start + interval.end) / 2,
+          1,
+          formatPlanLabel(plan),
+        ] as [number, number, string]
+      })
+      .filter((point): point is [number, number, string] => point !== null) ??
+    []
+
+  if (!data.length) return null
+
+  return {
+    name: 'Plans',
+    type: 'scatter',
+    symbol: 'roundRect',
+    symbolSize: 3,
+    yAxisIndex,
+    color: '#808080',
+    data,
+    silent: true,
+    tooltip: {
+      show: false,
+    },
+    labelLayout: {
+      y: 74,
+      moveOverlap: 'shiftX',
+      hideOverlap: plans ? plans.length > 10 : false,
+      draggable: true,
+    },
+    labelLine: {
+      show: true,
+      lineStyle: {
+        color: '#808080',
+      },
+    },
+    label: {
+      show: true,
+      position: 'top',
+      distance: 8,
+      padding: 5,
+      borderRadius: 5,
+      minMargin: 10,
+      align: 'left',
+      backgroundColor: '#f0f0f0',
+      formatter: (params) =>
+        Array.isArray(params.value) ? String(params.value[2]) : '',
+      rich: {
+        plan: {
+          fontSize: 9,
+          fontWeight: 'bold',
+          align: 'left',
+        },
+        info: {
+          fontSize: 9,
+          align: 'left',
+        },
+      },
+    },
+  }
+}
 
 const withPlanMarkAreas = (
   series: SeriesOption[],
@@ -347,6 +440,7 @@ const buildBaseOption = ({
   legendData,
   legendConfig,
   showLegend = true,
+  plans,
 }: {
   title: string
   series: SeriesOption[]
@@ -355,92 +449,124 @@ const buildBaseOption = ({
   legendData?: LegendComponentOption['data']
   legendConfig?: Partial<LegendComponentOption>
   showLegend?: boolean
-}): EChartsOption => ({
-  title: [
-    {
-      text: title,
-      left: 'center',
-      top: 4,
-      textStyle: {
-        fontSize: 16,
-        fontWeight: 600,
-      },
-    },
-  ],
-  color: [
-    chartColors.raw,
-    chartColors.smooth,
-    chartColors.primary,
-    chartColors.cross,
-    chartColors.percent,
-  ],
-  grid: {
-    left: 72,
+  plans?: Plan[] | null
+}): EChartsOption => {
+  const grid = createGrid({
+    left: 90,
     right,
-    top: 72,
-    bottom: 72,
-  },
-  legend: createLegend({
-    data: legendData,
-    orient: 'horizontal',
-    show: showLegend,
-    top: 34,
-    type: 'scroll',
-    ...legendConfig,
-  }),
-  tooltip: {
-    trigger: 'axis',
-    valueFormatter: (value) =>
-      typeof value === 'number' ? numberFormatter.format(value) : String(value),
-  },
-  xAxis: {
-    type: 'value',
-    min: 0,
-    max: 1440,
-    interval: 60,
-    name: 'Time of Day',
-    nameLocation: 'middle',
-    nameGap: 42,
-    axisLabel: {
-      formatter: (value: number) => minutesToTimeLabel(value),
+    top: 124,
+    bottom: 110,
+    borderColor: '#d0d5dd',
+    borderWidth: 1,
+  })
+  const dataZoom = createDataZoom([
+    {
+      type: 'slider',
+      start: 0,
+      end: 100,
+      left: grid.left,
+      right: grid.right,
+      bottom: 24,
+      height: 26,
     },
-    splitLine: {
-      show: true,
-      lineStyle: {
-        color: '#d6dee6',
-      },
-    },
-    minorTick: {
-      show: true,
-      splitNumber: 4,
-    },
-    minorSplitLine: {
-      show: true,
-      lineStyle: {
-        color: '#edf1f5',
-      },
-    },
-  },
-  yAxis,
-  dataZoom: [
     {
       type: 'inside',
       start: 0,
       end: 100,
     },
-    {
-      type: 'slider',
-      start: 0,
-      end: 100,
-      height: 18,
-      bottom: 18,
-    },
-  ],
-  series,
-})
+  ])
+  const yAxisCount = Array.isArray(yAxis) ? yAxis.length : 1
+  const planLabelSeries = buildPlanLabelSeries(plans, yAxisCount - 1)
 
+  return {
+    title: [
+      {
+        text: title,
+        left: 'center',
+        top: 4,
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 600,
+        },
+      },
+    ],
+    color: [
+      chartColors.raw,
+      chartColors.smooth,
+      chartColors.primary,
+      chartColors.cross,
+      chartColors.percent,
+    ],
+    grid,
+    legend: createLegend({
+      data: legendData,
+      orient: 'vertical',
+      show: showLegend,
+      right: 0,
+      top: 124,
+      type: 'scroll',
+      backgroundColor: '#f0f0f0',
+      borderRadius: 5,
+      padding: [10, 12],
+      ...legendConfig,
+    }),
+    tooltip: {
+      trigger: 'axis',
+      valueFormatter: (value) =>
+        typeof value === 'number'
+          ? numberFormatter.format(value)
+          : String(value),
+    },
+    xAxis: {
+      type: 'value',
+      min: 0,
+      max: 1440,
+      interval: 60,
+      name: 'Time of Day',
+      nameLocation: 'middle',
+      nameGap: 42,
+      axisLabel: {
+        formatter: (value: number) => minutesToTimeLabel(value),
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: '#d6dee6',
+        },
+      },
+      minorTick: {
+        show: true,
+        splitNumber: 4,
+      },
+      minorSplitLine: {
+        show: true,
+        lineStyle: {
+          color: '#edf1f5',
+        },
+      },
+    },
+    yAxis,
+    dataZoom,
+    series: planLabelSeries ? [...series, planLabelSeries] : series,
+  }
+}
 const normalizeToken = (value?: string | null) =>
   value?.toLowerCase().replace(/[^a-z0-9]/g, '') ?? ''
+
+export const getTimeOfDayPeriodBadgeColor = (period?: string | null) => {
+  const normalizedPeriod = normalizeToken(period)
+
+  if (normalizedPeriod.startsWith('am')) return chartColors.amSignalPeak
+  if (normalizedPeriod.startsWith('midday')) return chartColors.middaySignalPeak
+  if (normalizedPeriod.startsWith('pm')) return chartColors.pmSignalPeak
+
+  return chartColors.pmSignalPeak
+}
+
+export const getLocationNumber = (
+  locationNumberMap: TimeOfDayLocationNumberMap,
+  locationIdentifier?: string | null
+) => locationNumberMap[normalizeToken(locationIdentifier)]
 
 const getProfileDisplayName = (
   profile: TimeOfDayProfileDto,
@@ -648,25 +774,22 @@ export const buildPlanProfileOption = (
     result
   )
 
+  const plans = result.recommendation?.recommendedSchedule
+  const yAxis = createYAxis(Boolean(plans?.length), {
+    name: 'Volume (vph)',
+    nameGap: 60,
+    splitLine: {
+      lineStyle: { color: '#e3e8ee' },
+    },
+  })
+
   return buildBaseOption({
     title: 'Corridor Plan Recommendation',
     series,
     legendData: getPlanProfileLegendData(directionalSeriesNames),
-    legendConfig: {
-      bottom: 72,
-      orient: 'vertical',
-      right: 0,
-      top: 72,
-      type: 'scroll',
-    },
     right: 250,
-    yAxis: {
-      type: 'value',
-      name: 'Volume (vph)',
-      splitLine: {
-        lineStyle: { color: '#e3e8ee' },
-      },
-    },
+    yAxis,
+    plans,
   })
 }
 
@@ -730,6 +853,19 @@ export const buildSplitPressureOption = (
         peak.series === 'CrossTrafficPercent' ||
         peak.valueUnits?.toLowerCase().includes('percent')
     ) ?? []
+  const locationNumberMap = buildSplitPressureLocationNumberMap(result)
+  const locationPeakSeries = buildSplitPressureLocationPeakSeries(
+    result,
+    locationNumberMap
+  )
+  const unnumberedVolumePeaks = getUnnumberedSplitPressurePeakEvents(
+    volumePeaks,
+    locationNumberMap
+  )
+  const unnumberedPercentPeaks = getUnnumberedSplitPressurePeakEvents(
+    percentPeaks,
+    locationNumberMap
+  )
 
   const series = withPlanMarkAreas(
     [
@@ -777,50 +913,69 @@ export const buildSplitPressureOption = (
         shoulderReviewPercent,
         chartColors.shoulderReview
       ),
-      buildPeakScatterSeries(
-        volumePeaks,
-        'Volume Peaks',
-        chartColors.volumePeak
-      ),
-      buildPeakScatterSeries(
-        percentPeaks,
-        'Cross Traffic Percent Peaks',
-        chartColors.percent,
-        1
-      ),
+      ...locationPeakSeries,
+      ...(unnumberedVolumePeaks.length
+        ? [
+            buildPeakScatterSeries(
+              unnumberedVolumePeaks,
+              'Volume Peaks',
+              chartColors.volumePeak
+            ),
+          ]
+        : []),
+      ...(unnumberedPercentPeaks.length
+        ? [
+            buildPeakScatterSeries(
+              unnumberedPercentPeaks,
+              'Cross Traffic Percent Peaks',
+              chartColors.percent,
+              1
+            ),
+          ]
+        : []),
     ],
     result
+  )
+
+  const plans = result.recommendation?.recommendedSchedule
+  const yAxis = createYAxis(
+    Boolean(plans?.length),
+    {
+      name: 'Volume (vph)',
+      nameGap: 60,
+      splitLine: {
+        lineStyle: { color: '#e3e8ee' },
+      },
+    },
+    {
+      name: 'Cross Traffic (%)',
+      nameGap: 48,
+      min: 0,
+      max: (value) => Math.max(100, Math.ceil(value.max / 10) * 10),
+      position: 'right',
+      axisLabel: {
+        formatter: '{value}%',
+      },
+      axisLine: { show: false },
+    }
   )
 
   return buildBaseOption({
     title: 'Corridor Split Pressure',
     series,
-    right: 82,
+    right: 330,
     legendData: [
       primarySeriesName,
       crossSeriesName,
       'Cross-traffic percent',
       splitReviewName,
       shoulderReviewName,
+      'AM Location Peaks',
+      'Midday Location Peaks',
+      'PM Location Peaks',
     ],
-    yAxis: [
-      {
-        type: 'value',
-        name: 'Volume (vph)',
-        splitLine: {
-          lineStyle: { color: '#e3e8ee' },
-        },
-      },
-      {
-        type: 'value',
-        name: 'Cross Traffic (%)',
-        min: 0,
-        max: (value) => Math.max(100, Math.ceil(value.max / 10) * 10),
-        axisLabel: {
-          formatter: '{value}%',
-        },
-      },
-    ],
+    yAxis,
+    plans,
   })
 }
 
@@ -910,3 +1065,154 @@ export const getMovementPressures = (
       (movement) => movement.period?.toLowerCase() === period.toLowerCase()
     ) ?? []),
   ].sort((left, right) => (right.volume ?? 0) - (left.volume ?? 0))
+
+const splitPressureLocationPeriods = ['AM', 'Midday', 'PM']
+const splitPressureMovementPeriods = ['AM', 'PM']
+
+const addLocationNumber = (
+  locationNumberMap: TimeOfDayLocationNumberMap,
+  locationIdentifier?: string | null
+) => {
+  const key = normalizeToken(locationIdentifier)
+  if (!key || locationNumberMap[key]) return
+
+  locationNumberMap[key] = Object.keys(locationNumberMap).length + 1
+}
+
+export const buildSplitPressureLocationNumberMap = (
+  result: TimeOfDayResult
+): TimeOfDayLocationNumberMap => {
+  const locationNumberMap: TimeOfDayLocationNumberMap = {}
+
+  splitPressureLocationPeriods.forEach((period) => {
+    getCrossTrafficLocations(
+      result.splitPressure?.crossTrafficLocations,
+      period
+    ).forEach((location) => {
+      addLocationNumber(locationNumberMap, location.locationIdentifier)
+    })
+  })
+
+  splitPressureMovementPeriods.forEach((period) => {
+    getMovementPressures(
+      result.splitPressure?.movementPressures,
+      period
+    ).forEach((movement) => {
+      addLocationNumber(locationNumberMap, movement.locationIdentifier)
+    })
+  })
+
+  result.splitPressure?.periodPeaks?.forEach((peak) => {
+    addLocationNumber(locationNumberMap, peak.locationIdentifier)
+  })
+
+  return locationNumberMap
+}
+
+const buildSplitPressureLocationPeakEvents = (
+  result: TimeOfDayResult,
+  locationNumberMap: TimeOfDayLocationNumberMap
+): TimeOfDayNumberedPeakEvent[] => {
+  const locationPeaks: TimeOfDayNumberedPeakEvent[] = []
+  const seen = new Set<string>()
+
+  const addPeak = (peak: TimeOfDayPeakEventDto) => {
+    const badgeNumber = getLocationNumber(
+      locationNumberMap,
+      peak.locationIdentifier
+    )
+    if (
+      !badgeNumber ||
+      peak.minutes === undefined ||
+      peak.value === undefined
+    ) {
+      return
+    }
+
+    const key = [
+      normalizeToken(peak.period),
+      normalizeToken(peak.locationIdentifier),
+      peak.minutes,
+      peak.value,
+    ].join('|')
+    if (seen.has(key)) return
+    seen.add(key)
+
+    locationPeaks.push({
+      ...peak,
+      badgeNumber,
+      badgeColor: getTimeOfDayPeriodBadgeColor(peak.period),
+    })
+  }
+
+  splitPressureLocationPeriods.forEach((period) => {
+    getCrossTrafficLocations(
+      result.splitPressure?.crossTrafficLocations,
+      period
+    ).forEach((location) => {
+      addPeak({
+        period,
+        locationIdentifier: location.locationIdentifier,
+        locationDescription: location.locationDescription,
+        timeOfDay: location.peakTime,
+        minutes:
+          location.minutes ??
+          getPlanBoundaryMinutes(location.peakTime) ??
+          undefined,
+        value: location.totalVehiclesPerHour,
+        valueUnits: 'vph',
+      })
+    })
+  })
+
+  splitPressureMovementPeriods.forEach((period) => {
+    getMovementPressures(
+      result.splitPressure?.movementPressures,
+      period
+    ).forEach((movement) => {
+      addPeak({
+        period,
+        locationIdentifier: movement.locationIdentifier,
+        timeOfDay: movement.peakTime,
+        minutes: getPlanBoundaryMinutes(movement.peakTime) ?? undefined,
+        value: movement.volume,
+        valueUnits: 'vph',
+      })
+    })
+  })
+
+  return locationPeaks
+}
+
+const buildSplitPressureLocationPeakSeries = (
+  result: TimeOfDayResult,
+  locationNumberMap: TimeOfDayLocationNumberMap
+): SeriesOption[] =>
+  [
+    { period: 'AM', name: 'AM Location Peaks' },
+    { period: 'Midday', name: 'Midday Location Peaks' },
+    { period: 'PM', name: 'PM Location Peaks' },
+  ].flatMap(({ period, name }) => {
+    const periodPeaks = buildSplitPressureLocationPeakEvents(
+      result,
+      locationNumberMap
+    ).filter((peak) => peakPeriodMatches(peak, period))
+
+    return periodPeaks.length
+      ? [
+          buildNumberedSignalPeakSeries(
+            periodPeaks,
+            name,
+            getTimeOfDayPeriodBadgeColor(period)
+          ),
+        ]
+      : []
+  })
+
+const getUnnumberedSplitPressurePeakEvents = (
+  peaks: TimeOfDayPeakEventDto[],
+  locationNumberMap: TimeOfDayLocationNumberMap
+) =>
+  peaks.filter(
+    (peak) => !getLocationNumber(locationNumberMap, peak.locationIdentifier)
+  )
