@@ -116,12 +116,21 @@ export const normalizeLaneCounts = (laneCounts: Record<string, number>) =>
 
 const odataString = (value: string) => `'${value.replace(/'/g, "''")}'`
 
+export const createSearchLocationsFromIdentifiers = (
+  identifiers: string[]
+): SearchLocation[] =>
+  normalizeLocationIdentifiers(identifiers).map((locationIdentifier) => ({
+    locationIdentifier,
+  }))
+
 export async function resolveSearchLocationsByIdentifier(
   identifiers: string[]
 ) {
-  if (identifiers.length === 0) return []
+  const normalizedIdentifiers = normalizeLocationIdentifiers(identifiers)
 
-  const filter = identifiers
+  if (normalizedIdentifiers.length === 0) return []
+
+  const filter = normalizedIdentifiers
     .map((identifier) => `locationIdentifier eq ${odataString(identifier)}`)
     .join(' or ')
   const locations = await getLocationLocationsForSearch({ filter })
@@ -129,7 +138,8 @@ export async function resolveSearchLocationsByIdentifier(
     locations.map((location) => [location.locationIdentifier, location])
   )
 
-  return identifiers
-    .map((identifier) => byIdentifier.get(identifier))
-    .filter((location): location is SearchLocation => Boolean(location))
+  return normalizedIdentifiers.map(
+    (identifier) =>
+      byIdentifier.get(identifier) ?? { locationIdentifier: identifier }
+  )
 }

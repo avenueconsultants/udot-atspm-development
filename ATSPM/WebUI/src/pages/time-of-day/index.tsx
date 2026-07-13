@@ -6,6 +6,7 @@ import {
   areLaneCountsEqual,
   areStringArraysEqual,
   dataSourceParser,
+  createSearchLocationsFromIdentifiers,
   laneCountsParser,
   normalizeDates,
   normalizeDirections,
@@ -190,6 +191,25 @@ export default function TimeOfDayPage() {
       return
     }
 
+    const fallbackLocations = createSearchLocationsFromIdentifiers(identifiers)
+
+    setFormState((currentFormState) => {
+      const currentLocationIdentifiers = normalizeLocationIdentifiers(
+        currentFormState.selectedLocations
+          .map((location) => location.locationIdentifier)
+          .filter((identifier): identifier is string => Boolean(identifier))
+      )
+
+      if (areStringArraysEqual(currentLocationIdentifiers, identifiers)) {
+        return currentFormState
+      }
+
+      return {
+        ...currentFormState,
+        selectedLocations: fallbackLocations,
+      }
+    })
+
     void (async () => {
       try {
         const locations = await resolveSearchLocationsByIdentifier(identifiers)
@@ -205,7 +225,7 @@ export default function TimeOfDayPage() {
               )
           )
 
-          if (areStringArraysEqual(currentLocationIdentifiers, identifiers)) {
+          if (!areStringArraysEqual(currentLocationIdentifiers, identifiers)) {
             return currentFormState
           }
 

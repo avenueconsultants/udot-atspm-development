@@ -103,31 +103,6 @@ const formatBoolean = (value?: boolean | null) => {
   return value ? 'Yes' : 'No'
 }
 
-const formatMeasurement = (
-  value?: number | null,
-  units?: string,
-  maximumFractionDigits = 0
-) => {
-  if (value === undefined || value === null) return null
-
-  if (units === '%') return `${formatNumber(value, maximumFractionDigits)}%`
-
-  return [formatNumber(value, maximumFractionDigits), units]
-    .filter(Boolean)
-    .join(' ')
-}
-
-const formatPeakSummaryLabel = (
-  label: string,
-  time?: string | null,
-  value?: number | null,
-  units?: string,
-  maximumFractionDigits = 0
-) =>
-  [label, time, formatMeasurement(value, units, maximumFractionDigits)]
-    .filter(Boolean)
-    .join(' ')
-
 const formatPlanSchedule = (plans?: Plan[] | null) => {
   if (!plans?.length) return '-'
 
@@ -158,13 +133,14 @@ function SignalPeakBadge({
         color: 'common.white',
         display: 'inline-flex',
         flexShrink: 0,
-        fontSize: 11,
+        fontSize: 10,
         fontWeight: 700,
-        height: 20,
+        height: 18,
         justifyContent: 'center',
         lineHeight: 1,
-        minWidth: 20,
-        width: 20,
+        minWidth: 18,
+        opacity: 0.82,
+        width: 18,
       }}
     >
       {badgeNumber}
@@ -232,7 +208,7 @@ function PeakList({
                       color={peak.badgeColor}
                     />
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     {formatLocationLabel(
                       peak.locationIdentifier,
                       peak.locationDescription
@@ -322,7 +298,7 @@ function CrossTrafficLocationList({
                       />
                     ) : null}
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     {formatLocationLabel(
                       location.locationIdentifier,
                       location.locationDescription
@@ -424,7 +400,7 @@ function MovementPressureList({
                       />
                     ) : null}
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+                  <TableCell sx={{ whiteSpace: 'nowrap' }}>
                     {movement.locationIdentifier ?? '-'}
                   </TableCell>
                   <TableCell sx={{ whiteSpace: 'nowrap' }}>
@@ -678,26 +654,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
             )}
           </Box>
           <Stack spacing={2} sx={chartSidePanelSx}>
-            <Stack direction="row" gap={1} flexWrap="wrap">
-              {result.recommendation?.amPeakTime && (
-                <Chip
-                  size="small"
-                  label={`AM Peak ${result.recommendation.amPeakTime}`}
-                />
-              )}
-              {result.recommendation?.middayValleyTime && (
-                <Chip
-                  size="small"
-                  label={`Midday Valley ${result.recommendation.middayValleyTime}`}
-                />
-              )}
-              {result.recommendation?.pmPeakTime && (
-                <Chip
-                  size="small"
-                  label={`PM Peak ${result.recommendation.pmPeakTime}`}
-                />
-              )}
-            </Stack>
             <PeakList
               title="AM Signal Peaks"
               peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
@@ -734,42 +690,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
             )}
           </Box>
           <Stack spacing={2} sx={chartSidePanelSx}>
-            <Stack direction="row" gap={1} flexWrap="wrap">
-              {result.splitPressure?.primaryPeakTime && (
-                <Chip
-                  size="small"
-                  label={formatPeakSummaryLabel(
-                    'Primary',
-                    result.splitPressure.primaryPeakTime,
-                    result.splitPressure.primaryPeakVolume,
-                    'vph'
-                  )}
-                />
-              )}
-              {result.splitPressure?.crossStreetPeakTime && (
-                <Chip
-                  size="small"
-                  label={formatPeakSummaryLabel(
-                    'Cross',
-                    result.splitPressure.crossStreetPeakTime,
-                    result.splitPressure.crossStreetPeakVolume,
-                    'vph'
-                  )}
-                />
-              )}
-              {result.splitPressure?.peakCrossTrafficPercentTime && (
-                <Chip
-                  size="small"
-                  label={formatPeakSummaryLabel(
-                    'Peak Cross',
-                    result.splitPressure.peakCrossTrafficPercentTime,
-                    result.splitPressure.peakCrossTrafficPercent,
-                    '%',
-                    1
-                  )}
-                />
-              )}
-            </Stack>
             {periods.map((period) => (
               <CrossTrafficLocationList
                 key={period}
