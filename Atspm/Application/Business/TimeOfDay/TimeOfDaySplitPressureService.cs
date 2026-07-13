@@ -58,12 +58,20 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
-            var primaryProfile = profileService.SumProfiles(
+            var primaryProfile = BuildRepresentativeDirectionProfile(
                 "Primary street",
-                directionalProfiles.Where(p => primaryDirections.Contains(p.Direction, StringComparer.OrdinalIgnoreCase)).ToList());
-            var crossProfile = profileService.SumProfiles(
+                primaryDirections,
+                directionalProfiles,
+                locationData,
+                selectedDates,
+                binSizeMinutes);
+            var crossProfile = BuildRepresentativeDirectionProfile(
                 "Cross street",
-                directionalProfiles.Where(p => crossDirections.Contains(p.Direction, StringComparer.OrdinalIgnoreCase)).ToList());
+                crossDirections,
+                directionalProfiles,
+                locationData,
+                selectedDates,
+                binSizeMinutes);
 
             var share = BuildCrossTrafficShare(primaryProfile, crossProfile);
             var periodPeaks = BuildPeriodPeaks(primaryProfile, crossProfile, share);
@@ -72,8 +80,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .OrderByDescending(s => s.CrossTrafficPercent)
                 .ThenBy(s => s.Minutes)
                 .FirstOrDefault();
-            var primaryPeak = primaryProfile.Points.OrderByDescending(p => p.SmoothedVolume).ThenBy(p => p.Minutes).FirstOrDefault();
-            var crossPeak = crossProfile.Points.OrderByDescending(p => p.SmoothedVolume).ThenBy(p => p.Minutes).FirstOrDefault();
+            var primaryPeak = primaryProfile.Points.OrderByDescending(p => p.AverageVolume).ThenBy(p => p.Minutes).FirstOrDefault();
+            var crossPeak = crossProfile.Points.OrderByDescending(p => p.AverageVolume).ThenBy(p => p.Minutes).FirstOrDefault();
             var crossTrafficLocations = BuildCrossTrafficLocations(
                 locationData,
                 crossDirections,
@@ -100,9 +108,9 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 PeriodPeaks = periodPeaks,
                 CrossTrafficLocations = crossTrafficLocations,
                 MovementPressures = movementPressures,
-                PrimaryPeakVolume = primaryPeak?.SmoothedVolume,
+                PrimaryPeakVolume = primaryPeak?.AverageVolume,
                 PrimaryPeakTime = primaryPeak?.TimeOfDay ?? string.Empty,
-                CrossStreetPeakVolume = crossPeak?.SmoothedVolume,
+                CrossStreetPeakVolume = crossPeak?.AverageVolume,
                 CrossStreetPeakTime = crossPeak?.TimeOfDay ?? string.Empty,
                 PeakCrossTrafficPercent = peakShare?.CrossTrafficPercent,
                 PeakCrossTrafficPercentTime = peakShare?.TimeOfDay ?? string.Empty,
@@ -139,31 +147,150 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 : new List<string> { strongestDirection };
         }
 
+        private TimeOfDayProfileDto BuildRepresentativeDirectionProfile(
+            string label,
+            IReadOnlyList<string> directions,
+            IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
+            IReadOnlyList<TimeOfDayLocationAnalysisData> locationData,
+            IReadOnlyList<DateOnly> selectedDates,
+            int binSizeMinutes)
+        {
+            var normalizedDirections = directions
+                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
+                .Where(d => !string.IsNullOrWhiteSpace(d))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            var perLocationProfiles = new List<TimeOfDayProfileDto>();
+
+            foreach (var location in locationData)
+            {
+                var observations = location.Observations
+                    .Where(o => normalizedDirections.Contains(o.Direction, StringComparer.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (observations.Count == 0)
+                {
+                    continue;
+                }
+
+                var profile = profileService.BuildProfile(
+                    $"{location.Location.LocationIdentifier} {label}",
+                    string.Empty,
+                    string.Empty,
+                    string.Empty,
+                    observations,
+                    selectedDates,
+                    binSizeMinutes);
+
+                if (profile.Points.Any(p => p.AverageVolume > 0 || p.SmoothedVolume > 0))
+                {
+                    perLocationProfiles.Add(profile);
+                }
+            }
+
+            if (perLocationProfiles.Count > 0)
+            {
+                return MedianProfiles(label, perLocationProfiles);
+            }
+
+            return profileService.SumProfiles(
+                label,
+                directionalProfiles
+                    .Where(p => normalizedDirections.Contains(p.Direction, StringComparer.OrdinalIgnoreCase))
+                    .ToList());
+        }
+
+        private static TimeOfDayProfileDto MedianProfiles(
+            string label,
+            IReadOnlyList<TimeOfDayProfileDto> profiles)
+        {
+            var profilePointsByMinute = profiles
+                .SelectMany(p => p.Points)
+                .GroupBy(p => p.Minutes)
+                .OrderBy(g => g.Key)
+                .ToList();
+            var points = new List<TimeOfDayProfilePointDto>();
+
+            foreach (var group in profilePointsByMinute)
+            {
+                var groupPoints = group.ToList();
+                var template = groupPoints[0];
+                var rollingValues = groupPoints
+                    .Select(p => p.RollingHourVph)
+                    .Where(v => v.HasValue)
+                    .Select(v => v!.Value)
+                    .ToList();
+
+                points.Add(new TimeOfDayProfilePointDto
+                {
+                    TimeOfDay = template.TimeOfDay,
+                    Minutes = template.Minutes,
+                    AverageVolume = TimeOfDayProfileService.Round(Median(groupPoints.Select(p => p.AverageVolume).ToList())),
+                    SmoothedVolume = TimeOfDayProfileService.Round(Median(groupPoints.Select(p => p.SmoothedVolume).ToList())),
+                    RollingHourVph = rollingValues.Count == groupPoints.Count
+                        ? TimeOfDayProfileService.Round(Median(rollingValues))
+                        : null,
+                    ParticipatingLocations = groupPoints.Count
+                });
+            }
+
+            for (var i = 0; i < points.Count; i++)
+            {
+                points[i].Delta = i == 0
+                    ? 0
+                    : TimeOfDayProfileService.Round(points[i].SmoothedVolume - points[i - 1].SmoothedVolume);
+            }
+
+            return new TimeOfDayProfileDto
+            {
+                Label = label,
+                Points = points
+            };
+        }
+
+        private static double Median(IReadOnlyList<double> values)
+        {
+            var ordered = values.OrderBy(v => v).ToList();
+            var midpoint = ordered.Count / 2;
+
+            return ordered.Count % 2 == 0
+                ? (ordered[midpoint - 1] + ordered[midpoint]) / 2d
+                : ordered[midpoint];
+        }
+
         private static List<TimeOfDayCrossTrafficSharePointDto> BuildCrossTrafficShare(
             TimeOfDayProfileDto primaryProfile,
             TimeOfDayProfileDto crossProfile)
         {
             var count = Math.Max(primaryProfile.Points.Count, crossProfile.Points.Count);
-            var result = new List<TimeOfDayCrossTrafficSharePointDto>();
+            var rows = new List<(int Minutes, double PrimaryVolume, double CrossVolume, double Total)>();
 
             for (var i = 0; i < count; i++)
             {
                 var primary = primaryProfile.Points.ElementAtOrDefault(i);
                 var cross = crossProfile.Points.ElementAtOrDefault(i);
                 var minutes = primary?.Minutes ?? cross?.Minutes ?? i * 15;
-                var primaryVolume = primary?.SmoothedVolume ?? 0;
-                var crossVolume = cross?.SmoothedVolume ?? 0;
+                var primaryVolume = primary?.AverageVolume ?? 0;
+                var crossVolume = cross?.AverageVolume ?? 0;
                 var total = primaryVolume + crossVolume;
 
+                rows.Add((minutes, primaryVolume, crossVolume, total));
+            }
+
+            var shareFloor = Math.Max(300d, rows.Select(r => r.Total).DefaultIfEmpty(0).Max() * 0.15d);
+            var result = new List<TimeOfDayCrossTrafficSharePointDto>();
+
+            foreach (var row in rows)
+            {
                 result.Add(new TimeOfDayCrossTrafficSharePointDto
                 {
-                    TimeOfDay = TimeOfDayProfileService.FormatTime(minutes),
-                    Minutes = minutes,
-                    PrimaryVolume = TimeOfDayProfileService.Round(primaryVolume),
-                    CrossStreetVolume = TimeOfDayProfileService.Round(crossVolume),
-                    TotalVolume = TimeOfDayProfileService.Round(total),
-                    CrossTrafficPercent = total > 0
-                        ? TimeOfDayProfileService.Round(crossVolume / total * 100)
+                    TimeOfDay = TimeOfDayProfileService.FormatTime(row.Minutes),
+                    Minutes = row.Minutes,
+                    PrimaryVolume = TimeOfDayProfileService.Round(row.PrimaryVolume),
+                    CrossStreetVolume = TimeOfDayProfileService.Round(row.CrossVolume),
+                    TotalVolume = TimeOfDayProfileService.Round(row.Total),
+                    CrossTrafficPercent = row.Total >= shareFloor && row.Total > 0
+                        ? TimeOfDayProfileService.Round(row.CrossVolume / row.Total * 100)
                         : null
                 });
             }
@@ -217,7 +344,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         {
             var peak = profile.Points
                 .Where(p => p.Minutes >= start && p.Minutes < end)
-                .OrderByDescending(p => p.SmoothedVolume)
+                .OrderByDescending(p => p.AverageVolume)
                 .ThenBy(p => p.Minutes)
                 .FirstOrDefault();
 
@@ -233,7 +360,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 Period = period,
                 TimeOfDay = peak.TimeOfDay,
                 Minutes = peak.Minutes,
-                Value = peak.SmoothedVolume,
+                Value = peak.AverageVolume,
                 ValueUnits = profile.Units
             });
         }
@@ -263,11 +390,11 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         binSizeMinutes);
                     var peak = profile.Points
                         .Where(p => p.Minutes >= period.Start && p.Minutes < period.End)
-                        .OrderByDescending(p => p.SmoothedVolume)
+                        .OrderByDescending(p => p.AverageVolume)
                         .ThenBy(p => p.Minutes)
                         .FirstOrDefault();
 
-                    if (peak == null || peak.SmoothedVolume <= 0)
+                    if (peak == null || peak.AverageVolume <= 0)
                     {
                         continue;
                     }
@@ -283,9 +410,9 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         Period = period.Name,
                         PeakTime = peak.TimeOfDay,
                         Minutes = peak.Minutes,
-                        TotalVehiclesPerHour = peak.SmoothedVolume,
+                        TotalVehiclesPerHour = peak.AverageVolume,
                         PercentOfCrossTraffic = corridorCrossVolume > 0
-                            ? TimeOfDayProfileService.Round(peak.SmoothedVolume / corridorCrossVolume * 100)
+                            ? TimeOfDayProfileService.Round(peak.AverageVolume / corridorCrossVolume * 100)
                             : null
                     });
                 }
@@ -323,11 +450,11 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                             binSizeMinutes);
                         var peak = profile.Points
                             .Where(p => p.Minutes >= period.Start && p.Minutes < period.End)
-                            .OrderByDescending(p => p.SmoothedVolume)
+                            .OrderByDescending(p => p.AverageVolume)
                             .ThenBy(p => p.Minutes)
                             .FirstOrDefault();
 
-                        if (peak == null || peak.SmoothedVolume <= 0)
+                        if (peak == null || peak.AverageVolume <= 0)
                         {
                             continue;
                         }
@@ -339,7 +466,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                             Movement = movement,
                             MovementLabel = movement,
                             PeakTime = peak.TimeOfDay,
-                            Volume = peak.SmoothedVolume
+                            Volume = peak.AverageVolume
                         });
                     }
                 }
