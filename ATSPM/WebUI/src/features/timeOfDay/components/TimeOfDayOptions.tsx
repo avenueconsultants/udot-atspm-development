@@ -36,7 +36,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { differenceInCalendarDays, format, isSameDay } from 'date-fns'
 import type { ChangeEvent } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type {
   TimeOfDayDataSourceOption,
   TimeOfDayFormState,
@@ -106,6 +106,26 @@ export default function TimeOfDayOptions({
           options.pmPrimaryDirections
         )
     )
+
+  useEffect(() => {
+    const hasPeriodSpecificDirections =
+      !areDirectionSetsEqual(
+        options.allDayPrimaryDirections,
+        options.amPrimaryDirections
+      ) ||
+      !areDirectionSetsEqual(
+        options.allDayPrimaryDirections,
+        options.pmPrimaryDirections
+      )
+
+    if (hasPeriodSpecificDirections) {
+      setUsePeriodSpecificDirections(true)
+    }
+  }, [
+    options.allDayPrimaryDirections,
+    options.amPrimaryDirections,
+    options.pmPrimaryDirections,
+  ])
 
   const updateOptions = (patch: Partial<TimeOfDayFormState>) => {
     onChange({ ...options, ...patch })
