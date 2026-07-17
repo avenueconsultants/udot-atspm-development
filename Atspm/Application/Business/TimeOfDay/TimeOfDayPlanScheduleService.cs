@@ -57,7 +57,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             foreach (var data in locationData)
             {
                 var schedulesByDate = dataSource == TimeOfDayDataSource.Aggregated
-                    ? GetAggregatedDailySchedules(data.SignalPlanAggregations, selectedDates)
+                    ? GetAggregatedDailySchedules(data.SignalTimingPlans, selectedDates)
                     : GetIndianaDailySchedules(data.Location.LocationIdentifier, data.IndianaPlanEvents, selectedDates);
 
                 var schedule = BuildRepresentativeSchedule(
@@ -106,7 +106,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         }
 
         private List<DailyPlanSchedule> GetAggregatedDailySchedules(
-            IReadOnlyList<SignalPlanAggregation> signalPlanAggregations,
+            IReadOnlyList<SignalTimingPlan> signalTimingPlans,
             IReadOnlyList<DateOnly> selectedDates)
         {
             var schedules = new List<DailyPlanSchedule>();
@@ -115,21 +115,21 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             {
                 var start = selectedDate.ToDateTime(TimeOnly.MinValue);
                 var end = start.AddDays(1);
-                var aggregations = signalPlanAggregations
-                    .Where(a => a.Start >= start && a.Start < end)
+                var plans = signalTimingPlans
+                    .Where(a => a.Start < end && (a.End == DateTime.MinValue || a.End > start))
                     .OrderBy(a => a.Start)
                     .ToList();
 
-                if (aggregations.Count == 0)
+                if (plans.Count == 0)
                 {
                     continue;
                 }
 
-                var daily = aggregations
+                var daily = plans
                     .Select(a => new Plan(
                         a.PlanNumber.ToString(),
                         a.Start < start ? start : a.Start,
-                        a.End > end ? end : a.End))
+                        a.End == DateTime.MinValue || a.End > end ? end : a.End))
                     .Where(p => p.End > p.Start)
                     .ToList();
 

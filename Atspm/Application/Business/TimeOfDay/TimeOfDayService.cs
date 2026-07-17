@@ -38,7 +38,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         public List<IndianaEvent> IndianaEvents { get; } = new();
         public List<IndianaEvent> IndianaPlanEvents { get; } = new();
         public List<DetectorEventCountAggregation> DetectorEventCountAggregations { get; } = new();
-        public List<SignalPlanAggregation> SignalPlanAggregations { get; } = new();
+        public List<SignalTimingPlan> SignalTimingPlans { get; } = new();
     }
 
     public class TimeOfDayService

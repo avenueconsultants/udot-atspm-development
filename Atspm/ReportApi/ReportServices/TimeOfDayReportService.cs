@@ -27,20 +27,20 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         private readonly ILocationRepository locationRepository;
         private readonly IIndianaEventLogRepository eventLogRepository;
         private readonly IDetectorEventCountAggregationRepository detectorEventCountAggregationRepository;
-        private readonly ISignalPlanAggregationRepository signalPlanAggregationRepository;
+        private readonly ISignalTimingPlanRepository signalTimingPlanRepository;
         private readonly TimeOfDayService timeOfDayService;
 
         public TimeOfDayReportService(
             ILocationRepository locationRepository,
             IIndianaEventLogRepository eventLogRepository,
             IDetectorEventCountAggregationRepository detectorEventCountAggregationRepository,
-            ISignalPlanAggregationRepository signalPlanAggregationRepository,
+            ISignalTimingPlanRepository signalTimingPlanRepository,
             TimeOfDayService timeOfDayService)
         {
             this.locationRepository = locationRepository;
             this.eventLogRepository = eventLogRepository;
             this.detectorEventCountAggregationRepository = detectorEventCountAggregationRepository;
-            this.signalPlanAggregationRepository = signalPlanAggregationRepository;
+            this.signalTimingPlanRepository = signalTimingPlanRepository;
             this.timeOfDayService = timeOfDayService;
         }
 
@@ -152,8 +152,12 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 {
                     data.DetectorEventCountAggregations.AddRange(
                         detectorEventCountAggregationRepository.GetAggregationsBetweenDates(location.LocationIdentifier, start, end));
-                    data.SignalPlanAggregations.AddRange(
-                        signalPlanAggregationRepository.GetAggregationsBetweenDates(location.LocationIdentifier, start, end));
+                    data.SignalTimingPlans.AddRange(
+                        signalTimingPlanRepository.GetList()
+                            .Where(p => p.LocationIdentifier == location.LocationIdentifier
+                                && p.Start < end
+                                && (p.End == DateTime.MinValue || p.End > start))
+                            .ToList());
                 }
                 else
                 {
@@ -163,6 +167,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     data.IndianaPlanEvents.AddRange(controllerEventLogs
                         .Where(e => e.EventCode == (short)IndianaEnumerations.CoordPatternChange));
                 }
+            }
+
+            if (options.DataSource == TimeOfDayDataSource.Aggregated && data.SignalTimingPlans.Count > 0)
+            {
+                var distinctPlans = data.SignalTimingPlans
+                    .DistinctBy(p => new { p.LocationIdentifier, p.PlanNumber, p.Start })
+                    .ToList();
+
+                data.SignalTimingPlans.Clear();
+                data.SignalTimingPlans.AddRange(distinctPlans);
             }
 
             return data;
