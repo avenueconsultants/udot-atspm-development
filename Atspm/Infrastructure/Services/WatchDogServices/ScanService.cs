@@ -17,9 +17,12 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using Utah.Udot.Atspm.Business.Watchdog;
+using Utah.Udot.Atspm.Common;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models.IdentityModels;
+using Utah.Udot.Atspm.Infrastructure.LogMessages;
 using Utah.Udot.Atspm.Repositories;
 
 namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
@@ -44,6 +47,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
         private readonly IWatchdogEmailService emailService;
         private readonly SegmentedErrorsService segmentedErrorsService;
         private readonly ILogger<ScanService> logger;
+        private readonly ScanServiceLogMessages logMessages;
 
         public ScanService(
             ILocationRepository LocationRepository,
@@ -81,29 +85,41 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
             this.logger = logger;
             this.segmentedErrorsService = segmentedErrorsService;
             this.ignoreEventService = ignoreEventService;
+            this.logMessages = new ScanServiceLogMessages(logger, nameof(ScanService));
         }
         public async Task StartScan(
             WatchdogLoggingOptions loggingOptions,
             WatchdogEmailOptions emailOptions,
             CancellationToken cancellationToken)
         {
+            if (!(emailOptions.EmailAmErrors || emailOptions.EmailPmErrors || emailOptions.EmailRampErrors))
+            {
+                logMessages.NoEmailOptionsEnabled();
+                throw new InvalidOperationException("No email options are enabled.");
+            }
+
             DateTime scanDate = emailOptions.EmailAmErrors ? emailOptions.AmScanDate : emailOptions.EmailPmErrors
-                ? emailOptions.PmScanDate : emailOptions.EmailRampErrors ? emailOptions.RampMissedDetectorHitsStartScanDate
-                : throw new InvalidOperationException("No email options are enabled.");
+                ? emailOptions.PmScanDate : emailOptions.RampMissedDetectorHitsStartScanDate;
+
+            var stopwatch = Stopwatch.StartNew();
+            logMessages.ScanStarted(scanDate, emailOptions.EmailAmErrors, emailOptions.EmailPmErrors, emailOptions.EmailRampErrors);
 
             //need a version of this that gets the Location version for date of the scan
             var locations = LocationRepository.GetLatestVersionOfAllLocations(scanDate).ToList();
 
             var regions = regionsRepository.GetList().ToList();
-            var userRegions = userRegionRepository.GetList();
+            var userRegions = userRegionRepository.GetList().ToList();
 
             var areas = areaRepository.GetList().ToList();
             var userAreas = userAreaRepository.GetList().ToList();
 
             var jurisdictions = jurisdictionRepository.GetList().ToList(); // only look for ramp in jurisdiction if only .....
-            var userJurisdictions = userJurisdictionRepository.GetList();
+            var userJurisdictions = userJurisdictionRepository.GetList().ToList();
 
-            var users = await GetUsersWithWatchDogClaimAsync();
+            var recipients = await GetWatchdogEmailRecipientsAsync(
+                userRegions,
+                userJurisdictions,
+                userAreas);
 
             var errors = new List<WatchDogLogEvent>();
             var existingEvents = watchDogLogEventRepository.GetList();
@@ -129,6 +145,11 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     var pmOptions = BreakOutPmOptions(loggingOptions);
                     pmErrors = await logPmService.GetWatchDogIssues(pmOptions, locations, cancellationToken);
                     SaveErrorLogs(pmErrors);
+                    logMessages.SegmentErrorsComputed("PM", pmErrors.Count);
+                }
+                else
+                {
+                    logMessages.SegmentErrorsReused("PM", pmErrors.Count);
                 }
 
                 errors.AddRange(pmErrors);
@@ -143,6 +164,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 finalDaily.AddRange(pmResult.DailyRecurring);
                 finalRecurring.AddRange(pmResult.Recurring);
                 finalDayBefore.AddRange(pmResult.DayBefore);
+                logMessages.SegmentSummary("PM", pmResult.NewIssues.Count, pmResult.DailyRecurring.Count, pmResult.Recurring.Count, pmResult.DayBefore.Count);
             }
 
             // AM
@@ -160,6 +182,11 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     var amOptions = BreakOutAmOptions(loggingOptions);
                     amErrors = await logAmService.GetWatchDogIssues(amOptions, locations, cancellationToken);
                     SaveErrorLogs(amErrors);
+                    logMessages.SegmentErrorsComputed("AM", amErrors.Count);
+                }
+                else
+                {
+                    logMessages.SegmentErrorsReused("AM", amErrors.Count);
                 }
 
                 errors.AddRange(amErrors);
@@ -174,6 +201,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 finalDaily.AddRange(amResult.DailyRecurring);
                 finalRecurring.AddRange(amResult.Recurring);
                 finalDayBefore.AddRange(amResult.DayBefore);
+                logMessages.SegmentSummary("AM", amResult.NewIssues.Count, amResult.DailyRecurring.Count, amResult.Recurring.Count, amResult.DayBefore.Count);
             }
 
             // Ramp
@@ -191,6 +219,11 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     var rampOptions = BreakOutRampOptions(loggingOptions);
                     rampErrors = await logRampService.GetWatchDogIssues(rampOptions, locations, cancellationToken);
                     SaveErrorLogs(rampErrors);
+                    logMessages.SegmentErrorsComputed("Ramp", rampErrors.Count);
+                }
+                else
+                {
+                    logMessages.SegmentErrorsReused("Ramp", rampErrors.Count);
                 }
 
                 errors.AddRange(rampErrors);
@@ -205,6 +238,17 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 finalDaily.AddRange(rampResult.DailyRecurring);
                 finalRecurring.AddRange(rampResult.Recurring);
                 finalDayBefore.AddRange(rampResult.DayBefore);
+                logMessages.SegmentSummary("Ramp", rampResult.NewIssues.Count, rampResult.DailyRecurring.Count, rampResult.Recurring.Count, rampResult.DayBefore.Count);
+            }
+
+            stopwatch.Stop();
+            logMessages.ScanCompleted(scanDate, errors.Count, stopwatch.ElapsedMilliseconds);
+
+            var isWeekend = scanDate.DayOfWeek == DayOfWeek.Saturday || scanDate.DayOfWeek == DayOfWeek.Sunday;
+            if (emailOptions.WeekdayOnly && isWeekend)
+            {
+                logMessages.SkippingWeekendEmail(scanDate);
+                return;
             }
 
             await emailService.SendAllEmails(
@@ -213,13 +257,10 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                 finalDaily,
                 finalRecurring,
                 locations,
-                users,
+                recipients,
                 jurisdictions,
-                userJurisdictions.ToList(),
                 areas,
-                userAreas.ToList(),
                 regions,
-                userRegions.ToList(),
                 finalDayBefore);
         }
 
@@ -294,7 +335,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     retryCount++;
 
                     // Log the exception (optional, based on your logging implementation)
-                    logger.LogError($"Attempt {retryCount} failed: {ex.Message}");
+                    logMessages.SaveErrorLogsAttemptFailed(retryCount, ex);
 
                     if (retryCount == maxRetryAttempts)
                     {
@@ -303,7 +344,7 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
                     }
 
                     // Exponential backoff delay before retrying
-                    logger.LogInformation($"Retrying in {delay} ms...");
+                    logMessages.SaveErrorLogsRetrying(delay);
                     Thread.Sleep(delay);
                     delay *= 2; // Double the delay time
                 }
@@ -312,33 +353,71 @@ namespace Utah.Udot.ATSPM.Infrastructure.Services.WatchDogServices
 
 
 
-        public async Task<List<ApplicationUser>> GetUsersWithWatchDogClaimAsync()
+        public async Task<List<WatchdogEmailRecipient>> GetWatchdogEmailRecipientsAsync(
+            List<UserRegion> userRegions,
+            List<UserJurisdiction> userJurisdictions,
+            List<UserArea> userAreas)
         {
-            // Define the claim type you are looking for
-            const string claimValue = "Watchdog:View";
-
-            var usersWithWatchDogClaim = new List<ApplicationUser>();
-
-            // Get all users
-            var allUsers = userManager.Users.ToList();
-
-            foreach (var user in allUsers)
+            var recipients = new List<WatchdogEmailRecipient>();
+            var roleHasWatchdogClaimCache = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+            foreach (var user in userManager.Users.ToList())
             {
                 var userRoles = await userManager.GetRolesAsync(user);
+                if (!await HasWatchdogClaimAsync(userRoles, roleHasWatchdogClaimCache))
+                    continue;
 
-                foreach (var role in userRoles)
+                recipients.Add(new WatchdogEmailRecipient
                 {
-                    var roleClaims = await roleManager.GetClaimsAsync(await roleManager.FindByNameAsync(role));
+                    UserId = user.Id,
+                    Email = user.Email ?? string.Empty,
+                    DisplayName = user.FullName?.Trim() ?? string.Empty,
+                    IsAdmin = userRoles.Any(role => string.Equals(role, AtspmAuthorization.Roles.Admin, StringComparison.OrdinalIgnoreCase)),
+                    IsWatchdogSubscriber = userRoles.Any(role => string.Equals(role, AtspmAuthorization.Roles.WatchdogSubscriber, StringComparison.OrdinalIgnoreCase)),
+                    RegionIds = userRegions.Where(ur => ur.UserId == user.Id).Select(ur => ur.RegionId).Distinct().ToList(),
+                    JurisdictionIds = userJurisdictions.Where(uj => uj.UserId == user.Id).Select(uj => uj.JurisdictionId).Distinct().ToList(),
+                    AreaIds = userAreas.Where(ua => ua.UserId == user.Id).Select(ua => ua.AreaId).Distinct().ToList()
+                });
+            }
 
-                    if (roleClaims.Any(claim => claim.Value == claimValue))
+            return recipients;
+        }
+
+        private async Task<bool> HasWatchdogClaimAsync(
+            IEnumerable<string> userRoles,
+            IDictionary<string, bool> roleHasWatchdogClaimCache)
+        {
+            var claimValue = AtspmAuthorization.Permissions.WatchdogView;
+            foreach (var role in userRoles)
+            {
+                if (roleHasWatchdogClaimCache.TryGetValue(role, out var hasWatchdogClaim))
+                {
+                    if (hasWatchdogClaim)
                     {
-                        usersWithWatchDogClaim.Add(user);
-                        break; // Once we find the claim in one of the user's roles, no need to check further
+                        return true;
                     }
+
+                    continue;
+                }
+
+                var identityRole = await roleManager.FindByNameAsync(role);
+                if (identityRole is null)
+                {
+                    roleHasWatchdogClaimCache[role] = false;
+                    continue;
+                }
+
+                var roleClaims = await roleManager.GetClaimsAsync(identityRole);
+                hasWatchdogClaim = roleClaims.Any(claim =>
+                    string.Equals(claim.Value, claimValue, StringComparison.OrdinalIgnoreCase));
+                roleHasWatchdogClaimCache[role] = hasWatchdogClaim;
+
+                if (hasWatchdogClaim)
+                {
+                    return true;
                 }
             }
 
-            return usersWithWatchDogClaim;
+            return false;
         }
 
 

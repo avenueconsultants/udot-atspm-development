@@ -1,96 +1,77 @@
-﻿#region license
-// Copyright 2026 Utah Departement of Transportation
-// for Infrastructure - Utah.Udot.Atspm.Infrastructure.Extensions/MoveToToolkit.cs
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-#endregion
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Threading.Tasks.Dataflow;
+using Utah.Udot.ATSPM.Infrastructure.Workflows;
 
 namespace Utah.Udot.Atspm.Infrastructure.Extensions
 {
-    public static class ApiKeyGenerator
+    //HACK: move to toolkit
+    public static class WorkflowExtensions
     {
-        public static string HashKey(string rawKey)
+        public static async Task BatchRunAsync<TInput, TOutput>(this Func<WorkflowBase<TInput, TOutput>> factory, IAsyncEnumerable<TInput> source, int batchSize, int parallelInstances, CancellationToken cancellationToken)
         {
-            var inputBytes = Encoding.UTF8.GetBytes(rawKey);
-            var hashBytes = SHA256.HashData(inputBytes);
-            return Convert.ToBase64String(hashBytes);
+            var batcher = new BatchBlock<TInput>(batchSize, new GroupingDataflowBlockOptions
+            {
+                BoundedCapacity = batchSize * (parallelInstances + 2),
+                CancellationToken = cancellationToken
+            });
+
+            var manager = new ActionBlock<TInput[]>(async chunk =>
+            {
+                var workflow = factory();
+
+                await workflow.Initialize();
+
+                workflow.Output.LinkTo(DataflowBlock.NullTarget<TOutput>(), new DataflowLinkOptions { PropagateCompletion = true });
+
+                foreach (var item in chunk)
+                {
+                    await workflow.Input.SendAsync(item, cancellationToken);
+                }
+
+                workflow.Input.Complete();
+
+                await workflow.Output.Completion;
+            },
+            new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = parallelInstances,
+                BoundedCapacity = parallelInstances + 1,
+                CancellationToken = cancellationToken
+            });
+
+            batcher.LinkTo(manager, new DataflowLinkOptions { PropagateCompletion = true });
+
+            await foreach (var item in source.WithCancellation(cancellationToken))
+            {
+                await batcher.SendAsync(item, cancellationToken);
+            }
+            batcher.Complete();
+
+            await manager.Completion;
         }
 
-        public static (string RawKey, string Hash) CreateKey()
+        public static Task WhenInitialized(this ISupportInitializeNotification service)
         {
-            var bytes = RandomNumberGenerator.GetBytes(32);
-            string rawKey = Convert.ToBase64String(bytes)
-                .Replace("/", "").Replace("+", "").Replace("=", "");
+            if (service.IsInitialized)
+                return Task.CompletedTask;
 
-            return (rawKey, HashKey(rawKey));
-        }
-    }
+            var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    public static class StuffToMove
-    {
-        public static SwaggerGenOptions AddAtspmSecurityDefinitions(this SwaggerGenOptions swaggerGenOptions)
-        {
-            // 1. Define the JWT Scheme
-            var jwtSecurityScheme = new OpenApiSecurityScheme
+            void Handler(object s, EventArgs e)
             {
-                BearerFormat = "JWT",
-                Name = "JWT Authentication",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.Http,
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
-                Reference = new OpenApiReference
-                {
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
+                service.Initialized -= Handler;
+                tcs.TrySetResult(true);
+            }
 
-            // 2. Define the API Key Scheme
-            var apiKeySecurityScheme = new OpenApiSecurityScheme
+            service.Initialized += Handler;
+
+            if (service.IsInitialized)
             {
-                Name = "X-API-KEY", // The actual header name the code looks for
-                Description = "Enter your API Key directly (no 'Bearer' prefix needed)",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "ApiKey",
-                Reference = new OpenApiReference
-                {
-                    Id = "ApiKey", // This ID is used for the requirement below
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
+                service.Initialized -= Handler;
+                tcs.TrySetResult(true);
+            }
 
-            // 3. Register both definitions
-            swaggerGenOptions.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
-            swaggerGenOptions.AddSecurityDefinition(apiKeySecurityScheme.Reference.Id, apiKeySecurityScheme);
-
-            // 4. Require BOTH for all operations
-            // Swagger will allow EITHER to satisfy the requirement if the user provides one
-            swaggerGenOptions.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        { jwtSecurityScheme, Array.Empty<string>() },
-        { apiKeySecurityScheme, Array.Empty<string>() }
-    });
-
-            return swaggerGenOptions;
+            return tcs.Task;
         }
     }
 }
