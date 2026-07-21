@@ -14,10 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { TimeSpaceRendererDirectionRole } from '@/features/charts/timeSpaceDiagram/renderer/types/timeSpaceRenderer.types'
 import { Color } from '@/features/charts/utils'
-import type {
-  TimeSpaceRendererDirectionRole,
-} from '@/features/charts/timeSpaceDiagram/renderer/types/timeSpaceRenderer.types'
 import type { EChartsOption, SeriesOption } from 'echarts'
 import type { TimeSpaceAppearanceSettings } from '../../shared/timeSpaceAppearance'
 import { TIME_SPACE_GPX_TRACKS_LEGEND_NAME } from '../../shared/types'
@@ -154,8 +152,8 @@ const SIDEBAR_ITEM_DEFINITIONS: SidebarItemDefinition[] = [
     description:
       'Horizontal phase-state band showing how each cycle progresses through the signal indications.',
     details: [
-      { color: '#8ef08d', label: 'Early green' },
-      { color: Color.Green, label: 'Programmed split green' },
+      { color: Color.Green, label: 'Early green' },
+      { color: '#8ef08d', label: 'Green phase' },
       { color: Color.Yellow, label: 'Yellow clearance' },
       { color: '#FF0000', label: 'Red clearance' },
       { color: '#f0807f', label: 'Red indication' },
@@ -186,7 +184,8 @@ const SIDEBAR_ITEM_DEFINITIONS: SidebarItemDefinition[] = [
     key: 'lane-by-lane-count',
     label: 'Lane-by-Lane Count',
     category: 'Detection',
-    description: 'Lane-level count detector traces for each corridor direction.',
+    description:
+      'Lane-level count detector traces for each corridor direction.',
     preview: 'detector-line',
     match: (name) => matchDirectionalPrefix(name, 'Lane by Lane Count'),
   },
@@ -323,9 +322,9 @@ function getAllSeries(option?: EChartsOption): SeriesOption[] {
     return []
   }
 
-  return (Array.isArray(option.series) ? option.series : [option.series]).filter(
-    isSeriesOption
-  )
+  return (
+    Array.isArray(option.series) ? option.series : [option.series]
+  ).filter(isSeriesOption)
 }
 
 function getSeriesName(series: SeriesOption): string | null {
@@ -745,12 +744,12 @@ export function getRenderedItemDetails(
 
   return [
     {
-      color: appearanceSettings.cycles.indicationColors.trailingGreen,
+      color: appearanceSettings.cycles.indicationColors.beginGreen,
       label: 'Early green',
     },
     {
-      color: appearanceSettings.cycles.indicationColors.beginGreen,
-      label: 'Programmed split green',
+      color: appearanceSettings.cycles.indicationColors.trailingGreen,
+      label: 'Green phase',
     },
     {
       color: appearanceSettings.cycles.indicationColors.yellowClearance,

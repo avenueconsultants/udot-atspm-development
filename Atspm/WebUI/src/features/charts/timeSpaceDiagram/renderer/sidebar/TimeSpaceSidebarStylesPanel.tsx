@@ -1,8 +1,8 @@
 import {
   getDirectionRoleDisplayLabel,
   getStylableItems,
-  type SidebarItem,
   type SidebarDirectionRole,
+  type SidebarItem,
 } from '@/features/charts/timeSpaceDiagram/renderer/sidebar/timeSpaceSidebarModel'
 import {
   TIME_SPACE_DEFAULT_APPEARANCE_SETTINGS,
@@ -352,7 +352,9 @@ export default function TimeSpaceSidebarStylesPanel({
   const stylableItems = getStylableItems(items)
   const styleAppearance =
     appearanceSettings ?? TIME_SPACE_DEFAULT_APPEARANCE_SETTINGS
-  const hasLeftTurnStyle = stylableItems.some((item) => item.key === 'left-turn')
+  const hasLeftTurnStyle = stylableItems.some(
+    (item) => item.key === 'left-turn'
+  )
   const hasRightTurnStyle = stylableItems.some(
     (item) => item.key === 'right-turn'
   )
@@ -434,6 +436,23 @@ export default function TimeSpaceSidebarStylesPanel({
                 >
                   <ColorInputControl
                     label="Early green"
+                    value={cycleColors.beginGreen}
+                    ariaLabel="Cycles begin green color"
+                    onChange={(value) =>
+                      updateAppearance((current) => ({
+                        ...current,
+                        cycles: {
+                          ...current.cycles,
+                          indicationColors: {
+                            ...current.cycles.indicationColors,
+                            beginGreen: value,
+                          },
+                        },
+                      }))
+                    }
+                  />
+                  <ColorInputControl
+                    label="Green phase"
                     value={cycleColors.trailingGreen}
                     ariaLabel="Cycles early green color"
                     onChange={(value) =>
