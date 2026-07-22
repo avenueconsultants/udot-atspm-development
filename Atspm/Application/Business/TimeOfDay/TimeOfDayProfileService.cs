@@ -34,6 +34,13 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             string direction = "",
             string movement = "",
             string movementLabel = "");
+
+        TimeOfDayProfileDto MedianProfiles(
+            string label,
+            IReadOnlyList<TimeOfDayProfileDto> profiles,
+            string direction = "",
+            string movement = "",
+            string movementLabel = "");
     }
 
     public class TimeOfDayProfileService : ITimeOfDayProfileService
@@ -182,6 +189,69 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             };
         }
 
+        public TimeOfDayProfileDto MedianProfiles(
+            string label,
+            IReadOnlyList<TimeOfDayProfileDto> profiles,
+            string direction = "",
+            string movement = "",
+            string movementLabel = "")
+        {
+            if (profiles.Count == 0)
+            {
+                return new TimeOfDayProfileDto
+                {
+                    Label = label,
+                    Direction = direction,
+                    Movement = movement,
+                    MovementLabel = movementLabel
+                };
+            }
+
+            var profilePointsByMinute = profiles
+                .SelectMany(p => p.Points)
+                .GroupBy(p => p.Minutes)
+                .OrderBy(g => g.Key)
+                .ToList();
+            var points = new List<TimeOfDayProfilePointDto>();
+
+            foreach (var group in profilePointsByMinute)
+            {
+                var groupPoints = group.ToList();
+                var template = groupPoints[0];
+                var rollingValues = groupPoints
+                    .Select(p => p.RollingHourVph)
+                    .Where(v => v.HasValue)
+                    .Select(v => v!.Value)
+                    .ToList();
+
+                points.Add(new TimeOfDayProfilePointDto
+                {
+                    TimeOfDay = template.TimeOfDay,
+                    Minutes = template.Minutes,
+                    AverageVolume = Round(Median(groupPoints.Select(p => p.AverageVolume).ToList())),
+                    SmoothedVolume = Round(Median(groupPoints.Select(p => p.SmoothedVolume).ToList())),
+                    RollingHourVph = rollingValues.Count == groupPoints.Count
+                        ? Round(Median(rollingValues))
+                        : null,
+                    ParticipatingLocations = groupPoints.Count
+                });
+            }
+
+            for (var i = 0; i < points.Count; i++)
+            {
+                points[i].Delta = i == 0 ? 0 : Round(points[i].SmoothedVolume - points[i - 1].SmoothedVolume);
+            }
+
+            return new TimeOfDayProfileDto
+            {
+                Label = label,
+                Direction = direction,
+                Movement = movement,
+                MovementLabel = movementLabel,
+                Points = points
+            };
+        }
+
         internal static string FormatTime(int minutes)
         {
             var normalized = ((minutes % (24 * 60)) + (24 * 60)) % (24 * 60);
@@ -189,5 +259,15 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         }
 
         internal static double Round(double value) => Math.Round(value, 2, MidpointRounding.AwayFromZero);
+
+        internal static double Median(IReadOnlyList<double> values)
+        {
+            var ordered = values.OrderBy(v => v).ToList();
+            var midpoint = ordered.Count / 2;
+
+            return ordered.Count % 2 == 0
+                ? (ordered[midpoint - 1] + ordered[midpoint]) / 2d
+                : ordered[midpoint];
+        }
     }
 }

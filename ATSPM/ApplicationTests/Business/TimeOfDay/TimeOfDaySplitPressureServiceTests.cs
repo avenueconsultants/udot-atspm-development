@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Options;
 using Utah.Udot.Atspm.Business.TimeOfDay;
 using Utah.Udot.Atspm.Data.Models;
 using Utah.Udot.Atspm.Data.Models.MeasureOptions;
@@ -85,11 +84,85 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
             Assert.Null(share.CrossTrafficPercent);
         }
 
+        [Fact]
+        public void BuildSplitPressure_UsesOnlyAllDayPrimaryDirectionsForSplitPressure()
+        {
+            var service = CreateService();
+            var result = service.BuildSplitPressure(
+                new TimeOfDayOptions
+                {
+                    AllDayPrimaryDirections = new List<string> { "Eastbound" },
+                    AmPrimaryDirections = new List<string> { "Northbound" },
+                    PmPrimaryDirections = new List<string> { "Northbound" }
+                },
+                new List<TimeOfDayProfileDto>
+                {
+                    BuildProfile("Eastbound", "Eastbound", 480, 600),
+                    BuildProfile("Northbound", "Northbound", 480, 400)
+                },
+                new List<TimeOfDayLocationAnalysisData>(),
+                new List<DateOnly> { TestDate },
+                15);
+
+            Assert.Equal(new[] { "Eastbound" }, result.PrimaryDirections);
+            Assert.Equal(new[] { "Northbound" }, result.CrossDirections);
+        }
+
+        [Fact]
+        public void BuildSplitPressure_InfersCrossDirectionsFromOppositeAxis()
+        {
+            var service = CreateService();
+            var result = service.BuildSplitPressure(
+                new TimeOfDayOptions
+                {
+                    AllDayPrimaryDirections = new List<string> { "Eastbound" }
+                },
+                new List<TimeOfDayProfileDto>
+                {
+                    BuildProfile("Eastbound", "Eastbound", 480, 600),
+                    BuildProfile("Westbound", "Westbound", 480, 500),
+                    BuildProfile("Northbound", "Northbound", 480, 300),
+                    BuildProfile("Southbound", "Southbound", 480, 200)
+                },
+                new List<TimeOfDayLocationAnalysisData>(),
+                new List<DateOnly> { TestDate },
+                15);
+
+            Assert.Equal(new[] { "Northbound", "Southbound" }, result.CrossDirections);
+        }
+
+        [Fact]
+        public void BuildSplitPressure_AlignsCrossTrafficShareByMinute()
+        {
+            var service = CreateService();
+            var result = service.BuildSplitPressure(
+                new TimeOfDayOptions
+                {
+                    AllDayPrimaryDirections = new List<string> { "Eastbound" }
+                },
+                new List<TimeOfDayProfileDto>
+                {
+                    BuildProfile("Eastbound", "Eastbound", 480, 1000),
+                    BuildProfile("Northbound", "Northbound", 495, 500)
+                },
+                new List<TimeOfDayLocationAnalysisData>(),
+                new List<DateOnly> { TestDate },
+                15);
+
+            var primaryOnly = result.CrossTrafficShare.Single(p => p.Minutes == 480);
+            var crossOnly = result.CrossTrafficShare.Single(p => p.Minutes == 495);
+
+            Assert.Equal(1000, primaryOnly.PrimaryVolume);
+            Assert.Equal(0, primaryOnly.CrossStreetVolume);
+            Assert.Equal(0, primaryOnly.CrossTrafficPercent);
+            Assert.Equal(0, crossOnly.PrimaryVolume);
+            Assert.Equal(500, crossOnly.CrossStreetVolume);
+            Assert.Equal(100, crossOnly.CrossTrafficPercent);
+        }
+
         private static TimeOfDaySplitPressureService CreateService()
         {
-            return new TimeOfDaySplitPressureService(
-                Options.Create(new TimeOfDayThresholdOptions()),
-                new TimeOfDayProfileService());
+            return new TimeOfDaySplitPressureService(new TimeOfDayProfileService());
         }
 
         private static List<TimeOfDayProfileDto> BuildDirectionalProfiles()

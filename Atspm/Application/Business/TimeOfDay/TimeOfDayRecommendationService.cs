@@ -15,7 +15,6 @@
 // limitations under the License.
 #endregion
 
-using Microsoft.Extensions.Options;
 using Utah.Udot.Atspm.Business.Common;
 using Utah.Udot.Atspm.Data.Models.MeasureOptions;
 
@@ -32,14 +31,13 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
     public class TimeOfDayRecommendationService : ITimeOfDayRecommendationService
     {
-        private readonly TimeOfDayThresholdOptions thresholds;
+        private const string AlgorithmVersion = "tod-v1";
+        private const string ThresholdConfigurationName = "Configured thresholds";
+
         private readonly ITimeOfDayProfileService profileService;
 
-        public TimeOfDayRecommendationService(
-            IOptions<TimeOfDayThresholdOptions> thresholds,
-            ITimeOfDayProfileService profileService)
+        public TimeOfDayRecommendationService(ITimeOfDayProfileService profileService)
         {
-            this.thresholds = thresholds.Value;
             this.profileService = profileService;
         }
 
@@ -53,8 +51,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             {
                 return new TimeOfDayRecommendationDto
                 {
-                    AlgorithmVersion = thresholds.AlgorithmVersion,
-                    ThresholdConfigurationName = thresholds.ConfigurationName,
+                    AlgorithmVersion = AlgorithmVersion,
+                    ThresholdConfigurationName = ThresholdConfigurationName,
                     SummaryText = "Recommended schedule unavailable because no usable volume profile was found."
                 };
             }
@@ -70,86 +68,216 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 corridorProfile,
                 "PM primary");
 
-            var maxAmEnd = ParseTimeOrDefault(thresholds.MaxAmEndTime, 11 * 60);
-            var maxPmEnd = ParseTimeOrDefault(thresholds.MaxPmEndTime, 19 * 60);
-            var freeFallback = ParseTimeOrDefault(thresholds.FreeFallbackTime, 22 * 60);
+            var maxAmEnd = ParseTimeOrDefault(options.MaxAmEndTime, 10 * 60);
+            var maxPmEnd = ParseTimeOrDefault(options.MaxPmEndTime, 20 * 60);
+            var freeFallback = ParseTimeOrDefault(options.FreeFallbackTime, 23 * 60 + 30);
             var binSize = InferBinSize(corridorProfile);
 
-            var amPeak = FindPeak(amProfile, 4 * 60, maxAmEnd) ?? FindPeak(corridorProfile, 4 * 60, maxAmEnd);
-            var pmPeak = FindPeak(pmProfile, 12 * 60, maxPmEnd) ?? FindPeak(corridorProfile, 12 * 60, maxPmEnd);
+            var amPeak = FindPeak(amProfile, 5 * 60, 10 * 60) ?? FindPeak(corridorProfile, 5 * 60, 10 * 60);
+            var pmPeak = FindPeak(pmProfile, 14 * 60, 19 * 60) ?? FindPeak(corridorProfile, 14 * 60, 19 * 60);
             var dailyPeak = corridorProfile.Points.Max(p => p.SmoothedVolume);
-            var baseline = corridorProfile.Points
-                .Where(p => p.SmoothedVolume > 0)
-                .Select(p => p.SmoothedVolume)
-                .DefaultIfEmpty(0)
-                .Min();
+            var baseline = Percentile(corridorProfile.Points.Select(p => p.SmoothedVolume).ToList(), 0.15);
+            var amPeakValue = amPeak != null
+                ? FindMaxSmoothed(amProfile, 5 * 60, 12 * 60, dailyPeak)
+                : dailyPeak;
+            var pmPeakValue = pmPeak != null
+                ? FindMaxSmoothed(pmProfile, 12 * 60, 19 * 60, dailyPeak)
+                : dailyPeak;
 
-            var amEntryThreshold = baseline + ((amPeak?.SmoothedVolume ?? dailyPeak) - baseline) * thresholds.AmEntryPctOfPeak;
-            var amExitThreshold = baseline + ((amPeak?.SmoothedVolume ?? dailyPeak) - baseline) * thresholds.AmExitPctOfPeak;
-            var pmEntryThreshold = baseline + ((pmPeak?.SmoothedVolume ?? dailyPeak) - baseline) * thresholds.PmEntryPctOfPeak;
-            var pmExitThreshold = baseline + ((pmPeak?.SmoothedVolume ?? dailyPeak) - baseline) * thresholds.PmExitPctOfPeak;
+            var amEntryThreshold = baseline + (amPeakValue - baseline) * options.AmEntryPctOfPeak;
+            var pmEntryThreshold = baseline + (pmPeakValue - baseline) * options.PmEntryPctOfPeak;
             var freeThreshold = Math.Max(
-                dailyPeak * thresholds.FreeEntryPctOfDailyPeak,
-                baseline + (dailyPeak - baseline) * thresholds.FreeEntryPctOfDynamicRange);
+                dailyPeak * options.FreeEntryPctOfDailyPeak,
+                baseline + (dailyPeak - baseline) * options.FreeEntryPctOfDynamicRange);
 
             var amEntry = FindFirstSustained(
                 amProfile,
-                3 * 60,
-                amPeak?.Minutes ?? 7 * 60,
+                4 * 60,
+                amPeak?.Minutes ?? 10 * 60,
                 amEntryThreshold,
-                thresholds.EntrySustainedBins,
-                true) ?? 6 * 60;
-            var amExit = FindFirstSustained(
-                amProfile,
-                (amPeak?.Minutes ?? amEntry) + binSize,
-                maxAmEnd,
-                amExitThreshold,
-                thresholds.EntrySustainedBins,
-                false) ?? maxAmEnd;
+                options.EntrySustainedBins,
+                true);
+            var amExit = amPeak != null
+                ? FindLastSustainedAbove(
+                    amProfile,
+                    amPeak.Minutes,
+                    maxAmEnd,
+                    amEntryThreshold,
+                    options.EntrySustainedBins)
+                : null;
+
+            if (!amExit.HasValue && amPeak != null)
+            {
+                amExit = FindValley(amProfile, amPeak.Minutes, maxAmEnd)?.Minutes;
+            }
+
+            if (amEntry.HasValue && amExit.HasValue && amExit.Value <= amEntry.Value)
+            {
+                amExit = FindValley(amProfile, amEntry.Value + 60, 12 * 60)?.Minutes;
+            }
+
+            if (amEntry.HasValue && !amExit.HasValue)
+            {
+                amExit = maxAmEnd;
+            }
+
+            if (amExit.HasValue && amExit.Value > maxAmEnd)
+            {
+                amExit = maxAmEnd;
+            }
+
+            if (amEntry.HasValue && amExit.HasValue && amEntry.Value >= amExit.Value)
+            {
+                amEntry = FindFirstSustained(
+                    amProfile,
+                    5 * 60,
+                    maxAmEnd - 60,
+                    amEntryThreshold,
+                    options.EntrySustainedBins,
+                    true) ?? 6 * 60;
+            }
+
+            amEntry ??= 6 * 60;
+            amExit ??= maxAmEnd;
+
             var pmEntry = FindFirstSustained(
                 pmProfile,
-                Math.Max(amExit + binSize, 12 * 60),
-                pmPeak?.Minutes ?? 16 * 60,
+                Math.Max(amExit.Value, 14 * 60),
+                pmPeak?.Minutes ?? 19 * 60,
                 pmEntryThreshold,
-                thresholds.EntrySustainedBins,
-                true) ?? Math.Max(amExit + binSize, 15 * 60);
-            var pmExit = FindFirstSustained(
-                pmProfile,
-                (pmPeak?.Minutes ?? pmEntry) + binSize,
-                maxPmEnd,
-                pmExitThreshold,
-                thresholds.EntrySustainedBins,
-                false) ?? maxPmEnd;
+                options.EntrySustainedBins,
+                true);
+            var pmExit = pmPeak != null
+                ? FindLastSustainedAbove(
+                    pmProfile,
+                    pmPeak.Minutes,
+                    maxPmEnd,
+                    pmEntryThreshold,
+                    options.EntrySustainedBins)
+                : null;
+
+            if (pmEntry.HasValue && pmExit.HasValue && pmExit.Value <= pmEntry.Value)
+            {
+                pmExit = FindValley(pmProfile, pmEntry.Value + 60, 22 * 60)?.Minutes;
+            }
+
+            if (!pmExit.HasValue)
+            {
+                pmExit = FindValley(pmProfile, 16 * 60, maxPmEnd)?.Minutes ?? maxPmEnd;
+            }
+
+            if (pmExit.HasValue && pmExit.Value > maxPmEnd)
+            {
+                pmExit = maxPmEnd;
+            }
+
+            if (pmEntry.HasValue && pmExit.HasValue && pmEntry.Value >= pmExit.Value)
+            {
+                pmEntry = FindFirstSustained(
+                    pmProfile,
+                    14 * 60,
+                    maxPmEnd - 60,
+                    pmEntryThreshold,
+                    options.EntrySustainedBins,
+                    true);
+
+                if (pmEntry.HasValue && pmEntry.Value >= pmExit.Value)
+                {
+                    pmEntry = Math.Max(14 * 60, maxPmEnd - 180);
+                }
+            }
+
+            pmEntry ??= 14 * 60;
+            pmExit ??= maxPmEnd;
+
+            var middayValley = amPeak != null && pmPeak != null
+                ? FindValley(
+                    corridorProfile,
+                    Math.Max(amPeak.Minutes, 9 * 60 + 30),
+                    Math.Min(pmPeak.Minutes, 16 * 60))
+                : null;
+            int? middayStart = amExit;
+            int? middayEnd = pmEntry;
+
+            if (middayValley != null)
+            {
+                if (!middayStart.HasValue)
+                {
+                    middayStart = Math.Max(9 * 60 + 30, Math.Min(middayValley.Minutes, 13 * 60));
+                }
+
+                if (pmEntry.Value < middayValley.Minutes)
+                {
+                    pmEntry = Math.Max(14 * 60, middayValley.Minutes);
+                    middayEnd = pmEntry;
+                }
+            }
+
+            if (!middayStart.HasValue && amPeak != null)
+            {
+                middayStart = FindValley(corridorProfile, amPeak.Minutes, 14 * 60)?.Minutes;
+            }
+
+            if (middayStart.HasValue && middayStart.Value < 9 * 60)
+            {
+                middayStart = 9 * 60;
+            }
+
+            if (pmEntry.Value < 14 * 60)
+            {
+                pmEntry = 14 * 60;
+                middayEnd = pmEntry;
+            }
+
+            middayStart = amExit;
+            middayEnd = pmEntry;
+
+            if (middayStart.HasValue && middayEnd.HasValue && middayEnd.Value <= middayStart.Value)
+            {
+                middayStart = null;
+                middayEnd = null;
+            }
+
+            var eveningStart = pmExit.Value;
+            var freeStartFloor = Math.Max(pmExit.Value, 19 * 60);
             var freeStart = FindFirstSustained(
                 corridorProfile,
-                pmExit,
-                24 * 60 - binSize,
+                freeStartFloor,
+                23 * 60 + 30,
                 freeThreshold,
-                thresholds.FreeSustainedBins,
-                false) ?? freeFallback;
+                options.FreeSustainedBins,
+                false);
+
+            if (freeStart.HasValue && freeStart.Value <= eveningStart)
+            {
+                freeStart = null;
+            }
+
+            freeStart ??= freeFallback;
 
             var boundaries = NormalizeBoundaries(
-                new[] { amEntry, amExit, pmEntry, freeStart },
+                new[] { amEntry.Value, amExit.Value, pmEntry.Value, pmExit.Value, freeStart.Value },
                 binSize);
             var start = representativeDate.ToDateTime(TimeOnly.MinValue);
             var end = start.AddDays(1);
             var schedule = new List<Plan>();
 
-            AddPlan(schedule, "1", start, start.AddMinutes(boundaries[0]));
-            AddPlan(schedule, "7", start.AddMinutes(boundaries[0]), start.AddMinutes(boundaries[1]));
-            AddPlan(schedule, "13", start.AddMinutes(boundaries[1]), start.AddMinutes(boundaries[2]));
-            AddPlan(schedule, "7", start.AddMinutes(boundaries[2]), start.AddMinutes(boundaries[3]));
-            AddPlan(schedule, "254", start.AddMinutes(boundaries[3]), end);
+            AddPlan(schedule, "254", start, start.AddMinutes(boundaries[0]));
+            AddPlan(schedule, "1", start.AddMinutes(boundaries[0]), start.AddMinutes(boundaries[1]));
+            AddPlan(schedule, "7", start.AddMinutes(boundaries[1]), start.AddMinutes(boundaries[2]));
+            AddPlan(schedule, "13", start.AddMinutes(boundaries[2]), start.AddMinutes(boundaries[3]));
+            AddPlan(schedule, "7", start.AddMinutes(boundaries[3]), start.AddMinutes(boundaries[4]));
+            AddPlan(schedule, "254", start.AddMinutes(boundaries[4]), end);
 
             return new TimeOfDayRecommendationDto
             {
                 RecommendedSchedule = schedule,
                 AmPeakTime = amPeak?.TimeOfDay ?? string.Empty,
-                MiddayValleyTime = FindValley(corridorProfile, boundaries[1], boundaries[2])?.TimeOfDay ?? string.Empty,
+                MiddayValleyTime = middayValley?.TimeOfDay ?? FindValley(corridorProfile, boundaries[1], boundaries[2])?.TimeOfDay ?? string.Empty,
                 PmPeakTime = pmPeak?.TimeOfDay ?? string.Empty,
-                AlgorithmVersion = thresholds.AlgorithmVersion,
-                ThresholdConfigurationName = thresholds.ConfigurationName,
-                SummaryText = $"Recommended TOD schedule uses {thresholds.AlgorithmVersion} with AM peak {amPeak?.TimeOfDay ?? "unavailable"} and PM peak {pmPeak?.TimeOfDay ?? "unavailable"}."
+                AlgorithmVersion = AlgorithmVersion,
+                ThresholdConfigurationName = ThresholdConfigurationName,
+                SummaryText = $"Recommended TOD schedule uses {AlgorithmVersion} with AM peak {amPeak?.TimeOfDay ?? "unavailable"} and PM peak {pmPeak?.TimeOfDay ?? "unavailable"}."
             };
         }
 
@@ -197,6 +325,20 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .FirstOrDefault();
         }
 
+        private static double FindMaxSmoothed(
+            TimeOfDayProfileDto profile,
+            int startMinutes,
+            int endMinutes,
+            double fallback)
+        {
+            var values = profile.Points
+                .Where(p => p.Minutes >= startMinutes && p.Minutes <= endMinutes)
+                .Select(p => p.SmoothedVolume)
+                .ToList();
+
+            return values.Count > 0 ? values.Max() : fallback;
+        }
+
         private static int? FindFirstSustained(
             TimeOfDayProfileDto profile,
             int startMinutes,
@@ -225,6 +367,41 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 if (sustained)
                 {
                     return points[i].Minutes;
+                }
+            }
+
+            return null;
+        }
+
+        private static int? FindLastSustainedAbove(
+            TimeOfDayProfileDto profile,
+            int startMinutes,
+            int endMinutes,
+            double threshold,
+            int sustainedBins)
+        {
+            var points = profile.Points
+                .Where(p => p.Minutes >= startMinutes && p.Minutes <= endMinutes)
+                .OrderBy(p => p.Minutes)
+                .ToList();
+            var runLength = 0;
+            int? runEndTime = null;
+
+            for (var i = points.Count - 1; i >= 0; i--)
+            {
+                if (points[i].SmoothedVolume >= threshold)
+                {
+                    runLength++;
+                    runEndTime = points[i].Minutes;
+                    if (runLength >= sustainedBins)
+                    {
+                        return runEndTime;
+                    }
+                }
+                else
+                {
+                    runLength = 0;
+                    runEndTime = null;
                 }
             }
 
@@ -261,6 +438,27 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             return TimeOnly.TryParse(value, out var time)
                 ? time.Hour * 60 + time.Minute
                 : defaultMinutes;
+        }
+
+        private static double Percentile(IReadOnlyList<double> values, double percentile)
+        {
+            if (values.Count == 0)
+            {
+                return 0;
+            }
+
+            var ordered = values.OrderBy(v => v).ToList();
+            var position = (ordered.Count - 1) * percentile;
+            var lowerIndex = (int)Math.Floor(position);
+            var upperIndex = (int)Math.Ceiling(position);
+
+            if (lowerIndex == upperIndex)
+            {
+                return ordered[lowerIndex];
+            }
+
+            var fraction = position - lowerIndex;
+            return ordered[lowerIndex] + (ordered[upperIndex] - ordered[lowerIndex]) * fraction;
         }
 
         private static void AddPlan(List<Plan> schedule, string planNumber, DateTime start, DateTime end)

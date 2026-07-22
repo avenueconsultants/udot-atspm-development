@@ -463,13 +463,6 @@ export default function TimeOfDayOptions({
                 )}
               </ToggleButtonGroup>
             </Box>
-            <TextField
-              size="small"
-              label="Bin Size Minutes"
-              value={options.binSizeMinutes}
-              disabled
-              fullWidth
-            />
             {renderDirectionSelect(
               'Primary Directions',
               'allDayPrimaryDirections'

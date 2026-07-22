@@ -112,28 +112,30 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 };
             }
 
-            var allObservations = usableLocationData
-                .SelectMany(d => d.Observations)
-                .ToList();
-            var corridorProfile = profileService.BuildProfile(
+            var corridorProfile = BuildRepresentativeProfile(
                 "Corridor",
                 string.Empty,
                 string.Empty,
                 string.Empty,
-                allObservations,
+                usableLocationData,
                 selectedDates,
-                options.BinSizeMinutes);
-            var directionalProfiles = allObservations
-                .GroupBy(o => o.Direction, StringComparer.OrdinalIgnoreCase)
-                .OrderBy(g => g.Key)
-                .Select(g => profileService.BuildProfile(
-                    g.Key,
-                    g.Key,
+                options.BinSizeMinutes,
+                data => data.Observations);
+            var directionalProfiles = usableLocationData
+                .SelectMany(d => d.Observations.Select(o => o.Direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(d => d)
+                .Select(direction => BuildRepresentativeProfile(
+                    direction,
+                    direction,
                     string.Empty,
                     string.Empty,
-                    g.ToList(),
+                    usableLocationData,
                     selectedDates,
-                    options.BinSizeMinutes))
+                    options.BinSizeMinutes,
+                    data => data.Observations
+                        .Where(o => string.Equals(o.Direction, direction, StringComparison.OrdinalIgnoreCase))))
+                .Where(p => p.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
                 .ToList();
             var locationResults = BuildLocationResults(
                 options,
@@ -292,6 +294,49 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             return results;
         }
 
+        private TimeOfDayProfileDto BuildRepresentativeProfile(
+            string label,
+            string direction,
+            string movement,
+            string movementLabel,
+            IReadOnlyList<TimeOfDayLocationAnalysisData> locationData,
+            IReadOnlyList<DateOnly> selectedDates,
+            int binSizeMinutes,
+            Func<TimeOfDayLocationAnalysisData, IEnumerable<TimeOfDayVolumeObservation>> observationSelector)
+        {
+            var perLocationProfiles = new List<TimeOfDayProfileDto>();
+
+            foreach (var location in locationData)
+            {
+                var observations = observationSelector(location).ToList();
+                if (observations.Count == 0)
+                {
+                    continue;
+                }
+
+                var profile = profileService.BuildProfile(
+                    $"{location.Location.LocationIdentifier} {label}",
+                    direction,
+                    movement,
+                    movementLabel,
+                    observations,
+                    selectedDates,
+                    binSizeMinutes);
+
+                if (profile.Points.Any(p => p.AverageVolume > 0 || p.SmoothedVolume > 0))
+                {
+                    perLocationProfiles.Add(profile);
+                }
+            }
+
+            return profileService.MedianProfiles(
+                label,
+                perLocationProfiles,
+                direction,
+                movement,
+                movementLabel);
+        }
+
         private static TimeOfDayLocationSummaryDto BuildLocationSummary(
             TimeOfDayOptions options,
             Location location,
@@ -366,6 +411,11 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     .Select(d => new { d.Approach.DirectionTypeId, d.LaneNumber })
                     .Distinct()
                     .Count();
+            }
+
+            if (laneCount <= 0)
+            {
+                laneCount = options.ApproachVolumeAssumedLanes;
             }
 
             return Math.Max(laneCount, 1) * options.LaneCapacityVehiclesPerHour;

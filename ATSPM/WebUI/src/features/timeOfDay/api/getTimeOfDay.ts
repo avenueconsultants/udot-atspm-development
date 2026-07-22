@@ -1,6 +1,5 @@
 import {
   getTimeOfDayReportData,
-  TimeOfDayDataSource as ApiTimeOfDayDataSource,
 } from '@/api/reports'
 import type {
   ProblemDetails,
@@ -14,8 +13,8 @@ const apiDataSourceByName: Record<
   TimeOfDayOptions['dataSource'],
   ApiTimeOfDayOptions['dataSource']
 > = {
-  IndianaEvents: ApiTimeOfDayDataSource.NUMBER_0,
-  Aggregated: ApiTimeOfDayDataSource.NUMBER_1,
+  IndianaEvents: 0 as ApiTimeOfDayOptions['dataSource'],
+  Aggregated: 1 as ApiTimeOfDayOptions['dataSource'],
 }
 
 export const toApiTimeOfDayOptions = (

@@ -45,21 +45,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
             foreach (var location in locations)
             {
-                var peak = FindPeak(location.Profile, 0, 24 * 60);
-                if (peak != null)
-                {
-                    peaks.Add(new TimeOfDayPeakEventDto
-                    {
-                        Label = "Location peak",
-                        Series = "Location",
-                        LocationIdentifier = location.LocationIdentifier,
-                        LocationDescription = location.LocationDescription,
-                        TimeOfDay = peak.TimeOfDay,
-                        Minutes = peak.Minutes,
-                        Value = peak.SmoothedVolume,
-                        ValueUnits = location.Profile.Units
-                    });
-                }
+                AddLocationPeak(peaks, location, "AM", 5 * 60, 10 * 60);
+                AddLocationPeak(peaks, location, "PM", 14 * 60, 19 * 60);
             }
 
             return new TimeOfDayPlanProfileDto
@@ -94,6 +81,33 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 Minutes = peak.Minutes,
                 Value = peak.SmoothedVolume,
                 ValueUnits = profile.Units
+            });
+        }
+
+        private static void AddLocationPeak(
+            List<TimeOfDayPeakEventDto> peaks,
+            TimeOfDayLocationResult location,
+            string period,
+            int startMinutes,
+            int endMinutes)
+        {
+            var peak = FindPeak(location.Profile, startMinutes, endMinutes);
+            if (peak == null || (peak.SmoothedVolume <= 0 && peak.AverageVolume <= 0))
+            {
+                return;
+            }
+
+            peaks.Add(new TimeOfDayPeakEventDto
+            {
+                Label = $"{period} location peak",
+                Series = "Location",
+                Period = period,
+                LocationIdentifier = location.LocationIdentifier,
+                LocationDescription = location.LocationDescription,
+                TimeOfDay = peak.TimeOfDay,
+                Minutes = peak.Minutes,
+                Value = peak.SmoothedVolume,
+                ValueUnits = location.Profile.Units
             });
         }
 

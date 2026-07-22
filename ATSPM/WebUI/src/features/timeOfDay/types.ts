@@ -21,7 +21,6 @@ export interface TimeOfDayFormState {
   allDayPrimaryDirections: string[]
   amPrimaryDirections: string[]
   pmPrimaryDirections: string[]
-  binSizeMinutes: 15
   laneCapacityVehiclesPerHour: number
   directionLaneCounts: Record<string, number>
 }

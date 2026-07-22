@@ -46,7 +46,6 @@ const getDefaultFormState = (): TimeOfDayFormState => ({
   allDayPrimaryDirections: defaultPrimaryDirections,
   amPrimaryDirections: defaultPrimaryDirections,
   pmPrimaryDirections: defaultPrimaryDirections,
-  binSizeMinutes: 15,
   laneCapacityVehiclesPerHour: 800,
   directionLaneCounts: {},
 })
@@ -277,7 +276,7 @@ export default function TimeOfDayPage() {
       allDayPrimaryDirections: formState.allDayPrimaryDirections,
       amPrimaryDirections: formState.amPrimaryDirections,
       pmPrimaryDirections: formState.pmPrimaryDirections,
-      binSizeMinutes: formState.binSizeMinutes,
+      binSizeMinutes: 15,
       laneCapacityVehiclesPerHour: formState.laneCapacityVehiclesPerHour,
       directionLaneCounts: formState.directionLaneCounts,
     }

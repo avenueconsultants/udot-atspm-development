@@ -176,8 +176,6 @@ builder.Host
         s.AddScoped<ITimeOfDayPlanScheduleService, TimeOfDayPlanScheduleService>();
         s.AddScoped<ITimeOfDayPlanProfileService, TimeOfDayPlanProfileService>();
         s.AddScoped<ITimeOfDaySplitPressureService, TimeOfDaySplitPressureService>();
-        s.Configure<TimeOfDayThresholdOptions>(
-            h.Configuration.GetSection("TimeOfDay:Thresholds"));
         s.AddScoped<TimingAndActuationsForPhaseService>();
         s.AddScoped<PriorityDetailsReportService>();
         s.AddScoped<TimeSpaceDiagramReportService>();

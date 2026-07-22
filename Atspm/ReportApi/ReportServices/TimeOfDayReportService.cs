@@ -54,6 +54,7 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 throw new ArgumentNullException(nameof(parameter));
             }
 
+            NormalizeForExecution(parameter);
             Validate(parameter);
 
             var warnings = new List<TimeOfDayWarningDto>();
@@ -103,15 +104,38 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 throw new ArgumentException("At least one selected date is required.");
             }
 
-            if (parameter.BinSizeMinutes != 15)
-            {
-                throw new ArgumentException("Time Of Day only supports a 15-minute bin size.");
-            }
-
             if (parameter.LaneCapacityVehiclesPerHour <= 0)
             {
                 throw new ArgumentException("Lane capacity must be greater than zero.");
             }
+
+            if (parameter.ApproachVolumeAssumedLanes <= 0)
+            {
+                throw new ArgumentException("Approach volume assumed lanes must be greater than zero.");
+            }
+
+            if (parameter.EntrySustainedBins <= 0 || parameter.FreeSustainedBins <= 0)
+            {
+                throw new ArgumentException("Sustained bin counts must be greater than zero.");
+            }
+
+            if (!TimeOnly.TryParse(parameter.FreeFallbackTime, out _) ||
+                !TimeOnly.TryParse(parameter.MaxAmEndTime, out _) ||
+                !TimeOnly.TryParse(parameter.MaxPmEndTime, out _))
+            {
+                throw new ArgumentException("Time Of Day threshold times must use a valid time value.");
+            }
+        }
+
+        internal static void NormalizeForExecution(TimeOfDayOptions parameter)
+        {
+            parameter.BinSizeMinutes = TimeOfDayOptions.FixedBinSizeMinutes;
+            parameter.LocationIdentifiers ??= new();
+            parameter.SelectedDates ??= new();
+            parameter.AllDayPrimaryDirections ??= new();
+            parameter.AmPrimaryDirections ??= new();
+            parameter.PmPrimaryDirections ??= new();
+            parameter.DirectionLaneCounts ??= new();
         }
 
         private IReadOnlyList<Location> LoadLocations(IReadOnlyList<string> locationIdentifiers, DateTime firstDate)
