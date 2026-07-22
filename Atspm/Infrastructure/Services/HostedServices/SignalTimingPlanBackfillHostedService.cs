@@ -20,10 +20,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Threading.Tasks.Dataflow;
-using Utah.Udot.Atspm.Data.Models;
 using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.ATSPM.Infrastructure.Workflows;
-using Utah.Udot.NetStandardToolkit.Workflows;
 
 namespace Utah.Udot.Atspm.Infrastructure.Services.HostedServices
 {
@@ -59,7 +57,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.HostedServices
                 config.ProcessingBatchSize,
                 config.ParallelProcesses,
                 cancellationToken);
-            await workflow.WhenInitialized();
+            await workflow.Initialize();
 
             var planRowsProcessed = 0;
             var result = new ActionBlock<SignalTimingPlan>(
