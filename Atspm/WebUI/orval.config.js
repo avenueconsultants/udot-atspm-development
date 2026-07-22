@@ -55,11 +55,11 @@ module.exports = {
   // },
   // data: {
   //   input: {
-  //     target: './api-specs/reports-spec.json',
+  //     target: './data-spec.json',
   //   },
   //   output: {
-  //     workspace: './src/api/reports',
-  //     target: './report-api.ts',
+  //     workspace: './src/api/data',
+  //     target: './data-api.ts',
   //     client: 'react-query',
   //     httpClient: 'axios',
   //     mock: true,
@@ -68,7 +68,7 @@ module.exports = {
   //     override: {
   //       mutator: {
   //         path: '../../lib/axios.ts',
-  //         name: 'reportsRequest',
+  //         name: 'dataRequest',
   //       },
   //     },
   //   },

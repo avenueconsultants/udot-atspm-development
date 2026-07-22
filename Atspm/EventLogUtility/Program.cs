@@ -15,6 +15,8 @@
 // limitations under the License.
 #endregion
 
+//trick git
+
 using Google.Cloud.Diagnostics.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
