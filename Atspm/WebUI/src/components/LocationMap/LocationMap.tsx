@@ -37,6 +37,7 @@ interface LocationMapProps {
   mapHeight?: number | string
   filters: Filters
   updateFilters: (filters: Partial<Filters>) => void
+  highlightedLocationId?: number
 }
 
 const LocationMap = ({
@@ -50,6 +51,7 @@ const LocationMap = ({
   mapHeight,
   filters,
   updateFilters,
+  highlightedLocationId,
 }: LocationMapProps) => {
   const theme = useTheme()
   const env = useEnv()
@@ -235,16 +237,18 @@ const LocationMap = ({
 
       {googleSession ? (
         <TileLayer
-          attribution={
-            mapInfo.attribution
-          }
+          attribution={mapInfo.attribution}
           url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
           crossOrigin
         />
       ) : (
         <TileLayer attribution={mapInfo.attribution} url={mapInfo.tile_layer} />
       )}
-      <Markers locations={filteredLocations} setLocation={setLocation} />
+      <Markers
+        locations={filteredLocations}
+        setLocation={setLocation}
+        highlightedLocationId={highlightedLocationId}
+      />
       {route && route.length > 0 && (
         <Polyline
           positions={route.map((coord) => [coord[0], coord[1]])}

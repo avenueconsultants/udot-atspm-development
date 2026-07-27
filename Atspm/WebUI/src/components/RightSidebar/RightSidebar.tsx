@@ -7,14 +7,19 @@ export default function RightSidebar({
   children,
   width = 420,
   title,
-}: PropsWithChildren<{ width?: number; title: string }>) {
+  dismissOnBackdrop = false,
+}: PropsWithChildren<{
+  width?: number
+  title: string
+  dismissOnBackdrop?: boolean
+}>) {
   const theme = useTheme()
   const { isRightSidebarOpen, closeRightSidebar } = useSidebarStore()
 
   return (
     <Drawer
       anchor="right"
-      variant="persistent"
+      variant={dismissOnBackdrop ? 'temporary' : 'persistent'}
       open={isRightSidebarOpen}
       onClose={closeRightSidebar}
       PaperProps={{
