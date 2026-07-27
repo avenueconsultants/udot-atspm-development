@@ -1,8 +1,9 @@
-import MultipleLocationsSelect from '@/components/MultipleLocationsSelect/MultipleLocationsSelect'
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
-import MultiDaySelect from '@/features/tspReport/components/DateCalendar'
+import MultipleLocationsSelect from '@/components/MultipleLocationsSelect/MultipleLocationsSelect'
 import { directionList } from '@/features/locations/types/DirectionType'
+import MultiDaySelect from '@/features/tspReport/components/DateCalendar'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
   AccordionDetails,
@@ -22,24 +23,24 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   TextField,
-  Switch,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { differenceInCalendarDays, format, isSameDay } from 'date-fns'
 import type { ChangeEvent } from 'react'
 import { useEffect, useState } from 'react'
 import type {
   TimeOfDayDataSourceOption,
   TimeOfDayFormState,
+  TimeOfDayTuningOptionKey,
 } from '../types'
 import { timeOfDayDataSourceLabels } from '../types'
 
@@ -47,6 +48,106 @@ type DirectionField =
   | 'allDayPrimaryDirections'
   | 'amPrimaryDirections'
   | 'pmPrimaryDirections'
+
+type TuningFieldDefinition = {
+  option: TimeOfDayTuningOptionKey
+  label: string
+  type?: 'number' | 'time'
+  inputProps?: Record<string, string | number>
+}
+
+const scheduleThresholdFields: TuningFieldDefinition[] = [
+  {
+    option: 'amEntryPctOfPeak',
+    label: 'AM start threshold as share of AM peak',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'amExitPctOfPeak',
+    label: 'AM end threshold as share of AM peak',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'pmEntryPctOfPeak',
+    label: 'PM start threshold as share of PM peak',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'pmExitPctOfPeak',
+    label: 'PM end threshold as share of PM peak',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'freeEntryPctOfDailyPeak',
+    label: 'FREE threshold as share of daily peak',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'freeEntryPctOfDynamicRange',
+    label: 'FREE threshold above baseline share',
+    type: 'number',
+    inputProps: { min: 0, max: 1, step: 0.01 },
+  },
+  {
+    option: 'entrySustainedBins',
+    label: 'Consecutive bins for AM/PM entry-exit',
+    type: 'number',
+    inputProps: { min: 1, step: 1 },
+  },
+  {
+    option: 'freeSustainedBins',
+    label: 'Consecutive bins before going FREE',
+    type: 'number',
+    inputProps: { min: 1, step: 1 },
+  },
+  {
+    option: 'freeFallbackTime',
+    label: 'Fallback FREE start time',
+    type: 'time',
+  },
+  {
+    option: 'maxAmEndTime',
+    label: 'Latest allowed end time for AM plan',
+    type: 'time',
+  },
+  {
+    option: 'maxPmEndTime',
+    label: 'Latest allowed end time for PM plan',
+    type: 'time',
+  },
+]
+
+const occupancyReviewFields: TuningFieldDefinition[] = [
+  {
+    option: 'laneCapacityVehiclesPerHour',
+    label: 'Lane capacity for 100% occupancy',
+    type: 'number',
+    inputProps: { min: 1, step: 1 },
+  },
+  {
+    option: 'approachVolumeAssumedLanes',
+    label: 'Assumed lanes per approach volume',
+    type: 'number',
+    inputProps: { min: 1, step: 1 },
+  },
+  {
+    option: 'splitReviewThresholdPercent',
+    label: 'Split review threshold percent',
+    type: 'number',
+    inputProps: { min: 0, max: 100, step: 1 },
+  },
+  {
+    option: 'shoulderReviewThresholdPercent',
+    label: 'Shoulder review threshold percent',
+    type: 'number',
+    inputProps: { min: 0, max: 100, step: 1 },
+  },
+]
 
 interface TimeOfDayOptionsProps {
   options: TimeOfDayFormState
@@ -149,7 +250,7 @@ export default function TimeOfDayOptions({
       updateOptions({
         [field]: selectedDirections,
       } as Partial<TimeOfDayFormState>)
-  }
+    }
 
   const handleUsePeriodSpecificDirectionsChange = (
     event: ChangeEvent<HTMLInputElement>
@@ -199,6 +300,17 @@ export default function TimeOfDayOptions({
     updateOptions({ directionLaneCounts: nextLaneCounts })
   }
 
+  const handleTuningFieldChange =
+    (field: TuningFieldDefinition) =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const value =
+        field.type === 'time' ? event.target.value : Number(event.target.value)
+
+      updateOptions({
+        [field.option]: value,
+      } as Partial<TimeOfDayFormState>)
+    }
+
   const sortedSelectedDates = [...options.selectedDates].sort(
     (a, b) => a.getTime() - b.getTime()
   )
@@ -237,6 +349,20 @@ export default function TimeOfDayOptions({
         ))}
       </Select>
     </FormControl>
+  )
+
+  const renderTuningField = (field: TuningFieldDefinition) => (
+    <TextField
+      key={field.option}
+      fullWidth
+      size="small"
+      type={field.type ?? 'number'}
+      label={field.label}
+      value={options[field.option]}
+      onChange={handleTuningFieldChange(field)}
+      inputProps={field.inputProps}
+      InputLabelProps={field.type === 'time' ? { shrink: true } : undefined}
+    />
   )
 
   return (
@@ -447,10 +573,7 @@ export default function TimeOfDayOptions({
                 color="primary"
                 size="small"
                 value={options.dataSource}
-                onChange={(
-                  _,
-                  dataSource: TimeOfDayDataSourceOption | null
-                ) => {
+                onChange={(_, dataSource: TimeOfDayDataSourceOption | null) => {
                   if (dataSource) updateOptions({ dataSource })
                 }}
               >
@@ -492,7 +615,7 @@ export default function TimeOfDayOptions({
 
           <Accordion sx={{ mt: 2 }}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>Advanced Occupancy</Typography>
+              <Typography>Schedule Thresholds</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Box
@@ -502,18 +625,25 @@ export default function TimeOfDayOptions({
                   gap: 2,
                 }}
               >
-                <TextField
-                  size="small"
-                  type="number"
-                  label="Lane Capacity VPH"
-                  value={options.laneCapacityVehiclesPerHour}
-                  onChange={(event) =>
-                    updateOptions({
-                      laneCapacityVehiclesPerHour: Number(event.target.value),
-                    })
-                  }
-                  inputProps={{ min: 1 }}
-                />
+                {scheduleThresholdFields.map(renderTuningField)}
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion sx={{ mt: 2 }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Occupancy and Review</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                }}
+              >
+                {occupancyReviewFields.map(renderTuningField)}
+                <Typography variant="subtitle2">Direction Lanes</Typography>
                 {directionList.map((direction) => (
                   <TextField
                     key={direction}

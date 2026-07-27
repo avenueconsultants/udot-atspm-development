@@ -593,8 +593,7 @@ const buildPlanLabelSeries = (
           },
         }
       })
-      .filter((point): point is TimeOfDayPlanLabelPoint => point !== null) ??
-    []
+      .filter((point): point is TimeOfDayPlanLabelPoint => point !== null) ?? []
 
   if (!data.length) return null
 
@@ -1274,14 +1273,26 @@ export const buildSplitPressureOption = (
     series,
     right: 410,
     legendData: [
-      createLegendItem(primarySeriesName, SolidLineSeriesSymbol, chartColors.primary),
-      createLegendItem(crossSeriesName, SolidLineSeriesSymbol, chartColors.cross),
+      createLegendItem(
+        primarySeriesName,
+        SolidLineSeriesSymbol,
+        chartColors.primary
+      ),
+      createLegendItem(
+        crossSeriesName,
+        SolidLineSeriesSymbol,
+        chartColors.cross
+      ),
       createLegendItem(
         'Cross-traffic percent',
         DashedLineSeriesSymbol,
         chartColors.percent
       ),
-      createLegendItem(splitReviewName, DashedLineSeriesSymbol, chartColors.splitReview),
+      createLegendItem(
+        splitReviewName,
+        DashedLineSeriesSymbol,
+        chartColors.splitReview
+      ),
       createLegendItem(
         shoulderReviewName,
         DashedLineSeriesSymbol,
@@ -1477,12 +1488,12 @@ const buildSplitPressureLocationPeakEvents = (
     ).forEach((location) => {
       addPeak({
         period,
-        locationIdentifier: location.locationIdentifier,
-        locationDescription: location.locationDescription,
-        timeOfDay: location.peakTime,
+        locationIdentifier: location.locationIdentifier ?? undefined,
+        locationDescription: location.locationDescription ?? undefined,
+        timeOfDay: location.peakTime ?? undefined,
         minutes:
           location.minutes ??
-          getPlanBoundaryMinutes(location.peakTime) ??
+          getPlanBoundaryMinutes(location.peakTime ?? undefined) ??
           undefined,
         value: location.totalVehiclesPerHour,
         valueUnits: 'vph',
@@ -1497,9 +1508,10 @@ const buildSplitPressureLocationPeakEvents = (
     ).forEach((movement) => {
       addPeak({
         period,
-        locationIdentifier: movement.locationIdentifier,
-        timeOfDay: movement.peakTime,
-        minutes: getPlanBoundaryMinutes(movement.peakTime) ?? undefined,
+        locationIdentifier: movement.locationIdentifier ?? undefined,
+        timeOfDay: movement.peakTime ?? undefined,
+        minutes:
+          getPlanBoundaryMinutes(movement.peakTime ?? undefined) ?? undefined,
         value: movement.volume,
         valueUnits: 'vph',
       })
