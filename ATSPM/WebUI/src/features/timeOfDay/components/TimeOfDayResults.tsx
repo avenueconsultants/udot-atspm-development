@@ -11,22 +11,24 @@ import {
   Chip,
   Paper,
   Stack,
+  Tab,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tabs,
   Typography,
 } from '@mui/material'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type {
   TimeOfDayLocationNumberMap,
   TimeOfDayNumberedPeakEvent,
 } from '../transformers'
 import {
   buildPlanProfileOption,
-  buildScheduleRows,
+  buildScheduleComparisonOption,
   buildSplitPressureLocationNumberMap,
   buildSplitPressureOption,
   formatNumber,
@@ -46,6 +48,7 @@ interface TimeOfDayResultsProps {
 }
 
 const periods = ['AM', 'Midday', 'PM']
+type TimeOfDayAnalysisView = 'plan-recommendation' | 'split-pressure'
 
 const compactReportTableContainerSx = {
   borderRadius: 2,
@@ -84,6 +87,14 @@ const chartSidePanelSx = {
   minWidth: 0,
 }
 
+const analysisTabsContainerSx = {
+  display: 'flex',
+  justifyContent: 'flex-end',
+  borderBottom: 1,
+  borderColor: 'divider',
+  mb: 2,
+}
+
 const formatLocationLabel = (
   identifier?: string | null,
   description?: string | null
@@ -119,9 +130,11 @@ const formatPlanSchedule = (plans?: Plan[] | null) => {
 function SignalPeakBadge({
   badgeNumber,
   color,
+  shape = 'circle',
 }: {
   badgeNumber: number
   color: string
+  shape?: 'circle' | 'square'
 }) {
   return (
     <Box
@@ -129,7 +142,7 @@ function SignalPeakBadge({
       sx={{
         alignItems: 'center',
         bgcolor: color,
-        borderRadius: '50%',
+        borderRadius: shape === 'circle' ? '50%' : '2px',
         color: 'common.white',
         display: 'inline-flex',
         flexShrink: 0,
@@ -397,6 +410,7 @@ function MovementPressureList({
                           ) as number
                         }
                         color={getTimeOfDayPeriodBadgeColor(period)}
+                        shape="square"
                       />
                     ) : null}
                   </TableCell>
@@ -429,14 +443,21 @@ function MovementPressureList({
 }
 
 function PlanComparisonTable({ result }: { result: TimeOfDayResult }) {
-  const rows = buildScheduleRows(result)
+  const comparisonOption = useMemo(
+    () => buildScheduleComparisonOption(result),
+    [result]
+  )
+  const hasScheduleData = Boolean(
+    result.recommendation?.recommendedSchedule?.length ||
+      result.planComparison?.commonCurrentSchedule?.length
+  )
   const exceptionLocations =
     result.planComparison?.exceptionLocationIdentifiers ?? []
 
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-        Existing vs Recommended TOD Plan Comparison
+        Existing vs Proposed TOD Plan Comparison
       </Typography>
       <Stack spacing={1.5} sx={{ mb: 2 }}>
         {renderTextBlock('Recommendation', result.recommendation?.summaryText)}
@@ -458,40 +479,27 @@ function PlanComparisonTable({ result }: { result: TimeOfDayResult }) {
           </Stack>
         )}
       </Stack>
-      {rows.length === 0 ? (
+      {!hasScheduleData ? (
         <Alert severity="warning">
           {result.planComparison?.summaryText ||
             'Current schedule unavailable.'}
         </Alert>
       ) : (
-        <Table size="small" aria-label="time of day plan comparison">
-          <TableHead>
-            <TableRow>
-              <TableCell>Schedule Type</TableCell>
-              <TableCell>Locations</TableCell>
-              <TableCell>Plan</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Start</TableCell>
-              <TableCell>End</TableCell>
-              <TableCell align="right">Duration Minutes</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>{row.scheduleType}</TableCell>
-                <TableCell>{row.locations}</TableCell>
-                <TableCell>{row.plan}</TableCell>
-                <TableCell>{row.description}</TableCell>
-                <TableCell>{row.start}</TableCell>
-                <TableCell>{row.end}</TableCell>
-                <TableCell align="right">
-                  {formatNumber(row.durationMinutes)}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Stack spacing={0.5}>
+          <Box sx={{ overflowX: 'auto' }}>
+            <Box sx={{ height: 340, minWidth: 720 }}>
+              <ApacheEChart
+                id="time-of-day-plan-comparison"
+                option={comparisonOption}
+                hideInteractionMessage
+                style={{ width: '100%', height: '100%' }}
+              />
+            </Box>
+          </Box>
+          <Typography variant="caption" color="text.secondary">
+            Amber shading marks time windows where the active plans differ.
+          </Typography>
+        </Stack>
       )}
     </Paper>
   )
@@ -602,6 +610,9 @@ function LocationSupportingTable({ result }: { result: TimeOfDayResult }) {
 }
 
 export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
+  const [analysisView, setAnalysisView] = useState<TimeOfDayAnalysisView>(
+    'plan-recommendation'
+  )
   const planProfileOption = useMemo(
     () => buildPlanProfileOption(result),
     [result]
@@ -631,43 +642,34 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
       )}
 
       <Paper sx={{ p: 3 }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 560px' },
-            gap: 3,
-            alignItems: 'start',
-          }}
-        >
-          <Box>
-            {hasPlanProfileData(result) ? (
-              <Box sx={{ height: { xs: 720, md: 840 }, minWidth: 600 }}>
-                <ApacheEChart
-                  id="time-of-day-plan-profile"
-                  option={planProfileOption}
-                  hideInteractionMessage
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </Box>
-            ) : (
-              <Alert severity="warning">No Data Available</Alert>
-            )}
-          </Box>
-          <Stack spacing={2} sx={chartSidePanelSx}>
-            <PeakList
-              title="AM Signal Peaks"
-              peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
+        <Box sx={analysisTabsContainerSx}>
+          <Tabs
+            value={analysisView}
+            onChange={(_, value: TimeOfDayAnalysisView) =>
+              setAnalysisView(value)
+            }
+            aria-label="Time-of-day analysis view"
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            <Tab
+              id="time-of-day-plan-recommendation-tab"
+              aria-controls="time-of-day-analysis-panel"
+              value="plan-recommendation"
+              label="Plan Recommendation"
             />
-            <PeakList
-              title="PM Signal Peaks"
-              peaks={getLocationPeakEvents(result.planProfile?.peaks, 'PM')}
+            <Tab
+              id="time-of-day-split-pressure-tab"
+              aria-controls="time-of-day-analysis-panel"
+              value="split-pressure"
+              label="Split Pressure"
             />
-          </Stack>
+          </Tabs>
         </Box>
-      </Paper>
-
-      <Paper sx={{ p: 3 }}>
         <Box
+          id="time-of-day-analysis-panel"
+          role="tabpanel"
+          aria-labelledby={`time-of-day-${analysisView}-tab`}
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1fr) 560px' },
@@ -676,7 +678,20 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
           }}
         >
           <Box>
-            {hasSplitPressureData(result) ? (
+            {analysisView === 'plan-recommendation' ? (
+              hasPlanProfileData(result) ? (
+                <Box sx={{ height: { xs: 720, md: 840 }, minWidth: 600 }}>
+                  <ApacheEChart
+                    id="time-of-day-plan-profile"
+                    option={planProfileOption}
+                    hideInteractionMessage
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </Box>
+              ) : (
+                <Alert severity="warning">No Data Available</Alert>
+              )
+            ) : hasSplitPressureData(result) ? (
               <Box sx={{ height: { xs: 720, md: 840 }, minWidth: 600 }}>
                 <ApacheEChart
                   id="time-of-day-split-pressure"
@@ -689,36 +704,50 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
               <Alert severity="warning">No Data Available</Alert>
             )}
           </Box>
-          <Stack spacing={2} sx={chartSidePanelSx}>
-            {periods.map((period) => (
-              <CrossTrafficLocationList
-                key={period}
-                title={`${period} Cross Traffic Locations`}
-                period={period}
-                locations={getCrossTrafficLocations(
-                  result.splitPressure?.crossTrafficLocations,
-                  period
-                )}
-                locationNumberMap={splitPressureLocationNumberMap}
+          {analysisView === 'plan-recommendation' ? (
+            <Stack spacing={2} sx={chartSidePanelSx}>
+              <PeakList
+                title="AM Signal Peaks"
+                peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
               />
-            ))}
-            {['AM', 'PM'].map((period) => (
-              <MovementPressureList
-                key={period}
-                title={`${period} Movement Pressure`}
-                period={period}
-                movements={getMovementPressures(
-                  result.splitPressure?.movementPressures,
-                  period
-                )}
-                locationNumberMap={splitPressureLocationNumberMap}
+              <PeakList
+                title="PM Signal Peaks"
+                peaks={getLocationPeakEvents(result.planProfile?.peaks, 'PM')}
               />
-            ))}
-            <Stack spacing={1}>
-              {renderTextBlock('Summary', result.splitPressure?.summaryText)}
-              {renderTextBlock('Review', result.splitPressure?.reviewText)}
             </Stack>
-          </Stack>
+          ) : (
+            <Stack spacing={2} sx={chartSidePanelSx}>
+              {periods.map((period) => (
+                <CrossTrafficLocationList
+                  key={period}
+                  title={`${period} Cross Traffic Locations`}
+                  period={period}
+                  locations={getCrossTrafficLocations(
+                    result.splitPressure?.crossTrafficLocations,
+                    period
+                  )}
+                  locationNumberMap={splitPressureLocationNumberMap}
+                />
+              ))}
+              {['AM', 'PM'].map((period) => (
+                <MovementPressureList
+                  key={period}
+                  title={`${period} Movement Pressure`}
+                  period={period}
+                  movements={getMovementPressures(
+                    result.splitPressure?.movementPressures,
+                    period,
+                    splitPressureLocationNumberMap
+                  )}
+                  locationNumberMap={splitPressureLocationNumberMap}
+                />
+              ))}
+              <Stack spacing={1}>
+                {renderTextBlock('Summary', result.splitPressure?.summaryText)}
+                {renderTextBlock('Review', result.splitPressure?.reviewText)}
+              </Stack>
+            </Stack>
+          )}
         </Box>
       </Paper>
 
