@@ -1,20 +1,23 @@
-import type { Plan, TimeOfDayResult } from '@/api/reports'
+import type { TimeOfDayResult } from '@/api/reports'
 import {
   Alert,
-  Box,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from '@mui/material'
+import { formatNumber } from '../../transformers'
 import {
-  formatNumber,
-  formatPlanNumber,
-  formatPlanTime,
-} from '../../transformers'
+  compactReportTableContainerSx,
+  compactReportTableHeadSx,
+  compactReportTableRowSx,
+  numericReportTableCellSx,
+} from './timeOfDayReportTableStyles'
 
 const formatBoolean = (value?: boolean | null) => {
   if (value === undefined || value === null) return '-'
@@ -22,17 +25,10 @@ const formatBoolean = (value?: boolean | null) => {
   return value ? 'Yes' : 'No'
 }
 
-const formatPlanSchedule = (plans?: Plan[] | null) => {
-  if (!plans?.length) return '-'
+const formatPercent = (value?: number | null) => {
+  if (value === undefined || value === null) return '-'
 
-  return plans
-    .map(
-      (plan) =>
-        `${formatPlanNumber(plan.planNumber)} ${formatPlanTime(
-          plan.start
-        )}-${formatPlanTime(plan.end)}`
-    )
-    .join('; ')
+  return `${formatNumber(value, 1)}%`
 }
 
 export default function TimeOfDayLocationData({
@@ -43,101 +39,149 @@ export default function TimeOfDayLocationData({
   const locations = result.locations ?? []
 
   return (
-    <Paper sx={{ p: 3 }}>
-      <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-        Location Supporting Data
-      </Typography>
+    <Paper sx={{ p: { xs: 2, md: 3 } }}>
+      <Stack spacing={0.5} sx={{ mb: 2 }}>
+        <Typography variant="h5" component="h2">
+          Location Supporting Data
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Coverage, peak demand, occupancy, and review details for{' '}
+          {locations.length} selected{' '}
+          {locations.length === 1 ? 'location' : 'locations'}.
+        </Typography>
+      </Stack>
       {locations.length === 0 ? (
         <Alert severity="warning">No location supporting data available.</Alert>
       ) : (
-        <Box sx={{ overflowX: 'auto' }}>
-          <Table size="small" aria-label="time of day location supporting data">
-            <TableHead>
+        <TableContainer
+          component={Paper}
+          variant="outlined"
+          sx={compactReportTableContainerSx}
+        >
+          <Table
+            size="small"
+            aria-label="time of day location supporting data"
+            sx={{ minWidth: 1500 }}
+          >
+            <TableHead
+              sx={{
+                ...compactReportTableHeadSx,
+                '& .MuiTableRow-root:first-of-type .MuiTableCell-head:not([rowspan])':
+                  {
+                    bgcolor: 'grey.50',
+                    color: 'text.secondary',
+                    fontSize: '0.7rem',
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                  },
+              }}
+            >
               <TableRow>
-                <TableCell>Location</TableCell>
-                <TableCell>Location Name</TableCell>
-                <TableCell align="right">Days With Data</TableCell>
-                <TableCell>Fallback Used</TableCell>
-                <TableCell>Existing TOD Plans</TableCell>
-                <TableCell align="right">Peak Raw Volume</TableCell>
-                <TableCell align="right">Peak Smoothed Volume</TableCell>
-                <TableCell align="right">Peak Hourly Rate</TableCell>
-                <TableCell align="right">Peak Occupancy</TableCell>
-                <TableCell align="right">AM Peak Occupancy</TableCell>
-                <TableCell align="right">PM Peak Occupancy</TableCell>
-                <TableCell>AM Direction Exception</TableCell>
-                <TableCell>PM Direction Exception</TableCell>
-                <TableCell>Cross Traffic Review</TableCell>
-                <TableCell>Data Quality Flag</TableCell>
-                <TableCell>Notes</TableCell>
+                <TableCell rowSpan={2} scope="col">
+                  Location
+                </TableCell>
+                <TableCell align="center" colSpan={2} scope="colgroup">
+                  Coverage
+                </TableCell>
+                <TableCell align="center" colSpan={3} scope="colgroup">
+                  Peak Demand
+                </TableCell>
+                <TableCell align="center" colSpan={3} scope="colgroup">
+                  Occupancy
+                </TableCell>
+                <TableCell align="center" colSpan={5} scope="colgroup">
+                  Review
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="right" scope="col">
+                  Days
+                </TableCell>
+                <TableCell scope="col">Fallback</TableCell>
+                <TableCell align="right" scope="col">
+                  Raw
+                </TableCell>
+                <TableCell align="right" scope="col">
+                  Smoothed
+                </TableCell>
+                <TableCell align="right" scope="col">
+                  Hourly Rate
+                </TableCell>
+                <TableCell align="right" scope="col">
+                  Peak
+                </TableCell>
+                <TableCell align="right" scope="col">
+                  AM Peak
+                </TableCell>
+                <TableCell align="right" scope="col">
+                  PM Peak
+                </TableCell>
+                <TableCell scope="col">AM Direction</TableCell>
+                <TableCell scope="col">PM Direction</TableCell>
+                <TableCell scope="col">Cross Traffic</TableCell>
+                <TableCell scope="col">Data Quality</TableCell>
+                <TableCell scope="col">Notes</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {locations.map((location) => (
-                <TableRow key={location.locationIdentifier}>
-                  <TableCell>{location.locationIdentifier ?? '-'}</TableCell>
-                  <TableCell>{location.locationDescription ?? '-'}</TableCell>
-                  <TableCell align="right">
+                <TableRow
+                  key={location.locationIdentifier}
+                  hover
+                  sx={compactReportTableRowSx}
+                >
+                  <TableCell sx={{ minWidth: 210 }}>
+                    <Typography variant="body2" fontWeight={600}>
+                      {location.locationIdentifier ?? '-'}
+                    </Typography>
+                    {location.locationDescription && (
+                      <Typography variant="caption" color="text.secondary">
+                        {location.locationDescription}
+                      </Typography>
+                    )}
+                  </TableCell>
+                  <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatNumber(location.daysWithData)}
                   </TableCell>
                   <TableCell>
                     {formatBoolean(location.coverageFallbackUsed)}
                   </TableCell>
-                  <TableCell>
-                    {formatPlanSchedule(location.currentPlanSchedule)}
-                  </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatNumber(location.summary?.peakRawVolume)}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatNumber(location.summary?.peakSmoothedVolume)}
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatNumber(location.summary?.peakHourlyRate)}
                   </TableCell>
-                  <TableCell align="right">
-                    {location.summary?.peakOccupancyPercent === undefined ||
-                    location.summary?.peakOccupancyPercent === null
-                      ? '-'
-                      : `${formatNumber(
-                          location.summary.peakOccupancyPercent,
-                          1
-                        )}%`}
+                  <TableCell align="right" sx={numericReportTableCellSx}>
+                    {formatPercent(location.summary?.peakOccupancyPercent)}
                   </TableCell>
-                  <TableCell align="right">
-                    {location.summary?.amPeakOccupancyPercent === undefined ||
-                    location.summary?.amPeakOccupancyPercent === null
-                      ? '-'
-                      : `${formatNumber(
-                          location.summary.amPeakOccupancyPercent,
-                          1
-                        )}%`}
+                  <TableCell align="right" sx={numericReportTableCellSx}>
+                    {formatPercent(location.summary?.amPeakOccupancyPercent)}
                   </TableCell>
-                  <TableCell align="right">
-                    {location.summary?.pmPeakOccupancyPercent === undefined ||
-                    location.summary?.pmPeakOccupancyPercent === null
-                      ? '-'
-                      : `${formatNumber(
-                          location.summary.pmPeakOccupancyPercent,
-                          1
-                        )}%`}
+                  <TableCell align="right" sx={numericReportTableCellSx}>
+                    {formatPercent(location.summary?.pmPeakOccupancyPercent)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>
                     {location.summary?.amDirectionExceptionMessage ?? '-'}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>
                     {location.summary?.pmDirectionExceptionMessage ?? '-'}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ minWidth: 160 }}>
                     {location.summary?.crossTrafficReview ?? '-'}
                   </TableCell>
                   <TableCell>{location.dataQualityFlag ?? '-'}</TableCell>
-                  <TableCell>{location.summary?.notes ?? '-'}</TableCell>
+                  <TableCell sx={{ minWidth: 180 }}>
+                    {location.summary?.notes ?? '-'}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-        </Box>
+        </TableContainer>
       )}
     </Paper>
   )

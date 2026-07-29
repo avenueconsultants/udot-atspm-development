@@ -26,34 +26,12 @@ import {
   getTimeOfDaySignalPeakDetailKey,
 } from '../../transformers'
 
-const compactReportTableContainerSx = {
-  borderRadius: 2,
-  borderColor: 'grey.200',
-  overflowX: 'auto',
-}
-
-const compactReportTableHeadSx = {
-  '& .MuiTableCell-head': {
-    fontSize: '0.8rem',
-    bgcolor: 'grey.100',
-    lineHeight: '1rem',
-    padding: '0.5rem',
-    borderBottom: '1px solid',
-    borderColor: 'divider',
-    fontWeight: 600,
-    whiteSpace: 'nowrap',
-  },
-}
-
-const compactReportTableRowSx = {
-  '& .MuiTableCell-body': {
-    fontSize: '0.9rem',
-    borderRight: '1px solid #e0e0e0',
-    padding: '.7rem',
-    verticalAlign: 'middle',
-  },
-  '&:nth-of-type(odd)': { backgroundColor: '#f4f4f4' },
-}
+import {
+  compactReportTableContainerSx,
+  compactReportTableHeadSx,
+  compactReportTableRowSx,
+  numericReportTableCellSx,
+} from './timeOfDayReportTableStyles'
 
 const formatLocationLabel = (
   identifier?: string | null,
@@ -169,13 +147,7 @@ export function PeakList({
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {peak.timeOfDay ?? '-'}
                     </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontVariantNumeric: 'tabular-nums',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <TableCell align="right" sx={numericReportTableCellSx}>
                       {formatNumber(peak.value)}
                     </TableCell>
                   </TableRow>
@@ -270,22 +242,10 @@ export function CrossTrafficLocationList({
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {location.peakTime ?? '-'}
                     </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontVariantNumeric: 'tabular-nums',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <TableCell align="right" sx={numericReportTableCellSx}>
                       {formatNumber(location.totalVehiclesPerHour)}
                     </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontVariantNumeric: 'tabular-nums',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <TableCell align="right" sx={numericReportTableCellSx}>
                       {location.percentOfCrossTraffic === undefined ||
                       location.percentOfCrossTraffic === null
                         ? '-'
@@ -384,13 +344,7 @@ export function MovementPressureList({
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {movement.peakTime ?? '-'}
                     </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{
-                        fontVariantNumeric: 'tabular-nums',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
+                    <TableCell align="right" sx={numericReportTableCellSx}>
                       {formatNumber(movement.volume)}
                     </TableCell>
                   </TableRow>

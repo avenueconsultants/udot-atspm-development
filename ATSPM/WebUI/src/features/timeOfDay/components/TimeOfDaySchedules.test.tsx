@@ -160,14 +160,14 @@ describe('TimeOfDaySchedules', () => {
     ).toBeTruthy()
   })
 
-  test('adds Schedules beside the chart and location data tabs', () => {
+  test('places Schedules before Location Data in the results tabs', () => {
     render(<TimeOfDayResults result={result} />)
 
     const tabs = screen.getAllByRole('tab')
     expect(tabs.map((tab) => tab.textContent)).toEqual([
       'Time-of-Day Chart',
-      'Location Data',
       'Schedules',
+      'Location Data',
     ])
 
     fireEvent.click(screen.getByRole('tab', { name: 'Schedules' }))

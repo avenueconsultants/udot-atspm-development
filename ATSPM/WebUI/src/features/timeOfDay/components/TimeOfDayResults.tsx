@@ -84,8 +84,8 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
         sx={{ mt: 2 }}
       >
         <Tab value="chart" label="Time-of-Day Chart" />
-        <Tab value="location-data" label="Location Data" />
         <Tab value="schedules" label="Schedules" />
+        <Tab value="location-data" label="Location Data" />
       </Tabs>
 
       {activeTab === 'chart' && (
