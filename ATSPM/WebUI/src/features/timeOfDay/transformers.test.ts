@@ -2,10 +2,11 @@ import type { TimeOfDayResult } from '@/api/reports'
 
 import {
   buildPlanProfileOption,
-  buildScheduleComparisonOption,
   buildScheduleRows,
   buildSplitPressureOption,
+  buildTimeOfDayAnalysisModel,
   getMovementPressures,
+  getTimeOfDayPresetSeriesSelection,
 } from './transformers'
 
 const result = {
@@ -60,9 +61,7 @@ describe('time-of-day chart titles', () => {
       selectedDates: [],
       planProfile: {
         corridorProfile: {
-          points: [
-            { minutes: 480, averageVolume: 3300, smoothedVolume: 3200 },
-          ],
+          points: [{ minutes: 480, averageVolume: 3300, smoothedVolume: 3200 }],
         },
         peaks: [
           {
@@ -98,8 +97,9 @@ describe('time-of-day chart titles', () => {
         ],
       },
     } as TimeOfDayResult
-    const getVolumeAxisMax = (option: ReturnType<typeof buildPlanProfileOption>) =>
-      (option.yAxis as Array<{ max?: number }>)[0].max
+    const getVolumeAxisMax = (
+      option: ReturnType<typeof buildPlanProfileOption>
+    ) => (option.yAxis as Array<{ max?: number }>)[0].max
 
     expect(getVolumeAxisMax(buildPlanProfileOption(sharedResult))).toBe(6000)
     expect(getVolumeAxisMax(buildSplitPressureOption(sharedResult))).toBe(6000)
@@ -259,9 +259,7 @@ describe('time-of-day chart titles', () => {
         name?: string
         data?: unknown[][]
         markArea?: {
-          data?: Array<
-            [{ name?: string; xAxis?: number }, { xAxis?: number }]
-          >
+          data?: Array<[{ name?: string; xAxis?: number }, { xAxis?: number }]>
         }
       }>
       const existingRail = series.find(
@@ -313,7 +311,7 @@ describe('time-of-day chart titles', () => {
         ])
       )
       expect(graphic.style?.text).toContain(
-        'common schedule for 1 of 3 locations (7192)'
+        'schedule is common for 1 of 3 locations (7192)'
       )
     }
   )
@@ -382,9 +380,50 @@ describe('time-of-day chart titles', () => {
     ])
   })
 
-  test('builds a two-lane schedule timeline with highlighted differences', () => {
-    const option = buildScheduleComparisonOption({
+  test('builds one layered chart with presets, schedule context, and detail targets', () => {
+    const model = buildTimeOfDayAnalysisModel({
+      planProfile: {
+        corridorProfile: {
+          points: [{ minutes: 480, averageVolume: 3000, smoothedVolume: 2900 }],
+        },
+        peaks: [
+          {
+            period: 'AM',
+            series: 'Location',
+            locationIdentifier: '7190',
+            minutes: 480,
+            value: 2500,
+          },
+        ],
+      },
+      splitPressure: {
+        primaryProfile: {
+          points: [{ minutes: 480, averageVolume: 2400 }],
+        },
+        crossStreetProfile: {
+          points: [{ minutes: 480, averageVolume: 900 }],
+        },
+        crossTrafficShare: [{ minutes: 480, crossTrafficPercent: 27.3 }],
+        crossTrafficLocations: [
+          {
+            period: 'AM',
+            locationIdentifier: '7191',
+            minutes: 480,
+            totalVehiclesPerHour: 900,
+          },
+        ],
+        movementPressures: [
+          {
+            period: 'AM',
+            locationIdentifier: '7192',
+            movementLabel: 'Left',
+            peakTime: '08:00',
+            volume: 500,
+          },
+        ],
+      },
       recommendation: {
+        amPeakTime: '08:00',
         recommendedSchedule: [
           {
             planNumber: 'Free',
@@ -417,23 +456,111 @@ describe('time-of-day chart titles', () => {
         ],
       },
     } as TimeOfDayResult)
-    const series = option.series as Array<{
+    expect(model.header.title).toBe('Corridor Time-of-Day Analysis')
+    expect(model.header.summaryItems.map((item) => item.label)).toContain(
+      'AM Corridor Peak'
+    )
+    expect(model.option.title).toEqual([])
+    const series = model.option.series as Array<{
+      type?: string
+      clip?: boolean
+      z?: number
       name?: string
       data?: unknown[][]
-      markLine?: { data?: Array<{ xAxis?: number }> }
+      dimensions?: string[]
+      encode?: { tooltip?: number[] }
+      tooltip?: { show?: boolean }
+      renderItem?: (
+        params: {
+          dataIndex?: number
+          coordSys: { x: number; y: number; width: number; height: number }
+        },
+        api: {
+          value: (dimension: number) => number
+          coord: (values: number[]) => number[]
+          size?: (values: number[]) => number[]
+        }
+      ) =>
+        | {
+            children?: Array<{
+              type?: string
+              silent?: boolean
+              shape?: {
+                x?: number
+                width?: number
+                height?: number
+                r?: number
+              }
+              style?: {
+                fill?: string
+                stroke?: string
+                lineWidth?: number
+                lineDash?: number[]
+              }
+              emphasis?: {
+                style?: {
+                  fill?: string
+                }
+              }
+            }>
+          }
+        | undefined
       markArea?: {
-        data?: Array<[{ xAxis?: number }, { xAxis?: number }]>
+        data?: Array<
+          [
+            {
+              name?: string
+              xAxis?: number
+              itemStyle?: {
+                decal?: { rotation?: number; dashArrayY?: number[] }
+              }
+            },
+            { xAxis?: number },
+          ]
+        >
       }
     }>
     const existingSchedule = series.find(
-      (seriesOption) => seriesOption.name === 'Existing schedule'
+      (seriesOption) => seriesOption.name === 'Existing schedule rail'
     )
     const proposedSchedule = series.find(
-      (seriesOption) => seriesOption.name === 'Proposed schedule'
+      (seriesOption) => seriesOption.name === 'Proposed schedule rail'
     )
     const differenceWindows = series.find(
-      (seriesOption) => seriesOption.name === 'Different plan windows'
+      (seriesOption) => seriesOption.name === 'Plan difference windows'
     )
+    const existingPlanWindows = series.find(
+      (seriesOption) => seriesOption.name === 'Existing plan windows'
+    )
+    const scheduleGrid = (model.option.grid as Array<{ height?: number }>)[1]
+    expect(scheduleGrid.height).toBe(84)
+
+    const scheduleXAxis = (
+      model.option.xAxis as Array<{
+        axisPointer?: { show?: boolean }
+      }>
+    )[1]
+    const scheduleYAxes = model.option.yAxis as Array<{
+      axisPointer?: { show?: boolean }
+      triggerEvent?: boolean
+    }>
+    const scheduleYAxis = scheduleYAxes[scheduleYAxes.length - 1]
+    expect(scheduleXAxis.axisPointer?.show).toBe(false)
+    expect(scheduleYAxis.axisPointer?.show).toBe(false)
+    expect(scheduleYAxis.triggerEvent).toBe(true)
+    expect(proposedSchedule).toMatchObject({
+      clip: false,
+      tooltip: { show: false },
+    })
+    expect(proposedSchedule?.dimensions).not.toContain('Hovered')
+    expect(proposedSchedule?.encode).not.toHaveProperty('tooltip')
+
+    const percentAxis = (
+      model.option.yAxis as Array<{
+        show?: boolean
+        axisLabel?: { formatter?: string | ((value: number) => string) }
+      }>
+    )[1]
 
     expect(existingSchedule?.data?.map((datum) => datum.slice(0, 4))).toEqual([
       [0, 360, 0, 'FREE'],
@@ -443,16 +570,150 @@ describe('time-of-day chart titles', () => {
       [0, 420, 1, 'FREE'],
       [420, 540, 1, '1'],
     ])
-    expect(
-      series.some(
-        (seriesOption) =>
-          seriesOption.name === 'Existing changes' ||
-          seriesOption.name === 'Proposed changes'
-      )
-    ).toBe(false)
-    expect(differenceWindows?.markArea?.data).toEqual([
-      [{ xAxis: 360 }, { xAxis: 420 }],
-      [{ xAxis: 420 }, { xAxis: 540 }],
+    expect(existingSchedule?.data?.map((datum) => datum.slice(3, 5))).toEqual([
+      ['FREE', '#607d8b'],
+      ['7', '#2e7d32'],
     ])
+    expect(proposedSchedule?.data?.map((datum) => datum.slice(3, 5))).toEqual([
+      ['FREE', '#607d8b'],
+      ['1', '#ef6c00'],
+    ])
+
+    const proposedPlanDatum = proposedSchedule?.data?.[1]
+    const renderedProposedPlan = proposedSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 1440, height: 60 } },
+      {
+        value: (dimension) => proposedPlanDatum?.[dimension] as number,
+        coord: ([minutes, lane]) => [minutes, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    const proposedPlanStyle = renderedProposedPlan?.children?.[0]?.style
+    expect(proposedPlanStyle).toMatchObject({
+      fill: 'rgba(239, 108, 0, 0.2)',
+    })
+    expect(renderedProposedPlan?.children?.[0]?.shape?.height).toBe(34)
+    expect(renderedProposedPlan?.children?.[0]).not.toHaveProperty('emphasis')
+
+    const proposedRowDatum = proposedSchedule?.data?.[0]
+    const renderedProposedRow = proposedSchedule?.renderItem?.(
+      {
+        dataIndex: 0,
+        coordSys: { x: 0, y: 0, width: 1440, height: 60 },
+      },
+      {
+        value: (dimension) => proposedRowDatum?.[dimension] as number,
+        coord: ([minutes, lane]) => [minutes, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedProposedRow?.children?.[0]).toMatchObject({
+      type: 'rect',
+      shape: {
+        x: -88,
+        width: 1528,
+        height: 38,
+        r: 4,
+      },
+      style: {
+        fill: 'rgba(255, 255, 255, 0)',
+      },
+      emphasis: {
+        style: {
+          fill: 'rgba(71, 84, 103, 0.08)',
+        },
+      },
+    })
+    expect(renderedProposedRow?.children?.[1]?.silent).toBe(true)
+    expect(renderedProposedRow?.children?.[2]?.silent).toBe(true)
+    expect(renderedProposedRow?.children?.[0]?.style).not.toHaveProperty(
+      'stroke'
+    )
+    expect(renderedProposedRow?.children?.[0]?.style).not.toHaveProperty(
+      'lineWidth'
+    )
+    expect(proposedPlanStyle).not.toHaveProperty('stroke')
+    expect(proposedPlanStyle).not.toHaveProperty('lineWidth')
+    expect(differenceWindows).toMatchObject({
+      type: 'custom',
+      data: [
+        [360, 420],
+        [420, 540],
+      ],
+      z: 10,
+    })
+    const renderedDifference = differenceWindows?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 100, height: 60 } },
+      {
+        value: (dimension) => (dimension === 0 ? 20 : 80),
+        coord: ([value]) => [value, 0],
+      }
+    )
+    expect(
+      renderedDifference?.children?.some((child) => child.type === 'line')
+    ).toBe(true)
+    expect(renderedDifference?.children?.[0]?.style?.fill).toBe(
+      'rgba(226, 232, 240, 0.78)'
+    )
+    expect(
+      renderedDifference?.children?.filter(
+        (child) => child.style?.lineDash?.join(',') === '5,4'
+      )
+    ).toHaveLength(2)
+    expect(existingPlanWindows?.markArea?.data).toHaveLength(2)
+    expect(model.defaultSelectedSeries).toMatchObject({
+      'Median Raw Volume': true,
+      'Existing plan windows': false,
+      'Existing schedule rail': false,
+      'Proposed plan windows': true,
+      'Proposed schedule rail': true,
+      'Plan difference windows': false,
+      'AM Movement Pressure': false,
+    })
+    expect(percentAxis.show).toBe(false)
+    const percentFormatter = percentAxis.axisLabel?.formatter
+    expect(typeof percentFormatter).toBe('function')
+    if (typeof percentFormatter === 'function') {
+      expect(percentFormatter(83.33333333333334)).toBe('83.3%')
+      expect(percentFormatter(100)).toBe('100%')
+    }
+
+    expect(model.percentSeriesNames).toEqual(
+      expect.arrayContaining([
+        'Cross-traffic percent',
+        '35% split review',
+        '45% shoulder review',
+      ])
+    )
+    expect(Object.values(model.detailTargets)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ layerId: 'signal-peaks' }),
+        expect.objectContaining({ layerId: 'cross-traffic-locations' }),
+        expect.objectContaining({ layerId: 'movement-pressure' }),
+      ])
+    )
+
+    const pressureSelection = getTimeOfDayPresetSeriesSelection(
+      model.layers,
+      'pressure',
+      {
+        ...model.defaultSelectedSeries,
+        'Proposed plan windows': false,
+        'Proposed schedule rail': true,
+        'Existing plan windows': true,
+        'Existing schedule rail': true,
+      }
+    )
+
+    expect(pressureSelection).toMatchObject({
+      'Median Raw Volume': false,
+      'Cross-traffic percent': true,
+      'AM Cross Traffic Locations': true,
+      'AM Movement Pressure': false,
+      'Existing schedule rail': true,
+      'Existing plan windows': true,
+      'Proposed schedule rail': true,
+      'Proposed plan windows': false,
+    })
   })
 })
