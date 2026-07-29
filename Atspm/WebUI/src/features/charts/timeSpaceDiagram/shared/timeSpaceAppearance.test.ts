@@ -226,7 +226,7 @@ describe('applyTimeSpaceAppearanceToOption', () => {
     expect(cycleGraphic.children[1].style.opacity).toBe(1)
   })
 
-  it('preserves continuation fills when applying custom series appearance', () => {
+  it('styles green-band continuations while preserving other continuation fills', () => {
     const appearance = createDefaultTimeSpaceAppearanceSettings()
     appearance.greenBands.primary.color = '#234567'
     appearance.greenBands.primary.opacity = 0.4
@@ -304,7 +304,10 @@ describe('applyTimeSpaceAppearanceToOption', () => {
     const greenBandGraphic = (
       series[0] as SeriesOption & { renderItem: () => GraphicNode }
     ).renderItem()
-    expect(greenBandGraphic.children?.[0]?.style?.fill).toBe('#D5DBE3')
+    expect(greenBandGraphic.children?.[0]?.style).toMatchObject({
+      fill: '#234567',
+      opacity: 0.4,
+    })
     expect(greenBandGraphic.children?.[1]?.style?.fill).toBe('#234567')
 
     const stopBarGraphic = (

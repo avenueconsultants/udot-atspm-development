@@ -683,14 +683,10 @@ function buildGreenBandPolygon(
     shape: {
       points,
     },
-    style: isContinuation
-      ? {
-          fill: getCycleContinuationPatternFill(),
-        }
-      : {
-          opacity: isPrimary ? 0.3 : 0.2,
-          fill: isPrimary ? '#4f9bac' : '#202d30',
-        },
+    style: {
+      opacity: isPrimary ? 0.3 : 0.2,
+      fill: isPrimary ? '#4f9bac' : '#202d30',
+    },
   }
 }
 
@@ -715,7 +711,7 @@ function getGreenEventsDataPoints(
   start: string,
   end: string
 ) {
-  const result = []
+  const result: Array<[string, number]> = []
 
   for (let i = 0; i < greenEvents.length; ) {
     const currentPoint = greenEvents[i]
@@ -747,7 +743,42 @@ function getGreenEventsDataPoints(
     }
   }
 
-  return result
+  const chartStartMs = getTimeLikeMs(start)
+  const chartEndMs = getTimeLikeMs(end)
+
+  if (chartStartMs == null || chartEndMs == null || chartEndMs <= chartStartMs) {
+    return result
+  }
+
+  const clippedResult: Array<[string, number]> = []
+
+  for (let i = 0; i < result.length - 1; i += 2) {
+    const intervalStart = result[i][0]
+    const intervalEnd = result[i + 1][0]
+    const intervalStartMs = getTimeLikeMs(intervalStart)
+    const intervalEndMs = getTimeLikeMs(intervalEnd)
+
+    if (intervalStartMs == null || intervalEndMs == null) {
+      continue
+    }
+
+    const clippedStartMs = Math.max(intervalStartMs, chartStartMs)
+    const clippedEndMs = Math.min(intervalEndMs, chartEndMs)
+
+    if (clippedEndMs <= clippedStartMs) {
+      continue
+    }
+
+    clippedResult.push(
+      [
+        clippedStartMs === intervalStartMs ? intervalStart : start,
+        currentDistance,
+      ],
+      [clippedEndMs === intervalEndMs ? intervalEnd : end, currentDistance]
+    )
+  }
+
+  return clippedResult
 }
 
 function getArrivalTime(
