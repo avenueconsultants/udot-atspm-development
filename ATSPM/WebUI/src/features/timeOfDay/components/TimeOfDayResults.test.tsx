@@ -1,7 +1,10 @@
 import type { TimeOfDayResult } from '@/api/reports'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { init as initECharts } from 'echarts'
-import { getTimeOfDaySignalPeakDetailKey } from '../transformers'
+import {
+  getTimeOfDayCrossTrafficDetailKey,
+  getTimeOfDaySignalPeakDetailKey,
+} from '../transformers'
 
 import TimeOfDayResults from './TimeOfDayResults'
 
@@ -28,6 +31,8 @@ const result = {
   locationIdentifiers: ['7190', '7191', '7192'],
   recommendation: {
     amPeakTime: '08:00',
+    pmPeakTime: '17:15',
+    summaryText: 'Use the proposed corridor schedule.',
     recommendedSchedule: [
       {
         planNumber: 'Free',
@@ -44,6 +49,8 @@ const result = {
     ],
   },
   planComparison: {
+    summaryText: 'The current schedule is shared by one location.',
+    exceptionsText: 'Locations 7191 and 7192 use different schedules.',
     commonCurrentSchedule: [
       {
         planNumber: 'Free',
@@ -76,6 +83,10 @@ const result = {
     ],
   },
   splitPressure: {
+    summaryText: 'Cross traffic pressure is highest in the AM period.',
+    reviewText: 'Review the AM split at location 7191.',
+    peakCrossTrafficPercent: 27.3,
+    peakCrossTrafficPercentTime: '08:00',
     primaryProfile: {
       points: [{ minutes: 480, averageVolume: 2400 }],
     },
@@ -131,7 +142,24 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     ).toBeTruthy()
     expect(screen.getByText(/Wed, April 15, 2026/)).toBeTruthy()
-    expect(screen.getByText('AM Corridor Peak:')).toBeTruthy()
+    const summary = screen.getByRole('region', { name: 'Summary' })
+    expect(within(summary).getByText('AM Corridor Peak')).toBeTruthy()
+    expect(within(summary).getByText('PM Corridor Peak')).toBeTruthy()
+    expect(within(summary).getByText('Peak Cross Traffic')).toBeTruthy()
+    expect(within(summary).getByText('Recommendation')).toBeTruthy()
+    expect(
+      within(summary).getByText('Use the proposed corridor schedule.')
+    ).toBeTruthy()
+    expect(within(summary).getByText('Pressure Summary')).toBeTruthy()
+    expect(
+      within(summary).getByText(
+        'Cross traffic pressure is highest in the AM period.'
+      )
+    ).toBeTruthy()
+    expect(within(summary).getByText('Review')).toBeTruthy()
+    expect(
+      within(summary).getByText('Review the AM split at location 7191.')
+    ).toBeTruthy()
     expect(screen.getByRole('tab', { name: 'Legend' })).toBeTruthy()
     expect(screen.queryByRole('tab', { name: 'Layers' })).toBeNull()
 
@@ -372,6 +400,22 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(
       screen.getByRole('tab', { name: 'Details' }).getAttribute('aria-selected')
     ).toBe('true')
+    const peaksButton = screen.getByRole('button', { name: 'Peaks' })
+    const crossTrafficButton = screen.getByRole('button', {
+      name: 'Cross Traffic',
+    })
+    const movementPressureButton = screen.getByRole('button', {
+      name: 'Movement Pressure',
+    })
+    expect(peaksButton.getAttribute('aria-pressed')).toBe('true')
+    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('false')
+    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('false')
+    expect(
+      screen.queryByText('The current schedule is shared by one location.')
+    ).toBeNull()
+    expect(
+      screen.queryByText('Locations 7191 and 7192 use different schedules.')
+    ).toBeNull()
     const peakTable = screen.getByRole('table', {
       name: 'AM Signal Peaks peak list',
     })
@@ -386,11 +430,38 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     )
 
+    const crossTraffic = result.splitPressure?.crossTrafficLocations?.[0]
+    if (!crossTraffic) {
+      throw new Error('Expected the test cross-traffic location')
+    }
+    const crossTrafficDetailKey = getTimeOfDayCrossTrafficDetailKey(
+      crossTraffic,
+      'AM'
+    )
     mockChart.dispatchAction.mockClear()
+    act(() => {
+      mockChartHandlers.get('click')?.({
+        data: { detailKey: crossTrafficDetailKey },
+      })
+    })
+
+    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('true')
+    expect(
+      screen.queryByRole('table', { name: 'AM Signal Peaks peak list' })
+    ).toBeNull()
+
     const crossTrafficTable = screen.getByRole('table', {
       name: 'AM Cross Traffic Locations cross traffic locations',
     })
-    fireEvent.click(within(crossTrafficTable).getAllByRole('row')[1])
+    expect(
+      screen.queryByRole('table', {
+        name: 'AM Movement Pressure movement pressure',
+      })
+    ).toBeNull()
+    const selectedCrossTrafficRow = within(crossTrafficTable)
+      .getAllByRole('row')
+      .find((row) => row.getAttribute('aria-selected') === 'true')
+    expect(selectedCrossTrafficRow).toBeTruthy()
 
     expect(
       screen
@@ -408,5 +479,19 @@ describe('TimeOfDayResults unified workspace', () => {
         seriesName: 'AM Cross Traffic Locations',
       })
     )
+
+    fireEvent.click(movementPressureButton)
+    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('true')
+    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('false')
+    expect(
+      screen.getByRole('table', {
+        name: 'AM Movement Pressure movement pressure',
+      })
+    ).toBeTruthy()
+    expect(
+      screen.queryByRole('table', {
+        name: 'AM Cross Traffic Locations cross traffic locations',
+      })
+    ).toBeNull()
   })
 })

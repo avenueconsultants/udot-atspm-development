@@ -11,6 +11,7 @@ import TimeOfDayChartWorkspace from './TimeOfDayChartWorkspace'
 import TimeOfDaySchedules from './TimeOfDaySchedules'
 import TimeOfDayDetailsPanel from './results/TimeOfDayDetailsPanel'
 import TimeOfDayLocationData from './results/TimeOfDayLocationData'
+import TimeOfDaySummary from './results/TimeOfDaySummary'
 
 interface TimeOfDayResultsProps {
   result: TimeOfDayResult
@@ -102,16 +103,22 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
           ) : (
             <Alert severity="warning">No Data Available</Alert>
           )}
+          {hasChartData && (
+            <TimeOfDaySummary
+              result={result}
+              peakItems={analysisModel.header.summaryItems}
+            />
+          )}
         </Paper>
-      )}
-      {activeTab === 'location-data' && (
-        <Box role="tabpanel" aria-label="Location data">
-          <TimeOfDayLocationData result={result} />
-        </Box>
       )}
       {activeTab === 'schedules' && (
         <Box role="tabpanel" aria-label="Schedules">
           <TimeOfDaySchedules result={result} />
+        </Box>
+      )}
+      {activeTab === 'location-data' && (
+        <Box role="tabpanel" aria-label="Location data">
+          <TimeOfDayLocationData result={result} />
         </Box>
       )}
     </Stack>

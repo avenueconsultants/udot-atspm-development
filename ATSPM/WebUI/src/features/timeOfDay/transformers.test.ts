@@ -271,9 +271,6 @@ describe('time-of-day chart titles', () => {
       const scheduleContextSeries = series.find(
         (seriesOption) => seriesOption.markArea?.data?.length
       )
-      const graphic = option.graphic as {
-        style?: { text?: string }
-      }
       const dataZoom = option.dataZoom as Array<{
         xAxisIndex?: number | number[]
       }>
@@ -310,9 +307,7 @@ describe('time-of-day chart titles', () => {
           ],
         ])
       )
-      expect(graphic.style?.text).toContain(
-        'schedule is common for 1 of 3 locations (7192)'
-      )
+      expect(option.graphic).toBeUndefined()
     }
   )
 
@@ -610,9 +605,9 @@ describe('time-of-day chart titles', () => {
     expect(renderedProposedRow?.children?.[0]).toMatchObject({
       type: 'rect',
       shape: {
-        x: -88,
-        width: 1528,
-        height: 38,
+        x: -72,
+        width: 1584,
+        height: 40,
         r: 4,
       },
       style: {

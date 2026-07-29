@@ -950,7 +950,6 @@ const buildBaseOption = ({
   const plotTop = externalHeader ? (hasScheduleRails ? 117 : 24) : top
   const scheduleTop = externalHeader ? 24 : 108
   const scheduleGridHeight = externalHeader ? 84 : 52
-  const noticeTop = externalHeader ? 2 : 87
   const grid = createGrid({
     left: 90,
     right,
@@ -1005,8 +1004,6 @@ const buildBaseOption = ({
       },
     },
   }
-  const scheduleNotice = getScheduleOverlayNotice(result)
-
   return {
     title: externalHeader
       ? []
@@ -1050,20 +1047,6 @@ const buildBaseOption = ({
           ? numberFormatter.format(value)
           : String(value),
     },
-    graphic: scheduleNotice
-      ? {
-          type: 'text',
-          left: 90,
-          top: noticeTop,
-          silent: true,
-          style: {
-            text: scheduleNotice,
-            fill: '#9a6700',
-            fontSize: 11,
-            fontWeight: 600,
-          },
-        }
-      : undefined,
     xAxis: hasScheduleRails
       ? [
           xAxis,
@@ -1677,7 +1660,9 @@ const renderSchedulePlanBlock = (
     ? Number(laneSize[1])
     : Number(laneSize ?? 0)
   const height = Math.max(0, laneHeight - 6)
-  const buttonHeight = Math.max(0, laneHeight - 2)
+  const buttonHeight = Math.max(0, laneHeight)
+  const buttonLeftExtension = 72
+  const buttonRightExtension = 72
   const coordSys = params.coordSys as unknown as {
     x: number
     y: number
@@ -1716,9 +1701,9 @@ const renderSchedulePlanBlock = (
       ? {
           type: 'rect' as const,
           shape: {
-            x: coordSys.x - 88,
+            x: coordSys.x - buttonLeftExtension,
             y: start[1] - buttonHeight / 2,
-            width: coordSys.width + 88,
+            width: coordSys.width + buttonLeftExtension + buttonRightExtension,
             height: buttonHeight,
             r: 4,
           },
@@ -1780,36 +1765,6 @@ const getScheduleTimelineData = (
       plan.planDescription ?? '-',
     ]
   })
-
-const getScheduleOverlayNotice = (result: TimeOfDayResult) => {
-  const exceptionLocations = [
-    ...new Set(
-      result.planComparison?.exceptionLocationIdentifiers?.filter(Boolean) ?? []
-    ),
-  ]
-  if (!exceptionLocations.length) return undefined
-
-  const resultLocations = result.locationIdentifiers?.filter(Boolean) ?? []
-  const selectedLocations = resultLocations.length
-    ? resultLocations
-    : (result.locations
-        ?.map((location) => location.locationIdentifier)
-        .filter((identifier): identifier is string => Boolean(identifier)) ??
-      [])
-  const exceptionSet = new Set(exceptionLocations)
-  const commonLocations = selectedLocations.filter(
-    (location) => !exceptionSet.has(location)
-  )
-  const coverage = selectedLocations.length
-    ? `${commonLocations.length} of ${selectedLocations.length} locations${
-        commonLocations.length ? ` (${commonLocations.join(', ')})` : ''
-      }`
-    : 'the selected locations'
-
-  return `Existing schedule is common for ${coverage}; different schedules: ${exceptionLocations.join(
-    ', '
-  )}.`
-}
 
 const buildScheduleOverlaySeries = (
   result: TimeOfDayResult,

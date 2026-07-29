@@ -13,10 +13,12 @@ interface TimeOfDayChartHeaderProps {
   onChangeAnalysisMode: (mode: TimeOfDayAnalysisMode) => void
 }
 
-const headerToggleGroupSx = {
+export const timeOfDayToggleGroupSx = {
   '& .MuiButton-root': {
+    height: 30,
+    minHeight: 30,
     px: 1.25,
-    py: 0.45,
+    py: 0,
     borderColor: '#CBD5E1',
     color: '#475569',
     fontSize: '0.75rem',
@@ -94,47 +96,6 @@ export default function TimeOfDayChartHeader({
             </Typography>
           )}
         </Box>
-        {model.header.summaryItems.length > 0 && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              columnGap: 1,
-              rowGap: 0.25,
-              width: 'fit-content',
-              maxWidth: '100%',
-              mt: 1,
-              px: 1.25,
-              py: 0.65,
-              borderRadius: 1,
-              bgcolor: 'grey.100',
-            }}
-          >
-            {model.header.summaryItems.map((item, index) => (
-              <Box
-                key={item.label}
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 0.4,
-                }}
-              >
-                {index > 0 && (
-                  <Typography variant="caption" color="text.secondary">
-                    {'\u2022'}
-                  </Typography>
-                )}
-                <Typography variant="caption" color="text.secondary">
-                  {item.label}:
-                </Typography>
-                <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                  {item.value}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-        )}
       </Box>
       <Box
         sx={{
@@ -153,7 +114,7 @@ export default function TimeOfDayChartHeader({
           size="small"
           variant="outlined"
           aria-label="Time-of-day analysis modes"
-          sx={headerToggleGroupSx}
+          sx={timeOfDayToggleGroupSx}
         >
           <Button
             className={
