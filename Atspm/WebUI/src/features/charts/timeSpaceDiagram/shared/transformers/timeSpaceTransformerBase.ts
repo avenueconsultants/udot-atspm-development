@@ -625,40 +625,20 @@ export function generateGreenEventLines(
           return
         }
 
-        const chartTimespanMs = getChartTimespanMs(location.start, location.end)
-
-        const buildPoints = (shiftMs = 0) => [
-          api.coord([x1Ms + shiftMs, y1]),
-          api.coord([x2Ms + shiftMs, y2]),
+        const points = [
+          api.coord([x1Ms, y1]),
+          api.coord([x2Ms, y2]),
           api.coord([
-            nextPointFinalMs + shiftMs,
+            nextPointFinalMs,
             (y2 as number) + displayDistanceToNext,
           ]),
           api.coord([
-            currPointFinalMs + shiftMs,
+            currPointFinalMs,
             (y1 as number) + displayDistanceToNext,
           ]),
         ]
 
-        return chartTimespanMs == null
-          ? buildGreenBandPolygon(buildPoints(), false, isPrimary)
-          : {
-              type: 'group',
-              emphasisDisabled: true,
-              children: [
-                buildGreenBandPolygon(
-                  buildPoints(-chartTimespanMs),
-                  true,
-                  isPrimary
-                ),
-                buildGreenBandPolygon(buildPoints(), false, isPrimary),
-                buildGreenBandPolygon(
-                  buildPoints(chartTimespanMs),
-                  true,
-                  isPrimary
-                ),
-              ],
-            }
+        return buildGreenBandPolygon(points, isPrimary)
       },
     })
   }
@@ -668,15 +648,11 @@ export function generateGreenEventLines(
 
 function buildGreenBandPolygon(
   points: number[][],
-  isContinuation: boolean,
   isPrimary?: boolean
 ): CustomSeriesRenderItemReturn {
   return {
     type: 'polygon',
-    ...(isContinuation ? { name: TIME_SPACE_CONTINUATION_NODE_NAME } : null),
-    z2: isContinuation
-      ? TIME_SPACE_MOVEMENT_ELEMENT_Z2 - 1
-      : TIME_SPACE_MOVEMENT_ELEMENT_Z2,
+    z2: TIME_SPACE_MOVEMENT_ELEMENT_Z2,
     focus: 'none',
     transition: ['shape'],
     emphasisDisabled: true,

@@ -331,7 +331,6 @@ function applyGraphicFillAppearance(
   options?: {
     includeFillOpacity?: boolean
     forceOpacity?: number
-    includeContinuations?: boolean
   }
 ) {
   return wrapCustomRenderItem(
@@ -342,10 +341,7 @@ function applyGraphicFillAppearance(
           return node
         }
 
-        if (
-          node.name === TIME_SPACE_CONTINUATION_NODE_NAME &&
-          !options?.includeContinuations
-        ) {
+        if (node.name === TIME_SPACE_CONTINUATION_NODE_NAME) {
           return node
         }
 
@@ -416,9 +412,7 @@ export function applyTimeSpaceAppearanceToOption(
     if (name.startsWith('Green Bands ')) {
       const role = directionRoleBySeriesName.get(name)
       return role
-        ? applyGraphicFillAppearance(series, appearance.greenBands[role], {
-            includeContinuations: true,
-          })
+        ? applyGraphicFillAppearance(series, appearance.greenBands[role])
         : series
     }
 

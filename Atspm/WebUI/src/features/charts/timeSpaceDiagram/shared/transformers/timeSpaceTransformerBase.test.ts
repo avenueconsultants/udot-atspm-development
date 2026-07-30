@@ -584,7 +584,7 @@ describe('timeSpaceTransformerBase offset formatting', () => {
     expect(labelData[0]?.[0]).toBe(Date.parse('2026-03-20T00:00:34Z'))
   })
 
-  it('renders green-band continuations with the same appearance as the band', () => {
+  it('renders only the requested green band without continuation copies', () => {
     const greenBandNode = renderGreenBandNode(
       buildLocation({
         end: '2026-03-20T00:01:00Z',
@@ -600,23 +600,19 @@ describe('timeSpaceTransformerBase offset formatting', () => {
         ],
       })
     ) as {
+      type?: unknown
       emphasisDisabled?: unknown
-      children?: Array<{
-        style?: { fill?: unknown }
-      }>
+      style?: { fill?: unknown; opacity?: unknown }
+      children?: unknown[]
     }
 
     expect(greenBandNode?.emphasisDisabled).toBe(true)
-    expect(greenBandNode?.children).toHaveLength(3)
-    expect(greenBandNode.children?.[0]?.style).toMatchObject({
+    expect(greenBandNode?.type).toBe('polygon')
+    expect(greenBandNode?.style).toMatchObject({
       fill: '#4f9bac',
       opacity: 0.3,
     })
-    expect(greenBandNode.children?.[1]?.style?.fill).toBe('#4f9bac')
-    expect(greenBandNode.children?.[2]?.style).toMatchObject({
-      fill: '#4f9bac',
-      opacity: 0.3,
-    })
+    expect(greenBandNode?.children).toBeUndefined()
   })
 
   it('excludes buffered green intervals outside the requested chart range', () => {
