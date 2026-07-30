@@ -129,28 +129,49 @@ describe('TimeOfDaySchedules', () => {
       screen.getByText(/Dashed guides mark the proposed schedule/)
     ).toBeTruthy()
     expect(
-      screen.getByRole('heading', {
+      screen.getByRole('region', { name: 'Proposed schedule' })
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('region', {
         name: 'Common schedule — 3 locations',
       })
     ).toBeTruthy()
     expect(
-      screen.getByRole('heading', { name: 'Exceptions — 2 locations' })
+      screen.getByRole('region', { name: 'Exceptions — 2 locations' })
     ).toBeTruthy()
+    expect(screen.getByTestId('schedule-proposed-buffer-before')).toBeTruthy()
+    expect(screen.getByTestId('schedule-proposed-buffer-after')).toBeTruthy()
+    expect(screen.getByTestId('schedule-common-buffer-before')).toBeTruthy()
+    expect(screen.getByTestId('schedule-common-buffer-after')).toBeTruthy()
+    expect(screen.getByTestId('schedule-exception-buffer-before')).toBeTruthy()
+    expect(screen.getByTestId('schedule-exception-buffer-after')).toBeTruthy()
+    expect(screen.getByTestId('schedule-proposed-buffer-right')).toBeTruthy()
+    expect(screen.getByTestId('schedule-common-buffer-right')).toBeTruthy()
+    expect(screen.getByTestId('schedule-exception-buffer-right')).toBeTruthy()
     expect(screen.getByText('#7174 — Main St & 100 S')).toBeTruthy()
     expect(screen.getByText('#7621 — State St & Center St')).toBeTruthy()
     expect(screen.getByText('#7015 — Broadway & 200 S')).toBeTruthy()
     expect(screen.getByText('#1005 — Foothill Dr & 1300 S')).toBeTruthy()
     expect(screen.getByText('#7618 — 700 E & 400 S')).toBeTruthy()
+    expect(screen.getByText('00:00')).toBeTruthy()
+    expect(screen.getByText('24:00')).toBeTruthy()
+    expect(screen.queryByText('12 AM')).toBeNull()
+    screen.getAllByText('1').forEach((label) => {
+      expect(label.getAttribute('data-plan-shape')).toBe('circle')
+    })
+    screen.getAllByText('FREE').forEach((label) => {
+      expect(label.getAttribute('data-plan-shape')).toBe('pill')
+    })
     expect(
-      screen.getAllByRole('img', { name: /Proposed reference schedule/ })
+      screen.getAllByRole('img', { name: /^Proposed schedule:/ })
     ).toHaveLength(1)
     expect(
       screen.getAllByRole('img', { name: /Existing schedule for/ })
     ).toHaveLength(2)
     expect(
-      screen.getByRole('img', { name: /Common existing schedule used by/ })
-    ).toBeTruthy()
-    expect(screen.getAllByTestId('proposed-boundary-guide')).toHaveLength(12)
+      screen.getAllByRole('img', { name: /Common existing schedule for/ })
+    ).toHaveLength(3)
+    expect(screen.getAllByTestId('proposed-boundary-guide')).toHaveLength(24)
     expect(screen.queryByText('Different existing')).toBeNull()
     expect(screen.queryByText('All selected locations')).toBeNull()
     expect(
@@ -174,7 +195,7 @@ describe('TimeOfDaySchedules', () => {
 
     expect(screen.getByRole('tabpanel', { name: 'Schedules' })).toBeTruthy()
     expect(
-      screen.getByRole('heading', {
+      screen.getByRole('region', {
         name: 'Common schedule — 3 locations',
       })
     ).toBeTruthy()

@@ -23,14 +23,18 @@ interface ScheduleComparisonProps {
 }
 
 const labelColumnWidth = 248
-const minimumTimelineWidth = 700
-const timeTicks = [
-  { minutes: 0, label: '12 AM' },
-  { minutes: 360, label: '6 AM' },
-  { minutes: 720, label: '12 PM' },
-  { minutes: 1080, label: '6 PM' },
-  { minutes: 1440, label: '12 AM' },
-]
+const categoryRailWidth = 34
+const categoryBufferSize = 8
+const minimumTimelineWidth = 1200
+const minimumComparisonWidth =
+  categoryRailWidth +
+  labelColumnWidth +
+  minimumTimelineWidth +
+  categoryBufferSize
+const timeTicks = Array.from({ length: 25 }, (_, hour) => ({
+  minutes: hour * 60,
+  label: `${String(hour).padStart(2, '0')}:00`,
+}))
 
 const formatScheduleLocation = ({
   identifier,
@@ -68,10 +72,20 @@ function ScheduleRail({
         minHeight: 40,
         overflow: 'hidden',
         bgcolor: '#F1F5F9',
+        '&::after': {
+          position: 'absolute',
+          zIndex: 2,
+          inset: 0,
+          content: '""',
+          backgroundImage:
+            'repeating-linear-gradient(to right, transparent 0, transparent calc(4.1666667% - 1px), rgba(100, 116, 139, 0.16) calc(4.1666667% - 1px), rgba(100, 116, 139, 0.16) 4.1666667%)',
+          pointerEvents: 'none',
+        },
       }}
     >
       {intervals.map(({ plan, startMinutes, endMinutes }, index) => {
         const planName = formatPlanNumber(plan.planNumber)
+        const isNumberedPlan = /^\d+$/.test(planName)
         const color = colorMap.get(planName) ?? freePlanColor
         const intervalLabel = `${planName}, ${formatClockTime(
           startMinutes
@@ -99,19 +113,30 @@ function ScheduleRail({
                 overflow: 'hidden',
                 bgcolor: alpha(color, planName === 'FREE' ? 0.14 : 0.2),
                 color,
-                fontSize: '0.75rem',
-                fontWeight: 700,
+                fontSize: '0.7rem',
                 lineHeight: 1,
-                zIndex: 1,
               }}
             >
               <Box
                 component="span"
+                data-plan-shape={isNumberedPlan ? 'circle' : 'pill'}
                 sx={{
-                  px: 0.5,
+                  position: 'relative',
+                  zIndex: 4,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: isNumberedPlan ? 20 : 'auto',
+                  height: isNumberedPlan ? 20 : 'auto',
+                  px: isNumberedPlan ? 0 : 0.8,
+                  py: isNumberedPlan ? 0 : 0.3,
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
+                  borderRadius: isNumberedPlan ? '50%' : 0.75,
+                  bgcolor: color,
+                  color: 'common.white',
+                  fontSize: isNumberedPlan ? '0.65rem' : 'inherit',
                 }}
               >
                 {planName}
@@ -129,10 +154,10 @@ function ScheduleRail({
             position: 'absolute',
             insetBlock: 0,
             left: `${(minutes / 1440) * 100}%`,
-            borderLeft: '1px dashed',
+            borderLeft: '2px dashed',
             borderColor: 'rgba(71, 85, 105, 0.72)',
             pointerEvents: 'none',
-            zIndex: 2,
+            zIndex: 3,
           }}
         />
       ))}
@@ -147,7 +172,7 @@ function ScheduleRow({
   ariaLabel,
   proposedBoundaryMinutes,
   minHeight = 41,
-  reference = false,
+  labelWidth = labelColumnWidth,
 }: {
   label: ReactNode
   schedule: Plan[]
@@ -155,28 +180,26 @@ function ScheduleRow({
   ariaLabel: string
   proposedBoundaryMinutes?: number[]
   minHeight?: number
-  reference?: boolean
+  labelWidth?: number
 }) {
   return (
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: `${labelColumnWidth}px minmax(${minimumTimelineWidth}px, 1fr)`,
+        gridTemplateColumns: `${labelWidth}px minmax(${minimumTimelineWidth}px, 1fr)`,
         minHeight,
         overflow: 'hidden',
-        border: reference ? '1px solid' : 0,
-        borderColor: reference ? '#DBEAFE' : undefined,
-        borderRadius: reference ? 1 : 0,
       }}
     >
       <Box
+        data-schedule-row-label
         sx={{
           display: 'flex',
           alignItems: 'center',
           minWidth: 0,
           px: 2,
-          py: reference ? 0.75 : 0.5,
-          bgcolor: reference ? '#F8FAFC' : 'common.white',
+          py: 0.5,
+          bgcolor: 'common.white',
         }}
       >
         {label}
@@ -191,81 +214,137 @@ function ScheduleRow({
   )
 }
 
-function ScheduleGroupHeader({
+type ScheduleGroupTone = 'proposed' | 'common' | 'exception'
+
+const scheduleGroupTones = {
+  proposed: {
+    border: '#93C5FD',
+    railBackground: '#DBEAFE',
+    text: '#1D4ED8',
+  },
+  common: {
+    border: '#A7F3D0',
+    railBackground: '#D1FAE5',
+    text: '#047857',
+  },
+  exception: {
+    border: '#FED7AA',
+    railBackground: '#FFEDD5',
+    text: '#C2410C',
+  },
+} as const
+
+function ScheduleGroup({
   tone,
+  label,
+  ariaLabel,
+  showLabelRail = true,
   children,
 }: {
-  tone: 'common' | 'exception'
+  tone: ScheduleGroupTone
+  label: string
+  ariaLabel: string
+  showLabelRail?: boolean
   children: ReactNode
 }) {
-  const common = tone === 'common'
-  const color = common ? '#065F46' : '#9A3412'
+  const colors = scheduleGroupTones[tone]
+  const headingId = `time-of-day-${tone}-schedule-heading`
 
   return (
     <Box
+      component="section"
+      aria-label={showLabelRail ? undefined : ariaLabel}
+      aria-labelledby={showLabelRail ? headingId : undefined}
+      data-testid={`schedule-${tone}-group`}
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 0.75,
-        minHeight: 29,
-        px: 1.5,
-        borderRadius: 1,
-        bgcolor: common ? '#ECFDF5' : '#FFF7ED',
+        overflow: 'hidden',
+        borderRadius: 2,
+        bgcolor: 'common.white',
       }}
     >
       <Box
         aria-hidden
+        data-testid={`schedule-${tone}-buffer-before`}
         sx={{
-          width: 6,
-          height: 6,
-          flexShrink: 0,
-          borderRadius: '50%',
-          bgcolor: common ? '#10B981' : '#F59E0B',
+          height: categoryBufferSize,
+          bgcolor: colors.railBackground,
         }}
       />
-      <Typography
-        component="h3"
-        variant="caption"
+      <Box
         sx={{
-          color,
-          fontWeight: 700,
-          lineHeight: 1.2,
-          textTransform: 'uppercase',
+          display: 'grid',
+          gridTemplateColumns: showLabelRail
+            ? `${categoryRailWidth}px minmax(0, 1fr) ${categoryBufferSize}px`
+            : `minmax(0, 1fr) ${categoryBufferSize}px`,
         }}
       >
-        {children}
-      </Typography>
+        {showLabelRail && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: 40,
+              borderRight: '1px solid',
+              borderColor: colors.border,
+              bgcolor: colors.railBackground,
+            }}
+          >
+            <Typography
+              id={headingId}
+              component="h3"
+              variant="caption"
+              aria-label={ariaLabel}
+              sx={{
+                color: colors.text,
+                fontSize: '0.67rem',
+                fontWeight: 800,
+                letterSpacing: '0.08em',
+                lineHeight: 1,
+                textTransform: 'uppercase',
+                transform: 'rotate(180deg)',
+                whiteSpace: 'nowrap',
+                writingMode: 'vertical-rl',
+              }}
+            >
+              <Box component="span" aria-hidden>
+                {label}
+              </Box>
+            </Typography>
+          </Box>
+        )}
+        <Box
+          sx={{
+            minWidth: 0,
+            '& > * + *': {
+              borderTop: '1px solid',
+              borderColor: 'common.white',
+            },
+            '& [data-schedule-row-label]': {
+              bgcolor: colors.railBackground,
+            },
+          }}
+        >
+          {children}
+        </Box>
+        <Box
+          aria-hidden
+          data-testid={`schedule-${tone}-buffer-right`}
+          sx={{ bgcolor: colors.railBackground }}
+        />
+      </Box>
+      <Box
+        aria-hidden
+        data-testid={`schedule-${tone}-buffer-after`}
+        sx={{
+          height: categoryBufferSize,
+          bgcolor: colors.railBackground,
+        }}
+      />
     </Box>
   )
 }
-
-function CommonScheduleLabel({ locations }: { locations: ScheduleLocation[] }) {
-  return (
-    <Stack spacing={0.25} sx={{ minWidth: 0 }}>
-      <Typography variant="subtitle2" fontWeight={700}>
-        Common existing
-      </Typography>
-      {locations.map((location) => {
-        const label = formatScheduleLocation(location)
-
-        return (
-          <Typography
-            key={location.identifier}
-            variant="caption"
-            color="text.secondary"
-            title={label}
-            noWrap
-            sx={{ lineHeight: 1.25 }}
-          >
-            {label}
-          </Typography>
-        )
-      })}
-    </Stack>
-  )
-}
-
-function ExceptionScheduleLabel({ location }: { location: ScheduleLocation }) {
+function ScheduleLocationLabel({ location }: { location: ScheduleLocation }) {
   const label = formatScheduleLocation(location)
 
   return (
@@ -296,7 +375,9 @@ function TimeAxis() {
       aria-hidden
       sx={{
         display: 'grid',
-        gridTemplateColumns: `${labelColumnWidth}px minmax(${minimumTimelineWidth}px, 1fr)`,
+        gridTemplateColumns: `${
+          categoryRailWidth + labelColumnWidth
+        }px minmax(${minimumTimelineWidth}px, 1fr) ${categoryBufferSize}px`,
       }}
     >
       <Box />
@@ -327,10 +408,10 @@ function TimeAxis() {
           </Typography>
         ))}
       </Box>
+      <Box />
     </Box>
   )
 }
-
 export default function TimeOfDayScheduleComparison({
   proposedSchedule,
   commonSchedule,
@@ -356,82 +437,92 @@ export default function TimeOfDayScheduleComparison({
 
   return (
     <Box sx={{ overflowX: 'auto' }}>
-      <Stack spacing={0} sx={{ minWidth: 980 }}>
-        {proposedSchedule.length > 0 && (
-          <Box sx={{ mb: 1.5 }}>
-            <ScheduleRow
-              reference
-              label={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 0.75,
-                    minWidth: 0,
-                  }}
-                >
+      <Stack spacing={0} sx={{ minWidth: minimumComparisonWidth }}>
+        <Stack spacing={0.75}>
+          {proposedSchedule.length > 0 && (
+            <ScheduleGroup
+              tone="proposed"
+              label="Proposed"
+              ariaLabel="Proposed schedule"
+              showLabelRail={false}
+            >
+              <ScheduleRow
+                label={
                   <Box
-                    component="span"
                     sx={{
-                      px: 0.55,
-                      py: 0.15,
-                      borderRadius: 0.5,
-                      bgcolor: '#1D4ED8',
-                      color: 'common.white',
-                      fontSize: '0.62rem',
-                      fontWeight: 800,
-                      lineHeight: 1.25,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.75,
+                      minWidth: 0,
                     }}
                   >
-                    REF
+                    <Box
+                      component="span"
+                      sx={{
+                        px: 0.55,
+                        py: 0.15,
+                        borderRadius: 0.5,
+                        bgcolor: '#1D4ED8',
+                        color: 'common.white',
+                        fontSize: '0.62rem',
+                        fontWeight: 800,
+                        lineHeight: 1.25,
+                      }}
+                    >
+                      REF
+                    </Box>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ color: '#1D4ED8', fontWeight: 700 }}
+                    >
+                      Proposed schedule
+                    </Typography>
                   </Box>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: '#1D4ED8', fontWeight: 700 }}
-                  >
-                    Proposed
-                  </Typography>
-                </Box>
-              }
-              schedule={proposedSchedule}
-              colorMap={colorMap}
-              ariaLabel="Proposed reference schedule"
-            />
-          </Box>
-        )}
-
-        {commonSchedule.length > 0 && (
-          <Box sx={{ mb: exceptions.length ? 1.25 : 0 }}>
-            <ScheduleGroupHeader tone="common">
-              Common schedule — {commonLocations.length}{' '}
-              {commonLocations.length === 1 ? 'location' : 'locations'}
-            </ScheduleGroupHeader>
-            <Box sx={{ mt: 0.5 }}>
-              <ScheduleRow
-                label={<CommonScheduleLabel locations={commonLocations} />}
-                schedule={commonSchedule}
+                }
+                schedule={proposedSchedule}
                 colorMap={colorMap}
-                ariaLabel={`Common existing schedule used by ${commonLocations
-                  .map(formatScheduleLocation)
-                  .join(', ')}`}
+                ariaLabel="Proposed schedule"
                 proposedBoundaryMinutes={proposedBoundaryMinutes}
-                minHeight={Math.max(72, 33 + commonLocations.length * 16)}
+                labelWidth={categoryRailWidth + labelColumnWidth}
               />
-            </Box>
-          </Box>
-        )}
+            </ScheduleGroup>
+          )}
 
-        {exceptions.length > 0 && (
-          <Box>
-            <ScheduleGroupHeader tone="exception">
-              Exceptions — {exceptions.length}{' '}
-              {exceptions.length === 1 ? 'location' : 'locations'}
-            </ScheduleGroupHeader>
-            <Box sx={{ mt: 0.5 }}>
+          {commonSchedule.length > 0 && (
+            <ScheduleGroup
+              tone="common"
+              label="Common"
+              ariaLabel={`Common schedule — ${commonLocations.length} ${
+                commonLocations.length === 1 ? 'location' : 'locations'
+              }`}
+            >
+              {commonLocations.map((location) => (
+                <ScheduleRow
+                  key={location.identifier}
+                  label={<ScheduleLocationLabel location={location} />}
+                  schedule={commonSchedule}
+                  colorMap={colorMap}
+                  ariaLabel={`Common existing schedule for ${formatScheduleLocation(
+                    location
+                  )}`}
+                  proposedBoundaryMinutes={proposedBoundaryMinutes}
+                />
+              ))}
+            </ScheduleGroup>
+          )}
+
+          {exceptions.length > 0 && (
+            <ScheduleGroup
+              tone="exception"
+              label="Exceptions"
+              ariaLabel={`Exceptions — ${exceptions.length} ${
+                exceptions.length === 1 ? 'location' : 'locations'
+              }`}
+            >
               {exceptions.map(({ location, schedule }) => (
                 <ScheduleRow
                   key={location.identifier}
-                  label={<ExceptionScheduleLabel location={location} />}
+                  label={<ScheduleLocationLabel location={location} />}
                   schedule={schedule}
                   colorMap={colorMap}
                   ariaLabel={`Existing schedule for ${formatScheduleLocation(
@@ -440,9 +531,9 @@ export default function TimeOfDayScheduleComparison({
                   proposedBoundaryMinutes={proposedBoundaryMinutes}
                 />
               ))}
-            </Box>
-          </Box>
-        )}
+            </ScheduleGroup>
+          )}
+        </Stack>
 
         <TimeAxis />
       </Stack>

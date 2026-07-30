@@ -31,6 +31,19 @@ const formatPercent = (value?: number | null) => {
   return `${formatNumber(value, 1)}%`
 }
 
+const formatLocation = (
+  identifier?: string | null,
+  description?: string | null
+) => {
+  if (description) {
+    return !identifier || description.includes(identifier)
+      ? description
+      : `${identifier} - ${description}`
+  }
+
+  return identifier ?? '-'
+}
+
 export default function TimeOfDayLocationData({
   result,
 }: {
@@ -130,15 +143,20 @@ export default function TimeOfDayLocationData({
                   hover
                   sx={compactReportTableRowSx}
                 >
-                  <TableCell sx={{ minWidth: 210 }}>
-                    <Typography variant="body2" fontWeight={600}>
-                      {location.locationIdentifier ?? '-'}
+                  <TableCell sx={{ minWidth: 260 }}>
+                    <Typography
+                      variant="body2"
+                      noWrap
+                      title={formatLocation(
+                        location.locationIdentifier,
+                        location.locationDescription
+                      )}
+                    >
+                      {formatLocation(
+                        location.locationIdentifier,
+                        location.locationDescription
+                      )}
                     </Typography>
-                    {location.locationDescription && (
-                      <Typography variant="caption" color="text.secondary">
-                        {location.locationDescription}
-                      </Typography>
-                    )}
                   </TableCell>
                   <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatNumber(location.daysWithData)}
