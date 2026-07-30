@@ -133,7 +133,12 @@ export async function resolveSearchLocationsByIdentifier(
   const filter = normalizedIdentifiers
     .map((identifier) => `locationIdentifier eq ${odataString(identifier)}`)
     .join(' or ')
-  const locations = await getLocationLocationsForSearch({ filter })
+  // The config API returns an OData envelope even though the generated client
+  // currently types this endpoint as a bare array.
+  const response = (await getLocationLocationsForSearch({ filter })) as
+    | SearchLocation[]
+    | { value?: SearchLocation[] }
+  const locations = Array.isArray(response) ? response : (response.value ?? [])
   const byIdentifier = new Map(
     locations.map((location) => [location.locationIdentifier, location])
   )

@@ -609,7 +609,7 @@ const getDiagonalStripeSegments = (rect: {
   width: number
   height: number
 }): DiagonalStripeSegment[] => {
-  const spacing = 12
+  const spacing = 16
   const right = rect.x + rect.width
   const bottom = rect.y + rect.height
   const firstDiagonal = Math.floor((rect.x + rect.y) / spacing) * spacing
@@ -721,6 +721,8 @@ const getPlanMarkAreas = (result: TimeOfDayResult) => [
   ...getPlanDifferenceMarkAreas(result),
 ]
 
+const scheduleContextZ = 1
+
 const buildScheduleContextSeries = (
   result: TimeOfDayResult
 ): SeriesOption[] => {
@@ -746,9 +748,11 @@ const buildScheduleContextSeries = (
     data: [],
     showSymbol: false,
     silent: true,
+    z: scheduleContextZ,
     lineStyle: { opacity: 0 },
     markArea: {
       silent: true,
+      z: scheduleContextZ,
       label: { show: false },
       data: markAreaData,
     },
@@ -785,7 +789,7 @@ const buildScheduleContextSeries = (
             data: differenceWindows,
             silent: true,
             animation: false,
-            z: 10,
+            z: scheduleContextZ,
           } as SeriesOption,
         ]
       : []),

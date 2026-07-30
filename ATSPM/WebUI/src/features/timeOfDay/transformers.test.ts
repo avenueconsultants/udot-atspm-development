@@ -635,7 +635,11 @@ describe('time-of-day chart titles', () => {
         [360, 420],
         [420, 540],
       ],
-      z: 10,
+      z: 1,
+    })
+    expect(existingPlanWindows).toMatchObject({
+      z: 1,
+      markArea: { z: 1 },
     })
     const renderedDifference = differenceWindows?.renderItem?.(
       { coordSys: { x: 0, y: 0, width: 100, height: 60 } },
@@ -650,6 +654,11 @@ describe('time-of-day chart titles', () => {
     expect(renderedDifference?.children?.[0]?.style?.fill).toBe(
       'rgba(226, 232, 240, 0.78)'
     )
+    expect(
+      renderedDifference?.children?.filter(
+        (child) => child.type === 'line' && !child.style?.lineDash
+      )
+    ).toHaveLength(7)
     expect(
       renderedDifference?.children?.filter(
         (child) => child.style?.lineDash?.join(',') === '5,4'

@@ -114,14 +114,19 @@ export default function TimeOfDayAnalysisOptions({
               <Divider sx={{ mb: 1.5 }}>
                 <Typography variant="caption">Advanced Settings</Typography>
               </Divider>
-              <Stack divider={<Divider flexItem />}>
+              <Stack spacing={1}>
                 {advancedSettings.map(({ sidebar, label }) => (
                   <ListItemButton
                     key={sidebar}
                     onClick={() => openAnalysisSidebar(sidebar)}
                     sx={{
-                      px: 0.5,
+                      px: 1.25,
                       py: 1.25,
+                      borderRadius: 1,
+                      bgcolor: 'grey.100',
+                      '&:hover': {
+                        bgcolor: 'grey.200',
+                      },
                     }}
                   >
                     <Typography variant="subtitle2" sx={{ flex: 1 }}>
