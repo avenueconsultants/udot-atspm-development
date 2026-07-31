@@ -79,7 +79,23 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DeviceDownloaders
         ///<inheritdoc/>
         public override bool CanExecute(Device value)
         {
-            return value.LoggingEnabled && value?.DeviceConfiguration?.Protocol != TransportProtocols.Unknown;
+            return !BluebandLidarDownloader.IsBluebandDevice(value) && value.LoggingEnabled && value?.DeviceConfiguration?.Protocol != TransportProtocols.Unknown;
+        }
+
+        /// <summary>
+        /// Gets connection headers and other protocol-specific properties for a device.
+        /// </summary>
+        protected virtual Dictionary<string, string> GetConnectionProperties(Device device)
+        {
+            return device?.DeviceConfiguration?.ConnectionProperties?.ToDictionary(k => k.Key, k => k.Value?.ToString());
+        }
+
+        /// <summary>
+        /// Gets credentials passed to the protocol client.
+        /// </summary>
+        protected virtual NetworkCredential GetCredentials(Device device, IPAddress ipaddress)
+        {
+            return new NetworkCredential(device?.DeviceConfiguration?.UserName, device?.DeviceConfiguration?.Password, ipaddress.ToString());
         }
 
         /// <exception cref="ArgumentNullException"></exception>
@@ -112,20 +128,18 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DeviceDownloaders
                 }
 
                 var deviceIdentifier = parameter?.DeviceIdentifier;
-                var user = parameter?.DeviceConfiguration?.UserName;
-                var password = parameter?.DeviceConfiguration?.Password;
                 var path = new ObjectPropertyParser(parameter, parameter?.DeviceConfiguration?.Path).ToString();
                 var query = parameter?.DeviceConfiguration?.Query.Select(s => new ObjectPropertyParser(parameter, s).ToString()).ToArray();
                 var connectionTimeout = parameter?.DeviceConfiguration?.ConnectionTimeout ?? 2000;
                 var operationTimeout = parameter?.DeviceConfiguration?.OperationTimeout ?? 2000;
-                var props = parameter?.DeviceConfiguration?.ConnectionProperties?.ToDictionary(k => k.Key, k => k.Value.ToString());
+                var props = GetConnectionProperties(parameter);
 
                 using (client)
                 {
                     try
                     {
                         var connection = new IPEndPoint(ipaddress, parameter.DeviceConfiguration.Port);
-                        var credentials = new NetworkCredential(user, password, ipaddress.ToString());
+                        var credentials = GetCredentials(parameter, ipaddress);
 
                         logMessages.ConnectingToHostMessage(deviceIdentifier, ipaddress);
 

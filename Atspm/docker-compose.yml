@@ -216,6 +216,12 @@ services:
       DeviceDownloaderConfiguration__DeviceDownloader__DeleteRemoteFile: "${DeviceDownloaderConfiguration__DeviceDownloader__DeleteRemoteFile}"
       DeviceDownloaderConfiguration__DeviceDownloader__Ping: "${DeviceDownloaderConfiguration__DeviceDownloader__Ping}"
 
+      DeviceDownloaderConfiguration__BluebandLidarDownloader__BasePath: "${DeviceDownloaderConfiguration__DeviceDownloader__BasePath}"
+      DeviceDownloaderConfiguration__BluebandLidarDownloader__DeleteRemoteFile: "false"
+      DeviceDownloaderConfiguration__BluebandLidarDownloader__Ping: "${DeviceDownloaderConfiguration__DeviceDownloader__Ping}"
+      DeviceDownloaderConfiguration__BluebandLidarDownloader__MinimumFileSizeBytes: "${DeviceDownloaderConfiguration__BluebandLidarDownloader__MinimumFileSizeBytes:-2}"
+      DeviceDownloaderConfiguration__BluebandLidarDownloader__MaximumFileSizeBytes: "${DeviceDownloaderConfiguration__BluebandLidarDownloader__MaximumFileSizeBytes:-134217728}"
+
       EventLogImporterConfiguration__EventLogFileImporter__EarliestAcceptableDate: "${EventLogImporterConfiguration__EventLogFileImporter__EarliestAcceptableDate}"
       EventLogImporterConfiguration__EventLogFileImporter__DeleteSource: "${EventLogImporterConfiguration__EventLogFileImporter__DeleteSource}"
 

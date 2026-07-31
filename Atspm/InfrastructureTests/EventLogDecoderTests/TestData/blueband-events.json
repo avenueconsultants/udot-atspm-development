@@ -1,0 +1,45 @@
+{
+  "state": {
+    "phases": {
+      "2": { "id": 2, "vehicle": "green", "pedestrian": "walk", "timestamp": 1779392674000 }
+    }
+  },
+  "events": [
+    {
+      "date": 1779392682956,
+      "id": 1000,
+      "phase": 6,
+      "vehicle": "green",
+      "pedestrian": "dont-walk"
+    },
+    {
+      "date": 1779392674894,
+      "id": 1002,
+      "detector": 18,
+      "vehicle": "call",
+      "pedestrian": "clear"
+    },
+    {
+      "date": 1779392675646,
+      "id": 2000,
+      "duration": 2086,
+      "heading": "nb",
+      "zone": { "id": 49, "name": "VC-NB-T1-PR-18" },
+      "movement": { "heading": "nb", "type": "through", "certainty": "realized" },
+      "object": {
+        "id": [1268554, 1779392675646],
+        "type": "vehicle",
+        "classification": "vehicle",
+        "position": [41.218143463134766, -111.97048950195312],
+        "speed": 10.508091926574707
+      },
+      "lane": "NBT1"
+    },
+    {
+      "date": 1779392907936,
+      "id": 3002,
+      "incident": 17266,
+      "movement": { "heading": "nb", "type": "left", "certainty": "realized", "ppt": 590 }
+    }
+  ]
+}

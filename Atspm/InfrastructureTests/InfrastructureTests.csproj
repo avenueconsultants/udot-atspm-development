@@ -62,4 +62,10 @@
 		<Folder Include="EventLogDecoderTests\TestData\" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Update="EventLogDecoderTests\TestData\blueband-events.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>
