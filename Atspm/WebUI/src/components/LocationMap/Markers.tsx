@@ -16,6 +16,7 @@ import LocationPopup, { type StreetViewAvailability } from './LocationPopup'
 type MarkersProps = {
   locations: Location[] | undefined
   setLocation: (location: Location) => void
+  highlightedLocationId?: number
 }
 
 type MarkerItemProps = {
@@ -29,6 +30,8 @@ type MarkerItemProps = {
   regionName: string
   jurisdictionName: string
   areaNames: string[]
+  isHighlighted: boolean
+  hasHighlightedMarker: boolean
 }
 
 const MarkerItem = memo(
@@ -43,6 +46,8 @@ const MarkerItem = memo(
     regionName,
     jurisdictionName,
     areaNames,
+    isHighlighted,
+    hasHighlightedMarker,
   }: MarkerItemProps) => {
     const eventHandlers = useMemo(
       () => ({
@@ -58,6 +63,8 @@ const MarkerItem = memo(
         position={[marker.latitude, marker.longitude]}
         icon={icon}
         eventHandlers={eventHandlers}
+        opacity={hasHighlightedMarker && !isHighlighted ? 0.45 : 1}
+        zIndexOffset={isHighlighted ? 1000 : 0}
       >
         <Popup offset={[0, -30]} closeButton={false} autoPan>
           <LocationPopup
@@ -76,7 +83,11 @@ const MarkerItem = memo(
 )
 MarkerItem.displayName = 'MarkerItem'
 
-const Markers = ({ locations, setLocation }: MarkersProps) => {
+const Markers = ({
+  locations,
+  setLocation,
+  highlightedLocationId,
+}: MarkersProps) => {
   const { data: regionsData } = useGetRegion()
   const { data: jurisdictionData } = useGetJurisdiction()
   const { data: areasData } = useGetArea()
@@ -227,6 +238,8 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
             regionName={regionName}
             jurisdictionName={jurisdictionName}
             areaNames={areaNames}
+            isHighlighted={marker.id === highlightedLocationId}
+            hasHighlightedMarker={highlightedLocationId != null}
           />
         )
       })}

@@ -20,34 +20,42 @@ import {
   SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
 import type {
+  CustomSeriesRenderItemAPI,
+  CustomSeriesRenderItemParams,
+  CustomSeriesRenderItemReturn,
   EChartsOption,
   LegendComponentOption,
   SeriesOption,
 } from 'echarts'
+import { graphic } from 'echarts'
+import type { TimeOfDayScheduleEntry } from './schedule'
+import {
+  buildScheduleRows,
+  formatPlanNumber,
+  freeSchedulePlanColor,
+  getPlanBoundaryMinutes,
+  getPlanIntervalMinutes,
+  getScheduleEntries,
+  getSchedulePlanColorMap,
+  minutesToTimeLabel,
+  planIntervalContainsMinutes,
+} from './schedule'
+
+export {
+  buildScheduleRows,
+  formatPlanNumber,
+  formatPlanTime,
+  minutesToTimeLabel,
+} from './schedule'
+export type {
+  TimeOfDaySchedulePlanDetails,
+  TimeOfDayScheduleRow,
+} from './schedule'
 
 type ProfileValueKey = keyof Pick<
   TimeOfDayProfilePointDto,
   'averageVolume' | 'smoothedVolume' | 'rollingHourVph'
 >
-
-export interface TimeOfDayScheduleRow {
-  id: string
-  scheduleType: string
-  locations: string
-  plan: string
-  description: string
-  start: string
-  end: string
-  durationMinutes: number | null
-}
-
-interface TimeOfDayPlanLabelPoint {
-  value: [number, number, string]
-  label: {
-    backgroundColor: string
-    color: string
-  }
-}
 
 interface TimeOfDayPlanColorContext {
   amPeakMinutes: number | null
@@ -61,9 +69,82 @@ interface TimeOfDayPlanColorContext {
 export type TimeOfDayNumberedPeakEvent = TimeOfDayPeakEventDto & {
   badgeNumber: number
   badgeColor: string
+  markerSymbol?: 'circle' | 'rect'
+  detailKey?: string
 }
 
 export type TimeOfDayLocationNumberMap = Record<string, number>
+
+export type TimeOfDayChartPreset = 'recommendation' | 'pressure' | 'combined'
+
+export type TimeOfDayChartLayerGroup =
+  | 'Schedules'
+  | 'Corridor Demand'
+  | 'Split Pressure'
+  | 'Locations'
+
+export type TimeOfDayChartLayerId =
+  | 'proposed-schedule'
+  | 'existing-schedule'
+  | 'difference-windows'
+  | 'raw-volume'
+  | 'smoothed-volume'
+  | 'directional-profiles'
+  | `directional-profile-${number}`
+  | 'corridor-peaks'
+  | 'primary-volume'
+  | 'cross-volume'
+  | 'cross-percent'
+  | 'review-thresholds'
+  | 'split-review-threshold'
+  | 'shoulder-review-threshold'
+  | 'pressure-peaks'
+  | 'signal-peaks'
+  | 'cross-traffic-locations'
+  | 'movement-pressure'
+
+export type TimeOfDayChartLayerPreview =
+  | 'schedule'
+  | 'area'
+  | 'solid-line'
+  | 'dashed-line'
+  | 'circle'
+  | 'star'
+  | 'square'
+
+export interface TimeOfDayChartLayer {
+  id: TimeOfDayChartLayerId
+  group: TimeOfDayChartLayerGroup
+  label: string
+  description: string
+  preview: TimeOfDayChartLayerPreview
+  color: string
+  seriesNames: string[]
+  available: boolean
+}
+
+export interface TimeOfDayChartDetailTarget {
+  detailKey: string
+  layerId: TimeOfDayChartLayerId
+  seriesName: string
+  dataIndex: number
+}
+
+export interface TimeOfDayAnalysisModel {
+  header: {
+    title: string
+    dateRange: string
+    summaryItems: Array<{
+      label: string
+      value: string
+    }>
+  }
+  option: EChartsOption
+  layers: TimeOfDayChartLayer[]
+  defaultSelectedSeries: Record<string, boolean>
+  percentSeriesNames: string[]
+  detailTargets: Record<string, TimeOfDayChartDetailTarget>
+}
 
 const chartColors = {
   raw: '#455a64',
@@ -96,6 +177,10 @@ const directionalColors = [
   '#ad1457',
 ]
 
+const StarSeriesSymbol =
+  'path://M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21Z'
+const peakMarkerZ = 50
+
 const numberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 })
@@ -116,6 +201,14 @@ export const formatNumber = (
   return new Intl.NumberFormat('en-US', {
     maximumFractionDigits,
   }).format(value)
+}
+
+const formatPercentAxisLabel = (value: number | string) => {
+  const numericValue = Number(value)
+
+  return Number.isFinite(numericValue)
+    ? `${formatNumber(numericValue, 1)}%`
+    : `${value}%`
 }
 
 const formatSelectedDateRange = (selectedDates?: string[] | null) => {
@@ -171,44 +264,45 @@ const formatPeakInfo = (items: Array<[string, string]>) => {
   return populatedItems.length ? createInfoString(...populatedItems) : undefined
 }
 
-export const minutesToTimeLabel = (minutes: number) => {
-  const clampedMinutes = Math.max(0, Math.min(1440, Math.round(minutes)))
-  if (clampedMinutes === 1440) return '24:00'
-
-  const hours = Math.floor(clampedMinutes / 60)
-  const remainingMinutes = clampedMinutes % 60
-
-  return `${String(hours).padStart(2, '0')}:${String(remainingMinutes).padStart(
-    2,
-    '0'
-  )}`
-}
-
-export const formatPlanTime = (value?: string) => {
-  if (!value) return '-'
-
-  const date = new Date(value)
-  if (!Number.isNaN(date.getTime())) {
-    return minutesToTimeLabel(date.getHours() * 60 + date.getMinutes())
-  }
-
-  const timeMatch = value.match(/(\d{1,2}):(\d{2})/)
-  return timeMatch ? timeMatch[0].padStart(5, '0') : value
-}
-
-export const formatPlanNumber = (planNumber?: string | null) => {
-  if (!planNumber) return '-'
-
-  const normalized = planNumber.trim()
-  if (!normalized) return '-'
-
-  return normalized === '254' || normalized.toLowerCase() === 'free'
-    ? 'FREE'
-    : normalized
-}
-
 const normalizeToken = (value?: string | null) =>
   value?.toLowerCase().replace(/[^a-z0-9]/g, '') ?? ''
+
+const buildDetailKey = (...parts: Array<string | number | null | undefined>) =>
+  parts.map((part) => normalizeToken(String(part ?? ''))).join(':')
+
+export const getTimeOfDaySignalPeakDetailKey = (peak: TimeOfDayPeakEventDto) =>
+  buildDetailKey(
+    'signal-peak',
+    peak.period,
+    peak.locationIdentifier,
+    peak.minutes,
+    peak.value
+  )
+
+export const getTimeOfDayCrossTrafficDetailKey = (
+  location: TimeOfDayCrossTrafficLocationDto,
+  period = location.period
+) =>
+  buildDetailKey(
+    'cross-traffic',
+    period,
+    location.locationIdentifier,
+    location.minutes ?? location.peakTime,
+    location.totalVehiclesPerHour
+  )
+
+export const getTimeOfDayMovementPressureDetailKey = (
+  movement: TimeOfDayMovementPressureDto,
+  period = movement.period
+) =>
+  buildDetailKey(
+    'movement-pressure',
+    period,
+    movement.locationIdentifier,
+    movement.movementLabel ?? movement.movement,
+    movement.peakTime,
+    movement.volume
+  )
 
 const getProfilePoints = (profile?: TimeOfDayProfileDto) =>
   profile?.points?.filter((point) => point.minutes !== undefined) ?? []
@@ -227,6 +321,56 @@ export const hasSplitPressureData = (result: TimeOfDayResult) => {
       hasProfileData(splitPressure?.crossStreetProfile) ||
       splitPressure?.crossTrafficShare?.length
   )
+}
+
+const isPercentPeakEvent = (peak: TimeOfDayPeakEventDto) =>
+  normalizeToken(peak.series) === 'crosstrafficpercent' ||
+  peak.valueUnits?.toLowerCase().includes('percent') === true
+
+const getSharedVolumeAxisMax = (result: TimeOfDayResult) => {
+  let maximumVolume = 0
+  const includeVolume = (value?: number | null) => {
+    if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+      maximumVolume = Math.max(maximumVolume, value)
+    }
+  }
+  const includeProfile = (
+    profile: TimeOfDayProfileDto | null | undefined,
+    valueKeys: ProfileValueKey[]
+  ) => {
+    profile?.points?.forEach((point) => {
+      valueKeys.forEach((valueKey) => includeVolume(point[valueKey]))
+    })
+  }
+
+  includeProfile(result.planProfile?.corridorProfile, [
+    'averageVolume',
+    'smoothedVolume',
+  ])
+  result.planProfile?.directionalProfiles?.forEach((profile) =>
+    includeProfile(profile, ['averageVolume'])
+  )
+  result.planProfile?.peaks?.forEach((peak) => {
+    if (!isPercentPeakEvent(peak)) includeVolume(peak.value)
+  })
+
+  includeProfile(result.splitPressure?.primaryProfile, ['averageVolume'])
+  includeProfile(result.splitPressure?.crossStreetProfile, ['averageVolume'])
+  result.splitPressure?.periodPeaks?.forEach((peak) => {
+    if (!isPercentPeakEvent(peak)) includeVolume(peak.value)
+  })
+  result.splitPressure?.crossTrafficLocations?.forEach((location) =>
+    includeVolume(location.totalVehiclesPerHour)
+  )
+  result.splitPressure?.movementPressures?.forEach((movement) =>
+    includeVolume(movement.volume)
+  )
+  includeVolume(result.splitPressure?.primaryPeakVolume)
+  includeVolume(result.splitPressure?.crossStreetPeakVolume)
+
+  if (maximumVolume === 0) return undefined
+
+  return Math.ceil((maximumVolume * 1.1) / 1000) * 1000
 }
 
 const getProfileSeriesData = (
@@ -270,66 +414,6 @@ const buildProfileLineSeries = ({
   },
   itemStyle: { color },
 })
-
-const getPlanBoundaryMinutes = (value?: string) => {
-  if (!value) return null
-
-  const date = new Date(value)
-  if (!Number.isNaN(date.getTime())) {
-    return date.getHours() * 60 + date.getMinutes()
-  }
-
-  const timeMatch = value.match(/(\d{1,2}):(\d{2})/)
-  if (!timeMatch) return null
-
-  return Number(timeMatch[1]) * 60 + Number(timeMatch[2])
-}
-
-const crossesMidnight = (start?: string, end?: string) => {
-  if (!start || !end) return false
-
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
-    return false
-  }
-
-  return (
-    endDate.toDateString() !== startDate.toDateString() && endDate > startDate
-  )
-}
-
-const getPlanIntervalMinutes = (plan: Plan) => {
-  const start = getPlanBoundaryMinutes(plan.start)
-  const end = getPlanBoundaryMinutes(plan.end)
-  if (start === null || end === null) return null
-
-  let adjustedEnd = end
-  if (crossesMidnight(plan.start, plan.end) || adjustedEnd <= start) {
-    adjustedEnd += 1440
-  }
-
-  const clampedStart = Math.max(0, Math.min(1440, start))
-  const clampedEnd = Math.max(0, Math.min(1440, adjustedEnd))
-  if (clampedEnd <= clampedStart) return null
-
-  return {
-    start: clampedStart,
-    end: clampedEnd,
-  }
-}
-
-const planIntervalContainsMinutes = (
-  plan: Plan,
-  minutes: number | null | undefined
-) => {
-  if (minutes === undefined || minutes === null) return false
-
-  const interval = getPlanIntervalMinutes(plan)
-  if (!interval) return false
-
-  return minutes >= interval.start && minutes < interval.end
-}
 
 const getPlanIndexForMinutes = (
   plans: Plan[] | null | undefined,
@@ -470,29 +554,274 @@ const buildPlanMarkAreas = (
   return markAreas
 }
 
+const getPlanDifferenceMarkAreas = (
+  result: TimeOfDayResult
+): Array<[Record<string, unknown>, Record<string, unknown>]> => {
+  if (
+    !result.recommendation?.recommendedSchedule?.length ||
+    !result.planComparison?.commonCurrentSchedule?.length
+  ) {
+    return []
+  }
+
+  return buildScheduleRows(result)
+    .filter((row) => row.comparison !== 'Same')
+    .map((row) => [
+      {
+        name: 'Existing and proposed plans differ',
+        xAxis: row.startMinutes,
+        itemStyle: {
+          color: 'rgba(245, 158, 11, 0.04)',
+          decal: {
+            symbol: 'rect',
+            symbolSize: 1,
+            color: 'rgba(245, 158, 11, 0.6)',
+            backgroundColor: 'rgba(255, 255, 255, 0)',
+            dashArrayX: [1, 0],
+            dashArrayY: [4, 4],
+            rotation: -Math.PI / 4,
+          },
+        },
+      },
+      { xAxis: row.endMinutes },
+    ])
+}
+
+type PlanDifferenceOverlayDatum = [number, number]
+
+interface DiagonalStripeSegment {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+const getPlanDifferenceOverlayData = (
+  result: TimeOfDayResult
+): PlanDifferenceOverlayDatum[] => {
+  if (
+    !result.recommendation?.recommendedSchedule?.length ||
+    !result.planComparison?.commonCurrentSchedule?.length
+  ) {
+    return []
+  }
+
+  return buildScheduleRows(result)
+    .filter((row) => row.comparison !== 'Same')
+    .map((row) => [row.startMinutes, row.endMinutes])
+}
+
+const getDiagonalStripeSegments = (rect: {
+  x: number
+  y: number
+  width: number
+  height: number
+}): DiagonalStripeSegment[] => {
+  const spacing = 16
+  const right = rect.x + rect.width
+  const bottom = rect.y + rect.height
+  const firstDiagonal = Math.floor((rect.x + rect.y) / spacing) * spacing
+  const lastDiagonal = right + bottom
+  const segments: DiagonalStripeSegment[] = []
+
+  for (
+    let diagonal = firstDiagonal;
+    diagonal <= lastDiagonal;
+    diagonal += spacing
+  ) {
+    const candidates = [
+      { x: diagonal - rect.y, y: rect.y },
+      { x: diagonal - bottom, y: bottom },
+      { x: rect.x, y: diagonal - rect.x },
+      { x: right, y: diagonal - right },
+    ].filter(
+      (point) =>
+        point.x >= rect.x - 0.5 &&
+        point.x <= right + 0.5 &&
+        point.y >= rect.y - 0.5 &&
+        point.y <= bottom + 0.5
+    )
+    const points = candidates.filter(
+      (point, index) =>
+        candidates.findIndex(
+          (candidate) =>
+            Math.abs(candidate.x - point.x) < 0.5 &&
+            Math.abs(candidate.y - point.y) < 0.5
+        ) === index
+    )
+
+    if (points.length < 2) continue
+
+    segments.push({
+      x1: points[0].x,
+      y1: points[0].y,
+      x2: points[1].x,
+      y2: points[1].y,
+    })
+  }
+
+  return segments
+}
+
+const renderPlanDifferenceOverlay = (
+  params: CustomSeriesRenderItemParams,
+  api: CustomSeriesRenderItemAPI
+): CustomSeriesRenderItemReturn => {
+  const coordSys = params.coordSys as unknown as {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+  const start = api.coord([api.value(0), 0])
+  const end = api.coord([api.value(1), 0])
+  const rectShape = graphic.clipRectByRect(
+    {
+      x: start[0],
+      y: coordSys.y,
+      width: end[0] - start[0],
+      height: coordSys.height,
+    },
+    coordSys
+  )
+  if (!rectShape) return
+
+  return {
+    type: 'group',
+    children: [
+      {
+        type: 'rect',
+        shape: rectShape,
+        style: { fill: 'rgba(226, 232, 240, 0.78)' },
+      },
+      ...getDiagonalStripeSegments(rectShape).map((segment) => ({
+        type: 'line' as const,
+        shape: segment,
+        style: {
+          stroke: 'rgba(245, 158, 11, 0.72)',
+          lineWidth: 1,
+        },
+      })),
+      ...[rectShape.x, rectShape.x + rectShape.width].map((x) => ({
+        type: 'line' as const,
+        shape: {
+          x1: x,
+          y1: rectShape.y,
+          x2: x,
+          y2: rectShape.y + rectShape.height,
+        },
+        style: {
+          stroke: 'rgba(217, 119, 6, 0.9)',
+          lineWidth: 1.25,
+          lineDash: [5, 4],
+        },
+      })),
+    ],
+  }
+}
+
 const getPlanMarkAreas = (result: TimeOfDayResult) => [
   ...buildPlanMarkAreas(
     result.recommendation?.recommendedSchedule,
     'Recommended',
     getPlanColorContext(result, result.recommendation?.recommendedSchedule)
   ),
+  ...getPlanDifferenceMarkAreas(result),
 ]
+
+const scheduleContextZ = 1
+
+const buildScheduleContextSeries = (
+  result: TimeOfDayResult
+): SeriesOption[] => {
+  const proposedWindows = buildPlanMarkAreas(
+    result.recommendation?.recommendedSchedule,
+    'Proposed',
+    getPlanColorContext(result, result.recommendation?.recommendedSchedule)
+  )
+  const existingWindows = buildPlanMarkAreas(
+    result.planComparison?.commonCurrentSchedule,
+    'Existing',
+    getPlanColorContext(result, result.planComparison?.commonCurrentSchedule)
+  )
+  const differenceWindows = getPlanDifferenceOverlayData(result)
+  const buildContextSeries = (
+    id: string,
+    name: string,
+    markAreaData: Array<[Record<string, unknown>, Record<string, unknown>]>
+  ): SeriesOption => ({
+    id,
+    name,
+    type: 'line',
+    data: [],
+    showSymbol: false,
+    silent: true,
+    z: scheduleContextZ,
+    lineStyle: { opacity: 0 },
+    markArea: {
+      silent: true,
+      z: scheduleContextZ,
+      label: { show: false },
+      data: markAreaData,
+    },
+  })
+
+  return [
+    ...(proposedWindows.length
+      ? [
+          buildContextSeries(
+            'tod-proposed-plan-windows',
+            'Proposed plan windows',
+            proposedWindows
+          ),
+        ]
+      : []),
+    ...(existingWindows.length
+      ? [
+          buildContextSeries(
+            'tod-existing-plan-windows',
+            'Existing plan windows',
+            existingWindows
+          ),
+        ]
+      : []),
+    ...(differenceWindows.length
+      ? [
+          {
+            id: 'tod-plan-difference-windows',
+            name: 'Plan difference windows',
+            type: 'custom',
+            renderItem: renderPlanDifferenceOverlay,
+            dimensions: ['Start', 'End'],
+            encode: { x: [0, 1] },
+            data: differenceWindows,
+            silent: true,
+            animation: false,
+            z: scheduleContextZ,
+          } as SeriesOption,
+        ]
+      : []),
+  ]
+}
+
 const buildPeakScatterSeries = (
   peaks: TimeOfDayPeakEventDto[] | null | undefined,
   name: string,
   color: string,
   yAxisIndex = 0,
-  symbolSize = 9
+  symbolSize = 13
 ): SeriesOption => ({
   name,
   type: 'scatter',
   yAxisIndex,
+  z: peakMarkerZ,
   data:
     peaks?.map((peak) => [
       peak.minutes ?? 0,
       peak.value ?? 0,
       peak.label ?? peak.locationIdentifier ?? peak.period ?? name,
     ]) ?? [],
+  symbol: StarSeriesSymbol,
   symbolSize,
   itemStyle: {
     color,
@@ -514,7 +843,7 @@ const buildNumberedSignalPeakSeries = (
   name,
   type: 'scatter',
   yAxisIndex,
-  z: 20,
+  z: peakMarkerZ,
   data: peaks.map((peak) => ({
     name: String(peak.badgeNumber),
     value: [
@@ -522,12 +851,14 @@ const buildNumberedSignalPeakSeries = (
       peak.value ?? 0,
       peak.label ?? peak.locationIdentifier ?? peak.period ?? name,
     ],
+    symbol: peak.markerSymbol ?? 'circle',
+    detailKey: peak.detailKey,
     itemStyle: {
       color: peak.badgeColor,
       opacity: 0.82,
     },
   })),
-  symbol: 'circle',
+  symbol: peaks[0]?.markerSymbol ?? 'circle',
   symbolSize: 18,
   label: {
     show: true,
@@ -546,107 +877,6 @@ const buildNumberedSignalPeakSeries = (
       typeof value === 'number' ? numberFormatter.format(value) : String(value),
   },
 })
-const formatPlanLabel = (plan: Plan) => {
-  const planNumber = formatPlanNumber(plan.planNumber)
-  const planName = planNumber === 'FREE' ? 'Free' : `Plan ${planNumber}`
-  const planDescription = plan.planDescription?.trim()
-  const normalizedPlanName = planName.toLowerCase()
-  const normalizedPlanNumber = planNumber.toLowerCase()
-  const normalizedPlanDescription = planDescription?.toLowerCase()
-
-  return planDescription &&
-    normalizedPlanDescription !== normalizedPlanName &&
-    normalizedPlanDescription !== normalizedPlanNumber
-    ? `{plan|${planName}}\n{info|${planDescription}}`
-    : `{plan|${planName}}`
-}
-
-const buildPlanLabelSeries = (
-  plans: Plan[] | null | undefined,
-  yAxisIndex: number,
-  context?: TimeOfDayPlanColorContext
-): SeriesOption | null => {
-  const data =
-    plans
-      ?.map((plan, index) => {
-        const interval = getPlanIntervalMinutes(plan)
-        if (!interval) return null
-
-        const backgroundColor = getTimeOfDayPlanBackgroundColor(
-          plan,
-          context,
-          index
-        )
-
-        return {
-          value: [
-            (interval.start + interval.end) / 2,
-            1,
-            formatPlanLabel(plan),
-          ] as [number, number, string],
-          label: {
-            backgroundColor,
-            color:
-              backgroundColor === chartColors.defaultPlanBackground
-                ? '#000000'
-                : '#ffffff',
-          },
-        }
-      })
-      .filter((point): point is TimeOfDayPlanLabelPoint => point !== null) ??
-    []
-
-  if (!data.length) return null
-
-  return {
-    name: 'Plans',
-    type: 'scatter',
-    symbol: 'roundRect',
-    symbolSize: 3,
-    yAxisIndex,
-    color: '#808080',
-    data,
-    silent: true,
-    tooltip: {
-      show: false,
-    },
-    labelLayout: {
-      y: 122,
-      moveOverlap: 'shiftX',
-      hideOverlap: plans ? plans.length > 10 : false,
-      draggable: true,
-    },
-    labelLine: {
-      show: true,
-      lineStyle: {
-        color: '#808080',
-      },
-    },
-    label: {
-      show: true,
-      position: 'top',
-      distance: 8,
-      padding: 5,
-      borderRadius: 5,
-      minMargin: 10,
-      align: 'left',
-      backgroundColor: '#f0f0f0',
-      formatter: (params) =>
-        Array.isArray(params.value) ? String(params.value[2]) : '',
-      rich: {
-        plan: {
-          fontSize: 9,
-          fontWeight: 'bold',
-          align: 'left',
-        },
-        info: {
-          fontSize: 9,
-          align: 'left',
-        },
-      },
-    },
-  }
-}
 const withPlanMarkAreas = (
   series: SeriesOption[],
   result: TimeOfDayResult
@@ -667,20 +897,48 @@ const withPlanMarkAreas = (
   ]
 }
 
+const createTimeOfDayTitle = ({
+  title,
+  dateRange,
+  info,
+}: {
+  title: string
+  dateRange?: string
+  info?: string
+}) => {
+  const titleTops = [0]
+
+  if (dateRange) {
+    titleTops.push(32)
+  }
+
+  if (info) {
+    titleTops.push(dateRange ? 58 : 32)
+  }
+
+  return createTitle({ title, dateRange, info }).map((titleOption, index) => ({
+    ...titleOption,
+    left: 0,
+    top: titleTops[index],
+    textAlign: 'left' as const,
+  }))
+}
+
 const buildBaseOption = ({
+  result,
   title,
   series,
   yAxis,
-  top = 160,
+  top = 190,
   right,
   legendData,
   legendConfig,
   showLegend = true,
-  plans,
-  planColorContext,
   dateRange = '',
   info,
+  externalHeader = false,
 }: {
+  result: TimeOfDayResult
   title: string
   series: SeriesOption[]
   yAxis: EChartsOption['yAxis']
@@ -689,22 +947,40 @@ const buildBaseOption = ({
   legendConfig?: Partial<LegendComponentOption>
   top?: number
   showLegend?: boolean
-  plans?: Plan[] | null
-  planColorContext?: TimeOfDayPlanColorContext
   dateRange?: string
   info?: string
+  externalHeader?: boolean
 }): EChartsOption => {
+  const yAxes = (
+    Array.isArray(yAxis) ? yAxis : yAxis === undefined ? [] : [yAxis]
+  ).filter((axis): axis is NonNullable<typeof axis> => axis !== undefined)
+  const scheduleYAxisIndex = yAxes.length
+  const scheduleSeries = buildScheduleOverlaySeries(
+    result,
+    1,
+    scheduleYAxisIndex
+  )
+  const hasScheduleRails = scheduleSeries.length > 0
+  const scheduleTop = externalHeader ? 12 : 108
+  const scheduleGridHeight = externalHeader ? 68 : 52
+  const scheduleGridGap = 9
+  const plotTop = externalHeader
+    ? hasScheduleRails
+      ? scheduleTop + scheduleGridHeight + scheduleGridGap
+      : scheduleTop
+    : top
   const grid = createGrid({
     left: 90,
     right,
-    top,
-    bottom: 110,
+    top: plotTop,
+    bottom: externalHeader ? 116 : 110,
     borderColor: '#d0d5dd',
     borderWidth: 1,
   })
   const dataZoom = createDataZoom([
     {
       type: 'slider',
+      xAxisIndex: hasScheduleRails ? [0, 1] : 0,
       start: 0,
       end: 100,
       left: grid.left,
@@ -714,23 +990,43 @@ const buildBaseOption = ({
     },
     {
       type: 'inside',
+      xAxisIndex: hasScheduleRails ? [0, 1] : 0,
       start: 0,
       end: 100,
     },
   ])
-  const yAxisCount = Array.isArray(yAxis) ? yAxis.length : 1
-  const planLabelSeries = buildPlanLabelSeries(
-    plans,
-    yAxisCount - 1,
-    planColorContext
-  )
-
-  return {
-    title: {
-      ...createTitle({ title, dateRange, info }),
-      left: 0,
-      textAlign: 'left',
+  const xAxis = {
+    type: 'value' as const,
+    min: 0,
+    max: 1440,
+    interval: 60,
+    name: 'Time of Day',
+    nameLocation: 'middle' as const,
+    nameGap: 42,
+    axisLabel: {
+      formatter: (value: number) => minutesToTimeLabel(value),
     },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        color: '#d6dee6',
+      },
+    },
+    minorTick: {
+      show: true,
+      splitNumber: 4,
+    },
+    minorSplitLine: {
+      show: true,
+      lineStyle: {
+        color: '#edf1f5',
+      },
+    },
+  }
+  return {
+    title: externalHeader
+      ? []
+      : createTimeOfDayTitle({ title, dateRange, info }),
     color: [
       chartColors.raw,
       chartColors.smooth,
@@ -738,7 +1034,19 @@ const buildBaseOption = ({
       chartColors.cross,
       chartColors.percent,
     ],
-    grid,
+    grid: hasScheduleRails
+      ? [
+          grid,
+          {
+            left: 90,
+            right,
+            top: scheduleTop,
+            height: scheduleGridHeight,
+            borderColor: '#d0d5dd',
+            borderWidth: 1,
+          },
+        ]
+      : grid,
     legend: createLegend({
       data: legendData,
       orient: 'vertical',
@@ -758,37 +1066,43 @@ const buildBaseOption = ({
           ? numberFormatter.format(value)
           : String(value),
     },
-    xAxis: {
-      type: 'value',
-      min: 0,
-      max: 1440,
-      interval: 60,
-      name: 'Time of Day',
-      nameLocation: 'middle',
-      nameGap: 42,
-      axisLabel: {
-        formatter: (value: number) => minutesToTimeLabel(value),
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: '#d6dee6',
-        },
-      },
-      minorTick: {
-        show: true,
-        splitNumber: 4,
-      },
-      minorSplitLine: {
-        show: true,
-        lineStyle: {
-          color: '#edf1f5',
-        },
-      },
-    },
-    yAxis,
+    xAxis: hasScheduleRails
+      ? [
+          xAxis,
+          {
+            type: 'value',
+            gridIndex: 1,
+            min: 0,
+            max: 1440,
+            axisLabel: { show: false },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false },
+            axisPointer: { show: false },
+          },
+        ]
+      : xAxis,
+    yAxis: hasScheduleRails
+      ? [
+          ...yAxes,
+          {
+            type: 'category',
+            gridIndex: 1,
+            data: ['Existing', 'Proposed'],
+            axisTick: { show: false },
+            axisLine: { show: false },
+            axisPointer: { show: false },
+            triggerEvent: true,
+            axisLabel: {
+              color: '#475467',
+              fontSize: 11,
+              fontWeight: 600,
+            },
+          },
+        ]
+      : yAxes,
     dataZoom,
-    series: planLabelSeries ? [...series, planLabelSeries] : series,
+    series: [...series, ...scheduleSeries],
   }
 }
 
@@ -901,8 +1215,8 @@ const getPlanProfileLegendData = (
       directionalColors[index % directionalColors.length]
     )
   ),
-  createLegendItem('AM Corridor Peak', 'circle', chartColors.amPeak),
-  createLegendItem('PM Corridor Peak', 'circle', chartColors.pmPeak),
+  createLegendItem('AM Corridor Peak', StarSeriesSymbol, chartColors.amPeak),
+  createLegendItem('PM Corridor Peak', StarSeriesSymbol, chartColors.pmPeak),
   createLegendItem('AM Signal Peaks', 'circle', chartColors.amSignalPeak),
   createLegendItem('PM Signal Peaks', 'circle', chartColors.pmSignalPeak),
 ]
@@ -973,22 +1287,34 @@ export const buildPlanProfileOption = (
 
   const amCorridorPeaks = getCorridorPeakEvents(result.planProfile?.peaks, 'AM')
   const pmCorridorPeaks = getCorridorPeakEvents(result.planProfile?.peaks, 'PM')
-  const amSignalPeaks = getLocationPeakEvents(result.planProfile?.peaks, 'AM')
-  const pmSignalPeaks = getLocationPeakEvents(result.planProfile?.peaks, 'PM')
+  const amSignalPeaks = getLocationPeakEvents(
+    result.planProfile?.peaks,
+    'AM'
+  ).map((peak) => ({
+    ...peak,
+    detailKey: getTimeOfDaySignalPeakDetailKey(peak),
+  }))
+  const pmSignalPeaks = getLocationPeakEvents(
+    result.planProfile?.peaks,
+    'PM'
+  ).map((peak) => ({
+    ...peak,
+    detailKey: getTimeOfDaySignalPeakDetailKey(peak),
+  }))
 
   const amPeakSeries = buildPeakScatterSeries(
     amCorridorPeaks,
     'AM Corridor Peak',
     chartColors.amPeak,
     0,
-    11
+    15
   )
   const pmPeakSeries = buildPeakScatterSeries(
     pmCorridorPeaks,
     'PM Corridor Peak',
     chartColors.pmPeak,
     0,
-    11
+    15
   )
   const amSignalPeakSeries = buildNumberedSignalPeakSeries(
     amSignalPeaks,
@@ -1027,9 +1353,11 @@ export const buildPlanProfileOption = (
   )
 
   const plans = result.recommendation?.recommendedSchedule
+  const sharedVolumeAxisMax = getSharedVolumeAxisMax(result)
   const yAxis = createYAxis(Boolean(plans?.length), {
     name: 'Volume (vph)',
     nameGap: 60,
+    max: sharedVolumeAxisMax,
     splitLine: {
       lineStyle: { color: '#e3e8ee' },
     },
@@ -1056,6 +1384,7 @@ export const buildPlanProfileOption = (
   ])
 
   return buildBaseOption({
+    result,
     title: 'Corridor Plan Recommendation',
     dateRange: titleDateRange,
     info: titleInfo,
@@ -1063,11 +1392,6 @@ export const buildPlanProfileOption = (
     legendData: getPlanProfileLegendData(directionalSeriesNames),
     right: 250,
     yAxis,
-    plans,
-    planColorContext: getPlanColorContext(
-      result,
-      result.recommendation?.recommendedSchedule
-    ),
   })
 }
 
@@ -1120,17 +1444,10 @@ export const buildSplitPressureOption = (
   )
 
   const volumePeaks =
-    splitPressure?.periodPeaks?.filter(
-      (peak) =>
-        peak.series !== 'CrossTrafficPercent' &&
-        !peak.valueUnits?.toLowerCase().includes('percent')
-    ) ?? []
+    splitPressure?.periodPeaks?.filter((peak) => !isPercentPeakEvent(peak)) ??
+    []
   const percentPeaks =
-    splitPressure?.periodPeaks?.filter(
-      (peak) =>
-        peak.series === 'CrossTrafficPercent' ||
-        peak.valueUnits?.toLowerCase().includes('percent')
-    ) ?? []
+    splitPressure?.periodPeaks?.filter(isPercentPeakEvent) ?? []
   const locationNumberMap = buildSplitPressureLocationNumberMap(result)
   const locationPeakSeries = buildSplitPressureLocationPeakSeries(
     result,
@@ -1216,11 +1533,13 @@ export const buildSplitPressureOption = (
   )
 
   const plans = result.recommendation?.recommendedSchedule
+  const sharedVolumeAxisMax = getSharedVolumeAxisMax(result)
   const yAxis = createYAxis(
     Boolean(plans?.length),
     {
       name: 'Volume (vph)',
       nameGap: 60,
+      max: sharedVolumeAxisMax,
       splitLine: {
         lineStyle: { color: '#e3e8ee' },
       },
@@ -1232,7 +1551,7 @@ export const buildSplitPressureOption = (
       max: (value) => Math.max(100, Math.ceil(value.max / 10) * 10),
       position: 'right',
       axisLabel: {
-        formatter: '{value}%',
+        formatter: formatPercentAxisLabel,
       },
       axisLine: { show: false },
     }
@@ -1268,81 +1587,251 @@ export const buildSplitPressureOption = (
   ])
 
   return buildBaseOption({
+    result,
     title: 'Corridor Split Pressure',
     dateRange: titleDateRange,
     info: titleInfo,
     series,
     right: 410,
     legendData: [
-      createLegendItem(primarySeriesName, SolidLineSeriesSymbol, chartColors.primary),
-      createLegendItem(crossSeriesName, SolidLineSeriesSymbol, chartColors.cross),
+      createLegendItem(
+        primarySeriesName,
+        SolidLineSeriesSymbol,
+        chartColors.primary
+      ),
+      createLegendItem(
+        crossSeriesName,
+        SolidLineSeriesSymbol,
+        chartColors.cross
+      ),
       createLegendItem(
         'Cross-traffic percent',
         DashedLineSeriesSymbol,
         chartColors.percent
       ),
-      createLegendItem(splitReviewName, DashedLineSeriesSymbol, chartColors.splitReview),
+      createLegendItem(
+        splitReviewName,
+        DashedLineSeriesSymbol,
+        chartColors.splitReview
+      ),
       createLegendItem(
         shoulderReviewName,
         DashedLineSeriesSymbol,
         chartColors.shoulderReview
       ),
-      createLegendItem('AM Location Peaks', 'circle', chartColors.amSignalPeak),
       createLegendItem(
-        'Midday Location Peaks',
+        'AM Cross Traffic Locations',
+        'circle',
+        chartColors.amSignalPeak
+      ),
+      createLegendItem(
+        'Midday Cross Traffic Locations',
         'circle',
         chartColors.middaySignalPeak
       ),
-      createLegendItem('PM Location Peaks', 'circle', chartColors.pmSignalPeak),
+      createLegendItem(
+        'PM Cross Traffic Locations',
+        'circle',
+        chartColors.pmSignalPeak
+      ),
+      createLegendItem(
+        'AM Movement Pressure',
+        'rect',
+        chartColors.amSignalPeak
+      ),
+      createLegendItem(
+        'PM Movement Pressure',
+        'rect',
+        chartColors.pmSignalPeak
+      ),
     ],
+    legendConfig: {
+      selected: {
+        'AM Movement Pressure': false,
+        'PM Movement Pressure': false,
+      },
+    },
     yAxis,
-    plans,
-    planColorContext: getPlanColorContext(
-      result,
-      result.recommendation?.recommendedSchedule
-    ),
   })
 }
 
-const getDurationMinutes = (plan: Plan) => {
-  const interval = getPlanIntervalMinutes(plan)
-  if (!interval) return null
+type ScheduleTimelineDatum = [number, number, number, string, string, string]
 
-  return Math.round(interval.end - interval.start)
+const withColorOpacity = (color: string, opacity: number) => {
+  const hex = color.replace('#', '')
+  if (!/^[0-9a-f]{6}$/i.test(hex)) return color
+
+  const red = Number.parseInt(hex.slice(0, 2), 16)
+  const green = Number.parseInt(hex.slice(2, 4), 16)
+  const blue = Number.parseInt(hex.slice(4, 6), 16)
+
+  return `rgba(${red}, ${green}, ${blue}, ${opacity})`
 }
 
-export const buildScheduleRows = (
-  result: TimeOfDayResult
-): TimeOfDayScheduleRow[] => {
-  const rows: TimeOfDayScheduleRow[] = []
+const renderSchedulePlanBlock = (
+  params: CustomSeriesRenderItemParams,
+  api: CustomSeriesRenderItemAPI
+): CustomSeriesRenderItemReturn => {
+  const start = api.coord([api.value(0), api.value(2)])
+  const end = api.coord([api.value(1), api.value(2)])
+  const laneSize = api.size?.([0, 1])
+  const laneHeight = Array.isArray(laneSize)
+    ? Number(laneSize[1])
+    : Number(laneSize ?? 0)
+  const height = Math.max(0, laneHeight - 6)
+  const buttonHeight = Math.max(0, laneHeight)
+  const buttonLeftExtension = 72
+  const buttonRightExtension = 72
+  const coordSys = params.coordSys as unknown as {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+  const rectShape = graphic.clipRectByRect(
+    {
+      x: start[0],
+      y: start[1] - height / 2,
+      width: end[0] - start[0],
+      height,
+    },
+    {
+      x: coordSys.x,
+      y: coordSys.y,
+      width: coordSys.width,
+      height: coordSys.height,
+    }
+  )
+  if (!rectShape) return
 
-  result.recommendation?.recommendedSchedule?.forEach((plan, index) => {
-    rows.push({
-      id: `recommended-${index}`,
-      scheduleType: 'Recommended',
-      locations: 'Selected corridor',
-      plan: formatPlanNumber(plan.planNumber),
-      description: plan.planDescription ?? '-',
-      start: formatPlanTime(plan.start),
-      end: formatPlanTime(plan.end),
-      durationMinutes: getDurationMinutes(plan),
-    })
+  const width = Math.max(0, end[0] - start[0])
+  const color = String(api.value(4))
+  const freePlan = String(api.value(3)) === 'FREE'
+  const rectElement = {
+    type: 'rect' as const,
+    shape: rectShape,
+    silent: true,
+    style: {
+      fill: withColorOpacity(color, freePlan ? 0.14 : 0.2),
+    },
+  }
+  const buttonSurface =
+    params.dataIndex === 0
+      ? {
+          type: 'rect' as const,
+          shape: {
+            x: coordSys.x - buttonLeftExtension,
+            y: start[1] - buttonHeight / 2,
+            width: coordSys.width + buttonLeftExtension + buttonRightExtension,
+            height: buttonHeight,
+            r: 4,
+          },
+          style: {
+            fill: 'rgba(255, 255, 255, 0)',
+          },
+          emphasis: {
+            style: {
+              fill: 'rgba(71, 84, 103, 0.08)',
+            },
+          },
+        }
+      : undefined
+  const planLabel =
+    width >= 32
+      ? {
+          type: 'text' as const,
+          silent: true,
+          style: {
+            x: (start[0] + end[0]) / 2,
+            y: start[1],
+            text: String(api.value(3)),
+            fill: color,
+            fontSize: 11,
+            fontWeight: 700,
+            align: 'center' as const,
+            verticalAlign: 'middle' as const,
+            width: Math.max(0, width - 8),
+            overflow: 'truncate' as const,
+          },
+        }
+      : undefined
+  const children = [buttonSurface, rectElement, planLabel].filter(
+    (child): child is NonNullable<typeof child> => Boolean(child)
+  )
+
+  return children.length === 1
+    ? rectElement
+    : {
+        type: 'group',
+        children,
+      }
+}
+
+const getScheduleTimelineData = (
+  entries: TimeOfDayScheduleEntry[],
+  lane: number,
+  colorMap: Map<string, string>
+): ScheduleTimelineDatum[] =>
+  entries.map(({ plan, interval }) => {
+    const planName = formatPlanNumber(plan.planNumber)
+
+    return [
+      interval.start,
+      interval.end,
+      lane,
+      planName,
+      colorMap.get(planName) ?? freeSchedulePlanColor,
+      plan.planDescription ?? '-',
+    ]
   })
 
-  result.planComparison?.commonCurrentSchedule?.forEach((plan, index) => {
-    rows.push({
-      id: `current-${index}`,
-      scheduleType: 'Current common',
-      locations: 'Selected corridor',
-      plan: formatPlanNumber(plan.planNumber),
-      description: plan.planDescription ?? '-',
-      start: formatPlanTime(plan.start),
-      end: formatPlanTime(plan.end),
-      durationMinutes: getDurationMinutes(plan),
-    })
+const buildScheduleOverlaySeries = (
+  result: TimeOfDayResult,
+  xAxisIndex: number,
+  yAxisIndex: number
+): SeriesOption[] => {
+  const existingEntries = getScheduleEntries(
+    result.planComparison?.commonCurrentSchedule
+  )
+  const proposedEntries = getScheduleEntries(
+    result.recommendation?.recommendedSchedule
+  )
+  if (!existingEntries.length && !proposedEntries.length) return []
+
+  const colorMap = getSchedulePlanColorMap([
+    proposedEntries.map(({ plan }) => plan),
+    existingEntries.map(({ plan }) => plan),
+  ])
+  const buildRailSeries = (
+    name: string,
+    entries: TimeOfDayScheduleEntry[],
+    lane: number
+  ): SeriesOption => ({
+    id:
+      name === 'Existing schedule rail'
+        ? 'tod-existing-schedule-rail'
+        : 'tod-proposed-schedule-rail',
+    name,
+    type: 'custom',
+    renderItem: renderSchedulePlanBlock,
+    clip: false,
+    xAxisIndex,
+    yAxisIndex,
+    encode: { x: [0, 1], y: 2 },
+    dimensions: ['Start', 'End', 'Lane', 'Plan', 'Color', 'Description'],
+    tooltip: { show: false },
+    data: getScheduleTimelineData(entries, lane, colorMap),
+    z: 30,
   })
 
-  return rows
+  return [
+    ...(existingEntries.length
+      ? [buildRailSeries('Existing schedule rail', existingEntries, 0)]
+      : []),
+    ...(proposedEntries.length
+      ? [buildRailSeries('Proposed schedule rail', proposedEntries, 1)]
+      : []),
+  ]
 }
 
 export const getLocationPeakEvents = (
@@ -1381,15 +1870,70 @@ export const getCrossTrafficLocations = (
       (right.totalVehiclesPerHour ?? 0) - (left.totalVehiclesPerHour ?? 0)
   )
 
+const movementOrder: Record<string, number> = {
+  left: 0,
+  thru: 1,
+  through: 1,
+  straight: 1,
+  right: 2,
+}
+
+const getMovementName = (movement: TimeOfDayMovementPressureDto) =>
+  movement.movementLabel ?? movement.movement ?? ''
+
+const compareMovementPressures = (
+  left: TimeOfDayMovementPressureDto,
+  right: TimeOfDayMovementPressureDto,
+  locationNumberMap?: TimeOfDayLocationNumberMap
+) => {
+  if (locationNumberMap) {
+    const leftLocationNumber = getLocationNumber(
+      locationNumberMap,
+      left.locationIdentifier
+    )
+    const rightLocationNumber = getLocationNumber(
+      locationNumberMap,
+      right.locationIdentifier
+    )
+    const locationNumberComparison =
+      (leftLocationNumber ?? Number.MAX_SAFE_INTEGER) -
+      (rightLocationNumber ?? Number.MAX_SAFE_INTEGER)
+    if (locationNumberComparison !== 0) return locationNumberComparison
+  }
+
+  const locationComparison = (left.locationIdentifier ?? '').localeCompare(
+    right.locationIdentifier ?? '',
+    undefined,
+    { numeric: true, sensitivity: 'base' }
+  )
+  if (locationComparison !== 0) return locationComparison
+
+  const leftMovement = normalizeToken(getMovementName(left))
+  const rightMovement = normalizeToken(getMovementName(right))
+  const movementOrderComparison =
+    (movementOrder[leftMovement] ?? Number.MAX_SAFE_INTEGER) -
+    (movementOrder[rightMovement] ?? Number.MAX_SAFE_INTEGER)
+
+  return (
+    movementOrderComparison ||
+    leftMovement.localeCompare(rightMovement, undefined, {
+      sensitivity: 'base',
+    })
+  )
+}
+
 export const getMovementPressures = (
   movements: TimeOfDayMovementPressureDto[] | null | undefined,
-  period: string
+  period: string,
+  locationNumberMap?: TimeOfDayLocationNumberMap
 ) =>
   [
     ...(movements?.filter(
       (movement) => movement.period?.toLowerCase() === period.toLowerCase()
     ) ?? []),
-  ].sort((left, right) => (right.volume ?? 0) - (left.volume ?? 0))
+  ].sort((left, right) =>
+    compareMovementPressures(left, right, locationNumberMap)
+  )
 
 const splitPressureLocationPeriods = ['AM', 'Midday', 'PM']
 const splitPressureMovementPeriods = ['AM', 'PM']
@@ -1441,7 +1985,10 @@ const buildSplitPressureLocationPeakEvents = (
   const locationPeaks: TimeOfDayNumberedPeakEvent[] = []
   const seen = new Set<string>()
 
-  const addPeak = (peak: TimeOfDayPeakEventDto) => {
+  const addPeak = (
+    peak: TimeOfDayPeakEventDto & { detailKey?: string },
+    markerSymbol: 'circle' | 'rect' = 'circle'
+  ) => {
     const badgeNumber = getLocationNumber(
       locationNumberMap,
       peak.locationIdentifier
@@ -1467,6 +2014,7 @@ const buildSplitPressureLocationPeakEvents = (
       ...peak,
       badgeNumber,
       badgeColor: getTimeOfDayPeriodBadgeColor(peak.period),
+      markerSymbol,
     })
   }
 
@@ -1477,15 +2025,16 @@ const buildSplitPressureLocationPeakEvents = (
     ).forEach((location) => {
       addPeak({
         period,
-        locationIdentifier: location.locationIdentifier,
-        locationDescription: location.locationDescription,
-        timeOfDay: location.peakTime,
+        locationIdentifier: location.locationIdentifier ?? undefined,
+        locationDescription: location.locationDescription ?? undefined,
+        timeOfDay: location.peakTime ?? undefined,
         minutes:
           location.minutes ??
-          getPlanBoundaryMinutes(location.peakTime) ??
+          getPlanBoundaryMinutes(location.peakTime ?? undefined) ??
           undefined,
         value: location.totalVehiclesPerHour,
         valueUnits: 'vph',
+        detailKey: getTimeOfDayCrossTrafficDetailKey(location, period),
       })
     })
   })
@@ -1493,16 +2042,22 @@ const buildSplitPressureLocationPeakEvents = (
   splitPressureMovementPeriods.forEach((period) => {
     getMovementPressures(
       result.splitPressure?.movementPressures,
-      period
+      period,
+      locationNumberMap
     ).forEach((movement) => {
-      addPeak({
-        period,
-        locationIdentifier: movement.locationIdentifier,
-        timeOfDay: movement.peakTime,
-        minutes: getPlanBoundaryMinutes(movement.peakTime) ?? undefined,
-        value: movement.volume,
-        valueUnits: 'vph',
-      })
+      addPeak(
+        {
+          period,
+          locationIdentifier: movement.locationIdentifier ?? undefined,
+          timeOfDay: movement.peakTime ?? undefined,
+          minutes:
+            getPlanBoundaryMinutes(movement.peakTime ?? undefined) ?? undefined,
+          value: movement.volume,
+          valueUnits: 'vph',
+          detailKey: getTimeOfDayMovementPressureDetailKey(movement, period),
+        },
+        'rect'
+      )
     })
   })
 
@@ -1512,27 +2067,45 @@ const buildSplitPressureLocationPeakEvents = (
 const buildSplitPressureLocationPeakSeries = (
   result: TimeOfDayResult,
   locationNumberMap: TimeOfDayLocationNumberMap
-): SeriesOption[] =>
-  [
-    { period: 'AM', name: 'AM Location Peaks' },
-    { period: 'Midday', name: 'Midday Location Peaks' },
-    { period: 'PM', name: 'PM Location Peaks' },
-  ].flatMap(({ period, name }) => {
-    const periodPeaks = buildSplitPressureLocationPeakEvents(
-      result,
-      locationNumberMap
-    ).filter((peak) => peakPeriodMatches(peak, period))
+): SeriesOption[] => {
+  const locationPeaks = buildSplitPressureLocationPeakEvents(
+    result,
+    locationNumberMap
+  )
 
-    return periodPeaks.length
-      ? [
-          buildNumberedSignalPeakSeries(
-            periodPeaks,
-            name,
-            getTimeOfDayPeriodBadgeColor(period)
-          ),
-        ]
-      : []
+  return ['AM', 'Midday', 'PM'].flatMap((period) => {
+    const periodPeaks = locationPeaks.filter((peak) =>
+      peakPeriodMatches(peak, period)
+    )
+    const crossTrafficPeaks = periodPeaks.filter(
+      (peak) => peak.markerSymbol !== 'rect'
+    )
+    const movementPressurePeaks = periodPeaks.filter(
+      (peak) => peak.markerSymbol === 'rect'
+    )
+
+    return [
+      ...(crossTrafficPeaks.length
+        ? [
+            buildNumberedSignalPeakSeries(
+              crossTrafficPeaks,
+              `${period} Cross Traffic Locations`,
+              getTimeOfDayPeriodBadgeColor(period)
+            ),
+          ]
+        : []),
+      ...(movementPressurePeaks.length
+        ? [
+            buildNumberedSignalPeakSeries(
+              movementPressurePeaks,
+              `${period} Movement Pressure`,
+              getTimeOfDayPeriodBadgeColor(period)
+            ),
+          ]
+        : []),
+    ]
   })
+}
 
 const getUnnumberedSplitPressurePeakEvents = (
   peaks: TimeOfDayPeakEventDto[],
@@ -1541,3 +2114,501 @@ const getUnnumberedSplitPressurePeakEvents = (
   peaks.filter(
     (peak) => !getLocationNumber(locationNumberMap, peak.locationIdentifier)
   )
+
+const presetLayerIds: Record<TimeOfDayChartPreset, TimeOfDayChartLayerId[]> = {
+  recommendation: [
+    'raw-volume',
+    'smoothed-volume',
+    'directional-profiles',
+    'corridor-peaks',
+    'signal-peaks',
+  ],
+  pressure: [
+    'primary-volume',
+    'cross-volume',
+    'cross-percent',
+    'review-thresholds',
+    'pressure-peaks',
+    'cross-traffic-locations',
+  ],
+  combined: [
+    'raw-volume',
+    'smoothed-volume',
+    'directional-profiles',
+    'corridor-peaks',
+    'primary-volume',
+    'cross-volume',
+    'cross-percent',
+    'review-thresholds',
+    'pressure-peaks',
+    'signal-peaks',
+    'cross-traffic-locations',
+  ],
+}
+
+const reviewThresholdLayerIds = new Set<TimeOfDayChartLayerId>([
+  'split-review-threshold',
+  'shoulder-review-threshold',
+])
+
+const getPresetLayerId = (
+  layerId: TimeOfDayChartLayerId
+): TimeOfDayChartLayerId => {
+  if (layerId.startsWith('directional-profile-')) {
+    return 'directional-profiles'
+  }
+  if (reviewThresholdLayerIds.has(layerId)) {
+    return 'review-thresholds'
+  }
+
+  return layerId
+}
+
+export const getTimeOfDayPresetSeriesSelection = (
+  layers: TimeOfDayChartLayer[],
+  preset: TimeOfDayChartPreset,
+  currentSelection: Record<string, boolean> = {}
+) => {
+  const visibleLayerIds = new Set(presetLayerIds[preset])
+  const hasAvailableProposedSchedule = layers.some(
+    (layer) => layer.id === 'proposed-schedule' && layer.available
+  )
+  const nextSelection: Record<string, boolean> = {}
+  const getDefaultScheduleSeriesVisibility = (layer: TimeOfDayChartLayer) => {
+    if (!layer.available) return false
+    if (layer.id === 'difference-windows') return false
+    if (layer.id === 'existing-schedule') {
+      return !hasAvailableProposedSchedule
+    }
+
+    return true
+  }
+
+  layers.forEach((layer) => {
+    const visible =
+      layer.group === 'Schedules'
+        ? undefined
+        : layer.available && visibleLayerIds.has(getPresetLayerId(layer.id))
+
+    layer.seriesNames.forEach((seriesName) => {
+      nextSelection[seriesName] =
+        visible === undefined
+          ? (currentSelection[seriesName] ??
+            getDefaultScheduleSeriesVisibility(layer))
+          : visible
+    })
+  })
+
+  return nextSelection
+}
+
+const getOptionSeries = (option: EChartsOption): SeriesOption[] => {
+  if (!option.series) return []
+
+  return Array.isArray(option.series)
+    ? (option.series as SeriesOption[])
+    : [option.series as SeriesOption]
+}
+
+const getSeriesName = (series: SeriesOption) =>
+  typeof series.name === 'string' ? series.name : ''
+
+const withStableSeriesIdentity = (
+  series: SeriesOption,
+  prefix: string,
+  index: number
+) => {
+  const nextSeries = { ...series } as SeriesOption & {
+    markArea?: unknown
+  }
+  delete nextSeries.markArea
+
+  return {
+    ...nextSeries,
+    id: `tod-${prefix}-${normalizeToken(getSeriesName(series)) || index}`,
+  } as SeriesOption
+}
+
+const getUnifiedSourceSeries = (option: EChartsOption, prefix: string) =>
+  getOptionSeries(option)
+    .filter((series) => !getSeriesName(series).endsWith('schedule rail'))
+    .map((series, index) => withStableSeriesIdentity(series, prefix, index))
+
+const seriesHasData = (series?: SeriesOption) => {
+  if (!series) return false
+
+  const data = (series as SeriesOption & { data?: unknown[] }).data
+  if (Array.isArray(data) && data.length > 0) return true
+
+  const markAreaData = (
+    series as SeriesOption & {
+      markArea?: { data?: unknown[] }
+    }
+  ).markArea?.data
+
+  return Array.isArray(markAreaData) && markAreaData.length > 0
+}
+
+const buildDetailTargets = (
+  series: SeriesOption[],
+  layers: TimeOfDayChartLayer[]
+) => {
+  const targets: Record<string, TimeOfDayChartDetailTarget> = {}
+  const layerBySeriesName = new Map<string, TimeOfDayChartLayerId>()
+
+  layers.forEach((layer) => {
+    layer.seriesNames.forEach((seriesName) => {
+      layerBySeriesName.set(seriesName, layer.id)
+    })
+  })
+
+  series.forEach((seriesOption) => {
+    const seriesName = getSeriesName(seriesOption)
+    const layerId = layerBySeriesName.get(seriesName)
+    const data = (seriesOption as SeriesOption & { data?: unknown[] }).data
+    if (!layerId || !Array.isArray(data)) return
+
+    data.forEach((datum, dataIndex) => {
+      if (!datum || typeof datum !== 'object' || Array.isArray(datum)) return
+
+      const detailKey = (datum as { detailKey?: unknown }).detailKey
+      if (typeof detailKey !== 'string' || !detailKey) return
+
+      targets[detailKey] = {
+        detailKey,
+        layerId,
+        seriesName,
+        dataIndex,
+      }
+    })
+  })
+
+  return targets
+}
+
+export const buildTimeOfDayAnalysisModel = (
+  result: TimeOfDayResult
+): TimeOfDayAnalysisModel => {
+  const planSeries = getUnifiedSourceSeries(
+    buildPlanProfileOption(result),
+    'recommendation'
+  )
+  const pressureSeries = getUnifiedSourceSeries(
+    buildSplitPressureOption(result),
+    'pressure'
+  )
+  const contextSeries = buildScheduleContextSeries(result)
+  const dataSeries = [...contextSeries, ...planSeries, ...pressureSeries]
+  const directionalSeriesNames =
+    result.planProfile?.directionalProfiles?.map((profile, index) =>
+      formatDirectionProfileName(profile, index)
+    ) ?? []
+  const splitPressure = result.splitPressure
+  const primarySeriesName = formatRepresentativeSeriesName(
+    splitPressure?.primaryDirections,
+    'primary',
+    'primary street'
+  )
+  const crossSeriesName = formatRepresentativeSeriesName(
+    splitPressure?.crossDirections,
+    'cross street',
+    'cross street'
+  )
+  const splitReviewName = formatPercentThresholdName(
+    getThresholdPercent(
+      splitPressure?.thresholdPercentByName,
+      ['SplitReview', '35% split review', 'split review'],
+      35
+    ),
+    'split review'
+  )
+  const shoulderReviewName = formatPercentThresholdName(
+    getThresholdPercent(
+      splitPressure?.thresholdPercentByName,
+      ['ShoulderReview', '45% shoulder review', 'shoulder review'],
+      45
+    ),
+    'shoulder review'
+  )
+  const existingEntries = getScheduleEntries(
+    result.planComparison?.commonCurrentSchedule
+  )
+  const proposedEntries = getScheduleEntries(
+    result.recommendation?.recommendedSchedule
+  )
+  const scheduleSeriesNames = [
+    ...(existingEntries.length ? ['Existing schedule rail'] : []),
+    ...(proposedEntries.length ? ['Proposed schedule rail'] : []),
+  ]
+  const allSeriesNames = [
+    ...dataSeries.map(getSeriesName).filter(Boolean),
+    ...scheduleSeriesNames,
+  ]
+  const sharedVolumeAxisMax = getSharedVolumeAxisMax(result)
+  const yAxis = createYAxis(
+    false,
+    {
+      name: 'Volume (vph)',
+      nameGap: 60,
+      max: sharedVolumeAxisMax,
+      splitLine: { lineStyle: { color: '#e3e8ee' } },
+    },
+    {
+      name: 'Cross Traffic (%)',
+      nameGap: 48,
+      min: 0,
+      max: (value) => Math.max(100, Math.ceil(value.max / 10) * 10),
+      position: 'right',
+      show: false,
+      axisLabel: { formatter: formatPercentAxisLabel },
+      axisLine: { show: false },
+    }
+  )
+  const amCorridorPeaks = getCorridorPeakEvents(result.planProfile?.peaks, 'AM')
+  const pmCorridorPeaks = getCorridorPeakEvents(result.planProfile?.peaks, 'PM')
+  const dateRange = formatSelectedDateRange(result.selectedDates)
+  const summaryItems = [
+    {
+      label: 'AM Corridor Peak',
+      value: formatPeakInfoValue(
+        result.recommendation?.amPeakTime ?? amCorridorPeaks[0]?.timeOfDay,
+        amCorridorPeaks[0]?.value,
+        amCorridorPeaks[0]?.valueUnits ?? 'vph'
+      ),
+    },
+    {
+      label: 'PM Corridor Peak',
+      value: formatPeakInfoValue(
+        result.recommendation?.pmPeakTime ?? pmCorridorPeaks[0]?.timeOfDay,
+        pmCorridorPeaks[0]?.value,
+        pmCorridorPeaks[0]?.valueUnits ?? 'vph'
+      ),
+    },
+    {
+      label: 'Peak Cross Traffic',
+      value: formatPeakInfoValue(
+        splitPressure?.peakCrossTrafficPercentTime,
+        splitPressure?.peakCrossTrafficPercent,
+        '%',
+        1
+      ),
+    },
+  ].filter((item) => Boolean(item.value))
+  const option = buildBaseOption({
+    result,
+    title: 'Corridor Time-of-Day Analysis',
+    externalHeader: true,
+    series: dataSeries,
+    right: 90,
+    legendData: allSeriesNames,
+    showLegend: false,
+    yAxis,
+  })
+  const optionSeries = getOptionSeries(option)
+  const seriesByName = new Map(
+    optionSeries.map((seriesOption) => [
+      getSeriesName(seriesOption),
+      seriesOption,
+    ])
+  )
+  const createLayer = (
+    layer: Omit<TimeOfDayChartLayer, 'available'>
+  ): TimeOfDayChartLayer => ({
+    ...layer,
+    available:
+      (!reviewThresholdLayerIds.has(layer.id) ||
+        hasSplitPressureData(result)) &&
+      layer.seriesNames.some((seriesName) =>
+        seriesHasData(seriesByName.get(seriesName))
+      ),
+  })
+  const layers: TimeOfDayChartLayer[] = [
+    createLayer({
+      id: 'proposed-schedule',
+      group: 'Schedules',
+      label: 'Proposed schedule',
+      description: 'Recommended plan windows and the proposed schedule rail.',
+      preview: 'schedule',
+      color: chartColors.pmPlanBackground,
+      seriesNames: ['Proposed plan windows', 'Proposed schedule rail'],
+    }),
+    createLayer({
+      id: 'existing-schedule',
+      group: 'Schedules',
+      label: 'Existing schedule',
+      description:
+        'The common current schedule for the selected corridor locations.',
+      preview: 'schedule',
+      color: freeSchedulePlanColor,
+      seriesNames: ['Existing plan windows', 'Existing schedule rail'],
+    }),
+    createLayer({
+      id: 'difference-windows',
+      group: 'Schedules',
+      label: 'Difference windows',
+      description:
+        'Amber windows where the proposed and existing plans differ.',
+      preview: 'area',
+      color: '#f59e0b',
+      seriesNames: ['Plan difference windows'],
+    }),
+    createLayer({
+      id: 'raw-volume',
+      group: 'Corridor Demand',
+      label: 'Median raw volume',
+      description: 'Median observed corridor volume by time of day.',
+      preview: 'solid-line',
+      color: chartColors.raw,
+      seriesNames: ['Median Raw Volume'],
+    }),
+    createLayer({
+      id: 'smoothed-volume',
+      group: 'Corridor Demand',
+      label: 'Smoothed breakpoints',
+      description:
+        'Smoothed corridor demand used to recommend plan boundaries.',
+      preview: 'solid-line',
+      color: chartColors.smooth,
+      seriesNames: ['Smoothed For Breakpoints'],
+    }),
+    ...directionalSeriesNames.map((seriesName, index) =>
+      createLayer({
+        id: `directional-profile-${index}`,
+        group: 'Corridor Demand',
+        label: seriesName,
+        description: 'Representative directional volume profile.',
+        preview: 'dashed-line',
+        color: directionalColors[index % directionalColors.length],
+        seriesNames: [seriesName],
+      })
+    ),
+    createLayer({
+      id: 'corridor-peaks',
+      group: 'Corridor Demand',
+      label: 'Corridor peaks',
+      description: 'AM and PM corridor peak markers.',
+      preview: 'star',
+      color: chartColors.amPeak,
+      seriesNames: ['AM Corridor Peak', 'PM Corridor Peak'],
+    }),
+    createLayer({
+      id: 'primary-volume',
+      group: 'Split Pressure',
+      label: 'Primary traffic',
+      description: 'Representative primary-street volume profile.',
+      preview: 'solid-line',
+      color: chartColors.primary,
+      seriesNames: [primarySeriesName],
+    }),
+    createLayer({
+      id: 'cross-volume',
+      group: 'Split Pressure',
+      label: 'Cross traffic',
+      description: 'Representative cross-street volume profile.',
+      preview: 'solid-line',
+      color: chartColors.cross,
+      seriesNames: [crossSeriesName],
+    }),
+    createLayer({
+      id: 'cross-percent',
+      group: 'Split Pressure',
+      label: 'Cross-traffic percent',
+      description: 'Cross traffic as a percentage of total corridor demand.',
+      preview: 'dashed-line',
+      color: chartColors.percent,
+      seriesNames: ['Cross-traffic percent'],
+    }),
+    createLayer({
+      id: 'split-review-threshold',
+      group: 'Split Pressure',
+      label: splitReviewName,
+      description: 'Cross-traffic split-review percentage threshold.',
+      preview: 'dashed-line',
+      color: chartColors.splitReview,
+      seriesNames: [splitReviewName],
+    }),
+    createLayer({
+      id: 'shoulder-review-threshold',
+      group: 'Split Pressure',
+      label: shoulderReviewName,
+      description: 'Cross-traffic shoulder-review percentage threshold.',
+      preview: 'dashed-line',
+      color: chartColors.shoulderReview,
+      seriesNames: [shoulderReviewName],
+    }),
+    createLayer({
+      id: 'pressure-peaks',
+      group: 'Split Pressure',
+      label: 'Pressure peaks',
+      description: 'Unnumbered volume and cross-traffic percentage peaks.',
+      preview: 'star',
+      color: chartColors.volumePeak,
+      seriesNames: ['Volume Peaks', 'Cross Traffic Percent Peaks'],
+    }),
+    createLayer({
+      id: 'signal-peaks',
+      group: 'Locations',
+      label: 'Signal peaks',
+      description: 'Numbered AM and PM signal peak locations.',
+      preview: 'circle',
+      color: chartColors.amSignalPeak,
+      seriesNames: ['AM Signal Peaks', 'PM Signal Peaks'],
+    }),
+    createLayer({
+      id: 'cross-traffic-locations',
+      group: 'Locations',
+      label: 'Cross-traffic locations',
+      description: 'Numbered cross-traffic locations by analysis period.',
+      preview: 'circle',
+      color: chartColors.middaySignalPeak,
+      seriesNames: [
+        'AM Cross Traffic Locations',
+        'Midday Cross Traffic Locations',
+        'PM Cross Traffic Locations',
+      ],
+    }),
+    createLayer({
+      id: 'movement-pressure',
+      group: 'Locations',
+      label: 'Movement pressure',
+      description: 'Numbered movement-pressure locations, shown as squares.',
+      preview: 'square',
+      color: chartColors.pmSignalPeak,
+      seriesNames: ['AM Movement Pressure', 'PM Movement Pressure'],
+    }),
+  ]
+  const defaultSelectedSeries = getTimeOfDayPresetSeriesSelection(
+    layers,
+    'recommendation'
+  )
+  const legend = option.legend as LegendComponentOption
+  option.legend = {
+    ...legend,
+    show: false,
+    selected: defaultSelectedSeries,
+  }
+  const percentSeriesNames = optionSeries
+    .filter(
+      (seriesOption) =>
+        (seriesOption as SeriesOption & { yAxisIndex?: number }).yAxisIndex ===
+        1
+    )
+    .map(getSeriesName)
+    .filter(Boolean)
+
+  return {
+    header: {
+      title: 'Corridor Time-of-Day Analysis',
+      dateRange,
+      summaryItems,
+    },
+    option,
+    layers,
+    defaultSelectedSeries,
+    percentSeriesNames,
+    detailTargets: buildDetailTargets(optionSeries, layers),
+  }
+}
+
+export const buildTimeOfDayAnalysisOption = (result: TimeOfDayResult) =>
+  buildTimeOfDayAnalysisModel(result).option
