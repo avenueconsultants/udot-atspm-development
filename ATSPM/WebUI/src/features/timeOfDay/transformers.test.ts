@@ -130,6 +130,7 @@ describe('time-of-day chart titles', () => {
     } as TimeOfDayResult)
     const series = option.series as Array<{
       name?: string
+      z?: number
       data?: Array<{ name?: string; symbol?: string }>
     }>
     const amCrossTraffic = series.find(
@@ -146,9 +147,11 @@ describe('time-of-day chart titles', () => {
     expect(amCrossTraffic?.data).toEqual([
       expect.objectContaining({ name: '1', symbol: 'circle' }),
     ])
+    expect(amCrossTraffic?.z).toBe(50)
     expect(amMovementPressure?.data).toEqual([
       expect.objectContaining({ name: '2', symbol: 'rect' }),
     ])
+    expect(amMovementPressure?.z).toBe(50)
     expect(legend.data).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: 'AM Cross Traffic Locations' }),
@@ -158,6 +161,68 @@ describe('time-of-day chart titles', () => {
     expect(legend.selected).toMatchObject({
       'AM Movement Pressure': false,
       'PM Movement Pressure': false,
+    })
+  })
+
+  test('uses star chart markers for peaks without a location', () => {
+    const planOption = buildPlanProfileOption({
+      selectedDates: [],
+      planProfile: {
+        peaks: [
+          {
+            period: 'AM',
+            series: 'Corridor',
+            minutes: 480,
+            value: 3000,
+          },
+        ],
+      },
+    } as TimeOfDayResult)
+    const pressureOption = buildSplitPressureOption({
+      selectedDates: [],
+      splitPressure: {
+        periodPeaks: [
+          {
+            period: 'AM',
+            series: 'PrimaryVolume',
+            minutes: 480,
+            value: 2500,
+          },
+          {
+            period: 'PM',
+            series: 'CrossTrafficPercent',
+            minutes: 1020,
+            value: 42,
+            valueUnits: 'percent',
+          },
+        ],
+      },
+    } as TimeOfDayResult)
+    const getPeakSeries = (
+      option: ReturnType<typeof buildPlanProfileOption>,
+      name: string
+    ) =>
+      (
+        option.series as Array<{
+          name?: string
+          symbol?: string
+          z?: number
+        }>
+      ).find((series) => series.name === name)
+
+    expect(getPeakSeries(planOption, 'AM Corridor Peak')).toMatchObject({
+      symbol: expect.stringMatching(/^path:\/\//),
+      z: 50,
+    })
+    expect(getPeakSeries(pressureOption, 'Volume Peaks')).toMatchObject({
+      symbol: expect.stringMatching(/^path:\/\//),
+      z: 50,
+    })
+    expect(
+      getPeakSeries(pressureOption, 'Cross Traffic Percent Peaks')
+    ).toMatchObject({
+      symbol: expect.stringMatching(/^path:\/\//),
+      z: 50,
     })
   })
 
@@ -381,6 +446,16 @@ describe('time-of-day chart titles', () => {
         corridorProfile: {
           points: [{ minutes: 480, averageVolume: 3000, smoothedVolume: 2900 }],
         },
+        directionalProfiles: [
+          {
+            label: 'Northbound total profile',
+            points: [{ minutes: 480, averageVolume: 1600 }],
+          },
+          {
+            label: 'Southbound total profile',
+            points: [{ minutes: 480, averageVolume: 1400 }],
+          },
+        ],
         peaks: [
           {
             period: 'AM',
@@ -455,6 +530,34 @@ describe('time-of-day chart titles', () => {
     expect(model.header.summaryItems.map((item) => item.label)).toContain(
       'AM Corridor Peak'
     )
+    expect(model.layers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'directional-profile-0',
+          label: 'Northbound total profile',
+          color: '#00897b',
+          seriesNames: ['Northbound total profile'],
+        }),
+        expect.objectContaining({
+          id: 'directional-profile-1',
+          label: 'Southbound total profile',
+          color: '#7b1fa2',
+          seriesNames: ['Southbound total profile'],
+        }),
+        expect.objectContaining({
+          id: 'split-review-threshold',
+          label: '35% split review',
+          color: '#f9a825',
+          seriesNames: ['35% split review'],
+        }),
+        expect.objectContaining({
+          id: 'shoulder-review-threshold',
+          label: '45% shoulder review',
+          color: '#c62828',
+          seriesNames: ['45% shoulder review'],
+        }),
+      ])
+    )
     expect(model.option.title).toEqual([])
     const series = model.option.series as Array<{
       type?: string
@@ -527,8 +630,13 @@ describe('time-of-day chart titles', () => {
     const existingPlanWindows = series.find(
       (seriesOption) => seriesOption.name === 'Existing plan windows'
     )
-    const scheduleGrid = (model.option.grid as Array<{ height?: number }>)[1]
-    expect(scheduleGrid.height).toBe(84)
+    const chartGrids = model.option.grid as Array<{
+      bottom?: number
+      top?: number
+      height?: number
+    }>
+    expect(chartGrids[0]).toMatchObject({ top: 89, bottom: 116 })
+    expect(chartGrids[1]).toMatchObject({ top: 12, height: 68 })
 
     const scheduleXAxis = (
       model.option.xAxis as Array<{
@@ -667,6 +775,10 @@ describe('time-of-day chart titles', () => {
     expect(existingPlanWindows?.markArea?.data).toHaveLength(2)
     expect(model.defaultSelectedSeries).toMatchObject({
       'Median Raw Volume': true,
+      'Northbound total profile': true,
+      'Southbound total profile': true,
+      '35% split review': false,
+      '45% shoulder review': false,
       'Existing plan windows': false,
       'Existing schedule rail': false,
       'Proposed plan windows': true,
@@ -711,7 +823,11 @@ describe('time-of-day chart titles', () => {
 
     expect(pressureSelection).toMatchObject({
       'Median Raw Volume': false,
+      'Northbound total profile': false,
+      'Southbound total profile': false,
       'Cross-traffic percent': true,
+      '35% split review': true,
+      '45% shoulder review': true,
       'AM Cross Traffic Locations': true,
       'AM Movement Pressure': false,
       'Existing schedule rail': true,

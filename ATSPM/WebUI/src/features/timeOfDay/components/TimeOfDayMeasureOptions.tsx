@@ -4,7 +4,13 @@ import {
   timeOfDayMeasureTypeId,
 } from '@/features/timeOfDay/measureDefaults'
 import type { TimeOfDayTuningOptionKey } from '@/features/timeOfDay/types'
-import { Alert, Box, TextField, Typography } from '@mui/material'
+import {
+  Alert,
+  Box,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
 
 interface TimeOfDayMeasureOptionsProps {
   chartDefaults: TimeOfDayMeasureDefaults
@@ -17,44 +23,51 @@ type TimeOfDayMeasureOptionField = {
   label: string
   type?: 'number' | 'time'
   inputProps?: Record<string, string | number>
+  displayAsPercent?: boolean
 }
 
 const thresholdFields: TimeOfDayMeasureOptionField[] = [
   {
     option: 'amEntryPctOfPeak',
-    label: 'AM start threshold as share of AM peak',
+    label: 'AM start threshold as percent of AM peak',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'amExitPctOfPeak',
-    label: 'AM end threshold as share of AM peak',
+    label: 'AM end threshold as percent of AM peak',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'pmEntryPctOfPeak',
-    label: 'PM start threshold as share of PM peak',
+    label: 'PM start threshold as percent of PM peak',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'pmExitPctOfPeak',
-    label: 'PM end threshold as share of PM peak',
+    label: 'PM end threshold as percent of PM peak',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'freeEntryPctOfDailyPeak',
-    label: 'FREE threshold as share of daily peak',
+    label: 'FREE threshold as percent of daily peak',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'freeEntryPctOfDynamicRange',
-    label: 'FREE threshold above baseline share',
+    label: 'FREE threshold above baseline as percent of dynamic range',
     type: 'number',
-    inputProps: { min: 0, max: 1, step: 0.01 },
+    inputProps: { min: 0, max: 100, step: 1 },
+    displayAsPercent: true,
   },
   {
     option: 'entrySustainedBins',
@@ -119,12 +132,34 @@ const optionValueToString = (value: Default['value'] | undefined) => {
   return String(value)
 }
 
+const fractionToPercentString = (value: string) => {
+  if (value === '') return value
+
+  const fraction = Number(value)
+  return Number.isFinite(fraction)
+    ? String(Number((fraction * 100).toFixed(10)))
+    : value
+}
+
+const percentToFractionString = (value: string) => {
+  if (value === '') return value
+
+  const percent = Number(value)
+  return Number.isFinite(percent)
+    ? String(Number((percent / 100).toFixed(10)))
+    : value
+}
+
 export const TimeOfDayMeasureOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
 }: TimeOfDayMeasureOptionsProps) => {
   const renderField = (field: TimeOfDayMeasureOptionField) => {
     const defaultOption = chartDefaults[field.option]
+    const serializedValue = optionValueToString(defaultOption?.value)
+    const displayValue = field.displayAsPercent
+      ? fractionToPercentString(serializedValue)
+      : serializedValue
 
     return (
       <TextField
@@ -132,17 +167,26 @@ export const TimeOfDayMeasureOptions = ({
         size="small"
         type={field.type ?? 'number'}
         label={field.label}
-        value={optionValueToString(defaultOption?.value)}
+        value={displayValue}
         onChange={(event) => {
           if (!defaultOption) return
 
           handleChartOptionsUpdate({
             id: defaultOption.id,
             option: defaultOption.option,
-            value: event.target.value,
+            value: field.displayAsPercent
+              ? percentToFractionString(event.target.value)
+              : event.target.value,
           })
         }}
         inputProps={field.inputProps}
+        InputProps={
+          field.displayAsPercent
+            ? {
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }
+            : undefined
+        }
         InputLabelProps={field.type === 'time' ? { shrink: true } : undefined}
         disabled={!defaultOption}
       />

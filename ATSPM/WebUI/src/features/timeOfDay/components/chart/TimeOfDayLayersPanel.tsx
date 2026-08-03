@@ -126,6 +126,17 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
             opacity: 0.18,
           }}
         />
+      ) : layer.preview === 'star' ? (
+        <Box
+          sx={{
+            width: 18,
+            height: 18,
+            bgcolor: layer.color,
+            opacity: 0.82,
+            clipPath:
+              'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%)',
+          }}
+        />
       ) : layer.preview === 'circle' || layer.preview === 'square' ? (
         <Box
           sx={{

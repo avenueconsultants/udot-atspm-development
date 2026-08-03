@@ -153,9 +153,12 @@ export default function TimeOfDayAdvancedSidebar({
   const renderTuningSlider = (
     field: TuningFieldDefinition,
     maximum: number,
-    valueSuffix = ''
+    valueSuffix = '',
+    displayMultiplier = 1
   ) => {
-    const value = Number(options[field.option])
+    const value = Number(
+      (Number(options[field.option]) * displayMultiplier).toFixed(10)
+    )
 
     return (
       <Box key={field.option}>
@@ -190,7 +193,9 @@ export default function TimeOfDayAdvancedSidebar({
           }
           onChange={(_, sliderValue) =>
             updateOptions({
-              [field.option]: Number(sliderValue),
+              [field.option]: Number(
+                (Number(sliderValue) / displayMultiplier).toFixed(10)
+              ),
             } as Partial<TimeOfDayFormState>)
           }
           aria-label={field.label}
@@ -292,7 +297,7 @@ export default function TimeOfDayAdvancedSidebar({
               <>
                 {scheduleThresholdFields
                   .slice(0, 4)
-                  .map((field) => renderTuningSlider(field, 1))}
+                  .map((field) => renderTuningSlider(field, 100, '%', 100))}
                 {renderCompactTuningField(scheduleThresholdFields[6])}
               </>
             )}
@@ -301,7 +306,7 @@ export default function TimeOfDayAdvancedSidebar({
               <>
                 {scheduleThresholdFields
                   .slice(4, 6)
-                  .map((field) => renderTuningSlider(field, 1))}
+                  .map((field) => renderTuningSlider(field, 100, '%', 100))}
                 {renderCompactTuningField(scheduleThresholdFields[7])}
                 {renderCompactTuningField(scheduleThresholdFields[8])}
               </>

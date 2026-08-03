@@ -1,5 +1,10 @@
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
-import MultiDaySelect from '@/features/tspReport/components/DateCalendar'
+import MultiDayCalendar from '@/components/date-selection/MultiDayCalendar'
+import {
+  getDayAvailabilityCalendarRange,
+  useDayAvailability,
+  type DayAvailabilityDataSource,
+} from '@/features/dataAvailability/useDayAvailability'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import {
   Box,
@@ -11,11 +16,23 @@ import {
   Typography,
 } from '@mui/material'
 import { differenceInCalendarDays, format, isSameDay } from 'date-fns'
+import { useEffect, useMemo, useState } from 'react'
 import type { TimeOfDayFormState } from '../types'
 
 type SelectedDateRange = {
   start: Date
   end: Date
+}
+
+const availabilitySourceByDataSource: Record<
+  TimeOfDayFormState['dataSource'],
+  DayAvailabilityDataSource
+> = {
+  IndianaEvents: { dataCategory: 'raw', dataType: 'IndianaEvent' },
+  Aggregated: {
+    dataCategory: 'aggregation',
+    dataType: 'DetectorEventCountAggregation',
+  },
 }
 
 const buildSelectedDateRanges = (dates: Date[]): SelectedDateRange[] =>
@@ -56,8 +73,38 @@ export default function TimeOfDayDatesOptions({
   options,
   onChange,
 }: TimeOfDayDatesOptionsProps) {
+  const [calendarRange, setCalendarRange] = useState(() =>
+    getDayAvailabilityCalendarRange(options.selectedDates[0] ?? new Date())
+  )
+  const locationIdentifiers = useMemo(
+    () =>
+      options.selectedLocations
+        .map((location) => location.locationIdentifier?.trim())
+        .filter((identifier): identifier is string => Boolean(identifier)),
+    [options.selectedLocations]
+  )
+  const dayAvailability = useDayAvailability(
+    locationIdentifiers,
+    calendarRange.start,
+    calendarRange.end,
+    undefined,
+    availabilitySourceByDataSource[options.dataSource]
+  )
+  const firstSelectedDateTimestamp = options.selectedDates[0]?.getTime()
+
+  useEffect(() => {
+    if (firstSelectedDateTimestamp !== undefined) {
+      setCalendarRange(
+        getDayAvailabilityCalendarRange(new Date(firstSelectedDateTimestamp))
+      )
+    }
+  }, [firstSelectedDateTimestamp])
+
   const updateDates = (selectedDates: Date[]) =>
     onChange({ ...options, selectedDates })
+
+  const handleCalendarDateChange = (date: Date) =>
+    setCalendarRange(getDayAvailabilityCalendarRange(date))
 
   const sortedSelectedDates = [...options.selectedDates].sort(
     (a, b) => a.getTime() - b.getTime()
@@ -112,9 +159,13 @@ export default function TimeOfDayDatesOptions({
         }}
       >
         <Box sx={{ mx: -3, display: 'flex', justifyContent: 'center' }}>
-          <MultiDaySelect
+          <MultiDayCalendar
             selectedDays={options.selectedDates}
             onSelectedDaysChange={updateDates}
+            dayAvailability={
+              locationIdentifiers.length ? dayAvailability : undefined
+            }
+            onMonthChange={handleCalendarDateChange}
           />
         </Box>
         <Box

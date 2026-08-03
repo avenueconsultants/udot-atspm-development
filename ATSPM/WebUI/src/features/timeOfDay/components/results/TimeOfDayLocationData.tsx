@@ -31,6 +31,12 @@ const formatPercent = (value?: number | null) => {
   return `${formatNumber(value, 1)}%`
 }
 
+const formatRatio = (value?: number | null) => {
+  if (value === undefined || value === null || Number.isNaN(value)) return '-'
+
+  return (value / 100).toFixed(2)
+}
+
 const formatLocation = (
   identifier?: string | null,
   description?: string | null
@@ -121,7 +127,7 @@ export default function TimeOfDayLocationData({
                   Hourly Rate
                 </TableCell>
                 <TableCell align="right" scope="col">
-                  Peak
+                  V/C Ratio
                 </TableCell>
                 <TableCell align="right" scope="col">
                   AM Peak
@@ -174,7 +180,7 @@ export default function TimeOfDayLocationData({
                     {formatNumber(location.summary?.peakHourlyRate)}
                   </TableCell>
                   <TableCell align="right" sx={numericReportTableCellSx}>
-                    {formatPercent(location.summary?.peakOccupancyPercent)}
+                    {formatRatio(location.summary?.peakOccupancyPercent)}
                   </TableCell>
                   <TableCell align="right" sx={numericReportTableCellSx}>
                     {formatPercent(location.summary?.amPeakOccupancyPercent)}

@@ -87,6 +87,7 @@ const result = {
     reviewText: 'Review the AM split at location 7191.',
     peakCrossTrafficPercent: 27.3,
     peakCrossTrafficPercentTime: '08:00',
+    thresholdPercentByName: { SplitReview: 25, ShoulderReview: 45 },
     primaryProfile: {
       points: [{ minutes: 480, averageVolume: 2400 }],
     },
@@ -143,23 +144,19 @@ describe('TimeOfDayResults unified workspace', () => {
     ).toBeTruthy()
     expect(screen.getByText(/Wed, April 15, 2026/)).toBeTruthy()
     const summary = screen.getByRole('region', { name: 'Summary' })
-    expect(within(summary).getByText('AM Corridor Peak')).toBeTruthy()
-    expect(within(summary).getByText('PM Corridor Peak')).toBeTruthy()
-    expect(within(summary).getByText('Peak Cross Traffic')).toBeTruthy()
-    expect(within(summary).getByText('Recommendation')).toBeTruthy()
-    expect(
-      within(summary).getByText('Use the proposed corridor schedule.')
-    ).toBeTruthy()
-    expect(within(summary).getByText('Pressure Summary')).toBeTruthy()
-    expect(
-      within(summary).getByText(
-        'Cross traffic pressure is highest in the AM period.'
-      )
-    ).toBeTruthy()
-    expect(within(summary).getByText('Review')).toBeTruthy()
-    expect(
-      within(summary).getByText('Review the AM split at location 7191.')
-    ).toBeTruthy()
+    expect(within(summary).getByText('Measured Peaks')).toBeTruthy()
+    expect(within(summary).getByText('AM corridor peak')).toBeTruthy()
+    expect(within(summary).getByText('PM corridor peak')).toBeTruthy()
+    expect(within(summary).getByText('Peak cross traffic')).toBeTruthy()
+    expect(within(summary).getByText('Proposed Plan Schedule')).toBeTruthy()
+    expect(within(summary).getByText('00:00–07:00')).toBeTruthy()
+    expect(within(summary).getByText('07:00–09:00')).toBeTruthy()
+    expect(within(summary).getByText('Free')).toBeTruthy()
+    expect(within(summary).getByText('Plan 1')).toBeTruthy()
+    expect(within(summary).getByText('1 review item')).toBeTruthy()
+    expect(summary.textContent).toContain(
+      'Review the AM split at location 7191.'
+    )
     expect(screen.getByRole('tab', { name: 'Legend' })).toBeTruthy()
     expect(screen.queryByRole('tab', { name: 'Layers' })).toBeNull()
 
@@ -172,6 +169,26 @@ describe('TimeOfDayResults unified workspace', () => {
         name: 'Corridor time-of-day analysis chart',
       })
     ).toBeNull()
+  })
+
+  test('presents below-threshold review text as status rather than a warning', () => {
+    render(
+      <TimeOfDayResults
+        result={{
+          ...result,
+          splitPressure: {
+            ...result.splitPressure,
+            reviewText:
+              'Cross traffic peaks at 27.3% at 08:00; primary street remains dominant.',
+            thresholdPercentByName: { SplitReview: 35, ShoulderReview: 45 },
+          },
+        }}
+      />
+    )
+
+    const summary = screen.getByRole('region', { name: 'Summary' })
+    expect(within(summary).getByText('Review status')).toBeTruthy()
+    expect(within(summary).queryByText('1 review item')).toBeNull()
   })
 
   test('switches analysis modes while independently controlling schedule views', () => {

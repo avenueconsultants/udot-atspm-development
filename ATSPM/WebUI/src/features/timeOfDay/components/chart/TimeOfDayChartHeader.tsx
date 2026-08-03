@@ -56,6 +56,8 @@ export default function TimeOfDayChartHeader({
           xs: '1fr',
           md: `minmax(0, 1fr) auto ${sidebarWidth}px`,
         },
+        width: { md: 'calc(100% - 2px)' },
+        ml: { md: '1px' },
         alignItems: 'center',
         bgcolor: 'common.white',
       }}
@@ -99,15 +101,14 @@ export default function TimeOfDayChartHeader({
       </Box>
       <Box
         sx={{
-          mr: 1.5,
-          mt: 1.25,
-          alignSelf: 'start',
+          alignSelf: 'center',
           justifySelf: { xs: 'start', md: 'end' },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
           flexWrap: 'wrap',
           gap: 0.75,
+          mr: 1.5,
         }}
       >
         <ButtonGroup
@@ -143,7 +144,8 @@ export default function TimeOfDayChartHeader({
           alignItems: 'flex-end',
           borderLeft: { xs: 0, md: '1px solid' },
           borderTop: { xs: '1px solid', md: 0 },
-          borderColor: 'divider',
+          borderLeftColor: { md: 'divider' },
+          borderTopColor: { xs: 'divider' },
         }}
       >
         <Tabs

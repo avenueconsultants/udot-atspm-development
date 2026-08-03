@@ -95,17 +95,7 @@ export default function TimeOfDayDirectionSelector({
   onChange,
 }: TimeOfDayDirectionSelectorProps) {
   const [usePeriodSpecificDirections, setUsePeriodSpecificDirections] =
-    useState(
-      () =>
-        !areDirectionSetsEqual(
-          options.allDayPrimaryDirections,
-          options.amPrimaryDirections
-        ) ||
-        !areDirectionSetsEqual(
-          options.allDayPrimaryDirections,
-          options.pmPrimaryDirections
-        )
-    )
+    useState(true)
 
   useEffect(() => {
     const hasPeriodSpecificDirections =

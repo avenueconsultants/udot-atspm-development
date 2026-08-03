@@ -134,7 +134,7 @@ export default function TimeOfDayChartWorkspace({
     () => getSidebarLayers(model.layers, [activeMode]),
     [activeMode, model.layers]
   )
-  const sidebarWidth = sidebarTab === 'details' ? 600 : 360
+  const sidebarWidth = sidebarTab === 'details' ? 650 : 360
   const selectedDetail = selectedDetailKey
     ? model.detailTargets[selectedDetailKey]
     : undefined
@@ -183,7 +183,8 @@ export default function TimeOfDayChartWorkspace({
             height: { xs: 'auto', md: 840 },
             borderLeft: { xs: 0, md: '1px solid' },
             borderTop: { xs: '1px solid', md: 0 },
-            borderColor: 'divider',
+            borderLeftColor: { md: 'divider' },
+            borderTopColor: { xs: 'divider' },
             display: 'flex',
             flexDirection: 'column',
             bgcolor: 'common.white',

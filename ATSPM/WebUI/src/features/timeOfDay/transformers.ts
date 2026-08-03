@@ -90,11 +90,14 @@ export type TimeOfDayChartLayerId =
   | 'raw-volume'
   | 'smoothed-volume'
   | 'directional-profiles'
+  | `directional-profile-${number}`
   | 'corridor-peaks'
   | 'primary-volume'
   | 'cross-volume'
   | 'cross-percent'
   | 'review-thresholds'
+  | 'split-review-threshold'
+  | 'shoulder-review-threshold'
   | 'pressure-peaks'
   | 'signal-peaks'
   | 'cross-traffic-locations'
@@ -106,6 +109,7 @@ export type TimeOfDayChartLayerPreview =
   | 'solid-line'
   | 'dashed-line'
   | 'circle'
+  | 'star'
   | 'square'
 
 export interface TimeOfDayChartLayer {
@@ -172,6 +176,10 @@ const directionalColors = [
   '#2e7d32',
   '#ad1457',
 ]
+
+const StarSeriesSymbol =
+  'path://M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21Z'
+const peakMarkerZ = 50
 
 const numberFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
@@ -801,17 +809,19 @@ const buildPeakScatterSeries = (
   name: string,
   color: string,
   yAxisIndex = 0,
-  symbolSize = 9
+  symbolSize = 13
 ): SeriesOption => ({
   name,
   type: 'scatter',
   yAxisIndex,
+  z: peakMarkerZ,
   data:
     peaks?.map((peak) => [
       peak.minutes ?? 0,
       peak.value ?? 0,
       peak.label ?? peak.locationIdentifier ?? peak.period ?? name,
     ]) ?? [],
+  symbol: StarSeriesSymbol,
   symbolSize,
   itemStyle: {
     color,
@@ -833,7 +843,7 @@ const buildNumberedSignalPeakSeries = (
   name,
   type: 'scatter',
   yAxisIndex,
-  z: 20,
+  z: peakMarkerZ,
   data: peaks.map((peak) => ({
     name: String(peak.badgeNumber),
     value: [
@@ -951,14 +961,19 @@ const buildBaseOption = ({
     scheduleYAxisIndex
   )
   const hasScheduleRails = scheduleSeries.length > 0
-  const plotTop = externalHeader ? (hasScheduleRails ? 117 : 24) : top
-  const scheduleTop = externalHeader ? 24 : 108
-  const scheduleGridHeight = externalHeader ? 84 : 52
+  const scheduleTop = externalHeader ? 12 : 108
+  const scheduleGridHeight = externalHeader ? 68 : 52
+  const scheduleGridGap = 9
+  const plotTop = externalHeader
+    ? hasScheduleRails
+      ? scheduleTop + scheduleGridHeight + scheduleGridGap
+      : scheduleTop
+    : top
   const grid = createGrid({
     left: 90,
     right,
     top: plotTop,
-    bottom: 110,
+    bottom: externalHeader ? 116 : 110,
     borderColor: '#d0d5dd',
     borderWidth: 1,
   })
@@ -1200,8 +1215,8 @@ const getPlanProfileLegendData = (
       directionalColors[index % directionalColors.length]
     )
   ),
-  createLegendItem('AM Corridor Peak', 'circle', chartColors.amPeak),
-  createLegendItem('PM Corridor Peak', 'circle', chartColors.pmPeak),
+  createLegendItem('AM Corridor Peak', StarSeriesSymbol, chartColors.amPeak),
+  createLegendItem('PM Corridor Peak', StarSeriesSymbol, chartColors.pmPeak),
   createLegendItem('AM Signal Peaks', 'circle', chartColors.amSignalPeak),
   createLegendItem('PM Signal Peaks', 'circle', chartColors.pmSignalPeak),
 ]
@@ -1292,14 +1307,14 @@ export const buildPlanProfileOption = (
     'AM Corridor Peak',
     chartColors.amPeak,
     0,
-    11
+    15
   )
   const pmPeakSeries = buildPeakScatterSeries(
     pmCorridorPeaks,
     'PM Corridor Peak',
     chartColors.pmPeak,
     0,
-    11
+    15
   )
   const amSignalPeakSeries = buildNumberedSignalPeakSeries(
     amSignalPeaks,
@@ -2131,6 +2146,24 @@ const presetLayerIds: Record<TimeOfDayChartPreset, TimeOfDayChartLayerId[]> = {
   ],
 }
 
+const reviewThresholdLayerIds = new Set<TimeOfDayChartLayerId>([
+  'split-review-threshold',
+  'shoulder-review-threshold',
+])
+
+const getPresetLayerId = (
+  layerId: TimeOfDayChartLayerId
+): TimeOfDayChartLayerId => {
+  if (layerId.startsWith('directional-profile-')) {
+    return 'directional-profiles'
+  }
+  if (reviewThresholdLayerIds.has(layerId)) {
+    return 'review-thresholds'
+  }
+
+  return layerId
+}
+
 export const getTimeOfDayPresetSeriesSelection = (
   layers: TimeOfDayChartLayer[],
   preset: TimeOfDayChartPreset,
@@ -2155,7 +2188,7 @@ export const getTimeOfDayPresetSeriesSelection = (
     const visible =
       layer.group === 'Schedules'
         ? undefined
-        : layer.available && visibleLayerIds.has(layer.id)
+        : layer.available && visibleLayerIds.has(getPresetLayerId(layer.id))
 
     layer.seriesNames.forEach((seriesName) => {
       nextSelection[seriesName] =
@@ -2383,7 +2416,8 @@ export const buildTimeOfDayAnalysisModel = (
   ): TimeOfDayChartLayer => ({
     ...layer,
     available:
-      (layer.id !== 'review-thresholds' || hasSplitPressureData(result)) &&
+      (!reviewThresholdLayerIds.has(layer.id) ||
+        hasSplitPressureData(result)) &&
       layer.seriesNames.some((seriesName) =>
         seriesHasData(seriesByName.get(seriesName))
       ),
@@ -2437,22 +2471,23 @@ export const buildTimeOfDayAnalysisModel = (
       color: chartColors.smooth,
       seriesNames: ['Smoothed For Breakpoints'],
     }),
-    createLayer({
-      id: 'directional-profiles',
-      group: 'Corridor Demand',
-      label: 'Directional profiles',
-      description:
-        'Representative volume profiles for each corridor direction.',
-      preview: 'dashed-line',
-      color: directionalColors[0],
-      seriesNames: directionalSeriesNames,
-    }),
+    ...directionalSeriesNames.map((seriesName, index) =>
+      createLayer({
+        id: `directional-profile-${index}`,
+        group: 'Corridor Demand',
+        label: seriesName,
+        description: 'Representative directional volume profile.',
+        preview: 'dashed-line',
+        color: directionalColors[index % directionalColors.length],
+        seriesNames: [seriesName],
+      })
+    ),
     createLayer({
       id: 'corridor-peaks',
       group: 'Corridor Demand',
       label: 'Corridor peaks',
       description: 'AM and PM corridor peak markers.',
-      preview: 'circle',
+      preview: 'star',
       color: chartColors.amPeak,
       seriesNames: ['AM Corridor Peak', 'PM Corridor Peak'],
     }),
@@ -2484,20 +2519,29 @@ export const buildTimeOfDayAnalysisModel = (
       seriesNames: ['Cross-traffic percent'],
     }),
     createLayer({
-      id: 'review-thresholds',
+      id: 'split-review-threshold',
       group: 'Split Pressure',
-      label: 'Review thresholds',
-      description: 'Split and shoulder review percentage thresholds.',
+      label: splitReviewName,
+      description: 'Cross-traffic split-review percentage threshold.',
       preview: 'dashed-line',
       color: chartColors.splitReview,
-      seriesNames: [splitReviewName, shoulderReviewName],
+      seriesNames: [splitReviewName],
+    }),
+    createLayer({
+      id: 'shoulder-review-threshold',
+      group: 'Split Pressure',
+      label: shoulderReviewName,
+      description: 'Cross-traffic shoulder-review percentage threshold.',
+      preview: 'dashed-line',
+      color: chartColors.shoulderReview,
+      seriesNames: [shoulderReviewName],
     }),
     createLayer({
       id: 'pressure-peaks',
       group: 'Split Pressure',
       label: 'Pressure peaks',
       description: 'Unnumbered volume and cross-traffic percentage peaks.',
-      preview: 'circle',
+      preview: 'star',
       color: chartColors.volumePeak,
       seriesNames: ['Volume Peaks', 'Cross Traffic Percent Peaks'],
     }),
