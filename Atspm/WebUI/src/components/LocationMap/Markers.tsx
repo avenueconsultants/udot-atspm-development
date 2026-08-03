@@ -31,6 +31,14 @@ type MarkerItemProps = {
   areaNames: string[]
 }
 
+type MarkerDisplayDetails = {
+  regionName: string
+  jurisdictionName: string
+  areaNames: string[]
+}
+
+const POPUP_OFFSET: [number, number] = [0, -30]
+
 const MarkerItem = memo(
   ({
     marker,
@@ -44,6 +52,11 @@ const MarkerItem = memo(
     jurisdictionName,
     areaNames,
   }: MarkerItemProps) => {
+    const position = useMemo<[number, number]>(
+      () => [marker.latitude, marker.longitude],
+      [marker.latitude, marker.longitude]
+    )
+
     const eventHandlers = useMemo(
       () => ({
         click: () => onSelect(marker),
@@ -54,12 +67,11 @@ const MarkerItem = memo(
 
     return (
       <Marker
-        key={marker.id}
-        position={[marker.latitude, marker.longitude]}
+        position={position}
         icon={icon}
         eventHandlers={eventHandlers}
       >
-        <Popup offset={[0, -30]} closeButton={false} autoPan>
+        <Popup offset={POPUP_OFFSET} closeButton={false} autoPan>
           <LocationPopup
             marker={marker}
             regionName={regionName}
@@ -86,6 +98,9 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
     Record<string, StreetViewAvailability | undefined>
   >({})
 
+  const streetViewStatusByIdRef = useRef<
+    Record<string, StreetViewAvailability | undefined>
+  >({})
   const streetViewInFlightRef = useRef<Record<string, boolean>>({})
 
   const regionNameById = useMemo(() => {
@@ -111,6 +126,28 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
     }
     return map
   }, [areasData])
+
+  const markerDisplayDetailsById = useMemo(() => {
+    const details: Record<string, MarkerDisplayDetails> = {}
+
+    for (const marker of locations ?? []) {
+      details[marker.id] = {
+        regionName:
+          marker.regionId != null
+            ? regionNameById[String(marker.regionId)]
+            : '',
+        jurisdictionName:
+          marker.jurisdictionId != null
+            ? jurisdictionNameById[String(marker.jurisdictionId)]
+            : '',
+        areaNames: (marker.areas ?? [])
+          .map((id) => areaNameById[String(id)])
+          .filter(Boolean),
+      }
+    }
+
+    return details
+  }, [areaNameById, jurisdictionNameById, locations, regionNameById])
 
   useEffect(() => {
     if (!locations) return
@@ -156,16 +193,24 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
     [setLocation]
   )
 
+  const updateStreetViewStatus = useCallback(
+    (id: string, status: StreetViewAvailability) => {
+      streetViewStatusByIdRef.current[id] = status
+      setStreetViewStatusById((prev) =>
+        prev[id] === status ? prev : { ...prev, [id]: status }
+      )
+    },
+    []
+  )
+
   const checkStreetView = useCallback(
     async (id: string, lat: number, lng: number) => {
-      const existing = streetViewStatusById[id]
+      const existing = streetViewStatusByIdRef.current[id]
       if (existing === 'available' || existing === 'unavailable') return
       if (streetViewInFlightRef.current[id]) return
 
       streetViewInFlightRef.current[id] = true
-
-      // Optional: if you hate the extra “unknown” re-render, remove this line.
-      setStreetViewStatusById((prev) => ({ ...prev, [id]: 'unknown' }))
+      updateStreetViewStatus(id, 'unknown')
 
       try {
         const r = await fetch(
@@ -174,17 +219,17 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
           )}&lng=${encodeURIComponent(lng)}`
         )
         const data = (await r.json()) as { available: boolean }
-        setStreetViewStatusById((prev) => ({
-          ...prev,
-          [id]: data.available ? 'available' : 'unavailable',
-        }))
+        updateStreetViewStatus(
+          id,
+          data.available ? 'available' : 'unavailable'
+        )
       } catch {
-        setStreetViewStatusById((prev) => ({ ...prev, [id]: 'unavailable' }))
+        updateStreetViewStatus(id, 'unavailable')
       } finally {
         streetViewInFlightRef.current[id] = false
       }
     },
-    [streetViewStatusById]
+    [updateStreetViewStatus]
   )
 
   const handlePopupOpen = useCallback(
@@ -204,15 +249,7 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
 
         const streetViewStatus = streetViewStatusById[marker.id]
 
-        const regionName =
-          marker.regionId != null ? regionNameById[String(marker.regionId)] : ''
-        const jurisdictionName =
-          marker.jurisdictionId != null
-            ? jurisdictionNameById[String(marker.jurisdictionId)]
-            : ''
-        const areaNames = (marker.areas ?? [])
-          .map((id) => areaNameById[String(id)])
-          .filter(Boolean)
+        const displayDetails = markerDisplayDetailsById[marker.id]
 
         return (
           <MarkerItem
@@ -224,9 +261,9 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
             onPopupOpen={handlePopupOpen}
             streetViewUrl={streetViewUrl}
             googleMapsUrl={googleMapsUrl}
-            regionName={regionName}
-            jurisdictionName={jurisdictionName}
-            areaNames={areaNames}
+            regionName={displayDetails.regionName}
+            jurisdictionName={displayDetails.jurisdictionName}
+            areaNames={displayDetails.areaNames}
           />
         )
       })}
