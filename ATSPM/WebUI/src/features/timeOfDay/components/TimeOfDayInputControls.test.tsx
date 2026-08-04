@@ -98,9 +98,16 @@ describe('time-of-day inputs', () => {
         name: 'Schedule threshold preset',
       }).textContent
     ).toBe('Suburban Mixed-Use')
+    expect(
+      screen.getByText(/volume levels that start and end AM\/PM plans/)
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/falling evening volume returns the schedule to FREE/)
+    ).toBeTruthy()
+    expect(screen.getByText(/latest time each peak plan can end/)).toBeTruthy()
 
     const amStart = screen.getByRole('slider', {
-      name: 'AM start — share of AM peak',
+      name: 'AM start threshold',
     })
     expect(amStart.getAttribute('aria-valuenow')).toBe('55')
     expect(screen.getAllByText('55%').length).toBeGreaterThan(0)
