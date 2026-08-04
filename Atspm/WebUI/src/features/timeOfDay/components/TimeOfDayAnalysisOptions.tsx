@@ -3,6 +3,7 @@ import { useSidebarStore } from '@/stores/sidebar'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import {
   Box,
+  Button,
   Divider,
   ListItemButton,
   Paper,
@@ -12,26 +13,29 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
+import type { TimeOfDaySchedulePreset } from '../measureDefaults'
 import type { TimeOfDayDataSourceOption, TimeOfDayFormState } from '../types'
 import { timeOfDayDataSourceLabels } from '../types'
 import TimeOfDayAdvancedSidebar, {
   type AnalysisSidebar,
 } from './TimeOfDayAdvancedSidebar'
 import TimeOfDayDirectionSelector from './TimeOfDayDirectionSelector'
+import TimeOfDaySchedulePresetSelect from './TimeOfDaySchedulePresetSelect'
 
 interface TimeOfDayAnalysisOptionsProps {
   options: TimeOfDayFormState
   onChange: (options: TimeOfDayFormState) => void
+  schedulePresets?: TimeOfDaySchedulePreset[]
 }
 
 const advancedSettings = [
-  { sidebar: 'schedule', label: 'Schedule Thresholds' },
   { sidebar: 'occupancy', label: 'Occupancy and Review' },
 ] satisfies { sidebar: AnalysisSidebar; label: string }[]
 
 export default function TimeOfDayAnalysisOptions({
   options,
   onChange,
+  schedulePresets = [],
 }: TimeOfDayAnalysisOptionsProps) {
   const { openRightSidebar, closeRightSidebar } = useSidebarStore()
   const [activeSidebar, setActiveSidebar] =
@@ -110,6 +114,34 @@ export default function TimeOfDayAnalysisOptions({
               />
             </Box>
 
+            <Box component={'section'}>
+              <Divider sx={{ mb: 1.5 }}>
+                <Typography variant={'caption'}>Schedule Thresholds</Typography>
+              </Divider>
+              <Stack direction="row" spacing={1} alignItems="flex-start">
+                <TimeOfDaySchedulePresetSelect
+                  options={options}
+                  onChange={onChange}
+                  presets={schedulePresets}
+                />
+                <Button
+                  variant="outlined"
+                  endIcon={<ChevronRightIcon />}
+                  onClick={() => openAnalysisSidebar('schedule')}
+                  aria-label="Customize schedule thresholds"
+                  sx={{
+                    height: 40,
+                    minWidth: 88,
+                    px: 1.5,
+                    textTransform: 'none',
+                    fontWeight: 600,
+                  }}
+                >
+                  Customize
+                </Button>
+              </Stack>
+            </Box>
+
             <Box component="section">
               <Divider sx={{ mb: 1.5 }}>
                 <Typography variant="caption">Advanced Settings</Typography>
@@ -145,6 +177,7 @@ export default function TimeOfDayAnalysisOptions({
         activeSidebar={activeSidebar}
         options={options}
         onChange={onChange}
+        schedulePresets={schedulePresets}
       />
     </>
   )

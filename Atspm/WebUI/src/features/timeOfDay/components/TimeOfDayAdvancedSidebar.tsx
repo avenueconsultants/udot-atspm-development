@@ -4,7 +4,9 @@ import { Box, Slider, Stack, TextField, Typography } from '@mui/material'
 import { TimePicker } from '@mui/x-date-pickers'
 import { format } from 'date-fns'
 import type { ChangeEvent, ReactNode } from 'react'
+import type { TimeOfDaySchedulePreset } from '../measureDefaults'
 import type { TimeOfDayFormState, TimeOfDayTuningOptionKey } from '../types'
+import TimeOfDaySchedulePresetSelect from './TimeOfDaySchedulePresetSelect'
 
 export type AnalysisSidebar = 'schedule' | 'occupancy'
 
@@ -113,12 +115,14 @@ interface TimeOfDayAdvancedSidebarProps {
   activeSidebar: AnalysisSidebar
   options: TimeOfDayFormState
   onChange: (options: TimeOfDayFormState) => void
+  schedulePresets?: TimeOfDaySchedulePreset[]
 }
 
 export default function TimeOfDayAdvancedSidebar({
   activeSidebar,
   options,
   onChange,
+  schedulePresets = [],
 }: TimeOfDayAdvancedSidebarProps) {
   const updateOptions = (patch: Partial<TimeOfDayFormState>) =>
     onChange({ ...options, ...patch })
@@ -292,6 +296,11 @@ export default function TimeOfDayAdvancedSidebar({
       >
         {activeSidebar === 'schedule' ? (
           <Stack spacing={2}>
+            <TimeOfDaySchedulePresetSelect
+              options={options}
+              onChange={onChange}
+              presets={schedulePresets}
+            />
             {renderSidebarSection(
               'AM / PM Transition Thresholds',
               <>
