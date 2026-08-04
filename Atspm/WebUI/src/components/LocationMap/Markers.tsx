@@ -9,9 +9,10 @@ import {
 } from '@/api/config'
 import { generatePin } from '@/features/locations/utils'
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Marker, Popup } from 'react-leaflet'
+import { Marker, Pane, Popup, Tooltip } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import LocationPopup, { type StreetViewAvailability } from './LocationPopup'
+import styles from './Markers.module.css'
 
 type MarkersProps = {
   locations: Location[] | undefined
@@ -38,6 +39,8 @@ type MarkerDisplayDetails = {
 }
 
 const POPUP_OFFSET: [number, number] = [0, -30]
+const LOCATION_LABEL_PANE = 'location-labels'
+const LOCATION_LABEL_PANE_STYLE = { zIndex: 550 }
 
 const MarkerItem = memo(
   ({
@@ -56,6 +59,12 @@ const MarkerItem = memo(
       () => [marker.latitude, marker.longitude],
       [marker.latitude, marker.longitude]
     )
+    const locationTypeLabelClass =
+      marker.locationTypeId === 1
+        ? styles.intersectionLocationLabel
+        : marker.locationTypeId === 2
+          ? styles.rampMeterLocationLabel
+          : styles.defaultLocationLabel
 
     const eventHandlers = useMemo(
       () => ({
@@ -71,6 +80,16 @@ const MarkerItem = memo(
         icon={icon}
         eventHandlers={eventHandlers}
       >
+        <Tooltip
+          permanent
+          direction={'right'}
+          offset={[-8, -22]}
+          opacity={1}
+          pane={LOCATION_LABEL_PANE}
+          className={`${styles.locationIdentifierLabel} ${locationTypeLabelClass}`}
+        >
+          {marker.locationIdentifier}
+        </Tooltip>
         <Popup offset={POPUP_OFFSET} closeButton={false} autoPan>
           <LocationPopup
             marker={marker}
@@ -242,32 +261,38 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
   if (!locations) return null
 
   return (
-    <MarkerClusterGroup chunkedLoading disableClusteringAtZoom={16}>
-      {locations.map((marker) => {
-        const icon = icons[marker.id]
-        if (!icon) return null
+    <>
+      <Pane
+        name={LOCATION_LABEL_PANE}
+        style={LOCATION_LABEL_PANE_STYLE}
+      />
+      <MarkerClusterGroup chunkedLoading disableClusteringAtZoom={16}>
+        {locations.map((marker) => {
+          const icon = icons[marker.id]
+          if (!icon) return null
 
-        const streetViewStatus = streetViewStatusById[marker.id]
+          const streetViewStatus = streetViewStatusById[marker.id]
 
-        const displayDetails = markerDisplayDetailsById[marker.id]
+          const displayDetails = markerDisplayDetailsById[marker.id]
 
-        return (
-          <MarkerItem
-            key={marker.id}
-            marker={marker}
-            icon={icon}
-            streetViewStatus={streetViewStatus}
-            onSelect={handleSelectLocation}
-            onPopupOpen={handlePopupOpen}
-            streetViewUrl={streetViewUrl}
-            googleMapsUrl={googleMapsUrl}
-            regionName={displayDetails.regionName}
-            jurisdictionName={displayDetails.jurisdictionName}
-            areaNames={displayDetails.areaNames}
-          />
-        )
-      })}
-    </MarkerClusterGroup>
+          return (
+            <MarkerItem
+              key={marker.id}
+              marker={marker}
+              icon={icon}
+              streetViewStatus={streetViewStatus}
+              onSelect={handleSelectLocation}
+              onPopupOpen={handlePopupOpen}
+              streetViewUrl={streetViewUrl}
+              googleMapsUrl={googleMapsUrl}
+              regionName={displayDetails.regionName}
+              jurisdictionName={displayDetails.jurisdictionName}
+              areaNames={displayDetails.areaNames}
+            />
+          )
+        })}
+      </MarkerClusterGroup>
+    </>
   )
 }
 
