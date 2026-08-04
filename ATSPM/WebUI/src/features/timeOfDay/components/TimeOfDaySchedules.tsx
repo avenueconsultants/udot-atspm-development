@@ -4,7 +4,6 @@ import { useMemo } from 'react'
 import TimeOfDayScheduleComparison from './schedules/TimeOfDayScheduleComparison'
 import {
   buildTimeOfDaySchedulesModel,
-  formatLocationLabel,
   getScheduleColorMap,
 } from './schedules/timeOfDayScheduleModel'
 
@@ -31,7 +30,8 @@ export default function TimeOfDaySchedules({
   const hasScheduleData =
     model.proposedSchedule.length > 0 ||
     model.commonSchedule.length > 0 ||
-    model.exceptions.length > 0
+    model.exceptions.length > 0 ||
+    model.unavailableLocations.length > 0
 
   return (
     <Paper sx={{ p: 0, bgcolor: 'common.white' }}>
@@ -97,16 +97,9 @@ export default function TimeOfDaySchedules({
               commonSchedule={model.commonSchedule}
               commonLocations={model.commonLocations}
               exceptions={model.exceptions}
+              unavailableLocations={model.unavailableLocations}
               colorMap={colorMap}
             />
-
-            {model.unavailableLocations.length > 0 && (
-              <Alert severity="warning" sx={{ mt: 1.5 }}>
-                Schedule data is unavailable for{' '}
-                {model.unavailableLocations.map(formatLocationLabel).join(', ')}
-                .
-              </Alert>
-            )}
           </Box>
         )}
       </Stack>

@@ -19,18 +19,15 @@ interface ScheduleComparisonProps {
   commonSchedule: Plan[]
   commonLocations: ScheduleLocation[]
   exceptions: ScheduleException[]
+  unavailableLocations: ScheduleLocation[]
   colorMap: Map<string, string>
 }
 
+const categoryColumnWidth = 280
 const labelColumnWidth = 248
-const categoryRailWidth = 34
-const categoryBufferSize = 8
 const minimumTimelineWidth = 1200
 const minimumComparisonWidth =
-  categoryRailWidth +
-  labelColumnWidth +
-  minimumTimelineWidth +
-  categoryBufferSize
+  categoryColumnWidth + labelColumnWidth + minimumTimelineWidth
 const timeTicks = Array.from({ length: 25 }, (_, hour) => ({
   minutes: hour * 60,
   label: `${String(hour).padStart(2, '0')}:00`,
@@ -54,20 +51,23 @@ function ScheduleRail({
   colorMap,
   ariaLabel,
   proposedBoundaryMinutes = [],
+  emptyLabel,
 }: {
   schedule: Plan[]
   colorMap: Map<string, string>
   ariaLabel: string
   proposedBoundaryMinutes?: number[]
+  emptyLabel?: string
 }) {
   const intervals = getScheduleIntervals(schedule)
 
   return (
     <Box
       role="img"
-      aria-label={`${ariaLabel}: ${getScheduleSummary(schedule)}`}
+      aria-label={`${ariaLabel}: ${emptyLabel ?? getScheduleSummary(schedule)}`}
       sx={{
         position: 'relative',
+        flex: 1,
         alignSelf: 'stretch',
         minHeight: 40,
         overflow: 'hidden',
@@ -145,6 +145,24 @@ function ScheduleRail({
           </Tooltip>
         )
       })}
+      {emptyLabel && intervals.length === 0 && (
+        <Typography
+          component="span"
+          variant="caption"
+          sx={{
+            position: 'absolute',
+            zIndex: 4,
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'text.secondary',
+            fontStyle: 'italic',
+          }}
+        >
+          {emptyLabel}
+        </Typography>
+      )}
       {proposedBoundaryMinutes.map((minutes) => (
         <Box
           key={minutes}
@@ -171,16 +189,20 @@ function ScheduleRow({
   colorMap,
   ariaLabel,
   proposedBoundaryMinutes,
+  emptyLabel,
   minHeight = 41,
   labelWidth = labelColumnWidth,
+  fillHeight = false,
 }: {
   label: ReactNode
   schedule: Plan[]
   colorMap: Map<string, string>
   ariaLabel: string
   proposedBoundaryMinutes?: number[]
+  emptyLabel?: string
   minHeight?: number
   labelWidth?: number
+  fillHeight?: boolean
 }) {
   return (
     <Box
@@ -188,6 +210,7 @@ function ScheduleRow({
         display: 'grid',
         gridTemplateColumns: `${labelWidth}px minmax(${minimumTimelineWidth}px, 1fr)`,
         minHeight,
+        flex: fillHeight ? 1 : undefined,
         overflow: 'hidden',
       }}
     >
@@ -209,12 +232,13 @@ function ScheduleRow({
         colorMap={colorMap}
         ariaLabel={ariaLabel}
         proposedBoundaryMinutes={proposedBoundaryMinutes}
+        emptyLabel={emptyLabel}
       />
     </Box>
   )
 }
 
-type ScheduleGroupTone = 'proposed' | 'common' | 'exception'
+type ScheduleGroupTone = 'proposed' | 'common' | 'exception' | 'unavailable'
 
 const scheduleGroupTones = {
   proposed: {
@@ -232,115 +256,89 @@ const scheduleGroupTones = {
     railBackground: '#FFEDD5',
     text: '#C2410C',
   },
+  unavailable: {
+    border: '#CBD5E1',
+    railBackground: '#E2E8F0',
+    text: '#475569',
+  },
 } as const
 
 function ScheduleGroup({
   tone,
   label,
+  description,
   ariaLabel,
-  showLabelRail = true,
   children,
 }: {
   tone: ScheduleGroupTone
   label: string
+  description: string
   ariaLabel: string
-  showLabelRail?: boolean
   children: ReactNode
 }) {
   const colors = scheduleGroupTones[tone]
   const headingId = `time-of-day-${tone}-schedule-heading`
+  const descriptionId = `time-of-day-${tone}-schedule-description`
 
   return (
     <Box
       component="section"
-      aria-label={showLabelRail ? undefined : ariaLabel}
-      aria-labelledby={showLabelRail ? headingId : undefined}
+      aria-label={ariaLabel}
+      aria-describedby={descriptionId}
       data-testid={`schedule-${tone}-group`}
       sx={{
+        display: 'grid',
+        gridTemplateColumns: `${categoryColumnWidth}px minmax(0, 1fr)`,
         overflow: 'hidden',
         borderRadius: 2,
         bgcolor: 'common.white',
       }}
     >
       <Box
-        aria-hidden
-        data-testid={`schedule-${tone}-buffer-before`}
         sx={{
-          height: categoryBufferSize,
+          display: 'flex',
+          alignItems: 'flex-start',
+          flexDirection: 'column',
+          gap: 0.25,
+          px: 2,
+          py: 1,
+          borderRight: '1px solid',
+          borderColor: colors.border,
           bgcolor: colors.railBackground,
-        }}
-      />
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: showLabelRail
-            ? `${categoryRailWidth}px minmax(0, 1fr) ${categoryBufferSize}px`
-            : `minmax(0, 1fr) ${categoryBufferSize}px`,
         }}
       >
-        {showLabelRail && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: 40,
-              borderRight: '1px solid',
-              borderColor: colors.border,
-              bgcolor: colors.railBackground,
-            }}
-          >
-            <Typography
-              id={headingId}
-              component="h3"
-              variant="caption"
-              aria-label={ariaLabel}
-              sx={{
-                color: colors.text,
-                fontSize: '0.67rem',
-                fontWeight: 800,
-                letterSpacing: '0.08em',
-                lineHeight: 1,
-                textTransform: 'uppercase',
-                transform: 'rotate(180deg)',
-                whiteSpace: 'nowrap',
-                writingMode: 'vertical-rl',
-              }}
-            >
-              <Box component="span" aria-hidden>
-                {label}
-              </Box>
-            </Typography>
-          </Box>
-        )}
-        <Box
-          sx={{
-            minWidth: 0,
-            '& > * + *': {
-              borderTop: '1px solid',
-              borderColor: 'common.white',
-            },
-            '& [data-schedule-row-label]': {
-              bgcolor: colors.railBackground,
-            },
-          }}
+        <Typography
+          id={headingId}
+          component="h3"
+          variant="subtitle2"
+          sx={{ flexShrink: 0, color: colors.text, fontWeight: 800 }}
         >
-          {children}
-        </Box>
-        <Box
-          aria-hidden
-          data-testid={`schedule-${tone}-buffer-right`}
-          sx={{ bgcolor: colors.railBackground }}
-        />
+          {label}
+        </Typography>
+        <Typography
+          id={descriptionId}
+          variant="caption"
+          sx={{ color: 'text.secondary', lineHeight: 1.45 }}
+        >
+          {description}
+        </Typography>
       </Box>
       <Box
-        aria-hidden
-        data-testid={`schedule-${tone}-buffer-after`}
         sx={{
-          height: categoryBufferSize,
-          bgcolor: colors.railBackground,
+          display: 'flex',
+          flexDirection: 'column',
+          minWidth: 0,
+          '& > * + *': {
+            borderTop: '1px solid',
+            borderColor: 'common.white',
+          },
+          '& [data-schedule-row-label]': {
+            bgcolor: colors.railBackground,
+          },
         }}
-      />
+      >
+        {children}
+      </Box>
     </Box>
   )
 }
@@ -376,8 +374,8 @@ function TimeAxis() {
       sx={{
         display: 'grid',
         gridTemplateColumns: `${
-          categoryRailWidth + labelColumnWidth
-        }px minmax(${minimumTimelineWidth}px, 1fr) ${categoryBufferSize}px`,
+          categoryColumnWidth + labelColumnWidth
+        }px minmax(${minimumTimelineWidth}px, 1fr)`,
       }}
     >
       <Box />
@@ -408,7 +406,6 @@ function TimeAxis() {
           </Typography>
         ))}
       </Box>
-      <Box />
     </Box>
   )
 }
@@ -417,6 +414,7 @@ export default function TimeOfDayScheduleComparison({
   commonSchedule,
   commonLocations,
   exceptions,
+  unavailableLocations,
   colorMap,
 }: ScheduleComparisonProps) {
   const proposedBoundaryMinutes = [
@@ -429,7 +427,8 @@ export default function TimeOfDayScheduleComparison({
   const hasScheduleRows =
     proposedSchedule.length > 0 ||
     commonSchedule.length > 0 ||
-    exceptions.length > 0
+    exceptions.length > 0 ||
+    unavailableLocations.length > 0
 
   if (!hasScheduleRows) {
     return <Alert severity="warning">No schedule data available.</Alert>
@@ -443,47 +442,24 @@ export default function TimeOfDayScheduleComparison({
             <ScheduleGroup
               tone="proposed"
               label="Proposed"
+              description="The recommended schedule."
               ariaLabel="Proposed schedule"
-              showLabelRail={false}
             >
               <ScheduleRow
                 label={
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 0.75,
-                      minWidth: 0,
-                    }}
+                  <Typography
+                    component="em"
+                    variant="caption"
+                    sx={{ fontStyle: 'italic' }}
                   >
-                    <Box
-                      component="span"
-                      sx={{
-                        px: 0.55,
-                        py: 0.15,
-                        borderRadius: 0.5,
-                        bgcolor: '#1D4ED8',
-                        color: 'common.white',
-                        fontSize: '0.62rem',
-                        fontWeight: 800,
-                        lineHeight: 1.25,
-                      }}
-                    >
-                      REF
-                    </Box>
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ color: '#1D4ED8', fontWeight: 700 }}
-                    >
-                      Proposed schedule
-                    </Typography>
-                  </Box>
+                    Proposal
+                  </Typography>
                 }
                 schedule={proposedSchedule}
                 colorMap={colorMap}
                 ariaLabel="Proposed schedule"
                 proposedBoundaryMinutes={proposedBoundaryMinutes}
-                labelWidth={categoryRailWidth + labelColumnWidth}
+                fillHeight
               />
             </ScheduleGroup>
           )}
@@ -492,6 +468,7 @@ export default function TimeOfDayScheduleComparison({
             <ScheduleGroup
               tone="common"
               label="Common"
+              description="The existing schedule used by the largest group of selected locations."
               ariaLabel={`Common schedule — ${commonLocations.length} ${
                 commonLocations.length === 1 ? 'location' : 'locations'
               }`}
@@ -515,6 +492,7 @@ export default function TimeOfDayScheduleComparison({
             <ScheduleGroup
               tone="exception"
               label="Exceptions"
+              description="Selected locations with an existing schedule that differs from the common schedule."
               ariaLabel={`Exceptions — ${exceptions.length} ${
                 exceptions.length === 1 ? 'location' : 'locations'
               }`}
@@ -529,6 +507,30 @@ export default function TimeOfDayScheduleComparison({
                     location
                   )}`}
                   proposedBoundaryMinutes={proposedBoundaryMinutes}
+                />
+              ))}
+            </ScheduleGroup>
+          )}
+
+          {unavailableLocations.length > 0 && (
+            <ScheduleGroup
+              tone="unavailable"
+              label="Unavailable"
+              description="No current schedule data is available for these selected locations."
+              ariaLabel={`Unavailable schedules — ${unavailableLocations.length} ${
+                unavailableLocations.length === 1 ? 'location' : 'locations'
+              }`}
+            >
+              {unavailableLocations.map((location) => (
+                <ScheduleRow
+                  key={location.identifier}
+                  label={<ScheduleLocationLabel location={location} />}
+                  schedule={[]}
+                  colorMap={colorMap}
+                  ariaLabel={`No current schedule for ${formatScheduleLocation(
+                    location
+                  )}`}
+                  emptyLabel="No data"
                 />
               ))}
             </ScheduleGroup>
