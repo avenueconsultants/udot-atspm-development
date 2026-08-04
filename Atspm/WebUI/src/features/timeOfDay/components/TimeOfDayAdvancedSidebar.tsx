@@ -20,32 +20,32 @@ type TuningFieldDefinition = {
 const scheduleThresholdFields: TuningFieldDefinition[] = [
   {
     option: 'amEntryPctOfPeak',
-    label: 'AM start — share of AM peak',
+    label: 'AM start threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
     option: 'amExitPctOfPeak',
-    label: 'AM end — share of AM peak',
+    label: 'AM end threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
     option: 'pmEntryPctOfPeak',
-    label: 'PM start — share of PM peak',
+    label: 'PM start threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
     option: 'pmExitPctOfPeak',
-    label: 'PM end — share of PM peak',
+    label: 'PM end threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
     option: 'freeEntryPctOfDailyPeak',
-    label: 'FREE start — share of daily peak',
+    label: 'Daily peak threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
     option: 'freeEntryPctOfDynamicRange',
-    label: 'FREE start — share of dynamic range',
+    label: 'Dynamic range threshold',
     inputProps: { min: 0, max: 1, step: 0.01 },
   },
   {
@@ -258,7 +258,11 @@ export default function TimeOfDayAdvancedSidebar({
     </Box>
   )
 
-  const renderSidebarSection = (title: string, children: ReactNode) => (
+  const renderSidebarSection = (
+    title: string,
+    children: ReactNode,
+    description?: string
+  ) => (
     <Box
       component="section"
       sx={{
@@ -268,9 +272,18 @@ export default function TimeOfDayAdvancedSidebar({
         p: 1.5,
       }}
     >
-      <Typography variant="subtitle2" sx={{ mb: 1.5 }}>
+      <Typography variant="subtitle2" sx={{ mb: description ? 0.5 : 1.5 }}>
         {title}
       </Typography>
+      {description && (
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mb: 1.5, lineHeight: 1.45 }}
+        >
+          {description}
+        </Typography>
+      )}
       <Stack spacing={1.5}>{children}</Stack>
     </Box>
   )
@@ -308,7 +321,8 @@ export default function TimeOfDayAdvancedSidebar({
                   .slice(0, 4)
                   .map((field) => renderTuningSlider(field, 100, '%', 100))}
                 {renderCompactTuningField(scheduleThresholdFields[6])}
-              </>
+              </>,
+              'Sets the volume levels that start and end AM/PM plans, expressed relative to each period’s peak. Consecutive bins prevent a brief spike or dip from triggering a transition.'
             )}
             {renderSidebarSection(
               'FREE Transition',
@@ -318,14 +332,16 @@ export default function TimeOfDayAdvancedSidebar({
                   .map((field) => renderTuningSlider(field, 100, '%', 100))}
                 {renderCompactTuningField(scheduleThresholdFields[7])}
                 {renderCompactTuningField(scheduleThresholdFields[8])}
-              </>
+              </>,
+              'Uses the daily peak and baseline-to-peak dynamic range to decide when falling evening volume returns the schedule to FREE. The fallback time is used when no sustained transition is found.'
             )}
             {renderSidebarSection(
               'Plan Length Limits',
               <>
                 {renderCompactTuningField(scheduleThresholdFields[9])}
                 {renderCompactTuningField(scheduleThresholdFields[10])}
-              </>
+              </>,
+              'Sets the latest time each peak plan can end. These limits also serve as fallbacks when the volume profile does not show a clear transition.'
             )}
           </Stack>
         ) : (
