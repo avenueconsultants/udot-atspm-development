@@ -85,7 +85,9 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 : dailyPeak;
 
             var amEntryThreshold = baseline + (amPeakValue - baseline) * options.AmEntryPctOfPeak;
+            var amExitThreshold = baseline + (amPeakValue - baseline) * options.AmExitPctOfPeak;
             var pmEntryThreshold = baseline + (pmPeakValue - baseline) * options.PmEntryPctOfPeak;
+            var pmExitThreshold = baseline + (pmPeakValue - baseline) * options.PmExitPctOfPeak;
             var freeThreshold = Math.Max(
                 dailyPeak * options.FreeEntryPctOfDailyPeak,
                 baseline + (dailyPeak - baseline) * options.FreeEntryPctOfDynamicRange);
@@ -102,7 +104,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     amProfile,
                     amPeak.Minutes,
                     maxAmEnd,
-                    amEntryThreshold,
+                    amExitThreshold,
                     options.EntrySustainedBins)
                 : null;
 
@@ -152,7 +154,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     pmProfile,
                     pmPeak.Minutes,
                     maxPmEnd,
-                    pmEntryThreshold,
+                    pmExitThreshold,
                     options.EntrySustainedBins)
                 : null;
 

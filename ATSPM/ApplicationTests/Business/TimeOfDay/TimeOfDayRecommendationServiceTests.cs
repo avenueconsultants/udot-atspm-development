@@ -142,6 +142,38 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
         }
 
         [Fact]
+        public void BuildRecommendation_UsesConfiguredAmAndPmExitThresholds()
+        {
+            var highExitThresholdResult = CreateService().BuildRecommendation(
+                new TimeOfDayOptions
+                {
+                    AmExitPctOfPeak = 0.8,
+                    PmExitPctOfPeak = 0.8,
+                    EntrySustainedBins = 1
+                },
+                BuildExitThresholdProfile(),
+                new List<TimeOfDayProfileDto>(),
+                TestDate);
+            var lowExitThresholdResult = CreateService().BuildRecommendation(
+                new TimeOfDayOptions
+                {
+                    AmExitPctOfPeak = 0.2,
+                    PmExitPctOfPeak = 0.2,
+                    EntrySustainedBins = 1
+                },
+                BuildExitThresholdProfile(),
+                new List<TimeOfDayProfileDto>(),
+                TestDate);
+
+            Assert.True(
+                EndMinutes(FindPlan(lowExitThresholdResult.RecommendedSchedule, "1")) >
+                EndMinutes(FindPlan(highExitThresholdResult.RecommendedSchedule, "1")));
+            Assert.True(
+                EndMinutes(FindPlan(lowExitThresholdResult.RecommendedSchedule, "13")) >
+                EndMinutes(FindPlan(highExitThresholdResult.RecommendedSchedule, "13")));
+        }
+
+        [Fact]
         public void BuildRecommendation_ReturnsUnavailableWhenProfileIsNotUsable()
         {
             var result = CreateService().BuildRecommendation(
@@ -181,6 +213,26 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
                 Label = "Corridor",
                 Points = points
             };
+        }
+
+        private static TimeOfDayProfileDto BuildExitThresholdProfile()
+        {
+            return BuildProfile(minutes => minutes switch
+            {
+                >= 360 and < 450 => 800,
+                450 => 1000,
+                465 => 800,
+                480 => 600,
+                495 => 400,
+                510 => 200,
+                >= 900 and < 1020 => 800,
+                1020 => 1000,
+                1035 => 800,
+                1050 => 600,
+                1065 => 400,
+                1080 => 200,
+                _ => 100
+            });
         }
 
         private static Plan FindPlan(IReadOnlyList<Plan> schedule, string planNumber)
