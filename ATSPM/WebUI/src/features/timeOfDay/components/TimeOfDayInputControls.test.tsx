@@ -1,6 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
-import type { TimeOfDayMeasureDefaults } from '../measureDefaults'
+import type {
+  TimeOfDayMeasureDefaults,
+  TimeOfDaySchedulePreset,
+} from '../measureDefaults'
 import {
   defaultPrimaryDirections,
   timeOfDayDefaultTuningOptions,
@@ -9,6 +12,7 @@ import {
 import TimeOfDayAdvancedSidebar from './TimeOfDayAdvancedSidebar'
 import TimeOfDayDirectionSelector from './TimeOfDayDirectionSelector'
 import { TimeOfDayMeasureOptions } from './TimeOfDayMeasureOptions'
+import TimeOfDaySchedulePresetSelect from './TimeOfDaySchedulePresetSelect'
 
 jest.mock('@/components/RightSidebar', () => ({
   __esModule: true,
@@ -30,6 +34,37 @@ const options: TimeOfDayFormState = {
   ...timeOfDayDefaultTuningOptions,
 }
 
+const schedulePresets: TimeOfDaySchedulePreset[] = [
+  {
+    id: 4102,
+    name: 'Suburban Mixed-Use',
+    options: {
+      amEntryPctOfPeak: 0.55,
+      amExitPctOfPeak: 0.4,
+      pmEntryPctOfPeak: 0.68,
+      pmExitPctOfPeak: 0.38,
+      freeEntryPctOfDailyPeak: 0.22,
+      freeEntryPctOfDynamicRange: 0.18,
+      entrySustainedBins: 2,
+      freeSustainedBins: 4,
+    },
+  },
+  {
+    id: 4103,
+    name: 'Retail / Commercial',
+    options: {
+      amEntryPctOfPeak: 0.5,
+      amExitPctOfPeak: 0.38,
+      pmEntryPctOfPeak: 0.62,
+      pmExitPctOfPeak: 0.36,
+      freeEntryPctOfDailyPeak: 0.25,
+      freeEntryPctOfDynamicRange: 0.2,
+      entrySustainedBins: 3,
+      freeSustainedBins: 4,
+    },
+  },
+]
+
 describe('time-of-day inputs', () => {
   test('defaults to separate AM and PM primary directions', () => {
     render(
@@ -49,13 +84,20 @@ describe('time-of-day inputs', () => {
 
   test('displays schedule threshold fractions as editable percents', () => {
     const handleChange = jest.fn()
-    render(
+    const { rerender } = render(
       <TimeOfDayAdvancedSidebar
         activeSidebar={'schedule'}
         options={options}
         onChange={handleChange}
+        schedulePresets={schedulePresets}
       />
     )
+
+    expect(
+      screen.getByRole('combobox', {
+        name: 'Schedule threshold preset',
+      }).textContent
+    ).toBe('Suburban Mixed-Use')
 
     const amStart = screen.getByRole('slider', {
       name: 'AM start — share of AM peak',
@@ -68,6 +110,59 @@ describe('time-of-day inputs', () => {
     expect(handleChange).toHaveBeenLastCalledWith(
       expect.objectContaining({ amEntryPctOfPeak: 0.6 })
     )
+
+    rerender(
+      <TimeOfDayAdvancedSidebar
+        activeSidebar={'schedule'}
+        options={{ ...options, amEntryPctOfPeak: 0.6 }}
+        onChange={handleChange}
+        schedulePresets={schedulePresets}
+      />
+    )
+
+    expect(
+      screen.getByRole('combobox', {
+        name: 'Schedule threshold preset',
+      }).textContent
+    ).toBe('Custom')
+  })
+
+  test('applies a schedule preset and identifies edited values as custom', () => {
+    const handleChange = jest.fn()
+    const { rerender } = render(
+      <TimeOfDaySchedulePresetSelect
+        options={options}
+        onChange={handleChange}
+        presets={schedulePresets}
+      />
+    )
+
+    const presetSelect = screen.getByRole('combobox', {
+      name: 'Schedule threshold preset',
+    })
+    expect(presetSelect.textContent).toBe('Suburban Mixed-Use')
+
+    fireEvent.mouseDown(presetSelect)
+    fireEvent.click(screen.getByRole('option', { name: 'Retail / Commercial' }))
+
+    expect(handleChange).toHaveBeenLastCalledWith({
+      ...options,
+      ...schedulePresets[1].options,
+    })
+
+    rerender(
+      <TimeOfDaySchedulePresetSelect
+        options={{ ...options, amEntryPctOfPeak: 0.56 }}
+        onChange={handleChange}
+        presets={schedulePresets}
+      />
+    )
+
+    expect(
+      screen.getByRole('combobox', {
+        name: 'Schedule threshold preset',
+      }).textContent
+    ).toBe('Custom')
   })
 
   test('displays measure-default threshold fractions as percents', () => {

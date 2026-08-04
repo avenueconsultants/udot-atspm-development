@@ -1,3 +1,7 @@
+import {
+  type MeasureOptionPreset,
+  useGetMeasureTypeMeasureOptionPresetsFromKey,
+} from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useChartDefaults } from '@/features/charts/api'
 import { useTimeOfDayReport } from '@/features/timeOfDay/api/getTimeOfDay'
@@ -5,6 +9,7 @@ import TimeOfDayOptions from '@/features/timeOfDay/components/TimeOfDayOptions'
 import TimeOfDayResults from '@/features/timeOfDay/components/TimeOfDayResults'
 import type { TimeOfDayMeasureDefaults } from '@/features/timeOfDay/measureDefaults'
 import {
+  buildTimeOfDaySchedulePresets,
   buildTimeOfDayTuningOptionsFromDefaults,
   timeOfDayMeasureTypeId,
 } from '@/features/timeOfDay/measureDefaults'
@@ -98,8 +103,28 @@ const getErrorMessage = (error: unknown) => {
   return 'Unable to generate Time Of Day analysis.'
 }
 
+const getSchedulePresetRecords = (data: unknown): MeasureOptionPreset[] => {
+  if (Array.isArray(data)) return data as MeasureOptionPreset[]
+
+  if (data && typeof data === 'object' && 'value' in data) {
+    const value = (data as { value?: unknown }).value
+    if (Array.isArray(value)) return value as MeasureOptionPreset[]
+  }
+
+  return []
+}
+
 export default function TimeOfDayPage() {
   const { data: chartDefaultsData } = useChartDefaults()
+  const { data: schedulePresetData } =
+    useGetMeasureTypeMeasureOptionPresetsFromKey(timeOfDayMeasureTypeId)
+  const schedulePresets = useMemo(
+    () =>
+      buildTimeOfDaySchedulePresets(
+        getSchedulePresetRecords(schedulePresetData)
+      ),
+    [schedulePresetData]
+  )
   const measureDefaultOptions = useMemo(() => {
     const timeOfDayMeasureType = chartDefaultsData?.value.find(
       (measureType) => measureType.id === timeOfDayMeasureTypeId
@@ -432,7 +457,11 @@ export default function TimeOfDayPage() {
   return (
     <ResponsivePageLayout title="Time Of Day" useFullWidth>
       <Stack spacing={2}>
-        <TimeOfDayOptions options={formState} onChange={setFormState} />
+        <TimeOfDayOptions
+          options={formState}
+          onChange={setFormState}
+          schedulePresets={schedulePresets}
+        />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <LoadingButton
             loading={isLoading}
