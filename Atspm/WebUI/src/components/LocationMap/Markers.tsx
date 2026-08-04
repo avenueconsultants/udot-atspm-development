@@ -65,6 +65,7 @@ const MarkerItem = memo(
         : marker.locationTypeId === 2
           ? styles.rampMeterLocationLabel
           : styles.defaultLocationLabel
+    const locationIdentifier = marker.locationIdentifier?.trim()
 
     const eventHandlers = useMemo(
       () => ({
@@ -80,16 +81,18 @@ const MarkerItem = memo(
         icon={icon}
         eventHandlers={eventHandlers}
       >
-        <Tooltip
-          permanent
-          direction={'right'}
-          offset={[-8, -22]}
-          opacity={1}
-          pane={LOCATION_LABEL_PANE}
-          className={`${styles.locationIdentifierLabel} ${locationTypeLabelClass}`}
-        >
-          {marker.locationIdentifier}
-        </Tooltip>
+          <Tooltip
+            permanent
+            direction={'right'}
+            offset={[-8, -22]}
+            opacity={1}
+            pane={LOCATION_LABEL_PANE}
+            className={`${styles.locationIdentifierLabel} ${locationTypeLabelClass}`}
+          >
+            <span className={styles.locationIdentifierText}>
+              {locationIdentifier}
+            </span>
+          </Tooltip>
         <Popup offset={POPUP_OFFSET} closeButton={false} autoPan>
           <LocationPopup
             marker={marker}
