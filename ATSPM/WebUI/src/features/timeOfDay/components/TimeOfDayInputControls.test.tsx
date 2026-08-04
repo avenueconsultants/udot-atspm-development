@@ -104,6 +104,9 @@ describe('time-of-day inputs', () => {
     expect(
       screen.getByText(/falling evening volume returns the schedule to FREE/)
     ).toBeTruthy()
+    expect(
+      screen.getByText(/configured number of consecutive bins/)
+    ).toBeTruthy()
     expect(screen.getByText(/latest time each peak plan can end/)).toBeTruthy()
 
     const amStart = screen.getByRole('slider', {
@@ -170,6 +173,41 @@ describe('time-of-day inputs', () => {
         name: 'Schedule threshold preset',
       }).textContent
     ).toBe('Custom')
+  })
+
+  test('explains occupancy capacity, review thresholds, and lane overrides', () => {
+    render(
+      <TimeOfDayAdvancedSidebar
+        activeSidebar={'occupancy'}
+        options={options}
+        onChange={jest.fn()}
+      />
+    )
+
+    expect(screen.getByText(/capacity converts approach volume/)).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Capacity' })).toBeTruthy()
+    expect(
+      screen.getByRole('heading', { name: 'Review thresholds' })
+    ).toBeTruthy()
+    expect(
+      screen.getByRole('heading', { name: 'Direction lane overrides' })
+    ).toBeTruthy()
+    expect(
+      screen.getByText(/Optional counts override lanes inferred from/)
+    ).toBeTruthy()
+    expect(
+      (
+        screen.getByRole('spinbutton', {
+          name: 'Per-lane capacity (veh/hr)',
+        }) as HTMLInputElement
+      ).value
+    ).toBe('800')
+    expect(
+      screen.getByRole('spinbutton', {
+        name: 'Fallback lanes per approach',
+      })
+    ).toBeTruthy()
+    expect(screen.getAllByPlaceholderText('Auto')).toHaveLength(2)
   })
 
   test('displays measure-default threshold fractions as percents', () => {
