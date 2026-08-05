@@ -60,6 +60,14 @@ export default function TimeOfDayChartHeader({
         ml: { md: '1px' },
         alignItems: 'center',
         bgcolor: 'common.white',
+        transition: (theme) =>
+          theme.transitions.create('grid-template-columns', {
+            duration: theme.transitions.duration.standard,
+            easing: theme.transitions.easing.easeInOut,
+          }),
+        '@media (prefers-reduced-motion: reduce)': {
+          transition: 'none',
+        },
       }}
     >
       <Box sx={{ minWidth: 0, px: 1.75, py: 1.25 }}>
@@ -146,6 +154,15 @@ export default function TimeOfDayChartHeader({
           borderTop: { xs: '1px solid', md: 0 },
           borderLeftColor: { md: 'divider' },
           borderTopColor: { xs: 'divider' },
+          overflow: 'hidden',
+          transition: (theme) =>
+            theme.transitions.create(['width', 'min-width'], {
+              duration: theme.transitions.duration.standard,
+              easing: theme.transitions.easing.easeInOut,
+            }),
+          '@media (prefers-reduced-motion: reduce)': {
+            transition: 'none',
+          },
         }}
       >
         <Tabs

@@ -114,7 +114,24 @@ export default function TimeOfDayEChart({
       setScheduleRowEmphasis('proposed', false)
       setScheduleRowEmphasis('existing', false)
     }
-    const resizeChart = () => chart.resize()
+    let lastWidth = element.clientWidth
+    let lastHeight = element.clientHeight
+    const resizeChart = () => {
+      const width = element.clientWidth
+      const height = element.clientHeight
+      if (!width || !height || (width === lastWidth && height === lastHeight)) {
+        return
+      }
+
+      lastWidth = width
+      lastHeight = height
+      chart.resize({
+        width,
+        height,
+        animation: { duration: 0 },
+        silent: true,
+      })
+    }
     const resizeObserver =
       typeof ResizeObserver === 'undefined'
         ? undefined
