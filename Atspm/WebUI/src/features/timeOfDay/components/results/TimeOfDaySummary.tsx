@@ -76,10 +76,30 @@ const getPlanLabel = (planNumber: string, description?: string | null) => {
   return normalizedDescription || `Plan ${planNumber}`
 }
 
-const sectionTitleSx = {
-  fontSize: '0.8rem',
-  fontWeight: 700,
-  lineHeight: 1.25,
+function SummaryCardHeader({
+  title,
+  description,
+}: {
+  title: string
+  description: string
+}) {
+  return (
+    <Box sx={{ px: 2, pt: 1.75, pb: 1.25 }}>
+      <Typography
+        component="h3"
+        variant="subtitle2"
+        sx={{ fontWeight: 800, lineHeight: 1.25 }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        variant="caption"
+        sx={{ display: 'block', mt: 0.35, color: 'text.secondary' }}
+      >
+        {description}
+      </Typography>
+    </Box>
+  )
 }
 
 const getActionableReviewThreshold = (
@@ -126,180 +146,93 @@ export default function TimeOfDaySummary({
   if (!hasSchedule && !hasMeasuredPeaks && !reviewText) return null
 
   return (
-    <Paper
+    <Box
       component="section"
       aria-label="Summary"
-      variant="outlined"
       sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr', md: sectionColumns },
+        p: { xs: 2, sm: 3 },
+        borderTop: '1px solid',
         borderColor: 'divider',
-        bgcolor: 'common.white',
-        boxShadow: 'none',
-        overflow: 'hidden',
+        bgcolor: 'grey.50',
       }}
     >
-      {hasSchedule && (
-        <Box
-          sx={{
-            minWidth: 0,
-            borderRight: {
-              xs: 0,
-              md: hasMeasuredPeaks || reviewText ? '1px solid' : 0,
-            },
-            borderBottom: {
-              xs: hasMeasuredPeaks || reviewText ? '1px solid' : 0,
-              md: 0,
-            },
-            borderColor: 'divider',
-          }}
-        >
-          <Box
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h5" component="h2">
+          Summary
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+          Recommended timing, measured demand peaks, and items that may need
+          review.
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: 'minmax(0, 1fr)',
+            md: 'repeat(2, minmax(0, 1fr))',
+            xl: sectionColumns,
+          },
+          alignItems: 'stretch',
+          gap: 1.5,
+        }}
+      >
+        {hasSchedule && (
+          <Paper
+            variant="outlined"
             sx={{
-              px: 1.5,
-              py: 1,
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              bgcolor: 'grey.50',
+              minWidth: 0,
+              borderRadius: 2,
+              overflow: 'hidden',
+              bgcolor: 'common.white',
             }}
           >
-            <Typography component="h3" sx={sectionTitleSx}>
-              Proposed Plan Schedule
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'grid', gap: 0.62, p: 1.5 }}>
-            {scheduleEntries.map(({ plan, interval }) => {
-              const planNumber = formatPlanNumber(plan.planNumber)
-              const color = scheduleColorMap.get(planNumber) ?? '#8da0b4'
+            <SummaryCardHeader
+              title="Proposed Plan Schedule"
+              description="Recommended plan periods for the corridor."
+            />
+            <Box sx={{ display: 'grid', gap: 0.75, px: 2, pb: 2 }}>
+              {scheduleEntries.map(({ plan, interval }) => {
+                const planNumber = formatPlanNumber(plan.planNumber)
+                const color = scheduleColorMap.get(planNumber) ?? '#8da0b4'
 
-              return (
-                <Box
-                  key={`${interval.start}-${interval.end}-${planNumber}`}
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: '8px auto minmax(0, 1fr)',
-                    alignItems: 'center',
-                    columnGap: 0.85,
-                    minWidth: 0,
-                  }}
-                >
+                return (
                   <Box
-                    aria-hidden
+                    key={`${interval.start}-${interval.end}-${planNumber}`}
                     sx={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: 0.4,
-                      bgcolor: color,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      color: 'text.primary',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      lineHeight: 1.25,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {minutesToTimeLabel(interval.start)}
-                    {'\u2013'}
-                    {minutesToTimeLabel(interval.end)}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      minWidth: 0,
-                      overflow: 'hidden',
-                      color: 'text.secondary',
-                      fontSize: '0.7rem',
-                      lineHeight: 1.25,
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {getPlanLabel(planNumber, plan.planDescription)}
-                  </Typography>
-                </Box>
-              )
-            })}
-          </Box>
-        </Box>
-      )}
-
-      {hasMeasuredPeaks && (
-        <Box
-          sx={{
-            minWidth: 0,
-            borderRight: {
-              xs: 0,
-              md: reviewText ? '1px solid' : 0,
-            },
-            borderBottom: {
-              xs: reviewText ? '1px solid' : 0,
-              md: 0,
-            },
-            borderColor: 'divider',
-          }}
-        >
-          <Box
-            sx={{
-              px: 1.5,
-              py: 1,
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              bgcolor: 'grey.50',
-            }}
-          >
-            <Typography component="h3" sx={sectionTitleSx}>
-              Measured Peaks
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${peakItems.length}, minmax(0, 1fr))`,
-              p: 1.5,
-            }}
-          >
-            {peakItems.map((item, index) => {
-              const displayValue = parsePeakValue(item.value)
-              const display = peakDisplayBySource[item.label] ?? {
-                label: item.label,
-                color: '#546e7a',
-              }
-              const isCrossTraffic = item.label === 'Peak Cross Traffic'
-
-              return (
-                <Box
-                  key={item.label}
-                  sx={{
-                    minWidth: 0,
-                    px: index === 0 ? 0 : { xs: 1, sm: 1.75 },
-                    pr:
-                      index === peakItems.length - 1 ? 0 : { xs: 1, sm: 1.75 },
-                    borderRight:
-                      index === peakItems.length - 1 ? 0 : '1px solid',
-                    borderColor: 'divider',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
+                      display: 'grid',
+                      gridTemplateColumns: '8px auto minmax(0, 1fr)',
                       alignItems: 'center',
-                      gap: 0.75,
-                      mb: 0.6,
+                      columnGap: 0.85,
                       minWidth: 0,
+                      px: 1,
+                      py: 0.7,
+                      borderRadius: 1,
+                      bgcolor: 'grey.50',
                     }}
                   >
                     <Box
                       aria-hidden
                       sx={{
-                        width: 14,
-                        flex: '0 0 auto',
-                        borderTop: '2px solid',
-                        borderTopColor: display.color,
-                        borderTopStyle: display.dashed ? 'dashed' : 'solid',
+                        width: 8,
+                        height: 8,
+                        borderRadius: 0.4,
+                        bgcolor: color,
                       }}
                     />
+                    <Typography
+                      sx={{
+                        color: 'text.primary',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        lineHeight: 1.25,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {minutesToTimeLabel(interval.start)}
+                      {'\u2013'}
+                      {minutesToTimeLabel(interval.end)}
+                    </Typography>
                     <Typography
                       sx={{
                         minWidth: 0,
@@ -311,88 +244,182 @@ export default function TimeOfDaySummary({
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {display.label}
+                      {getPlanLabel(planNumber, plan.planDescription)}
                     </Typography>
                   </Box>
-                  {displayValue.value && (
+                )
+              })}
+            </Box>
+          </Paper>
+        )}
+
+        {hasMeasuredPeaks && (
+          <Paper
+            variant="outlined"
+            sx={{
+              minWidth: 0,
+              borderRadius: 2,
+              overflow: 'hidden',
+              bgcolor: 'common.white',
+            }}
+          >
+            <SummaryCardHeader
+              title="Measured Peaks"
+              description="Key corridor demand and cross-traffic observations."
+            />
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: 'minmax(0, 1fr)',
+                  sm: `repeat(${peakItems.length}, minmax(0, 1fr))`,
+                },
+                gap: 1,
+                px: 2,
+                pb: 2,
+              }}
+            >
+              {peakItems.map((item) => {
+                const displayValue = parsePeakValue(item.value)
+                const display = peakDisplayBySource[item.label] ?? {
+                  label: item.label,
+                  color: '#546e7a',
+                }
+                const isCrossTraffic = item.label === 'Peak Cross Traffic'
+
+                return (
+                  <Box
+                    key={item.label}
+                    sx={{
+                      minWidth: 0,
+                      p: 1.25,
+                      border: '1px solid',
+                      borderColor: 'divider',
+                      borderRadius: 1.5,
+                      bgcolor: 'grey.50',
+                    }}
+                  >
                     <Box
                       sx={{
                         display: 'flex',
-                        alignItems: 'baseline',
-                        gap: 0.6,
+                        alignItems: 'center',
+                        gap: 0.75,
+                        mb: 0.6,
                         minWidth: 0,
                       }}
                     >
+                      <Box
+                        aria-hidden
+                        sx={{
+                          width: 14,
+                          flex: '0 0 auto',
+                          borderTop: '2px solid',
+                          borderTopColor: display.color,
+                          borderTopStyle: display.dashed ? 'dashed' : 'solid',
+                        }}
+                      />
                       <Typography
                         sx={{
-                          color: 'text.primary',
-                          fontSize: '1.22rem',
-                          fontWeight: 800,
-                          lineHeight: 1.15,
+                          minWidth: 0,
+                          overflow: 'hidden',
+                          color: 'text.secondary',
+                          fontSize: '0.7rem',
+                          lineHeight: 1.25,
+                          textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        {displayValue.value}
+                        {display.label}
                       </Typography>
-                      {displayValue.unit && (
+                    </Box>
+                    {displayValue.value && (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'baseline',
+                          gap: 0.6,
+                          minWidth: 0,
+                        }}
+                      >
                         <Typography
-                          component="span"
                           sx={{
-                            color: 'text.secondary',
-                            fontSize: '0.68rem',
-                            lineHeight: 1,
+                            color: 'text.primary',
+                            fontSize: '1.22rem',
+                            fontWeight: 800,
+                            lineHeight: 1.15,
                             whiteSpace: 'nowrap',
                           }}
                         >
-                          {displayValue.unit}
+                          {displayValue.value}
                         </Typography>
-                      )}
-                    </Box>
-                  )}
-                  {displayValue.time && (
-                    <Box
-                      component="span"
-                      sx={{
-                        display: 'inline-flex',
-                        mt: displayValue.value ? 0.55 : 0.7,
-                        px: 0.72,
-                        py: 0.25,
-                        borderRadius: 0.5,
-                        bgcolor: isCrossTraffic
-                          ? 'rgba(106, 27, 154, 0.1)'
-                          : 'grey.100',
-                        color: isCrossTraffic ? '#6a1b9a' : 'text.secondary',
-                        fontSize: '0.65rem',
-                        fontWeight: 700,
-                        lineHeight: 1.25,
-                      }}
-                    >
-                      {displayValue.time}
-                    </Box>
-                  )}
-                </Box>
-              )
-            })}
-          </Box>
-        </Box>
-      )}
+                        {displayValue.unit && (
+                          <Typography
+                            component="span"
+                            sx={{
+                              color: 'text.secondary',
+                              fontSize: '0.68rem',
+                              lineHeight: 1,
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {displayValue.unit}
+                          </Typography>
+                        )}
+                      </Box>
+                    )}
+                    {displayValue.time && (
+                      <Box
+                        component="span"
+                        sx={{
+                          display: 'inline-flex',
+                          mt: displayValue.value ? 0.55 : 0.7,
+                          px: 0.72,
+                          py: 0.25,
+                          borderRadius: 0.5,
+                          bgcolor: isCrossTraffic
+                            ? 'rgba(106, 27, 154, 0.1)'
+                            : 'grey.100',
+                          color: isCrossTraffic ? '#6a1b9a' : 'text.secondary',
+                          fontSize: '0.65rem',
+                          fontWeight: 700,
+                          lineHeight: 1.25,
+                        }}
+                      >
+                        {displayValue.time}
+                      </Box>
+                    )}
+                  </Box>
+                )
+              })}
+            </Box>
+          </Paper>
+        )}
 
-      {reviewText && (
-        <Box sx={{ minWidth: 0, p: 1.5 }}>
+        {reviewText && (
           <Alert
             severity={hasActionableReview ? 'warning' : 'info'}
             variant="outlined"
             sx={{
+              minWidth: 0,
+              height: '100%',
               alignItems: 'flex-start',
+              borderRadius: 2,
+              px: 2,
+              py: 1.5,
+              bgcolor: hasActionableReview ? '#FFF9ED' : '#F4F8FC',
+              gridColumn: {
+                md: hasSchedule && hasMeasuredPeaks ? '1 / -1' : 'auto',
+                xl: 'auto',
+              },
               '& .MuiAlert-message': { width: '100%', minWidth: 0 },
             }}
           >
-            <AlertTitle sx={{ mb: 0.4 }}>
+            <AlertTitle sx={{ mb: 0.5 }}>
               <Typography
                 component="h3"
                 sx={{
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
+                  fontSize: '0.85rem',
+                  fontWeight: 800,
                   lineHeight: 1.25,
                 }}
               >
@@ -403,14 +430,14 @@ export default function TimeOfDaySummary({
               sx={{
                 color: 'text.primary',
                 fontSize: '0.875rem',
-                lineHeight: 1.45,
+                lineHeight: 1.5,
               }}
             >
               {reviewText}
             </Typography>
           </Alert>
-        </Box>
-      )}
-    </Paper>
+        )}
+      </Box>
+    </Box>
   )
 }

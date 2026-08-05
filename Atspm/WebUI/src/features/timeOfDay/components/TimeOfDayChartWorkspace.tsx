@@ -20,8 +20,11 @@ import TimeOfDayLayersPanel, {
 interface TimeOfDayChartWorkspaceProps {
   model: TimeOfDayAnalysisModel
   renderDetails: (props: {
+    activeMode: TimeOfDayAnalysisMode
+    selectedSeries: Record<string, boolean>
     selectedDetailKey?: string
     onSelectDetail: (detailKey: string) => void
+    onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
   }) => ReactNode
 }
 
@@ -139,8 +142,22 @@ export default function TimeOfDayChartWorkspace({
     ? model.detailTargets[selectedDetailKey]
     : undefined
   const details = useMemo(
-    () => renderDetails({ selectedDetailKey, onSelectDetail: selectDetail }),
-    [renderDetails, selectDetail, selectedDetailKey]
+    () =>
+      renderDetails({
+        activeMode,
+        selectedSeries,
+        selectedDetailKey,
+        onSelectDetail: selectDetail,
+        onSetSeriesVisibility: setSeriesVisibility,
+      }),
+    [
+      activeMode,
+      renderDetails,
+      selectDetail,
+      selectedDetailKey,
+      selectedSeries,
+      setSeriesVisibility,
+    ]
   )
 
   return (
@@ -190,7 +207,14 @@ export default function TimeOfDayChartWorkspace({
             bgcolor: 'common.white',
           }}
         >
-          <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 1.25 }}>
+          <Box
+            sx={{
+              flex: 1,
+              minHeight: 0,
+              overflowY: 'auto',
+              p: sidebarTab === 'layers' ? 1.25 : 0,
+            }}
+          >
             {sidebarTab === 'layers' ? (
               <TimeOfDayLayersPanel
                 layers={sidebarLayers}

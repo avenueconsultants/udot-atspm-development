@@ -4,6 +4,7 @@ import {
 } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useChartDefaults } from '@/features/charts/api'
+import ChartMessages from '@/features/charts/components/chartMessages/ChartMessages'
 import { useTimeOfDayReport } from '@/features/timeOfDay/api/getTimeOfDay'
 import TimeOfDayOptions from '@/features/timeOfDay/components/TimeOfDayOptions'
 import TimeOfDayResults from '@/features/timeOfDay/components/TimeOfDayResults'
@@ -39,7 +40,7 @@ import {
 } from '@/features/timeOfDay/types'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton } from '@mui/lab'
-import { Alert, Box, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { AxiosError } from 'axios'
 import { format, parseISO, startOfYesterday, subDays } from 'date-fns'
 import {
@@ -462,7 +463,14 @@ export default function TimeOfDayPage() {
           onChange={setFormState}
           schedulePresets={schedulePresets}
         />
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: 1.5,
+          }}
+        >
           <LoadingButton
             loading={isLoading}
             loadingPosition="start"
@@ -474,7 +482,17 @@ export default function TimeOfDayPage() {
             Generate Analysis
           </LoadingButton>
           {pageError.type !== 'NONE' && (
-            <Alert severity="error">{pageError.message}</Alert>
+            <ChartMessages
+              messages={[pageError.message]}
+              ariaLabel="Analysis errors"
+            />
+          )}
+          {result?.warnings && result.warnings.length > 0 && (
+            <ChartMessages
+              messages={result.warnings}
+              severity="warning"
+              ariaLabel="Analysis warnings"
+            />
           )}
         </Box>
       </Stack>

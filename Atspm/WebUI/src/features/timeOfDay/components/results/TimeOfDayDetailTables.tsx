@@ -4,6 +4,8 @@ import type {
 } from '@/api/reports'
 import {
   Box,
+  Checkbox,
+  FormControlLabel,
   Paper,
   Table,
   TableBody,
@@ -80,22 +82,75 @@ function SignalPeakBadge({
   )
 }
 
+function DetailSectionHeader({
+  title,
+  seriesVisible,
+  disabled,
+  onSetSeriesVisibility,
+}: {
+  title: string
+  seriesVisible: boolean
+  disabled: boolean
+  onSetSeriesVisibility: (visible: boolean) => void
+}) {
+  return (
+    <Box
+      sx={{
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'space-between',
+        mb: 1,
+      }}
+    >
+      <Typography variant="subtitle2">{title}</Typography>
+      <FormControlLabel
+        control={
+          <Checkbox
+            size="small"
+            checked={seriesVisible}
+            disabled={disabled}
+            onChange={(_, checked) => onSetSeriesVisibility(checked)}
+            inputProps={{ 'aria-label': `Toggle ${title}` }}
+            sx={{ p: 0.25 }}
+          />
+        }
+        label="Show on chart"
+        sx={{
+          m: 0,
+          gap: 0.5,
+          '& .MuiFormControlLabel-label': {
+            color: 'text.secondary',
+            fontSize: '0.75rem',
+          },
+        }}
+      />
+    </Box>
+  )
+}
+
 export function PeakList({
   title,
   peaks,
+  seriesVisible,
   selectedDetailKey,
   onSelectDetail,
+  onSetSeriesVisibility,
 }: {
   title: string
   peaks: TimeOfDayNumberedPeakEvent[]
+  seriesVisible: boolean
   selectedDetailKey?: string
   onSelectDetail: (detailKey: string) => void
+  onSetSeriesVisibility: (visible: boolean) => void
 }) {
   return (
     <Box>
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        {title}
-      </Typography>
+      <DetailSectionHeader
+        title={title}
+        seriesVisible={seriesVisible}
+        disabled={peaks.length === 0}
+        onSetSeriesVisibility={onSetSeriesVisibility}
+      />
       {peaks.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
           No peaks
@@ -166,21 +221,28 @@ export function CrossTrafficLocationList({
   period,
   locations,
   locationNumberMap,
+  seriesVisible,
   selectedDetailKey,
   onSelectDetail,
+  onSetSeriesVisibility,
 }: {
   title: string
   period: string
   locations: TimeOfDayCrossTrafficLocationDto[]
   locationNumberMap: TimeOfDayLocationNumberMap
+  seriesVisible: boolean
   selectedDetailKey?: string
   onSelectDetail: (detailKey: string) => void
+  onSetSeriesVisibility: (visible: boolean) => void
 }) {
   return (
     <Box>
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        {title}
-      </Typography>
+      <DetailSectionHeader
+        title={title}
+        seriesVisible={seriesVisible}
+        disabled={locations.length === 0}
+        onSetSeriesVisibility={onSetSeriesVisibility}
+      />
       {locations.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
           No locations
@@ -267,21 +329,28 @@ export function MovementPressureList({
   period,
   movements,
   locationNumberMap,
+  seriesVisible,
   selectedDetailKey,
   onSelectDetail,
+  onSetSeriesVisibility,
 }: {
   title: string
   period: string
   movements: TimeOfDayMovementPressureDto[]
   locationNumberMap: TimeOfDayLocationNumberMap
+  seriesVisible: boolean
   selectedDetailKey?: string
   onSelectDetail: (detailKey: string) => void
+  onSetSeriesVisibility: (visible: boolean) => void
 }) {
   return (
     <Box>
-      <Typography variant="subtitle2" sx={{ mb: 1 }}>
-        {title}
-      </Typography>
+      <DetailSectionHeader
+        title={title}
+        seriesVisible={seriesVisible}
+        disabled={movements.length === 0}
+        onSetSeriesVisibility={onSetSeriesVisibility}
+      />
       {movements.length === 0 ? (
         <Typography variant="body2" color="text.secondary">
           No movements
