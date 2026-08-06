@@ -6,6 +6,7 @@ import {
   getTimeOfDaySignalPeakDetailKey,
 } from '../transformers'
 
+import ChartMessages from '@/features/charts/components/chartMessages/ChartMessages'
 import TimeOfDayResults from './TimeOfDayResults'
 
 const mockChartHandlers = new Map<string, (params: unknown) => void>()
@@ -144,6 +145,9 @@ describe('TimeOfDayResults unified workspace', () => {
     ).toBeTruthy()
     expect(screen.getByText(/Wed, April 15, 2026/)).toBeTruthy()
     const summary = screen.getByRole('region', { name: 'Summary' })
+    expect(
+      within(summary).getByRole('heading', { name: 'Summary' })
+    ).toBeTruthy()
     expect(within(summary).getByText('Measured Peaks')).toBeTruthy()
     expect(within(summary).getByText('AM corridor peak')).toBeTruthy()
     expect(within(summary).getByText('PM corridor peak')).toBeTruthy()
@@ -189,6 +193,55 @@ describe('TimeOfDayResults unified workspace', () => {
     const summary = screen.getByRole('region', { name: 'Summary' })
     expect(within(summary).getByText('Review status')).toBeTruthy()
     expect(within(summary).queryByText('1 review item')).toBeNull()
+  })
+
+  test('renders multiple backend messages without rewriting them', () => {
+    render(
+      <ChartMessages
+        severity="warning"
+        ariaLabel="Analysis warnings"
+        messages={[
+          {
+            code: 'PartialLocationData',
+            locationIdentifier: '7117',
+            message:
+              'Location 7117 has usable volume data for 3 of 4 selected dates.',
+          },
+          {
+            code: 'PartialLocationData',
+            locationIdentifier: '7403',
+            message:
+              'Location 7403 has usable volume data for 3 of 4 selected dates.',
+          },
+        ]}
+      />
+    )
+
+    const warnings = screen.getByRole('alert', {
+      name: 'Analysis warnings',
+    })
+    const summaryToggle = within(warnings).getByRole('button', {
+      name: '2 warnings',
+    })
+    expect(summaryToggle.getAttribute('aria-expanded')).toBe('false')
+    expect(within(warnings).queryAllByRole('listitem')).toHaveLength(0)
+
+    fireEvent.click(summaryToggle)
+
+    expect(summaryToggle.getAttribute('aria-expanded')).toBe('true')
+    expect(within(warnings).getAllByRole('listitem')).toHaveLength(2)
+    expect(
+      within(warnings).getByText(
+        'Location 7117 has usable volume data for 3 of 4 selected dates.'
+      )
+    ).toBeTruthy()
+    expect(
+      within(warnings).getByText(
+        'Location 7403 has usable volume data for 3 of 4 selected dates.'
+      )
+    ).toBeTruthy()
+    expect(within(warnings).queryByText('Data quality')).toBeNull()
+    expect(within(warnings).queryByText('Incomplete date coverage')).toBeNull()
   })
 
   test('switches analysis modes while independently controlling schedule views', () => {
@@ -417,16 +470,26 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(
       screen.getByRole('tab', { name: 'Details' }).getAttribute('aria-selected')
     ).toBe('true')
-    const peaksButton = screen.getByRole('button', { name: 'Peaks' })
-    const crossTrafficButton = screen.getByRole('button', {
-      name: 'Cross Traffic',
+    expect(screen.queryByRole('button', { name: 'Peaks' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'Cross Traffic' })).toBeNull()
+    expect(
+      screen.queryByRole('button', { name: 'Movement Pressure' })
+    ).toBeNull()
+    const amSignalPeaksToggle = screen.getByRole('checkbox', {
+      name: 'Toggle AM Signal Peaks',
     })
-    const movementPressureButton = screen.getByRole('button', {
-      name: 'Movement Pressure',
+    expect(
+      within(screen.getByRole('region', { name: 'Peaks' })).getAllByText(
+        'Show on chart'
+      )
+    ).toHaveLength(2)
+    expect((amSignalPeaksToggle as HTMLInputElement).checked).toBe(true)
+    fireEvent.click(amSignalPeaksToggle)
+    expect((amSignalPeaksToggle as HTMLInputElement).checked).toBe(false)
+    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
+      type: 'legendUnSelect',
+      name: 'AM Signal Peaks',
     })
-    expect(peaksButton.getAttribute('aria-pressed')).toBe('true')
-    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('false')
-    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('false')
     expect(
       screen.queryByText('The current schedule is shared by one location.')
     ).toBeNull()
@@ -462,7 +525,27 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     })
 
+    const crossTrafficButton = screen.getByRole('button', {
+      name: 'Cross Traffic',
+    })
+    const movementPressureButton = screen.getByRole('button', {
+      name: 'Movement Pressure',
+    })
+    expect(
+      window.getComputedStyle(
+        screen.getByRole('navigation', { name: 'Pressure detail views' })
+      ).position
+    ).toBe('sticky')
     expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('true')
+    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('false')
+    expect(screen.queryByRole('button', { name: 'Peaks' })).toBeNull()
+    expect(
+      (
+        screen.getByRole('checkbox', {
+          name: 'Toggle AM Cross Traffic Locations',
+        }) as HTMLInputElement
+      ).checked
+    ).toBe(true)
     expect(
       screen.queryByRole('table', { name: 'AM Signal Peaks peak list' })
     ).toBeNull()
@@ -500,6 +583,16 @@ describe('TimeOfDayResults unified workspace', () => {
     fireEvent.click(movementPressureButton)
     expect(movementPressureButton.getAttribute('aria-pressed')).toBe('true')
     expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('false')
+    const amMovementPressureToggle = screen.getByRole('checkbox', {
+      name: 'Toggle AM Movement Pressure',
+    })
+    expect((amMovementPressureToggle as HTMLInputElement).checked).toBe(false)
+    fireEvent.click(amMovementPressureToggle)
+    expect((amMovementPressureToggle as HTMLInputElement).checked).toBe(true)
+    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
+      type: 'legendSelect',
+      name: 'AM Movement Pressure',
+    })
     expect(
       screen.getByRole('table', {
         name: 'AM Movement Pressure movement pressure',

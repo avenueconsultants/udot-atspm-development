@@ -9,6 +9,7 @@ import {
 } from '../transformers'
 import TimeOfDayChartWorkspace from './TimeOfDayChartWorkspace'
 import TimeOfDaySchedules from './TimeOfDaySchedules'
+import type { TimeOfDayAnalysisMode } from './chart/TimeOfDayLayersPanel'
 import TimeOfDayDetailsPanel from './results/TimeOfDayDetailsPanel'
 import TimeOfDayLocationData from './results/TimeOfDayLocationData'
 import TimeOfDaySummary from './results/TimeOfDaySummary'
@@ -29,7 +30,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     () => buildSplitPressureLocationNumberMap(result),
     [result]
   )
-  const warnings = result.warnings ?? []
   const hasChartData =
     hasPlanProfileData(result) ||
     hasSplitPressureData(result) ||
@@ -38,17 +38,26 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     )
   const renderDetails = useCallback(
     ({
+      activeMode,
+      selectedSeries,
       selectedDetailKey,
       onSelectDetail,
+      onSetSeriesVisibility,
     }: {
+      activeMode: TimeOfDayAnalysisMode
+      selectedSeries: Record<string, boolean>
       selectedDetailKey?: string
       onSelectDetail: (detailKey: string) => void
+      onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
     }) => (
       <TimeOfDayDetailsPanel
         result={result}
+        activeMode={activeMode}
+        selectedSeries={selectedSeries}
         locationNumberMap={splitPressureLocationNumberMap}
         selectedDetailKey={selectedDetailKey}
         onSelectDetail={onSelectDetail}
+        onSetSeriesVisibility={onSetSeriesVisibility}
       />
     ),
     [result, splitPressureLocationNumberMap]
@@ -66,18 +75,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
         ml: { xs: -1, sm: -3 },
       }}
     >
-      {warnings.length > 0 && (
-        <Stack spacing={1} sx={{ mt: 2, mx: 2 }}>
-          {warnings.map((warning, index) => (
-            <Alert key={`${warning.code}-${index}`} severity="warning">
-              {[warning.locationIdentifier, warning.message]
-                .filter(Boolean)
-                .join(': ')}
-            </Alert>
-          ))}
-        </Stack>
-      )}
-
       <Tabs
         value={activeTab}
         onChange={(_, value: TimeOfDayResultsTab) => setActiveTab(value)}

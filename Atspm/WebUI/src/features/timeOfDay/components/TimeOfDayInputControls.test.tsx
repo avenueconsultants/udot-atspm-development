@@ -95,9 +95,9 @@ describe('time-of-day inputs', () => {
 
     expect(
       screen.getByRole('combobox', {
-        name: 'Schedule threshold preset',
+        name: 'Roadway type threshold preset',
       }).textContent
-    ).toBe('Suburban Mixed-Use')
+    ).toBe('FHWA Suburban Mixed-Use')
     expect(
       screen.getByText(/volume levels that start and end AM\/PM plans/)
     ).toBeTruthy()
@@ -132,7 +132,7 @@ describe('time-of-day inputs', () => {
 
     expect(
       screen.getByRole('combobox', {
-        name: 'Schedule threshold preset',
+        name: 'Roadway type threshold preset',
       }).textContent
     ).toBe('Custom')
   })
@@ -148,12 +148,14 @@ describe('time-of-day inputs', () => {
     )
 
     const presetSelect = screen.getByRole('combobox', {
-      name: 'Schedule threshold preset',
+      name: 'Roadway type threshold preset',
     })
-    expect(presetSelect.textContent).toBe('Suburban Mixed-Use')
+    expect(presetSelect.textContent).toBe('FHWA Suburban Mixed-Use')
 
     fireEvent.mouseDown(presetSelect)
-    fireEvent.click(screen.getByRole('option', { name: 'Retail / Commercial' }))
+    fireEvent.click(
+      screen.getByRole('option', { name: 'FHWA Retail / Commercial' })
+    )
 
     expect(handleChange).toHaveBeenLastCalledWith({
       ...options,
@@ -170,7 +172,7 @@ describe('time-of-day inputs', () => {
 
     expect(
       screen.getByRole('combobox', {
-        name: 'Schedule threshold preset',
+        name: 'Roadway type threshold preset',
       }).textContent
     ).toBe('Custom')
   })

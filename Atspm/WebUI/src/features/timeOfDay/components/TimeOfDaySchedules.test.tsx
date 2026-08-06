@@ -139,15 +139,22 @@ describe('TimeOfDaySchedules', () => {
     expect(
       screen.getByRole('region', { name: 'Exceptions — 2 locations' })
     ).toBeTruthy()
-    expect(screen.getByTestId('schedule-proposed-buffer-before')).toBeTruthy()
-    expect(screen.getByTestId('schedule-proposed-buffer-after')).toBeTruthy()
-    expect(screen.getByTestId('schedule-common-buffer-before')).toBeTruthy()
-    expect(screen.getByTestId('schedule-common-buffer-after')).toBeTruthy()
-    expect(screen.getByTestId('schedule-exception-buffer-before')).toBeTruthy()
-    expect(screen.getByTestId('schedule-exception-buffer-after')).toBeTruthy()
-    expect(screen.getByTestId('schedule-proposed-buffer-right')).toBeTruthy()
-    expect(screen.getByTestId('schedule-common-buffer-right')).toBeTruthy()
-    expect(screen.getByTestId('schedule-exception-buffer-right')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Proposed' })).toBeTruthy()
+    expect(screen.queryByText('Proposed schedule')).toBeNull()
+    expect(screen.getByText('Proposal').tagName).toBe('EM')
+    expect(screen.getByRole('heading', { name: 'Common' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Exceptions' })).toBeTruthy()
+    expect(screen.getByText('The recommended schedule.')).toBeTruthy()
+    expect(
+      screen.getByText(
+        'The existing schedule used by the largest group of selected locations.'
+      )
+    ).toBeTruthy()
+    expect(
+      screen.getByText(
+        'Selected locations with an existing schedule that differs from the common schedule.'
+      )
+    ).toBeTruthy()
     expect(screen.getByText('#7174 — Main St & 100 S')).toBeTruthy()
     expect(screen.getByText('#7621 — State St & Center St')).toBeTruthy()
     expect(screen.getByText('#7015 — Broadway & 200 S')).toBeTruthy()
@@ -175,10 +182,18 @@ describe('TimeOfDaySchedules', () => {
     expect(screen.queryByText('Different existing')).toBeNull()
     expect(screen.queryByText('All selected locations')).toBeNull()
     expect(
-      screen.getByText(
-        'Schedule data is unavailable for 7077 - No Schedule Ave.'
-      )
+      screen.getByRole('region', {
+        name: 'Unavailable schedules — 1 location',
+      })
     ).toBeTruthy()
+    expect(screen.getByText('#7077 — No Schedule Ave')).toBeTruthy()
+    expect(
+      screen.getByRole('img', {
+        name: 'No current schedule for #7077 — No Schedule Ave: No data',
+      })
+    ).toBeTruthy()
+    expect(screen.getByText('No data')).toBeTruthy()
+    expect(screen.queryByText(/Schedule data is unavailable for/)).toBeNull()
   })
 
   test('places Schedules before Location Data in the results tabs', () => {

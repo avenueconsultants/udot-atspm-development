@@ -1,5 +1,5 @@
 import type { TimeOfDayResult } from '@/api/reports'
-import { Button, ButtonGroup, Stack } from '@mui/material'
+import { Box, Button, ButtonGroup, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import type { TimeOfDayLocationNumberMap } from '../../transformers'
 import {
@@ -8,6 +8,7 @@ import {
   getMovementPressures,
 } from '../../transformers'
 import { timeOfDayToggleGroupSx } from '../chart/TimeOfDayChartHeader'
+import type { TimeOfDayAnalysisMode } from '../chart/TimeOfDayLayersPanel'
 import {
   CrossTrafficLocationList,
   MovementPressureList,
@@ -15,83 +16,111 @@ import {
 } from './TimeOfDayDetailTables'
 
 const periods = ['AM', 'Midday', 'PM']
-type TimeOfDayDetailsView = 'peaks' | 'cross-traffic' | 'movement-pressure'
+type TimeOfDayPressureDetailsView = 'cross-traffic' | 'movement-pressure'
 
 export default function TimeOfDayDetailsPanel({
   result,
+  activeMode,
+  selectedSeries,
   locationNumberMap,
   selectedDetailKey,
   onSelectDetail,
+  onSetSeriesVisibility,
 }: {
   result: TimeOfDayResult
+  activeMode: TimeOfDayAnalysisMode
+  selectedSeries: Record<string, boolean>
   locationNumberMap: TimeOfDayLocationNumberMap
   selectedDetailKey?: string
   onSelectDetail: (detailKey: string) => void
+  onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
 }) {
-  const [activeView, setActiveView] = useState<TimeOfDayDetailsView>('peaks')
+  const [pressureView, setPressureView] =
+    useState<TimeOfDayPressureDetailsView>('cross-traffic')
 
   useEffect(() => {
     if (selectedDetailKey?.startsWith('crosstraffic:')) {
-      setActiveView('cross-traffic')
+      setPressureView('cross-traffic')
     } else if (selectedDetailKey?.startsWith('movementpressure:')) {
-      setActiveView('movement-pressure')
-    } else if (selectedDetailKey?.startsWith('signalpeak:')) {
-      setActiveView('peaks')
+      setPressureView('movement-pressure')
     }
   }, [selectedDetailKey])
 
   return (
     <Stack spacing={2}>
-      <ButtonGroup
-        size="small"
-        variant="outlined"
-        aria-label="Time-of-day detail views"
-        sx={{ ...timeOfDayToggleGroupSx, alignSelf: 'flex-start' }}
-      >
-        <Button
-          className={activeView === 'peaks' ? 'is-active' : undefined}
-          onClick={() => setActiveView('peaks')}
-          aria-pressed={activeView === 'peaks'}
+      {activeMode === 'pressure' && (
+        <Box
+          component="nav"
+          aria-label="Pressure detail views"
+          sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            bgcolor: 'common.white',
+            px: 1.25,
+            py: 0.75,
+          }}
         >
-          Peaks
-        </Button>
-        <Button
-          className={activeView === 'cross-traffic' ? 'is-active' : undefined}
-          onClick={() => setActiveView('cross-traffic')}
-          aria-pressed={activeView === 'cross-traffic'}
-        >
-          Cross Traffic
-        </Button>
-        <Button
-          className={
-            activeView === 'movement-pressure' ? 'is-active' : undefined
-          }
-          onClick={() => setActiveView('movement-pressure')}
-          aria-pressed={activeView === 'movement-pressure'}
-        >
-          Movement Pressure
-        </Button>
-      </ButtonGroup>
+          <ButtonGroup
+            size="small"
+            variant="outlined"
+            aria-label="Time-of-day detail views"
+            sx={timeOfDayToggleGroupSx}
+          >
+            <Button
+              className={
+                pressureView === 'cross-traffic' ? 'is-active' : undefined
+              }
+              onClick={() => setPressureView('cross-traffic')}
+              aria-pressed={pressureView === 'cross-traffic'}
+            >
+              Cross Traffic
+            </Button>
+            <Button
+              className={
+                pressureView === 'movement-pressure' ? 'is-active' : undefined
+              }
+              onClick={() => setPressureView('movement-pressure')}
+              aria-pressed={pressureView === 'movement-pressure'}
+            >
+              Movement Pressure
+            </Button>
+          </ButtonGroup>
+        </Box>
+      )}
 
-      {activeView === 'peaks' && (
-        <Stack spacing={2} role="region" aria-label="Peaks">
+      {activeMode === 'recommendation' && (
+        <Stack spacing={2} role="region" aria-label="Peaks" sx={{ p: 1.25 }}>
           <PeakList
             title="AM Signal Peaks"
             peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
+            seriesVisible={Boolean(selectedSeries['AM Signal Peaks'])}
             selectedDetailKey={selectedDetailKey}
             onSelectDetail={onSelectDetail}
+            onSetSeriesVisibility={(visible) =>
+              onSetSeriesVisibility(['AM Signal Peaks'], visible)
+            }
           />
           <PeakList
             title="PM Signal Peaks"
             peaks={getLocationPeakEvents(result.planProfile?.peaks, 'PM')}
+            seriesVisible={Boolean(selectedSeries['PM Signal Peaks'])}
             selectedDetailKey={selectedDetailKey}
             onSelectDetail={onSelectDetail}
+            onSetSeriesVisibility={(visible) =>
+              onSetSeriesVisibility(['PM Signal Peaks'], visible)
+            }
           />
         </Stack>
       )}
 
-      {activeView === 'cross-traffic' && (
-        <Stack spacing={2} role="region" aria-label="Cross Traffic">
+      {activeMode === 'pressure' && pressureView === 'cross-traffic' && (
+        <Stack
+          spacing={2}
+          role="region"
+          aria-label="Cross Traffic"
+          sx={{ px: 1.25, pb: 1.25 }}
+        >
           {periods.map((period) => (
             <CrossTrafficLocationList
               key={period}
@@ -102,15 +131,29 @@ export default function TimeOfDayDetailsPanel({
                 period
               )}
               locationNumberMap={locationNumberMap}
+              seriesVisible={Boolean(
+                selectedSeries[`${period} Cross Traffic Locations`]
+              )}
               selectedDetailKey={selectedDetailKey}
               onSelectDetail={onSelectDetail}
+              onSetSeriesVisibility={(visible) =>
+                onSetSeriesVisibility(
+                  [`${period} Cross Traffic Locations`],
+                  visible
+                )
+              }
             />
           ))}
         </Stack>
       )}
 
-      {activeView === 'movement-pressure' && (
-        <Stack spacing={2} role="region" aria-label="Movement Pressure">
+      {activeMode === 'pressure' && pressureView === 'movement-pressure' && (
+        <Stack
+          spacing={2}
+          role="region"
+          aria-label="Movement Pressure"
+          sx={{ px: 1.25, pb: 1.25 }}
+        >
           {['AM', 'PM'].map((period) => (
             <MovementPressureList
               key={period}
@@ -122,8 +165,14 @@ export default function TimeOfDayDetailsPanel({
                 locationNumberMap
               )}
               locationNumberMap={locationNumberMap}
+              seriesVisible={Boolean(
+                selectedSeries[`${period} Movement Pressure`]
+              )}
               selectedDetailKey={selectedDetailKey}
               onSelectDetail={onSelectDetail}
+              onSetSeriesVisibility={(visible) =>
+                onSetSeriesVisibility([`${period} Movement Pressure`], visible)
+              }
             />
           ))}
         </Stack>

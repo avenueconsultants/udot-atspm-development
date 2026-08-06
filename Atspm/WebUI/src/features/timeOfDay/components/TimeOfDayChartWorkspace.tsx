@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import type { TimeOfDayAnalysisModel } from '../transformers'
 import type { TimeOfDaySidebarTab } from './chart/TimeOfDayChartHeader'
 import TimeOfDayChartHeader from './chart/TimeOfDayChartHeader'
@@ -17,11 +17,56 @@ import TimeOfDayLayersPanel, {
   isScheduleLayerSelected,
 } from './chart/TimeOfDayLayersPanel'
 
+const sidebarWidths: Record<TimeOfDaySidebarTab, number> = {
+  layers: 360,
+  details: 700,
+}
+
+const sidebarTransition = (theme: {
+  transitions: {
+    create: (
+      properties: string | string[],
+      options: { duration: number; easing: string }
+    ) => string
+    duration: { standard: number }
+    easing: { easeInOut: string }
+  }
+}) =>
+  theme.transitions.create('width', {
+    duration: theme.transitions.duration.standard,
+    easing: theme.transitions.easing.easeInOut,
+  })
+
+const SidebarDetails = memo(
+  function SidebarDetails({
+    active,
+    children,
+  }: {
+    active: boolean
+    children: ReactNode
+  }) {
+    return (
+      <Box
+        sx={{
+          display: active ? 'block' : 'none',
+          width: { xs: '100%', md: sidebarWidths.details },
+        }}
+      >
+        {children}
+      </Box>
+    )
+  },
+  (previous, next) => !previous.active && !next.active
+)
+
 interface TimeOfDayChartWorkspaceProps {
   model: TimeOfDayAnalysisModel
   renderDetails: (props: {
+    activeMode: TimeOfDayAnalysisMode
+    selectedSeries: Record<string, boolean>
     selectedDetailKey?: string
     onSelectDetail: (detailKey: string) => void
+    onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
   }) => ReactNode
 }
 
@@ -32,6 +77,7 @@ export default function TimeOfDayChartWorkspace({
   const [activeMode, setActiveMode] =
     useState<TimeOfDayAnalysisMode>('recommendation')
   const [sidebarTab, setSidebarTab] = useState<TimeOfDaySidebarTab>('layers')
+  const [hasOpenedDetails, setHasOpenedDetails] = useState(false)
   const [selectedSeries, setSelectedSeries] = useState<Record<string, boolean>>(
     () => model.defaultSelectedSeries
   )
@@ -40,6 +86,7 @@ export default function TimeOfDayChartWorkspace({
   useEffect(() => {
     setActiveMode('recommendation')
     setSidebarTab('layers')
+    setHasOpenedDetails(false)
     setSelectedSeries(model.defaultSelectedSeries)
     setSelectedDetailKey(undefined)
   }, [model])
@@ -122,10 +169,16 @@ export default function TimeOfDayChartWorkspace({
         setSeriesVisibility([target.seriesName], true)
       }
       setSelectedDetailKey(detailKey)
+      setHasOpenedDetails(true)
       setSidebarTab('details')
     },
     [changeAnalysisMode, model.detailTargets, model.layers, setSeriesVisibility]
   )
+
+  const changeSidebarTab = useCallback((tab: TimeOfDaySidebarTab) => {
+    if (tab === 'details') setHasOpenedDetails(true)
+    setSidebarTab(tab)
+  }, [])
 
   const showPercentAxis = model.percentSeriesNames.some(
     (seriesName) => selectedSeries[seriesName]
@@ -134,13 +187,27 @@ export default function TimeOfDayChartWorkspace({
     () => getSidebarLayers(model.layers, [activeMode]),
     [activeMode, model.layers]
   )
-  const sidebarWidth = sidebarTab === 'details' ? 650 : 360
+  const sidebarWidth = sidebarWidths[sidebarTab]
   const selectedDetail = selectedDetailKey
     ? model.detailTargets[selectedDetailKey]
     : undefined
   const details = useMemo(
-    () => renderDetails({ selectedDetailKey, onSelectDetail: selectDetail }),
-    [renderDetails, selectDetail, selectedDetailKey]
+    () =>
+      renderDetails({
+        activeMode,
+        selectedSeries,
+        selectedDetailKey,
+        onSelectDetail: selectDetail,
+        onSetSeriesVisibility: setSeriesVisibility,
+      }),
+    [
+      activeMode,
+      renderDetails,
+      selectDetail,
+      selectedDetailKey,
+      selectedSeries,
+      setSeriesVisibility,
+    ]
   )
 
   return (
@@ -150,7 +217,7 @@ export default function TimeOfDayChartWorkspace({
         sidebarTab={sidebarTab}
         sidebarWidth={sidebarWidth}
         activeMode={activeMode}
-        onChangeSidebarTab={setSidebarTab}
+        onChangeSidebarTab={changeSidebarTab}
         onChangeAnalysisMode={changeAnalysisMode}
       />
       <Box
@@ -188,18 +255,40 @@ export default function TimeOfDayChartWorkspace({
             display: 'flex',
             flexDirection: 'column',
             bgcolor: 'common.white',
+            overflow: 'hidden',
+            transition: sidebarTransition,
+            '@media (prefers-reduced-motion: reduce)': {
+              transition: 'none',
+            },
           }}
         >
-          <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 1.25 }}>
-            {sidebarTab === 'layers' ? (
+          <Box
+            sx={{
+              flex: 1,
+              minHeight: 0,
+              overflowY: 'auto',
+              overflowX: 'hidden',
+            }}
+          >
+            <Box
+              sx={{
+                display: sidebarTab === 'layers' ? 'block' : 'none',
+                width: { xs: '100%', md: sidebarWidths.layers },
+                boxSizing: 'border-box',
+                p: 1.25,
+              }}
+            >
               <TimeOfDayLayersPanel
                 layers={sidebarLayers}
                 selectedSeries={selectedSeries}
                 onToggleScheduleView={toggleScheduleView}
                 onSetSeriesVisibility={setSeriesVisibility}
               />
-            ) : (
-              details
+            </Box>
+            {hasOpenedDetails && (
+              <SidebarDetails active={sidebarTab === 'details'}>
+                {details}
+              </SidebarDetails>
             )}
           </Box>
         </Box>
