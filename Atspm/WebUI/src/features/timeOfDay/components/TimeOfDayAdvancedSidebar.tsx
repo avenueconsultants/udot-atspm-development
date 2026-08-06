@@ -372,7 +372,7 @@ export default function TimeOfDayAdvancedSidebar({
       dismissOnBackdrop
       title={
         activeSidebar === 'schedule'
-          ? 'Schedule Thresholds'
+          ? 'Roadway Type Thresholds'
           : 'Occupancy and Review'
       }
       subtitle={

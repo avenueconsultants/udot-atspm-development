@@ -30,7 +30,7 @@ export default function TimeOfDaySchedulePresetSelect({
       select
       fullWidth
       size="small"
-      label="Schedule threshold preset"
+      label="Roadway type threshold preset"
       value={matchingPreset ? String(matchingPreset.id) : 'custom'}
       onChange={(event) => handlePresetChange(event.target.value)}
       sx={{ flex: 1, minWidth: 0 }}
@@ -40,7 +40,7 @@ export default function TimeOfDaySchedulePresetSelect({
       </MenuItem>
       {presets.map((preset) => (
         <MenuItem key={preset.id} value={String(preset.id)}>
-          {preset.name}
+          FHWA {preset.name}
         </MenuItem>
       ))}
     </TextField>

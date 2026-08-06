@@ -116,7 +116,9 @@ export default function TimeOfDayAnalysisOptions({
 
             <Box component={'section'}>
               <Divider sx={{ mb: 1.5 }}>
-                <Typography variant={'caption'}>Schedule Thresholds</Typography>
+                <Typography variant={'caption'}>
+                  Roadway Type Thresholds
+                </Typography>
               </Divider>
               <Stack direction="row" spacing={1} alignItems="flex-start">
                 <TimeOfDaySchedulePresetSelect
@@ -128,7 +130,7 @@ export default function TimeOfDayAnalysisOptions({
                   variant="outlined"
                   endIcon={<ChevronRightIcon />}
                   onClick={() => openAnalysisSidebar('schedule')}
-                  aria-label="Customize schedule thresholds"
+                  aria-label="Customize roadway type thresholds"
                   sx={{
                     height: 40,
                     minWidth: 88,

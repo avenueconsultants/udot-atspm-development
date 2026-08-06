@@ -19,7 +19,7 @@ import TimeOfDayLayersPanel, {
 
 const sidebarWidths: Record<TimeOfDaySidebarTab, number> = {
   layers: 360,
-  details: 650,
+  details: 700,
 }
 
 const sidebarTransition = (theme: {
