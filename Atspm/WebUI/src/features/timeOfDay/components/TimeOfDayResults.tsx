@@ -96,15 +96,15 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
             <TimeOfDayChartWorkspace
               model={analysisModel}
               renderDetails={renderDetails}
+              summary={
+                <TimeOfDaySummary
+                  result={result}
+                  peakItems={analysisModel.header.summaryItems}
+                />
+              }
             />
           ) : (
             <Alert severity="warning">No Data Available</Alert>
-          )}
-          {hasChartData && (
-            <TimeOfDaySummary
-              result={result}
-              peakItems={analysisModel.header.summaryItems}
-            />
           )}
         </Paper>
       )}

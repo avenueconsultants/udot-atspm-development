@@ -133,31 +133,35 @@ describe('TimeOfDayResults unified workspace', () => {
     const locationDataTab = screen.getByRole('tab', { name: 'Location Data' })
 
     expect(chartTab.getAttribute('aria-selected')).toBe('true')
-    expect(
-      screen.getByRole('img', {
-        name: 'Corridor time-of-day analysis chart',
-      })
-    ).toBeTruthy()
+    const chart = screen.getByRole('img', {
+      name: 'Corridor time-of-day analysis chart',
+    })
+    expect(chart).toBeTruthy()
     expect(
       screen.getByRole('heading', {
         name: 'Corridor Time-of-Day Analysis',
       })
     ).toBeTruthy()
     expect(screen.getByText(/Wed, April 15, 2026/)).toBeTruthy()
-    const summary = screen.getByRole('region', { name: 'Summary' })
+    const summary = screen.getByRole('region', { name: 'Chart summary' })
+    const sidebar = screen.getByRole('complementary', {
+      name: 'Time-of-day chart controls',
+    })
+    expect(summary.parentElement?.contains(chart)).toBe(true)
+    expect(summary.parentElement?.firstElementChild).toBe(summary)
+    expect(summary.parentElement?.parentElement).toBe(sidebar.parentElement)
     expect(
-      within(summary).getByRole('heading', { name: 'Summary' })
-    ).toBeTruthy()
-    expect(within(summary).getByText('Measured Peaks')).toBeTruthy()
-    expect(within(summary).getByText('AM corridor peak')).toBeTruthy()
-    expect(within(summary).getByText('PM corridor peak')).toBeTruthy()
+      within(summary).queryByRole('heading', { name: 'Summary' })
+    ).toBeNull()
+    expect(within(summary).getByLabelText('Measured peaks')).toBeTruthy()
+    expect(within(summary).getByText('AM peak')).toBeTruthy()
+    expect(within(summary).getByText('PM peak')).toBeTruthy()
     expect(within(summary).getByText('Peak cross traffic')).toBeTruthy()
-    expect(within(summary).getByText('Proposed Plan Schedule')).toBeTruthy()
-    expect(within(summary).getByText('00:00–07:00')).toBeTruthy()
-    expect(within(summary).getByText('07:00–09:00')).toBeTruthy()
-    expect(within(summary).getByText('Free')).toBeTruthy()
-    expect(within(summary).getByText('Plan 1')).toBeTruthy()
-    expect(within(summary).getByText('1 review item')).toBeTruthy()
+    expect(within(summary).getByTestId('WbSunnyOutlinedIcon')).toBeTruthy()
+    expect(within(summary).getByTestId('DarkModeOutlinedIcon')).toBeTruthy()
+    expect(within(summary).getByTestId('ShuffleIcon')).toBeTruthy()
+    expect(within(summary).queryByText('Proposed Plan Schedule')).toBeNull()
+    expect(within(summary).getByText('Review')).toBeTruthy()
     expect(summary.textContent).toContain(
       'Review the AM split at location 7191.'
     )
@@ -190,9 +194,9 @@ describe('TimeOfDayResults unified workspace', () => {
       />
     )
 
-    const summary = screen.getByRole('region', { name: 'Summary' })
+    const summary = screen.getByRole('region', { name: 'Chart summary' })
     expect(within(summary).getByText('Review status')).toBeTruthy()
-    expect(within(summary).queryByText('1 review item')).toBeNull()
+    expect(within(summary).queryByText('Review')).toBeNull()
   })
 
   test('renders multiple backend messages without rewriting them', () => {

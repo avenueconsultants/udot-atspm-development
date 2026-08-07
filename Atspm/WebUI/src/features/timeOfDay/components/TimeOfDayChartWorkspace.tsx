@@ -21,6 +21,7 @@ const sidebarWidths: Record<TimeOfDaySidebarTab, number> = {
   layers: 360,
   details: 700,
 }
+const chartHeight = 640
 
 const sidebarTransition = (theme: {
   transitions: {
@@ -61,6 +62,7 @@ const SidebarDetails = memo(
 
 interface TimeOfDayChartWorkspaceProps {
   model: TimeOfDayAnalysisModel
+  summary: ReactNode
   renderDetails: (props: {
     activeMode: TimeOfDayAnalysisMode
     selectedSeries: Record<string, boolean>
@@ -72,6 +74,7 @@ interface TimeOfDayChartWorkspaceProps {
 
 export default function TimeOfDayChartWorkspace({
   model,
+  summary,
   renderDetails,
 }: TimeOfDayChartWorkspaceProps) {
   const [activeMode, setActiveMode] =
@@ -224,21 +227,24 @@ export default function TimeOfDayChartWorkspace({
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          minHeight: { xs: 0, md: 840 },
+          minHeight: { xs: 0, md: chartHeight },
           border: '1px solid',
           borderColor: 'divider',
         }}
       >
-        <Box sx={{ flex: 1, minWidth: 0, overflowX: 'auto' }}>
-          <Box sx={{ height: 840, minWidth: 600 }}>
-            <TimeOfDayEChart
-              option={model.option}
-              selectedSeries={selectedSeries}
-              showPercentAxis={showPercentAxis}
-              selectedDetail={selectedDetail}
-              onSelectDetail={selectDetail}
-              onToggleScheduleView={toggleScheduleView}
-            />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          {summary}
+          <Box sx={{ overflowX: 'auto' }}>
+            <Box sx={{ height: chartHeight, minWidth: 600 }}>
+              <TimeOfDayEChart
+                option={model.option}
+                selectedSeries={selectedSeries}
+                showPercentAxis={showPercentAxis}
+                selectedDetail={selectedDetail}
+                onSelectDetail={selectDetail}
+                onToggleScheduleView={toggleScheduleView}
+              />
+            </Box>
           </Box>
         </Box>
         <Box
@@ -247,7 +253,7 @@ export default function TimeOfDayChartWorkspace({
           sx={{
             width: { xs: '100%', md: sidebarWidth },
             flexShrink: 0,
-            height: { xs: 'auto', md: 840 },
+            minHeight: { xs: 0, md: chartHeight },
             borderLeft: { xs: 0, md: '1px solid' },
             borderTop: { xs: '1px solid', md: 0 },
             borderLeftColor: { md: 'divider' },

@@ -1,3 +1,4 @@
+import { DashedLineSeriesSymbol } from '@/features/charts/utils'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Box, Checkbox, IconButton, Paper, Typography } from '@mui/material'
@@ -90,7 +91,42 @@ export const getSidebarLayers = (
     return mode === undefined || activeModes.includes(mode)
   })
 
+const dashedLineSvgPath = DashedLineSeriesSymbol.replace(
+  /^path:\/\//,
+  ''
+).replace(/zm?,\s*/g, 'z ')
+
+function DashedLinePreview({
+  color,
+  width = 34,
+  height = 4,
+}: {
+  color: string
+  width?: number
+  height?: number
+}) {
+  return (
+    <Box
+      component="svg"
+      viewBox="180 880 1660 240"
+      preserveAspectRatio="none"
+      aria-hidden
+      sx={{
+        display: 'block',
+        width,
+        height,
+        flexShrink: 0,
+        color,
+        overflow: 'visible',
+      }}
+    >
+      <path d={dashedLineSvgPath} fill="currentColor" />
+    </Box>
+  )
+}
+
 function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
+  const previewColors = [layer.color, ...(layer.additionalColors ?? [])]
   const commonLineSx = {
     width: 34,
     borderTop: '3px solid',
@@ -127,16 +163,51 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
           }}
         />
       ) : layer.preview === 'star' ? (
-        <Box
-          sx={{
-            width: 18,
-            height: 18,
-            bgcolor: layer.color,
-            opacity: 0.82,
-            clipPath:
-              'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%)',
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {previewColors.map((color, index) => (
+            <Box
+              key={`${color}-${index}`}
+              sx={{
+                width: previewColors.length > 1 ? 16 : 18,
+                height: previewColors.length > 1 ? 16 : 18,
+                ml: index === 0 ? 0 : '-6px',
+                bgcolor: color,
+                opacity: 0.82,
+                zIndex: index + 1,
+                clipPath:
+                  'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%)',
+              }}
+            />
+          ))}
+        </Box>
+      ) : (layer.preview === 'circle' || layer.preview === 'square') &&
+        (previewColors.length > 1 || layer.previewLabel) ? (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {previewColors.map((color, index) => (
+            <Box
+              key={`${color}-${index}`}
+              sx={{
+                width: 16,
+                height: 16,
+                ml: index === 0 ? 0 : '-6px',
+                borderRadius: layer.preview === 'circle' ? '50%' : '2px',
+                bgcolor: color,
+                color: 'common.white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 9,
+                fontWeight: 600,
+                lineHeight: 1,
+                opacity: 0.82,
+                zIndex: index + 1,
+                boxShadow: '0 0 0 1px #eef1f5',
+              }}
+            >
+              {index === previewColors.length - 1 ? layer.previewLabel : null}
+            </Box>
+          ))}
+        </Box>
       ) : layer.preview === 'circle' || layer.preview === 'square' ? (
         <Box
           sx={{
@@ -147,12 +218,30 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
             opacity: 0.82,
           }}
         />
+      ) : layer.preview === 'dashed-line' && previewColors.length > 1 ? (
+        <Box
+          sx={{
+            width: 34,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.25,
+          }}
+        >
+          {previewColors.map((color, index) => (
+            <DashedLinePreview
+              key={`${color}-${index}`}
+              color={color}
+              height={4}
+            />
+          ))}
+        </Box>
+      ) : layer.preview === 'dashed-line' ? (
+        <DashedLinePreview color={layer.color} />
       ) : (
         <Box
           sx={{
             ...commonLineSx,
-            borderTopStyle:
-              layer.preview === 'dashed-line' ? 'dashed' : 'solid',
+            borderTopStyle: 'solid',
           }}
         />
       )}
@@ -168,6 +257,9 @@ export default function TimeOfDayLayersPanel({
 }: TimeOfDayLayersPanelProps) {
   const [collapsedGroups, setCollapsedGroups] = useState<
     Partial<Record<TimeOfDayChartLayerGroup, boolean>>
+  >({})
+  const [expandedLayerDetails, setExpandedLayerDetails] = useState<
+    Record<string, boolean>
   >({})
 
   return (
@@ -252,6 +344,9 @@ export default function TimeOfDayLayersPanel({
                     visibleCount === layer.seriesNames.length
                   const someLayerSeriesVisible =
                     visibleCount > 0 && !allLayerSeriesVisible
+                  const seriesControls = layer.seriesControls ?? []
+                  const detailsExpanded =
+                    expandedLayerDetails[layer.id] === true
 
                   return (
                     <Paper
@@ -288,28 +383,51 @@ export default function TimeOfDayLayersPanel({
                           >
                             {layer.label}
                           </Typography>
-                          <Checkbox
-                            size="small"
-                            checked={allLayerSeriesVisible}
-                            indeterminate={
-                              !layerScheduleView && someLayerSeriesVisible
-                            }
-                            disabled={!layer.available}
-                            onChange={() => {
-                              if (layerScheduleView) {
-                                onToggleScheduleView(layerScheduleView)
-                              } else {
-                                onSetSeriesVisibility(
-                                  layer.seriesNames,
-                                  !allLayerSeriesVisible
-                                )
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            {seriesControls.length > 0 && (
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  setExpandedLayerDetails((current) => ({
+                                    ...current,
+                                    [layer.id]: !detailsExpanded,
+                                  }))
+                                }
+                                aria-label={`${
+                                  detailsExpanded ? 'Hide' : 'Show'
+                                } ${layer.label} details`}
+                                sx={{ p: 0.15, color: 'text.secondary' }}
+                              >
+                                {detailsExpanded ? (
+                                  <ExpandLessIcon fontSize="small" />
+                                ) : (
+                                  <ExpandMoreIcon fontSize="small" />
+                                )}
+                              </IconButton>
+                            )}
+                            <Checkbox
+                              size="small"
+                              checked={allLayerSeriesVisible}
+                              indeterminate={
+                                !layerScheduleView && someLayerSeriesVisible
                               }
-                            }}
-                            inputProps={{
-                              'aria-label': `Toggle ${layer.label}`,
-                            }}
-                            sx={{ p: 0.15 }}
-                          />
+                              disabled={!layer.available}
+                              onChange={() => {
+                                if (layerScheduleView) {
+                                  onToggleScheduleView(layerScheduleView)
+                                } else {
+                                  onSetSeriesVisibility(
+                                    layer.seriesNames,
+                                    !allLayerSeriesVisible
+                                  )
+                                }
+                              }}
+                              inputProps={{
+                                'aria-label': `Toggle ${layer.label}`,
+                              }}
+                              sx={{ p: 0.15 }}
+                            />
+                          </Box>
                         </Box>
                         <Typography
                           variant="caption"
@@ -320,6 +438,70 @@ export default function TimeOfDayLayersPanel({
                             ? layer.description
                             : 'No data available for this layer.'}
                         </Typography>
+                        {seriesControls.length > 0 && detailsExpanded && (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 0.35,
+                              mt: 0.7,
+                              pt: 0.7,
+                              borderTop: '1px solid',
+                              borderColor: 'divider',
+                            }}
+                          >
+                            {seriesControls.map((control) => {
+                              const controlVisible =
+                                selectedSeries[control.seriesName] === true
+
+                              return (
+                                <Box
+                                  key={control.seriesName}
+                                  sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns:
+                                      '24px minmax(0, 1fr) auto',
+                                    alignItems: 'center',
+                                    columnGap: 0.6,
+                                    minWidth: 0,
+                                    opacity: control.available ? 1 : 0.5,
+                                  }}
+                                >
+                                  <DashedLinePreview
+                                    color={control.color}
+                                    width={22}
+                                  />
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      minWidth: 0,
+                                      color: 'text.secondary',
+                                      fontSize: '0.7rem',
+                                      lineHeight: 1.2,
+                                    }}
+                                  >
+                                    {control.label}
+                                  </Typography>
+                                  <Checkbox
+                                    size="small"
+                                    checked={controlVisible}
+                                    disabled={!control.available}
+                                    onChange={() =>
+                                      onSetSeriesVisibility(
+                                        [control.seriesName],
+                                        !controlVisible
+                                      )
+                                    }
+                                    inputProps={{
+                                      'aria-label': `Toggle ${control.label}`,
+                                    }}
+                                    sx={{ p: 0.1 }}
+                                  />
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Paper>
                   )
