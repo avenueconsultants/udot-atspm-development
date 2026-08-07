@@ -160,8 +160,8 @@ describe('TimeOfDaySchedules', () => {
     expect(screen.getByText('#7015 — Broadway & 200 S')).toBeTruthy()
     expect(screen.getByText('#1005 — Foothill Dr & 1300 S')).toBeTruthy()
     expect(screen.getByText('#7618 — 700 E & 400 S')).toBeTruthy()
-    expect(screen.getByText('00:00')).toBeTruthy()
-    expect(screen.getByText('24:00')).toBeTruthy()
+    expect(screen.getAllByText('00:00')).toHaveLength(2)
+    expect(screen.getAllByText('24:00')).toHaveLength(2)
     expect(screen.queryByText('12 AM')).toBeNull()
     screen.getAllByText('1').forEach((label) => {
       expect(label.getAttribute('data-plan-shape')).toBe('circle')

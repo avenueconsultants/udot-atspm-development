@@ -367,7 +367,7 @@ function ScheduleLocationLabel({ location }: { location: ScheduleLocation }) {
   )
 }
 
-function TimeAxis() {
+function TimeAxis({ position }: { position: 'top' | 'bottom' }) {
   return (
     <Box
       aria-hidden
@@ -379,7 +379,14 @@ function TimeAxis() {
       }}
     >
       <Box />
-      <Box sx={{ position: 'relative', height: 30, mt: 0.5 }}>
+      <Box
+        sx={{
+          position: 'relative',
+          height: 30,
+          mt: position === 'bottom' ? 0.5 : 0,
+          mb: position === 'top' ? 0.5 : 0,
+        }}
+      >
         {timeTicks.map((tick, index) => (
           <Typography
             key={tick.minutes}
@@ -387,7 +394,8 @@ function TimeAxis() {
             color="text.secondary"
             sx={{
               position: 'absolute',
-              top: 2,
+              top: position === 'bottom' ? 2 : 'auto',
+              bottom: position === 'top' ? 2 : 'auto',
               left:
                 index === timeTicks.length - 1
                   ? 'auto'
@@ -437,6 +445,8 @@ export default function TimeOfDayScheduleComparison({
   return (
     <Box sx={{ overflowX: 'auto' }}>
       <Stack spacing={0} sx={{ minWidth: minimumComparisonWidth }}>
+        <TimeAxis position="top" />
+
         <Stack spacing={0.75}>
           {proposedSchedule.length > 0 && (
             <ScheduleGroup
@@ -537,7 +547,7 @@ export default function TimeOfDayScheduleComparison({
           )}
         </Stack>
 
-        <TimeAxis />
+        <TimeAxis position="bottom" />
       </Stack>
     </Box>
   )

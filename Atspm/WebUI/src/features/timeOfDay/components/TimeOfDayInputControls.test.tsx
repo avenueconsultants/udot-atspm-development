@@ -186,16 +186,17 @@ describe('time-of-day inputs', () => {
       />
     )
 
-    expect(screen.getByText(/capacity converts approach volume/)).toBeTruthy()
+    expect(screen.getByText(/Converts approach volume/)).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Capacity' })).toBeTruthy()
     expect(
       screen.getByRole('heading', { name: 'Review thresholds' })
     ).toBeTruthy()
+    const laneConfigurationHeading = screen.getByRole('heading', {
+      name: 'Lane configuration',
+    })
+    expect(laneConfigurationHeading).toBeTruthy()
     expect(
-      screen.getByRole('heading', { name: 'Direction lane overrides' })
-    ).toBeTruthy()
-    expect(
-      screen.getByText(/Optional counts override lanes inferred from/)
+      screen.getByText(/Optional direction counts override lanes inferred from/)
     ).toBeTruthy()
     expect(
       (
@@ -204,11 +205,21 @@ describe('time-of-day inputs', () => {
         }) as HTMLInputElement
       ).value
     ).toBe('800')
+    const fallbackLanesInput = screen.getByRole('spinbutton', {
+      name: 'Fallback lanes per approach',
+    })
+    expect(fallbackLanesInput).toBeTruthy()
+    expect(fallbackLanesInput.closest('section')).toBe(
+      laneConfigurationHeading.closest('section')
+    )
+    const southboundLanesInput = screen.getByRole('spinbutton', {
+      name: 'Southbound lanes',
+    })
     expect(
-      screen.getByRole('spinbutton', {
-        name: 'Fallback lanes per approach',
-      })
+      southboundLanesInput.compareDocumentPosition(fallbackLanesInput) &
+        Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
+    expect(screen.getByText(/Used as the total lane count/)).toBeTruthy()
     expect(screen.getAllByPlaceholderText('Auto')).toHaveLength(2)
   })
 

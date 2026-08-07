@@ -83,11 +83,15 @@ const occupancyReviewFields: TuningFieldDefinition[] = [
     option: 'laneCapacityVehiclesPerHour',
     label: 'Per-lane capacity',
     unitLabel: '(veh/hr)',
+    helperText:
+      'Converts approach volume into an estimated occupancy percentage.',
     inputProps: { min: 1, step: 1 },
   },
   {
     option: 'approachVolumeAssumedLanes',
     label: 'Fallback lanes per approach',
+    helperText:
+      'Used as the total lane count when lanes cannot be inferred from configured vehicle detectors and no direction override is provided.',
     inputProps: { min: 1, step: 1 },
   },
   {
@@ -308,7 +312,11 @@ export default function TimeOfDayAdvancedSidebar({
     <Box key={field.option} sx={{ minWidth: 0 }}>
       <Typography
         variant="body2"
-        sx={{ mb: 0.75, fontSize: '0.75rem', fontWeight: 500 }}
+        sx={{
+          mb: field.helperText ? 0.25 : 0.75,
+          fontSize: '0.75rem',
+          fontWeight: 500,
+        }}
       >
         {field.label}{' '}
         {field.unitLabel && (
@@ -317,6 +325,15 @@ export default function TimeOfDayAdvancedSidebar({
           </Box>
         )}
       </Typography>
+      {field.helperText && (
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mb: 0.75, lineHeight: 1.45 }}
+        >
+          {field.helperText}
+        </Typography>
+      )}
       <TextField
         fullWidth
         size="small"
@@ -377,7 +394,7 @@ export default function TimeOfDayAdvancedSidebar({
       }
       subtitle={
         activeSidebar === 'occupancy'
-          ? 'Capacity, review flags, and directional lane overrides'
+          ? 'Capacity, review flags, and lane configuration'
           : undefined
       }
     >
@@ -437,18 +454,7 @@ export default function TimeOfDayAdvancedSidebar({
           <Stack spacing={1.5}>
             {renderSidebarSection(
               'Capacity',
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                  gap: 1.25,
-                }}
-              >
-                {occupancyReviewFields
-                  .slice(0, 2)
-                  .map(renderStackedTuningField)}
-              </Box>,
-              'Per-lane capacity converts approach volume into an estimated occupancy percentage.'
+              renderStackedTuningField(occupancyReviewFields[0])
             )}
             {renderSidebarSection(
               'Review thresholds',
@@ -460,51 +466,54 @@ export default function TimeOfDayAdvancedSidebar({
               'Flags when the cross street’s share of combined traffic warrants split-allocation or shoulder-timing review.'
             )}
             {renderSidebarSection(
-              'Direction lane overrides',
-              selectedLaneDirections.length === 0 ? (
-                <Typography variant="body2" color="text.secondary">
-                  Select at least one primary direction to configure lanes.
-                </Typography>
-              ) : (
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                    gap: 1.25,
-                  }}
-                >
-                  {selectedLaneDirections.map((direction) => (
-                    <Box key={direction} sx={{ minWidth: 0 }}>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          mb: 0.75,
-                          fontSize: '0.75rem',
-                          fontWeight: 500,
-                        }}
-                      >
-                        {direction} lanes
-                      </Typography>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        type="number"
-                        placeholder="Auto"
-                        value={options.directionLaneCounts[direction] ?? ''}
-                        onChange={(event) =>
-                          handleLaneCountChange(direction, event.target.value)
-                        }
-                        inputProps={{
-                          min: 0,
-                          step: 1,
-                          'aria-label': [direction, 'lanes'].join(' '),
-                        }}
-                      />
-                    </Box>
-                  ))}
-                </Box>
-              ),
-              'Optional counts override lanes inferred from configured vehicle detectors. Leave blank to use detector data with the fallback lane count above.'
+              'Lane configuration',
+              <>
+                {selectedLaneDirections.length === 0 ? (
+                  <Typography variant="body2" color="text.secondary">
+                    Select at least one primary direction to configure lanes.
+                  </Typography>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+                      gap: 1.25,
+                    }}
+                  >
+                    {selectedLaneDirections.map((direction) => (
+                      <Box key={direction} sx={{ minWidth: 0 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            mb: 0.75,
+                            fontSize: '0.75rem',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {direction} lanes
+                        </Typography>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          type="number"
+                          placeholder="Auto"
+                          value={options.directionLaneCounts[direction] ?? ''}
+                          onChange={(event) =>
+                            handleLaneCountChange(direction, event.target.value)
+                          }
+                          inputProps={{
+                            min: 0,
+                            step: 1,
+                            'aria-label': [direction, 'lanes'].join(' '),
+                          }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+                {renderStackedTuningField(occupancyReviewFields[1])}
+              </>,
+              'Optional direction counts override lanes inferred from configured vehicle detectors. Leave them blank to use detector data or the fallback lane count below.'
             )}
           </Stack>
         )}

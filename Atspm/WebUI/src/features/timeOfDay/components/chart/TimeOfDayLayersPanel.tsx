@@ -1,3 +1,4 @@
+import { DashedLineSeriesSymbol } from '@/features/charts/utils'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Box, Checkbox, IconButton, Paper, Typography } from '@mui/material'
@@ -10,12 +11,10 @@ import type {
 import { getTimeOfDayPresetSeriesSelection } from '../../transformers'
 
 export type TimeOfDayAnalysisMode = Exclude<TimeOfDayChartPreset, 'combined'>
-export type TimeOfDayScheduleView = 'proposed' | 'existing'
 
 interface TimeOfDayLayersPanelProps {
   layers: TimeOfDayChartLayer[]
   selectedSeries: Record<string, boolean>
-  onToggleScheduleView: (view: TimeOfDayScheduleView) => void
   onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
 }
 
@@ -36,24 +35,6 @@ export const getLayerAnalysisMode = (
   return layer.id === 'signal-peaks' ? 'recommendation' : 'pressure'
 }
 
-export const getScheduleViewForLayer = (
-  layer: TimeOfDayChartLayer
-): TimeOfDayScheduleView | undefined => {
-  if (layer.id === 'proposed-schedule') return 'proposed'
-  if (layer.id === 'existing-schedule') return 'existing'
-
-  return undefined
-}
-
-export const isScheduleLayerSelected = (
-  layer: TimeOfDayChartLayer | undefined,
-  selectedSeries: Record<string, boolean>
-) =>
-  Boolean(
-    layer?.available &&
-      layer.seriesNames.some((seriesName) => selectedSeries[seriesName])
-  )
-
 export const getAnalysisModeSeriesSelection = (
   layers: TimeOfDayChartLayer[],
   activeModes: TimeOfDayAnalysisMode[],
@@ -68,11 +49,16 @@ export const getAnalysisModeSeriesSelection = (
 
   const nextSelection: Record<string, boolean> = {}
   layers.forEach((layer) => {
+    const scheduleVisible =
+      layer.group === 'Schedules' &&
+      layer.available &&
+      layer.seriesNames.every(
+        (seriesName) => currentSelection[seriesName] === true
+      )
+
     layer.seriesNames.forEach((seriesName) => {
       nextSelection[seriesName] =
-        layer.group === 'Schedules'
-          ? (currentSelection[seriesName] ?? layer.available)
-          : false
+        layer.group === 'Schedules' ? scheduleVisible : false
     })
   })
 
@@ -84,13 +70,46 @@ export const getSidebarLayers = (
   activeModes: TimeOfDayAnalysisMode[]
 ) =>
   layers.filter((layer) => {
-    if (layer.id === 'difference-windows') return false
-
     const mode = getLayerAnalysisMode(layer)
     return mode === undefined || activeModes.includes(mode)
   })
 
+const dashedLineSvgPath = DashedLineSeriesSymbol.replace(
+  /^path:\/\//,
+  ''
+).replace(/zm?,\s*/g, 'z ')
+
+function DashedLinePreview({
+  color,
+  width = 34,
+  height = 4,
+}: {
+  color: string
+  width?: number
+  height?: number
+}) {
+  return (
+    <Box
+      component="svg"
+      viewBox="180 880 1660 240"
+      preserveAspectRatio="none"
+      aria-hidden
+      sx={{
+        display: 'block',
+        width,
+        height,
+        flexShrink: 0,
+        color,
+        overflow: 'visible',
+      }}
+    >
+      <path d={dashedLineSvgPath} fill="currentColor" />
+    </Box>
+  )
+}
+
 function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
+  const previewColors = [layer.color, ...(layer.additionalColors ?? [])]
   const commonLineSx = {
     width: 34,
     borderTop: '3px solid',
@@ -111,11 +130,13 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
       }}
     >
       {layer.preview === 'schedule' ? (
-        <Box sx={{ width: 36 }}>
-          <Box
-            sx={{ height: 7, bgcolor: layer.color, opacity: 0.45, mb: 0.5 }}
-          />
-          <Box sx={{ height: 7, bgcolor: layer.color, opacity: 0.7 }} />
+        <Box sx={{ width: 36, display: 'flex' }}>
+          {previewColors.map((color, index) => (
+            <Box
+              key={`${color}-${index}`}
+              sx={{ flex: 1, height: 20, bgcolor: color, opacity: 0.35 }}
+            />
+          ))}
         </Box>
       ) : layer.preview === 'area' ? (
         <Box
@@ -127,16 +148,51 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
           }}
         />
       ) : layer.preview === 'star' ? (
-        <Box
-          sx={{
-            width: 18,
-            height: 18,
-            bgcolor: layer.color,
-            opacity: 0.82,
-            clipPath:
-              'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%)',
-          }}
-        />
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {previewColors.map((color, index) => (
+            <Box
+              key={`${color}-${index}`}
+              sx={{
+                width: previewColors.length > 1 ? 16 : 18,
+                height: previewColors.length > 1 ? 16 : 18,
+                ml: index === 0 ? 0 : '-6px',
+                bgcolor: color,
+                opacity: 0.82,
+                zIndex: index + 1,
+                clipPath:
+                  'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 94%, 50% 72%, 21% 94%, 32% 57%, 2% 35%, 39% 35%)',
+              }}
+            />
+          ))}
+        </Box>
+      ) : (layer.preview === 'circle' || layer.preview === 'square') &&
+        (previewColors.length > 1 || layer.previewLabel) ? (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {previewColors.map((color, index) => (
+            <Box
+              key={`${color}-${index}`}
+              sx={{
+                width: 16,
+                height: 16,
+                ml: index === 0 ? 0 : '-6px',
+                borderRadius: layer.preview === 'circle' ? '50%' : '2px',
+                bgcolor: color,
+                color: 'common.white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 9,
+                fontWeight: 600,
+                lineHeight: 1,
+                opacity: 0.82,
+                zIndex: index + 1,
+                boxShadow: '0 0 0 1px #eef1f5',
+              }}
+            >
+              {index === previewColors.length - 1 ? layer.previewLabel : null}
+            </Box>
+          ))}
+        </Box>
       ) : layer.preview === 'circle' || layer.preview === 'square' ? (
         <Box
           sx={{
@@ -147,12 +203,30 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
             opacity: 0.82,
           }}
         />
+      ) : layer.preview === 'dashed-line' && previewColors.length > 1 ? (
+        <Box
+          sx={{
+            width: 34,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.25,
+          }}
+        >
+          {previewColors.map((color, index) => (
+            <DashedLinePreview
+              key={`${color}-${index}`}
+              color={color}
+              height={4}
+            />
+          ))}
+        </Box>
+      ) : layer.preview === 'dashed-line' ? (
+        <DashedLinePreview color={layer.color} />
       ) : (
         <Box
           sx={{
             ...commonLineSx,
-            borderTopStyle:
-              layer.preview === 'dashed-line' ? 'dashed' : 'solid',
+            borderTopStyle: 'solid',
           }}
         />
       )}
@@ -160,14 +234,45 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
   )
 }
 
+function LegendItemPreview({
+  color,
+  preview,
+}: {
+  color: string
+  preview: 'area' | 'hatch'
+}) {
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        width: 22,
+        height: 14,
+        flexShrink: 0,
+        border: '1px solid',
+        borderColor: preview === 'hatch' ? color : 'divider',
+        bgcolor: preview === 'hatch' ? 'grey.100' : color,
+        opacity: preview === 'hatch' ? 1 : 0.35,
+        backgroundImage:
+          preview === 'hatch'
+            ? 'repeating-linear-gradient(135deg, transparent 0 4px, ' +
+              color +
+              ' 4px 6px)'
+            : 'none',
+      }}
+    />
+  )
+}
+
 export default function TimeOfDayLayersPanel({
   layers,
-  onToggleScheduleView,
   selectedSeries,
   onSetSeriesVisibility,
 }: TimeOfDayLayersPanelProps) {
   const [collapsedGroups, setCollapsedGroups] = useState<
     Partial<Record<TimeOfDayChartLayerGroup, boolean>>
+  >({})
+  const [expandedLayerDetails, setExpandedLayerDetails] = useState<
+    Record<string, boolean>
   >({})
 
   return (
@@ -245,13 +350,18 @@ export default function TimeOfDayLayersPanel({
                   const visibleCount = layer.seriesNames.filter(
                     (seriesName) => selectedSeries[seriesName]
                   ).length
-                  const layerScheduleView = getScheduleViewForLayer(layer)
                   const allLayerSeriesVisible =
                     layer.available &&
                     layer.seriesNames.length > 0 &&
                     visibleCount === layer.seriesNames.length
                   const someLayerSeriesVisible =
                     visibleCount > 0 && !allLayerSeriesVisible
+                  const seriesControls = layer.seriesControls ?? []
+                  const legendItems = layer.legendItems ?? []
+                  const hasDetails =
+                    seriesControls.length > 0 || legendItems.length > 0
+                  const detailsExpanded =
+                    expandedLayerDetails[layer.id] === true
 
                   return (
                     <Paper
@@ -288,28 +398,45 @@ export default function TimeOfDayLayersPanel({
                           >
                             {layer.label}
                           </Typography>
-                          <Checkbox
-                            size="small"
-                            checked={allLayerSeriesVisible}
-                            indeterminate={
-                              !layerScheduleView && someLayerSeriesVisible
-                            }
-                            disabled={!layer.available}
-                            onChange={() => {
-                              if (layerScheduleView) {
-                                onToggleScheduleView(layerScheduleView)
-                              } else {
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            {hasDetails && (
+                              <IconButton
+                                size="small"
+                                onClick={() =>
+                                  setExpandedLayerDetails((current) => ({
+                                    ...current,
+                                    [layer.id]: !detailsExpanded,
+                                  }))
+                                }
+                                aria-label={`${
+                                  detailsExpanded ? 'Hide' : 'Show'
+                                } ${layer.label} details`}
+                                sx={{ p: 0.15, color: 'text.secondary' }}
+                              >
+                                {detailsExpanded ? (
+                                  <ExpandLessIcon fontSize="small" />
+                                ) : (
+                                  <ExpandMoreIcon fontSize="small" />
+                                )}
+                              </IconButton>
+                            )}
+                            <Checkbox
+                              size="small"
+                              checked={allLayerSeriesVisible}
+                              indeterminate={someLayerSeriesVisible}
+                              disabled={!layer.available}
+                              onChange={() =>
                                 onSetSeriesVisibility(
                                   layer.seriesNames,
                                   !allLayerSeriesVisible
                                 )
                               }
-                            }}
-                            inputProps={{
-                              'aria-label': `Toggle ${layer.label}`,
-                            }}
-                            sx={{ p: 0.15 }}
-                          />
+                              inputProps={{
+                                'aria-label': `Toggle ${layer.label}`,
+                              }}
+                              sx={{ p: 0.15 }}
+                            />
+                          </Box>
                         </Box>
                         <Typography
                           variant="caption"
@@ -320,6 +447,99 @@ export default function TimeOfDayLayersPanel({
                             ? layer.description
                             : 'No data available for this layer.'}
                         </Typography>
+                        {hasDetails && detailsExpanded && (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 0.35,
+                              mt: 0.7,
+                              pt: 0.7,
+                              borderTop: '1px solid',
+                              borderColor: 'divider',
+                            }}
+                          >
+                            {legendItems.map((item) => (
+                              <Box
+                                key={item.label}
+                                sx={{
+                                  display: 'grid',
+                                  gridTemplateColumns: '24px minmax(0, 1fr)',
+                                  alignItems: 'center',
+                                  columnGap: 0.6,
+                                  minWidth: 0,
+                                  minHeight: 22,
+                                }}
+                              >
+                                <LegendItemPreview
+                                  color={item.color}
+                                  preview={item.preview}
+                                />
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    minWidth: 0,
+                                    color: 'text.secondary',
+                                    fontSize: '0.7rem',
+                                    lineHeight: 1.2,
+                                  }}
+                                >
+                                  {item.label}
+                                </Typography>
+                              </Box>
+                            ))}
+                            {seriesControls.map((control) => {
+                              const controlVisible =
+                                selectedSeries[control.seriesName] === true
+
+                              return (
+                                <Box
+                                  key={control.seriesName}
+                                  sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns:
+                                      '24px minmax(0, 1fr) auto',
+                                    alignItems: 'center',
+                                    columnGap: 0.6,
+                                    minWidth: 0,
+                                    opacity: control.available ? 1 : 0.5,
+                                  }}
+                                >
+                                  <DashedLinePreview
+                                    color={control.color}
+                                    width={22}
+                                  />
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      minWidth: 0,
+                                      color: 'text.secondary',
+                                      fontSize: '0.7rem',
+                                      lineHeight: 1.2,
+                                    }}
+                                  >
+                                    {control.label}
+                                  </Typography>
+                                  <Checkbox
+                                    size="small"
+                                    checked={controlVisible}
+                                    disabled={!control.available}
+                                    onChange={() =>
+                                      onSetSeriesVisibility(
+                                        [control.seriesName],
+                                        !controlVisible
+                                      )
+                                    }
+                                    inputProps={{
+                                      'aria-label': `Toggle ${control.label}`,
+                                    }}
+                                    sx={{ p: 0.1 }}
+                                  />
+                                </Box>
+                              )
+                            })}
+                          </Box>
+                        )}
                       </Box>
                     </Paper>
                   )

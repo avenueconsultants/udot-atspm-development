@@ -133,31 +133,35 @@ describe('TimeOfDayResults unified workspace', () => {
     const locationDataTab = screen.getByRole('tab', { name: 'Location Data' })
 
     expect(chartTab.getAttribute('aria-selected')).toBe('true')
-    expect(
-      screen.getByRole('img', {
-        name: 'Corridor time-of-day analysis chart',
-      })
-    ).toBeTruthy()
+    const chart = screen.getByRole('img', {
+      name: 'Corridor time-of-day analysis chart',
+    })
+    expect(chart).toBeTruthy()
     expect(
       screen.getByRole('heading', {
         name: 'Corridor Time-of-Day Analysis',
       })
     ).toBeTruthy()
     expect(screen.getByText(/Wed, April 15, 2026/)).toBeTruthy()
-    const summary = screen.getByRole('region', { name: 'Summary' })
+    const summary = screen.getByRole('region', { name: 'Chart summary' })
+    const sidebar = screen.getByRole('complementary', {
+      name: 'Time-of-day chart controls',
+    })
+    expect(summary.parentElement?.contains(chart)).toBe(true)
+    expect(summary.parentElement?.firstElementChild).toBe(summary)
+    expect(summary.parentElement?.parentElement).toBe(sidebar.parentElement)
     expect(
-      within(summary).getByRole('heading', { name: 'Summary' })
-    ).toBeTruthy()
-    expect(within(summary).getByText('Measured Peaks')).toBeTruthy()
-    expect(within(summary).getByText('AM corridor peak')).toBeTruthy()
-    expect(within(summary).getByText('PM corridor peak')).toBeTruthy()
+      within(summary).queryByRole('heading', { name: 'Summary' })
+    ).toBeNull()
+    expect(within(summary).getByLabelText('Measured peaks')).toBeTruthy()
+    expect(within(summary).getByText('AM peak')).toBeTruthy()
+    expect(within(summary).getByText('PM peak')).toBeTruthy()
     expect(within(summary).getByText('Peak cross traffic')).toBeTruthy()
-    expect(within(summary).getByText('Proposed Plan Schedule')).toBeTruthy()
-    expect(within(summary).getByText('00:00–07:00')).toBeTruthy()
-    expect(within(summary).getByText('07:00–09:00')).toBeTruthy()
-    expect(within(summary).getByText('Free')).toBeTruthy()
-    expect(within(summary).getByText('Plan 1')).toBeTruthy()
-    expect(within(summary).getByText('1 review item')).toBeTruthy()
+    expect(within(summary).getByTestId('WbSunnyOutlinedIcon')).toBeTruthy()
+    expect(within(summary).getByTestId('DarkModeOutlinedIcon')).toBeTruthy()
+    expect(within(summary).getByTestId('ShuffleIcon')).toBeTruthy()
+    expect(within(summary).queryByText('Proposed Plan Schedule')).toBeNull()
+    expect(within(summary).getByText('Review')).toBeTruthy()
     expect(summary.textContent).toContain(
       'Review the AM split at location 7191.'
     )
@@ -190,9 +194,9 @@ describe('TimeOfDayResults unified workspace', () => {
       />
     )
 
-    const summary = screen.getByRole('region', { name: 'Summary' })
+    const summary = screen.getByRole('region', { name: 'Chart summary' })
     expect(within(summary).getByText('Review status')).toBeTruthy()
-    expect(within(summary).queryByText('1 review item')).toBeNull()
+    expect(within(summary).queryByText('Review')).toBeNull()
   })
 
   test('renders multiple backend messages without rewriting them', () => {
@@ -244,26 +248,50 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(within(warnings).queryByText('Incomplete date coverage')).toBeNull()
   })
 
-  test('switches analysis modes while independently controlling schedule views', () => {
+  test('switches analysis modes while controlling schedules all-or-none', () => {
     render(<TimeOfDayResults result={result} />)
 
     const recommendedToggle = screen.getByRole('button', {
       name: 'Recommended',
     })
     const pressureToggle = screen.getByRole('button', { name: 'Pressure' })
-    const proposedSchedule = screen.getByRole('checkbox', {
-      name: 'Toggle Proposed schedule',
+    const schedulesToggle = screen.getByRole('checkbox', {
+      name: 'Toggle Schedules',
     })
-    const existingSchedule = screen.getByRole('checkbox', {
-      name: 'Toggle Existing schedule',
-    })
+    const scheduleSeriesNames = [
+      'Proposed plan windows',
+      'Proposed schedule rail',
+      'Existing plan windows',
+      'Existing schedule rail',
+      'Plan difference windows',
+    ]
 
     expect(recommendedToggle.getAttribute('aria-pressed')).toBe('true')
     expect(pressureToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(true)
-    expect(screen.queryByRole('button', { name: 'Proposed' })).toBeNull()
-    expect(screen.queryByRole('button', { name: 'Existing' })).toBeNull()
-    expect((existingSchedule as HTMLInputElement).checked).toBe(false)
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
+    expect(
+      screen.queryByRole('checkbox', { name: 'Toggle Proposed schedule' })
+    ).toBeNull()
+    expect(
+      screen.queryByRole('checkbox', { name: 'Toggle Existing schedule' })
+    ).toBeNull()
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show Schedules details' })
+    )
+    ;[
+      'AM peak plan',
+      'Midday plan',
+      'PM peak plan',
+      'FREE operation',
+      'Proposed and existing schedules differ',
+    ].forEach((label) => {
+      expect(screen.getByText(label)).toBeTruthy()
+      expect(
+        screen.queryByRole('checkbox', { name: `Toggle ${label}` })
+      ).toBeNull()
+    })
+
     expect(
       screen.getByRole('checkbox', { name: 'Toggle Median raw volume' })
     ).toHaveProperty('checked', true)
@@ -283,7 +311,6 @@ describe('TimeOfDayResults unified workspace', () => {
       seriesName: 'Proposed schedule rail',
       dataIndex: 0,
     })
-    expect(mockChart.setOption).not.toHaveBeenCalled()
     act(() => {
       mockChartHandlers.get('mouseout')?.({
         seriesName: 'Proposed schedule rail',
@@ -294,7 +321,6 @@ describe('TimeOfDayResults unified workspace', () => {
       seriesName: 'Proposed schedule rail',
       dataIndex: 0,
     })
-    expect(mockChart.setOption).not.toHaveBeenCalled()
 
     act(() => {
       mockChartHandlers.get('mouseover')?.({
@@ -318,60 +344,50 @@ describe('TimeOfDayResults unified workspace', () => {
       seriesName: 'Existing schedule rail',
       dataIndex: 0,
     })
-    expect(mockChart.setOption).not.toHaveBeenCalled()
 
+    mockChart.dispatchAction.mockClear()
     act(() => {
       mockChartHandlers.get('click')?.({
         componentType: 'yAxis',
         value: 'Existing',
       })
     })
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(true)
-    expect((existingSchedule as HTMLInputElement).checked).toBe(true)
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Proposed plan windows',
-    })
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Existing plan windows',
-    })
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Proposed schedule rail',
-    })
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Existing schedule rail',
-    })
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Plan difference windows',
-    })
-    expect(mockChart.setOption).toHaveBeenCalledWith(
-      expect.objectContaining({
-        series: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'tod-proposed-plan-windows',
-            markArea: expect.objectContaining({
-              data: expect.arrayContaining([expect.any(Array)]),
-            }),
-          }),
-          expect.objectContaining({
-            id: 'tod-existing-plan-windows',
-            markArea: expect.objectContaining({
-              data: expect.arrayContaining([expect.any(Array)]),
-            }),
-          }),
-        ]),
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
+    ;[
+      'Proposed plan windows',
+      'Existing plan windows',
+      'Plan difference windows',
+    ].forEach((name) => {
+      expect(mockChart.dispatchAction).toHaveBeenCalledWith({
+        type: 'legendUnSelect',
+        name,
       })
-    )
+    })
+    ;['Proposed schedule rail', 'Existing schedule rail'].forEach((name) => {
+      expect(mockChart.dispatchAction).toHaveBeenCalledWith({
+        type: 'legendSelect',
+        name,
+      })
+    })
+
+    act(() => {
+      mockChartHandlers.get('click')?.({
+        componentType: 'yAxis',
+        value: 'Proposed',
+      })
+    })
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
+    scheduleSeriesNames.forEach((name) => {
+      expect(mockChart.dispatchAction).toHaveBeenCalledWith({
+        type: 'legendSelect',
+        name,
+      })
+    })
 
     fireEvent.click(pressureToggle)
-
     expect(pressureToggle.getAttribute('aria-pressed')).toBe('true')
     expect(recommendedToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(true)
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
     expect(
       screen.getByRole('checkbox', { name: 'Toggle Movement pressure' })
     ).toHaveProperty('checked', false)
@@ -385,30 +401,13 @@ describe('TimeOfDayResults unified workspace', () => {
     )
 
     fireEvent.click(recommendedToggle)
-
     expect(recommendedToggle.getAttribute('aria-pressed')).toBe('true')
     expect(pressureToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(true)
-    expect((existingSchedule as HTMLInputElement).checked).toBe(true)
-
-    expect(
-      screen.getByRole('checkbox', { name: 'Toggle Median raw volume' })
-    ).toHaveProperty('checked', true)
-    expect(
-      screen.queryByRole('checkbox', { name: 'Toggle Movement pressure' })
-    ).toBeNull()
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
     expect(initECharts).toHaveBeenCalledTimes(1)
-    fireEvent.click(proposedSchedule)
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(false)
-    expect((existingSchedule as HTMLInputElement).checked).toBe(true)
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendUnSelect',
-      name: 'Plan difference windows',
-    })
-    expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-      type: 'legendSelect',
-      name: 'Proposed schedule rail',
-    })
+
+    fireEvent.click(schedulesToggle)
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
     const mutedProposedRail = mockChart.setOption.mock.calls
       .flatMap(([update]) => update?.series ?? [])
       .reverse()
@@ -426,26 +425,13 @@ describe('TimeOfDayResults unified workspace', () => {
         seriesName: 'Proposed schedule rail',
       })
     })
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(true)
-    act(() => {
-      mockChartHandlers.get('click')?.({
-        seriesName: 'Proposed schedule rail',
-      })
-    })
-    expect((proposedSchedule as HTMLInputElement).checked).toBe(false)
-
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
     act(() => {
       mockChartHandlers.get('click')?.({
         seriesName: 'Existing schedule rail',
       })
     })
-    expect((existingSchedule as HTMLInputElement).checked).toBe(false)
-    act(() => {
-      mockChartHandlers.get('click')?.({
-        seriesName: 'Existing schedule rail',
-      })
-    })
-    expect((existingSchedule as HTMLInputElement).checked).toBe(true)
+    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
 
     expect(mockChart.dispose).not.toHaveBeenCalled()
     expect(

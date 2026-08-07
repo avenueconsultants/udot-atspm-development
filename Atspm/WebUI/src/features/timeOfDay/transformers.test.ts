@@ -44,6 +44,48 @@ describe('time-of-day chart titles', () => {
     )
   })
 
+  test('uses red and purple for the AM and PM corridor peak stars', () => {
+    const option = buildPlanProfileOption({
+      planProfile: {
+        peaks: [
+          {
+            period: 'AM',
+            series: 'Corridor',
+            minutes: 480,
+            value: 3000,
+          },
+          {
+            period: 'PM',
+            series: 'Corridor',
+            minutes: 1020,
+            value: 3200,
+          },
+        ],
+      },
+    } as TimeOfDayResult)
+    const series = option.series as Array<{
+      name?: string
+      symbol?: string
+      z?: number
+      itemStyle?: { color?: string }
+    }>
+
+    expect(
+      series.find((seriesOption) => seriesOption.name === 'AM Corridor Peak')
+    ).toMatchObject({
+      symbol: expect.stringContaining('path://'),
+      z: 100,
+      itemStyle: { color: '#c62828' },
+    })
+    expect(
+      series.find((seriesOption) => seriesOption.name === 'PM Corridor Peak')
+    ).toMatchObject({
+      symbol: expect.stringContaining('path://'),
+      z: 100,
+      itemStyle: { color: '#6a1b9a' },
+    })
+  })
+
   test('uses compact spacing for the title, date, and info rows', () => {
     const option = buildPlanProfileOption({
       selectedDates: ['2026-04-14', '2026-04-16'],
@@ -189,6 +231,12 @@ describe('time-of-day chart titles', () => {
             value: 2500,
           },
           {
+            period: 'Midday',
+            series: 'PrimaryVolume',
+            minutes: 720,
+            value: 2200,
+          },
+          {
             period: 'PM',
             series: 'CrossTrafficPercent',
             minutes: 1020,
@@ -207,23 +255,36 @@ describe('time-of-day chart titles', () => {
           name?: string
           symbol?: string
           z?: number
+          data?: Array<{
+            itemStyle?: { color?: string }
+          }>
         }>
       ).find((series) => series.name === name)
 
     expect(getPeakSeries(planOption, 'AM Corridor Peak')).toMatchObject({
       symbol: expect.stringMatching(/^path:\/\//),
-      z: 50,
+      z: 100,
     })
-    expect(getPeakSeries(pressureOption, 'Volume Peaks')).toMatchObject({
+    const volumePeaks = getPeakSeries(pressureOption, 'Volume Peaks')
+    expect(volumePeaks).toMatchObject({
       symbol: expect.stringMatching(/^path:\/\//),
-      z: 50,
+      z: 100,
     })
-    expect(
-      getPeakSeries(pressureOption, 'Cross Traffic Percent Peaks')
-    ).toMatchObject({
+    expect(volumePeaks?.data).toEqual([
+      expect.objectContaining({ itemStyle: { color: '#c62828' } }),
+      expect.objectContaining({ itemStyle: { color: '#1b5e20' } }),
+    ])
+    const percentPeaks = getPeakSeries(
+      pressureOption,
+      'Cross Traffic Percent Peaks'
+    )
+    expect(percentPeaks).toMatchObject({
       symbol: expect.stringMatching(/^path:\/\//),
-      z: 50,
+      z: 100,
     })
+    expect(percentPeaks?.data).toEqual([
+      expect.objectContaining({ itemStyle: { color: '#6a1b9a' } }),
+    ])
   })
 
   test('groups movement pressure by numbered location, then direction', () => {
@@ -375,6 +436,79 @@ describe('time-of-day chart titles', () => {
       expect(option.graphic).toBeUndefined()
     }
   )
+
+  test('colors repeated non-free plan windows while leaving FREE windows white', () => {
+    const option = buildPlanProfileOption({
+      recommendation: {
+        amPeakTime: '08:00',
+        middayValleyTime: '12:00',
+        pmPeakTime: '17:00',
+        recommendedSchedule: [
+          {
+            planNumber: 'Free',
+            start: '2026-01-01T00:00:00',
+            end: '2026-01-01T07:30:00',
+          },
+          {
+            planNumber: '1',
+            start: '2026-01-01T07:30:00',
+            end: '2026-01-01T09:45:00',
+          },
+          {
+            planNumber: '7',
+            start: '2026-01-01T09:45:00',
+            end: '2026-01-01T15:00:00',
+          },
+          {
+            planNumber: '13',
+            start: '2026-01-01T15:00:00',
+            end: '2026-01-01T18:45:00',
+          },
+          {
+            planNumber: '7',
+            start: '2026-01-01T18:45:00',
+            end: '2026-01-01T22:30:00',
+          },
+          {
+            planNumber: 'Free',
+            start: '2026-01-01T22:30:00',
+            end: '2026-01-02T00:00:00',
+          },
+        ],
+      },
+      planProfile: {
+        corridorProfile: {
+          points: [{ minutes: 480, averageVolume: 3000 }],
+        },
+      },
+    } as TimeOfDayResult)
+    const series = option.series as Array<{
+      markArea?: {
+        data?: Array<
+          [
+            {
+              xAxis?: number
+              itemStyle?: { color?: string; opacity?: number }
+            },
+            { xAxis?: number },
+          ]
+        >
+      }
+    }>
+    const planWindows = series.find(
+      (seriesOption) => seriesOption.markArea?.data?.length === 6
+    )?.markArea?.data
+    const styleByStart = new Map(
+      planWindows?.map(([start]) => [start.xAxis, start.itemStyle])
+    )
+
+    expect(styleByStart.get(0)).toEqual({ color: '#ffffff', opacity: 0 })
+    expect(styleByStart.get(450)?.color).toBe('#ef6c00')
+    expect(styleByStart.get(585)?.color).toBe('#2e7d32')
+    expect(styleByStart.get(900)?.color).toBe('#1565c0')
+    expect(styleByStart.get(1125)?.color).toBe('#2e7d32')
+    expect(styleByStart.get(1350)).toEqual({ color: '#ffffff', opacity: 0 })
+  })
 
   test('aligns recommended and current plans by shared time windows', () => {
     const rows = buildScheduleRows({
@@ -533,16 +667,65 @@ describe('time-of-day chart titles', () => {
     expect(model.layers).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          id: 'directional-profile-0',
-          label: 'Northbound total profile',
-          color: '#00897b',
-          seriesNames: ['Northbound total profile'],
+          id: 'schedules',
+          label: 'Schedules',
+          color: '#ef6c00',
+          additionalColors: ['#2e7d32', '#1565c0'],
+          seriesNames: [
+            'Proposed plan windows',
+            'Proposed schedule rail',
+            'Existing plan windows',
+            'Existing schedule rail',
+            'Plan difference windows',
+          ],
+          legendItems: [
+            {
+              label: 'AM peak plan',
+              color: '#ef6c00',
+              preview: 'area',
+            },
+            {
+              label: 'Midday plan',
+              color: '#2e7d32',
+              preview: 'area',
+            },
+            {
+              label: 'PM peak plan',
+              color: '#1565c0',
+              preview: 'area',
+            },
+            {
+              label: 'FREE operation',
+              color: '#607d8b',
+              preview: 'area',
+            },
+            {
+              label: 'Proposed and existing schedules differ',
+              color: '#f59e0b',
+              preview: 'hatch',
+            },
+          ],
         }),
         expect.objectContaining({
-          id: 'directional-profile-1',
-          label: 'Southbound total profile',
-          color: '#7b1fa2',
-          seriesNames: ['Southbound total profile'],
+          id: 'directional-profiles',
+          label: 'Directional profiles',
+          color: '#00897b',
+          additionalColors: ['#7b1fa2'],
+          seriesNames: ['Northbound total profile', 'Southbound total profile'],
+          seriesControls: [
+            {
+              seriesName: 'Northbound total profile',
+              label: 'Northbound total profile',
+              color: '#00897b',
+              available: true,
+            },
+            {
+              seriesName: 'Southbound total profile',
+              label: 'Southbound total profile',
+              color: '#7b1fa2',
+              available: true,
+            },
+          ],
         }),
         expect.objectContaining({
           id: 'split-review-threshold',
@@ -556,6 +739,43 @@ describe('time-of-day chart titles', () => {
           color: '#c62828',
           seriesNames: ['45% shoulder review'],
         }),
+        expect.objectContaining({
+          id: 'corridor-peaks',
+          color: '#c62828',
+          additionalColors: ['#6a1b9a'],
+          seriesNames: ['AM Corridor Peak', 'PM Corridor Peak'],
+        }),
+        expect.objectContaining({
+          id: 'pressure-peaks',
+          color: '#c62828',
+          additionalColors: ['#1b5e20', '#6a1b9a'],
+          seriesNames: ['Volume Peaks', 'Cross Traffic Percent Peaks'],
+        }),
+        expect.objectContaining({
+          id: 'signal-peaks',
+          color: '#ef6c00',
+          additionalColors: ['#1565c0'],
+          previewLabel: '1',
+          seriesNames: ['AM Signal Peaks', 'PM Signal Peaks'],
+        }),
+        expect.objectContaining({
+          id: 'cross-traffic-locations',
+          color: '#ef6c00',
+          additionalColors: ['#1b5e20', '#1565c0'],
+          previewLabel: '1',
+          seriesNames: [
+            'AM Cross Traffic Locations',
+            'Midday Cross Traffic Locations',
+            'PM Cross Traffic Locations',
+          ],
+        }),
+        expect.objectContaining({
+          id: 'movement-pressure',
+          color: '#ef6c00',
+          additionalColors: ['#1565c0'],
+          previewLabel: '1',
+          seriesNames: ['AM Movement Pressure', 'PM Movement Pressure'],
+        }),
       ])
     )
     expect(model.option.title).toEqual([])
@@ -567,7 +787,13 @@ describe('time-of-day chart titles', () => {
       data?: unknown[][]
       dimensions?: string[]
       encode?: { tooltip?: number[] }
-      tooltip?: { show?: boolean }
+      tooltip?: {
+        show?: boolean
+        trigger?: string
+        formatter?: (params: unknown) => string
+      }
+      silent?: boolean
+      cursor?: string
       renderItem?: (
         params: {
           dataIndex?: number
@@ -591,6 +817,8 @@ describe('time-of-day chart titles', () => {
               }
               style?: {
                 fill?: string
+                text?: string
+                y?: number
                 stroke?: string
                 lineWidth?: number
                 lineDash?: number[]
@@ -635,8 +863,8 @@ describe('time-of-day chart titles', () => {
       top?: number
       height?: number
     }>
-    expect(chartGrids[0]).toMatchObject({ top: 89, bottom: 116 })
-    expect(chartGrids[1]).toMatchObject({ top: 12, height: 68 })
+    expect(chartGrids[0]).toMatchObject({ top: 112, bottom: 116 })
+    expect(chartGrids[1]).toMatchObject({ top: 24, height: 76 })
 
     const scheduleXAxis = (
       model.option.xAxis as Array<{
@@ -653,7 +881,11 @@ describe('time-of-day chart titles', () => {
     expect(scheduleYAxis.triggerEvent).toBe(true)
     expect(proposedSchedule).toMatchObject({
       clip: false,
-      tooltip: { show: false },
+      tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: expect.any(Function),
+      },
     })
     expect(proposedSchedule?.dimensions).not.toContain('Hovered')
     expect(proposedSchedule?.encode).not.toHaveProperty('tooltip')
@@ -683,6 +915,11 @@ describe('time-of-day chart titles', () => {
     ])
 
     const proposedPlanDatum = proposedSchedule?.data?.[1]
+    const proposedTooltipFormatter = proposedSchedule?.tooltip?.formatter
+    expect(typeof proposedTooltipFormatter).toBe('function')
+    expect(proposedTooltipFormatter?.({ value: proposedPlanDatum })).toBe(
+      '<strong>Proposed schedule</strong><br/>07:00–09:00<br/>Plan 1'
+    )
     const renderedProposedPlan = proposedSchedule?.renderItem?.(
       { coordSys: { x: 0, y: 0, width: 1440, height: 60 } },
       {
@@ -697,6 +934,72 @@ describe('time-of-day chart titles', () => {
     })
     expect(renderedProposedPlan?.children?.[0]?.shape?.height).toBe(34)
     expect(renderedProposedPlan?.children?.[0]).not.toHaveProperty('emphasis')
+    expect(renderedProposedPlan?.children?.[1]?.style).toMatchObject({
+      text: '07:00\u201309:00',
+      y: -5,
+    })
+    expect(renderedProposedPlan?.children?.[2]?.style).toMatchObject({
+      text: '1',
+      y: 20,
+    })
+
+    const existingPlanDatum = existingSchedule?.data?.[1]
+    const renderedExistingPlan = existingSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 1440, height: 60 } },
+      {
+        value: (dimension) => existingPlanDatum?.[dimension] as number,
+        coord: ([minutes, lane]) => [minutes, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedExistingPlan?.children?.[1]?.style?.text).toBe('7')
+    expect(renderedExistingPlan?.children?.[2]).toBeUndefined()
+
+    const compactDatum = [420, 540, 1, '1', '#ef6c00', 'Plan 1']
+    const renderedCompactPlan = proposedSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 720, height: 60 } },
+      {
+        value: (dimension) => compactDatum[dimension] as number,
+        coord: ([minutes, lane]) => [minutes / 2, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedCompactPlan?.children?.[1]?.style?.text).toBe('07:00')
+    expect(renderedCompactPlan?.children?.[2]?.style?.text).toBe('1')
+
+    const renderedPlanOnly = proposedSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 480, height: 60 } },
+      {
+        value: (dimension) => compactDatum[dimension] as number,
+        coord: ([minutes, lane]) => [minutes / 3, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedPlanOnly?.children?.[1]?.style?.text).toBe('1')
+
+    const renderedUnlabeledPlan = proposedSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 288, height: 60 } },
+      {
+        value: (dimension) => compactDatum[dimension] as number,
+        coord: ([minutes, lane]) => [minutes / 5, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedUnlabeledPlan?.children).toBeUndefined()
+
+    const endOfDayDatum = [1320, 1440, 1, 'FREE', '#607d8b', 'Free']
+    const renderedEndOfDayPlan = proposedSchedule?.renderItem?.(
+      { coordSys: { x: 0, y: 0, width: 1440, height: 60 } },
+      {
+        value: (dimension) => endOfDayDatum[dimension] as number,
+        coord: ([minutes, lane]) => [minutes, lane * 20],
+        size: () => [0, 40],
+      }
+    )
+    expect(renderedEndOfDayPlan?.children?.[1]?.style?.text).toBe(
+      '22:00\u201324:00'
+    )
+    expect(renderedEndOfDayPlan?.children?.[2]?.style?.text).toBe('FREE')
 
     const proposedRowDatum = proposedSchedule?.data?.[0]
     const renderedProposedRow = proposedSchedule?.renderItem?.(
@@ -727,7 +1030,7 @@ describe('time-of-day chart titles', () => {
         },
       },
     })
-    expect(renderedProposedRow?.children?.[1]?.silent).toBe(true)
+    expect(renderedProposedRow?.children?.[1]?.silent).toBe(false)
     expect(renderedProposedRow?.children?.[2]?.silent).toBe(true)
     expect(renderedProposedRow?.children?.[0]?.style).not.toHaveProperty(
       'stroke'
@@ -740,11 +1043,25 @@ describe('time-of-day chart titles', () => {
     expect(differenceWindows).toMatchObject({
       type: 'custom',
       data: [
-        [360, 420],
-        [420, 540],
+        [360, 420, 'FREE', 'Free', '7', 'Plan 7'],
+        [420, 540, '1', 'Plan 1', '7', 'Plan 7'],
       ],
+      silent: false,
+      cursor: 'help',
+      tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: expect.any(Function),
+      },
       z: 1,
     })
+    const differenceTooltipFormatter = differenceWindows?.tooltip?.formatter
+    expect(typeof differenceTooltipFormatter).toBe('function')
+    expect(
+      differenceTooltipFormatter?.({ value: differenceWindows?.data?.[0] })
+    ).toBe(
+      '<strong>Schedules differ</strong><br/>06:00–07:00<br/>Proposed: FREE<br/>Existing: Plan 7'
+    )
     expect(existingPlanWindows).toMatchObject({
       z: 1,
       markArea: { z: 1 },
@@ -779,11 +1096,11 @@ describe('time-of-day chart titles', () => {
       'Southbound total profile': true,
       '35% split review': false,
       '45% shoulder review': false,
-      'Existing plan windows': false,
-      'Existing schedule rail': false,
+      'Existing plan windows': true,
+      'Existing schedule rail': true,
       'Proposed plan windows': true,
       'Proposed schedule rail': true,
-      'Plan difference windows': false,
+      'Plan difference windows': true,
       'AM Movement Pressure': false,
     })
     expect(percentAxis.show).toBe(false)
@@ -830,10 +1147,11 @@ describe('time-of-day chart titles', () => {
       '45% shoulder review': true,
       'AM Cross Traffic Locations': true,
       'AM Movement Pressure': false,
-      'Existing schedule rail': true,
-      'Existing plan windows': true,
-      'Proposed schedule rail': true,
+      'Existing schedule rail': false,
+      'Existing plan windows': false,
+      'Proposed schedule rail': false,
       'Proposed plan windows': false,
+      'Plan difference windows': false,
     })
   })
 })

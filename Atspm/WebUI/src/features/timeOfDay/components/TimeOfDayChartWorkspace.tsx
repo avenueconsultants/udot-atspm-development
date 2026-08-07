@@ -5,22 +5,18 @@ import type { TimeOfDayAnalysisModel } from '../transformers'
 import type { TimeOfDaySidebarTab } from './chart/TimeOfDayChartHeader'
 import TimeOfDayChartHeader from './chart/TimeOfDayChartHeader'
 import TimeOfDayEChart from './chart/TimeOfDayEChart'
-import type {
-  TimeOfDayAnalysisMode,
-  TimeOfDayScheduleView,
-} from './chart/TimeOfDayLayersPanel'
+import type { TimeOfDayAnalysisMode } from './chart/TimeOfDayLayersPanel'
 import TimeOfDayLayersPanel, {
   getAnalysisModeSeriesSelection,
   getLayerAnalysisMode,
-  getScheduleViewForLayer,
   getSidebarLayers,
-  isScheduleLayerSelected,
 } from './chart/TimeOfDayLayersPanel'
 
 const sidebarWidths: Record<TimeOfDaySidebarTab, number> = {
   layers: 360,
   details: 700,
 }
+const workspacePaneHeight = 820
 
 const sidebarTransition = (theme: {
   transitions: {
@@ -61,6 +57,7 @@ const SidebarDetails = memo(
 
 interface TimeOfDayChartWorkspaceProps {
   model: TimeOfDayAnalysisModel
+  summary: ReactNode
   renderDetails: (props: {
     activeMode: TimeOfDayAnalysisMode
     selectedSeries: Record<string, boolean>
@@ -72,6 +69,7 @@ interface TimeOfDayChartWorkspaceProps {
 
 export default function TimeOfDayChartWorkspace({
   model,
+  summary,
   renderDetails,
 }: TimeOfDayChartWorkspaceProps) {
   const [activeMode, setActiveMode] =
@@ -105,36 +103,19 @@ export default function TimeOfDayChartWorkspace({
   )
 
   const toggleScheduleView = useCallback(
-    (view: TimeOfDayScheduleView) => {
-      const selectedLayer = model.layers.find(
-        (layer) => getScheduleViewForLayer(layer) === view
+    () => {
+      const scheduleLayer = model.layers.find(
+        (layer) => layer.id === 'schedules'
       )
-      if (!selectedLayer?.available) return
+      if (!scheduleLayer?.available) return
 
       setSelectedSeries((current) => {
         const next = { ...current }
-        const scheduleLayers = model.layers.filter(
-          (layer) => getScheduleViewForLayer(layer) && layer.available
+        const allVisible = scheduleLayer.seriesNames.every(
+          (seriesName) => current[seriesName] === true
         )
-        const selected = isScheduleLayerSelected(selectedLayer, current)
-        selectedLayer.seriesNames.forEach((seriesName) => {
-          next[seriesName] = !selected
-        })
-
-        const proposedLayer = scheduleLayers.find(
-          (layer) => getScheduleViewForLayer(layer) === 'proposed'
-        )
-        const existingLayer = scheduleLayers.find(
-          (layer) => getScheduleViewForLayer(layer) === 'existing'
-        )
-        const showDifferences =
-          isScheduleLayerSelected(proposedLayer, next) &&
-          isScheduleLayerSelected(existingLayer, next)
-        const differenceLayer = model.layers.find(
-          (layer) => layer.id === 'difference-windows'
-        )
-        differenceLayer?.seriesNames.forEach((seriesName) => {
-          next[seriesName] = differenceLayer.available && showDifferences
+        scheduleLayer.seriesNames.forEach((seriesName) => {
+          next[seriesName] = !allVisible
         })
 
         return next
@@ -224,21 +205,37 @@ export default function TimeOfDayChartWorkspace({
         sx={{
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
-          minHeight: { xs: 0, md: 840 },
+          height: { xs: 'auto', md: workspacePaneHeight },
+          minHeight: 0,
           border: '1px solid',
           borderColor: 'divider',
+          overflow: 'hidden',
         }}
       >
-        <Box sx={{ flex: 1, minWidth: 0, overflowX: 'auto' }}>
-          <Box sx={{ height: 840, minWidth: 600 }}>
-            <TimeOfDayEChart
-              option={model.option}
-              selectedSeries={selectedSeries}
-              showPercentAxis={showPercentAxis}
-              selectedDetail={selectedDetail}
-              onSelectDetail={selectDetail}
-              onToggleScheduleView={toggleScheduleView}
-            />
+        <Box
+          sx={{
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+            width: '100%',
+            height: { xs: workspacePaneHeight, md: '100%' },
+            minWidth: 0,
+            minHeight: 0,
+            overflow: 'hidden',
+          }}
+        >
+          {summary}
+          <Box sx={{ flex: 1, minHeight: 0, overflowX: 'auto' }}>
+            <Box sx={{ width: '100%', height: '100%', minWidth: 600 }}>
+              <TimeOfDayEChart
+                option={model.option}
+                selectedSeries={selectedSeries}
+                showPercentAxis={showPercentAxis}
+                selectedDetail={selectedDetail}
+                onSelectDetail={selectDetail}
+                onToggleScheduleView={toggleScheduleView}
+              />
+            </Box>
           </Box>
         </Box>
         <Box
@@ -246,8 +243,9 @@ export default function TimeOfDayChartWorkspace({
           aria-label="Time-of-day chart controls"
           sx={{
             width: { xs: '100%', md: sidebarWidth },
+            height: { xs: workspacePaneHeight, md: '100%' },
             flexShrink: 0,
-            height: { xs: 'auto', md: 840 },
+            minHeight: 0,
             borderLeft: { xs: 0, md: '1px solid' },
             borderTop: { xs: '1px solid', md: 0 },
             borderLeftColor: { md: 'divider' },
@@ -268,6 +266,8 @@ export default function TimeOfDayChartWorkspace({
               minHeight: 0,
               overflowY: 'auto',
               overflowX: 'hidden',
+              overscrollBehavior: 'contain',
+              scrollbarGutter: 'stable',
             }}
           >
             <Box
@@ -281,7 +281,6 @@ export default function TimeOfDayChartWorkspace({
               <TimeOfDayLayersPanel
                 layers={sidebarLayers}
                 selectedSeries={selectedSeries}
-                onToggleScheduleView={toggleScheduleView}
                 onSetSeriesVisibility={setSeriesVisibility}
               />
             </Box>
