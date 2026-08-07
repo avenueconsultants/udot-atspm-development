@@ -36,7 +36,7 @@ export default function TimeOfDaySchedules({
   return (
     <Paper sx={{ p: 0, bgcolor: 'common.white' }}>
       <Stack spacing={0}>
-        <Box sx={{ px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 3 }, pb: 2.5 }}>
+        <Box sx={{ px: { xs: 2, sm: 3 }, pt: { xs: 2, sm: 3 }, pb: 0 }}>
           <Typography variant="h5" component="h2">
             Schedules
           </Typography>
