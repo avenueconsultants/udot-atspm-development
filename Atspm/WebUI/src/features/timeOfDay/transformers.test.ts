@@ -667,14 +667,51 @@ describe('time-of-day chart titles', () => {
     expect(model.layers).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
+          id: 'schedules',
+          label: 'Schedules',
+          color: '#ef6c00',
+          additionalColors: ['#2e7d32', '#1565c0'],
+          seriesNames: [
+            'Proposed plan windows',
+            'Proposed schedule rail',
+            'Existing plan windows',
+            'Existing schedule rail',
+            'Plan difference windows',
+          ],
+          legendItems: [
+            {
+              label: 'AM peak plan',
+              color: '#ef6c00',
+              preview: 'area',
+            },
+            {
+              label: 'Midday plan',
+              color: '#2e7d32',
+              preview: 'area',
+            },
+            {
+              label: 'PM peak plan',
+              color: '#1565c0',
+              preview: 'area',
+            },
+            {
+              label: 'FREE operation',
+              color: '#607d8b',
+              preview: 'area',
+            },
+            {
+              label: 'Proposed and existing schedules differ',
+              color: '#f59e0b',
+              preview: 'hatch',
+            },
+          ],
+        }),
+        expect.objectContaining({
           id: 'directional-profiles',
           label: 'Directional profiles',
           color: '#00897b',
           additionalColors: ['#7b1fa2'],
-          seriesNames: [
-            'Northbound total profile',
-            'Southbound total profile',
-          ],
+          seriesNames: ['Northbound total profile', 'Southbound total profile'],
           seriesControls: [
             {
               seriesName: 'Northbound total profile',
@@ -750,7 +787,13 @@ describe('time-of-day chart titles', () => {
       data?: unknown[][]
       dimensions?: string[]
       encode?: { tooltip?: number[] }
-      tooltip?: { show?: boolean }
+      tooltip?: {
+        show?: boolean
+        trigger?: string
+        formatter?: (params: unknown) => string
+      }
+      silent?: boolean
+      cursor?: string
       renderItem?: (
         params: {
           dataIndex?: number
@@ -838,7 +881,11 @@ describe('time-of-day chart titles', () => {
     expect(scheduleYAxis.triggerEvent).toBe(true)
     expect(proposedSchedule).toMatchObject({
       clip: false,
-      tooltip: { show: false },
+      tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: expect.any(Function),
+      },
     })
     expect(proposedSchedule?.dimensions).not.toContain('Hovered')
     expect(proposedSchedule?.encode).not.toHaveProperty('tooltip')
@@ -868,6 +915,11 @@ describe('time-of-day chart titles', () => {
     ])
 
     const proposedPlanDatum = proposedSchedule?.data?.[1]
+    const proposedTooltipFormatter = proposedSchedule?.tooltip?.formatter
+    expect(typeof proposedTooltipFormatter).toBe('function')
+    expect(proposedTooltipFormatter?.({ value: proposedPlanDatum })).toBe(
+      '<strong>Proposed schedule</strong><br/>07:00–09:00<br/>Plan 1'
+    )
     const renderedProposedPlan = proposedSchedule?.renderItem?.(
       { coordSys: { x: 0, y: 0, width: 1440, height: 60 } },
       {
@@ -978,7 +1030,7 @@ describe('time-of-day chart titles', () => {
         },
       },
     })
-    expect(renderedProposedRow?.children?.[1]?.silent).toBe(true)
+    expect(renderedProposedRow?.children?.[1]?.silent).toBe(false)
     expect(renderedProposedRow?.children?.[2]?.silent).toBe(true)
     expect(renderedProposedRow?.children?.[0]?.style).not.toHaveProperty(
       'stroke'
@@ -991,11 +1043,25 @@ describe('time-of-day chart titles', () => {
     expect(differenceWindows).toMatchObject({
       type: 'custom',
       data: [
-        [360, 420],
-        [420, 540],
+        [360, 420, 'FREE', 'Free', '7', 'Plan 7'],
+        [420, 540, '1', 'Plan 1', '7', 'Plan 7'],
       ],
+      silent: false,
+      cursor: 'help',
+      tooltip: {
+        show: true,
+        trigger: 'item',
+        formatter: expect.any(Function),
+      },
       z: 1,
     })
+    const differenceTooltipFormatter = differenceWindows?.tooltip?.formatter
+    expect(typeof differenceTooltipFormatter).toBe('function')
+    expect(
+      differenceTooltipFormatter?.({ value: differenceWindows?.data?.[0] })
+    ).toBe(
+      '<strong>Schedules differ</strong><br/>06:00–07:00<br/>Proposed: FREE<br/>Existing: Plan 7'
+    )
     expect(existingPlanWindows).toMatchObject({
       z: 1,
       markArea: { z: 1 },
@@ -1030,11 +1096,11 @@ describe('time-of-day chart titles', () => {
       'Southbound total profile': true,
       '35% split review': false,
       '45% shoulder review': false,
-      'Existing plan windows': false,
-      'Existing schedule rail': false,
+      'Existing plan windows': true,
+      'Existing schedule rail': true,
       'Proposed plan windows': true,
       'Proposed schedule rail': true,
-      'Plan difference windows': false,
+      'Plan difference windows': true,
       'AM Movement Pressure': false,
     })
     expect(percentAxis.show).toBe(false)
@@ -1081,10 +1147,11 @@ describe('time-of-day chart titles', () => {
       '45% shoulder review': true,
       'AM Cross Traffic Locations': true,
       'AM Movement Pressure': false,
-      'Existing schedule rail': true,
-      'Existing plan windows': true,
-      'Proposed schedule rail': true,
+      'Existing schedule rail': false,
+      'Existing plan windows': false,
+      'Proposed schedule rail': false,
       'Proposed plan windows': false,
+      'Plan difference windows': false,
     })
   })
 })

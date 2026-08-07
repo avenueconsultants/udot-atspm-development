@@ -3,7 +3,8 @@ import type { ECharts, EChartsOption } from 'echarts'
 import { init } from 'echarts'
 import { useEffect, useMemo, useRef } from 'react'
 import type { TimeOfDayChartDetailTarget } from '../../transformers'
-import type { TimeOfDayScheduleView } from './TimeOfDayLayersPanel'
+
+export type TimeOfDayScheduleView = 'proposed' | 'existing'
 
 interface TimeOfDayEChartProps {
   option: EChartsOption

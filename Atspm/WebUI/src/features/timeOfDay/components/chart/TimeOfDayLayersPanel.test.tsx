@@ -39,7 +39,6 @@ describe('TimeOfDayLayersPanel directional profiles', () => {
         selectedSeries={Object.fromEntries(
           directionalSeriesNames.map((seriesName) => [seriesName, true])
         )}
-        onToggleScheduleView={jest.fn()}
         onSetSeriesVisibility={onSetSeriesVisibility}
       />
     )
@@ -79,6 +78,77 @@ describe('TimeOfDayLayersPanel directional profiles', () => {
     fireEvent.click(parentCheckbox)
     expect(onSetSeriesVisibility).toHaveBeenLastCalledWith(
       directionalSeriesNames,
+      false
+    )
+  })
+})
+
+const scheduleSeriesNames = [
+  'Proposed plan windows',
+  'Proposed schedule rail',
+  'Existing plan windows',
+  'Existing schedule rail',
+  'Plan difference windows',
+]
+
+const schedulesLayer: TimeOfDayChartLayer = {
+  id: 'schedules',
+  group: 'Schedules',
+  label: 'Schedules',
+  description:
+    'Proposed and existing timing-plan windows. Expand for the color and hatch key.',
+  preview: 'schedule',
+  color: '#ef6c00',
+  additionalColors: ['#2e7d32', '#1565c0'],
+  seriesNames: scheduleSeriesNames,
+  legendItems: [
+    { label: 'AM peak plan', color: '#ef6c00', preview: 'area' },
+    { label: 'Midday plan', color: '#2e7d32', preview: 'area' },
+    { label: 'PM peak plan', color: '#1565c0', preview: 'area' },
+    { label: 'FREE operation', color: '#607d8b', preview: 'area' },
+    {
+      label: 'Proposed and existing schedules differ',
+      color: '#f59e0b',
+      preview: 'hatch',
+    },
+  ],
+  available: true,
+}
+
+describe('TimeOfDayLayersPanel schedules', () => {
+  test('explains schedule colors and hatching without per-item toggles', () => {
+    const onSetSeriesVisibility = jest.fn()
+
+    render(
+      <TimeOfDayLayersPanel
+        layers={[schedulesLayer]}
+        selectedSeries={Object.fromEntries(
+          scheduleSeriesNames.map((seriesName) => [seriesName, true])
+        )}
+        onSetSeriesVisibility={onSetSeriesVisibility}
+      />
+    )
+
+    const parentCheckbox = screen.getByRole('checkbox', {
+      name: 'Toggle Schedules',
+    })
+    expect(parentCheckbox).toHaveProperty('checked', true)
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show Schedules details' })
+    )
+
+    schedulesLayer.legendItems?.forEach(({ label }) => {
+      expect(screen.getByText(label)).toBeTruthy()
+      expect(
+        screen.queryByRole('checkbox', { name: `Toggle ${label}` })
+      ).toBeNull()
+    })
+
+    expect(screen.getAllByRole('checkbox')).toHaveLength(1)
+    fireEvent.click(parentCheckbox)
+    expect(onSetSeriesVisibility).toHaveBeenLastCalledWith(
+      scheduleSeriesNames,
       false
     )
   })
