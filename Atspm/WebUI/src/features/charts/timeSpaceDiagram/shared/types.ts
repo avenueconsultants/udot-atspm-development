@@ -197,9 +197,11 @@ export type TimeSpaceOptions =
   | TimeSpaceAverageOptions
 
 export type TimeSpaceDistanceSpacingMode = 'distance' | 'sequence' | 'hybrid'
+export type TimeSpaceRouteOrientation = 'configured' | 'reversed'
 
 export interface TimeSpaceTransformOptions {
   distanceSpacingMode?: TimeSpaceDistanceSpacingMode
+  routeOrientation?: TimeSpaceRouteOrientation
 }
 
 export interface RawTimeSpaceDiagramResponse {
