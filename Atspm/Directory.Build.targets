@@ -1,0 +1,30 @@
+<Project>
+
+  <!--
+    Auto-exports each API's OpenAPI/Swagger document to WebUI/api-specs whenever
+    it builds, so the frontend's orval-generated client is regenerated from a
+    spec that's always current instead of a manually re-exported snapshot.
+
+    Opt in per project via GenerateSwaggerSpec=true and SwaggerSpecName=<name>
+    (output filename becomes <name>-spec.json).
+
+    Requires the local dotnet tool manifest at Atspm/.config/dotnet-tools.json
+    (Swashbuckle.AspNetCore.Cli) to have been restored at least once
+    (`dotnet tool restore`). If the tool isn't present, or the export fails for
+    any reason (no DB needed, but e.g. a version mismatch), this only emits a
+    build warning - it never fails a normal build.
+  -->
+  <PropertyGroup Condition="'$(GenerateSwaggerSpec)' == 'true'">
+    <SwaggerCliDll>$(NuGetPackageRoot)swashbuckle.aspnetcore.cli\7.1.0\tools\$(TargetFramework)\any\dotnet-swagger.dll</SwaggerCliDll>
+    <SwaggerSpecOutputDir>$(MSBuildThisFileDirectory)WebUI\api-specs\</SwaggerSpecOutputDir>
+  </PropertyGroup>
+
+  <Target Name="ExportSwaggerSpec"
+          AfterTargets="Build"
+          Condition="'$(GenerateSwaggerSpec)' == 'true' AND Exists('$(SwaggerCliDll)')">
+    <Exec Command="dotnet exec --depsfile &quot;$(TargetDir)$(TargetName).deps.json&quot; --runtimeconfig &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SwaggerCliDll)&quot; tofile --output &quot;$(SwaggerSpecOutputDir)$(SwaggerSpecName)-spec.json&quot; &quot;$(TargetPath)&quot; v1"
+          EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development;DatabaseConfiguration__ConfigContext__DBType=InMemory;DatabaseConfiguration__ConfigContext__Host=localhost;DatabaseConfiguration__ConfigContext__Database=swagger-export;DatabaseConfiguration__ConfigContext__RunMigrations=false;DatabaseConfiguration__AggregationContext__DBType=InMemory;DatabaseConfiguration__AggregationContext__Host=localhost;DatabaseConfiguration__AggregationContext__Database=swagger-export;DatabaseConfiguration__AggregationContext__RunMigrations=false;DatabaseConfiguration__EventLogContext__DBType=InMemory;DatabaseConfiguration__EventLogContext__Host=localhost;DatabaseConfiguration__EventLogContext__Database=swagger-export;DatabaseConfiguration__EventLogContext__RunMigrations=false;DatabaseConfiguration__IdentityContext__DBType=InMemory;DatabaseConfiguration__IdentityContext__Host=localhost;DatabaseConfiguration__IdentityContext__Database=swagger-export;DatabaseConfiguration__IdentityContext__RunMigrations=false"
+          ContinueOnError="WarnAndContinue" />
+  </Target>
+
+</Project>
