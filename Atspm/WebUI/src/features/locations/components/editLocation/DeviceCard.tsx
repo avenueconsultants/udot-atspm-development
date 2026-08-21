@@ -1,6 +1,5 @@
-import { Device } from '@/api/config'
+import { Device, useGetDeviceConfiguration } from '@/api/config'
 import AuditBadge from '@/components/AuditInfo'
-import { useGetDeviceConfigurations } from '@/features/devices/api'
 import CircleIcon from '@mui/icons-material/Circle'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
@@ -53,7 +52,7 @@ interface DeviceCardProps {
   canEdit: boolean
   canDelete: boolean
   onEdit: (device: Device) => void
-  onDelete: (deviceId: string) => void
+  onDelete: (deviceId: number | undefined) => void
 }
 
 const DeviceCard = ({
@@ -65,9 +64,9 @@ const DeviceCard = ({
 }: DeviceCardProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const { data: deviceConfigurationsData } = useGetDeviceConfigurations()
+  const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
 
-  const deviceConfigurations = deviceConfigurationsData?.value
+  const deviceConfigurations = deviceConfigurationsData
 
   if (!deviceConfigurations) return null
 

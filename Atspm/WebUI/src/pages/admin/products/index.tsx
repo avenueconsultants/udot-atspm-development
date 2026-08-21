@@ -1,4 +1,10 @@
-import { Product } from '@/api/config'
+import {
+  Product,
+  useDeleteProductFromKey,
+  useGetProduct,
+  usePatchProductFromKey,
+  usePostProduct,
+} from '@/api/config'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
@@ -7,12 +13,6 @@ import {
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import {
-  useCreateProduct,
-  useDeleteProduct,
-  useEditProduct,
-  useGetProducts,
-} from '@/features/products/api/index'
 import ProductEditorModal from '@/features/products/components/ProductEditorModal'
 import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
@@ -23,17 +23,17 @@ const ProductsAdmin = () => {
   const hasDeviceEditClaim = useUserHasClaim('Device:Edit')
   const hasDeviceDeleteClaim = useUserHasClaim('Device:Delete')
 
-  const { mutateAsync: createMutation } = useCreateProduct()
-  const { mutateAsync: deleteMutation } = useDeleteProduct()
-  const { mutateAsync: editMutation } = useEditProduct()
+  const { mutateAsync: createMutation } = usePostProduct()
+  const { mutateAsync: deleteMutation } = useDeleteProductFromKey()
+  const { mutateAsync: editMutation } = usePatchProductFromKey()
 
   const {
     data: productData,
     isLoading,
     refetch: refetchProducts,
-  } = useGetProducts()
+  } = useGetProduct()
 
-  const products = productData?.value
+  const products = productData
 
   if (pageAccess.isLoading) {
     return
@@ -54,16 +54,16 @@ const ProductsAdmin = () => {
     if (notes) sanitizedProduct.notes = notes
 
     try {
-      await createMutation(sanitizedProduct)
+      await createMutation({ data: sanitizedProduct })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
     }
   }
 
-  const HandleDeleteProduct = async (id: number) => {
+  const HandleDeleteProduct = async (id: string | number) => {
     try {
-      await deleteMutation(id)
+      await deleteMutation({ key: Number(id) })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
@@ -75,7 +75,7 @@ const ProductsAdmin = () => {
     try {
       await editMutation({
         data: { manufacturer, model, webPage, notes },
-        id,
+        key: id,
       })
       refetchProducts()
     } catch (error) {

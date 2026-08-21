@@ -1,9 +1,9 @@
-import { Device } from '@/api/config'
-import { useGetDeviceConfigurations } from '@/features/devices/api'
 import {
-  useDeleteDevice,
-  useGetDevicesForLocation,
-} from '@/features/devices/api/devices'
+  Device,
+  useDeleteDeviceFromKey,
+  useGetDeviceConfiguration,
+  useGetLocationDevicesFromKey,
+} from '@/api/config'
 import { useUserHasClaim } from '@/features/identity/pagesCheck'
 import DeviceCard from '@/features/locations/components/editLocation/DeviceCard'
 import { useLocationStore } from '@/features/locations/components/editLocation/locationStore'
@@ -24,14 +24,14 @@ const EditDevices = () => {
   const [isModalOpen, setModalOpen] = useState(false)
   const [currentDevice, setCurrentDevice] = useState<Device | null>(null)
   const [openDeleteModal, setOpenDeleteModal] = useState(false)
-  const [deleteDeviceId, setDeleteDeviceId] = useState<string | null>(null)
+  const [deleteDeviceId, setDeleteDeviceId] = useState<number | null>(null)
 
   const { data: devicesData, refetch: refetchDevices } =
-    useGetDevicesForLocation(locationId)
-  const { data: deviceConfigurationsData } = useGetDeviceConfigurations()
-  const { mutate: deleteDevice } = useDeleteDevice()
+    useGetLocationDevicesFromKey(locationId ?? 0)
+  const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
+  const { mutate: deleteDevice } = useDeleteDeviceFromKey()
 
-  if (!deviceConfigurationsData?.value || !devicesData?.value) {
+  if (!deviceConfigurationsData || !devicesData) {
     return <Typography variant="h6">Loading...</Typography>
   }
 
@@ -49,8 +49,8 @@ const EditDevices = () => {
     setModalOpen(true)
   }
 
-  const handleDelete = (deviceId: string) => {
-    if (!hasDeviceDeleteClaim) return
+  const handleDelete = (deviceId: number | undefined) => {
+    if (!hasDeviceDeleteClaim || deviceId === undefined) return
 
     setDeleteDeviceId(deviceId)
     setOpenDeleteModal(true)
@@ -59,8 +59,11 @@ const EditDevices = () => {
   const confirmDeleteDevice = () => {
     if (!hasDeviceDeleteClaim) return
 
-    if (deleteDeviceId) {
-      deleteDevice(deleteDeviceId, { onSuccess: refetchDevices })
+    if (deleteDeviceId !== null) {
+      deleteDevice(
+        { key: deleteDeviceId },
+        { onSuccess: () => refetchDevices() }
+      )
     }
     setOpenDeleteModal(false)
   }
@@ -77,7 +80,7 @@ const EditDevices = () => {
           marginTop: '10px',
         }}
       >
-        {devicesData.value.map((device) => (
+        {devicesData.map((device) => (
           <DeviceCard
             key={device.id}
             device={device}

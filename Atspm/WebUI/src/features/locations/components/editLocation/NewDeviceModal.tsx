@@ -1,9 +1,11 @@
-import { usePutDeviceFromKey } from '@/api/config'
+import {
+  DeviceConfiguration,
+  useGetDeviceConfiguration,
+  useGetProduct,
+  usePostDevice,
+  usePutDeviceFromKey,
+} from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { useGetDeviceConfigurations } from '@/features/devices/api'
-import { useCreateDevice } from '@/features/devices/api/devices'
-import { DeviceConfiguration } from '@/features/devices/types'
-import { useGetProducts } from '@/features/products/api'
 import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
 import { useNotificationStore } from '@/stores/notifications'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -87,7 +89,7 @@ const deviceSchema = z.object({
 export interface NewDeviceModalProps {
   onClose: () => void
   device?: any | null
-  locationId: string
+  locationId: number | undefined
   refetchDevices: () => void
 }
 
@@ -97,16 +99,16 @@ const DeviceModal = ({
   locationId,
   refetchDevices,
 }: NewDeviceModalProps) => {
-  const { data: productsData } = useGetProducts()
-  const { data: deviceConfigurationsData } = useGetDeviceConfigurations()
+  const { data: productsData } = useGetProduct()
+  const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
   const { mutate: updateDevice } = usePutDeviceFromKey()
-  const { mutate: createDevice } = useCreateDevice()
+  const { mutate: createDevice } = usePostDevice()
   const { data: deviceTypes } = useConfigEnums(ConfigEnum.DeviceTypes)
   const { data: deviceStatus } = useConfigEnums(ConfigEnum.DeviceStatus)
   const { addNotification } = useNotificationStore()
 
-  const deviceConfigurations = deviceConfigurationsData?.value
-  const products = productsData?.value
+  const deviceConfigurations = deviceConfigurationsData
+  const products = productsData
 
   const [filteredConfigurations, setFilteredConfigurations] = useState<
     DeviceConfiguration[]
@@ -203,15 +205,18 @@ const DeviceModal = ({
         }
       )
     } else {
-      createDevice(newDeviceDTO, {
-        onSuccess: () => {
-          refetchDevices()
-          onClose()
-        },
-        onError: (error) => {
-          addNotification({ title: 'Device Creation Failed', type: 'error' })
-        },
-      })
+      createDevice(
+        { data: newDeviceDTO },
+        {
+          onSuccess: () => {
+            refetchDevices()
+            onClose()
+          },
+          onError: (error) => {
+            addNotification({ title: 'Device Creation Failed', type: 'error' })
+          },
+        }
+      )
     }
   }
 
