@@ -1,9 +1,9 @@
-// import { useGetLocationSaveTemplatedLocationFromKey } from '@/api/config'
 import {
-  useCreateLocation,
-  useLatestVersionOfAllLocations,
-} from '@/features/locations/api'
-import { Location, LocationExpanded } from '@/features/locations/types'
+  Location,
+  LocationVersionActions,
+  usePostLocation,
+  useGetLocationLocationsForSearch,
+} from '@/api/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
@@ -24,11 +24,9 @@ import { z } from 'zod'
 interface NewLocationModalProps {
   closeModal: () => void
   setLocation: (location: Location) => void
-  onCreatedFromTemplate: () => void
 }
 
-// Schemas
-// For no template: Only locationIdentifier is required
+// Only locationIdentifier is required to create a location
 const noTemplateSchema = z.object({
   locationIdentifier: z
     .string()
@@ -38,120 +36,37 @@ const noTemplateSchema = z.object({
     }),
 })
 
-// For template: locationIdentifier + latitude + longitude + devices (with ipaddress)
-const templateSchema = z.object({
-  locationIdentifier: z
-    .string()
-    .min(1, { message: 'Location Identifier is required.' })
-    .max(10, {
-      message: 'Location Identifier must be 10 characters or fewer.',
-    }),
-  primaryName: z.string().optional(),
-  secondaryName: z.string().optional(),
-  latitude: z
-    .union([z.string(), z.number()])
-    .transform((val) => (val === '' ? NaN : Number(val)))
-    .refine((val) => !isNaN(val), {
-      message: 'Latitude is required when copying from template',
-    }),
-  longitude: z
-    .union([z.string(), z.number()])
-    .transform((val) => (val === '' ? NaN : Number(val)))
-    .refine((val) => !isNaN(val), {
-      message: 'Longitude is required when copying from template',
-    }),
-  devices: z
-    .array(
-      z.object({
-        ipaddress: z.string().min(1, { message: 'IP Address is required.' }),
-      })
-    )
-    .min(1, {
-      message: 'At least one device is required when copying from template',
-    }),
-})
+type NewLocationFormData = z.infer<typeof noTemplateSchema>
 
 const NewLocationModal = ({
   closeModal,
   setLocation,
-  onCreatedFromTemplate,
 }: NewLocationModalProps) => {
-  // const [selectedLocation, setSelectedLocation] = useState<Location | null>(
-  //   null
-  // )
-  // const [copyLocationFromTemplate, setCopyLocationFromTemplate] =
-  //   useState<boolean>(false)
-
-  // const locationHandler = useLocationConfigHandler({
-  //   location: selectedLocation as Location,
-  // })
-
-  const { mutate: createLocation } = useCreateLocation()
-  const { data: allLocationsData } = useLatestVersionOfAllLocations()
-  const allLocations = allLocationsData?.value || []
+  const { mutate: createLocation } = usePostLocation()
+  const { data: allLocationsData } = useGetLocationLocationsForSearch()
+  const allLocations = allLocationsData || []
 
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
     watch,
-  } = useForm<LocationExpanded>({
+  } = useForm<NewLocationFormData>({
     resolver: zodResolver(noTemplateSchema),
     defaultValues: {
       locationIdentifier: '',
-      primaryName: '',
-      secondaryName: '',
-      latitude: undefined,
-      longitude: undefined,
-      devices: [],
     },
   })
 
   const locationIdentifier = watch('locationIdentifier')
 
   const locationIsUnique = !allLocations.find(
-    (loc: { locationIdentifier: string }) =>
-      loc.locationIdentifier === locationIdentifier
+    (loc) => loc.locationIdentifier === locationIdentifier
   )
   const locationIsLessThan10Characters = (locationIdentifier || '').length <= 10
 
-  const onSubmit = async (data: LocationExpanded) => {
-    // const devices = locationHandler?.expandedLocation?.devices || []
-    // const transformedDevices = devices.map((device, index) => {
-    //   const { id, locationId, ...rest } = device
-    //   return {
-    //     ...rest,
-    //     ipaddress: data.devices ? data.devices[index].ipaddress : '',
-    //   }
-    // })
-
-    // if (copyLocationFromTemplate && selectedLocation) {
-    //   const templateData = {
-    //     locationIdentifier: data.locationIdentifier,
-    //     primaryName: data.primaryName || '',
-    //     secondaryName: data.secondaryName || '',
-    //     latitude: data.latitude || null,
-    //     longitude: data.longitude || null,
-    //     devices: transformedDevices,
-    //   }
-
-    //   await createFromTemplate(
-    //     {
-    //       key: parseInt(selectedLocation.id),
-    //       data: templateData,
-    //     },
-    //     {
-    //       onSuccess: (createdData) => {
-    //         setLocation(createdData as unknown as Location)
-
-    //         onCreatedFromTemplate()
-    //       },
-    //       onSettled: closeModal,
-    //     }
-    //   )
-    // } else {
-    // If not copying template, we just need locationIdentifier.
-    const defaultValues = {
+  const onSubmit = (data: NewLocationFormData) => {
+    const newLocation: Location = {
       locationIdentifier: data.locationIdentifier,
       note: '',
       start: new Date().toISOString(),
@@ -164,17 +79,19 @@ const NewLocationModal = ({
       chartEnabled: false,
       regionId: 10,
       jurisdictionId: 1,
-      versionAction: 'Initial',
+      versionAction: LocationVersionActions.NUMBER_10,
     }
 
-    createLocation(defaultValues, {
-      onSuccess: (createdData) => {
-        setLocation(createdData as unknown as Location)
-      },
-      onSettled: closeModal,
-    })
+    createLocation(
+      { data: newLocation },
+      {
+        onSuccess: (createdData) => {
+          setLocation(createdData as unknown as Location)
+        },
+        onSettled: closeModal,
+      }
+    )
   }
-  // }
 
   const errorMessage = () => {
     if (errors.locationIdentifier) {

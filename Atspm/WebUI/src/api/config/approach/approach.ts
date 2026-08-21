@@ -208,7 +208,7 @@ export const upsertApproachApproach = (
 ) => {
 
 
-      return configRequest<void>(
+      return configRequest<ApproachDto>(
       {url: `/UpsertApproach`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: approachDto,
@@ -268,7 +268,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<void>(
+      return configRequest<ApproachDto>(
       {url: `/GetApproachDto/${id}`, method: 'GET',
         params, signal
     },

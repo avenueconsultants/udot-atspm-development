@@ -15,9 +15,9 @@ import {
 import { useEffect, useState } from 'react'
 
 import {
-  useLocationConfigData,
-  useLocationVersions,
-} from '@/features/locations/api'
+  useGetLocationAllVersionsOfLocationFromIdentifier,
+  useGetLocationFromKey,
+} from '@/api/config'
 import ApproachesInfo from '@/features/locations/components/ApproachesInfo/approachesInfo'
 import DetectorsInfo from '@/features/locations/components/DetectorsInfo/detectorsInfo'
 import LocationInfo from '@/features/locations/components/LocationInfo/locationInfo'
@@ -30,38 +30,47 @@ interface LocationsConfigContainerProps {
 function LocationsConfigContainer({
   locationIdentifier,
 }: LocationsConfigContainerProps) {
-  const [version, setVersion] = useState({ id: '', note: '' })
+  const [version, setVersion] = useState({ id: 0, note: '' })
   const [isLocationInfoExpanded, setIsLocationInfoExpanded] = useState(true)
   const [isApproachesExpanded, setIsApproachesExpanded] = useState(true)
   const [isDetectorsExpanded, setIsDetectorsExpanded] = useState(true)
 
-  const { data: versionData } = useLocationVersions({
-    locationId: locationIdentifier,
-  })
+  const { data: versionData } = useGetLocationAllVersionsOfLocationFromIdentifier(
+    `'${locationIdentifier}'`
+  )
 
   useEffect(() => {
     if (versionData) {
       const newestVersion = versionData.reduce((newest, current) => {
-        return new Date(newest.start) > new Date(current.start)
+        return new Date(newest.start ?? 0) > new Date(current.start ?? 0)
           ? newest
           : current
       }, versionData[0])
-      setVersion({ id: newestVersion.id, note: newestVersion.note })
+      setVersion({
+        id: newestVersion?.id ?? 0,
+        note: newestVersion?.note ?? '',
+      })
     }
   }, [versionData])
 
-  const { data: configData } = useLocationConfigData({
-    locationId: version.id,
-  })
+  const { data: location } = useGetLocationFromKey(
+    version.id,
+    {
+      expand:
+        'approaches($expand=directionType, detectors($expand=detectionTypes, detectorComments))',
+    },
+    { query: { enabled: !!version.id } }
+  )
 
   const handleChange = (event: SelectChangeEvent) => {
+    const id = Number(event.target.value)
     setVersion({
-      id: event.target.value as string,
-      note: versionData?.find((v) => v.id === event.target.value)?.note || '',
+      id,
+      note: versionData?.find((v) => v.id === id)?.note || '',
     })
   }
 
-  if (!configData || !versionData) {
+  if (!location || !versionData) {
     return (
       <>
         <Typography variant="h4" fontWeight={'bold'} mt={2}>
@@ -71,8 +80,6 @@ function LocationsConfigContainer({
       </>
     )
   }
-
-  const location = configData[0]
 
   return (
     <Box>
@@ -88,7 +95,7 @@ function LocationsConfigContainer({
             Version
           </InputLabel>
           <Select
-            value={version.id}
+            value={String(version.id)}
             label="Version"
             labelId="location-version-select-label"
             id={'location-version-select'}
@@ -96,8 +103,11 @@ function LocationsConfigContainer({
             onChange={handleChange}
           >
             {versionData.map((version, index) => (
-              <MenuItem key={index} value={version.id}>
-                {format(version.start, 'MM/dd/yyyy')} - {version.note}
+              <MenuItem key={index} value={String(version.id)}>
+                {version.start
+                  ? format(new Date(version.start), 'MM/dd/yyyy')
+                  : ''}{' '}
+                - {version.note}
               </MenuItem>
             ))}
           </Select>

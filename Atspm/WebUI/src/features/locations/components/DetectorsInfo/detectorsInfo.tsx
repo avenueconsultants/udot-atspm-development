@@ -3,7 +3,7 @@ import DetectionTypesCell from '@/features/locations/components/editDetector/Det
 import { laneTypeOptions } from '@/features/locations/components/editDetector/LaneTypeCell'
 import { movementTypeOptions } from '@/features/locations/components/editDetector/MovementTypeCell'
 import { hardwareTypes } from '@/features/locations/components/editDetector/selectOptions'
-import { LocationExpanded } from '@/features/locations/types'
+import { Location as LocationExpanded } from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import { Box, SxProps, Theme } from '@mui/material'
@@ -58,13 +58,13 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
   const detectionRes = useGetDetectionType()
   const locationTypeRes = useGetLocationType()
 
-  const locationType = locationTypeRes.data?.value.find(
+  const locationType = locationTypeRes.data?.find(
     (lt) => lt.id === location?.locationTypeId
   )
 
   const availableDetectionTypes = React.useMemo(() => {
-    if (!locationType || !detectionRes.data?.value) return []
-    const all = detectionRes.data.value as any[]
+    if (!locationType || !detectionRes.data) return []
+    const all = detectionRes.data as any[]
     if (locationType.name === 'Intersection') {
       return all.filter((d) =>
         ['AC', 'AS', 'LLC', 'LLS', 'SBP', 'AP', 'PP'].includes(d.abbreviation)
@@ -103,7 +103,7 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
       movementType: detector.movementType,
       laneNumber: detector.laneNumber,
       laneType: laneTypeOptions.find(
-        (o) => o.abbreviation === detector.laneType
+        (o) => o.abbreviation === (detector.laneType as unknown as string)
       )?.description,
       distanceFromStopBar: detector.distanceFromStopBar,
       decisionPoint: detector.decisionPoint,
@@ -114,8 +114,9 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
         .join(', '),
     }))
     .sort((a, b) => {
-      if (a.detectorChannel < b.detectorChannel) return -1
-      if (a.detectorChannel > b.detectorChannel) return 1
+      if ((a.detectorChannel ?? 0) < (b.detectorChannel ?? 0)) return -1
+      if ((a.detectorChannel ?? 0) > (b.detectorChannel ?? 0)) return 1
+      return 0
     })
 
   const columns: GridColDef[] = [

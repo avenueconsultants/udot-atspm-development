@@ -1,13 +1,13 @@
 import {
+  ApproachDto,
   DetectionHardwareTypes,
   DetectionTypes,
   DirectionTypes,
   LaneTypes,
   MovementTypes,
+  useUpsertApproachApproach,
 } from '@/api/config'
 import AuditInfo from '@/components/AuditInfo'
-import { Color } from '@/features/charts/utils'
-import { useEditApproach } from '@/features/locations/api/approach'
 import ApproachEditorRowHeader from '@/features/locations/components/editApproach/ApproachEditorRow'
 import DeleteApproachModal from '@/features/locations/components/editApproach/DeleteApproachModal'
 import { hasUniqueDetectorChannels } from '@/features/locations/components/editApproach/utils/checkDetectors'
@@ -69,7 +69,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   const { addNotification } = useNotificationStore()
-  const { mutate: editApproach } = useEditApproach()
+  const { mutate: editApproach } = useUpsertApproachApproach()
 
   // Lookups
   const { findEnumByNameOrAbbreviation: findDetectionType } = useConfigEnums(
@@ -207,71 +207,82 @@ function EditApproach({ approach }: ApproachAdminProps) {
     modifiedApproach.detectors =
       modifiedApproach.detectors.map(removeAuditFields)
 
-    editApproach(modifiedApproach, {
-      onSuccess: (saved) => {
-        try {
-          const detectorsArray = saved.detectors || []
-          detectorsArray.forEach((detector) => {
-            detector.detectionTypes = detector.detectionTypes || []
-            detector.detectionTypes.forEach((dType) => {
-              dType.abbreviation =
-                findDetectionType(dType.abbreviation)?.name || DetectionTypes.NA
+    editApproach(
+      { data: modifiedApproach as unknown as ApproachDto },
+      {
+        onSuccess: (savedApproachDto) => {
+          try {
+            // The store keeps detector/direction enum fields as their
+            // human-readable name (matched against ConfigEnum lookups
+            // below), not the numeric codes the API returns - normalize
+            // through a loosely-typed view rather than fight the two
+            // incompatible shapes.
+            const saved = savedApproachDto as any
+            const detectorsArray: any[] = saved.detectors || []
+            detectorsArray.forEach((detector: any) => {
+              detector.detectionTypes = detector.detectionTypes || []
+              detector.detectionTypes.forEach((dType: any) => {
+                dType.abbreviation =
+                  findDetectionType(dType.abbreviation)?.name ||
+                  DetectionTypes.NA
+              })
+              detector.detectionHardware =
+                findDetectionHardware(detector.detectionHardware)?.name ||
+                DetectionHardwareTypes.NA
+              detector.movementType =
+                findMovementType(detector.movementType)?.name ||
+                MovementTypes.NA
+              detector.laneType =
+                findLaneType(detector.laneType)?.name || LaneTypes.NA
             })
-            detector.detectionHardware =
-              findDetectionHardware(detector.detectionHardware)?.name ||
-              DetectionHardwareTypes.NA
-            detector.movementType =
-              findMovementType(detector.movementType)?.name || MovementTypes.NA
-            detector.laneType =
-              findLaneType(detector.laneType)?.name || LaneTypes.NA
-          })
 
-          // Build final approach object for the store
-          const normalizedSaved: ConfigApproach = {
-            ...saved,
-            isNew: false,
-            directionTypeId:
-              findDirectionType(saved.directionTypeId)?.name ||
-              DirectionTypes.NA,
-            detectors: detectorsArray.sort(
-              (a, b) => a.detectorChannel - b.detectorChannel
-            ),
+            // Build final approach object for the store
+            const normalizedSaved: ConfigApproach = {
+              ...saved,
+              isNew: false,
+              directionTypeId:
+                findDirectionType(saved.directionTypeId)?.name ||
+                DirectionTypes.NA,
+              detectors: detectorsArray.sort(
+                (a: any, b: any) => a.detectorChannel - b.detectorChannel
+              ),
+            }
+
+            if (approach.isNew) {
+              deleteApproachInStore(approach)
+            }
+
+            updateApproachInStore(normalizedSaved)
+            updateSavedApproaches(normalizedSaved)
+            addNotification({
+              title: 'Approach saved successfully',
+              type: 'success',
+            })
+          } catch (error) {
+            console.error('Error processing saved approach:', error)
+            addNotification({
+              title: 'Failed to process saved approach',
+              type: 'error',
+              message:
+                error instanceof Error
+                  ? error.message
+                  : 'An unexpected error occurred',
+            })
           }
-
-          if (approach.isNew) {
-            deleteApproachInStore(approach)
-          }
-
-          updateApproachInStore(normalizedSaved)
-          updateSavedApproaches(normalizedSaved)
+        },
+        onError: (error) => {
+          console.error('Failed to save approach:', error)
           addNotification({
-            title: 'Approach saved successfully',
-            type: 'success',
-          })
-        } catch (error) {
-          console.error('Error processing saved approach:', error)
-          addNotification({
-            title: 'Failed to process saved approach',
+            title: 'Failed to save approach',
             type: 'error',
             message:
               error instanceof Error
                 ? error.message
                 : 'An unexpected error occurred',
           })
-        }
-      },
-      onError: (error) => {
-        console.error('Failed to save approach:', error)
-        addNotification({
-          title: 'Failed to save approach',
-          type: 'error',
-          message:
-            error instanceof Error
-              ? error.message
-              : 'An unexpected error occurred',
-        })
-      },
-    })
+        },
+      }
+    )
   }, [
     approach,
     channelMap,

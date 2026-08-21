@@ -1,4 +1,4 @@
-import { getLocationFromKey, Location } from '@/api/config'
+import { getLocationFromKey, SearchLocation } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { StyledPaper } from '@/components/StyledPaper'
 import { AddButton } from '@/components/addButton'
@@ -6,22 +6,45 @@ import { PageNames, useViewPage } from '@/features/identity/pagesCheck'
 import { sortApproachesAndDetectors } from '@/features/locations/components/editApproach/utils/sortApproaches'
 import LocationEditor from '@/features/locations/components/editLocation/EditLocation'
 import NewLocationModal from '@/features/locations/components/editLocation/NewLocationModal'
-import { useLocationStore } from '@/features/locations/components/editLocation/locationStore'
+import {
+  ConfigApproach,
+  ConfigLocation,
+  useLocationStore,
+} from '@/features/locations/components/editLocation/locationStore'
 import SelectLocation from '@/features/locations/components/selectLocation/SelectLocation'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export async function getLocation(locationId: number) {
-  const res = await getLocationFromKey(locationId, {
+export async function getLocation(
+  locationId: number
+): Promise<ConfigLocation | null> {
+  const location = await getLocationFromKey(locationId, {
     expand:
       'areas, devices, approaches($expand=Detectors($expand=DetectionTypes, detectorComments))',
   })
-  if (res?.value?.length) {
-    const newest = res.value[0]
-    newest.approaches = sortApproachesAndDetectors(newest.approaches)
-    return newest
-  }
-  return null
+  if (!location?.id) return null
+
+  const approaches: ConfigApproach[] = (location.approaches ?? []).map(
+    (approach, index) => ({
+      ...approach,
+      id: approach.id ?? 0,
+      index,
+      open: false,
+      isNew: false,
+      protectedPhaseNumber: approach.protectedPhaseNumber ?? null,
+      detectors: (approach.detectors ?? []).map((detector) => ({
+        ...detector,
+        id: detector.id ?? 0,
+        isNew: false,
+      })),
+    })
+  )
+
+  return {
+    ...location,
+    id: location.id,
+    approaches: sortApproachesAndDetectors(approaches),
+  } as ConfigLocation
 }
 
 const LocationsAdmin = () => {
@@ -34,10 +57,9 @@ const LocationsAdmin = () => {
 
   const pageAccess = useViewPage(PageNames.Location)
   const [isModalOpen, setModalOpen] = useState(false)
-  const [isWizardOpen, setIsWizardOpen] = useState(false)
 
   const onSelectLocation = useCallback(
-    (sel: Location | number | null) => {
+    (sel: { id?: number } | number | null) => {
       const id =
         sel && typeof sel === 'object'
           ? sel.id
@@ -70,7 +92,6 @@ const LocationsAdmin = () => {
     }
   }, [location?.id, setLocation, onSelectLocation])
 
-  const handleOpenWizard = () => setIsWizardOpen(true)
   const openNewLocationModal = useCallback(() => setModalOpen(true), [])
   const closeModal = useCallback(() => setModalOpen(false), [])
 
@@ -85,7 +106,7 @@ const LocationsAdmin = () => {
       />
       <StyledPaper sx={{ width: '50%', minWidth: 400, p: 3 }}>
         <SelectLocation
-          location={location}
+          location={location as unknown as SearchLocation | null}
           setLocation={onSelectLocation}
           mapHeight={400}
         />
@@ -95,7 +116,6 @@ const LocationsAdmin = () => {
         <NewLocationModal
           closeModal={closeModal}
           setLocation={onSelectLocation}
-          onCreatedFromTemplate={handleOpenWizard}
         />
       )}
     </ResponsivePageLayout>
