@@ -56,7 +56,7 @@ export const getRouteLocation = (
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/RouteLocation`, method: 'GET',
+      {url: `/RouteLocation`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -68,7 +68,7 @@ export const getRouteLocation = (
 
 export const getGetRouteLocationQueryKey = (params?: GetRouteLocationParams,) => {
     return [
-    `/api/v1/RouteLocation`, ...(params ? [params] : [])
+    `/RouteLocation`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -121,7 +121,7 @@ export const postRouteLocation = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/RouteLocation`, method: 'POST',
+      {url: `/RouteLocation`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: routeLocation,
         params, signal
@@ -180,7 +180,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/RouteLocation/$count`, method: 'GET',
+      {url: `/RouteLocation/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -192,7 +192,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetRouteLocationCountQueryKey = (params?: GetRouteLocationCountParams,) => {
     return [
-    `/api/v1/RouteLocation/$count`, ...(params ? [params] : [])
+    `/RouteLocation/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -245,7 +245,7 @@ export const getRouteLocationFromKey = (
 
 
       return configRequest<RouteLocation | Blob>(
-      {url: `/api/v1/RouteLocation/${key}`, method: 'GET',
+      {url: `/RouteLocation/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -258,7 +258,7 @@ export const getRouteLocationFromKey = (
 export const getGetRouteLocationFromKeyQueryKey = (key: number,
     params?: GetRouteLocationFromKeyParams,) => {
     return [
-    `/api/v1/RouteLocation/${key}`, ...(params ? [params] : [])
+    `/RouteLocation/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -314,7 +314,7 @@ export const putRouteLocationFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/RouteLocation/${key}`, method: 'PUT',
+      {url: `/RouteLocation/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: routeLocation,
         params, signal
@@ -375,7 +375,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/RouteLocation/${key}`, method: 'PATCH',
+      {url: `/RouteLocation/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: routeLocation,
         params, signal
@@ -434,7 +434,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/RouteLocation/${key}`, method: 'DELETE', signal
+      {url: `/RouteLocation/${key}`, method: 'DELETE', signal
     },
       );
     }

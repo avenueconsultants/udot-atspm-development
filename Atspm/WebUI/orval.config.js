@@ -14,10 +14,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+
+// configAxios and identityAxios (src/lib/axios.ts) already bake `/api/v1` into
+// their base URL, so paths generated from the (accurate) spec - which include
+// `/api/v1` themselves - would otherwise double up. Strip that leading segment
+// here rather than changing the shared axios base URLs, since ~90 hand-written
+// call sites elsewhere still assume the baked-in prefix.
+const stripApiV1Prefix = (spec) => ({
+  ...spec,
+  paths: Object.fromEntries(
+    Object.entries(spec.paths ?? {}).map(([path, pathItem]) => [
+      path.replace(/^\/api\/v1(?=\/|$)/, ''),
+      pathItem,
+    ])
+  ),
+})
+
 module.exports = {
   config: {
     input: {
       target: './api-specs/config-spec.json',
+      override: {
+        transformer: stripApiV1Prefix,
+      },
     },
     output: {
       workspace: './src/api/config',
@@ -78,6 +97,9 @@ module.exports = {
   identity: {
     input: {
       target: './api-specs/identity-spec.json',
+      override: {
+        transformer: stripApiV1Prefix,
+      },
     },
     output: {
       workspace: './src/api/identity',

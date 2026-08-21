@@ -66,7 +66,7 @@ export const getDetectionTypeDetectorsFromKey = (
 
 
       return configRequest<Detector[] | Blob>(
-      {url: `/api/v1/DetectionType/${key}/detectors`, method: 'GET',
+      {url: `/DetectionType/${key}/detectors`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -79,7 +79,7 @@ export const getDetectionTypeDetectorsFromKey = (
 export const getGetDetectionTypeDetectorsFromKeyQueryKey = (key: string,
     params?: GetDetectionTypeDetectorsFromKeyParams,) => {
     return [
-    `/api/v1/DetectionType/${key}/detectors`, ...(params ? [params] : [])
+    `/DetectionType/${key}/detectors`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -140,7 +140,7 @@ export const getDetectionTypeDetectorsCountFromKey = (
 
 
       return configRequest<Detector[] | Blob>(
-      {url: `/api/v1/DetectionType/${key}/detectors/$count`, method: 'GET',
+      {url: `/DetectionType/${key}/detectors/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -153,7 +153,7 @@ export const getDetectionTypeDetectorsCountFromKey = (
 export const getGetDetectionTypeDetectorsCountFromKeyQueryKey = (key: string,
     params?: GetDetectionTypeDetectorsCountFromKeyParams,) => {
     return [
-    `/api/v1/DetectionType/${key}/detectors/$count`, ...(params ? [params] : [])
+    `/DetectionType/${key}/detectors/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -214,7 +214,7 @@ export const getDetectionTypeMeasureTypesFromKey = (
 
 
       return configRequest<MeasureType[] | Blob>(
-      {url: `/api/v1/DetectionType/${key}/measureTypes`, method: 'GET',
+      {url: `/DetectionType/${key}/measureTypes`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -227,7 +227,7 @@ export const getDetectionTypeMeasureTypesFromKey = (
 export const getGetDetectionTypeMeasureTypesFromKeyQueryKey = (key: string,
     params?: GetDetectionTypeMeasureTypesFromKeyParams,) => {
     return [
-    `/api/v1/DetectionType/${key}/measureTypes`, ...(params ? [params] : [])
+    `/DetectionType/${key}/measureTypes`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -288,7 +288,7 @@ export const getDetectionTypeMeasureTypesCountFromKey = (
 
 
       return configRequest<MeasureType[] | Blob>(
-      {url: `/api/v1/DetectionType/${key}/measureTypes/$count`, method: 'GET',
+      {url: `/DetectionType/${key}/measureTypes/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -301,7 +301,7 @@ export const getDetectionTypeMeasureTypesCountFromKey = (
 export const getGetDetectionTypeMeasureTypesCountFromKeyQueryKey = (key: string,
     params?: GetDetectionTypeMeasureTypesCountFromKeyParams,) => {
     return [
-    `/api/v1/DetectionType/${key}/measureTypes/$count`, ...(params ? [params] : [])
+    `/DetectionType/${key}/measureTypes/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -358,7 +358,7 @@ export const getDetectionType = (
 
 
       return configRequest<DetectionType[] | Blob>(
-      {url: `/api/v1/DetectionType`, method: 'GET',
+      {url: `/DetectionType`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -370,7 +370,7 @@ export const getDetectionType = (
 
 export const getGetDetectionTypeQueryKey = (params?: GetDetectionTypeParams,) => {
     return [
-    `/api/v1/DetectionType`, ...(params ? [params] : [])
+    `/DetectionType`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -423,7 +423,7 @@ export const postDetectionType = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DetectionType`, method: 'POST',
+      {url: `/DetectionType`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: detectionType,
         params, signal
@@ -482,7 +482,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<DetectionType[] | Blob>(
-      {url: `/api/v1/DetectionType/$count`, method: 'GET',
+      {url: `/DetectionType/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -494,7 +494,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetDetectionTypeCountQueryKey = (params?: GetDetectionTypeCountParams,) => {
     return [
-    `/api/v1/DetectionType/$count`, ...(params ? [params] : [])
+    `/DetectionType/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -547,7 +547,7 @@ export const getDetectionTypeFromKey = (
 
 
       return configRequest<DetectionType | Blob>(
-      {url: `/api/v1/DetectionType/${key}`, method: 'GET',
+      {url: `/DetectionType/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -560,7 +560,7 @@ export const getDetectionTypeFromKey = (
 export const getGetDetectionTypeFromKeyQueryKey = (key: string,
     params?: GetDetectionTypeFromKeyParams,) => {
     return [
-    `/api/v1/DetectionType/${key}`, ...(params ? [params] : [])
+    `/DetectionType/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -616,7 +616,7 @@ export const putDetectionTypeFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DetectionType/${key}`, method: 'PUT',
+      {url: `/DetectionType/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: detectionType,
         params, signal
@@ -677,7 +677,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DetectionType/${key}`, method: 'PATCH',
+      {url: `/DetectionType/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: detectionType,
         params, signal
@@ -736,7 +736,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DetectionType/${key}`, method: 'DELETE', signal
+      {url: `/DetectionType/${key}`, method: 'DELETE', signal
     },
       );
     }

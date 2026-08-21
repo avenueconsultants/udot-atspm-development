@@ -1,6 +1,8 @@
+import {
+  useGetClaimsClaims,
+  useGetRolesRoles,
+} from '@/api/identity/atspmAuthenticationApi'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { useGetClaims } from '@/features/identity/api/getClaims'
-import { useGetRoles } from '@/features/identity/api/getRoles'
 import { Role } from '@/features/identity/types/roles'
 import PageClaimsCard from '@/features/roles/components/PageClaimsCard'
 import { Box, TextField } from '@mui/material'
@@ -24,12 +26,12 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
     data: rolesData,
     isLoading: rolesIsLoading,
     error: rolesError,
-  } = useGetRoles()
+  } = useGetRolesRoles<Role[]>()
   const {
     data: claimsData,
     isLoading: claimsIsLoading,
     error: claimsError,
-  } = useGetClaims()
+  } = useGetClaimsClaims<string[]>()
 
   const [userClaims, setUserClaims] = useState<string[]>(data?.claims || [])
   const [currentRole, setCurrentRole] = useState<string>(data?.role || '')

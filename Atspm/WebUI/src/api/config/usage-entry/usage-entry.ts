@@ -56,7 +56,7 @@ export const getUsageEntry = (
 
 
       return configRequest<UsageEntry[] | Blob>(
-      {url: `/api/v1/UsageEntry`, method: 'GET',
+      {url: `/UsageEntry`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -68,7 +68,7 @@ export const getUsageEntry = (
 
 export const getGetUsageEntryQueryKey = (params?: GetUsageEntryParams,) => {
     return [
-    `/api/v1/UsageEntry`, ...(params ? [params] : [])
+    `/UsageEntry`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -121,7 +121,7 @@ export const postUsageEntry = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/UsageEntry`, method: 'POST',
+      {url: `/UsageEntry`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: usageEntry,
         params, signal
@@ -180,7 +180,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<UsageEntry[] | Blob>(
-      {url: `/api/v1/UsageEntry/$count`, method: 'GET',
+      {url: `/UsageEntry/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -192,7 +192,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetUsageEntryCountQueryKey = (params?: GetUsageEntryCountParams,) => {
     return [
-    `/api/v1/UsageEntry/$count`, ...(params ? [params] : [])
+    `/UsageEntry/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -245,7 +245,7 @@ export const getUsageEntryFromKey = (
 
 
       return configRequest<UsageEntry | Blob>(
-      {url: `/api/v1/UsageEntry/${key}`, method: 'GET',
+      {url: `/UsageEntry/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -258,7 +258,7 @@ export const getUsageEntryFromKey = (
 export const getGetUsageEntryFromKeyQueryKey = (key: number,
     params?: GetUsageEntryFromKeyParams,) => {
     return [
-    `/api/v1/UsageEntry/${key}`, ...(params ? [params] : [])
+    `/UsageEntry/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -314,7 +314,7 @@ export const putUsageEntryFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/UsageEntry/${key}`, method: 'PUT',
+      {url: `/UsageEntry/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: usageEntry,
         params, signal
@@ -375,7 +375,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/UsageEntry/${key}`, method: 'PATCH',
+      {url: `/UsageEntry/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: usageEntry,
         params, signal
@@ -434,7 +434,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/UsageEntry/${key}`, method: 'DELETE', signal
+      {url: `/UsageEntry/${key}`, method: 'DELETE', signal
     },
       );
     }

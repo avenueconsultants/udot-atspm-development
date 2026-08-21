@@ -56,7 +56,7 @@ export const getProduct = (
 
 
       return configRequest<Product[] | Blob>(
-      {url: `/api/v1/Product`, method: 'GET',
+      {url: `/Product`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -68,7 +68,7 @@ export const getProduct = (
 
 export const getGetProductQueryKey = (params?: GetProductParams,) => {
     return [
-    `/api/v1/Product`, ...(params ? [params] : [])
+    `/Product`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -121,7 +121,7 @@ export const postProduct = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Product`, method: 'POST',
+      {url: `/Product`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: product,
         params, signal
@@ -180,7 +180,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<Product[] | Blob>(
-      {url: `/api/v1/Product/$count`, method: 'GET',
+      {url: `/Product/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -192,7 +192,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetProductCountQueryKey = (params?: GetProductCountParams,) => {
     return [
-    `/api/v1/Product/$count`, ...(params ? [params] : [])
+    `/Product/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -245,7 +245,7 @@ export const getProductFromKey = (
 
 
       return configRequest<Product | Blob>(
-      {url: `/api/v1/Product/${key}`, method: 'GET',
+      {url: `/Product/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -258,7 +258,7 @@ export const getProductFromKey = (
 export const getGetProductFromKeyQueryKey = (key: number,
     params?: GetProductFromKeyParams,) => {
     return [
-    `/api/v1/Product/${key}`, ...(params ? [params] : [])
+    `/Product/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -314,7 +314,7 @@ export const putProductFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Product/${key}`, method: 'PUT',
+      {url: `/Product/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: product,
         params, signal
@@ -375,7 +375,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Product/${key}`, method: 'PATCH',
+      {url: `/Product/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: product,
         params, signal
@@ -434,7 +434,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Product/${key}`, method: 'DELETE', signal
+      {url: `/Product/${key}`, method: 'DELETE', signal
     },
       );
     }

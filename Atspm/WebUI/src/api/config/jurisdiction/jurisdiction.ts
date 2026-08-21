@@ -63,7 +63,7 @@ export const getJurisdictionLocationsFromKey = (
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Jurisdiction/${key}/locations`, method: 'GET',
+      {url: `/Jurisdiction/${key}/locations`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -76,7 +76,7 @@ export const getJurisdictionLocationsFromKey = (
 export const getGetJurisdictionLocationsFromKeyQueryKey = (key: number,
     params?: GetJurisdictionLocationsFromKeyParams,) => {
     return [
-    `/api/v1/Jurisdiction/${key}/locations`, ...(params ? [params] : [])
+    `/Jurisdiction/${key}/locations`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -137,7 +137,7 @@ export const getJurisdictionLocationsCountFromKey = (
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Jurisdiction/${key}/locations/$count`, method: 'GET',
+      {url: `/Jurisdiction/${key}/locations/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -150,7 +150,7 @@ export const getJurisdictionLocationsCountFromKey = (
 export const getGetJurisdictionLocationsCountFromKeyQueryKey = (key: number,
     params?: GetJurisdictionLocationsCountFromKeyParams,) => {
     return [
-    `/api/v1/Jurisdiction/${key}/locations/$count`, ...(params ? [params] : [])
+    `/Jurisdiction/${key}/locations/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -207,7 +207,7 @@ export const getJurisdiction = (
 
 
       return configRequest<Jurisdiction[] | Blob>(
-      {url: `/api/v1/Jurisdiction`, method: 'GET',
+      {url: `/Jurisdiction`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -219,7 +219,7 @@ export const getJurisdiction = (
 
 export const getGetJurisdictionQueryKey = (params?: GetJurisdictionParams,) => {
     return [
-    `/api/v1/Jurisdiction`, ...(params ? [params] : [])
+    `/Jurisdiction`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -272,7 +272,7 @@ export const postJurisdiction = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Jurisdiction`, method: 'POST',
+      {url: `/Jurisdiction`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: jurisdiction,
         params, signal
@@ -331,7 +331,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<Jurisdiction[] | Blob>(
-      {url: `/api/v1/Jurisdiction/$count`, method: 'GET',
+      {url: `/Jurisdiction/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -343,7 +343,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetJurisdictionCountQueryKey = (params?: GetJurisdictionCountParams,) => {
     return [
-    `/api/v1/Jurisdiction/$count`, ...(params ? [params] : [])
+    `/Jurisdiction/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -396,7 +396,7 @@ export const getJurisdictionFromKey = (
 
 
       return configRequest<Jurisdiction | Blob>(
-      {url: `/api/v1/Jurisdiction/${key}`, method: 'GET',
+      {url: `/Jurisdiction/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -409,7 +409,7 @@ export const getJurisdictionFromKey = (
 export const getGetJurisdictionFromKeyQueryKey = (key: number,
     params?: GetJurisdictionFromKeyParams,) => {
     return [
-    `/api/v1/Jurisdiction/${key}`, ...(params ? [params] : [])
+    `/Jurisdiction/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -465,7 +465,7 @@ export const putJurisdictionFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Jurisdiction/${key}`, method: 'PUT',
+      {url: `/Jurisdiction/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: jurisdiction,
         params, signal
@@ -526,7 +526,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Jurisdiction/${key}`, method: 'PATCH',
+      {url: `/Jurisdiction/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: jurisdiction,
         params, signal
@@ -585,7 +585,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Jurisdiction/${key}`, method: 'DELETE', signal
+      {url: `/Jurisdiction/${key}`, method: 'DELETE', signal
     },
       );
     }

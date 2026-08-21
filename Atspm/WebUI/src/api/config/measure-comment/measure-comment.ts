@@ -63,7 +63,7 @@ export const getMeasureCommentMeasureTypesFromKey = (
 
 
       return configRequest<MeasureType[] | Blob>(
-      {url: `/api/v1/MeasureComment/${key}/measureTypes`, method: 'GET',
+      {url: `/MeasureComment/${key}/measureTypes`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -76,7 +76,7 @@ export const getMeasureCommentMeasureTypesFromKey = (
 export const getGetMeasureCommentMeasureTypesFromKeyQueryKey = (key: number,
     params?: GetMeasureCommentMeasureTypesFromKeyParams,) => {
     return [
-    `/api/v1/MeasureComment/${key}/measureTypes`, ...(params ? [params] : [])
+    `/MeasureComment/${key}/measureTypes`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -137,7 +137,7 @@ export const getMeasureCommentMeasureTypesCountFromKey = (
 
 
       return configRequest<MeasureType[] | Blob>(
-      {url: `/api/v1/MeasureComment/${key}/measureTypes/$count`, method: 'GET',
+      {url: `/MeasureComment/${key}/measureTypes/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -150,7 +150,7 @@ export const getMeasureCommentMeasureTypesCountFromKey = (
 export const getGetMeasureCommentMeasureTypesCountFromKeyQueryKey = (key: number,
     params?: GetMeasureCommentMeasureTypesCountFromKeyParams,) => {
     return [
-    `/api/v1/MeasureComment/${key}/measureTypes/$count`, ...(params ? [params] : [])
+    `/MeasureComment/${key}/measureTypes/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -207,7 +207,7 @@ export const getMeasureComment = (
 
 
       return configRequest<MeasureComment[] | Blob>(
-      {url: `/api/v1/MeasureComment`, method: 'GET',
+      {url: `/MeasureComment`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -219,7 +219,7 @@ export const getMeasureComment = (
 
 export const getGetMeasureCommentQueryKey = (params?: GetMeasureCommentParams,) => {
     return [
-    `/api/v1/MeasureComment`, ...(params ? [params] : [])
+    `/MeasureComment`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -272,7 +272,7 @@ export const postMeasureComment = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/MeasureComment`, method: 'POST',
+      {url: `/MeasureComment`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: measureComment,
         params, signal
@@ -331,7 +331,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<MeasureComment[] | Blob>(
-      {url: `/api/v1/MeasureComment/$count`, method: 'GET',
+      {url: `/MeasureComment/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -343,7 +343,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetMeasureCommentCountQueryKey = (params?: GetMeasureCommentCountParams,) => {
     return [
-    `/api/v1/MeasureComment/$count`, ...(params ? [params] : [])
+    `/MeasureComment/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -396,7 +396,7 @@ export const getMeasureCommentFromKey = (
 
 
       return configRequest<MeasureComment | Blob>(
-      {url: `/api/v1/MeasureComment/${key}`, method: 'GET',
+      {url: `/MeasureComment/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -409,7 +409,7 @@ export const getMeasureCommentFromKey = (
 export const getGetMeasureCommentFromKeyQueryKey = (key: number,
     params?: GetMeasureCommentFromKeyParams,) => {
     return [
-    `/api/v1/MeasureComment/${key}`, ...(params ? [params] : [])
+    `/MeasureComment/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -465,7 +465,7 @@ export const putMeasureCommentFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/MeasureComment/${key}`, method: 'PUT',
+      {url: `/MeasureComment/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: measureComment,
         params, signal
@@ -526,7 +526,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/MeasureComment/${key}`, method: 'PATCH',
+      {url: `/MeasureComment/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: measureComment,
         params, signal
@@ -585,7 +585,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/MeasureComment/${key}`, method: 'DELETE', signal
+      {url: `/MeasureComment/${key}`, method: 'DELETE', signal
     },
       );
     }

@@ -90,7 +90,7 @@ export const accountRegister = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/register`, method: 'POST',
+      {url: `/Account/register`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: registerViewModel, signal
     },
@@ -149,7 +149,7 @@ export const accountLogin = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/login`, method: 'POST',
+      {url: `/Account/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: loginViewModel, signal
     },
@@ -208,7 +208,7 @@ export const accountExternalLogin = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/external-login`, method: 'GET', signal
+      {url: `/Account/external-login`, method: 'GET', signal
     },
       );
     }
@@ -218,7 +218,7 @@ export const accountExternalLogin = (
 
 export const getAccountExternalLoginQueryKey = () => {
     return [
-    `/api/v1/Account/external-login`
+    `/Account/external-login`
     ] as const;
     }
 
@@ -271,7 +271,7 @@ export const accountOIDCLoginCallback = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/OIDCLoginCallback`, method: 'POST', signal
+      {url: `/Account/OIDCLoginCallback`, method: 'POST', signal
     },
       );
     }
@@ -328,7 +328,7 @@ export const accountOIDCLoginCallback = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/OIDCLoginCallback`, method: 'GET', signal
+      {url: `/Account/OIDCLoginCallback`, method: 'GET', signal
     },
       );
     }
@@ -338,7 +338,7 @@ export const accountOIDCLoginCallback = (
 
 export const getAccountOIDCLoginCallbackQueryKey = () => {
     return [
-    `/api/v1/Account/OIDCLoginCallback`
+    `/Account/OIDCLoginCallback`
     ] as const;
     }
 
@@ -391,7 +391,7 @@ export const accountLinkExternalLogin = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/link-external-login`, method: 'POST', signal
+      {url: `/Account/link-external-login`, method: 'POST', signal
     },
       );
     }
@@ -448,7 +448,7 @@ export const accountLogout = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/logout`, method: 'POST', signal
+      {url: `/Account/logout`, method: 'POST', signal
     },
       );
     }
@@ -505,7 +505,7 @@ export const accountChangePassword = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/changepassword`, method: 'POST',
+      {url: `/Account/changepassword`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: changePasswordViewModel, signal
     },
@@ -564,7 +564,7 @@ export const accountForgotPassword = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/forgotpassword`, method: 'POST',
+      {url: `/Account/forgotpassword`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: forgotPasswordViewModel, signal
     },
@@ -623,7 +623,7 @@ export const accountVerifyUserPasswordReset = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Account/verifyUserPasswordReset`, method: 'POST',
+      {url: `/Account/verifyUserPasswordReset`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyUserPasswordResetViewModel, signal
     },
@@ -948,7 +948,7 @@ export const getClaimsClaims = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Claims`, method: 'GET', signal
+      {url: `/Claims`, method: 'GET', signal
     },
       );
     }
@@ -958,7 +958,7 @@ export const getClaimsClaims = (
 
 export const getGetClaimsClaimsQueryKey = () => {
     return [
-    `/api/v1/Claims`
+    `/Claims`
     ] as const;
     }
 
@@ -1011,7 +1011,7 @@ export const getClaimsClaimsForRoleFromRoleName = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Claims/${roleName}`, method: 'GET', signal
+      {url: `/Claims/${roleName}`, method: 'GET', signal
     },
       );
     }
@@ -1021,7 +1021,7 @@ export const getClaimsClaimsForRoleFromRoleName = (
 
 export const getGetClaimsClaimsForRoleFromRoleNameQueryKey = (roleName: string,) => {
     return [
-    `/api/v1/Claims/${roleName}`
+    `/Claims/${roleName}`
     ] as const;
     }
 
@@ -1075,7 +1075,7 @@ export const getClaimsAddClaimToRoleFromRoleName = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Claims/${roleName}`, method: 'POST',
+      {url: `/Claims/${roleName}`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: claimModel, signal
     },
@@ -1135,7 +1135,7 @@ export const getClaimsRemoveClaimFromRoleAndRoleName = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Claims/${roleName}`, method: 'DELETE',
+      {url: `/Claims/${roleName}`, method: 'DELETE',
       headers: {'Content-Type': 'application/json', },
       data: claimModel, signal
     },
@@ -1195,7 +1195,7 @@ export const getClaimsAddClaimsToRoleFromRoleName = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Claims/add/${roleName}`, method: 'POST',
+      {url: `/Claims/add/${roleName}`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: claimsModel, signal
     },
@@ -1254,7 +1254,7 @@ export const getProfileProfile = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Profile`, method: 'GET', signal
+      {url: `/Profile`, method: 'GET', signal
     },
       );
     }
@@ -1264,7 +1264,7 @@ export const getProfileProfile = (
 
 export const getGetProfileProfileQueryKey = () => {
     return [
-    `/api/v1/Profile`
+    `/Profile`
     ] as const;
     }
 
@@ -1317,7 +1317,7 @@ export const getProfileUpdateProfile = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Profile`, method: 'PUT',
+      {url: `/Profile`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
       data: updateProfileViewModel, signal
     },
@@ -1376,7 +1376,7 @@ export const getRolesRoles = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Roles`, method: 'GET', signal
+      {url: `/Roles`, method: 'GET', signal
     },
       );
     }
@@ -1386,7 +1386,7 @@ export const getRolesRoles = (
 
 export const getGetRolesRolesQueryKey = () => {
     return [
-    `/api/v1/Roles`
+    `/Roles`
     ] as const;
     }
 
@@ -1439,7 +1439,7 @@ export const getRolesCreateRole = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Roles`, method: 'POST',
+      {url: `/Roles`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createRoleViewModel, signal
     },
@@ -1498,7 +1498,7 @@ export const deleteRolesRoleFromRoleName = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Roles/${roleName}`, method: 'DELETE', signal
+      {url: `/Roles/${roleName}`, method: 'DELETE', signal
     },
       );
     }
@@ -1555,7 +1555,7 @@ export const deleteTokenVerifyResetToken = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Token/verify/reset`, method: 'POST',
+      {url: `/Token/verify/reset`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyResetTokenViewModel, signal
     },
@@ -1614,7 +1614,7 @@ export const deleteTokenVerifyConnectToken = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Token/verify/connect`, method: 'POST',
+      {url: `/Token/verify/connect`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyConnectTokenViewModel, signal
     },
@@ -1673,7 +1673,7 @@ export const getUsersUsers = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Users`, method: 'GET', signal
+      {url: `/Users`, method: 'GET', signal
     },
       );
     }
@@ -1683,7 +1683,7 @@ export const getUsersUsers = (
 
 export const getGetUsersUsersQueryKey = () => {
     return [
-    `/api/v1/Users`
+    `/Users`
     ] as const;
     }
 
@@ -1736,7 +1736,7 @@ export const deleteUsersUserFromUserId = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Users/${userId}`, method: 'DELETE', signal
+      {url: `/Users/${userId}`, method: 'DELETE', signal
     },
       );
     }
@@ -1793,7 +1793,7 @@ export const deleteUsersAssignRole = (
 
 
       return identityRequest<unknown>(
-      {url: `/api/v1/Users/update`, method: 'POST',
+      {url: `/Users/update`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: userDTO, signal
     },

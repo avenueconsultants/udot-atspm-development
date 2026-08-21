@@ -56,7 +56,7 @@ export const getFaq = (
 
 
       return configRequest<Faq[] | Blob>(
-      {url: `/api/v1/Faq`, method: 'GET',
+      {url: `/Faq`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -68,7 +68,7 @@ export const getFaq = (
 
 export const getGetFaqQueryKey = (params?: GetFaqParams,) => {
     return [
-    `/api/v1/Faq`, ...(params ? [params] : [])
+    `/Faq`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -121,7 +121,7 @@ export const postFaq = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Faq`, method: 'POST',
+      {url: `/Faq`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: faq,
         params, signal
@@ -180,7 +180,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<Faq[] | Blob>(
-      {url: `/api/v1/Faq/$count`, method: 'GET',
+      {url: `/Faq/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -192,7 +192,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetFaqCountQueryKey = (params?: GetFaqCountParams,) => {
     return [
-    `/api/v1/Faq/$count`, ...(params ? [params] : [])
+    `/Faq/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -245,7 +245,7 @@ export const getFaqFromKey = (
 
 
       return configRequest<Faq | Blob>(
-      {url: `/api/v1/Faq/${key}`, method: 'GET',
+      {url: `/Faq/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -258,7 +258,7 @@ export const getFaqFromKey = (
 export const getGetFaqFromKeyQueryKey = (key: number,
     params?: GetFaqFromKeyParams,) => {
     return [
-    `/api/v1/Faq/${key}`, ...(params ? [params] : [])
+    `/Faq/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -314,7 +314,7 @@ export const putFaqFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Faq/${key}`, method: 'PUT',
+      {url: `/Faq/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: faq,
         params, signal
@@ -375,7 +375,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Faq/${key}`, method: 'PATCH',
+      {url: `/Faq/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: faq,
         params, signal
@@ -434,7 +434,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Faq/${key}`, method: 'DELETE', signal
+      {url: `/Faq/${key}`, method: 'DELETE', signal
     },
       );
     }

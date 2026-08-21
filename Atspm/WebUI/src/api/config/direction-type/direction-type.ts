@@ -68,7 +68,7 @@ export const getDirectionTypeApproachesFromKey = (
 
 
       return configRequest<Approach[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/approaches`, method: 'GET',
+      {url: `/DirectionType/${key}/approaches`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -81,7 +81,7 @@ export const getDirectionTypeApproachesFromKey = (
 export const getGetDirectionTypeApproachesFromKeyQueryKey = (key: string,
     params?: GetDirectionTypeApproachesFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/approaches`, ...(params ? [params] : [])
+    `/DirectionType/${key}/approaches`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -142,7 +142,7 @@ export const getDirectionTypeApproachesCountFromKey = (
 
 
       return configRequest<Approach[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/approaches/$count`, method: 'GET',
+      {url: `/DirectionType/${key}/approaches/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -155,7 +155,7 @@ export const getDirectionTypeApproachesCountFromKey = (
 export const getGetDirectionTypeApproachesCountFromKeyQueryKey = (key: string,
     params?: GetDirectionTypeApproachesCountFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/approaches/$count`, ...(params ? [params] : [])
+    `/DirectionType/${key}/approaches/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -216,7 +216,7 @@ export const getDirectionTypePrimaryDirectionsFromKey = (
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/primaryDirections`, method: 'GET',
+      {url: `/DirectionType/${key}/primaryDirections`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -229,7 +229,7 @@ export const getDirectionTypePrimaryDirectionsFromKey = (
 export const getGetDirectionTypePrimaryDirectionsFromKeyQueryKey = (key: string,
     params?: GetDirectionTypePrimaryDirectionsFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/primaryDirections`, ...(params ? [params] : [])
+    `/DirectionType/${key}/primaryDirections`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -290,7 +290,7 @@ export const getDirectionTypePrimaryDirectionsCountFromKey = (
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/primaryDirections/$count`, method: 'GET',
+      {url: `/DirectionType/${key}/primaryDirections/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -303,7 +303,7 @@ export const getDirectionTypePrimaryDirectionsCountFromKey = (
 export const getGetDirectionTypePrimaryDirectionsCountFromKeyQueryKey = (key: string,
     params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/primaryDirections/$count`, ...(params ? [params] : [])
+    `/DirectionType/${key}/primaryDirections/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -364,7 +364,7 @@ export const getDirectionTypeOpposingDirectionsFromKey = (
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/opposingDirections`, method: 'GET',
+      {url: `/DirectionType/${key}/opposingDirections`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -377,7 +377,7 @@ export const getDirectionTypeOpposingDirectionsFromKey = (
 export const getGetDirectionTypeOpposingDirectionsFromKeyQueryKey = (key: string,
     params?: GetDirectionTypeOpposingDirectionsFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/opposingDirections`, ...(params ? [params] : [])
+    `/DirectionType/${key}/opposingDirections`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -438,7 +438,7 @@ export const getDirectionTypeOpposingDirectionsCountFromKey = (
 
 
       return configRequest<RouteLocation[] | Blob>(
-      {url: `/api/v1/DirectionType/${key}/opposingDirections/$count`, method: 'GET',
+      {url: `/DirectionType/${key}/opposingDirections/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -451,7 +451,7 @@ export const getDirectionTypeOpposingDirectionsCountFromKey = (
 export const getGetDirectionTypeOpposingDirectionsCountFromKeyQueryKey = (key: string,
     params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}/opposingDirections/$count`, ...(params ? [params] : [])
+    `/DirectionType/${key}/opposingDirections/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -508,7 +508,7 @@ export const getDirectionType = (
 
 
       return configRequest<DirectionType[] | Blob>(
-      {url: `/api/v1/DirectionType`, method: 'GET',
+      {url: `/DirectionType`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -520,7 +520,7 @@ export const getDirectionType = (
 
 export const getGetDirectionTypeQueryKey = (params?: GetDirectionTypeParams,) => {
     return [
-    `/api/v1/DirectionType`, ...(params ? [params] : [])
+    `/DirectionType`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -573,7 +573,7 @@ export const postDirectionType = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DirectionType`, method: 'POST',
+      {url: `/DirectionType`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: directionType,
         params, signal
@@ -632,7 +632,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<DirectionType[] | Blob>(
-      {url: `/api/v1/DirectionType/$count`, method: 'GET',
+      {url: `/DirectionType/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -644,7 +644,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetDirectionTypeCountQueryKey = (params?: GetDirectionTypeCountParams,) => {
     return [
-    `/api/v1/DirectionType/$count`, ...(params ? [params] : [])
+    `/DirectionType/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -697,7 +697,7 @@ export const getDirectionTypeFromKey = (
 
 
       return configRequest<DirectionType | Blob>(
-      {url: `/api/v1/DirectionType/${key}`, method: 'GET',
+      {url: `/DirectionType/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -710,7 +710,7 @@ export const getDirectionTypeFromKey = (
 export const getGetDirectionTypeFromKeyQueryKey = (key: string,
     params?: GetDirectionTypeFromKeyParams,) => {
     return [
-    `/api/v1/DirectionType/${key}`, ...(params ? [params] : [])
+    `/DirectionType/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -766,7 +766,7 @@ export const putDirectionTypeFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DirectionType/${key}`, method: 'PUT',
+      {url: `/DirectionType/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: directionType,
         params, signal
@@ -827,7 +827,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DirectionType/${key}`, method: 'PATCH',
+      {url: `/DirectionType/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: directionType,
         params, signal
@@ -886,7 +886,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DirectionType/${key}`, method: 'DELETE', signal
+      {url: `/DirectionType/${key}`, method: 'DELETE', signal
     },
       );
     }

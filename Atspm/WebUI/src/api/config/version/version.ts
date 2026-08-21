@@ -55,7 +55,7 @@ export const getVersionCurrentVersion = (
 
 
       return configRequest<GitHubReleaseDto>(
-      {url: `/api/v1/GetCurrentVersion`, method: 'GET',
+      {url: `/GetCurrentVersion`, method: 'GET',
         params, signal
     },
       );
@@ -66,7 +66,7 @@ export const getVersionCurrentVersion = (
 
 export const getGetVersionCurrentVersionQueryKey = (params?: GetVersionCurrentVersionParams,) => {
     return [
-    `/api/v1/GetCurrentVersion`, ...(params ? [params] : [])
+    `/GetCurrentVersion`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -127,7 +127,7 @@ export const getVersionLatestVersionFromPreRelease = (
 
 
       return configRequest<GitHubReleaseDto>(
-      {url: `/api/v1/GetLatestVersion(PreRelease=${preRelease})`, method: 'GET',
+      {url: `/GetLatestVersion(PreRelease=${preRelease})`, method: 'GET',
         params, signal
     },
       );
@@ -139,7 +139,7 @@ export const getVersionLatestVersionFromPreRelease = (
 export const getGetVersionLatestVersionFromPreReleaseQueryKey = (preRelease: boolean,
     params?: GetVersionLatestVersionFromPreReleaseParams,) => {
     return [
-    `/api/v1/GetLatestVersion(PreRelease=${preRelease})`, ...(params ? [params] : [])
+    `/GetLatestVersion(PreRelease=${preRelease})`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -202,7 +202,7 @@ export const getVersionVersionHistoryFromPreRelease = (
 
 
       return configRequest<GitHubReleaseDto[]>(
-      {url: `/api/v1/GetVersionHistory(PreRelease=${preRelease})`, method: 'GET',
+      {url: `/GetVersionHistory(PreRelease=${preRelease})`, method: 'GET',
         params, signal
     },
       );
@@ -214,7 +214,7 @@ export const getVersionVersionHistoryFromPreRelease = (
 export const getGetVersionVersionHistoryFromPreReleaseQueryKey = (preRelease: boolean,
     params?: GetVersionVersionHistoryFromPreReleaseParams,) => {
     return [
-    `/api/v1/GetVersionHistory(PreRelease=${preRelease})`, ...(params ? [params] : [])
+    `/GetVersionHistory(PreRelease=${preRelease})`, ...(params ? [params] : [])
     ] as const;
     }
 

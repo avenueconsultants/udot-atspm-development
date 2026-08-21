@@ -79,7 +79,7 @@ export const getLocationApproachesFromKey = (
 
 
       return configRequest<Approach[] | Blob>(
-      {url: `/api/v1/Location/${key}/approaches`, method: 'GET',
+      {url: `/Location/${key}/approaches`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -92,7 +92,7 @@ export const getLocationApproachesFromKey = (
 export const getGetLocationApproachesFromKeyQueryKey = (key: number,
     params?: GetLocationApproachesFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/approaches`, ...(params ? [params] : [])
+    `/Location/${key}/approaches`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -153,7 +153,7 @@ export const getLocationApproachesCountFromKey = (
 
 
       return configRequest<Approach[] | Blob>(
-      {url: `/api/v1/Location/${key}/approaches/$count`, method: 'GET',
+      {url: `/Location/${key}/approaches/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -166,7 +166,7 @@ export const getLocationApproachesCountFromKey = (
 export const getGetLocationApproachesCountFromKeyQueryKey = (key: number,
     params?: GetLocationApproachesCountFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/approaches/$count`, ...(params ? [params] : [])
+    `/Location/${key}/approaches/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -227,7 +227,7 @@ export const getLocationAreasFromKey = (
 
 
       return configRequest<Area[] | Blob>(
-      {url: `/api/v1/Location/${key}/areas`, method: 'GET',
+      {url: `/Location/${key}/areas`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -240,7 +240,7 @@ export const getLocationAreasFromKey = (
 export const getGetLocationAreasFromKeyQueryKey = (key: number,
     params?: GetLocationAreasFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/areas`, ...(params ? [params] : [])
+    `/Location/${key}/areas`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -301,7 +301,7 @@ export const getLocationAreasCountFromKey = (
 
 
       return configRequest<Area[] | Blob>(
-      {url: `/api/v1/Location/${key}/areas/$count`, method: 'GET',
+      {url: `/Location/${key}/areas/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -314,7 +314,7 @@ export const getLocationAreasCountFromKey = (
 export const getGetLocationAreasCountFromKeyQueryKey = (key: number,
     params?: GetLocationAreasCountFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/areas/$count`, ...(params ? [params] : [])
+    `/Location/${key}/areas/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -375,7 +375,7 @@ export const getLocationDevicesFromKey = (
 
 
       return configRequest<Device[] | Blob>(
-      {url: `/api/v1/Location/${key}/devices`, method: 'GET',
+      {url: `/Location/${key}/devices`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -388,7 +388,7 @@ export const getLocationDevicesFromKey = (
 export const getGetLocationDevicesFromKeyQueryKey = (key: number,
     params?: GetLocationDevicesFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/devices`, ...(params ? [params] : [])
+    `/Location/${key}/devices`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -449,7 +449,7 @@ export const getLocationDevicesCountFromKey = (
 
 
       return configRequest<Device[] | Blob>(
-      {url: `/api/v1/Location/${key}/devices/$count`, method: 'GET',
+      {url: `/Location/${key}/devices/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -462,7 +462,7 @@ export const getLocationDevicesCountFromKey = (
 export const getGetLocationDevicesCountFromKeyQueryKey = (key: number,
     params?: GetLocationDevicesCountFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}/devices/$count`, ...(params ? [params] : [])
+    `/Location/${key}/devices/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -523,7 +523,7 @@ export const getLocationCopyLocationToNewVersionFromKey = (
 
 
       return configRequest<Location | Blob>(
-      {url: `/api/v1/Location/${key}/CopyLocationToNewVersion`, method: 'POST',
+      {url: `/Location/${key}/CopyLocationToNewVersion`, method: 'POST',
         params,
         responseType: 'blob', signal
     },
@@ -588,7 +588,7 @@ export const deleteLocationSetLocationTodFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location/${key}/SetLocationToDeleted`, method: 'POST',
+      {url: `/Location/${key}/SetLocationToDeleted`, method: 'POST',
         params, signal
     },
       );
@@ -652,7 +652,7 @@ export const deleteLocationAllVersionsFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location/${key}/DeleteAllVersions`, method: 'POST',
+      {url: `/Location/${key}/DeleteAllVersions`, method: 'POST',
         params, signal
     },
       );
@@ -716,7 +716,7 @@ export const getLocationLatestVersionOfLocationFromIdentifier = (
 
 
       return configRequest<Location | Blob>(
-      {url: `/api/v1/Location/GetLatestVersionOfLocation(identifier=${identifier})`, method: 'GET',
+      {url: `/Location/GetLatestVersionOfLocation(identifier=${identifier})`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -729,7 +729,7 @@ export const getLocationLatestVersionOfLocationFromIdentifier = (
 export const getGetLocationLatestVersionOfLocationFromIdentifierQueryKey = (identifier: string,
     params?: GetLocationLatestVersionOfLocationFromIdentifierParams,) => {
     return [
-    `/api/v1/Location/GetLatestVersionOfLocation(identifier=${identifier})`, ...(params ? [params] : [])
+    `/Location/GetLatestVersionOfLocation(identifier=${identifier})`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -790,7 +790,7 @@ export const getLocationAllVersionsOfLocationFromIdentifier = (
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Location/GetAllVersionsOfLocation(identifier=${identifier})`, method: 'GET',
+      {url: `/Location/GetAllVersionsOfLocation(identifier=${identifier})`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -803,7 +803,7 @@ export const getLocationAllVersionsOfLocationFromIdentifier = (
 export const getGetLocationAllVersionsOfLocationFromIdentifierQueryKey = (identifier: string,
     params?: GetLocationAllVersionsOfLocationFromIdentifierParams,) => {
     return [
-    `/api/v1/Location/GetAllVersionsOfLocation(identifier=${identifier})`, ...(params ? [params] : [])
+    `/Location/GetAllVersionsOfLocation(identifier=${identifier})`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -863,7 +863,7 @@ export const getLocationLatestVersionOfAllLocations = (
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Location/GetLatestVersionOfAllLocations`, method: 'GET',
+      {url: `/Location/GetLatestVersionOfAllLocations`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -875,7 +875,7 @@ export const getLocationLatestVersionOfAllLocations = (
 
 export const getGetLocationLatestVersionOfAllLocationsQueryKey = (params?: GetLocationLatestVersionOfAllLocationsParams,) => {
     return [
-    `/api/v1/Location/GetLatestVersionOfAllLocations`, ...(params ? [params] : [])
+    `/Location/GetLatestVersionOfAllLocations`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -933,7 +933,7 @@ export const getLocationDetectionTypeCount = (
 
 
       return configRequest<DetectionTypeGroup[] | Blob>(
-      {url: `/api/v1/Location/GetDetectionTypeCount`, method: 'GET',
+      {url: `/Location/GetDetectionTypeCount`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -945,7 +945,7 @@ export const getLocationDetectionTypeCount = (
 
 export const getGetLocationDetectionTypeCountQueryKey = (params?: GetLocationDetectionTypeCountParams,) => {
     return [
-    `/api/v1/Location/GetDetectionTypeCount`, ...(params ? [params] : [])
+    `/Location/GetDetectionTypeCount`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -1003,7 +1003,7 @@ export const getLocationLocationsForSearch = (
 
 
       return configRequest<SearchLocation[] | Blob>(
-      {url: `/api/v1/Location/GetLocationsForSearch`, method: 'GET',
+      {url: `/Location/GetLocationsForSearch`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -1015,7 +1015,7 @@ export const getLocationLocationsForSearch = (
 
 export const getGetLocationLocationsForSearchQueryKey = (params?: GetLocationLocationsForSearchParams,) => {
     return [
-    `/api/v1/Location/GetLocationsForSearch`, ...(params ? [params] : [])
+    `/Location/GetLocationsForSearch`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -1070,7 +1070,7 @@ export const getLocation = (
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Location`, method: 'GET',
+      {url: `/Location`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -1082,7 +1082,7 @@ export const getLocation = (
 
 export const getGetLocationQueryKey = (params?: GetLocationParams,) => {
     return [
-    `/api/v1/Location`, ...(params ? [params] : [])
+    `/Location`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -1135,7 +1135,7 @@ export const postLocation = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location`, method: 'POST',
+      {url: `/Location`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: location,
         params, signal
@@ -1194,7 +1194,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<Location[] | Blob>(
-      {url: `/api/v1/Location/$count`, method: 'GET',
+      {url: `/Location/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -1206,7 +1206,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetLocationCountQueryKey = (params?: GetLocationCountParams,) => {
     return [
-    `/api/v1/Location/$count`, ...(params ? [params] : [])
+    `/Location/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -1259,7 +1259,7 @@ export const getLocationFromKey = (
 
 
       return configRequest<Location | Blob>(
-      {url: `/api/v1/Location/${key}`, method: 'GET',
+      {url: `/Location/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -1272,7 +1272,7 @@ export const getLocationFromKey = (
 export const getGetLocationFromKeyQueryKey = (key: number,
     params?: GetLocationFromKeyParams,) => {
     return [
-    `/api/v1/Location/${key}`, ...(params ? [params] : [])
+    `/Location/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -1328,7 +1328,7 @@ export const putLocationFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location/${key}`, method: 'PUT',
+      {url: `/Location/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: location,
         params, signal
@@ -1389,7 +1389,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location/${key}`, method: 'PATCH',
+      {url: `/Location/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: location,
         params, signal
@@ -1448,7 +1448,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/Location/${key}`, method: 'DELETE', signal
+      {url: `/Location/${key}`, method: 'DELETE', signal
     },
       );
     }

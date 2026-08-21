@@ -64,7 +64,7 @@ export const getDeviceConfigurationDevicesFromKey = (
 
 
       return configRequest<Device[] | Blob>(
-      {url: `/api/v1/DeviceConfiguration/${key}/devices`, method: 'GET',
+      {url: `/DeviceConfiguration/${key}/devices`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -77,7 +77,7 @@ export const getDeviceConfigurationDevicesFromKey = (
 export const getGetDeviceConfigurationDevicesFromKeyQueryKey = (key: number,
     params?: GetDeviceConfigurationDevicesFromKeyParams,) => {
     return [
-    `/api/v1/DeviceConfiguration/${key}/devices`, ...(params ? [params] : [])
+    `/DeviceConfiguration/${key}/devices`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -138,7 +138,7 @@ export const getDeviceConfigurationDevicesCountFromKey = (
 
 
       return configRequest<Device[] | Blob>(
-      {url: `/api/v1/DeviceConfiguration/${key}/devices/$count`, method: 'GET',
+      {url: `/DeviceConfiguration/${key}/devices/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -151,7 +151,7 @@ export const getDeviceConfigurationDevicesCountFromKey = (
 export const getGetDeviceConfigurationDevicesCountFromKeyQueryKey = (key: number,
     params?: GetDeviceConfigurationDevicesCountFromKeyParams,) => {
     return [
-    `/api/v1/DeviceConfiguration/${key}/devices/$count`, ...(params ? [params] : [])
+    `/DeviceConfiguration/${key}/devices/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -212,7 +212,7 @@ export const getDeviceConfigurationEventLogDecoders = (
 
 
       return configRequest<string[] | Blob>(
-      {url: `/api/v1/DeviceConfiguration/GetEventLogDecoders`, method: 'GET',
+      {url: `/DeviceConfiguration/GetEventLogDecoders`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -224,7 +224,7 @@ export const getDeviceConfigurationEventLogDecoders = (
 
 export const getGetDeviceConfigurationEventLogDecodersQueryKey = (params?: GetDeviceConfigurationEventLogDecodersParams,) => {
     return [
-    `/api/v1/DeviceConfiguration/GetEventLogDecoders`, ...(params ? [params] : [])
+    `/DeviceConfiguration/GetEventLogDecoders`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -280,7 +280,7 @@ export const getDeviceConfiguration = (
 
 
       return configRequest<DeviceConfiguration[] | Blob>(
-      {url: `/api/v1/DeviceConfiguration`, method: 'GET',
+      {url: `/DeviceConfiguration`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -292,7 +292,7 @@ export const getDeviceConfiguration = (
 
 export const getGetDeviceConfigurationQueryKey = (params?: GetDeviceConfigurationParams,) => {
     return [
-    `/api/v1/DeviceConfiguration`, ...(params ? [params] : [])
+    `/DeviceConfiguration`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -345,7 +345,7 @@ export const postDeviceConfiguration = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DeviceConfiguration`, method: 'POST',
+      {url: `/DeviceConfiguration`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: deviceConfiguration,
         params, signal
@@ -404,7 +404,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<DeviceConfiguration[] | Blob>(
-      {url: `/api/v1/DeviceConfiguration/$count`, method: 'GET',
+      {url: `/DeviceConfiguration/$count`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -416,7 +416,7 @@ const {mutation: mutationOptions} = options ?
 
 export const getGetDeviceConfigurationCountQueryKey = (params?: GetDeviceConfigurationCountParams,) => {
     return [
-    `/api/v1/DeviceConfiguration/$count`, ...(params ? [params] : [])
+    `/DeviceConfiguration/$count`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -469,7 +469,7 @@ export const getDeviceConfigurationFromKey = (
 
 
       return configRequest<DeviceConfiguration | Blob>(
-      {url: `/api/v1/DeviceConfiguration/${key}`, method: 'GET',
+      {url: `/DeviceConfiguration/${key}`, method: 'GET',
         params,
         responseType: 'blob', signal
     },
@@ -482,7 +482,7 @@ export const getDeviceConfigurationFromKey = (
 export const getGetDeviceConfigurationFromKeyQueryKey = (key: number,
     params?: GetDeviceConfigurationFromKeyParams,) => {
     return [
-    `/api/v1/DeviceConfiguration/${key}`, ...(params ? [params] : [])
+    `/DeviceConfiguration/${key}`, ...(params ? [params] : [])
     ] as const;
     }
 
@@ -538,7 +538,7 @@ export const putDeviceConfigurationFromKey = (
 
 
       return configRequest<void>(
-      {url: `/api/v1/DeviceConfiguration/${key}`, method: 'PUT',
+      {url: `/DeviceConfiguration/${key}`, method: 'PUT',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: deviceConfiguration,
         params, signal
@@ -599,7 +599,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DeviceConfiguration/${key}`, method: 'PATCH',
+      {url: `/DeviceConfiguration/${key}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: deviceConfiguration,
         params, signal
@@ -658,7 +658,7 @@ const {mutation: mutationOptions} = options ?
 
 
       return configRequest<void>(
-      {url: `/api/v1/DeviceConfiguration/${key}`, method: 'DELETE', signal
+      {url: `/DeviceConfiguration/${key}`, method: 'DELETE', signal
     },
       );
     }
