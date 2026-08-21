@@ -1,5 +1,4 @@
-import { Location } from '@/api/config'
-import { useLatestVersionOfAllLocations } from '@/features/locations/api'
+import { SearchLocation as Location, useGetLocationLocationsForSearch } from '@/api/config'
 import LocationInput from '@/features/locations/components/selectLocation/LocationInput'
 import SelectLocationMap from '@/features/locations/components/selectLocationMap'
 import { Button } from '@mui/material'
@@ -32,11 +31,11 @@ export function SelectLocation({
   addLocationBtn,
   mapHeight,
 }: SelectLocationProps) {
-  const { data } = useLatestVersionOfAllLocations()
+  const { data } = useGetLocationLocationsForSearch()
 
   const [filters, setFilters] = useState<Filters>({})
 
-  const allLocations = useMemo(() => data?.value || [], [data])
+  const allLocations = useMemo(() => data || [], [data])
 
   const filteredLocations = useMemo(() => {
     return allLocations.filter(

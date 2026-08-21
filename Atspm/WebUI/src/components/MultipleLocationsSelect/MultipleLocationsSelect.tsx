@@ -2,7 +2,7 @@ import {
   getLocationFromKey,
   SearchLocation as Location,
   Route,
-  useGetLocationLatestVersionOfAllLocations,
+  useGetLocationLocationsForSearch,
   useGetRoute,
 } from '@/api/config'
 import { Filters } from '@/features/locations/components/selectLocation'
@@ -37,13 +37,10 @@ const MultipleLocationsSelect = ({
   removeRouteSelect,
 }: MultipleLocationsSelectProps) => {
   const { data: routesData } = useGetRoute({ expand: 'routeLocations' })
-  const { data: locationsData } = useGetLocationLatestVersionOfAllLocations()
+  const { data: locationsData } = useGetLocationLocationsForSearch()
 
-  const routes = useMemo(() => routesData?.value || [], [routesData])
-  const locations = useMemo(
-    () => locationsData?.value || [],
-    [locationsData]
-  ) as Location[]
+  const routes = useMemo(() => routesData || [], [routesData])
+  const locations = useMemo(() => locationsData || [], [locationsData])
 
   const [selectedLocation, setSelectedLocation] = useState<Location>()
   const [selectedRoute, setSelectedRoute] = useState<Route>()
@@ -163,7 +160,7 @@ const MultipleLocationsSelect = ({
       >
         <Box sx={{ flex: 1 }}>
           <LocationInput
-            location={selectedLocation}
+            location={selectedLocation ?? null}
             locations={filteredLocations}
             handleChange={handleLocationInputChange}
             filters={filters}
@@ -197,10 +194,16 @@ const MultipleLocationsSelect = ({
 export default MultipleLocationsSelect
 
 export const getLocationWithApproaches = async (locations: Location[]) => {
-  const locationsWithApproaches = await Promise.all(
-    locations
-      .filter((loc) => loc?.id)
-      .map((loc) => getLocationFromKey(loc.id, { expand: 'approaches' }))
+  const validLocations = locations.filter(
+    (loc): loc is Location & { id: number } => loc?.id != null
   )
-  return locationsWithApproaches.map((res) => res.value[0])
+  const fullLocations = await Promise.all(
+    validLocations.map((loc) =>
+      getLocationFromKey(loc.id, { expand: 'approaches' })
+    )
+  )
+  return validLocations.map((loc, index) => ({
+    ...loc,
+    approaches: fullLocations[index].approaches ?? [],
+  }))
 }
