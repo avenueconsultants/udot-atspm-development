@@ -1,6 +1,4 @@
-import { useLocationApproaches } from '@/features/locations/api'
-import { RouteLocation } from '@/features/routes/types'
-import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
+import { RouteLocationDto, useGetLocationApproachesFromKey } from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import {
@@ -16,8 +14,8 @@ import {
 
 interface DirectionSelectProps {
   hasErrors: boolean
-  link: RouteLocation
-  onUpdate: (updatedLink: RouteLocation) => void
+  link: RouteLocationDto
+  onUpdate: (updatedLink: RouteLocationDto) => void
   updateType: 'primary' | 'opposing'
 }
 
@@ -28,27 +26,18 @@ const DirectionSelect = ({
   updateType,
 }: DirectionSelectProps) => {
   const theme = useTheme()
-  const { data: approachesData } = useLocationApproaches({
-    locationId: link.locationId,
-  })
-
-  const { data: directionTypes } = useConfigEnums(ConfigEnum.DirectionTypes)
-
-  if (!directionTypes) return null
-
-  if (typeof link.primaryDirectionId === 'number') {
-    link.primaryDirectionId = directionTypes?.find(
-      (directionType) => directionType.value == link.primaryDirectionId
-    )?.name as string
-    link.opposingDirectionId = directionTypes?.find(
-      (directionType) => directionType.value == link.opposingDirectionId
-    )?.name as string
-  }
+  const { data: approachesData } = useGetLocationApproachesFromKey(
+    link.locationId ?? 0,
+    undefined,
+    { query: { enabled: link.locationId != null } }
+  )
 
   const directionTypeId =
+    updateType === 'primary' ? link.primaryDirectionId : link.opposingDirectionId
+  const directionDescription =
     updateType === 'primary'
-      ? link.primaryDirectionId
-      : link.opposingDirectionId
+      ? link.primaryDirectionDescription
+      : link.opposingDirectionDescription
   const phaseNumber =
     updateType === 'primary' ? link.primaryPhase : link.opposingPhase
   const isOverlap =
@@ -58,30 +47,38 @@ const DirectionSelect = ({
     isOverlap ? 'true' : 'false'
   }`
 
-  const approaches = approachesData?.value?.sort(
-    (a, b) => a.protectedPhaseNumber - b.protectedPhaseNumber
-  )
+  const approaches = approachesData
+    ?.slice()
+    .sort(
+      (a, b) => (a.protectedPhaseNumber ?? 0) - (b.protectedPhaseNumber ?? 0)
+    )
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const [directionTypeId, protectedPhaseNumber, isOverlapStr] =
+    const [directionTypeIdStr, protectedPhaseNumberStr, isOverlapStr] =
       event.target.value.split('-')
     const selectedApproach = approaches?.find(
       (approach) =>
-        approach.directionTypeId === directionTypeId &&
-        approach.protectedPhaseNumber.toString() === protectedPhaseNumber
+        approach.directionTypeId === Number(directionTypeIdStr) &&
+        approach.protectedPhaseNumber === Number(protectedPhaseNumberStr)
     )
 
     if (selectedApproach) {
       const updatedLink = { ...link }
+      const newDirectionId = Number(directionTypeIdStr)
+      const newPhase = Number(protectedPhaseNumberStr)
+      const newIsOverlap = isOverlapStr === 'true'
+      const newDescription = selectedApproach.directionType?.description ?? null
 
       if (updateType === 'primary') {
-        updatedLink.primaryDirectionId = directionTypeId
-        updatedLink.primaryPhase = protectedPhaseNumber
-        updatedLink.isPrimaryOverlap = isOverlapStr === 'true'
+        updatedLink.primaryDirectionId = newDirectionId
+        updatedLink.primaryDirectionDescription = newDescription
+        updatedLink.primaryPhase = newPhase
+        updatedLink.isPrimaryOverlap = newIsOverlap
       } else {
-        updatedLink.opposingDirectionId = directionTypeId
-        updatedLink.opposingPhase = protectedPhaseNumber
-        updatedLink.isOpposingOverlap = isOverlapStr === 'true'
+        updatedLink.opposingDirectionId = newDirectionId
+        updatedLink.opposingDirectionDescription = newDescription
+        updatedLink.opposingPhase = newPhase
+        updatedLink.isOpposingOverlap = newIsOverlap
       }
 
       onUpdate(updatedLink)
@@ -106,7 +103,7 @@ const DirectionSelect = ({
               alignItems: 'center',
             }}
           >
-            <Typography>{directionTypeId}</Typography>
+            <Typography>{directionDescription}</Typography>
             <Typography>{phaseNumber}</Typography>
             {isOverlap ? (
               <CheckBoxIcon color="success" fontSize="small" />
@@ -133,7 +130,7 @@ const DirectionSelect = ({
                 alignItems: 'center',
               }}
             >
-              <Typography>{approach.directionTypeId}</Typography>
+              <Typography>{approach.directionType?.description}</Typography>
               <Typography>{approach.protectedPhaseNumber}</Typography>
               {approach.isProtectedPhaseOverlap ? (
                 <CheckBoxIcon color="success" fontSize="small" />

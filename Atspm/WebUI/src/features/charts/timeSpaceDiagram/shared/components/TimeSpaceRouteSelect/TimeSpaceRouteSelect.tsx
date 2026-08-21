@@ -1,7 +1,6 @@
+import { RouteLocationDto, useGetRouteRouteViewFromId } from '@/api/config'
 import RouteChecker from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceRouteSelect/RouteChecker'
 import type { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/shared/options/timeSpaceBaseHandler'
-import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
-import { RouteLocation } from '@/features/routes/types'
 import {
   Alert,
   Autocomplete,
@@ -42,36 +41,36 @@ type DirectionConfigError = {
 }
 
 const validateDirectionConfig = (
-  loc: RouteLocation,
+  loc: RouteLocationDto,
   type: DirectionTypeLabel,
-  directionDescription: string | undefined,
-  phase: string | null,
-  overlap: boolean | null
+  directionDescription: string | null | undefined,
+  phase: number | null | undefined,
+  overlap: boolean | null | undefined
 ): DirectionConfigError | null => {
   // If required values missing → invalid
   if (!directionDescription || phase == null || overlap == null) {
     return {
-      locationIdentifier: loc.locationIdentifier,
+      locationIdentifier: loc.locationIdentifier ?? '',
       type,
       direction: directionDescription ?? null,
-      phase,
+      phase: phase != null ? String(phase) : null,
       overlap,
     }
   }
 
-  const hasMatch = loc.approaches.some(
+  const hasMatch = loc.approaches?.some(
     (a) =>
-      a.directionType.description === directionDescription &&
-      a.protectedPhaseNumber === Number(phase) &&
+      a.directionType?.description === directionDescription &&
+      a.protectedPhaseNumber === phase &&
       a.isProtectedPhaseOverlap === overlap
   )
 
   if (!hasMatch) {
     return {
-      locationIdentifier: loc.locationIdentifier,
+      locationIdentifier: loc.locationIdentifier ?? '',
       type,
       direction: directionDescription,
-      phase,
+      phase: String(phase),
       overlap,
     }
   }
@@ -84,10 +83,12 @@ export const TimeSpaceRouteSelect = ({
   paperSx,
   renderRouteDetails,
 }: Props) => {
-  const { data: routeData, refetch } = useGetRouteWithExpandedLocations({
-    routeId: handler.routeId,
-    includeLocationDetail: true,
-  })
+  const routeIdNumber = handler.routeId ? Number(handler.routeId) : undefined
+  const { data: routeData, refetch } = useGetRouteRouteViewFromId(
+    routeIdNumber ?? 0,
+    { includeLocationDetail: true },
+    { query: { enabled: !!routeIdNumber } }
+  )
 
   useEffect(() => {
     if (handler.routeId) refetch()
@@ -97,22 +98,22 @@ export const TimeSpaceRouteSelect = ({
 
   const routeValuesToCheck: TimeSpaceRouteRow[] =
     routeData?.routeLocations
-      .map((loc) => {
-        const primary = loc.approaches.find(
+      ?.map((loc) => {
+        const primary = loc.approaches?.find(
           (a) => a.protectedPhaseNumber === loc.primaryPhase && a.isProtectedPhaseOverlap === loc.isPrimaryOverlap
         )
-        const opposing = loc.approaches.find(
+        const opposing = loc.approaches?.find(
           (a) => a.protectedPhaseNumber === loc.opposingPhase && a.isProtectedPhaseOverlap === loc.isOpposingOverlap
         )
 
         return {
-          locationIdentifier: loc.locationIdentifier,
+          locationIdentifier: loc.locationIdentifier ?? '',
           primaryPhaseDescription: primary?.description ?? null,
           primaryMph: primary?.mph ?? null,
           opposingPhaseDescription: opposing?.description ?? null,
           opposingMph: opposing?.mph ?? null,
           distance: loc.nextLocationDistance?.distance ?? null,
-          order: loc.order,
+          order: loc.order ?? 0,
         }
       })
       .sort((a, b) => a.order - b.order) || []
@@ -230,7 +231,7 @@ export const TimeSpaceRouteSelect = ({
       <FormControl sx={{ mb: 2 }}>
         <Autocomplete
           options={handler.routes}
-          getOptionLabel={(o) => o.name}
+          getOptionLabel={(o) => o.name ?? ''}
           value={
             handler.routes.find(
               (r) => r.id === Number.parseInt(handler.routeId)

@@ -12,7 +12,7 @@ import {
   TimeSpaceAverageOptions,
   TimeSpaceOptions,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { useGetRoute } from '@/features/routes/api/getRoutes'
+import { useGetRoute } from '@/api/config'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { Alert, Box, Tab, Typography } from '@mui/material'
@@ -31,11 +31,13 @@ const TimeSpaceDiagram = () => {
   >(ToolType.TimeSpaceHistoric)
   const [hasAttemptedGenerate, setHasAttemptedGenerate] = useState(false)
 
-  const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute()
+  const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute({
+    expand: 'routeLocations',
+  })
 
   const routes = useMemo(() => {
-    const list = routesData?.value ?? []
-    return [...list].sort((a, b) => a.name.localeCompare(b.name))
+    const list = routesData ?? []
+    return [...list].sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''))
   }, [routesData])
 
   const historicHandler = useHistoricOptionsHandler({ routes })

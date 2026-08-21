@@ -14,12 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { RouteLocation } from '@/api/config'
+import { RouteLocationDto } from '@/api/config'
 
 import axios from 'axios'
 
 export const fetchRouteDistance = async (
-  routeLocations: RouteLocation[],
+  routeLocations: RouteLocationDto[],
   profile = 'driving'
 ) => {
   const coordinates = routeLocations

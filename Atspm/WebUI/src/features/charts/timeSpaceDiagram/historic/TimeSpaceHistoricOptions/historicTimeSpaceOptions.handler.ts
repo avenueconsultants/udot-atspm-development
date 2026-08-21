@@ -17,7 +17,7 @@
 import { ToolType } from '@/features/charts/common/types'
 import type { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/shared/options/timeSpaceBaseHandler'
 import { TimeSpaceHistoricOptions } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { Route } from '@/features/routes/types'
+import { Route } from '@/api/config'
 import { DateTimeProps } from '@/types/TimeProps'
 import { parseBool, parseDate, parseNum } from '@/utils/searchParams'
 import { set, subDays } from 'date-fns'
@@ -48,11 +48,11 @@ export function inferHistoricLocationIdentifier(
   locationIdentifier: string
 ) {
   const route = routes.find((candidate) => String(candidate.id) === routeId)
-  const routeLocationIdentifiers =
+  const routeLocationIdentifiers: string[] =
     route?.routeLocations
       ?.slice()
-      .sort((a, b) => a.order - b.order)
-      .map((routeLocation) => routeLocation.locationIdentifier)
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+      .map((routeLocation) => routeLocation.locationIdentifier ?? '')
       .filter((identifier) => identifier.trim().length > 0) ?? []
 
   if (routeLocationIdentifiers.length === 0) {

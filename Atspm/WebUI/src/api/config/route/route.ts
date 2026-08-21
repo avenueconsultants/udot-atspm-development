@@ -211,7 +211,7 @@ export const upsertRouteRoute = (
 ) => {
 
 
-      return configRequest<void>(
+      return configRequest<RouteDto>(
       {url: `/UpsertRoute`, method: 'POST',
       headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
       data: routeDto,
@@ -274,7 +274,7 @@ export const useUpsertRouteRoute = <TError = void,
 ) => {
 
 
-      return configRequest<void>(
+      return configRequest<RouteDto>(
       {url: `/GetRouteView/${id}`, method: 'GET',
         params, signal
     },
