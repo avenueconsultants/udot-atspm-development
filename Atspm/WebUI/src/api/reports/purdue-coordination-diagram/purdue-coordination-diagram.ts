@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getPurdueCoordinationDiagramTestDataResponse200 = {
-  data: PurdueCoordinationDiagramResult[]
-  status: 200
-}
-
-export type getPurdueCoordinationDiagramTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPurdueCoordinationDiagramTestDataResponseSuccess = (getPurdueCoordinationDiagramTestDataResponse200) & {
-  headers: Headers;
-};
-export type getPurdueCoordinationDiagramTestDataResponseError = (getPurdueCoordinationDiagramTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPurdueCoordinationDiagramTestDataResponse = (getPurdueCoordinationDiagramTestDataResponseSuccess | getPurdueCoordinationDiagramTestDataResponseError)
-
-export const getGetPurdueCoordinationDiagramTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/PurdueCoordinationDiagram/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getPurdueCoordinationDiagramTestData = async ( options?: RequestInit): Promise<getPurdueCoordinationDiagramTestDataResponse> => {
+export const getPurdueCoordinationDiagramTestData = (
 
-  return reportsRequest<getPurdueCoordinationDiagramTestDataResponse>(getGetPurdueCoordinationDiagramTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<PurdueCoordinationDiagramResult[]>(
+      {url: `/api/v1/PurdueCoordinationDiagram/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurdueCoordinationDiagramTestData>>> = ({ signal }) => getPurdueCoordinationDiagramTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPurdueCoordinationDiagramTestData>>> = ({ signal }) => getPurdueCoordinationDiagramTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetPurdueCoordinationDiagramTestData<TData = Awaited<ReturnTy
 
 
 
-export type getPurdueCoordinationDiagramReportDataResponse200 = {
-  data: PurdueCoordinationDiagramResult[]
-  status: 200
-}
-
-export type getPurdueCoordinationDiagramReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getPurdueCoordinationDiagramReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPurdueCoordinationDiagramReportDataResponseSuccess = (getPurdueCoordinationDiagramReportDataResponse200) & {
-  headers: Headers;
-};
-export type getPurdueCoordinationDiagramReportDataResponseError = (getPurdueCoordinationDiagramReportDataResponse400 | getPurdueCoordinationDiagramReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPurdueCoordinationDiagramReportDataResponse = (getPurdueCoordinationDiagramReportDataResponseSuccess | getPurdueCoordinationDiagramReportDataResponseError)
-
-export const getGetPurdueCoordinationDiagramReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/PurdueCoordinationDiagram/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getPurdueCoordinationDiagramReportData = async (purdueCoordinationDiagramOptions?: PurdueCoordinationDiagramOptions, options?: RequestInit): Promise<getPurdueCoordinationDiagramReportDataResponse> => {
+export const getPurdueCoordinationDiagramReportData = (
+    purdueCoordinationDiagramOptions?: PurdueCoordinationDiagramOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getPurdueCoordinationDiagramReportDataResponse>(getGetPurdueCoordinationDiagramReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(purdueCoordinationDiagramOptions)
-  }
-);}
 
+      return reportsRequest<PurdueCoordinationDiagramResult[]>(
+      {url: `/api/v1/PurdueCoordinationDiagram/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: purdueCoordinationDiagramOptions, signal
+    },
+      );
+    }
 
 
 

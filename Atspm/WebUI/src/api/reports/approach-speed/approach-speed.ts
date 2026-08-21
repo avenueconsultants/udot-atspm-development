@@ -72,47 +72,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getApproachSpeedTestDataResponse200 = {
-  data: ApproachSpeedResult[]
-  status: 200
-}
-
-export type getApproachSpeedTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApproachSpeedTestDataResponseSuccess = (getApproachSpeedTestDataResponse200) & {
-  headers: Headers;
-};
-export type getApproachSpeedTestDataResponseError = (getApproachSpeedTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachSpeedTestDataResponse = (getApproachSpeedTestDataResponseSuccess | getApproachSpeedTestDataResponseError)
-
-export const getGetApproachSpeedTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/ApproachSpeed/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getApproachSpeedTestData = async ( options?: RequestInit): Promise<getApproachSpeedTestDataResponse> => {
+export const getApproachSpeedTestData = (
 
-  return reportsRequest<getApproachSpeedTestDataResponse>(getGetApproachSpeedTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<ApproachSpeedResult[]>(
+      {url: `/api/v1/ApproachSpeed/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -133,7 +106,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachSpeedTestData>>> = ({ signal }) => getApproachSpeedTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachSpeedTestData>>> = ({ signal }) => getApproachSpeedTestData(signal);
 
 
 
@@ -167,52 +140,22 @@ export function useGetApproachSpeedTestData<TData = Awaited<ReturnType<typeof ge
 
 
 
-export type getApproachSpeedReportDataResponse200 = {
-  data: ApproachSpeedResult[]
-  status: 200
-}
-
-export type getApproachSpeedReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApproachSpeedReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApproachSpeedReportDataResponseSuccess = (getApproachSpeedReportDataResponse200) & {
-  headers: Headers;
-};
-export type getApproachSpeedReportDataResponseError = (getApproachSpeedReportDataResponse400 | getApproachSpeedReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachSpeedReportDataResponse = (getApproachSpeedReportDataResponseSuccess | getApproachSpeedReportDataResponseError)
-
-export const getGetApproachSpeedReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/ApproachSpeed/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getApproachSpeedReportData = async (approachSpeedOptions?: NonReadonly<ApproachSpeedOptions>, options?: RequestInit): Promise<getApproachSpeedReportDataResponse> => {
+export const getApproachSpeedReportData = (
+    approachSpeedOptions?: NonReadonly<ApproachSpeedOptions>,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getApproachSpeedReportDataResponse>(getGetApproachSpeedReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(approachSpeedOptions)
-  }
-);}
 
+      return reportsRequest<ApproachSpeedResult[]>(
+      {url: `/api/v1/ApproachSpeed/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: approachSpeedOptions, signal
+    },
+      );
+    }
 
 
 

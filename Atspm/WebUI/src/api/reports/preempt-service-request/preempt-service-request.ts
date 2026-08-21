@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getPreemptServiceRequestTestDataResponse200 = {
-  data: PreemptServiceRequestResult
-  status: 200
-}
-
-export type getPreemptServiceRequestTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPreemptServiceRequestTestDataResponseSuccess = (getPreemptServiceRequestTestDataResponse200) & {
-  headers: Headers;
-};
-export type getPreemptServiceRequestTestDataResponseError = (getPreemptServiceRequestTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPreemptServiceRequestTestDataResponse = (getPreemptServiceRequestTestDataResponseSuccess | getPreemptServiceRequestTestDataResponseError)
-
-export const getGetPreemptServiceRequestTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/PreemptServiceRequest/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getPreemptServiceRequestTestData = async ( options?: RequestInit): Promise<getPreemptServiceRequestTestDataResponse> => {
+export const getPreemptServiceRequestTestData = (
 
-  return reportsRequest<getPreemptServiceRequestTestDataResponse>(getGetPreemptServiceRequestTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<PreemptServiceRequestResult>(
+      {url: `/api/v1/PreemptServiceRequest/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPreemptServiceRequestTestData>>> = ({ signal }) => getPreemptServiceRequestTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPreemptServiceRequestTestData>>> = ({ signal }) => getPreemptServiceRequestTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetPreemptServiceRequestTestData<TData = Awaited<ReturnType<t
 
 
 
-export type getPreemptServiceRequestReportDataResponse200 = {
-  data: PreemptServiceRequestResult
-  status: 200
-}
-
-export type getPreemptServiceRequestReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getPreemptServiceRequestReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPreemptServiceRequestReportDataResponseSuccess = (getPreemptServiceRequestReportDataResponse200) & {
-  headers: Headers;
-};
-export type getPreemptServiceRequestReportDataResponseError = (getPreemptServiceRequestReportDataResponse400 | getPreemptServiceRequestReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPreemptServiceRequestReportDataResponse = (getPreemptServiceRequestReportDataResponseSuccess | getPreemptServiceRequestReportDataResponseError)
-
-export const getGetPreemptServiceRequestReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/PreemptServiceRequest/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getPreemptServiceRequestReportData = async (preemptServiceRequestOptions?: PreemptServiceRequestOptions, options?: RequestInit): Promise<getPreemptServiceRequestReportDataResponse> => {
+export const getPreemptServiceRequestReportData = (
+    preemptServiceRequestOptions?: PreemptServiceRequestOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getPreemptServiceRequestReportDataResponse>(getGetPreemptServiceRequestReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(preemptServiceRequestOptions)
-  }
-);}
 
+      return reportsRequest<PreemptServiceRequestResult>(
+      {url: `/api/v1/PreemptServiceRequest/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: preemptServiceRequestOptions, signal
+    },
+      );
+    }
 
 
 

@@ -33,11 +33,6 @@ import type {
 
 import { dataRequest } from '../../../lib/axios';
 
-interface TypedResponse<T> extends Response {
-  json(): Promise<T>;
-}
-
-
 
 
 
@@ -56,62 +51,6 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponseSuccess = (getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse200) & {
-  headers: Headers;
-};
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponseError = (getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse400 | getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse401 | getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse403 | getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse404 | getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse = (getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponseSuccess | getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponseError)
-
-export const getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdUrl = (locationIdentifier: string,
-    deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/StreamData/${locationIdentifier}/${deviceId}?${stringifiedParams}` : `/api/v1/EventLog/StreamData/${locationIdentifier}/${deviceId}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -122,19 +61,20 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdUrl = (loc
  * - GET /StreamData/1014?deviceId=42&start=2024-01-01&end=2024-12-31&dataType=[dataType]
  * @summary Streams archived data records for a specific location, device, and data type within a given date range.
  */
-export const getEventLogStreamDataFromLocationIdentifierAndDeviceId = async (locationIdentifier: string,
+export const getEventLogStreamDataFromLocationIdentifierAndDeviceId = (
+    locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: RequestInit): Promise<getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse> => {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getEventLogStreamDataFromLocationIdentifierAndDeviceIdResponse>(getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdUrl(locationIdentifier,deviceId,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/EventLog/StreamData/${locationIdentifier}/${deviceId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -159,7 +99,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDeviceId(locationIdentifier,deviceId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDeviceId(locationIdentifier,deviceId,params, signal);
 
 
 
@@ -195,81 +135,26 @@ export function useGetEventLogStreamDataFromLocationIdentifierAndDeviceId<TData 
 
 
 
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse200 = {
-  data: CompressedEventLogBase[]
-  status: 200
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponseSuccess = (getEventLogDataFromLocationIdentifierAndDeviceIdResponse200) & {
-  headers: Headers;
-};
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponseError = (getEventLogDataFromLocationIdentifierAndDeviceIdResponse400 | getEventLogDataFromLocationIdentifierAndDeviceIdResponse401 | getEventLogDataFromLocationIdentifierAndDeviceIdResponse403 | getEventLogDataFromLocationIdentifierAndDeviceIdResponse404 | getEventLogDataFromLocationIdentifierAndDeviceIdResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogDataFromLocationIdentifierAndDeviceIdResponse = (getEventLogDataFromLocationIdentifierAndDeviceIdResponseSuccess | getEventLogDataFromLocationIdentifierAndDeviceIdResponseError)
-
-export const getGetEventLogDataFromLocationIdentifierAndDeviceIdUrl = (locationIdentifier: string,
-    deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/GetData/${locationIdentifier}/${deviceId}?${stringifiedParams}` : `/api/v1/EventLog/GetData/${locationIdentifier}/${deviceId}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
  * - Response is a JSON array of Utah.Udot.Atspm.Data.Models.CompressedEventLogBase objects.
  * @summary Retrieves archived data records for a specific location, device, and data type within a given date range.
  */
-export const getEventLogDataFromLocationIdentifierAndDeviceId = async (locationIdentifier: string,
+export const getEventLogDataFromLocationIdentifierAndDeviceId = (
+    locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: RequestInit): Promise<getEventLogDataFromLocationIdentifierAndDeviceIdResponse> => {
-
-  return dataRequest<getEventLogDataFromLocationIdentifierAndDeviceIdResponse>(getGetEventLogDataFromLocationIdentifierAndDeviceIdUrl(locationIdentifier,deviceId,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedEventLogBase[]>(
+      {url: `/api/v1/EventLog/GetData/${locationIdentifier}/${deviceId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -294,7 +179,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDeviceId(locationIdentifier,deviceId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDeviceId(locationIdentifier,deviceId,params, signal);
 
 
 
@@ -330,63 +215,6 @@ export function useGetEventLogDataFromLocationIdentifierAndDeviceId<TData = Awai
 
 
 
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseSuccess = (getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse200) & {
-  headers: Headers;
-};
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseError = (getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse400 | getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse401 | getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse403 | getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse404 | getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse = (getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseSuccess | getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseError)
-
-export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdUrl = (locationIdentifier: string,
-    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}/${deviceId}?${stringifiedParams}` : `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}/${deviceId}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -397,20 +225,21 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceI
  * - GET /StreamData/1014?deviceId=42&start=2024-01-01&end=2024-12-31&dataType=[dataType]
  * @summary Streams archived data records for a specific location, device, and data type within a given date range.
  */
-export const getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId = async (locationIdentifier: string,
+export const getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId = (
+    locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: RequestInit): Promise<getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse> => {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse>(getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdUrl(locationIdentifier,dataType,deviceId,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}/${deviceId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -437,7 +266,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId(locationIdentifier,dataType,deviceId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId(locationIdentifier,dataType,deviceId,params, signal);
 
 
 
@@ -474,83 +303,27 @@ export function useGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDevi
 
 
 
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse200 = {
-  data: CompressedEventLogBase[]
-  status: 200
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseSuccess = (getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse200) & {
-  headers: Headers;
-};
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseError = (getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse400 | getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse401 | getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse403 | getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse404 | getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse = (getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseSuccess | getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponseError)
-
-export const getGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdUrl = (locationIdentifier: string,
-    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}/${deviceId}?${stringifiedParams}` : `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}/${deviceId}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
  * - Response is a JSON array of Utah.Udot.Atspm.Data.Models.CompressedEventLogBase objects.
  * @summary Retrieves archived data records for a specific location, device, and data type within a given date range.
  */
-export const getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId = async (locationIdentifier: string,
+export const getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId = (
+    locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: RequestInit): Promise<getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse> => {
-
-  return dataRequest<getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdResponse>(getGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdUrl(locationIdentifier,dataType,deviceId,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedEventLogBase[]>(
+      {url: `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}/${deviceId}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -577,7 +350,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId(locationIdentifier,dataType,deviceId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId(locationIdentifier,dataType,deviceId,params, signal);
 
 
 
@@ -614,62 +387,20 @@ export function useGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId<T
 
 
 
-export type getEventLogDataTypesResponse200 = {
-  data: DataTypeMeta[]
-  status: 200
-}
-
-export type getEventLogDataTypesResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataTypesResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataTypesResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataTypesResponse500 = {
-  data: ProblemDetails
-  status: 500
-}
-
-export type getEventLogDataTypesResponseSuccess = (getEventLogDataTypesResponse200) & {
-  headers: Headers;
-};
-export type getEventLogDataTypesResponseError = (getEventLogDataTypesResponse401 | getEventLogDataTypesResponse403 | getEventLogDataTypesResponse406 | getEventLogDataTypesResponse500) & {
-  headers: Headers;
-};
-
-export type getEventLogDataTypesResponse = (getEventLogDataTypesResponseSuccess | getEventLogDataTypesResponseError)
-
-export const getGetEventLogDataTypesUrl = () => {
-
-
-
-
-  return `/api/v1/EventLog/GetDataTypes`
-}
-
 /**
  * @summary Retrieves the available derived data types defined in the system.
  */
-export const getEventLogDataTypes = async ( options?: RequestInit): Promise<getEventLogDataTypesResponse> => {
+export const getEventLogDataTypes = (
 
-  return dataRequest<getEventLogDataTypesResponse>(getGetEventLogDataTypesUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<DataTypeMeta[]>(
+      {url: `/api/v1/EventLog/GetDataTypes`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -690,7 +421,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataTypes>>> = ({ signal }) => getEventLogDataTypes({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataTypes>>> = ({ signal }) => getEventLogDataTypes(signal);
 
 
 
@@ -724,61 +455,6 @@ export function useGetEventLogDataTypes<TData = Awaited<ReturnType<typeof getEve
 
 
 
-export type getEventLogStreamDataFromLocationIdentifierResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getEventLogStreamDataFromLocationIdentifierResponseSuccess = (getEventLogStreamDataFromLocationIdentifierResponse200) & {
-  headers: Headers;
-};
-export type getEventLogStreamDataFromLocationIdentifierResponseError = (getEventLogStreamDataFromLocationIdentifierResponse400 | getEventLogStreamDataFromLocationIdentifierResponse401 | getEventLogStreamDataFromLocationIdentifierResponse403 | getEventLogStreamDataFromLocationIdentifierResponse404 | getEventLogStreamDataFromLocationIdentifierResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogStreamDataFromLocationIdentifierResponse = (getEventLogStreamDataFromLocationIdentifierResponseSuccess | getEventLogStreamDataFromLocationIdentifierResponseError)
-
-export const getGetEventLogStreamDataFromLocationIdentifierUrl = (locationIdentifier: string,
-    params?: GetEventLogStreamDataFromLocationIdentifierParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/StreamData/${locationIdentifier}?${stringifiedParams}` : `/api/v1/EventLog/StreamData/${locationIdentifier}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -800,18 +476,19 @@ export const getGetEventLogStreamDataFromLocationIdentifierUrl = (locationIdenti
  * - Cancellation immediately stops enumeration and closes the response.
  * @summary Streams archived data records for a specific location within a given date range.
  */
-export const getEventLogStreamDataFromLocationIdentifier = async (locationIdentifier: string,
-    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: RequestInit): Promise<getEventLogStreamDataFromLocationIdentifierResponse> => {
+export const getEventLogStreamDataFromLocationIdentifier = (
+    locationIdentifier: string,
+    params?: GetEventLogStreamDataFromLocationIdentifierParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getEventLogStreamDataFromLocationIdentifierResponse>(getGetEventLogStreamDataFromLocationIdentifierUrl(locationIdentifier,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/EventLog/StreamData/${locationIdentifier}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -834,7 +511,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifier(locationIdentifier,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifier(locationIdentifier,params, signal);
 
 
 
@@ -869,91 +546,6 @@ export function useGetEventLogStreamDataFromLocationIdentifier<TData = Awaited<R
 
 
 
-export type getEventLogDataFromLocationIdentifierResponse200ApplicationJson = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getEventLogDataFromLocationIdentifierResponse200TextCsv = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getEventLogDataFromLocationIdentifierResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDataFromLocationIdentifierResponse400TextCsv = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDataFromLocationIdentifierResponse401ApplicationJson = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataFromLocationIdentifierResponse401TextCsv = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataFromLocationIdentifierResponse403ApplicationJson = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataFromLocationIdentifierResponse403TextCsv = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataFromLocationIdentifierResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDataFromLocationIdentifierResponse404TextCsv = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDataFromLocationIdentifierResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataFromLocationIdentifierResponse406TextCsv = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataFromLocationIdentifierResponseSuccess = (getEventLogDataFromLocationIdentifierResponse200ApplicationJson | getEventLogDataFromLocationIdentifierResponse200TextCsv) & {
-  headers: Headers;
-};
-export type getEventLogDataFromLocationIdentifierResponseError = (getEventLogDataFromLocationIdentifierResponse400ApplicationJson | getEventLogDataFromLocationIdentifierResponse400TextCsv | getEventLogDataFromLocationIdentifierResponse401ApplicationJson | getEventLogDataFromLocationIdentifierResponse401TextCsv | getEventLogDataFromLocationIdentifierResponse403ApplicationJson | getEventLogDataFromLocationIdentifierResponse403TextCsv | getEventLogDataFromLocationIdentifierResponse404ApplicationJson | getEventLogDataFromLocationIdentifierResponse404TextCsv | getEventLogDataFromLocationIdentifierResponse406ApplicationJson | getEventLogDataFromLocationIdentifierResponse406TextCsv) & {
-  headers: Headers;
-};
-
-export type getEventLogDataFromLocationIdentifierResponse = (getEventLogDataFromLocationIdentifierResponseSuccess | getEventLogDataFromLocationIdentifierResponseError)
-
-export const getGetEventLogDataFromLocationIdentifierUrl = (locationIdentifier: string,
-    params?: GetEventLogDataFromLocationIdentifierParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/GetData/${locationIdentifier}?${stringifiedParams}` : `/api/v1/EventLog/GetData/${locationIdentifier}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
@@ -971,18 +563,19 @@ export const getGetEventLogDataFromLocationIdentifierUrl = (locationIdentifier: 
  * ```
  * @summary Retrieves archived data records for a specific location within a given date range.
  */
-export const getEventLogDataFromLocationIdentifier = async (locationIdentifier: string,
-    params?: GetEventLogDataFromLocationIdentifierParams, options?: RequestInit): Promise<getEventLogDataFromLocationIdentifierResponse> => {
-
-  return dataRequest<getEventLogDataFromLocationIdentifierResponse>(getGetEventLogDataFromLocationIdentifierUrl(locationIdentifier,params),
-  {
-    ...options,
-    method: 'GET'
+export const getEventLogDataFromLocationIdentifier = (
+    locationIdentifier: string,
+    params?: GetEventLogDataFromLocationIdentifierParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase[]>(
+      {url: `/api/v1/EventLog/GetData/${locationIdentifier}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1005,7 +598,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>> = ({ signal }) => getEventLogDataFromLocationIdentifier(locationIdentifier,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>> = ({ signal }) => getEventLogDataFromLocationIdentifier(locationIdentifier,params, signal);
 
 
 
@@ -1040,62 +633,6 @@ export function useGetEventLogDataFromLocationIdentifier<TData = Awaited<ReturnT
 
 
 
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponseSuccess = (getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponseError = (getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse400 | getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse401 | getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse403 | getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse404 | getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse = (getEventLogStreamDataFromLocationIdentifierAndDataTypeResponseSuccess | getEventLogStreamDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -1112,19 +649,20 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeUrl = (loc
  * ```
  * @summary Streams archived data records for a specific location and data type within a given date range.
  */
-export const getEventLogStreamDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getEventLogStreamDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse> => {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getEventLogStreamDataFromLocationIdentifierAndDataTypeResponse>(getGetEventLogStreamDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/EventLog/StreamData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1149,7 +687,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogStreamDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 
@@ -1185,62 +723,6 @@ export function useGetEventLogStreamDataFromLocationIdentifierAndDataType<TData 
 
 
 
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse200 = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponseSuccess = (getEventLogDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponseError = (getEventLogDataFromLocationIdentifierAndDataTypeResponse400 | getEventLogDataFromLocationIdentifierAndDataTypeResponse401 | getEventLogDataFromLocationIdentifierAndDataTypeResponse403 | getEventLogDataFromLocationIdentifierAndDataTypeResponse404 | getEventLogDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogDataFromLocationIdentifierAndDataTypeResponse = (getEventLogDataFromLocationIdentifierAndDataTypeResponseSuccess | getEventLogDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetEventLogDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
@@ -1258,19 +740,20 @@ export const getGetEventLogDataFromLocationIdentifierAndDataTypeUrl = (locationI
  * ```
  * @summary Retrieves archived data records for a specific location and data type within a given date range.
  */
-export const getEventLogDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getEventLogDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getEventLogDataFromLocationIdentifierAndDataTypeResponse> => {
-
-  return dataRequest<getEventLogDataFromLocationIdentifierAndDataTypeResponse>(getGetEventLogDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase[]>(
+      {url: `/api/v1/EventLog/GetData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1295,7 +778,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 
@@ -1331,62 +814,6 @@ export function useGetEventLogDataFromLocationIdentifierAndDataType<TData = Awai
 
 
 
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse200 = {
-  data: string[]
-  status: 200
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponseSuccess = (getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponseError = (getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse400 | getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse401 | getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse403 | getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse404 | getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse = (getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponseSuccess | getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EventLog/GetDaysWithData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/EventLog/GetDaysWithData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * This endpoint allows anonymous access and returns a JSON array of System.DateOnly values.
  * Each value represents a day for which data exists. The request must specify a valid
@@ -1395,19 +822,20 @@ export const getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeUrl = (l
  * @summary Retrieves the distinct days that contain data for a specific location and data type
 within the given date range.
  */
-export const getEventLogDaysWithDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getEventLogDaysWithDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse> => {
-
-  return dataRequest<getEventLogDaysWithDataFromLocationIdentifierAndDataTypeResponse>(getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<string[]>(
+      {url: `/api/v1/EventLog/GetDaysWithData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1432,7 +860,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogDaysWithDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getEventLogDaysWithDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 

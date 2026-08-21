@@ -42,72 +42,24 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getVersionCurrentVersionResponse200 = {
-  data: GitHubReleaseDto
-  status: 200
-}
-
-export type getVersionCurrentVersionResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getVersionCurrentVersionResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getVersionCurrentVersionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getVersionCurrentVersionResponse502 = {
-  data: void
-  status: 502
-}
-
-export type getVersionCurrentVersionResponseSuccess = (getVersionCurrentVersionResponse200) & {
-  headers: Headers;
-};
-export type getVersionCurrentVersionResponseError = (getVersionCurrentVersionResponse400 | getVersionCurrentVersionResponse404 | getVersionCurrentVersionResponse406 | getVersionCurrentVersionResponse502) & {
-  headers: Headers;
-};
-
-export type getVersionCurrentVersionResponse = (getVersionCurrentVersionResponseSuccess | getVersionCurrentVersionResponseError)
-
-export const getGetVersionCurrentVersionUrl = (params?: GetVersionCurrentVersionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/GetCurrentVersion?${stringifiedParams}` : `/api/v1/GetCurrentVersion`
-}
-
 /**
  * This method identifies the current version by inspecting the assembly's Informational Version attribute.
  * It then queries GitHub for the corresponding tag. If the assembly version cannot be determined or
  * the tag does not exist on GitHub, an error is returned.
  * @summary Retrieves the specific release details for the version currently running in this environment.
  */
-export const getVersionCurrentVersion = async (params?: GetVersionCurrentVersionParams, options?: RequestInit): Promise<getVersionCurrentVersionResponse> => {
-
-  return configRequest<getVersionCurrentVersionResponse>(getGetVersionCurrentVersionUrl(params),
-  {
-    ...options,
-    method: 'GET'
+export const getVersionCurrentVersion = (
+    params?: GetVersionCurrentVersionParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<GitHubReleaseDto>(
+      {url: `/api/v1/GetCurrentVersion`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -128,7 +80,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionCurrentVersion>>> = ({ signal }) => getVersionCurrentVersion(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionCurrentVersion>>> = ({ signal }) => getVersionCurrentVersion(params, signal);
 
 
 
@@ -162,63 +114,24 @@ export function useGetVersionCurrentVersion<TData = Awaited<ReturnType<typeof ge
 
 
 
-export type getVersionLatestVersionFromPreReleaseResponse200 = {
-  data: GitHubReleaseDto
-  status: 200
-}
-
-export type getVersionLatestVersionFromPreReleaseResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getVersionLatestVersionFromPreReleaseResponse502 = {
-  data: void
-  status: 502
-}
-
-export type getVersionLatestVersionFromPreReleaseResponseSuccess = (getVersionLatestVersionFromPreReleaseResponse200) & {
-  headers: Headers;
-};
-export type getVersionLatestVersionFromPreReleaseResponseError = (getVersionLatestVersionFromPreReleaseResponse406 | getVersionLatestVersionFromPreReleaseResponse502) & {
-  headers: Headers;
-};
-
-export type getVersionLatestVersionFromPreReleaseResponse = (getVersionLatestVersionFromPreReleaseResponseSuccess | getVersionLatestVersionFromPreReleaseResponseError)
-
-export const getGetVersionLatestVersionFromPreReleaseUrl = (preRelease: boolean,
-    params?: GetVersionLatestVersionFromPreReleaseParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/GetLatestVersion(PreRelease=${preRelease})?${stringifiedParams}` : `/api/v1/GetLatestVersion(PreRelease=${preRelease})`
-}
-
 /**
  * Use this endpoint to check for updates. By default, this only returns stable releases.
  * Set the PreRelease parameter to true if you wish to include beta or release candidate versions.
  * @summary Retrieves the most recent release published to the GitHub repository.
  */
-export const getVersionLatestVersionFromPreRelease = async (preRelease: boolean,
-    params?: GetVersionLatestVersionFromPreReleaseParams, options?: RequestInit): Promise<getVersionLatestVersionFromPreReleaseResponse> => {
-
-  return configRequest<getVersionLatestVersionFromPreReleaseResponse>(getGetVersionLatestVersionFromPreReleaseUrl(preRelease,params),
-  {
-    ...options,
-    method: 'GET'
+export const getVersionLatestVersionFromPreRelease = (
+    preRelease: boolean,
+    params?: GetVersionLatestVersionFromPreReleaseParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<GitHubReleaseDto>(
+      {url: `/api/v1/GetLatestVersion(PreRelease=${preRelease})`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -241,7 +154,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>> = ({ signal }) => getVersionLatestVersionFromPreRelease(preRelease,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>> = ({ signal }) => getVersionLatestVersionFromPreRelease(preRelease,params, signal);
 
 
 
@@ -276,63 +189,24 @@ export function useGetVersionLatestVersionFromPreRelease<TData = Awaited<ReturnT
 
 
 
-export type getVersionVersionHistoryFromPreReleaseResponse200 = {
-  data: GitHubReleaseDto[]
-  status: 200
-}
-
-export type getVersionVersionHistoryFromPreReleaseResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getVersionVersionHistoryFromPreReleaseResponse502 = {
-  data: void
-  status: 502
-}
-
-export type getVersionVersionHistoryFromPreReleaseResponseSuccess = (getVersionVersionHistoryFromPreReleaseResponse200) & {
-  headers: Headers;
-};
-export type getVersionVersionHistoryFromPreReleaseResponseError = (getVersionVersionHistoryFromPreReleaseResponse406 | getVersionVersionHistoryFromPreReleaseResponse502) & {
-  headers: Headers;
-};
-
-export type getVersionVersionHistoryFromPreReleaseResponse = (getVersionVersionHistoryFromPreReleaseResponseSuccess | getVersionVersionHistoryFromPreReleaseResponseError)
-
-export const getGetVersionVersionHistoryFromPreReleaseUrl = (preRelease: boolean,
-    params?: GetVersionVersionHistoryFromPreReleaseParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/GetVersionHistory(PreRelease=${preRelease})?${stringifiedParams}` : `/api/v1/GetVersionHistory(PreRelease=${preRelease})`
-}
-
 /**
  * This endpoint supports standard OData query options such as $filter, $orderby, and $top.
  * It provides a chronological history of all versions, including their respective release notes and assets.
  * @summary Retrieves a complete historical list of all releases associated with this project.
  */
-export const getVersionVersionHistoryFromPreRelease = async (preRelease: boolean,
-    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: RequestInit): Promise<getVersionVersionHistoryFromPreReleaseResponse> => {
-
-  return configRequest<getVersionVersionHistoryFromPreReleaseResponse>(getGetVersionVersionHistoryFromPreReleaseUrl(preRelease,params),
-  {
-    ...options,
-    method: 'GET'
+export const getVersionVersionHistoryFromPreRelease = (
+    preRelease: boolean,
+    params?: GetVersionVersionHistoryFromPreReleaseParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<GitHubReleaseDto[]>(
+      {url: `/api/v1/GetVersionHistory(PreRelease=${preRelease})`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -355,7 +229,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>> = ({ signal }) => getVersionVersionHistoryFromPreRelease(preRelease,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>> = ({ signal }) => getVersionVersionHistoryFromPreRelease(preRelease,params, signal);
 
 
 

@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getPrioritySummaryTestDataResponse200 = {
-  data: PrioritySummaryResult
-  status: 200
-}
-
-export type getPrioritySummaryTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPrioritySummaryTestDataResponseSuccess = (getPrioritySummaryTestDataResponse200) & {
-  headers: Headers;
-};
-export type getPrioritySummaryTestDataResponseError = (getPrioritySummaryTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPrioritySummaryTestDataResponse = (getPrioritySummaryTestDataResponseSuccess | getPrioritySummaryTestDataResponseError)
-
-export const getGetPrioritySummaryTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/PrioritySummary/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getPrioritySummaryTestData = async ( options?: RequestInit): Promise<getPrioritySummaryTestDataResponse> => {
+export const getPrioritySummaryTestData = (
 
-  return reportsRequest<getPrioritySummaryTestDataResponse>(getGetPrioritySummaryTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<PrioritySummaryResult>(
+      {url: `/api/v1/PrioritySummary/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPrioritySummaryTestData>>> = ({ signal }) => getPrioritySummaryTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPrioritySummaryTestData>>> = ({ signal }) => getPrioritySummaryTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetPrioritySummaryTestData<TData = Awaited<ReturnType<typeof 
 
 
 
-export type getPrioritySummaryReportDataResponse200 = {
-  data: PrioritySummaryResult
-  status: 200
-}
-
-export type getPrioritySummaryReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getPrioritySummaryReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getPrioritySummaryReportDataResponseSuccess = (getPrioritySummaryReportDataResponse200) & {
-  headers: Headers;
-};
-export type getPrioritySummaryReportDataResponseError = (getPrioritySummaryReportDataResponse400 | getPrioritySummaryReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getPrioritySummaryReportDataResponse = (getPrioritySummaryReportDataResponseSuccess | getPrioritySummaryReportDataResponseError)
-
-export const getGetPrioritySummaryReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/PrioritySummary/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getPrioritySummaryReportData = async (prioritySummaryOptions?: PrioritySummaryOptions, options?: RequestInit): Promise<getPrioritySummaryReportDataResponse> => {
+export const getPrioritySummaryReportData = (
+    prioritySummaryOptions?: PrioritySummaryOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getPrioritySummaryReportDataResponse>(getGetPrioritySummaryReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(prioritySummaryOptions)
-  }
-);}
 
+      return reportsRequest<PrioritySummaryResult>(
+      {url: `/api/v1/PrioritySummary/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: prioritySummaryOptions, signal
+    },
+      );
+    }
 
 
 

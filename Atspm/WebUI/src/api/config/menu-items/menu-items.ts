@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
+export const getMenuItems = (
+    params?: GetMenuItemsParams,
+ signal?: AbortSignal
+) => {
 
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
 
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFull = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNone = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJson = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationXml = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200TextPlain = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMenuItemsResponse200TextJson = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMenuItemsResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMenuItemsResponseSuccess = (getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimal | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataFull | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataNone | getMenuItemsResponse200ApplicationJsonOdataStreamingTrue | getMenuItemsResponse200ApplicationJsonOdataStreamingFalse | getMenuItemsResponse200ApplicationJson | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationJsonIEEE754CompatibleFalse | getMenuItemsResponse200ApplicationJsonIEEE754CompatibleTrue | getMenuItemsResponse200ApplicationXml | getMenuItemsResponse200TextPlain | getMenuItemsResponse200ApplicationOctetStream | getMenuItemsResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMenuItemsResponseError = (getMenuItemsResponse400 | getMenuItemsResponse406) & {
-  headers: Headers;
-};
-
-export type getMenuItemsResponse = (getMenuItemsResponseSuccess | getMenuItemsResponseError)
-
-export const getGetMenuItemsUrl = (params?: GetMenuItemsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MenuItem[] | Blob>(
+      {url: `/api/v1/MenuItems`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems?${stringifiedParams}` : `/api/v1/MenuItems`
-}
-
-export const getMenuItems = async (params?: GetMenuItemsParams, options?: RequestInit): Promise<getMenuItemsResponse> => {
-
-  return configRequest<getMenuItemsResponse>(getGetMenuItemsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItems>>> = ({ signal }) => getMenuItems(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItems>>> = ({ signal }) => getMenuItems(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetMenuItems<TData = Awaited<ReturnType<typeof getMenuItems>>
 
 
 
-export type postMenuItemsResponse201 = {
-  data: void
-  status: 201
-}
+export const postMenuItems = (
+    menuItem?: MenuItem,
+    params?: PostMenuItemsParams,
+ signal?: AbortSignal
+) => {
 
-export type postMenuItemsResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postMenuItemsResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postMenuItemsResponseSuccess = (postMenuItemsResponse201) & {
-  headers: Headers;
-};
-export type postMenuItemsResponseError = (postMenuItemsResponse400 | postMenuItemsResponse406) & {
-  headers: Headers;
-};
-
-export type postMenuItemsResponse = (postMenuItemsResponseSuccess | postMenuItemsResponseError)
-
-export const getPostMenuItemsUrl = (params?: PostMenuItemsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/MenuItems`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: menuItem,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems?${stringifiedParams}` : `/api/v1/MenuItems`
-}
-
-export const postMenuItems = async (menuItem?: MenuItem,
-    params?: PostMenuItemsParams, options?: RequestInit): Promise<postMenuItemsResponse> => {
-
-  return configRequest<postMenuItemsResponse>(getPostMenuItemsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(menuItem)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostMenuItemsMutationOptions(options));
     }
-    export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
+    export const getMenuItemsCount = (
+    params?: GetMenuItemsCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
 
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJson = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationXml = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200TextPlain = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMenuItemsCountResponse200TextJson = {
-  data: MenuItem[]
-  status: 200
-}
-
-export type getMenuItemsCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMenuItemsCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMenuItemsCountResponseSuccess = (getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimal | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFull | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNone | getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrue | getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalse | getMenuItemsCountResponse200ApplicationJson | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationJsonIEEE754CompatibleFalse | getMenuItemsCountResponse200ApplicationJsonIEEE754CompatibleTrue | getMenuItemsCountResponse200ApplicationXml | getMenuItemsCountResponse200TextPlain | getMenuItemsCountResponse200ApplicationOctetStream | getMenuItemsCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMenuItemsCountResponseError = (getMenuItemsCountResponse400 | getMenuItemsCountResponse406) & {
-  headers: Headers;
-};
-
-export type getMenuItemsCountResponse = (getMenuItemsCountResponseSuccess | getMenuItemsCountResponseError)
-
-export const getGetMenuItemsCountUrl = (params?: GetMenuItemsCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MenuItem[] | Blob>(
+      {url: `/api/v1/MenuItems/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems/$count?${stringifiedParams}` : `/api/v1/MenuItems/$count`
-}
-
-export const getMenuItemsCount = async (params?: GetMenuItemsCountParams, options?: RequestInit): Promise<getMenuItemsCountResponse> => {
-
-  return configRequest<getMenuItemsCountResponse>(getGetMenuItemsCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItemsCount>>> = ({ signal }) => getMenuItemsCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItemsCount>>> = ({ signal }) => getMenuItemsCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetMenuItemsCount<TData = Awaited<ReturnType<typeof getMenuIt
 
 
 
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MenuItem
-  status: 200
-}
+export const getMenuItemsFromKey = (
+    key: number,
+    params?: GetMenuItemsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MenuItem
-  status: 200
-}
 
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJson = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationXml = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200TextPlain = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse200TextJson = {
-  data: MenuItem
-  status: 200
-}
-
-export type getMenuItemsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMenuItemsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMenuItemsFromKeyResponseSuccess = (getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFull | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNone | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMenuItemsFromKeyResponse200ApplicationJson | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMenuItemsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMenuItemsFromKeyResponse200ApplicationXml | getMenuItemsFromKeyResponse200TextPlain | getMenuItemsFromKeyResponse200ApplicationOctetStream | getMenuItemsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMenuItemsFromKeyResponseError = (getMenuItemsFromKeyResponse404 | getMenuItemsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMenuItemsFromKeyResponse = (getMenuItemsFromKeyResponseSuccess | getMenuItemsFromKeyResponseError)
-
-export const getGetMenuItemsFromKeyUrl = (key: number,
-    params?: GetMenuItemsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MenuItem | Blob>(
+      {url: `/api/v1/MenuItems/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems/${key}?${stringifiedParams}` : `/api/v1/MenuItems/${key}`
-}
-
-export const getMenuItemsFromKey = async (key: number,
-    params?: GetMenuItemsFromKeyParams, options?: RequestInit): Promise<getMenuItemsFromKeyResponse> => {
-
-  return configRequest<getMenuItemsFromKeyResponse>(getGetMenuItemsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItemsFromKey>>> = ({ signal }) => getMenuItemsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMenuItemsFromKey>>> = ({ signal }) => getMenuItemsFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetMenuItemsFromKey<TData = Awaited<ReturnType<typeof getMenu
 
 
 
-export type putMenuItemsFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putMenuItemsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putMenuItemsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putMenuItemsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putMenuItemsFromKeyResponseSuccess = (putMenuItemsFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putMenuItemsFromKeyResponseError = (putMenuItemsFromKeyResponse400 | putMenuItemsFromKeyResponse404 | putMenuItemsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putMenuItemsFromKeyResponse = (putMenuItemsFromKeyResponseSuccess | putMenuItemsFromKeyResponseError)
-
-export const getPutMenuItemsFromKeyUrl = (key: number,
-    params?: PutMenuItemsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems/${key}?${stringifiedParams}` : `/api/v1/MenuItems/${key}`
-}
-
-export const putMenuItemsFromKey = async (key: number,
+export const putMenuItemsFromKey = (
+    key: number,
     menuItem?: MenuItem,
-    params?: PutMenuItemsFromKeyParams, options?: RequestInit): Promise<putMenuItemsFromKeyResponse> => {
+    params?: PutMenuItemsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putMenuItemsFromKeyResponse>(getPutMenuItemsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(menuItem)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MenuItems/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: menuItem,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutMenuItemsFromKeyMutationOptions(options));
     }
-    export type patchMenuItemsFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchMenuItemsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchMenuItemsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchMenuItemsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchMenuItemsFromKeyResponseSuccess = (patchMenuItemsFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchMenuItemsFromKeyResponseError = (patchMenuItemsFromKeyResponse400 | patchMenuItemsFromKeyResponse404 | patchMenuItemsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchMenuItemsFromKeyResponse = (patchMenuItemsFromKeyResponseSuccess | patchMenuItemsFromKeyResponseError)
-
-export const getPatchMenuItemsFromKeyUrl = (key: number,
-    params?: PatchMenuItemsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MenuItems/${key}?${stringifiedParams}` : `/api/v1/MenuItems/${key}`
-}
-
-export const patchMenuItemsFromKey = async (key: number,
+    export const patchMenuItemsFromKey = (
+    key: number,
     menuItem?: MenuItem,
-    params?: PatchMenuItemsFromKeyParams, options?: RequestInit): Promise<patchMenuItemsFromKeyResponse> => {
+    params?: PatchMenuItemsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchMenuItemsFromKeyResponse>(getPatchMenuItemsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(menuItem)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MenuItems/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: menuItem,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchMenuItemsFromKeyMutationOptions(options));
     }
-    export type deleteMenuItemsFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteMenuItemsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteMenuItemsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteMenuItemsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteMenuItemsFromKeyResponseSuccess = (deleteMenuItemsFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteMenuItemsFromKeyResponseError = (deleteMenuItemsFromKeyResponse400 | deleteMenuItemsFromKeyResponse404 | deleteMenuItemsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteMenuItemsFromKeyResponse = (deleteMenuItemsFromKeyResponseSuccess | deleteMenuItemsFromKeyResponseError)
-
-export const getDeleteMenuItemsFromKeyUrl = (key: number,) => {
+    export const deleteMenuItemsFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/MenuItems/${key}`
-}
-
-export const deleteMenuItemsFromKey = async (key: number, options?: RequestInit): Promise<deleteMenuItemsFromKeyResponse> => {
-
-  return configRequest<deleteMenuItemsFromKeyResponse>(getDeleteMenuItemsFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/MenuItems/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

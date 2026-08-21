@@ -83,37 +83,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type accountRegisterResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type accountRegisterResponseError = (accountRegisterResponse406) & {
-  headers: Headers;
-};
-
-export type accountRegisterResponse = (accountRegisterResponseError)
-
-export const getAccountRegisterUrl = () => {
+export const accountRegister = (
+    registerViewModel?: RegisterViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/register`
-}
-
-export const accountRegister = async (registerViewModel?: RegisterViewModel, options?: RequestInit): Promise<accountRegisterResponse> => {
-
-  return identityRequest<accountRegisterResponse>(getAccountRegisterUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(registerViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/register`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: registerViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -160,37 +142,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountRegisterMutationOptions(options));
     }
 
-export type accountLoginResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type accountLoginResponseError = (accountLoginResponse406) & {
-  headers: Headers;
-};
-
-export type accountLoginResponse = (accountLoginResponseError)
-
-export const getAccountLoginUrl = () => {
+export const accountLogin = (
+    loginViewModel?: LoginViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/login`
-}
-
-export const accountLogin = async (loginViewModel?: LoginViewModel, options?: RequestInit): Promise<accountLoginResponse> => {
-
-  return identityRequest<accountLoginResponse>(getAccountLoginUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(loginViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -237,37 +201,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountLoginMutationOptions(options));
     }
 
-export type accountExternalLoginResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const accountExternalLogin = (
 
-;
-export type accountExternalLoginResponseError = (accountExternalLoginResponse406) & {
-  headers: Headers;
-};
-
-export type accountExternalLoginResponse = (accountExternalLoginResponseError)
-
-export const getAccountExternalLoginUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/external-login`
-}
-
-export const accountExternalLogin = async ( options?: RequestInit): Promise<accountExternalLoginResponse> => {
-
-  return identityRequest<accountExternalLoginResponse>(getAccountExternalLoginUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/external-login`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -288,7 +232,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof accountExternalLogin>>> = ({ signal }) => accountExternalLogin({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof accountExternalLogin>>> = ({ signal }) => accountExternalLogin(signal);
 
 
 
@@ -320,37 +264,17 @@ export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accoun
 
 
 
-export type accountOIDCLoginCallbackResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const accountOIDCLoginCallback = (
 
-;
-export type accountOIDCLoginCallbackResponseError = (accountOIDCLoginCallbackResponse406) & {
-  headers: Headers;
-};
-
-export type accountOIDCLoginCallbackResponse = (accountOIDCLoginCallbackResponseError)
-
-export const getAccountOIDCLoginCallbackUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/OIDCLoginCallback`
-}
-
-export const accountOIDCLoginCallback = async ( options?: RequestInit): Promise<accountOIDCLoginCallbackResponse> => {
-
-  return identityRequest<accountOIDCLoginCallbackResponse>(getAccountOIDCLoginCallbackUrl(),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/OIDCLoginCallback`, method: 'POST', signal
+    },
+      );
+    }
 
 
 
@@ -397,37 +321,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountOIDCLoginCallbackMutationOptions(options));
     }
 
-export type accountOIDCLoginCallbackResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const accountOIDCLoginCallback = (
 
-;
-export type accountOIDCLoginCallbackResponseError = (accountOIDCLoginCallbackResponse406) & {
-  headers: Headers;
-};
-
-export type accountOIDCLoginCallbackResponse = (accountOIDCLoginCallbackResponseError)
-
-export const getAccountOIDCLoginCallbackUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/OIDCLoginCallback`
-}
-
-export const accountOIDCLoginCallback = async ( options?: RequestInit): Promise<accountOIDCLoginCallbackResponse> => {
-
-  return identityRequest<accountOIDCLoginCallbackResponse>(getAccountOIDCLoginCallbackUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/OIDCLoginCallback`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -448,7 +352,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof accountOIDCLoginCallback>>> = ({ signal }) => accountOIDCLoginCallback({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof accountOIDCLoginCallback>>> = ({ signal }) => accountOIDCLoginCallback(signal);
 
 
 
@@ -480,37 +384,17 @@ export function useAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof ac
 
 
 
-export type accountLinkExternalLoginResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const accountLinkExternalLogin = (
 
-;
-export type accountLinkExternalLoginResponseError = (accountLinkExternalLoginResponse406) & {
-  headers: Headers;
-};
-
-export type accountLinkExternalLoginResponse = (accountLinkExternalLoginResponseError)
-
-export const getAccountLinkExternalLoginUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/link-external-login`
-}
-
-export const accountLinkExternalLogin = async ( options?: RequestInit): Promise<accountLinkExternalLoginResponse> => {
-
-  return identityRequest<accountLinkExternalLoginResponse>(getAccountLinkExternalLoginUrl(),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/link-external-login`, method: 'POST', signal
+    },
+      );
+    }
 
 
 
@@ -557,37 +441,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountLinkExternalLoginMutationOptions(options));
     }
 
-export type accountLogoutResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const accountLogout = (
 
-;
-export type accountLogoutResponseError = (accountLogoutResponse406) & {
-  headers: Headers;
-};
-
-export type accountLogoutResponse = (accountLogoutResponseError)
-
-export const getAccountLogoutUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/logout`
-}
-
-export const accountLogout = async ( options?: RequestInit): Promise<accountLogoutResponse> => {
-
-  return identityRequest<accountLogoutResponse>(getAccountLogoutUrl(),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/logout`, method: 'POST', signal
+    },
+      );
+    }
 
 
 
@@ -634,37 +498,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountLogoutMutationOptions(options));
     }
 
-export type accountChangePasswordResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type accountChangePasswordResponseError = (accountChangePasswordResponse406) & {
-  headers: Headers;
-};
-
-export type accountChangePasswordResponse = (accountChangePasswordResponseError)
-
-export const getAccountChangePasswordUrl = () => {
+export const accountChangePassword = (
+    changePasswordViewModel?: ChangePasswordViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/changepassword`
-}
-
-export const accountChangePassword = async (changePasswordViewModel?: ChangePasswordViewModel, options?: RequestInit): Promise<accountChangePasswordResponse> => {
-
-  return identityRequest<accountChangePasswordResponse>(getAccountChangePasswordUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(changePasswordViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/changepassword`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: changePasswordViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -711,37 +557,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountChangePasswordMutationOptions(options));
     }
 
-export type accountForgotPasswordResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type accountForgotPasswordResponseError = (accountForgotPasswordResponse406) & {
-  headers: Headers;
-};
-
-export type accountForgotPasswordResponse = (accountForgotPasswordResponseError)
-
-export const getAccountForgotPasswordUrl = () => {
+export const accountForgotPassword = (
+    forgotPasswordViewModel?: ForgotPasswordViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/forgotpassword`
-}
-
-export const accountForgotPassword = async (forgotPasswordViewModel?: ForgotPasswordViewModel, options?: RequestInit): Promise<accountForgotPasswordResponse> => {
-
-  return identityRequest<accountForgotPasswordResponse>(getAccountForgotPasswordUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(forgotPasswordViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/forgotpassword`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: forgotPasswordViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -788,37 +616,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountForgotPasswordMutationOptions(options));
     }
 
-export type accountVerifyUserPasswordResetResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type accountVerifyUserPasswordResetResponseError = (accountVerifyUserPasswordResetResponse406) & {
-  headers: Headers;
-};
-
-export type accountVerifyUserPasswordResetResponse = (accountVerifyUserPasswordResetResponseError)
-
-export const getAccountVerifyUserPasswordResetUrl = () => {
+export const accountVerifyUserPasswordReset = (
+    verifyUserPasswordResetViewModel?: VerifyUserPasswordResetViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Account/verifyUserPasswordReset`
-}
-
-export const accountVerifyUserPasswordReset = async (verifyUserPasswordResetViewModel?: VerifyUserPasswordResetViewModel, options?: RequestInit): Promise<accountVerifyUserPasswordResetResponse> => {
-
-  return identityRequest<accountVerifyUserPasswordResetResponse>(getAccountVerifyUserPasswordResetUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(verifyUserPasswordResetViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Account/verifyUserPasswordReset`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: verifyUserPasswordResetViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -865,62 +675,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getAccountVerifyUserPasswordResetMutationOptions(options));
     }
 
-export type apiKeyCreateResponse200 = {
-  data: void
-  status: 200
-}
-
-export type apiKeyCreateResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type apiKeyCreateResponse401 = {
-  data: void
-  status: 401
-}
-
-export type apiKeyCreateResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type apiKeyCreateResponse406 = {
-  data: void
-  status: 406
-}
-
-export type apiKeyCreateResponseSuccess = (apiKeyCreateResponse200) & {
-  headers: Headers;
-};
-export type apiKeyCreateResponseError = (apiKeyCreateResponse400 | apiKeyCreateResponse401 | apiKeyCreateResponse403 | apiKeyCreateResponse406) & {
-  headers: Headers;
-};
-
-export type apiKeyCreateResponse = (apiKeyCreateResponseSuccess | apiKeyCreateResponseError)
-
-export const getApiKeyCreateUrl = () => {
-
-
-
-
-  return `/api/ApiKey/create`
-}
-
 /**
  * @summary Generates and stores a new API key for the authenticated user.
  */
-export const apiKeyCreate = async (createApiKeyDto?: CreateApiKeyDto, options?: RequestInit): Promise<apiKeyCreateResponse> => {
+export const apiKeyCreate = (
+    createApiKeyDto?: CreateApiKeyDto,
+ signal?: AbortSignal
+) => {
 
-  return identityRequest<apiKeyCreateResponse>(getApiKeyCreateUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(createApiKeyDto)
-  }
-);}
 
+      return identityRequest<void>(
+      {url: `/api/ApiKey/create`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createApiKeyDto, signal
+    },
+      );
+    }
 
 
 
@@ -970,57 +740,20 @@ export const useApiKeyCreate = <TError = ProblemDetails | void,
       return useMutation(getApiKeyCreateMutationOptions(options));
     }
 
-export type getApiKeyMyKeysResponse200 = {
-  data: void
-  status: 200
-}
-
-export type getApiKeyMyKeysResponse401 = {
-  data: void
-  status: 401
-}
-
-export type getApiKeyMyKeysResponse403 = {
-  data: void
-  status: 403
-}
-
-export type getApiKeyMyKeysResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApiKeyMyKeysResponseSuccess = (getApiKeyMyKeysResponse200) & {
-  headers: Headers;
-};
-export type getApiKeyMyKeysResponseError = (getApiKeyMyKeysResponse401 | getApiKeyMyKeysResponse403 | getApiKeyMyKeysResponse406) & {
-  headers: Headers;
-};
-
-export type getApiKeyMyKeysResponse = (getApiKeyMyKeysResponseSuccess | getApiKeyMyKeysResponseError)
-
-export const getGetApiKeyMyKeysUrl = () => {
-
-
-
-
-  return `/api/ApiKey/my-keys`
-}
-
 /**
  * @summary Retrieves all active, non-revoked API keys belonging to the authenticated user.
  */
-export const getApiKeyMyKeys = async ( options?: RequestInit): Promise<getApiKeyMyKeysResponse> => {
+export const getApiKeyMyKeys = (
 
-  return identityRequest<getApiKeyMyKeysResponse>(getGetApiKeyMyKeysUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return identityRequest<void>(
+      {url: `/api/ApiKey/my-keys`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1041,7 +774,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiKeyMyKeys>>> = ({ signal }) => getApiKeyMyKeys({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiKeyMyKeys>>> = ({ signal }) => getApiKeyMyKeys(signal);
 
 
 
@@ -1076,57 +809,20 @@ export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMy
 
 
 
-export type getApiKeyAllKeysResponse200 = {
-  data: void
-  status: 200
-}
-
-export type getApiKeyAllKeysResponse401 = {
-  data: void
-  status: 401
-}
-
-export type getApiKeyAllKeysResponse403 = {
-  data: void
-  status: 403
-}
-
-export type getApiKeyAllKeysResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApiKeyAllKeysResponseSuccess = (getApiKeyAllKeysResponse200) & {
-  headers: Headers;
-};
-export type getApiKeyAllKeysResponseError = (getApiKeyAllKeysResponse401 | getApiKeyAllKeysResponse403 | getApiKeyAllKeysResponse406) & {
-  headers: Headers;
-};
-
-export type getApiKeyAllKeysResponse = (getApiKeyAllKeysResponseSuccess | getApiKeyAllKeysResponseError)
-
-export const getGetApiKeyAllKeysUrl = () => {
-
-
-
-
-  return `/api/ApiKey/all-keys`
-}
-
 /**
  * @summary Retrieves all active, non-revoked API keys in the system.
  */
-export const getApiKeyAllKeys = async ( options?: RequestInit): Promise<getApiKeyAllKeysResponse> => {
+export const getApiKeyAllKeys = (
 
-  return identityRequest<getApiKeyAllKeysResponse>(getGetApiKeyAllKeysUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return identityRequest<void>(
+      {url: `/api/ApiKey/all-keys`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1147,7 +843,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiKeyAllKeys>>> = ({ signal }) => getApiKeyAllKeys({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiKeyAllKeys>>> = ({ signal }) => getApiKeyAllKeys(signal);
 
 
 
@@ -1182,67 +878,20 @@ export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyA
 
 
 
-export type getApiKeyRevokeFromIdResponse200 = {
-  data: void
-  status: 200
-}
-
-export type getApiKeyRevokeFromIdResponse401 = {
-  data: void
-  status: 401
-}
-
-export type getApiKeyRevokeFromIdResponse403 = {
-  data: void
-  status: 403
-}
-
-export type getApiKeyRevokeFromIdResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getApiKeyRevokeFromIdResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApiKeyRevokeFromIdResponse500 = {
-  data: ProblemDetails
-  status: 500
-}
-
-export type getApiKeyRevokeFromIdResponseSuccess = (getApiKeyRevokeFromIdResponse200) & {
-  headers: Headers;
-};
-export type getApiKeyRevokeFromIdResponseError = (getApiKeyRevokeFromIdResponse401 | getApiKeyRevokeFromIdResponse403 | getApiKeyRevokeFromIdResponse404 | getApiKeyRevokeFromIdResponse406 | getApiKeyRevokeFromIdResponse500) & {
-  headers: Headers;
-};
-
-export type getApiKeyRevokeFromIdResponse = (getApiKeyRevokeFromIdResponseSuccess | getApiKeyRevokeFromIdResponseError)
-
-export const getGetApiKeyRevokeFromIdUrl = (id: number,) => {
-
-
-
-
-  return `/api/ApiKey/revoke/${id}`
-}
-
 /**
  * @summary Marks a specific API key as revoked to prevent further use.
  */
-export const getApiKeyRevokeFromId = async (id: number, options?: RequestInit): Promise<getApiKeyRevokeFromIdResponse> => {
-
-  return identityRequest<getApiKeyRevokeFromIdResponse>(getGetApiKeyRevokeFromIdUrl(id),
-  {
-    ...options,
-    method: 'POST'
+export const getApiKeyRevokeFromId = (
+    id: number,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return identityRequest<void>(
+      {url: `/api/ApiKey/revoke/${id}`, method: 'POST', signal
+    },
+      );
+    }
 
 
 
@@ -1292,37 +941,17 @@ export const useGetApiKeyRevokeFromId = <TError = void | ProblemDetails,
       return useMutation(getGetApiKeyRevokeFromIdMutationOptions(options));
     }
 
-export type getClaimsClaimsResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const getClaimsClaims = (
 
-;
-export type getClaimsClaimsResponseError = (getClaimsClaimsResponse406) & {
-  headers: Headers;
-};
-
-export type getClaimsClaimsResponse = (getClaimsClaimsResponseError)
-
-export const getGetClaimsClaimsUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Claims`
-}
-
-export const getClaimsClaims = async ( options?: RequestInit): Promise<getClaimsClaimsResponse> => {
-
-  return identityRequest<getClaimsClaimsResponse>(getGetClaimsClaimsUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Claims`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1343,7 +972,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClaimsClaims>>> = ({ signal }) => getClaimsClaims({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClaimsClaims>>> = ({ signal }) => getClaimsClaims(signal);
 
 
 
@@ -1375,37 +1004,17 @@ export function useGetClaimsClaims<TData = Awaited<ReturnType<typeof getClaimsCl
 
 
 
-export type getClaimsClaimsForRoleFromRoleNameResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getClaimsClaimsForRoleFromRoleNameResponseError = (getClaimsClaimsForRoleFromRoleNameResponse406) & {
-  headers: Headers;
-};
-
-export type getClaimsClaimsForRoleFromRoleNameResponse = (getClaimsClaimsForRoleFromRoleNameResponseError)
-
-export const getGetClaimsClaimsForRoleFromRoleNameUrl = (roleName: string,) => {
+export const getClaimsClaimsForRoleFromRoleName = (
+    roleName: string,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Claims/${roleName}`
-}
-
-export const getClaimsClaimsForRoleFromRoleName = async (roleName: string, options?: RequestInit): Promise<getClaimsClaimsForRoleFromRoleNameResponse> => {
-
-  return identityRequest<getClaimsClaimsForRoleFromRoleNameResponse>(getGetClaimsClaimsForRoleFromRoleNameUrl(roleName),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Claims/${roleName}`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1426,7 +1035,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>> = ({ signal }) => getClaimsClaimsForRoleFromRoleName(roleName, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>> = ({ signal }) => getClaimsClaimsForRoleFromRoleName(roleName, signal);
 
 
 
@@ -1458,38 +1067,20 @@ export function useGetClaimsClaimsForRoleFromRoleName<TData = Awaited<ReturnType
 
 
 
-export type getClaimsAddClaimToRoleFromRoleNameResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getClaimsAddClaimToRoleFromRoleNameResponseError = (getClaimsAddClaimToRoleFromRoleNameResponse406) & {
-  headers: Headers;
-};
-
-export type getClaimsAddClaimToRoleFromRoleNameResponse = (getClaimsAddClaimToRoleFromRoleNameResponseError)
-
-export const getGetClaimsAddClaimToRoleFromRoleNameUrl = (roleName: string,) => {
+export const getClaimsAddClaimToRoleFromRoleName = (
+    roleName: string,
+    claimModel?: ClaimModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Claims/${roleName}`
-}
-
-export const getClaimsAddClaimToRoleFromRoleName = async (roleName: string,
-    claimModel?: ClaimModel, options?: RequestInit): Promise<getClaimsAddClaimToRoleFromRoleNameResponse> => {
-
-  return identityRequest<getClaimsAddClaimToRoleFromRoleNameResponse>(getGetClaimsAddClaimToRoleFromRoleNameUrl(roleName),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(claimModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Claims/${roleName}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: claimModel, signal
+    },
+      );
+    }
 
 
 
@@ -1536,38 +1127,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetClaimsAddClaimToRoleFromRoleNameMutationOptions(options));
     }
 
-export type getClaimsRemoveClaimFromRoleAndRoleNameResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getClaimsRemoveClaimFromRoleAndRoleNameResponseError = (getClaimsRemoveClaimFromRoleAndRoleNameResponse406) & {
-  headers: Headers;
-};
-
-export type getClaimsRemoveClaimFromRoleAndRoleNameResponse = (getClaimsRemoveClaimFromRoleAndRoleNameResponseError)
-
-export const getGetClaimsRemoveClaimFromRoleAndRoleNameUrl = (roleName: string,) => {
+export const getClaimsRemoveClaimFromRoleAndRoleName = (
+    roleName: string,
+    claimModel?: ClaimModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Claims/${roleName}`
-}
-
-export const getClaimsRemoveClaimFromRoleAndRoleName = async (roleName: string,
-    claimModel?: ClaimModel, options?: RequestInit): Promise<getClaimsRemoveClaimFromRoleAndRoleNameResponse> => {
-
-  return identityRequest<getClaimsRemoveClaimFromRoleAndRoleNameResponse>(getGetClaimsRemoveClaimFromRoleAndRoleNameUrl(roleName),
-  {
-    ...options,
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(claimModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Claims/${roleName}`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: claimModel, signal
+    },
+      );
+    }
 
 
 
@@ -1614,38 +1187,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetClaimsRemoveClaimFromRoleAndRoleNameMutationOptions(options));
     }
 
-export type getClaimsAddClaimsToRoleFromRoleNameResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getClaimsAddClaimsToRoleFromRoleNameResponseError = (getClaimsAddClaimsToRoleFromRoleNameResponse406) & {
-  headers: Headers;
-};
-
-export type getClaimsAddClaimsToRoleFromRoleNameResponse = (getClaimsAddClaimsToRoleFromRoleNameResponseError)
-
-export const getGetClaimsAddClaimsToRoleFromRoleNameUrl = (roleName: string,) => {
+export const getClaimsAddClaimsToRoleFromRoleName = (
+    roleName: string,
+    claimsModel?: ClaimsModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Claims/add/${roleName}`
-}
-
-export const getClaimsAddClaimsToRoleFromRoleName = async (roleName: string,
-    claimsModel?: ClaimsModel, options?: RequestInit): Promise<getClaimsAddClaimsToRoleFromRoleNameResponse> => {
-
-  return identityRequest<getClaimsAddClaimsToRoleFromRoleNameResponse>(getGetClaimsAddClaimsToRoleFromRoleNameUrl(roleName),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(claimsModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Claims/add/${roleName}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: claimsModel, signal
+    },
+      );
+    }
 
 
 
@@ -1692,37 +1247,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetClaimsAddClaimsToRoleFromRoleNameMutationOptions(options));
     }
 
-export type getProfileProfileResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const getProfileProfile = (
 
-;
-export type getProfileProfileResponseError = (getProfileProfileResponse406) & {
-  headers: Headers;
-};
-
-export type getProfileProfileResponse = (getProfileProfileResponseError)
-
-export const getGetProfileProfileUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Profile`
-}
-
-export const getProfileProfile = async ( options?: RequestInit): Promise<getProfileProfileResponse> => {
-
-  return identityRequest<getProfileProfileResponse>(getGetProfileProfileUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Profile`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1743,7 +1278,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProfileProfile>>> = ({ signal }) => getProfileProfile({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProfileProfile>>> = ({ signal }) => getProfileProfile(signal);
 
 
 
@@ -1775,37 +1310,19 @@ export function useGetProfileProfile<TData = Awaited<ReturnType<typeof getProfil
 
 
 
-export type getProfileUpdateProfileResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getProfileUpdateProfileResponseError = (getProfileUpdateProfileResponse406) & {
-  headers: Headers;
-};
-
-export type getProfileUpdateProfileResponse = (getProfileUpdateProfileResponseError)
-
-export const getGetProfileUpdateProfileUrl = () => {
+export const getProfileUpdateProfile = (
+    updateProfileViewModel?: UpdateProfileViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Profile`
-}
-
-export const getProfileUpdateProfile = async (updateProfileViewModel?: UpdateProfileViewModel, options?: RequestInit): Promise<getProfileUpdateProfileResponse> => {
-
-  return identityRequest<getProfileUpdateProfileResponse>(getGetProfileUpdateProfileUrl(),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(updateProfileViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Profile`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateProfileViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -1852,37 +1369,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetProfileUpdateProfileMutationOptions(options));
     }
 
-export type getRolesRolesResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const getRolesRoles = (
 
-;
-export type getRolesRolesResponseError = (getRolesRolesResponse406) & {
-  headers: Headers;
-};
-
-export type getRolesRolesResponse = (getRolesRolesResponseError)
-
-export const getGetRolesRolesUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Roles`
-}
-
-export const getRolesRoles = async ( options?: RequestInit): Promise<getRolesRolesResponse> => {
-
-  return identityRequest<getRolesRolesResponse>(getGetRolesRolesUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Roles`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -1903,7 +1400,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRolesRoles>>> = ({ signal }) => getRolesRoles({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRolesRoles>>> = ({ signal }) => getRolesRoles(signal);
 
 
 
@@ -1935,37 +1432,19 @@ export function useGetRolesRoles<TData = Awaited<ReturnType<typeof getRolesRoles
 
 
 
-export type getRolesCreateRoleResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type getRolesCreateRoleResponseError = (getRolesCreateRoleResponse406) & {
-  headers: Headers;
-};
-
-export type getRolesCreateRoleResponse = (getRolesCreateRoleResponseError)
-
-export const getGetRolesCreateRoleUrl = () => {
+export const getRolesCreateRole = (
+    createRoleViewModel?: CreateRoleViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Roles`
-}
-
-export const getRolesCreateRole = async (createRoleViewModel?: CreateRoleViewModel, options?: RequestInit): Promise<getRolesCreateRoleResponse> => {
-
-  return identityRequest<getRolesCreateRoleResponse>(getGetRolesCreateRoleUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(createRoleViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Roles`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: createRoleViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -2012,37 +1491,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetRolesCreateRoleMutationOptions(options));
     }
 
-export type deleteRolesRoleFromRoleNameResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type deleteRolesRoleFromRoleNameResponseError = (deleteRolesRoleFromRoleNameResponse406) & {
-  headers: Headers;
-};
-
-export type deleteRolesRoleFromRoleNameResponse = (deleteRolesRoleFromRoleNameResponseError)
-
-export const getDeleteRolesRoleFromRoleNameUrl = (roleName: string,) => {
+export const deleteRolesRoleFromRoleName = (
+    roleName: string,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Roles/${roleName}`
-}
-
-export const deleteRolesRoleFromRoleName = async (roleName: string, options?: RequestInit): Promise<deleteRolesRoleFromRoleNameResponse> => {
-
-  return identityRequest<deleteRolesRoleFromRoleNameResponse>(getDeleteRolesRoleFromRoleNameUrl(roleName),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Roles/${roleName}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 
@@ -2089,37 +1548,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteRolesRoleFromRoleNameMutationOptions(options));
     }
 
-export type deleteTokenVerifyResetTokenResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type deleteTokenVerifyResetTokenResponseError = (deleteTokenVerifyResetTokenResponse406) & {
-  headers: Headers;
-};
-
-export type deleteTokenVerifyResetTokenResponse = (deleteTokenVerifyResetTokenResponseError)
-
-export const getDeleteTokenVerifyResetTokenUrl = () => {
+export const deleteTokenVerifyResetToken = (
+    verifyResetTokenViewModel?: VerifyResetTokenViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Token/verify/reset`
-}
-
-export const deleteTokenVerifyResetToken = async (verifyResetTokenViewModel?: VerifyResetTokenViewModel, options?: RequestInit): Promise<deleteTokenVerifyResetTokenResponse> => {
-
-  return identityRequest<deleteTokenVerifyResetTokenResponse>(getDeleteTokenVerifyResetTokenUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(verifyResetTokenViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Token/verify/reset`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: verifyResetTokenViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -2166,37 +1607,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteTokenVerifyResetTokenMutationOptions(options));
     }
 
-export type deleteTokenVerifyConnectTokenResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type deleteTokenVerifyConnectTokenResponseError = (deleteTokenVerifyConnectTokenResponse406) & {
-  headers: Headers;
-};
-
-export type deleteTokenVerifyConnectTokenResponse = (deleteTokenVerifyConnectTokenResponseError)
-
-export const getDeleteTokenVerifyConnectTokenUrl = () => {
+export const deleteTokenVerifyConnectToken = (
+    verifyConnectTokenViewModel?: VerifyConnectTokenViewModel,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Token/verify/connect`
-}
-
-export const deleteTokenVerifyConnectToken = async (verifyConnectTokenViewModel?: VerifyConnectTokenViewModel, options?: RequestInit): Promise<deleteTokenVerifyConnectTokenResponse> => {
-
-  return identityRequest<deleteTokenVerifyConnectTokenResponse>(getDeleteTokenVerifyConnectTokenUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(verifyConnectTokenViewModel)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Token/verify/connect`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: verifyConnectTokenViewModel, signal
+    },
+      );
+    }
 
 
 
@@ -2243,37 +1666,17 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteTokenVerifyConnectTokenMutationOptions(options));
     }
 
-export type getUsersUsersResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
+export const getUsersUsers = (
 
-;
-export type getUsersUsersResponseError = (getUsersUsersResponse406) & {
-  headers: Headers;
-};
-
-export type getUsersUsersResponse = (getUsersUsersResponseError)
-
-export const getGetUsersUsersUrl = () => {
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Users`
-}
-
-export const getUsersUsers = async ( options?: RequestInit): Promise<getUsersUsersResponse> => {
-
-  return identityRequest<getUsersUsersResponse>(getGetUsersUsersUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Users`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -2294,7 +1697,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersUsers>>> = ({ signal }) => getUsersUsers({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsersUsers>>> = ({ signal }) => getUsersUsers(signal);
 
 
 
@@ -2326,37 +1729,17 @@ export function useGetUsersUsers<TData = Awaited<ReturnType<typeof getUsersUsers
 
 
 
-export type deleteUsersUserFromUserIdResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type deleteUsersUserFromUserIdResponseError = (deleteUsersUserFromUserIdResponse406) & {
-  headers: Headers;
-};
-
-export type deleteUsersUserFromUserIdResponse = (deleteUsersUserFromUserIdResponseError)
-
-export const getDeleteUsersUserFromUserIdUrl = (userId: string,) => {
+export const deleteUsersUserFromUserId = (
+    userId: string,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Users/${userId}`
-}
-
-export const deleteUsersUserFromUserId = async (userId: string, options?: RequestInit): Promise<deleteUsersUserFromUserIdResponse> => {
-
-  return identityRequest<deleteUsersUserFromUserIdResponse>(getDeleteUsersUserFromUserIdUrl(userId),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Users/${userId}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 
@@ -2403,37 +1786,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteUsersUserFromUserIdMutationOptions(options));
     }
 
-export type deleteUsersAssignRoleResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-;
-export type deleteUsersAssignRoleResponseError = (deleteUsersAssignRoleResponse406) & {
-  headers: Headers;
-};
-
-export type deleteUsersAssignRoleResponse = (deleteUsersAssignRoleResponseError)
-
-export const getDeleteUsersAssignRoleUrl = () => {
+export const deleteUsersAssignRole = (
+    userDTO?: NonReadonly<UserDTO>,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Users/update`
-}
-
-export const deleteUsersAssignRole = async (userDTO?: NonReadonly<UserDTO>, options?: RequestInit): Promise<deleteUsersAssignRoleResponse> => {
-
-  return identityRequest<deleteUsersAssignRoleResponse>(getDeleteUsersAssignRoleUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(userDTO)
-  }
-);}
-
+      return identityRequest<unknown>(
+      {url: `/api/v1/Users/update`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userDTO, signal
+    },
+      );
+    }
 
 
 

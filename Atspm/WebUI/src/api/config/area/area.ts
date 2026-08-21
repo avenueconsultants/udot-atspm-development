@@ -52,261 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getAreaLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getAreaLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getAreaLocationsFromKeyResponseSuccess = (getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getAreaLocationsFromKeyResponse200ApplicationJson | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getAreaLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getAreaLocationsFromKeyResponse200ApplicationXml | getAreaLocationsFromKeyResponse200TextPlain | getAreaLocationsFromKeyResponse200ApplicationOctetStream | getAreaLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getAreaLocationsFromKeyResponseError = (getAreaLocationsFromKeyResponse400 | getAreaLocationsFromKeyResponse404 | getAreaLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getAreaLocationsFromKeyResponse = (getAreaLocationsFromKeyResponseSuccess | getAreaLocationsFromKeyResponseError)
-
-export const getGetAreaLocationsFromKeyUrl = (key: number,
-    params?: GetAreaLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/${key}/locations?${stringifiedParams}` : `/api/v1/Area/${key}/locations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getAreaLocationsFromKey = async (key: number,
-    params?: GetAreaLocationsFromKeyParams, options?: RequestInit): Promise<getAreaLocationsFromKeyResponse> => {
-
-  return configRequest<getAreaLocationsFromKeyResponse>(getGetAreaLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getAreaLocationsFromKey = (
+    key: number,
+    params?: GetAreaLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Area/${key}/locations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -329,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaLocationsFromKey>>> = ({ signal }) => getAreaLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaLocationsFromKey>>> = ({ signal }) => getAreaLocationsFromKey(key,params, signal);
 
 
 
@@ -364,261 +126,23 @@ export function useGetAreaLocationsFromKey<TData = Awaited<ReturnType<typeof get
 
 
 
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getAreaLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getAreaLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getAreaLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getAreaLocationsCountFromKeyResponseSuccess = (getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getAreaLocationsCountFromKeyResponse200ApplicationJson | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getAreaLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getAreaLocationsCountFromKeyResponse200ApplicationXml | getAreaLocationsCountFromKeyResponse200TextPlain | getAreaLocationsCountFromKeyResponse200ApplicationOctetStream | getAreaLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getAreaLocationsCountFromKeyResponseError = (getAreaLocationsCountFromKeyResponse400 | getAreaLocationsCountFromKeyResponse404 | getAreaLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getAreaLocationsCountFromKeyResponse = (getAreaLocationsCountFromKeyResponseSuccess | getAreaLocationsCountFromKeyResponseError)
-
-export const getGetAreaLocationsCountFromKeyUrl = (key: number,
-    params?: GetAreaLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/${key}/locations/$count?${stringifiedParams}` : `/api/v1/Area/${key}/locations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getAreaLocationsCountFromKey = async (key: number,
-    params?: GetAreaLocationsCountFromKeyParams, options?: RequestInit): Promise<getAreaLocationsCountFromKeyResponse> => {
-
-  return configRequest<getAreaLocationsCountFromKeyResponse>(getGetAreaLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getAreaLocationsCountFromKey = (
+    key: number,
+    params?: GetAreaLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Area/${key}/locations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -641,7 +165,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>> = ({ signal }) => getAreaLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>> = ({ signal }) => getAreaLocationsCountFromKey(key,params, signal);
 
 
 
@@ -676,251 +200,19 @@ export function useGetAreaLocationsCountFromKey<TData = Awaited<ReturnType<typeo
 
 
 
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
+export const getArea = (
+    params?: GetAreaParams,
+ signal?: AbortSignal
+) => {
 
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
 
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFull = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNone = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJson = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationXml = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200TextPlain = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getAreaResponse200TextJson = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getAreaResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getAreaResponseSuccess = (getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getAreaResponse200ApplicationJsonOdataMetadataMinimal | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getAreaResponse200ApplicationJsonOdataMetadataFull | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getAreaResponse200ApplicationJsonOdataMetadataNone | getAreaResponse200ApplicationJsonOdataStreamingTrue | getAreaResponse200ApplicationJsonOdataStreamingFalse | getAreaResponse200ApplicationJson | getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getAreaResponse200ApplicationJsonIEEE754CompatibleFalse | getAreaResponse200ApplicationJsonIEEE754CompatibleTrue | getAreaResponse200ApplicationXml | getAreaResponse200TextPlain | getAreaResponse200ApplicationOctetStream | getAreaResponse200TextJson) & {
-  headers: Headers;
-};
-export type getAreaResponseError = (getAreaResponse400 | getAreaResponse406) & {
-  headers: Headers;
-};
-
-export type getAreaResponse = (getAreaResponseSuccess | getAreaResponseError)
-
-export const getGetAreaUrl = (params?: GetAreaParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Area[] | Blob>(
+      {url: `/api/v1/Area`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area?${stringifiedParams}` : `/api/v1/Area`
-}
-
-export const getArea = async (params?: GetAreaParams, options?: RequestInit): Promise<getAreaResponse> => {
-
-  return configRequest<getAreaResponse>(getGetAreaUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -941,7 +233,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getArea>>> = ({ signal }) => getArea(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getArea>>> = ({ signal }) => getArea(params, signal);
 
 
 
@@ -972,57 +264,21 @@ export function useGetArea<TData = Awaited<ReturnType<typeof getArea>>, TError =
 
 
 
-export type postAreaResponse201 = {
-  data: void
-  status: 201
-}
+export const postArea = (
+    area?: Area,
+    params?: PostAreaParams,
+ signal?: AbortSignal
+) => {
 
-export type postAreaResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postAreaResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postAreaResponseSuccess = (postAreaResponse201) & {
-  headers: Headers;
-};
-export type postAreaResponseError = (postAreaResponse400 | postAreaResponse406) & {
-  headers: Headers;
-};
-
-export type postAreaResponse = (postAreaResponseSuccess | postAreaResponseError)
-
-export const getPostAreaUrl = (params?: PostAreaParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Area`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: area,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area?${stringifiedParams}` : `/api/v1/Area`
-}
-
-export const postArea = async (area?: Area,
-    params?: PostAreaParams, options?: RequestInit): Promise<postAreaResponse> => {
-
-  return configRequest<postAreaResponse>(getPostAreaUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(area)
-  }
-);}
-
 
 
 
@@ -1068,251 +324,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostAreaMutationOptions(options));
     }
-    export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
+    export const getAreaCount = (
+    params?: GetAreaCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
 
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJson = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationXml = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200TextPlain = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getAreaCountResponse200TextJson = {
-  data: Area[]
-  status: 200
-}
-
-export type getAreaCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getAreaCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getAreaCountResponseSuccess = (getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getAreaCountResponse200ApplicationJsonOdataMetadataMinimal | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getAreaCountResponse200ApplicationJsonOdataMetadataFull | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getAreaCountResponse200ApplicationJsonOdataMetadataNone | getAreaCountResponse200ApplicationJsonOdataStreamingTrue | getAreaCountResponse200ApplicationJsonOdataStreamingFalse | getAreaCountResponse200ApplicationJson | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getAreaCountResponse200ApplicationJsonIEEE754CompatibleFalse | getAreaCountResponse200ApplicationJsonIEEE754CompatibleTrue | getAreaCountResponse200ApplicationXml | getAreaCountResponse200TextPlain | getAreaCountResponse200ApplicationOctetStream | getAreaCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getAreaCountResponseError = (getAreaCountResponse400 | getAreaCountResponse406) & {
-  headers: Headers;
-};
-
-export type getAreaCountResponse = (getAreaCountResponseSuccess | getAreaCountResponseError)
-
-export const getGetAreaCountUrl = (params?: GetAreaCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Area[] | Blob>(
+      {url: `/api/v1/Area/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/$count?${stringifiedParams}` : `/api/v1/Area/$count`
-}
-
-export const getAreaCount = async (params?: GetAreaCountParams, options?: RequestInit): Promise<getAreaCountResponse> => {
-
-  return configRequest<getAreaCountResponse>(getGetAreaCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1333,7 +357,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaCount>>> = ({ signal }) => getAreaCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaCount>>> = ({ signal }) => getAreaCount(params, signal);
 
 
 
@@ -1364,253 +388,20 @@ export function useGetAreaCount<TData = Awaited<ReturnType<typeof getAreaCount>>
 
 
 
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Area
-  status: 200
-}
+export const getAreaFromKey = (
+    key: number,
+    params?: GetAreaFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Area
-  status: 200
-}
 
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJson = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationXml = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200TextPlain = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getAreaFromKeyResponse200TextJson = {
-  data: Area
-  status: 200
-}
-
-export type getAreaFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getAreaFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getAreaFromKeyResponseSuccess = (getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFull | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNone | getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrue | getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalse | getAreaFromKeyResponse200ApplicationJson | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getAreaFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getAreaFromKeyResponse200ApplicationXml | getAreaFromKeyResponse200TextPlain | getAreaFromKeyResponse200ApplicationOctetStream | getAreaFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getAreaFromKeyResponseError = (getAreaFromKeyResponse404 | getAreaFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getAreaFromKeyResponse = (getAreaFromKeyResponseSuccess | getAreaFromKeyResponseError)
-
-export const getGetAreaFromKeyUrl = (key: number,
-    params?: GetAreaFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Area | Blob>(
+      {url: `/api/v1/Area/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/${key}?${stringifiedParams}` : `/api/v1/Area/${key}`
-}
-
-export const getAreaFromKey = async (key: number,
-    params?: GetAreaFromKeyParams, options?: RequestInit): Promise<getAreaFromKeyResponse> => {
-
-  return configRequest<getAreaFromKeyResponse>(getGetAreaFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1633,7 +424,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaFromKey>>> = ({ signal }) => getAreaFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAreaFromKey>>> = ({ signal }) => getAreaFromKey(key,params, signal);
 
 
 
@@ -1665,64 +456,22 @@ export function useGetAreaFromKey<TData = Awaited<ReturnType<typeof getAreaFromK
 
 
 
-export type putAreaFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putAreaFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putAreaFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putAreaFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putAreaFromKeyResponseSuccess = (putAreaFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putAreaFromKeyResponseError = (putAreaFromKeyResponse400 | putAreaFromKeyResponse404 | putAreaFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putAreaFromKeyResponse = (putAreaFromKeyResponseSuccess | putAreaFromKeyResponseError)
-
-export const getPutAreaFromKeyUrl = (key: number,
-    params?: PutAreaFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/${key}?${stringifiedParams}` : `/api/v1/Area/${key}`
-}
-
-export const putAreaFromKey = async (key: number,
+export const putAreaFromKey = (
+    key: number,
     area?: Area,
-    params?: PutAreaFromKeyParams, options?: RequestInit): Promise<putAreaFromKeyResponse> => {
+    params?: PutAreaFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putAreaFromKeyResponse>(getPutAreaFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(area)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Area/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: area,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1768,64 +517,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutAreaFromKeyMutationOptions(options));
     }
-    export type patchAreaFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchAreaFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchAreaFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchAreaFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchAreaFromKeyResponseSuccess = (patchAreaFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchAreaFromKeyResponseError = (patchAreaFromKeyResponse400 | patchAreaFromKeyResponse404 | patchAreaFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchAreaFromKeyResponse = (patchAreaFromKeyResponseSuccess | patchAreaFromKeyResponseError)
-
-export const getPatchAreaFromKeyUrl = (key: number,
-    params?: PatchAreaFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Area/${key}?${stringifiedParams}` : `/api/v1/Area/${key}`
-}
-
-export const patchAreaFromKey = async (key: number,
+    export const patchAreaFromKey = (
+    key: number,
     area?: Area,
-    params?: PatchAreaFromKeyParams, options?: RequestInit): Promise<patchAreaFromKeyResponse> => {
+    params?: PatchAreaFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchAreaFromKeyResponse>(getPatchAreaFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(area)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Area/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: area,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1871,54 +578,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchAreaFromKeyMutationOptions(options));
     }
-    export type deleteAreaFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteAreaFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteAreaFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteAreaFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteAreaFromKeyResponseSuccess = (deleteAreaFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteAreaFromKeyResponseError = (deleteAreaFromKeyResponse400 | deleteAreaFromKeyResponse404 | deleteAreaFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteAreaFromKeyResponse = (deleteAreaFromKeyResponseSuccess | deleteAreaFromKeyResponseError)
-
-export const getDeleteAreaFromKeyUrl = (key: number,) => {
+    export const deleteAreaFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Area/${key}`
-}
-
-export const deleteAreaFromKey = async (key: number, options?: RequestInit): Promise<deleteAreaFromKeyResponse> => {
-
-  return configRequest<deleteAreaFromKeyResponse>(getDeleteAreaFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Area/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

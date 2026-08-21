@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
+export const getWatchDogIgnoreEvent = (
+    params?: GetWatchDogIgnoreEventParams,
+ signal?: AbortSignal
+) => {
 
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
 
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFull = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNone = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJson = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationXml = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200TextPlain = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse200TextJson = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getWatchDogIgnoreEventResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getWatchDogIgnoreEventResponseSuccess = (getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimal | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFull | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNone | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalse | getWatchDogIgnoreEventResponse200ApplicationJson | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationJsonIEEE754CompatibleFalse | getWatchDogIgnoreEventResponse200ApplicationJsonIEEE754CompatibleTrue | getWatchDogIgnoreEventResponse200ApplicationXml | getWatchDogIgnoreEventResponse200TextPlain | getWatchDogIgnoreEventResponse200ApplicationOctetStream | getWatchDogIgnoreEventResponse200TextJson) & {
-  headers: Headers;
-};
-export type getWatchDogIgnoreEventResponseError = (getWatchDogIgnoreEventResponse400 | getWatchDogIgnoreEventResponse406) & {
-  headers: Headers;
-};
-
-export type getWatchDogIgnoreEventResponse = (getWatchDogIgnoreEventResponseSuccess | getWatchDogIgnoreEventResponseError)
-
-export const getGetWatchDogIgnoreEventUrl = (params?: GetWatchDogIgnoreEventParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<WatchDogIgnoreEvent[] | Blob>(
+      {url: `/api/v1/WatchDogIgnoreEvent`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent`
-}
-
-export const getWatchDogIgnoreEvent = async (params?: GetWatchDogIgnoreEventParams, options?: RequestInit): Promise<getWatchDogIgnoreEventResponse> => {
-
-  return configRequest<getWatchDogIgnoreEventResponse>(getGetWatchDogIgnoreEventUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>> = ({ signal }) => getWatchDogIgnoreEvent(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>> = ({ signal }) => getWatchDogIgnoreEvent(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetWatchDogIgnoreEvent<TData = Awaited<ReturnType<typeof getW
 
 
 
-export type postWatchDogIgnoreEventResponse201 = {
-  data: void
-  status: 201
-}
+export const postWatchDogIgnoreEvent = (
+    watchDogIgnoreEvent?: WatchDogIgnoreEvent,
+    params?: PostWatchDogIgnoreEventParams,
+ signal?: AbortSignal
+) => {
 
-export type postWatchDogIgnoreEventResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postWatchDogIgnoreEventResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postWatchDogIgnoreEventResponseSuccess = (postWatchDogIgnoreEventResponse201) & {
-  headers: Headers;
-};
-export type postWatchDogIgnoreEventResponseError = (postWatchDogIgnoreEventResponse400 | postWatchDogIgnoreEventResponse406) & {
-  headers: Headers;
-};
-
-export type postWatchDogIgnoreEventResponse = (postWatchDogIgnoreEventResponseSuccess | postWatchDogIgnoreEventResponseError)
-
-export const getPostWatchDogIgnoreEventUrl = (params?: PostWatchDogIgnoreEventParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/WatchDogIgnoreEvent`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: watchDogIgnoreEvent,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent`
-}
-
-export const postWatchDogIgnoreEvent = async (watchDogIgnoreEvent?: WatchDogIgnoreEvent,
-    params?: PostWatchDogIgnoreEventParams, options?: RequestInit): Promise<postWatchDogIgnoreEventResponse> => {
-
-  return configRequest<postWatchDogIgnoreEventResponse>(getPostWatchDogIgnoreEventUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(watchDogIgnoreEvent)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostWatchDogIgnoreEventMutationOptions(options));
     }
-    export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
+    export const getWatchDogIgnoreEventCount = (
+    params?: GetWatchDogIgnoreEventCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
 
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJson = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationXml = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200TextPlain = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse200TextJson = {
-  data: WatchDogIgnoreEvent[]
-  status: 200
-}
-
-export type getWatchDogIgnoreEventCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getWatchDogIgnoreEventCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getWatchDogIgnoreEventCountResponseSuccess = (getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimal | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFull | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNone | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalse | getWatchDogIgnoreEventCountResponse200ApplicationJson | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationJsonIEEE754CompatibleFalse | getWatchDogIgnoreEventCountResponse200ApplicationJsonIEEE754CompatibleTrue | getWatchDogIgnoreEventCountResponse200ApplicationXml | getWatchDogIgnoreEventCountResponse200TextPlain | getWatchDogIgnoreEventCountResponse200ApplicationOctetStream | getWatchDogIgnoreEventCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getWatchDogIgnoreEventCountResponseError = (getWatchDogIgnoreEventCountResponse400 | getWatchDogIgnoreEventCountResponse406) & {
-  headers: Headers;
-};
-
-export type getWatchDogIgnoreEventCountResponse = (getWatchDogIgnoreEventCountResponseSuccess | getWatchDogIgnoreEventCountResponseError)
-
-export const getGetWatchDogIgnoreEventCountUrl = (params?: GetWatchDogIgnoreEventCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<WatchDogIgnoreEvent[] | Blob>(
+      {url: `/api/v1/WatchDogIgnoreEvent/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent/$count?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent/$count`
-}
-
-export const getWatchDogIgnoreEventCount = async (params?: GetWatchDogIgnoreEventCountParams, options?: RequestInit): Promise<getWatchDogIgnoreEventCountResponse> => {
-
-  return configRequest<getWatchDogIgnoreEventCountResponse>(getGetWatchDogIgnoreEventCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>> = ({ signal }) => getWatchDogIgnoreEventCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>> = ({ signal }) => getWatchDogIgnoreEventCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetWatchDogIgnoreEventCount<TData = Awaited<ReturnType<typeof
 
 
 
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
+export const getWatchDogIgnoreEventFromKey = (
+    key: number,
+    params?: GetWatchDogIgnoreEventFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
 
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJson = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationXml = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200TextPlain = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse200TextJson = {
-  data: WatchDogIgnoreEvent
-  status: 200
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getWatchDogIgnoreEventFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getWatchDogIgnoreEventFromKeyResponseSuccess = (getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFull | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNone | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJson | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getWatchDogIgnoreEventFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getWatchDogIgnoreEventFromKeyResponse200ApplicationXml | getWatchDogIgnoreEventFromKeyResponse200TextPlain | getWatchDogIgnoreEventFromKeyResponse200ApplicationOctetStream | getWatchDogIgnoreEventFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getWatchDogIgnoreEventFromKeyResponseError = (getWatchDogIgnoreEventFromKeyResponse404 | getWatchDogIgnoreEventFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getWatchDogIgnoreEventFromKeyResponse = (getWatchDogIgnoreEventFromKeyResponseSuccess | getWatchDogIgnoreEventFromKeyResponseError)
-
-export const getGetWatchDogIgnoreEventFromKeyUrl = (key: number,
-    params?: GetWatchDogIgnoreEventFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<WatchDogIgnoreEvent | Blob>(
+      {url: `/api/v1/WatchDogIgnoreEvent/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent/${key}?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent/${key}`
-}
-
-export const getWatchDogIgnoreEventFromKey = async (key: number,
-    params?: GetWatchDogIgnoreEventFromKeyParams, options?: RequestInit): Promise<getWatchDogIgnoreEventFromKeyResponse> => {
-
-  return configRequest<getWatchDogIgnoreEventFromKeyResponse>(getGetWatchDogIgnoreEventFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>> = ({ signal }) => getWatchDogIgnoreEventFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>> = ({ signal }) => getWatchDogIgnoreEventFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetWatchDogIgnoreEventFromKey<TData = Awaited<ReturnType<type
 
 
 
-export type putWatchDogIgnoreEventFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putWatchDogIgnoreEventFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putWatchDogIgnoreEventFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putWatchDogIgnoreEventFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putWatchDogIgnoreEventFromKeyResponseSuccess = (putWatchDogIgnoreEventFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putWatchDogIgnoreEventFromKeyResponseError = (putWatchDogIgnoreEventFromKeyResponse400 | putWatchDogIgnoreEventFromKeyResponse404 | putWatchDogIgnoreEventFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putWatchDogIgnoreEventFromKeyResponse = (putWatchDogIgnoreEventFromKeyResponseSuccess | putWatchDogIgnoreEventFromKeyResponseError)
-
-export const getPutWatchDogIgnoreEventFromKeyUrl = (key: number,
-    params?: PutWatchDogIgnoreEventFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent/${key}?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent/${key}`
-}
-
-export const putWatchDogIgnoreEventFromKey = async (key: number,
+export const putWatchDogIgnoreEventFromKey = (
+    key: number,
     watchDogIgnoreEvent?: WatchDogIgnoreEvent,
-    params?: PutWatchDogIgnoreEventFromKeyParams, options?: RequestInit): Promise<putWatchDogIgnoreEventFromKeyResponse> => {
+    params?: PutWatchDogIgnoreEventFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putWatchDogIgnoreEventFromKeyResponse>(getPutWatchDogIgnoreEventFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(watchDogIgnoreEvent)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/WatchDogIgnoreEvent/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: watchDogIgnoreEvent,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutWatchDogIgnoreEventFromKeyMutationOptions(options));
     }
-    export type patchWatchDogIgnoreEventFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchWatchDogIgnoreEventFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchWatchDogIgnoreEventFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchWatchDogIgnoreEventFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchWatchDogIgnoreEventFromKeyResponseSuccess = (patchWatchDogIgnoreEventFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchWatchDogIgnoreEventFromKeyResponseError = (patchWatchDogIgnoreEventFromKeyResponse400 | patchWatchDogIgnoreEventFromKeyResponse404 | patchWatchDogIgnoreEventFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchWatchDogIgnoreEventFromKeyResponse = (patchWatchDogIgnoreEventFromKeyResponseSuccess | patchWatchDogIgnoreEventFromKeyResponseError)
-
-export const getPatchWatchDogIgnoreEventFromKeyUrl = (key: number,
-    params?: PatchWatchDogIgnoreEventFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/WatchDogIgnoreEvent/${key}?${stringifiedParams}` : `/api/v1/WatchDogIgnoreEvent/${key}`
-}
-
-export const patchWatchDogIgnoreEventFromKey = async (key: number,
+    export const patchWatchDogIgnoreEventFromKey = (
+    key: number,
     watchDogIgnoreEvent?: WatchDogIgnoreEvent,
-    params?: PatchWatchDogIgnoreEventFromKeyParams, options?: RequestInit): Promise<patchWatchDogIgnoreEventFromKeyResponse> => {
+    params?: PatchWatchDogIgnoreEventFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchWatchDogIgnoreEventFromKeyResponse>(getPatchWatchDogIgnoreEventFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(watchDogIgnoreEvent)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/WatchDogIgnoreEvent/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: watchDogIgnoreEvent,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchWatchDogIgnoreEventFromKeyMutationOptions(options));
     }
-    export type deleteWatchDogIgnoreEventFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteWatchDogIgnoreEventFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteWatchDogIgnoreEventFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteWatchDogIgnoreEventFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteWatchDogIgnoreEventFromKeyResponseSuccess = (deleteWatchDogIgnoreEventFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteWatchDogIgnoreEventFromKeyResponseError = (deleteWatchDogIgnoreEventFromKeyResponse400 | deleteWatchDogIgnoreEventFromKeyResponse404 | deleteWatchDogIgnoreEventFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteWatchDogIgnoreEventFromKeyResponse = (deleteWatchDogIgnoreEventFromKeyResponseSuccess | deleteWatchDogIgnoreEventFromKeyResponseError)
-
-export const getDeleteWatchDogIgnoreEventFromKeyUrl = (key: number,) => {
+    export const deleteWatchDogIgnoreEventFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/WatchDogIgnoreEvent/${key}`
-}
-
-export const deleteWatchDogIgnoreEventFromKey = async (key: number, options?: RequestInit): Promise<deleteWatchDogIgnoreEventFromKeyResponse> => {
-
-  return configRequest<deleteWatchDogIgnoreEventFromKeyResponse>(getDeleteWatchDogIgnoreEventFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/WatchDogIgnoreEvent/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

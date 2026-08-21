@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
+export const getDetectorComment = (
+    params?: GetDetectorCommentParams,
+ signal?: AbortSignal
+) => {
 
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
 
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFull = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNone = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJson = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationXml = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200TextPlain = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDetectorCommentResponse200TextJson = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDetectorCommentResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDetectorCommentResponseSuccess = (getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimal | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataFull | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataNone | getDetectorCommentResponse200ApplicationJsonOdataStreamingTrue | getDetectorCommentResponse200ApplicationJsonOdataStreamingFalse | getDetectorCommentResponse200ApplicationJson | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationJsonIEEE754CompatibleFalse | getDetectorCommentResponse200ApplicationJsonIEEE754CompatibleTrue | getDetectorCommentResponse200ApplicationXml | getDetectorCommentResponse200TextPlain | getDetectorCommentResponse200ApplicationOctetStream | getDetectorCommentResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDetectorCommentResponseError = (getDetectorCommentResponse400 | getDetectorCommentResponse406) & {
-  headers: Headers;
-};
-
-export type getDetectorCommentResponse = (getDetectorCommentResponseSuccess | getDetectorCommentResponseError)
-
-export const getGetDetectorCommentUrl = (params?: GetDetectorCommentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DetectorComment[] | Blob>(
+      {url: `/api/v1/DetectorComment`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment?${stringifiedParams}` : `/api/v1/DetectorComment`
-}
-
-export const getDetectorComment = async (params?: GetDetectorCommentParams, options?: RequestInit): Promise<getDetectorCommentResponse> => {
-
-  return configRequest<getDetectorCommentResponse>(getGetDetectorCommentUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorComment>>> = ({ signal }) => getDetectorComment(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorComment>>> = ({ signal }) => getDetectorComment(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetDetectorComment<TData = Awaited<ReturnType<typeof getDetec
 
 
 
-export type postDetectorCommentResponse201 = {
-  data: void
-  status: 201
-}
+export const postDetectorComment = (
+    detectorComment?: DetectorComment,
+    params?: PostDetectorCommentParams,
+ signal?: AbortSignal
+) => {
 
-export type postDetectorCommentResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postDetectorCommentResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postDetectorCommentResponseSuccess = (postDetectorCommentResponse201) & {
-  headers: Headers;
-};
-export type postDetectorCommentResponseError = (postDetectorCommentResponse400 | postDetectorCommentResponse406) & {
-  headers: Headers;
-};
-
-export type postDetectorCommentResponse = (postDetectorCommentResponseSuccess | postDetectorCommentResponseError)
-
-export const getPostDetectorCommentUrl = (params?: PostDetectorCommentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/DetectorComment`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: detectorComment,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment?${stringifiedParams}` : `/api/v1/DetectorComment`
-}
-
-export const postDetectorComment = async (detectorComment?: DetectorComment,
-    params?: PostDetectorCommentParams, options?: RequestInit): Promise<postDetectorCommentResponse> => {
-
-  return configRequest<postDetectorCommentResponse>(getPostDetectorCommentUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(detectorComment)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostDetectorCommentMutationOptions(options));
     }
-    export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
+    export const getDetectorCommentCount = (
+    params?: GetDetectorCommentCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
 
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJson = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationXml = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200TextPlain = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDetectorCommentCountResponse200TextJson = {
-  data: DetectorComment[]
-  status: 200
-}
-
-export type getDetectorCommentCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDetectorCommentCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDetectorCommentCountResponseSuccess = (getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimal | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFull | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNone | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrue | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalse | getDetectorCommentCountResponse200ApplicationJson | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationJsonIEEE754CompatibleFalse | getDetectorCommentCountResponse200ApplicationJsonIEEE754CompatibleTrue | getDetectorCommentCountResponse200ApplicationXml | getDetectorCommentCountResponse200TextPlain | getDetectorCommentCountResponse200ApplicationOctetStream | getDetectorCommentCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDetectorCommentCountResponseError = (getDetectorCommentCountResponse400 | getDetectorCommentCountResponse406) & {
-  headers: Headers;
-};
-
-export type getDetectorCommentCountResponse = (getDetectorCommentCountResponseSuccess | getDetectorCommentCountResponseError)
-
-export const getGetDetectorCommentCountUrl = (params?: GetDetectorCommentCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DetectorComment[] | Blob>(
+      {url: `/api/v1/DetectorComment/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment/$count?${stringifiedParams}` : `/api/v1/DetectorComment/$count`
-}
-
-export const getDetectorCommentCount = async (params?: GetDetectorCommentCountParams, options?: RequestInit): Promise<getDetectorCommentCountResponse> => {
-
-  return configRequest<getDetectorCommentCountResponse>(getGetDetectorCommentCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorCommentCount>>> = ({ signal }) => getDetectorCommentCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorCommentCount>>> = ({ signal }) => getDetectorCommentCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetDetectorCommentCount<TData = Awaited<ReturnType<typeof get
 
 
 
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DetectorComment
-  status: 200
-}
+export const getDetectorCommentFromKey = (
+    key: number,
+    params?: GetDetectorCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DetectorComment
-  status: 200
-}
 
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJson = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationXml = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200TextPlain = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse200TextJson = {
-  data: DetectorComment
-  status: 200
-}
-
-export type getDetectorCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDetectorCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDetectorCommentFromKeyResponseSuccess = (getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFull | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNone | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDetectorCommentFromKeyResponse200ApplicationJson | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDetectorCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDetectorCommentFromKeyResponse200ApplicationXml | getDetectorCommentFromKeyResponse200TextPlain | getDetectorCommentFromKeyResponse200ApplicationOctetStream | getDetectorCommentFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDetectorCommentFromKeyResponseError = (getDetectorCommentFromKeyResponse404 | getDetectorCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDetectorCommentFromKeyResponse = (getDetectorCommentFromKeyResponseSuccess | getDetectorCommentFromKeyResponseError)
-
-export const getGetDetectorCommentFromKeyUrl = (key: number,
-    params?: GetDetectorCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DetectorComment | Blob>(
+      {url: `/api/v1/DetectorComment/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment/${key}?${stringifiedParams}` : `/api/v1/DetectorComment/${key}`
-}
-
-export const getDetectorCommentFromKey = async (key: number,
-    params?: GetDetectorCommentFromKeyParams, options?: RequestInit): Promise<getDetectorCommentFromKeyResponse> => {
-
-  return configRequest<getDetectorCommentFromKeyResponse>(getGetDetectorCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorCommentFromKey>>> = ({ signal }) => getDetectorCommentFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDetectorCommentFromKey>>> = ({ signal }) => getDetectorCommentFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetDetectorCommentFromKey<TData = Awaited<ReturnType<typeof g
 
 
 
-export type putDetectorCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putDetectorCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putDetectorCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putDetectorCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putDetectorCommentFromKeyResponseSuccess = (putDetectorCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putDetectorCommentFromKeyResponseError = (putDetectorCommentFromKeyResponse400 | putDetectorCommentFromKeyResponse404 | putDetectorCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putDetectorCommentFromKeyResponse = (putDetectorCommentFromKeyResponseSuccess | putDetectorCommentFromKeyResponseError)
-
-export const getPutDetectorCommentFromKeyUrl = (key: number,
-    params?: PutDetectorCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment/${key}?${stringifiedParams}` : `/api/v1/DetectorComment/${key}`
-}
-
-export const putDetectorCommentFromKey = async (key: number,
+export const putDetectorCommentFromKey = (
+    key: number,
     detectorComment?: DetectorComment,
-    params?: PutDetectorCommentFromKeyParams, options?: RequestInit): Promise<putDetectorCommentFromKeyResponse> => {
+    params?: PutDetectorCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putDetectorCommentFromKeyResponse>(getPutDetectorCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(detectorComment)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/DetectorComment/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: detectorComment,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutDetectorCommentFromKeyMutationOptions(options));
     }
-    export type patchDetectorCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchDetectorCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchDetectorCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchDetectorCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchDetectorCommentFromKeyResponseSuccess = (patchDetectorCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchDetectorCommentFromKeyResponseError = (patchDetectorCommentFromKeyResponse400 | patchDetectorCommentFromKeyResponse404 | patchDetectorCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchDetectorCommentFromKeyResponse = (patchDetectorCommentFromKeyResponseSuccess | patchDetectorCommentFromKeyResponseError)
-
-export const getPatchDetectorCommentFromKeyUrl = (key: number,
-    params?: PatchDetectorCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DetectorComment/${key}?${stringifiedParams}` : `/api/v1/DetectorComment/${key}`
-}
-
-export const patchDetectorCommentFromKey = async (key: number,
+    export const patchDetectorCommentFromKey = (
+    key: number,
     detectorComment?: DetectorComment,
-    params?: PatchDetectorCommentFromKeyParams, options?: RequestInit): Promise<patchDetectorCommentFromKeyResponse> => {
+    params?: PatchDetectorCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchDetectorCommentFromKeyResponse>(getPatchDetectorCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(detectorComment)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/DetectorComment/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: detectorComment,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchDetectorCommentFromKeyMutationOptions(options));
     }
-    export type deleteDetectorCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteDetectorCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteDetectorCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteDetectorCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteDetectorCommentFromKeyResponseSuccess = (deleteDetectorCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteDetectorCommentFromKeyResponseError = (deleteDetectorCommentFromKeyResponse400 | deleteDetectorCommentFromKeyResponse404 | deleteDetectorCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteDetectorCommentFromKeyResponse = (deleteDetectorCommentFromKeyResponseSuccess | deleteDetectorCommentFromKeyResponseError)
-
-export const getDeleteDetectorCommentFromKeyUrl = (key: number,) => {
+    export const deleteDetectorCommentFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/DetectorComment/${key}`
-}
-
-export const deleteDetectorCommentFromKey = async (key: number, options?: RequestInit): Promise<deleteDetectorCommentFromKeyResponse> => {
-
-  return configRequest<deleteDetectorCommentFromKeyResponse>(getDeleteDetectorCommentFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/DetectorComment/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

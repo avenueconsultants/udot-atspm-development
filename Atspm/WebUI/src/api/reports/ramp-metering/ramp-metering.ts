@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getRampMeteringTestDataResponse200 = {
-  data: RampMeteringResult
-  status: 200
-}
-
-export type getRampMeteringTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getRampMeteringTestDataResponseSuccess = (getRampMeteringTestDataResponse200) & {
-  headers: Headers;
-};
-export type getRampMeteringTestDataResponseError = (getRampMeteringTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getRampMeteringTestDataResponse = (getRampMeteringTestDataResponseSuccess | getRampMeteringTestDataResponseError)
-
-export const getGetRampMeteringTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/RampMetering/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getRampMeteringTestData = async ( options?: RequestInit): Promise<getRampMeteringTestDataResponse> => {
+export const getRampMeteringTestData = (
 
-  return reportsRequest<getRampMeteringTestDataResponse>(getGetRampMeteringTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<RampMeteringResult>(
+      {url: `/api/v1/RampMetering/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRampMeteringTestData>>> = ({ signal }) => getRampMeteringTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRampMeteringTestData>>> = ({ signal }) => getRampMeteringTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetRampMeteringTestData<TData = Awaited<ReturnType<typeof get
 
 
 
-export type getRampMeteringReportDataResponse200 = {
-  data: RampMeteringResult
-  status: 200
-}
-
-export type getRampMeteringReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getRampMeteringReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getRampMeteringReportDataResponseSuccess = (getRampMeteringReportDataResponse200) & {
-  headers: Headers;
-};
-export type getRampMeteringReportDataResponseError = (getRampMeteringReportDataResponse400 | getRampMeteringReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getRampMeteringReportDataResponse = (getRampMeteringReportDataResponseSuccess | getRampMeteringReportDataResponseError)
-
-export const getGetRampMeteringReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/RampMetering/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getRampMeteringReportData = async (rampMeteringOptions?: RampMeteringOptions, options?: RequestInit): Promise<getRampMeteringReportDataResponse> => {
+export const getRampMeteringReportData = (
+    rampMeteringOptions?: RampMeteringOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getRampMeteringReportDataResponse>(getGetRampMeteringReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(rampMeteringOptions)
-  }
-);}
 
+      return reportsRequest<RampMeteringResult>(
+      {url: `/api/v1/RampMetering/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: rampMeteringOptions, signal
+    },
+      );
+    }
 
 
 

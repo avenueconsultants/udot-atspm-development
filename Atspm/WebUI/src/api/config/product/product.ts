@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
+export const getProduct = (
+    params?: GetProductParams,
+ signal?: AbortSignal
+) => {
 
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
 
-export type getProductResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFull = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNone = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJson = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationXml = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200TextPlain = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getProductResponse200TextJson = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getProductResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getProductResponseSuccess = (getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getProductResponse200ApplicationJsonOdataMetadataMinimal | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getProductResponse200ApplicationJsonOdataMetadataFull | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getProductResponse200ApplicationJsonOdataMetadataNone | getProductResponse200ApplicationJsonOdataStreamingTrue | getProductResponse200ApplicationJsonOdataStreamingFalse | getProductResponse200ApplicationJson | getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getProductResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getProductResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getProductResponse200ApplicationJsonIEEE754CompatibleFalse | getProductResponse200ApplicationJsonIEEE754CompatibleTrue | getProductResponse200ApplicationXml | getProductResponse200TextPlain | getProductResponse200ApplicationOctetStream | getProductResponse200TextJson) & {
-  headers: Headers;
-};
-export type getProductResponseError = (getProductResponse400 | getProductResponse406) & {
-  headers: Headers;
-};
-
-export type getProductResponse = (getProductResponseSuccess | getProductResponseError)
-
-export const getGetProductUrl = (params?: GetProductParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Product[] | Blob>(
+      {url: `/api/v1/Product`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product?${stringifiedParams}` : `/api/v1/Product`
-}
-
-export const getProduct = async (params?: GetProductParams, options?: RequestInit): Promise<getProductResponse> => {
-
-  return configRequest<getProductResponse>(getGetProductUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProduct>>> = ({ signal }) => getProduct(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProduct>>> = ({ signal }) => getProduct(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetProduct<TData = Awaited<ReturnType<typeof getProduct>>, TE
 
 
 
-export type postProductResponse201 = {
-  data: void
-  status: 201
-}
+export const postProduct = (
+    product?: Product,
+    params?: PostProductParams,
+ signal?: AbortSignal
+) => {
 
-export type postProductResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postProductResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postProductResponseSuccess = (postProductResponse201) & {
-  headers: Headers;
-};
-export type postProductResponseError = (postProductResponse400 | postProductResponse406) & {
-  headers: Headers;
-};
-
-export type postProductResponse = (postProductResponseSuccess | postProductResponseError)
-
-export const getPostProductUrl = (params?: PostProductParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Product`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: product,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product?${stringifiedParams}` : `/api/v1/Product`
-}
-
-export const postProduct = async (product?: Product,
-    params?: PostProductParams, options?: RequestInit): Promise<postProductResponse> => {
-
-  return configRequest<postProductResponse>(getPostProductUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(product)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostProductMutationOptions(options));
     }
-    export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
+    export const getProductCount = (
+    params?: GetProductCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
 
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJson = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationXml = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200TextPlain = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getProductCountResponse200TextJson = {
-  data: Product[]
-  status: 200
-}
-
-export type getProductCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getProductCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getProductCountResponseSuccess = (getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getProductCountResponse200ApplicationJsonOdataMetadataMinimal | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getProductCountResponse200ApplicationJsonOdataMetadataFull | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getProductCountResponse200ApplicationJsonOdataMetadataNone | getProductCountResponse200ApplicationJsonOdataStreamingTrue | getProductCountResponse200ApplicationJsonOdataStreamingFalse | getProductCountResponse200ApplicationJson | getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getProductCountResponse200ApplicationJsonIEEE754CompatibleFalse | getProductCountResponse200ApplicationJsonIEEE754CompatibleTrue | getProductCountResponse200ApplicationXml | getProductCountResponse200TextPlain | getProductCountResponse200ApplicationOctetStream | getProductCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getProductCountResponseError = (getProductCountResponse400 | getProductCountResponse406) & {
-  headers: Headers;
-};
-
-export type getProductCountResponse = (getProductCountResponseSuccess | getProductCountResponseError)
-
-export const getGetProductCountUrl = (params?: GetProductCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Product[] | Blob>(
+      {url: `/api/v1/Product/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product/$count?${stringifiedParams}` : `/api/v1/Product/$count`
-}
-
-export const getProductCount = async (params?: GetProductCountParams, options?: RequestInit): Promise<getProductCountResponse> => {
-
-  return configRequest<getProductCountResponse>(getGetProductCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCount>>> = ({ signal }) => getProductCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductCount>>> = ({ signal }) => getProductCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetProductCount<TData = Awaited<ReturnType<typeof getProductC
 
 
 
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Product
-  status: 200
-}
+export const getProductFromKey = (
+    key: number,
+    params?: GetProductFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Product
-  status: 200
-}
 
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJson = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationXml = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200TextPlain = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getProductFromKeyResponse200TextJson = {
-  data: Product
-  status: 200
-}
-
-export type getProductFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getProductFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getProductFromKeyResponseSuccess = (getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataFull | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataNone | getProductFromKeyResponse200ApplicationJsonOdataStreamingTrue | getProductFromKeyResponse200ApplicationJsonOdataStreamingFalse | getProductFromKeyResponse200ApplicationJson | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getProductFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getProductFromKeyResponse200ApplicationXml | getProductFromKeyResponse200TextPlain | getProductFromKeyResponse200ApplicationOctetStream | getProductFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getProductFromKeyResponseError = (getProductFromKeyResponse404 | getProductFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getProductFromKeyResponse = (getProductFromKeyResponseSuccess | getProductFromKeyResponseError)
-
-export const getGetProductFromKeyUrl = (key: number,
-    params?: GetProductFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Product | Blob>(
+      {url: `/api/v1/Product/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product/${key}?${stringifiedParams}` : `/api/v1/Product/${key}`
-}
-
-export const getProductFromKey = async (key: number,
-    params?: GetProductFromKeyParams, options?: RequestInit): Promise<getProductFromKeyResponse> => {
-
-  return configRequest<getProductFromKeyResponse>(getGetProductFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductFromKey>>> = ({ signal }) => getProductFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProductFromKey>>> = ({ signal }) => getProductFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetProductFromKey<TData = Awaited<ReturnType<typeof getProduc
 
 
 
-export type putProductFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putProductFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putProductFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putProductFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putProductFromKeyResponseSuccess = (putProductFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putProductFromKeyResponseError = (putProductFromKeyResponse400 | putProductFromKeyResponse404 | putProductFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putProductFromKeyResponse = (putProductFromKeyResponseSuccess | putProductFromKeyResponseError)
-
-export const getPutProductFromKeyUrl = (key: number,
-    params?: PutProductFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product/${key}?${stringifiedParams}` : `/api/v1/Product/${key}`
-}
-
-export const putProductFromKey = async (key: number,
+export const putProductFromKey = (
+    key: number,
     product?: Product,
-    params?: PutProductFromKeyParams, options?: RequestInit): Promise<putProductFromKeyResponse> => {
+    params?: PutProductFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putProductFromKeyResponse>(getPutProductFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(product)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Product/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: product,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutProductFromKeyMutationOptions(options));
     }
-    export type patchProductFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchProductFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchProductFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchProductFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchProductFromKeyResponseSuccess = (patchProductFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchProductFromKeyResponseError = (patchProductFromKeyResponse400 | patchProductFromKeyResponse404 | patchProductFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchProductFromKeyResponse = (patchProductFromKeyResponseSuccess | patchProductFromKeyResponseError)
-
-export const getPatchProductFromKeyUrl = (key: number,
-    params?: PatchProductFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Product/${key}?${stringifiedParams}` : `/api/v1/Product/${key}`
-}
-
-export const patchProductFromKey = async (key: number,
+    export const patchProductFromKey = (
+    key: number,
     product?: Product,
-    params?: PatchProductFromKeyParams, options?: RequestInit): Promise<patchProductFromKeyResponse> => {
+    params?: PatchProductFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchProductFromKeyResponse>(getPatchProductFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(product)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Product/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: product,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchProductFromKeyMutationOptions(options));
     }
-    export type deleteProductFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteProductFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteProductFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteProductFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteProductFromKeyResponseSuccess = (deleteProductFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteProductFromKeyResponseError = (deleteProductFromKeyResponse400 | deleteProductFromKeyResponse404 | deleteProductFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteProductFromKeyResponse = (deleteProductFromKeyResponseSuccess | deleteProductFromKeyResponseError)
-
-export const getDeleteProductFromKeyUrl = (key: number,) => {
+    export const deleteProductFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Product/${key}`
-}
-
-export const deleteProductFromKey = async (key: number, options?: RequestInit): Promise<deleteProductFromKeyResponse> => {
-
-  return configRequest<deleteProductFromKeyResponse>(getDeleteProductFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Product/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

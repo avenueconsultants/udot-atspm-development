@@ -52,251 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFull = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNone = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationXml = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200TextPlain = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse200TextJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponseSuccess = (getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimal | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFull | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNone | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJson | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonIEEE754CompatibleFalse | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationJsonIEEE754CompatibleTrue | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationXml | getDeviceActiveDevicesByLocationFromLocationIdResponse200TextPlain | getDeviceActiveDevicesByLocationFromLocationIdResponse200ApplicationOctetStream | getDeviceActiveDevicesByLocationFromLocationIdResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDeviceActiveDevicesByLocationFromLocationIdResponseError = (getDeviceActiveDevicesByLocationFromLocationIdResponse406) & {
-  headers: Headers;
-};
-
-export type getDeviceActiveDevicesByLocationFromLocationIdResponse = (getDeviceActiveDevicesByLocationFromLocationIdResponseSuccess | getDeviceActiveDevicesByLocationFromLocationIdResponseError)
-
-export const getGetDeviceActiveDevicesByLocationFromLocationIdUrl = (locationId: number,
-    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/GetActiveDevicesByLocation(locationId=${locationId})?${stringifiedParams}` : `/api/v1/Device/GetActiveDevicesByLocation(locationId=${locationId})`
-}
-
 /**
  * @summary Gets all Utah.Udot.Atspm.Data.Models.Device from locationId where Utah.Udot.Atspm.Data.Models.Device.DeviceStatus equals Utah.Udot.Atspm.Data.Enums.DeviceStatus.Active
  */
-export const getDeviceActiveDevicesByLocationFromLocationId = async (locationId: number,
-    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: RequestInit): Promise<getDeviceActiveDevicesByLocationFromLocationIdResponse> => {
-
-  return configRequest<getDeviceActiveDevicesByLocationFromLocationIdResponse>(getGetDeviceActiveDevicesByLocationFromLocationIdUrl(locationId,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDeviceActiveDevicesByLocationFromLocationId = (
+    locationId: number,
+    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Device[] | Blob>(
+      {url: `/api/v1/Device/GetActiveDevicesByLocation(locationId=${locationId})`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -319,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>> = ({ signal }) => getDeviceActiveDevicesByLocationFromLocationId(locationId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>> = ({ signal }) => getDeviceActiveDevicesByLocationFromLocationId(locationId,params, signal);
 
 
 
@@ -354,249 +126,22 @@ export function useGetDeviceActiveDevicesByLocationFromLocationId<TData = Awaite
 
 
 
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJson = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationXml = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200TextPlain = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse200TextJson = {
-  data: DeviceGroup[]
-  status: 200
-}
-
-export type getDeviceActiveDevicesCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDeviceActiveDevicesCountResponseSuccess = (getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimal | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFull | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNone | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalse | getDeviceActiveDevicesCountResponse200ApplicationJson | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationJsonIEEE754CompatibleFalse | getDeviceActiveDevicesCountResponse200ApplicationJsonIEEE754CompatibleTrue | getDeviceActiveDevicesCountResponse200ApplicationXml | getDeviceActiveDevicesCountResponse200TextPlain | getDeviceActiveDevicesCountResponse200ApplicationOctetStream | getDeviceActiveDevicesCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDeviceActiveDevicesCountResponseError = (getDeviceActiveDevicesCountResponse406) & {
-  headers: Headers;
-};
-
-export type getDeviceActiveDevicesCountResponse = (getDeviceActiveDevicesCountResponseSuccess | getDeviceActiveDevicesCountResponseError)
-
-export const getGetDeviceActiveDevicesCountUrl = (params?: GetDeviceActiveDevicesCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/GetActiveDevicesCount?${stringifiedParams}` : `/api/v1/Device/GetActiveDevicesCount`
-}
-
 /**
  * @summary Gets a count of device type for all active devices Utah.Udot.Atspm.Data.Models.Device where Utah.Udot.Atspm.Data.Models.Device.DeviceStatus equals Utah.Udot.Atspm.Data.Enums.DeviceStatus.Active
  */
-export const getDeviceActiveDevicesCount = async (params?: GetDeviceActiveDevicesCountParams, options?: RequestInit): Promise<getDeviceActiveDevicesCountResponse> => {
-
-  return configRequest<getDeviceActiveDevicesCountResponse>(getGetDeviceActiveDevicesCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
+export const getDeviceActiveDevicesCount = (
+    params?: GetDeviceActiveDevicesCountParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<DeviceGroup[] | Blob>(
+      {url: `/api/v1/Device/GetActiveDevicesCount`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -617,7 +162,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>> = ({ signal }) => getDeviceActiveDevicesCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>> = ({ signal }) => getDeviceActiveDevicesCount(params, signal);
 
 
 
@@ -651,251 +196,19 @@ export function useGetDeviceActiveDevicesCount<TData = Awaited<ReturnType<typeof
 
 
 
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
+export const getDevice = (
+    params?: GetDeviceParams,
+ signal?: AbortSignal
+) => {
 
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
 
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFull = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNone = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationXml = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200TextPlain = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDeviceResponse200TextJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDeviceResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDeviceResponseSuccess = (getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDeviceResponse200ApplicationJsonOdataMetadataMinimal | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDeviceResponse200ApplicationJsonOdataMetadataFull | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDeviceResponse200ApplicationJsonOdataMetadataNone | getDeviceResponse200ApplicationJsonOdataStreamingTrue | getDeviceResponse200ApplicationJsonOdataStreamingFalse | getDeviceResponse200ApplicationJson | getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDeviceResponse200ApplicationJsonIEEE754CompatibleFalse | getDeviceResponse200ApplicationJsonIEEE754CompatibleTrue | getDeviceResponse200ApplicationXml | getDeviceResponse200TextPlain | getDeviceResponse200ApplicationOctetStream | getDeviceResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDeviceResponseError = (getDeviceResponse400 | getDeviceResponse406) & {
-  headers: Headers;
-};
-
-export type getDeviceResponse = (getDeviceResponseSuccess | getDeviceResponseError)
-
-export const getGetDeviceUrl = (params?: GetDeviceParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Device[] | Blob>(
+      {url: `/api/v1/Device`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device?${stringifiedParams}` : `/api/v1/Device`
-}
-
-export const getDevice = async (params?: GetDeviceParams, options?: RequestInit): Promise<getDeviceResponse> => {
-
-  return configRequest<getDeviceResponse>(getGetDeviceUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -916,7 +229,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDevice>>> = ({ signal }) => getDevice(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDevice>>> = ({ signal }) => getDevice(params, signal);
 
 
 
@@ -947,57 +260,21 @@ export function useGetDevice<TData = Awaited<ReturnType<typeof getDevice>>, TErr
 
 
 
-export type postDeviceResponse201 = {
-  data: void
-  status: 201
-}
+export const postDevice = (
+    device?: Device,
+    params?: PostDeviceParams,
+ signal?: AbortSignal
+) => {
 
-export type postDeviceResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postDeviceResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postDeviceResponseSuccess = (postDeviceResponse201) & {
-  headers: Headers;
-};
-export type postDeviceResponseError = (postDeviceResponse400 | postDeviceResponse406) & {
-  headers: Headers;
-};
-
-export type postDeviceResponse = (postDeviceResponseSuccess | postDeviceResponseError)
-
-export const getPostDeviceUrl = (params?: PostDeviceParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Device`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: device,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device?${stringifiedParams}` : `/api/v1/Device`
-}
-
-export const postDevice = async (device?: Device,
-    params?: PostDeviceParams, options?: RequestInit): Promise<postDeviceResponse> => {
-
-  return configRequest<postDeviceResponse>(getPostDeviceUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(device)
-  }
-);}
-
 
 
 
@@ -1043,251 +320,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostDeviceMutationOptions(options));
     }
-    export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
+    export const getDeviceCount = (
+    params?: GetDeviceCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
 
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationXml = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200TextPlain = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDeviceCountResponse200TextJson = {
-  data: Device[]
-  status: 200
-}
-
-export type getDeviceCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDeviceCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDeviceCountResponseSuccess = (getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimal | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataFull | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataNone | getDeviceCountResponse200ApplicationJsonOdataStreamingTrue | getDeviceCountResponse200ApplicationJsonOdataStreamingFalse | getDeviceCountResponse200ApplicationJson | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationJsonIEEE754CompatibleFalse | getDeviceCountResponse200ApplicationJsonIEEE754CompatibleTrue | getDeviceCountResponse200ApplicationXml | getDeviceCountResponse200TextPlain | getDeviceCountResponse200ApplicationOctetStream | getDeviceCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDeviceCountResponseError = (getDeviceCountResponse400 | getDeviceCountResponse406) & {
-  headers: Headers;
-};
-
-export type getDeviceCountResponse = (getDeviceCountResponseSuccess | getDeviceCountResponseError)
-
-export const getGetDeviceCountUrl = (params?: GetDeviceCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Device[] | Blob>(
+      {url: `/api/v1/Device/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/$count?${stringifiedParams}` : `/api/v1/Device/$count`
-}
-
-export const getDeviceCount = async (params?: GetDeviceCountParams, options?: RequestInit): Promise<getDeviceCountResponse> => {
-
-  return configRequest<getDeviceCountResponse>(getGetDeviceCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1308,7 +353,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceCount>>> = ({ signal }) => getDeviceCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceCount>>> = ({ signal }) => getDeviceCount(params, signal);
 
 
 
@@ -1339,253 +384,20 @@ export function useGetDeviceCount<TData = Awaited<ReturnType<typeof getDeviceCou
 
 
 
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Device
-  status: 200
-}
+export const getDeviceFromKey = (
+    key: number,
+    params?: GetDeviceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Device
-  status: 200
-}
 
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJson = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationXml = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200TextPlain = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDeviceFromKeyResponse200TextJson = {
-  data: Device
-  status: 200
-}
-
-export type getDeviceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDeviceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDeviceFromKeyResponseSuccess = (getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFull | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNone | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDeviceFromKeyResponse200ApplicationJson | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDeviceFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDeviceFromKeyResponse200ApplicationXml | getDeviceFromKeyResponse200TextPlain | getDeviceFromKeyResponse200ApplicationOctetStream | getDeviceFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDeviceFromKeyResponseError = (getDeviceFromKeyResponse404 | getDeviceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDeviceFromKeyResponse = (getDeviceFromKeyResponseSuccess | getDeviceFromKeyResponseError)
-
-export const getGetDeviceFromKeyUrl = (key: number,
-    params?: GetDeviceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Device | Blob>(
+      {url: `/api/v1/Device/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/${key}?${stringifiedParams}` : `/api/v1/Device/${key}`
-}
-
-export const getDeviceFromKey = async (key: number,
-    params?: GetDeviceFromKeyParams, options?: RequestInit): Promise<getDeviceFromKeyResponse> => {
-
-  return configRequest<getDeviceFromKeyResponse>(getGetDeviceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1608,7 +420,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceFromKey>>> = ({ signal }) => getDeviceFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeviceFromKey>>> = ({ signal }) => getDeviceFromKey(key,params, signal);
 
 
 
@@ -1640,64 +452,22 @@ export function useGetDeviceFromKey<TData = Awaited<ReturnType<typeof getDeviceF
 
 
 
-export type putDeviceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putDeviceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putDeviceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putDeviceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putDeviceFromKeyResponseSuccess = (putDeviceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putDeviceFromKeyResponseError = (putDeviceFromKeyResponse400 | putDeviceFromKeyResponse404 | putDeviceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putDeviceFromKeyResponse = (putDeviceFromKeyResponseSuccess | putDeviceFromKeyResponseError)
-
-export const getPutDeviceFromKeyUrl = (key: number,
-    params?: PutDeviceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/${key}?${stringifiedParams}` : `/api/v1/Device/${key}`
-}
-
-export const putDeviceFromKey = async (key: number,
+export const putDeviceFromKey = (
+    key: number,
     device?: Device,
-    params?: PutDeviceFromKeyParams, options?: RequestInit): Promise<putDeviceFromKeyResponse> => {
+    params?: PutDeviceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putDeviceFromKeyResponse>(getPutDeviceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(device)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Device/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: device,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1743,64 +513,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutDeviceFromKeyMutationOptions(options));
     }
-    export type patchDeviceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchDeviceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchDeviceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchDeviceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchDeviceFromKeyResponseSuccess = (patchDeviceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchDeviceFromKeyResponseError = (patchDeviceFromKeyResponse400 | patchDeviceFromKeyResponse404 | patchDeviceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchDeviceFromKeyResponse = (patchDeviceFromKeyResponseSuccess | patchDeviceFromKeyResponseError)
-
-export const getPatchDeviceFromKeyUrl = (key: number,
-    params?: PatchDeviceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Device/${key}?${stringifiedParams}` : `/api/v1/Device/${key}`
-}
-
-export const patchDeviceFromKey = async (key: number,
+    export const patchDeviceFromKey = (
+    key: number,
     device?: Device,
-    params?: PatchDeviceFromKeyParams, options?: RequestInit): Promise<patchDeviceFromKeyResponse> => {
+    params?: PatchDeviceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchDeviceFromKeyResponse>(getPatchDeviceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(device)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Device/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: device,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1846,54 +574,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchDeviceFromKeyMutationOptions(options));
     }
-    export type deleteDeviceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteDeviceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteDeviceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteDeviceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteDeviceFromKeyResponseSuccess = (deleteDeviceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteDeviceFromKeyResponseError = (deleteDeviceFromKeyResponse400 | deleteDeviceFromKeyResponse404 | deleteDeviceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteDeviceFromKeyResponse = (deleteDeviceFromKeyResponseSuccess | deleteDeviceFromKeyResponseError)
-
-export const getDeleteDeviceFromKeyUrl = (key: number,) => {
+    export const deleteDeviceFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Device/${key}`
-}
-
-export const deleteDeviceFromKey = async (key: number, options?: RequestInit): Promise<deleteDeviceFromKeyResponse> => {
-
-  return configRequest<deleteDeviceFromKeyResponse>(getDeleteDeviceFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Device/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
+export const getUsageEntry = (
+    params?: GetUsageEntryParams,
+ signal?: AbortSignal
+) => {
 
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
 
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFull = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNone = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJson = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationXml = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200TextPlain = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getUsageEntryResponse200TextJson = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getUsageEntryResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getUsageEntryResponseSuccess = (getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimal | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataFull | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataNone | getUsageEntryResponse200ApplicationJsonOdataStreamingTrue | getUsageEntryResponse200ApplicationJsonOdataStreamingFalse | getUsageEntryResponse200ApplicationJson | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationJsonIEEE754CompatibleFalse | getUsageEntryResponse200ApplicationJsonIEEE754CompatibleTrue | getUsageEntryResponse200ApplicationXml | getUsageEntryResponse200TextPlain | getUsageEntryResponse200ApplicationOctetStream | getUsageEntryResponse200TextJson) & {
-  headers: Headers;
-};
-export type getUsageEntryResponseError = (getUsageEntryResponse400 | getUsageEntryResponse406) & {
-  headers: Headers;
-};
-
-export type getUsageEntryResponse = (getUsageEntryResponseSuccess | getUsageEntryResponseError)
-
-export const getGetUsageEntryUrl = (params?: GetUsageEntryParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<UsageEntry[] | Blob>(
+      {url: `/api/v1/UsageEntry`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry?${stringifiedParams}` : `/api/v1/UsageEntry`
-}
-
-export const getUsageEntry = async (params?: GetUsageEntryParams, options?: RequestInit): Promise<getUsageEntryResponse> => {
-
-  return configRequest<getUsageEntryResponse>(getGetUsageEntryUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntry>>> = ({ signal }) => getUsageEntry(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntry>>> = ({ signal }) => getUsageEntry(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetUsageEntry<TData = Awaited<ReturnType<typeof getUsageEntry
 
 
 
-export type postUsageEntryResponse201 = {
-  data: void
-  status: 201
-}
+export const postUsageEntry = (
+    usageEntry?: UsageEntry,
+    params?: PostUsageEntryParams,
+ signal?: AbortSignal
+) => {
 
-export type postUsageEntryResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postUsageEntryResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postUsageEntryResponseSuccess = (postUsageEntryResponse201) & {
-  headers: Headers;
-};
-export type postUsageEntryResponseError = (postUsageEntryResponse400 | postUsageEntryResponse406) & {
-  headers: Headers;
-};
-
-export type postUsageEntryResponse = (postUsageEntryResponseSuccess | postUsageEntryResponseError)
-
-export const getPostUsageEntryUrl = (params?: PostUsageEntryParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/UsageEntry`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: usageEntry,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry?${stringifiedParams}` : `/api/v1/UsageEntry`
-}
-
-export const postUsageEntry = async (usageEntry?: UsageEntry,
-    params?: PostUsageEntryParams, options?: RequestInit): Promise<postUsageEntryResponse> => {
-
-  return configRequest<postUsageEntryResponse>(getPostUsageEntryUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(usageEntry)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostUsageEntryMutationOptions(options));
     }
-    export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
+    export const getUsageEntryCount = (
+    params?: GetUsageEntryCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
 
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJson = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationXml = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200TextPlain = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getUsageEntryCountResponse200TextJson = {
-  data: UsageEntry[]
-  status: 200
-}
-
-export type getUsageEntryCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getUsageEntryCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getUsageEntryCountResponseSuccess = (getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimal | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFull | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNone | getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrue | getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalse | getUsageEntryCountResponse200ApplicationJson | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationJsonIEEE754CompatibleFalse | getUsageEntryCountResponse200ApplicationJsonIEEE754CompatibleTrue | getUsageEntryCountResponse200ApplicationXml | getUsageEntryCountResponse200TextPlain | getUsageEntryCountResponse200ApplicationOctetStream | getUsageEntryCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getUsageEntryCountResponseError = (getUsageEntryCountResponse400 | getUsageEntryCountResponse406) & {
-  headers: Headers;
-};
-
-export type getUsageEntryCountResponse = (getUsageEntryCountResponseSuccess | getUsageEntryCountResponseError)
-
-export const getGetUsageEntryCountUrl = (params?: GetUsageEntryCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<UsageEntry[] | Blob>(
+      {url: `/api/v1/UsageEntry/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry/$count?${stringifiedParams}` : `/api/v1/UsageEntry/$count`
-}
-
-export const getUsageEntryCount = async (params?: GetUsageEntryCountParams, options?: RequestInit): Promise<getUsageEntryCountResponse> => {
-
-  return configRequest<getUsageEntryCountResponse>(getGetUsageEntryCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntryCount>>> = ({ signal }) => getUsageEntryCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntryCount>>> = ({ signal }) => getUsageEntryCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetUsageEntryCount<TData = Awaited<ReturnType<typeof getUsage
 
 
 
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: UsageEntry
-  status: 200
-}
+export const getUsageEntryFromKey = (
+    key: number,
+    params?: GetUsageEntryFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: UsageEntry
-  status: 200
-}
 
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJson = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationXml = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200TextPlain = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse200TextJson = {
-  data: UsageEntry
-  status: 200
-}
-
-export type getUsageEntryFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getUsageEntryFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getUsageEntryFromKeyResponseSuccess = (getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFull | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNone | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalse | getUsageEntryFromKeyResponse200ApplicationJson | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getUsageEntryFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getUsageEntryFromKeyResponse200ApplicationXml | getUsageEntryFromKeyResponse200TextPlain | getUsageEntryFromKeyResponse200ApplicationOctetStream | getUsageEntryFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getUsageEntryFromKeyResponseError = (getUsageEntryFromKeyResponse404 | getUsageEntryFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getUsageEntryFromKeyResponse = (getUsageEntryFromKeyResponseSuccess | getUsageEntryFromKeyResponseError)
-
-export const getGetUsageEntryFromKeyUrl = (key: number,
-    params?: GetUsageEntryFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<UsageEntry | Blob>(
+      {url: `/api/v1/UsageEntry/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry/${key}?${stringifiedParams}` : `/api/v1/UsageEntry/${key}`
-}
-
-export const getUsageEntryFromKey = async (key: number,
-    params?: GetUsageEntryFromKeyParams, options?: RequestInit): Promise<getUsageEntryFromKeyResponse> => {
-
-  return configRequest<getUsageEntryFromKeyResponse>(getGetUsageEntryFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntryFromKey>>> = ({ signal }) => getUsageEntryFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsageEntryFromKey>>> = ({ signal }) => getUsageEntryFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetUsageEntryFromKey<TData = Awaited<ReturnType<typeof getUsa
 
 
 
-export type putUsageEntryFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putUsageEntryFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putUsageEntryFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putUsageEntryFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putUsageEntryFromKeyResponseSuccess = (putUsageEntryFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putUsageEntryFromKeyResponseError = (putUsageEntryFromKeyResponse400 | putUsageEntryFromKeyResponse404 | putUsageEntryFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putUsageEntryFromKeyResponse = (putUsageEntryFromKeyResponseSuccess | putUsageEntryFromKeyResponseError)
-
-export const getPutUsageEntryFromKeyUrl = (key: number,
-    params?: PutUsageEntryFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry/${key}?${stringifiedParams}` : `/api/v1/UsageEntry/${key}`
-}
-
-export const putUsageEntryFromKey = async (key: number,
+export const putUsageEntryFromKey = (
+    key: number,
     usageEntry?: UsageEntry,
-    params?: PutUsageEntryFromKeyParams, options?: RequestInit): Promise<putUsageEntryFromKeyResponse> => {
+    params?: PutUsageEntryFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putUsageEntryFromKeyResponse>(getPutUsageEntryFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(usageEntry)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/UsageEntry/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: usageEntry,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutUsageEntryFromKeyMutationOptions(options));
     }
-    export type patchUsageEntryFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchUsageEntryFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchUsageEntryFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchUsageEntryFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchUsageEntryFromKeyResponseSuccess = (patchUsageEntryFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchUsageEntryFromKeyResponseError = (patchUsageEntryFromKeyResponse400 | patchUsageEntryFromKeyResponse404 | patchUsageEntryFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchUsageEntryFromKeyResponse = (patchUsageEntryFromKeyResponseSuccess | patchUsageEntryFromKeyResponseError)
-
-export const getPatchUsageEntryFromKeyUrl = (key: number,
-    params?: PatchUsageEntryFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UsageEntry/${key}?${stringifiedParams}` : `/api/v1/UsageEntry/${key}`
-}
-
-export const patchUsageEntryFromKey = async (key: number,
+    export const patchUsageEntryFromKey = (
+    key: number,
     usageEntry?: UsageEntry,
-    params?: PatchUsageEntryFromKeyParams, options?: RequestInit): Promise<patchUsageEntryFromKeyResponse> => {
+    params?: PatchUsageEntryFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchUsageEntryFromKeyResponse>(getPatchUsageEntryFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(usageEntry)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/UsageEntry/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: usageEntry,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchUsageEntryFromKeyMutationOptions(options));
     }
-    export type deleteUsageEntryFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteUsageEntryFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteUsageEntryFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteUsageEntryFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteUsageEntryFromKeyResponseSuccess = (deleteUsageEntryFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteUsageEntryFromKeyResponseError = (deleteUsageEntryFromKeyResponse400 | deleteUsageEntryFromKeyResponse404 | deleteUsageEntryFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteUsageEntryFromKeyResponse = (deleteUsageEntryFromKeyResponseSuccess | deleteUsageEntryFromKeyResponseError)
-
-export const getDeleteUsageEntryFromKeyUrl = (key: number,) => {
+    export const deleteUsageEntryFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/UsageEntry/${key}`
-}
-
-export const deleteUsageEntryFromKey = async (key: number, options?: RequestInit): Promise<deleteUsageEntryFromKeyResponse> => {
-
-  return configRequest<deleteUsageEntryFromKeyResponse>(getDeleteUsageEntryFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/UsageEntry/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

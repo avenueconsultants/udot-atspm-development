@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
+export const getFaq = (
+    params?: GetFaqParams,
+ signal?: AbortSignal
+) => {
 
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
 
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFull = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNone = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJson = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationXml = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200TextPlain = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getFaqResponse200TextJson = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getFaqResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getFaqResponseSuccess = (getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getFaqResponse200ApplicationJsonOdataMetadataMinimal | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getFaqResponse200ApplicationJsonOdataMetadataFull | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getFaqResponse200ApplicationJsonOdataMetadataNone | getFaqResponse200ApplicationJsonOdataStreamingTrue | getFaqResponse200ApplicationJsonOdataStreamingFalse | getFaqResponse200ApplicationJson | getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getFaqResponse200ApplicationJsonIEEE754CompatibleFalse | getFaqResponse200ApplicationJsonIEEE754CompatibleTrue | getFaqResponse200ApplicationXml | getFaqResponse200TextPlain | getFaqResponse200ApplicationOctetStream | getFaqResponse200TextJson) & {
-  headers: Headers;
-};
-export type getFaqResponseError = (getFaqResponse400 | getFaqResponse406) & {
-  headers: Headers;
-};
-
-export type getFaqResponse = (getFaqResponseSuccess | getFaqResponseError)
-
-export const getGetFaqUrl = (params?: GetFaqParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Faq[] | Blob>(
+      {url: `/api/v1/Faq`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq?${stringifiedParams}` : `/api/v1/Faq`
-}
-
-export const getFaq = async (params?: GetFaqParams, options?: RequestInit): Promise<getFaqResponse> => {
-
-  return configRequest<getFaqResponse>(getGetFaqUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaq>>> = ({ signal }) => getFaq(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaq>>> = ({ signal }) => getFaq(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetFaq<TData = Awaited<ReturnType<typeof getFaq>>, TError = v
 
 
 
-export type postFaqResponse201 = {
-  data: void
-  status: 201
-}
+export const postFaq = (
+    faq?: Faq,
+    params?: PostFaqParams,
+ signal?: AbortSignal
+) => {
 
-export type postFaqResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postFaqResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postFaqResponseSuccess = (postFaqResponse201) & {
-  headers: Headers;
-};
-export type postFaqResponseError = (postFaqResponse400 | postFaqResponse406) & {
-  headers: Headers;
-};
-
-export type postFaqResponse = (postFaqResponseSuccess | postFaqResponseError)
-
-export const getPostFaqUrl = (params?: PostFaqParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Faq`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: faq,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq?${stringifiedParams}` : `/api/v1/Faq`
-}
-
-export const postFaq = async (faq?: Faq,
-    params?: PostFaqParams, options?: RequestInit): Promise<postFaqResponse> => {
-
-  return configRequest<postFaqResponse>(getPostFaqUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(faq)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostFaqMutationOptions(options));
     }
-    export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
+    export const getFaqCount = (
+    params?: GetFaqCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
 
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJson = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationXml = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200TextPlain = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getFaqCountResponse200TextJson = {
-  data: Faq[]
-  status: 200
-}
-
-export type getFaqCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getFaqCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getFaqCountResponseSuccess = (getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getFaqCountResponse200ApplicationJsonOdataMetadataMinimal | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getFaqCountResponse200ApplicationJsonOdataMetadataFull | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getFaqCountResponse200ApplicationJsonOdataMetadataNone | getFaqCountResponse200ApplicationJsonOdataStreamingTrue | getFaqCountResponse200ApplicationJsonOdataStreamingFalse | getFaqCountResponse200ApplicationJson | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getFaqCountResponse200ApplicationJsonIEEE754CompatibleFalse | getFaqCountResponse200ApplicationJsonIEEE754CompatibleTrue | getFaqCountResponse200ApplicationXml | getFaqCountResponse200TextPlain | getFaqCountResponse200ApplicationOctetStream | getFaqCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getFaqCountResponseError = (getFaqCountResponse400 | getFaqCountResponse406) & {
-  headers: Headers;
-};
-
-export type getFaqCountResponse = (getFaqCountResponseSuccess | getFaqCountResponseError)
-
-export const getGetFaqCountUrl = (params?: GetFaqCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Faq[] | Blob>(
+      {url: `/api/v1/Faq/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq/$count?${stringifiedParams}` : `/api/v1/Faq/$count`
-}
-
-export const getFaqCount = async (params?: GetFaqCountParams, options?: RequestInit): Promise<getFaqCountResponse> => {
-
-  return configRequest<getFaqCountResponse>(getGetFaqCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaqCount>>> = ({ signal }) => getFaqCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaqCount>>> = ({ signal }) => getFaqCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetFaqCount<TData = Awaited<ReturnType<typeof getFaqCount>>, 
 
 
 
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Faq
-  status: 200
-}
+export const getFaqFromKey = (
+    key: number,
+    params?: GetFaqFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Faq
-  status: 200
-}
 
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJson = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationXml = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200TextPlain = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getFaqFromKeyResponse200TextJson = {
-  data: Faq
-  status: 200
-}
-
-export type getFaqFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getFaqFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getFaqFromKeyResponseSuccess = (getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFull | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNone | getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrue | getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalse | getFaqFromKeyResponse200ApplicationJson | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getFaqFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getFaqFromKeyResponse200ApplicationXml | getFaqFromKeyResponse200TextPlain | getFaqFromKeyResponse200ApplicationOctetStream | getFaqFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getFaqFromKeyResponseError = (getFaqFromKeyResponse404 | getFaqFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getFaqFromKeyResponse = (getFaqFromKeyResponseSuccess | getFaqFromKeyResponseError)
-
-export const getGetFaqFromKeyUrl = (key: number,
-    params?: GetFaqFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Faq | Blob>(
+      {url: `/api/v1/Faq/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq/${key}?${stringifiedParams}` : `/api/v1/Faq/${key}`
-}
-
-export const getFaqFromKey = async (key: number,
-    params?: GetFaqFromKeyParams, options?: RequestInit): Promise<getFaqFromKeyResponse> => {
-
-  return configRequest<getFaqFromKeyResponse>(getGetFaqFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaqFromKey>>> = ({ signal }) => getFaqFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFaqFromKey>>> = ({ signal }) => getFaqFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetFaqFromKey<TData = Awaited<ReturnType<typeof getFaqFromKey
 
 
 
-export type putFaqFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putFaqFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putFaqFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putFaqFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putFaqFromKeyResponseSuccess = (putFaqFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putFaqFromKeyResponseError = (putFaqFromKeyResponse400 | putFaqFromKeyResponse404 | putFaqFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putFaqFromKeyResponse = (putFaqFromKeyResponseSuccess | putFaqFromKeyResponseError)
-
-export const getPutFaqFromKeyUrl = (key: number,
-    params?: PutFaqFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq/${key}?${stringifiedParams}` : `/api/v1/Faq/${key}`
-}
-
-export const putFaqFromKey = async (key: number,
+export const putFaqFromKey = (
+    key: number,
     faq?: Faq,
-    params?: PutFaqFromKeyParams, options?: RequestInit): Promise<putFaqFromKeyResponse> => {
+    params?: PutFaqFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putFaqFromKeyResponse>(getPutFaqFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(faq)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Faq/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: faq,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutFaqFromKeyMutationOptions(options));
     }
-    export type patchFaqFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchFaqFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchFaqFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchFaqFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchFaqFromKeyResponseSuccess = (patchFaqFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchFaqFromKeyResponseError = (patchFaqFromKeyResponse400 | patchFaqFromKeyResponse404 | patchFaqFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchFaqFromKeyResponse = (patchFaqFromKeyResponseSuccess | patchFaqFromKeyResponseError)
-
-export const getPatchFaqFromKeyUrl = (key: number,
-    params?: PatchFaqFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Faq/${key}?${stringifiedParams}` : `/api/v1/Faq/${key}`
-}
-
-export const patchFaqFromKey = async (key: number,
+    export const patchFaqFromKey = (
+    key: number,
     faq?: Faq,
-    params?: PatchFaqFromKeyParams, options?: RequestInit): Promise<patchFaqFromKeyResponse> => {
+    params?: PatchFaqFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchFaqFromKeyResponse>(getPatchFaqFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(faq)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Faq/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: faq,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchFaqFromKeyMutationOptions(options));
     }
-    export type deleteFaqFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteFaqFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteFaqFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteFaqFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteFaqFromKeyResponseSuccess = (deleteFaqFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteFaqFromKeyResponseError = (deleteFaqFromKeyResponse400 | deleteFaqFromKeyResponse404 | deleteFaqFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteFaqFromKeyResponse = (deleteFaqFromKeyResponseSuccess | deleteFaqFromKeyResponseError)
-
-export const getDeleteFaqFromKeyUrl = (key: number,) => {
+    export const deleteFaqFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Faq/${key}`
-}
-
-export const deleteFaqFromKey = async (key: number, options?: RequestInit): Promise<deleteFaqFromKeyResponse> => {
-
-  return configRequest<deleteFaqFromKeyResponse>(getDeleteFaqFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Faq/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

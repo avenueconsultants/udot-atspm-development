@@ -28,11 +28,6 @@ import type {
 
 import { dataRequest } from '../../../lib/axios';
 
-interface TypedResponse<T> extends Response {
-  json(): Promise<T>;
-}
-
-
 
 
 
@@ -51,62 +46,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getAggregationDataTypesResponse200 = {
-  data: DataTypeMeta[]
-  status: 200
-}
-
-export type getAggregationDataTypesResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getAggregationDataTypesResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getAggregationDataTypesResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getAggregationDataTypesResponse500 = {
-  data: ProblemDetails
-  status: 500
-}
-
-export type getAggregationDataTypesResponseSuccess = (getAggregationDataTypesResponse200) & {
-  headers: Headers;
-};
-export type getAggregationDataTypesResponseError = (getAggregationDataTypesResponse401 | getAggregationDataTypesResponse403 | getAggregationDataTypesResponse406 | getAggregationDataTypesResponse500) & {
-  headers: Headers;
-};
-
-export type getAggregationDataTypesResponse = (getAggregationDataTypesResponseSuccess | getAggregationDataTypesResponseError)
-
-export const getGetAggregationDataTypesUrl = () => {
-
-
-
-
-  return `/api/v1/Aggregation/GetDataTypes`
-}
-
 /**
  * @summary Retrieves the available derived data types defined in the system.
  */
-export const getAggregationDataTypes = async ( options?: RequestInit): Promise<getAggregationDataTypesResponse> => {
+export const getAggregationDataTypes = (
 
-  return dataRequest<getAggregationDataTypesResponse>(getGetAggregationDataTypesUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<DataTypeMeta[]>(
+      {url: `/api/v1/Aggregation/GetDataTypes`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -127,7 +80,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataTypes>>> = ({ signal }) => getAggregationDataTypes({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataTypes>>> = ({ signal }) => getAggregationDataTypes(signal);
 
 
 
@@ -161,61 +114,6 @@ export function useGetAggregationDataTypes<TData = Awaited<ReturnType<typeof get
 
 
 
-export type getAggregationStreamDataFromLocationIdentifierResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getAggregationStreamDataFromLocationIdentifierResponseSuccess = (getAggregationStreamDataFromLocationIdentifierResponse200) & {
-  headers: Headers;
-};
-export type getAggregationStreamDataFromLocationIdentifierResponseError = (getAggregationStreamDataFromLocationIdentifierResponse400 | getAggregationStreamDataFromLocationIdentifierResponse401 | getAggregationStreamDataFromLocationIdentifierResponse403 | getAggregationStreamDataFromLocationIdentifierResponse404 | getAggregationStreamDataFromLocationIdentifierResponse406) & {
-  headers: Headers;
-};
-
-export type getAggregationStreamDataFromLocationIdentifierResponse = (getAggregationStreamDataFromLocationIdentifierResponseSuccess | getAggregationStreamDataFromLocationIdentifierResponseError)
-
-export const getGetAggregationStreamDataFromLocationIdentifierUrl = (locationIdentifier: string,
-    params?: GetAggregationStreamDataFromLocationIdentifierParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Aggregation/StreamData/${locationIdentifier}?${stringifiedParams}` : `/api/v1/Aggregation/StreamData/${locationIdentifier}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -237,18 +135,19 @@ export const getGetAggregationStreamDataFromLocationIdentifierUrl = (locationIde
  * - Cancellation immediately stops enumeration and closes the response.
  * @summary Streams archived data records for a specific location within a given date range.
  */
-export const getAggregationStreamDataFromLocationIdentifier = async (locationIdentifier: string,
-    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: RequestInit): Promise<getAggregationStreamDataFromLocationIdentifierResponse> => {
+export const getAggregationStreamDataFromLocationIdentifier = (
+    locationIdentifier: string,
+    params?: GetAggregationStreamDataFromLocationIdentifierParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getAggregationStreamDataFromLocationIdentifierResponse>(getGetAggregationStreamDataFromLocationIdentifierUrl(locationIdentifier,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/Aggregation/StreamData/${locationIdentifier}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -271,7 +170,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>> = ({ signal }) => getAggregationStreamDataFromLocationIdentifier(locationIdentifier,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>> = ({ signal }) => getAggregationStreamDataFromLocationIdentifier(locationIdentifier,params, signal);
 
 
 
@@ -306,91 +205,6 @@ export function useGetAggregationStreamDataFromLocationIdentifier<TData = Awaite
 
 
 
-export type getAggregationDataFromLocationIdentifierResponse200ApplicationJson = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getAggregationDataFromLocationIdentifierResponse200TextCsv = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getAggregationDataFromLocationIdentifierResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getAggregationDataFromLocationIdentifierResponse400TextCsv = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getAggregationDataFromLocationIdentifierResponse401ApplicationJson = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getAggregationDataFromLocationIdentifierResponse401TextCsv = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getAggregationDataFromLocationIdentifierResponse403ApplicationJson = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getAggregationDataFromLocationIdentifierResponse403TextCsv = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getAggregationDataFromLocationIdentifierResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getAggregationDataFromLocationIdentifierResponse404TextCsv = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getAggregationDataFromLocationIdentifierResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getAggregationDataFromLocationIdentifierResponse406TextCsv = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getAggregationDataFromLocationIdentifierResponseSuccess = (getAggregationDataFromLocationIdentifierResponse200ApplicationJson | getAggregationDataFromLocationIdentifierResponse200TextCsv) & {
-  headers: Headers;
-};
-export type getAggregationDataFromLocationIdentifierResponseError = (getAggregationDataFromLocationIdentifierResponse400ApplicationJson | getAggregationDataFromLocationIdentifierResponse400TextCsv | getAggregationDataFromLocationIdentifierResponse401ApplicationJson | getAggregationDataFromLocationIdentifierResponse401TextCsv | getAggregationDataFromLocationIdentifierResponse403ApplicationJson | getAggregationDataFromLocationIdentifierResponse403TextCsv | getAggregationDataFromLocationIdentifierResponse404ApplicationJson | getAggregationDataFromLocationIdentifierResponse404TextCsv | getAggregationDataFromLocationIdentifierResponse406ApplicationJson | getAggregationDataFromLocationIdentifierResponse406TextCsv) & {
-  headers: Headers;
-};
-
-export type getAggregationDataFromLocationIdentifierResponse = (getAggregationDataFromLocationIdentifierResponseSuccess | getAggregationDataFromLocationIdentifierResponseError)
-
-export const getGetAggregationDataFromLocationIdentifierUrl = (locationIdentifier: string,
-    params?: GetAggregationDataFromLocationIdentifierParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Aggregation/GetData/${locationIdentifier}?${stringifiedParams}` : `/api/v1/Aggregation/GetData/${locationIdentifier}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
@@ -408,18 +222,19 @@ export const getGetAggregationDataFromLocationIdentifierUrl = (locationIdentifie
  * ```
  * @summary Retrieves archived data records for a specific location within a given date range.
  */
-export const getAggregationDataFromLocationIdentifier = async (locationIdentifier: string,
-    params?: GetAggregationDataFromLocationIdentifierParams, options?: RequestInit): Promise<getAggregationDataFromLocationIdentifierResponse> => {
-
-  return dataRequest<getAggregationDataFromLocationIdentifierResponse>(getGetAggregationDataFromLocationIdentifierUrl(locationIdentifier,params),
-  {
-    ...options,
-    method: 'GET'
+export const getAggregationDataFromLocationIdentifier = (
+    locationIdentifier: string,
+    params?: GetAggregationDataFromLocationIdentifierParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase[]>(
+      {url: `/api/v1/Aggregation/GetData/${locationIdentifier}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -442,7 +257,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>> = ({ signal }) => getAggregationDataFromLocationIdentifier(locationIdentifier,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>> = ({ signal }) => getAggregationDataFromLocationIdentifier(locationIdentifier,params, signal);
 
 
 
@@ -477,62 +292,6 @@ export function useGetAggregationDataFromLocationIdentifier<TData = Awaited<Retu
 
 
 
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse200 = {
-  stream: TypedResponse<CompressedDataBase>
-  status: 200
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse400 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 400
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse401 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 401
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse403 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 403
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse404 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 404
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse406 = {
-  stream: TypedResponse<ProblemDetails>
-  status: 406
-}
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponseSuccess = (getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponseError = (getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse400 | getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse401 | getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse403 | getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse404 | getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse = (getAggregationStreamDataFromLocationIdentifierAndDataTypeResponseSuccess | getAggregationStreamDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetAggregationStreamDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Aggregation/StreamData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/Aggregation/StreamData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/x-ndjson`
@@ -549,19 +308,20 @@ export const getGetAggregationStreamDataFromLocationIdentifierAndDataTypeUrl = (
  * ```
  * @summary Streams archived data records for a specific location and data type within a given date range.
  */
-export const getAggregationStreamDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getAggregationStreamDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse> => {
+    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
-  return dataRequest<getAggregationStreamDataFromLocationIdentifierAndDataTypeResponse>(getGetAggregationStreamDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET',
-    headers: { Accept: 'application/x-ndjson', ...options?.headers }
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase>(
+      {url: `/api/v1/Aggregation/StreamData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -586,7 +346,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationStreamDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationStreamDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 
@@ -622,62 +382,6 @@ export function useGetAggregationStreamDataFromLocationIdentifierAndDataType<TDa
 
 
 
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse200 = {
-  data: CompressedDataBase[]
-  status: 200
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponseSuccess = (getAggregationDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponseError = (getAggregationDataFromLocationIdentifierAndDataTypeResponse400 | getAggregationDataFromLocationIdentifierAndDataTypeResponse401 | getAggregationDataFromLocationIdentifierAndDataTypeResponse403 | getAggregationDataFromLocationIdentifierAndDataTypeResponse404 | getAggregationDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getAggregationDataFromLocationIdentifierAndDataTypeResponse = (getAggregationDataFromLocationIdentifierAndDataTypeResponseSuccess | getAggregationDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetAggregationDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Aggregation/GetData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/Aggregation/GetData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * ### Response Format
  * - Content type: `application/json`
@@ -695,19 +399,20 @@ export const getGetAggregationDataFromLocationIdentifierAndDataTypeUrl = (locati
  * ```
  * @summary Retrieves archived data records for a specific location and data type within a given date range.
  */
-export const getAggregationDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getAggregationDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getAggregationDataFromLocationIdentifierAndDataTypeResponse> => {
-
-  return dataRequest<getAggregationDataFromLocationIdentifierAndDataTypeResponse>(getGetAggregationDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<CompressedDataBase[]>(
+      {url: `/api/v1/Aggregation/GetData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -732,7 +437,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 
@@ -768,62 +473,6 @@ export function useGetAggregationDataFromLocationIdentifierAndDataType<TData = A
 
 
 
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse200 = {
-  data: string[]
-  status: 200
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse401 = {
-  data: ProblemDetails
-  status: 401
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse403 = {
-  data: ProblemDetails
-  status: 403
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse404 = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponseSuccess = (getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse200) & {
-  headers: Headers;
-};
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponseError = (getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse400 | getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse401 | getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse403 | getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse404 | getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse = (getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponseSuccess | getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponseError)
-
-export const getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeUrl = (locationIdentifier: string,
-    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Aggregation/GetDaysWithData/${locationIdentifier}/${dataType}?${stringifiedParams}` : `/api/v1/Aggregation/GetDaysWithData/${locationIdentifier}/${dataType}`
-}
-
 /**
  * This endpoint allows anonymous access and returns a JSON array of System.DateOnly values.
  * Each value represents a day for which data exists. The request must specify a valid
@@ -832,19 +481,20 @@ export const getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeUrl =
  * @summary Retrieves the distinct days that contain data for a specific location and data type
 within the given date range.
  */
-export const getAggregationDaysWithDataFromLocationIdentifierAndDataType = async (locationIdentifier: string,
+export const getAggregationDaysWithDataFromLocationIdentifierAndDataType = (
+    locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: RequestInit): Promise<getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse> => {
-
-  return dataRequest<getAggregationDaysWithDataFromLocationIdentifierAndDataTypeResponse>(getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeUrl(locationIdentifier,dataType,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return dataRequest<string[]>(
+      {url: `/api/v1/Aggregation/GetDaysWithData/${locationIdentifier}/${dataType}`, method: 'GET',
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -869,7 +519,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationDaysWithDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>> = ({ signal }) => getAggregationDaysWithDataFromLocationIdentifierAndDataType(locationIdentifier,dataType,params, signal);
 
 
 

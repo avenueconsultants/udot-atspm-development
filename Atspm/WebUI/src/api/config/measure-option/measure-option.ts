@@ -49,251 +49,19 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
+export const getMeasureOption = (
+    params?: GetMeasureOptionParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
 
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJson = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationXml = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200TextPlain = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionResponse200TextJson = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureOptionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionResponseSuccess = (getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionResponse200ApplicationJson | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionResponse200ApplicationXml | getMeasureOptionResponse200TextPlain | getMeasureOptionResponse200ApplicationOctetStream | getMeasureOptionResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionResponseError = (getMeasureOptionResponse400 | getMeasureOptionResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionResponse = (getMeasureOptionResponseSuccess | getMeasureOptionResponseError)
-
-export const getGetMeasureOptionUrl = (params?: GetMeasureOptionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOption[] | Blob>(
+      {url: `/api/v1/MeasureOption`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption?${stringifiedParams}` : `/api/v1/MeasureOption`
-}
-
-export const getMeasureOption = async (params?: GetMeasureOptionParams, options?: RequestInit): Promise<getMeasureOptionResponse> => {
-
-  return configRequest<getMeasureOptionResponse>(getGetMeasureOptionUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -314,7 +82,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOption>>> = ({ signal }) => getMeasureOption(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOption>>> = ({ signal }) => getMeasureOption(params, signal);
 
 
 
@@ -345,57 +113,21 @@ export function useGetMeasureOption<TData = Awaited<ReturnType<typeof getMeasure
 
 
 
-export type postMeasureOptionResponse201 = {
-  data: void
-  status: 201
-}
+export const postMeasureOption = (
+    measureOption?: MeasureOption,
+    params?: PostMeasureOptionParams,
+ signal?: AbortSignal
+) => {
 
-export type postMeasureOptionResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postMeasureOptionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postMeasureOptionResponseSuccess = (postMeasureOptionResponse201) & {
-  headers: Headers;
-};
-export type postMeasureOptionResponseError = (postMeasureOptionResponse400 | postMeasureOptionResponse406) & {
-  headers: Headers;
-};
-
-export type postMeasureOptionResponse = (postMeasureOptionResponseSuccess | postMeasureOptionResponseError)
-
-export const getPostMeasureOptionUrl = (params?: PostMeasureOptionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOption`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOption,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption?${stringifiedParams}` : `/api/v1/MeasureOption`
-}
-
-export const postMeasureOption = async (measureOption?: MeasureOption,
-    params?: PostMeasureOptionParams, options?: RequestInit): Promise<postMeasureOptionResponse> => {
-
-  return configRequest<postMeasureOptionResponse>(getPostMeasureOptionUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOption)
-  }
-);}
-
 
 
 
@@ -441,251 +173,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostMeasureOptionMutationOptions(options));
     }
-    export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
+    export const getMeasureOptionCount = (
+    params?: GetMeasureOptionCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
 
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJson = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationXml = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200TextPlain = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionCountResponse200TextJson = {
-  data: MeasureOption[]
-  status: 200
-}
-
-export type getMeasureOptionCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureOptionCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionCountResponseSuccess = (getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionCountResponse200ApplicationJson | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionCountResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionCountResponse200ApplicationXml | getMeasureOptionCountResponse200TextPlain | getMeasureOptionCountResponse200ApplicationOctetStream | getMeasureOptionCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionCountResponseError = (getMeasureOptionCountResponse400 | getMeasureOptionCountResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionCountResponse = (getMeasureOptionCountResponseSuccess | getMeasureOptionCountResponseError)
-
-export const getGetMeasureOptionCountUrl = (params?: GetMeasureOptionCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOption[] | Blob>(
+      {url: `/api/v1/MeasureOption/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption/$count?${stringifiedParams}` : `/api/v1/MeasureOption/$count`
-}
-
-export const getMeasureOptionCount = async (params?: GetMeasureOptionCountParams, options?: RequestInit): Promise<getMeasureOptionCountResponse> => {
-
-  return configRequest<getMeasureOptionCountResponse>(getGetMeasureOptionCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -706,7 +206,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionCount>>> = ({ signal }) => getMeasureOptionCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionCount>>> = ({ signal }) => getMeasureOptionCount(params, signal);
 
 
 
@@ -737,253 +237,20 @@ export function useGetMeasureOptionCount<TData = Awaited<ReturnType<typeof getMe
 
 
 
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOption
-  status: 200
-}
+export const getMeasureOptionFromKey = (
+    key: number,
+    params?: GetMeasureOptionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOption
-  status: 200
-}
 
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJson = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationXml = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200TextPlain = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse200TextJson = {
-  data: MeasureOption
-  status: 200
-}
-
-export type getMeasureOptionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMeasureOptionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionFromKeyResponseSuccess = (getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionFromKeyResponse200ApplicationJson | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionFromKeyResponse200ApplicationXml | getMeasureOptionFromKeyResponse200TextPlain | getMeasureOptionFromKeyResponse200ApplicationOctetStream | getMeasureOptionFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionFromKeyResponseError = (getMeasureOptionFromKeyResponse404 | getMeasureOptionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionFromKeyResponse = (getMeasureOptionFromKeyResponseSuccess | getMeasureOptionFromKeyResponseError)
-
-export const getGetMeasureOptionFromKeyUrl = (key: number,
-    params?: GetMeasureOptionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOption | Blob>(
+      {url: `/api/v1/MeasureOption/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption/${key}?${stringifiedParams}` : `/api/v1/MeasureOption/${key}`
-}
-
-export const getMeasureOptionFromKey = async (key: number,
-    params?: GetMeasureOptionFromKeyParams, options?: RequestInit): Promise<getMeasureOptionFromKeyResponse> => {
-
-  return configRequest<getMeasureOptionFromKeyResponse>(getGetMeasureOptionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1006,7 +273,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionFromKey>>> = ({ signal }) => getMeasureOptionFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionFromKey>>> = ({ signal }) => getMeasureOptionFromKey(key,params, signal);
 
 
 
@@ -1038,64 +305,22 @@ export function useGetMeasureOptionFromKey<TData = Awaited<ReturnType<typeof get
 
 
 
-export type putMeasureOptionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putMeasureOptionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putMeasureOptionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putMeasureOptionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putMeasureOptionFromKeyResponseSuccess = (putMeasureOptionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putMeasureOptionFromKeyResponseError = (putMeasureOptionFromKeyResponse400 | putMeasureOptionFromKeyResponse404 | putMeasureOptionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putMeasureOptionFromKeyResponse = (putMeasureOptionFromKeyResponseSuccess | putMeasureOptionFromKeyResponseError)
-
-export const getPutMeasureOptionFromKeyUrl = (key: number,
-    params?: PutMeasureOptionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption/${key}?${stringifiedParams}` : `/api/v1/MeasureOption/${key}`
-}
-
-export const putMeasureOptionFromKey = async (key: number,
+export const putMeasureOptionFromKey = (
+    key: number,
     measureOption?: MeasureOption,
-    params?: PutMeasureOptionFromKeyParams, options?: RequestInit): Promise<putMeasureOptionFromKeyResponse> => {
+    params?: PutMeasureOptionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putMeasureOptionFromKeyResponse>(getPutMeasureOptionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOption)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOption/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOption,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1141,64 +366,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutMeasureOptionFromKeyMutationOptions(options));
     }
-    export type patchMeasureOptionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchMeasureOptionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchMeasureOptionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchMeasureOptionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchMeasureOptionFromKeyResponseSuccess = (patchMeasureOptionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchMeasureOptionFromKeyResponseError = (patchMeasureOptionFromKeyResponse400 | patchMeasureOptionFromKeyResponse404 | patchMeasureOptionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchMeasureOptionFromKeyResponse = (patchMeasureOptionFromKeyResponseSuccess | patchMeasureOptionFromKeyResponseError)
-
-export const getPatchMeasureOptionFromKeyUrl = (key: number,
-    params?: PatchMeasureOptionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOption/${key}?${stringifiedParams}` : `/api/v1/MeasureOption/${key}`
-}
-
-export const patchMeasureOptionFromKey = async (key: number,
+    export const patchMeasureOptionFromKey = (
+    key: number,
     measureOption?: MeasureOption,
-    params?: PatchMeasureOptionFromKeyParams, options?: RequestInit): Promise<patchMeasureOptionFromKeyResponse> => {
+    params?: PatchMeasureOptionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchMeasureOptionFromKeyResponse>(getPatchMeasureOptionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOption)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOption/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOption,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1244,54 +427,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchMeasureOptionFromKeyMutationOptions(options));
     }
-    export type deleteMeasureOptionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteMeasureOptionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteMeasureOptionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteMeasureOptionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteMeasureOptionFromKeyResponseSuccess = (deleteMeasureOptionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteMeasureOptionFromKeyResponseError = (deleteMeasureOptionFromKeyResponse400 | deleteMeasureOptionFromKeyResponse404 | deleteMeasureOptionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteMeasureOptionFromKeyResponse = (deleteMeasureOptionFromKeyResponseSuccess | deleteMeasureOptionFromKeyResponseError)
-
-export const getDeleteMeasureOptionFromKeyUrl = (key: number,) => {
+    export const deleteMeasureOptionFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/MeasureOption/${key}`
-}
-
-export const deleteMeasureOptionFromKey = async (key: number, options?: RequestInit): Promise<deleteMeasureOptionFromKeyResponse> => {
-
-  return configRequest<deleteMeasureOptionFromKeyResponse>(getDeleteMeasureOptionFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOption/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

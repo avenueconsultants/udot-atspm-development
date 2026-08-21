@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getSplitFailTestDataResponse200 = {
-  data: SplitFailsResult[]
-  status: 200
-}
-
-export type getSplitFailTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getSplitFailTestDataResponseSuccess = (getSplitFailTestDataResponse200) & {
-  headers: Headers;
-};
-export type getSplitFailTestDataResponseError = (getSplitFailTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getSplitFailTestDataResponse = (getSplitFailTestDataResponseSuccess | getSplitFailTestDataResponseError)
-
-export const getGetSplitFailTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/SplitFail/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getSplitFailTestData = async ( options?: RequestInit): Promise<getSplitFailTestDataResponse> => {
+export const getSplitFailTestData = (
 
-  return reportsRequest<getSplitFailTestDataResponse>(getGetSplitFailTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<SplitFailsResult[]>(
+      {url: `/api/v1/SplitFail/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSplitFailTestData>>> = ({ signal }) => getSplitFailTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSplitFailTestData>>> = ({ signal }) => getSplitFailTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetSplitFailTestData<TData = Awaited<ReturnType<typeof getSpl
 
 
 
-export type getSplitFailReportDataResponse200 = {
-  data: SplitFailsResult[]
-  status: 200
-}
-
-export type getSplitFailReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getSplitFailReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getSplitFailReportDataResponseSuccess = (getSplitFailReportDataResponse200) & {
-  headers: Headers;
-};
-export type getSplitFailReportDataResponseError = (getSplitFailReportDataResponse400 | getSplitFailReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getSplitFailReportDataResponse = (getSplitFailReportDataResponseSuccess | getSplitFailReportDataResponseError)
-
-export const getGetSplitFailReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/SplitFail/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getSplitFailReportData = async (splitFailOptions?: SplitFailOptions, options?: RequestInit): Promise<getSplitFailReportDataResponse> => {
+export const getSplitFailReportData = (
+    splitFailOptions?: SplitFailOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getSplitFailReportDataResponse>(getGetSplitFailReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(splitFailOptions)
-  }
-);}
 
+      return reportsRequest<SplitFailsResult[]>(
+      {url: `/api/v1/SplitFail/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: splitFailOptions, signal
+    },
+      );
+    }
 
 
 

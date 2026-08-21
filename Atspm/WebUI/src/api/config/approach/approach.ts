@@ -55,261 +55,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJson = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationXml = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200TextPlain = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse200TextJson = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getApproachDetectorsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getApproachDetectorsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachDetectorsFromKeyResponseSuccess = (getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFull | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNone | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getApproachDetectorsFromKeyResponse200ApplicationJson | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getApproachDetectorsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getApproachDetectorsFromKeyResponse200ApplicationXml | getApproachDetectorsFromKeyResponse200TextPlain | getApproachDetectorsFromKeyResponse200ApplicationOctetStream | getApproachDetectorsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getApproachDetectorsFromKeyResponseError = (getApproachDetectorsFromKeyResponse400 | getApproachDetectorsFromKeyResponse404 | getApproachDetectorsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachDetectorsFromKeyResponse = (getApproachDetectorsFromKeyResponseSuccess | getApproachDetectorsFromKeyResponseError)
-
-export const getGetApproachDetectorsFromKeyUrl = (key: number,
-    params?: GetApproachDetectorsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/${key}/detectors?${stringifiedParams}` : `/api/v1/Approach/${key}/detectors`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
-export const getApproachDetectorsFromKey = async (key: number,
-    params?: GetApproachDetectorsFromKeyParams, options?: RequestInit): Promise<getApproachDetectorsFromKeyResponse> => {
-
-  return configRequest<getApproachDetectorsFromKeyResponse>(getGetApproachDetectorsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getApproachDetectorsFromKey = (
+    key: number,
+    params?: GetApproachDetectorsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Detector[] | Blob>(
+      {url: `/api/v1/Approach/${key}/detectors`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -332,7 +94,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>> = ({ signal }) => getApproachDetectorsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>> = ({ signal }) => getApproachDetectorsFromKey(key,params, signal);
 
 
 
@@ -367,261 +129,23 @@ export function useGetApproachDetectorsFromKey<TData = Awaited<ReturnType<typeof
 
 
 
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJson = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationXml = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200TextPlain = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse200TextJson = {
-  data: Detector[]
-  status: 200
-}
-
-export type getApproachDetectorsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getApproachDetectorsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getApproachDetectorsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachDetectorsCountFromKeyResponseSuccess = (getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJson | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getApproachDetectorsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getApproachDetectorsCountFromKeyResponse200ApplicationXml | getApproachDetectorsCountFromKeyResponse200TextPlain | getApproachDetectorsCountFromKeyResponse200ApplicationOctetStream | getApproachDetectorsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getApproachDetectorsCountFromKeyResponseError = (getApproachDetectorsCountFromKeyResponse400 | getApproachDetectorsCountFromKeyResponse404 | getApproachDetectorsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachDetectorsCountFromKeyResponse = (getApproachDetectorsCountFromKeyResponseSuccess | getApproachDetectorsCountFromKeyResponseError)
-
-export const getGetApproachDetectorsCountFromKeyUrl = (key: number,
-    params?: GetApproachDetectorsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/${key}/detectors/$count?${stringifiedParams}` : `/api/v1/Approach/${key}/detectors/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
-export const getApproachDetectorsCountFromKey = async (key: number,
-    params?: GetApproachDetectorsCountFromKeyParams, options?: RequestInit): Promise<getApproachDetectorsCountFromKeyResponse> => {
-
-  return configRequest<getApproachDetectorsCountFromKeyResponse>(getGetApproachDetectorsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getApproachDetectorsCountFromKey = (
+    key: number,
+    params?: GetApproachDetectorsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Detector[] | Blob>(
+      {url: `/api/v1/Approach/${key}/detectors/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -644,7 +168,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>> = ({ signal }) => getApproachDetectorsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>> = ({ signal }) => getApproachDetectorsCountFromKey(key,params, signal);
 
 
 
@@ -679,57 +203,21 @@ export function useGetApproachDetectorsCountFromKey<TData = Awaited<ReturnType<t
 
 
 
-export type upsertApproachApproachResponse200 = {
-  data: void
-  status: 200
-}
+export const upsertApproachApproach = (
+    approachDto?: ApproachDto,
+    params?: UpsertApproachApproachParams,
+ signal?: AbortSignal
+) => {
 
-export type upsertApproachApproachResponse400 = {
-  data: void
-  status: 400
-}
 
-export type upsertApproachApproachResponse406 = {
-  data: void
-  status: 406
-}
-
-export type upsertApproachApproachResponseSuccess = (upsertApproachApproachResponse200) & {
-  headers: Headers;
-};
-export type upsertApproachApproachResponseError = (upsertApproachApproachResponse400 | upsertApproachApproachResponse406) & {
-  headers: Headers;
-};
-
-export type upsertApproachApproachResponse = (upsertApproachApproachResponseSuccess | upsertApproachApproachResponseError)
-
-export const getUpsertApproachApproachUrl = (params?: UpsertApproachApproachParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/UpsertApproach`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: approachDto,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UpsertApproach?${stringifiedParams}` : `/api/v1/UpsertApproach`
-}
-
-export const upsertApproachApproach = async (approachDto?: ApproachDto,
-    params?: UpsertApproachApproachParams, options?: RequestInit): Promise<upsertApproachApproachResponse> => {
-
-  return configRequest<upsertApproachApproachResponse>(getUpsertApproachApproachUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(approachDto)
-  }
-);}
-
 
 
 
@@ -775,58 +263,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getUpsertApproachApproachMutationOptions(options));
     }
-    export type getApproachApproachDtoFromIdResponse200 = {
-  data: void
-  status: 200
-}
+    export const getApproachApproachDtoFromId = (
+    id: number,
+    params?: GetApproachApproachDtoFromIdParams,
+ signal?: AbortSignal
+) => {
 
-export type getApproachApproachDtoFromIdResponse400 = {
-  data: void
-  status: 400
-}
 
-export type getApproachApproachDtoFromIdResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachApproachDtoFromIdResponseSuccess = (getApproachApproachDtoFromIdResponse200) & {
-  headers: Headers;
-};
-export type getApproachApproachDtoFromIdResponseError = (getApproachApproachDtoFromIdResponse400 | getApproachApproachDtoFromIdResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachApproachDtoFromIdResponse = (getApproachApproachDtoFromIdResponseSuccess | getApproachApproachDtoFromIdResponseError)
-
-export const getGetApproachApproachDtoFromIdUrl = (id: number,
-    params?: GetApproachApproachDtoFromIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/GetApproachDto/${id}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/GetApproachDto/${id}?${stringifiedParams}` : `/api/v1/GetApproachDto/${id}`
-}
-
-export const getApproachApproachDtoFromId = async (id: number,
-    params?: GetApproachApproachDtoFromIdParams, options?: RequestInit): Promise<getApproachApproachDtoFromIdResponse> => {
-
-  return configRequest<getApproachApproachDtoFromIdResponse>(getGetApproachApproachDtoFromIdUrl(id,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -849,7 +298,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>> = ({ signal }) => getApproachApproachDtoFromId(id,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>> = ({ signal }) => getApproachApproachDtoFromId(id,params, signal);
 
 
 
@@ -881,251 +330,19 @@ export function useGetApproachApproachDtoFromId<TData = Awaited<ReturnType<typeo
 
 
 
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
+export const getApproach = (
+    params?: GetApproachParams,
+ signal?: AbortSignal
+) => {
 
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
 
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFull = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNone = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationXml = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200TextPlain = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getApproachResponse200TextJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getApproachResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachResponseSuccess = (getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getApproachResponse200ApplicationJsonOdataMetadataMinimal | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getApproachResponse200ApplicationJsonOdataMetadataFull | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getApproachResponse200ApplicationJsonOdataMetadataNone | getApproachResponse200ApplicationJsonOdataStreamingTrue | getApproachResponse200ApplicationJsonOdataStreamingFalse | getApproachResponse200ApplicationJson | getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getApproachResponse200ApplicationJsonIEEE754CompatibleFalse | getApproachResponse200ApplicationJsonIEEE754CompatibleTrue | getApproachResponse200ApplicationXml | getApproachResponse200TextPlain | getApproachResponse200ApplicationOctetStream | getApproachResponse200TextJson) & {
-  headers: Headers;
-};
-export type getApproachResponseError = (getApproachResponse400 | getApproachResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachResponse = (getApproachResponseSuccess | getApproachResponseError)
-
-export const getGetApproachUrl = (params?: GetApproachParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Approach[] | Blob>(
+      {url: `/api/v1/Approach`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach?${stringifiedParams}` : `/api/v1/Approach`
-}
-
-export const getApproach = async (params?: GetApproachParams, options?: RequestInit): Promise<getApproachResponse> => {
-
-  return configRequest<getApproachResponse>(getGetApproachUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1146,7 +363,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproach>>> = ({ signal }) => getApproach(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproach>>> = ({ signal }) => getApproach(params, signal);
 
 
 
@@ -1177,57 +394,21 @@ export function useGetApproach<TData = Awaited<ReturnType<typeof getApproach>>, 
 
 
 
-export type postApproachResponse201 = {
-  data: void
-  status: 201
-}
+export const postApproach = (
+    approach?: Approach,
+    params?: PostApproachParams,
+ signal?: AbortSignal
+) => {
 
-export type postApproachResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postApproachResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postApproachResponseSuccess = (postApproachResponse201) & {
-  headers: Headers;
-};
-export type postApproachResponseError = (postApproachResponse400 | postApproachResponse406) & {
-  headers: Headers;
-};
-
-export type postApproachResponse = (postApproachResponseSuccess | postApproachResponseError)
-
-export const getPostApproachUrl = (params?: PostApproachParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Approach`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: approach,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach?${stringifiedParams}` : `/api/v1/Approach`
-}
-
-export const postApproach = async (approach?: Approach,
-    params?: PostApproachParams, options?: RequestInit): Promise<postApproachResponse> => {
-
-  return configRequest<postApproachResponse>(getPostApproachUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(approach)
-  }
-);}
-
 
 
 
@@ -1273,251 +454,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostApproachMutationOptions(options));
     }
-    export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
+    export const getApproachCount = (
+    params?: GetApproachCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
 
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationXml = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200TextPlain = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getApproachCountResponse200TextJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getApproachCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getApproachCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachCountResponseSuccess = (getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getApproachCountResponse200ApplicationJsonOdataMetadataMinimal | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getApproachCountResponse200ApplicationJsonOdataMetadataFull | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getApproachCountResponse200ApplicationJsonOdataMetadataNone | getApproachCountResponse200ApplicationJsonOdataStreamingTrue | getApproachCountResponse200ApplicationJsonOdataStreamingFalse | getApproachCountResponse200ApplicationJson | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getApproachCountResponse200ApplicationJsonIEEE754CompatibleFalse | getApproachCountResponse200ApplicationJsonIEEE754CompatibleTrue | getApproachCountResponse200ApplicationXml | getApproachCountResponse200TextPlain | getApproachCountResponse200ApplicationOctetStream | getApproachCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getApproachCountResponseError = (getApproachCountResponse400 | getApproachCountResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachCountResponse = (getApproachCountResponseSuccess | getApproachCountResponseError)
-
-export const getGetApproachCountUrl = (params?: GetApproachCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Approach[] | Blob>(
+      {url: `/api/v1/Approach/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/$count?${stringifiedParams}` : `/api/v1/Approach/$count`
-}
-
-export const getApproachCount = async (params?: GetApproachCountParams, options?: RequestInit): Promise<getApproachCountResponse> => {
-
-  return configRequest<getApproachCountResponse>(getGetApproachCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1538,7 +487,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachCount>>> = ({ signal }) => getApproachCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachCount>>> = ({ signal }) => getApproachCount(params, signal);
 
 
 
@@ -1569,253 +518,20 @@ export function useGetApproachCount<TData = Awaited<ReturnType<typeof getApproac
 
 
 
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Approach
-  status: 200
-}
+export const getApproachFromKey = (
+    key: number,
+    params?: GetApproachFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Approach
-  status: 200
-}
 
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJson = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationXml = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200TextPlain = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getApproachFromKeyResponse200TextJson = {
-  data: Approach
-  status: 200
-}
-
-export type getApproachFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getApproachFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getApproachFromKeyResponseSuccess = (getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFull | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNone | getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrue | getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalse | getApproachFromKeyResponse200ApplicationJson | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getApproachFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getApproachFromKeyResponse200ApplicationXml | getApproachFromKeyResponse200TextPlain | getApproachFromKeyResponse200ApplicationOctetStream | getApproachFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getApproachFromKeyResponseError = (getApproachFromKeyResponse404 | getApproachFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getApproachFromKeyResponse = (getApproachFromKeyResponseSuccess | getApproachFromKeyResponseError)
-
-export const getGetApproachFromKeyUrl = (key: number,
-    params?: GetApproachFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Approach | Blob>(
+      {url: `/api/v1/Approach/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/${key}?${stringifiedParams}` : `/api/v1/Approach/${key}`
-}
-
-export const getApproachFromKey = async (key: number,
-    params?: GetApproachFromKeyParams, options?: RequestInit): Promise<getApproachFromKeyResponse> => {
-
-  return configRequest<getApproachFromKeyResponse>(getGetApproachFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1838,7 +554,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachFromKey>>> = ({ signal }) => getApproachFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApproachFromKey>>> = ({ signal }) => getApproachFromKey(key,params, signal);
 
 
 
@@ -1870,64 +586,22 @@ export function useGetApproachFromKey<TData = Awaited<ReturnType<typeof getAppro
 
 
 
-export type putApproachFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putApproachFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putApproachFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putApproachFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putApproachFromKeyResponseSuccess = (putApproachFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putApproachFromKeyResponseError = (putApproachFromKeyResponse400 | putApproachFromKeyResponse404 | putApproachFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putApproachFromKeyResponse = (putApproachFromKeyResponseSuccess | putApproachFromKeyResponseError)
-
-export const getPutApproachFromKeyUrl = (key: number,
-    params?: PutApproachFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/${key}?${stringifiedParams}` : `/api/v1/Approach/${key}`
-}
-
-export const putApproachFromKey = async (key: number,
+export const putApproachFromKey = (
+    key: number,
     approach?: Approach,
-    params?: PutApproachFromKeyParams, options?: RequestInit): Promise<putApproachFromKeyResponse> => {
+    params?: PutApproachFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putApproachFromKeyResponse>(getPutApproachFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(approach)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Approach/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: approach,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1973,64 +647,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutApproachFromKeyMutationOptions(options));
     }
-    export type patchApproachFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchApproachFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchApproachFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchApproachFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchApproachFromKeyResponseSuccess = (patchApproachFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchApproachFromKeyResponseError = (patchApproachFromKeyResponse400 | patchApproachFromKeyResponse404 | patchApproachFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchApproachFromKeyResponse = (patchApproachFromKeyResponseSuccess | patchApproachFromKeyResponseError)
-
-export const getPatchApproachFromKeyUrl = (key: number,
-    params?: PatchApproachFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Approach/${key}?${stringifiedParams}` : `/api/v1/Approach/${key}`
-}
-
-export const patchApproachFromKey = async (key: number,
+    export const patchApproachFromKey = (
+    key: number,
     approach?: Approach,
-    params?: PatchApproachFromKeyParams, options?: RequestInit): Promise<patchApproachFromKeyResponse> => {
+    params?: PatchApproachFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchApproachFromKeyResponse>(getPatchApproachFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(approach)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Approach/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: approach,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2076,54 +708,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchApproachFromKeyMutationOptions(options));
     }
-    export type deleteApproachFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteApproachFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteApproachFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteApproachFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteApproachFromKeyResponseSuccess = (deleteApproachFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteApproachFromKeyResponseError = (deleteApproachFromKeyResponse400 | deleteApproachFromKeyResponse404 | deleteApproachFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteApproachFromKeyResponse = (deleteApproachFromKeyResponseSuccess | deleteApproachFromKeyResponseError)
-
-export const getDeleteApproachFromKeyUrl = (key: number,) => {
+    export const deleteApproachFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Approach/${key}`
-}
-
-export const deleteApproachFromKey = async (key: number, options?: RequestInit): Promise<deleteApproachFromKeyResponse> => {
-
-  return configRequest<deleteApproachFromKeyResponse>(getDeleteApproachFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Approach/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

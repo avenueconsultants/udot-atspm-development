@@ -55,261 +55,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteRouteLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteRouteLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteRouteLocationsFromKeyResponseSuccess = (getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJson | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteRouteLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteRouteLocationsFromKeyResponse200ApplicationXml | getRouteRouteLocationsFromKeyResponse200TextPlain | getRouteRouteLocationsFromKeyResponse200ApplicationOctetStream | getRouteRouteLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteRouteLocationsFromKeyResponseError = (getRouteRouteLocationsFromKeyResponse400 | getRouteRouteLocationsFromKeyResponse404 | getRouteRouteLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteRouteLocationsFromKeyResponse = (getRouteRouteLocationsFromKeyResponseSuccess | getRouteRouteLocationsFromKeyResponseError)
-
-export const getGetRouteRouteLocationsFromKeyUrl = (key: number,
-    params?: GetRouteRouteLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/${key}/routeLocations?${stringifiedParams}` : `/api/v1/Route/${key}/routeLocations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteRouteLocationsFromKey = async (key: number,
-    params?: GetRouteRouteLocationsFromKeyParams, options?: RequestInit): Promise<getRouteRouteLocationsFromKeyResponse> => {
-
-  return configRequest<getRouteRouteLocationsFromKeyResponse>(getGetRouteRouteLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteRouteLocationsFromKey = (
+    key: number,
+    params?: GetRouteRouteLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/Route/${key}/routeLocations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -332,7 +94,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>> = ({ signal }) => getRouteRouteLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>> = ({ signal }) => getRouteRouteLocationsFromKey(key,params, signal);
 
 
 
@@ -367,261 +129,23 @@ export function useGetRouteRouteLocationsFromKey<TData = Awaited<ReturnType<type
 
 
 
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteRouteLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteRouteLocationsCountFromKeyResponseSuccess = (getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJson | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteRouteLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteRouteLocationsCountFromKeyResponse200ApplicationXml | getRouteRouteLocationsCountFromKeyResponse200TextPlain | getRouteRouteLocationsCountFromKeyResponse200ApplicationOctetStream | getRouteRouteLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteRouteLocationsCountFromKeyResponseError = (getRouteRouteLocationsCountFromKeyResponse400 | getRouteRouteLocationsCountFromKeyResponse404 | getRouteRouteLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteRouteLocationsCountFromKeyResponse = (getRouteRouteLocationsCountFromKeyResponseSuccess | getRouteRouteLocationsCountFromKeyResponseError)
-
-export const getGetRouteRouteLocationsCountFromKeyUrl = (key: number,
-    params?: GetRouteRouteLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/${key}/routeLocations/$count?${stringifiedParams}` : `/api/v1/Route/${key}/routeLocations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteRouteLocationsCountFromKey = async (key: number,
-    params?: GetRouteRouteLocationsCountFromKeyParams, options?: RequestInit): Promise<getRouteRouteLocationsCountFromKeyResponse> => {
-
-  return configRequest<getRouteRouteLocationsCountFromKeyResponse>(getGetRouteRouteLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteRouteLocationsCountFromKey = (
+    key: number,
+    params?: GetRouteRouteLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/Route/${key}/routeLocations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -644,7 +168,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>> = ({ signal }) => getRouteRouteLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>> = ({ signal }) => getRouteRouteLocationsCountFromKey(key,params, signal);
 
 
 
@@ -679,60 +203,24 @@ export function useGetRouteRouteLocationsCountFromKey<TData = Awaited<ReturnType
 
 
 
-export type upsertRouteRouteResponse200 = {
-  data: void
-  status: 200
-}
-
-export type upsertRouteRouteResponse400 = {
-  data: void
-  status: 400
-}
-
-export type upsertRouteRouteResponse406 = {
-  data: void
-  status: 406
-}
-
-export type upsertRouteRouteResponseSuccess = (upsertRouteRouteResponse200) & {
-  headers: Headers;
-};
-export type upsertRouteRouteResponseError = (upsertRouteRouteResponse400 | upsertRouteRouteResponse406) & {
-  headers: Headers;
-};
-
-export type upsertRouteRouteResponse = (upsertRouteRouteResponseSuccess | upsertRouteRouteResponseError)
-
-export const getUpsertRouteRouteUrl = (params?: UpsertRouteRouteParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/UpsertRoute?${stringifiedParams}` : `/api/v1/UpsertRoute`
-}
-
 /**
  * @summary Creates a route with its associated route locations
  */
-export const upsertRouteRoute = async (routeDto?: RouteDto,
-    params?: UpsertRouteRouteParams, options?: RequestInit): Promise<upsertRouteRouteResponse> => {
+export const upsertRouteRoute = (
+    routeDto?: RouteDto,
+    params?: UpsertRouteRouteParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<upsertRouteRouteResponse>(getUpsertRouteRouteUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(routeDto)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/UpsertRoute`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: routeDto,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -781,58 +269,19 @@ export const useUpsertRouteRoute = <TError = void,
       > => {
       return useMutation(getUpsertRouteRouteMutationOptions(options));
     }
-    export type getRouteRouteViewFromIdResponse200 = {
-  data: void
-  status: 200
-}
+    export const getRouteRouteViewFromId = (
+    id: number,
+    params?: GetRouteRouteViewFromIdParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteRouteViewFromIdResponse400 = {
-  data: void
-  status: 400
-}
 
-export type getRouteRouteViewFromIdResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteRouteViewFromIdResponseSuccess = (getRouteRouteViewFromIdResponse200) & {
-  headers: Headers;
-};
-export type getRouteRouteViewFromIdResponseError = (getRouteRouteViewFromIdResponse400 | getRouteRouteViewFromIdResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteRouteViewFromIdResponse = (getRouteRouteViewFromIdResponseSuccess | getRouteRouteViewFromIdResponseError)
-
-export const getGetRouteRouteViewFromIdUrl = (id: number,
-    params?: GetRouteRouteViewFromIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/GetRouteView/${id}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/GetRouteView/${id}?${stringifiedParams}` : `/api/v1/GetRouteView/${id}`
-}
-
-export const getRouteRouteViewFromId = async (id: number,
-    params?: GetRouteRouteViewFromIdParams, options?: RequestInit): Promise<getRouteRouteViewFromIdResponse> => {
-
-  return configRequest<getRouteRouteViewFromIdResponse>(getGetRouteRouteViewFromIdUrl(id,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -855,7 +304,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteViewFromId>>> = ({ signal }) => getRouteRouteViewFromId(id,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteRouteViewFromId>>> = ({ signal }) => getRouteRouteViewFromId(id,params, signal);
 
 
 
@@ -887,251 +336,19 @@ export function useGetRouteRouteViewFromId<TData = Awaited<ReturnType<typeof get
 
 
 
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
+export const getRoute = (
+    params?: GetRouteParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
 
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFull = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNone = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJson = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationXml = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200TextPlain = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteResponse200TextJson = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteResponseSuccess = (getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteResponse200ApplicationJsonOdataMetadataMinimal | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteResponse200ApplicationJsonOdataMetadataFull | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteResponse200ApplicationJsonOdataMetadataNone | getRouteResponse200ApplicationJsonOdataStreamingTrue | getRouteResponse200ApplicationJsonOdataStreamingFalse | getRouteResponse200ApplicationJson | getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteResponse200ApplicationXml | getRouteResponse200TextPlain | getRouteResponse200ApplicationOctetStream | getRouteResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteResponseError = (getRouteResponse400 | getRouteResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteResponse = (getRouteResponseSuccess | getRouteResponseError)
-
-export const getGetRouteUrl = (params?: GetRouteParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Route[] | Blob>(
+      {url: `/api/v1/Route`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route?${stringifiedParams}` : `/api/v1/Route`
-}
-
-export const getRoute = async (params?: GetRouteParams, options?: RequestInit): Promise<getRouteResponse> => {
-
-  return configRequest<getRouteResponse>(getGetRouteUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1152,7 +369,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoute>>> = ({ signal }) => getRoute(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoute>>> = ({ signal }) => getRoute(params, signal);
 
 
 
@@ -1183,57 +400,21 @@ export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError
 
 
 
-export type postRouteResponse201 = {
-  data: void
-  status: 201
-}
+export const postRoute = (
+    route?: Route,
+    params?: PostRouteParams,
+ signal?: AbortSignal
+) => {
 
-export type postRouteResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postRouteResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postRouteResponseSuccess = (postRouteResponse201) & {
-  headers: Headers;
-};
-export type postRouteResponseError = (postRouteResponse400 | postRouteResponse406) & {
-  headers: Headers;
-};
-
-export type postRouteResponse = (postRouteResponseSuccess | postRouteResponseError)
-
-export const getPostRouteUrl = (params?: PostRouteParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Route`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: route,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route?${stringifiedParams}` : `/api/v1/Route`
-}
-
-export const postRoute = async (route?: Route,
-    params?: PostRouteParams, options?: RequestInit): Promise<postRouteResponse> => {
-
-  return configRequest<postRouteResponse>(getPostRouteUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(route)
-  }
-);}
-
 
 
 
@@ -1279,251 +460,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostRouteMutationOptions(options));
     }
-    export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
+    export const getRouteCount = (
+    params?: GetRouteCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
 
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJson = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationXml = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200TextPlain = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteCountResponse200TextJson = {
-  data: Route[]
-  status: 200
-}
-
-export type getRouteCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteCountResponseSuccess = (getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteCountResponse200ApplicationJsonOdataMetadataMinimal | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteCountResponse200ApplicationJsonOdataMetadataFull | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteCountResponse200ApplicationJsonOdataMetadataNone | getRouteCountResponse200ApplicationJsonOdataStreamingTrue | getRouteCountResponse200ApplicationJsonOdataStreamingFalse | getRouteCountResponse200ApplicationJson | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteCountResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteCountResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteCountResponse200ApplicationXml | getRouteCountResponse200TextPlain | getRouteCountResponse200ApplicationOctetStream | getRouteCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteCountResponseError = (getRouteCountResponse400 | getRouteCountResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteCountResponse = (getRouteCountResponseSuccess | getRouteCountResponseError)
-
-export const getGetRouteCountUrl = (params?: GetRouteCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Route[] | Blob>(
+      {url: `/api/v1/Route/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/$count?${stringifiedParams}` : `/api/v1/Route/$count`
-}
-
-export const getRouteCount = async (params?: GetRouteCountParams, options?: RequestInit): Promise<getRouteCountResponse> => {
-
-  return configRequest<getRouteCountResponse>(getGetRouteCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1544,7 +493,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteCount>>> = ({ signal }) => getRouteCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteCount>>> = ({ signal }) => getRouteCount(params, signal);
 
 
 
@@ -1575,253 +524,20 @@ export function useGetRouteCount<TData = Awaited<ReturnType<typeof getRouteCount
 
 
 
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Route
-  status: 200
-}
+export const getRouteFromKey = (
+    key: number,
+    params?: GetRouteFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Route
-  status: 200
-}
 
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJson = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationXml = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200TextPlain = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteFromKeyResponse200TextJson = {
-  data: Route
-  status: 200
-}
-
-export type getRouteFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteFromKeyResponseSuccess = (getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteFromKeyResponse200ApplicationJson | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteFromKeyResponse200ApplicationXml | getRouteFromKeyResponse200TextPlain | getRouteFromKeyResponse200ApplicationOctetStream | getRouteFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteFromKeyResponseError = (getRouteFromKeyResponse404 | getRouteFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteFromKeyResponse = (getRouteFromKeyResponseSuccess | getRouteFromKeyResponseError)
-
-export const getGetRouteFromKeyUrl = (key: number,
-    params?: GetRouteFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Route | Blob>(
+      {url: `/api/v1/Route/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/${key}?${stringifiedParams}` : `/api/v1/Route/${key}`
-}
-
-export const getRouteFromKey = async (key: number,
-    params?: GetRouteFromKeyParams, options?: RequestInit): Promise<getRouteFromKeyResponse> => {
-
-  return configRequest<getRouteFromKeyResponse>(getGetRouteFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1844,7 +560,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteFromKey>>> = ({ signal }) => getRouteFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteFromKey>>> = ({ signal }) => getRouteFromKey(key,params, signal);
 
 
 
@@ -1876,64 +592,22 @@ export function useGetRouteFromKey<TData = Awaited<ReturnType<typeof getRouteFro
 
 
 
-export type putRouteFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putRouteFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putRouteFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putRouteFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putRouteFromKeyResponseSuccess = (putRouteFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putRouteFromKeyResponseError = (putRouteFromKeyResponse400 | putRouteFromKeyResponse404 | putRouteFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putRouteFromKeyResponse = (putRouteFromKeyResponseSuccess | putRouteFromKeyResponseError)
-
-export const getPutRouteFromKeyUrl = (key: number,
-    params?: PutRouteFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/${key}?${stringifiedParams}` : `/api/v1/Route/${key}`
-}
-
-export const putRouteFromKey = async (key: number,
+export const putRouteFromKey = (
+    key: number,
     route?: Route,
-    params?: PutRouteFromKeyParams, options?: RequestInit): Promise<putRouteFromKeyResponse> => {
+    params?: PutRouteFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putRouteFromKeyResponse>(getPutRouteFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(route)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Route/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: route,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1979,64 +653,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutRouteFromKeyMutationOptions(options));
     }
-    export type patchRouteFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchRouteFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchRouteFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchRouteFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchRouteFromKeyResponseSuccess = (patchRouteFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchRouteFromKeyResponseError = (patchRouteFromKeyResponse400 | patchRouteFromKeyResponse404 | patchRouteFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchRouteFromKeyResponse = (patchRouteFromKeyResponseSuccess | patchRouteFromKeyResponseError)
-
-export const getPatchRouteFromKeyUrl = (key: number,
-    params?: PatchRouteFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Route/${key}?${stringifiedParams}` : `/api/v1/Route/${key}`
-}
-
-export const patchRouteFromKey = async (key: number,
+    export const patchRouteFromKey = (
+    key: number,
     route?: Route,
-    params?: PatchRouteFromKeyParams, options?: RequestInit): Promise<patchRouteFromKeyResponse> => {
+    params?: PatchRouteFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchRouteFromKeyResponse>(getPatchRouteFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(route)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Route/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: route,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2082,54 +714,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchRouteFromKeyMutationOptions(options));
     }
-    export type deleteRouteFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteRouteFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteRouteFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteRouteFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteRouteFromKeyResponseSuccess = (deleteRouteFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteRouteFromKeyResponseError = (deleteRouteFromKeyResponse400 | deleteRouteFromKeyResponse404 | deleteRouteFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteRouteFromKeyResponse = (deleteRouteFromKeyResponseSuccess | deleteRouteFromKeyResponseError)
-
-export const getDeleteRouteFromKeyUrl = (key: number,) => {
+    export const deleteRouteFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Route/${key}`
-}
-
-export const deleteRouteFromKey = async (key: number, options?: RequestInit): Promise<deleteRouteFromKeyResponse> => {
-
-  return configRequest<deleteRouteFromKeyResponse>(getDeleteRouteFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Route/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

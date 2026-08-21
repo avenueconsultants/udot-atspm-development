@@ -158,71 +158,18 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getApiV1AccessCategoryResponse200ApplicationJson = {
-  data: NameAndIdDto[]
-  status: 200
-}
+export const getApiV1AccessCategory = (
+    params?: GetApiV1AccessCategoryParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1AccessCategoryResponse200ApplicationXml = {
-  data: NameAndIdDto[]
-  status: 200
-}
 
-export type getApiV1AccessCategoryResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1AccessCategoryResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1AccessCategoryResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1AccessCategoryResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1AccessCategoryResponseSuccess = (getApiV1AccessCategoryResponse200ApplicationJson | getApiV1AccessCategoryResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1AccessCategoryResponseError = (getApiV1AccessCategoryResponse400ApplicationJson | getApiV1AccessCategoryResponse400ApplicationXml | getApiV1AccessCategoryResponse406ApplicationJson | getApiV1AccessCategoryResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1AccessCategoryResponse = (getApiV1AccessCategoryResponseSuccess | getApiV1AccessCategoryResponseError)
-
-export const getGetApiV1AccessCategoryUrl = (params?: GetApiV1AccessCategoryParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<NameAndIdDto[]>(
+      {url: `/api/v1/AccessCategory`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/AccessCategory?${stringifiedParams}` : `/api/v1/AccessCategory`
-}
-
-export const getApiV1AccessCategory = async (params?: GetApiV1AccessCategoryParams, options?: RequestInit): Promise<getApiV1AccessCategoryResponse> => {
-
-  return speedRequest<getApiV1AccessCategoryResponse>(getGetApiV1AccessCategoryUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -243,7 +190,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1AccessCategory>>> = ({ signal }) => getApiV1AccessCategory(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1AccessCategory>>> = ({ signal }) => getApiV1AccessCategory(params, signal);
 
 
 
@@ -275,71 +222,18 @@ export function useGetApiV1AccessCategory<TData = Awaited<ReturnType<typeof getA
 
 
 
-export type getApiV1CityResponse200ApplicationJson = {
-  data: NameAndIdDto[]
-  status: 200
-}
+export const getApiV1City = (
+    params?: GetApiV1CityParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1CityResponse200ApplicationXml = {
-  data: NameAndIdDto[]
-  status: 200
-}
 
-export type getApiV1CityResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1CityResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1CityResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1CityResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1CityResponseSuccess = (getApiV1CityResponse200ApplicationJson | getApiV1CityResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1CityResponseError = (getApiV1CityResponse400ApplicationJson | getApiV1CityResponse400ApplicationXml | getApiV1CityResponse406ApplicationJson | getApiV1CityResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1CityResponse = (getApiV1CityResponseSuccess | getApiV1CityResponseError)
-
-export const getGetApiV1CityUrl = (params?: GetApiV1CityParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<NameAndIdDto[]>(
+      {url: `/api/v1/City`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/City?${stringifiedParams}` : `/api/v1/City`
-}
-
-export const getApiV1City = async (params?: GetApiV1CityParams, options?: RequestInit): Promise<getApiV1CityResponse> => {
-
-  return speedRequest<getApiV1CityResponse>(getGetApiV1CityUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -360,7 +254,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1City>>> = ({ signal }) => getApiV1City(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1City>>> = ({ signal }) => getApiV1City(params, signal);
 
 
 
@@ -392,72 +286,21 @@ export function useGetApiV1City<TData = Awaited<ReturnType<typeof getApiV1City>>
 
 
 
-export type postApiV1CongestionTrackingGetReportDataResponse200ApplicationJson = {
-  data: CongestionTrackingDto
-  status: 200
-}
+export const postApiV1CongestionTrackingGetReportData = (
+    congestionTrackingOptions?: CongestionTrackingOptions,
+    params?: PostApiV1CongestionTrackingGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1CongestionTrackingGetReportDataResponse200ApplicationXml = {
-  data: CongestionTrackingDto
-  status: 200
-}
 
-export type postApiV1CongestionTrackingGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1CongestionTrackingGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1CongestionTrackingGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1CongestionTrackingGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1CongestionTrackingGetReportDataResponseSuccess = (postApiV1CongestionTrackingGetReportDataResponse200ApplicationJson | postApiV1CongestionTrackingGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1CongestionTrackingGetReportDataResponseError = (postApiV1CongestionTrackingGetReportDataResponse400ApplicationJson | postApiV1CongestionTrackingGetReportDataResponse400ApplicationXml | postApiV1CongestionTrackingGetReportDataResponse406ApplicationJson | postApiV1CongestionTrackingGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1CongestionTrackingGetReportDataResponse = (postApiV1CongestionTrackingGetReportDataResponseSuccess | postApiV1CongestionTrackingGetReportDataResponseError)
-
-export const getPostApiV1CongestionTrackingGetReportDataUrl = (params?: PostApiV1CongestionTrackingGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<CongestionTrackingDto>(
+      {url: `/api/v1/CongestionTracking/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: congestionTrackingOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/CongestionTracking/getReportData?${stringifiedParams}` : `/api/v1/CongestionTracking/getReportData`
-}
-
-export const postApiV1CongestionTrackingGetReportData = async (congestionTrackingOptions?: CongestionTrackingOptions,
-    params?: PostApiV1CongestionTrackingGetReportDataParams, options?: RequestInit): Promise<postApiV1CongestionTrackingGetReportDataResponse> => {
-
-  return speedRequest<postApiV1CongestionTrackingGetReportDataResponse>(getPostApiV1CongestionTrackingGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(congestionTrackingOptions)
-  }
-);}
-
 
 
 
@@ -504,71 +347,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1CongestionTrackingGetReportDataMutationOptions(options));
     }
 
-export type getApiV1CountyResponse200ApplicationJson = {
-  data: NameAndIdDto[]
-  status: 200
-}
+export const getApiV1County = (
+    params?: GetApiV1CountyParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1CountyResponse200ApplicationXml = {
-  data: NameAndIdDto[]
-  status: 200
-}
 
-export type getApiV1CountyResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1CountyResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1CountyResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1CountyResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1CountyResponseSuccess = (getApiV1CountyResponse200ApplicationJson | getApiV1CountyResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1CountyResponseError = (getApiV1CountyResponse400ApplicationJson | getApiV1CountyResponse400ApplicationXml | getApiV1CountyResponse406ApplicationJson | getApiV1CountyResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1CountyResponse = (getApiV1CountyResponseSuccess | getApiV1CountyResponseError)
-
-export const getGetApiV1CountyUrl = (params?: GetApiV1CountyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<NameAndIdDto[]>(
+      {url: `/api/v1/County`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/County?${stringifiedParams}` : `/api/v1/County`
-}
-
-export const getApiV1County = async (params?: GetApiV1CountyParams, options?: RequestInit): Promise<getApiV1CountyResponse> => {
-
-  return speedRequest<getApiV1CountyResponse>(getGetApiV1CountyUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -589,7 +379,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1County>>> = ({ signal }) => getApiV1County(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1County>>> = ({ signal }) => getApiV1County(params, signal);
 
 
 
@@ -621,49 +411,18 @@ export function useGetApiV1County<TData = Awaited<ReturnType<typeof getApiV1Coun
 
 
 
-export type postApiV1DataImporterStartRedownloadResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const postApiV1DataImporterStartRedownload = (
+    params?: PostApiV1DataImporterStartRedownloadParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1DataImporterStartRedownloadResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type postApiV1DataImporterStartRedownloadResponseError = (postApiV1DataImporterStartRedownloadResponse406ApplicationJson | postApiV1DataImporterStartRedownloadResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1DataImporterStartRedownloadResponse = (postApiV1DataImporterStartRedownloadResponseError)
-
-export const getPostApiV1DataImporterStartRedownloadUrl = (params?: PostApiV1DataImporterStartRedownloadParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/DataImporter/StartRedownload`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DataImporter/StartRedownload?${stringifiedParams}` : `/api/v1/DataImporter/StartRedownload`
-}
-
-export const postApiV1DataImporterStartRedownload = async (params?: PostApiV1DataImporterStartRedownloadParams, options?: RequestInit): Promise<postApiV1DataImporterStartRedownloadResponse> => {
-
-  return speedRequest<postApiV1DataImporterStartRedownloadResponse>(getPostApiV1DataImporterStartRedownloadUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -710,49 +469,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1DataImporterStartRedownloadMutationOptions(options));
     }
 
-export type postApiV1DataImporterDownloadHourlyDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const postApiV1DataImporterDownloadHourlyData = (
+    params?: PostApiV1DataImporterDownloadHourlyDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1DataImporterDownloadHourlyDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type postApiV1DataImporterDownloadHourlyDataResponseError = (postApiV1DataImporterDownloadHourlyDataResponse406ApplicationJson | postApiV1DataImporterDownloadHourlyDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1DataImporterDownloadHourlyDataResponse = (postApiV1DataImporterDownloadHourlyDataResponseError)
-
-export const getPostApiV1DataImporterDownloadHourlyDataUrl = (params?: PostApiV1DataImporterDownloadHourlyDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/DataImporter/DownloadHourlyData`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DataImporter/DownloadHourlyData?${stringifiedParams}` : `/api/v1/DataImporter/DownloadHourlyData`
-}
-
-export const postApiV1DataImporterDownloadHourlyData = async (params?: PostApiV1DataImporterDownloadHourlyDataParams, options?: RequestInit): Promise<postApiV1DataImporterDownloadHourlyDataResponse> => {
-
-  return speedRequest<postApiV1DataImporterDownloadHourlyDataResponse>(getPostApiV1DataImporterDownloadHourlyDataUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -799,49 +527,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1DataImporterDownloadHourlyDataMutationOptions(options));
     }
 
-export type postApiV1DataImporterDownloadClearguideHourlyResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const postApiV1DataImporterDownloadClearguideHourly = (
+    params?: PostApiV1DataImporterDownloadClearguideHourlyParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1DataImporterDownloadClearguideHourlyResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type postApiV1DataImporterDownloadClearguideHourlyResponseError = (postApiV1DataImporterDownloadClearguideHourlyResponse406ApplicationJson | postApiV1DataImporterDownloadClearguideHourlyResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1DataImporterDownloadClearguideHourlyResponse = (postApiV1DataImporterDownloadClearguideHourlyResponseError)
-
-export const getPostApiV1DataImporterDownloadClearguideHourlyUrl = (params?: PostApiV1DataImporterDownloadClearguideHourlyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/DataImporter/DownloadClearguideHourly`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DataImporter/DownloadClearguideHourly?${stringifiedParams}` : `/api/v1/DataImporter/DownloadClearguideHourly`
-}
-
-export const postApiV1DataImporterDownloadClearguideHourly = async (params?: PostApiV1DataImporterDownloadClearguideHourlyParams, options?: RequestInit): Promise<postApiV1DataImporterDownloadClearguideHourlyResponse> => {
-
-  return speedRequest<postApiV1DataImporterDownloadClearguideHourlyResponse>(getPostApiV1DataImporterDownloadClearguideHourlyUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -888,49 +585,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1DataImporterDownloadClearguideHourlyMutationOptions(options));
     }
 
-export type postApiV1DataImporterClearTempDataForClearguideResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const postApiV1DataImporterClearTempDataForClearguide = (
+    params?: PostApiV1DataImporterClearTempDataForClearguideParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1DataImporterClearTempDataForClearguideResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type postApiV1DataImporterClearTempDataForClearguideResponseError = (postApiV1DataImporterClearTempDataForClearguideResponse406ApplicationJson | postApiV1DataImporterClearTempDataForClearguideResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1DataImporterClearTempDataForClearguideResponse = (postApiV1DataImporterClearTempDataForClearguideResponseError)
-
-export const getPostApiV1DataImporterClearTempDataForClearguideUrl = (params?: PostApiV1DataImporterClearTempDataForClearguideParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/DataImporter/ClearTempDataForClearguide`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DataImporter/ClearTempDataForClearguide?${stringifiedParams}` : `/api/v1/DataImporter/ClearTempDataForClearguide`
-}
-
-export const postApiV1DataImporterClearTempDataForClearguide = async (params?: PostApiV1DataImporterClearTempDataForClearguideParams, options?: RequestInit): Promise<postApiV1DataImporterClearTempDataForClearguideResponse> => {
-
-  return speedRequest<postApiV1DataImporterClearTempDataForClearguideResponse>(getPostApiV1DataImporterClearTempDataForClearguideUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -977,72 +643,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1DataImporterClearTempDataForClearguideMutationOptions(options));
     }
 
-export type postApiV1DataQualityGetReportDataResponse200ApplicationJson = {
-  data: DataQualitySource[]
-  status: 200
-}
+export const postApiV1DataQualityGetReportData = (
+    dataQualityOptions?: DataQualityOptions,
+    params?: PostApiV1DataQualityGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1DataQualityGetReportDataResponse200ApplicationXml = {
-  data: DataQualitySource[]
-  status: 200
-}
 
-export type postApiV1DataQualityGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1DataQualityGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1DataQualityGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1DataQualityGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1DataQualityGetReportDataResponseSuccess = (postApiV1DataQualityGetReportDataResponse200ApplicationJson | postApiV1DataQualityGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1DataQualityGetReportDataResponseError = (postApiV1DataQualityGetReportDataResponse400ApplicationJson | postApiV1DataQualityGetReportDataResponse400ApplicationXml | postApiV1DataQualityGetReportDataResponse406ApplicationJson | postApiV1DataQualityGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1DataQualityGetReportDataResponse = (postApiV1DataQualityGetReportDataResponseSuccess | postApiV1DataQualityGetReportDataResponseError)
-
-export const getPostApiV1DataQualityGetReportDataUrl = (params?: PostApiV1DataQualityGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<DataQualitySource[]>(
+      {url: `/api/v1/DataQuality/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: dataQualityOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DataQuality/getReportData?${stringifiedParams}` : `/api/v1/DataQuality/getReportData`
-}
-
-export const postApiV1DataQualityGetReportData = async (dataQualityOptions?: DataQualityOptions,
-    params?: PostApiV1DataQualityGetReportDataParams, options?: RequestInit): Promise<postApiV1DataQualityGetReportDataResponse> => {
-
-  return speedRequest<postApiV1DataQualityGetReportDataResponse>(getPostApiV1DataQualityGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(dataQualityOptions)
-  }
-);}
-
 
 
 
@@ -1089,72 +704,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1DataQualityGetReportDataMutationOptions(options));
     }
 
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse200ApplicationJson = {
-  data: EffectivenessOfStrategiesDto[]
-  status: 200
-}
+export const postApiV1EffectivenessOfStrategiesGetReportData = (
+    effectivenessOfStrategiesOptions?: EffectivenessOfStrategiesOptions,
+    params?: PostApiV1EffectivenessOfStrategiesGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse200ApplicationXml = {
-  data: EffectivenessOfStrategiesDto[]
-  status: 200
-}
 
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponseSuccess = (postApiV1EffectivenessOfStrategiesGetReportDataResponse200ApplicationJson | postApiV1EffectivenessOfStrategiesGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponseError = (postApiV1EffectivenessOfStrategiesGetReportDataResponse400ApplicationJson | postApiV1EffectivenessOfStrategiesGetReportDataResponse400ApplicationXml | postApiV1EffectivenessOfStrategiesGetReportDataResponse406ApplicationJson | postApiV1EffectivenessOfStrategiesGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EffectivenessOfStrategiesGetReportDataResponse = (postApiV1EffectivenessOfStrategiesGetReportDataResponseSuccess | postApiV1EffectivenessOfStrategiesGetReportDataResponseError)
-
-export const getPostApiV1EffectivenessOfStrategiesGetReportDataUrl = (params?: PostApiV1EffectivenessOfStrategiesGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<EffectivenessOfStrategiesDto[]>(
+      {url: `/api/v1/EffectivenessOfStrategies/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: effectivenessOfStrategiesOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EffectivenessOfStrategies/getReportData?${stringifiedParams}` : `/api/v1/EffectivenessOfStrategies/getReportData`
-}
-
-export const postApiV1EffectivenessOfStrategiesGetReportData = async (effectivenessOfStrategiesOptions?: EffectivenessOfStrategiesOptions,
-    params?: PostApiV1EffectivenessOfStrategiesGetReportDataParams, options?: RequestInit): Promise<postApiV1EffectivenessOfStrategiesGetReportDataResponse> => {
-
-  return speedRequest<postApiV1EffectivenessOfStrategiesGetReportDataResponse>(getPostApiV1EffectivenessOfStrategiesGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(effectivenessOfStrategiesOptions)
-  }
-);}
-
 
 
 
@@ -1201,67 +765,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EffectivenessOfStrategiesGetReportDataMutationOptions(options));
     }
 
-export type postApiV1EntityGetEntitiesWithinRangeResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityGetEntitiesWithinRange = (
+    entityRequestOptions?: EntityRequestOptions,
+    params?: PostApiV1EntityGetEntitiesWithinRangeParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityGetEntitiesWithinRangeResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1EntityGetEntitiesWithinRangeResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityGetEntitiesWithinRangeResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityGetEntitiesWithinRangeResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityGetEntitiesWithinRangeResponseSuccess = (postApiV1EntityGetEntitiesWithinRangeResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityGetEntitiesWithinRangeResponseError = (postApiV1EntityGetEntitiesWithinRangeResponse400ApplicationJson | postApiV1EntityGetEntitiesWithinRangeResponse400ApplicationXml | postApiV1EntityGetEntitiesWithinRangeResponse406ApplicationJson | postApiV1EntityGetEntitiesWithinRangeResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityGetEntitiesWithinRangeResponse = (postApiV1EntityGetEntitiesWithinRangeResponseSuccess | postApiV1EntityGetEntitiesWithinRangeResponseError)
-
-export const getPostApiV1EntityGetEntitiesWithinRangeUrl = (params?: PostApiV1EntityGetEntitiesWithinRangeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Entity/GetEntitiesWithinRange`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: entityRequestOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Entity/GetEntitiesWithinRange?${stringifiedParams}` : `/api/v1/Entity/GetEntitiesWithinRange`
-}
-
-export const postApiV1EntityGetEntitiesWithinRange = async (entityRequestOptions?: EntityRequestOptions,
-    params?: PostApiV1EntityGetEntitiesWithinRangeParams, options?: RequestInit): Promise<postApiV1EntityGetEntitiesWithinRangeResponse> => {
-
-  return speedRequest<postApiV1EntityGetEntitiesWithinRangeResponse>(getPostApiV1EntityGetEntitiesWithinRangeUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(entityRequestOptions)
-  }
-);}
-
 
 
 
@@ -1308,66 +826,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityGetEntitiesWithinRangeMutationOptions(options));
     }
 
-export type postApiV1EntityFileGeojsonFetchFileResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityFileGeojsonFetchFile = (
+    params?: PostApiV1EntityFileGeojsonFetchFileParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityFileGeojsonFetchFileResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
 
-export type postApiV1EntityFileGeojsonFetchFileResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type postApiV1EntityFileGeojsonFetchFileResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileGeojsonFetchFileResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileGeojsonFetchFileResponseSuccess = (postApiV1EntityFileGeojsonFetchFileResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityFileGeojsonFetchFileResponseError = (postApiV1EntityFileGeojsonFetchFileResponse404ApplicationJson | postApiV1EntityFileGeojsonFetchFileResponse404ApplicationXml | postApiV1EntityFileGeojsonFetchFileResponse406ApplicationJson | postApiV1EntityFileGeojsonFetchFileResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityFileGeojsonFetchFileResponse = (postApiV1EntityFileGeojsonFetchFileResponseSuccess | postApiV1EntityFileGeojsonFetchFileResponseError)
-
-export const getPostApiV1EntityFileGeojsonFetchFileUrl = (params?: PostApiV1EntityFileGeojsonFetchFileParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityFile/geojson/fetch-file`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityFile/geojson/fetch-file?${stringifiedParams}` : `/api/v1/EntityFile/geojson/fetch-file`
-}
-
-export const postApiV1EntityFileGeojsonFetchFile = async (params?: PostApiV1EntityFileGeojsonFetchFileParams, options?: RequestInit): Promise<postApiV1EntityFileGeojsonFetchFileResponse> => {
-
-  return speedRequest<postApiV1EntityFileGeojsonFetchFileResponse>(getPostApiV1EntityFileGeojsonFetchFileUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -1414,66 +884,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityFileGeojsonFetchFileMutationOptions(options));
     }
 
-export type postApiV1EntityFileShapefileFetchFileResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityFileShapefileFetchFile = (
+    params?: PostApiV1EntityFileShapefileFetchFileParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityFileShapefileFetchFileResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
 
-export type postApiV1EntityFileShapefileFetchFileResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type postApiV1EntityFileShapefileFetchFileResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileShapefileFetchFileResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileShapefileFetchFileResponseSuccess = (postApiV1EntityFileShapefileFetchFileResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityFileShapefileFetchFileResponseError = (postApiV1EntityFileShapefileFetchFileResponse404ApplicationJson | postApiV1EntityFileShapefileFetchFileResponse404ApplicationXml | postApiV1EntityFileShapefileFetchFileResponse406ApplicationJson | postApiV1EntityFileShapefileFetchFileResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityFileShapefileFetchFileResponse = (postApiV1EntityFileShapefileFetchFileResponseSuccess | postApiV1EntityFileShapefileFetchFileResponseError)
-
-export const getPostApiV1EntityFileShapefileFetchFileUrl = (params?: PostApiV1EntityFileShapefileFetchFileParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityFile/shapefile/fetch-file`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityFile/shapefile/fetch-file?${stringifiedParams}` : `/api/v1/EntityFile/shapefile/fetch-file`
-}
-
-export const postApiV1EntityFileShapefileFetchFile = async (params?: PostApiV1EntityFileShapefileFetchFileParams, options?: RequestInit): Promise<postApiV1EntityFileShapefileFetchFileResponse> => {
-
-  return speedRequest<postApiV1EntityFileShapefileFetchFileResponse>(getPostApiV1EntityFileShapefileFetchFileUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -1520,66 +942,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityFileShapefileFetchFileMutationOptions(options));
     }
 
-export type postApiV1EntityFileAtspmRefreshResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityFileAtspmRefresh = (
+    params?: PostApiV1EntityFileAtspmRefreshParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityFileAtspmRefreshResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
 
-export type postApiV1EntityFileAtspmRefreshResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type postApiV1EntityFileAtspmRefreshResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileAtspmRefreshResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityFileAtspmRefreshResponseSuccess = (postApiV1EntityFileAtspmRefreshResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityFileAtspmRefreshResponseError = (postApiV1EntityFileAtspmRefreshResponse404ApplicationJson | postApiV1EntityFileAtspmRefreshResponse404ApplicationXml | postApiV1EntityFileAtspmRefreshResponse406ApplicationJson | postApiV1EntityFileAtspmRefreshResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityFileAtspmRefreshResponse = (postApiV1EntityFileAtspmRefreshResponseSuccess | postApiV1EntityFileAtspmRefreshResponseError)
-
-export const getPostApiV1EntityFileAtspmRefreshUrl = (params?: PostApiV1EntityFileAtspmRefreshParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityFile/atspm/refresh`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityFile/atspm/refresh?${stringifiedParams}` : `/api/v1/EntityFile/atspm/refresh`
-}
-
-export const postApiV1EntityFileAtspmRefresh = async (params?: PostApiV1EntityFileAtspmRefreshParams, options?: RequestInit): Promise<postApiV1EntityFileAtspmRefreshResponse> => {
-
-  return speedRequest<postApiV1EntityFileAtspmRefreshResponse>(getPostApiV1EntityFileAtspmRefreshUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -1626,66 +1000,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityFileAtspmRefreshMutationOptions(options));
     }
 
-export type postApiV1EntityVersionTablesResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityVersionTables = (
+    params?: PostApiV1EntityVersionTablesParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityVersionTablesResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1EntityVersionTablesResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityVersionTablesResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionTablesResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionTablesResponseSuccess = (postApiV1EntityVersionTablesResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityVersionTablesResponseError = (postApiV1EntityVersionTablesResponse400ApplicationJson | postApiV1EntityVersionTablesResponse400ApplicationXml | postApiV1EntityVersionTablesResponse406ApplicationJson | postApiV1EntityVersionTablesResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityVersionTablesResponse = (postApiV1EntityVersionTablesResponseSuccess | postApiV1EntityVersionTablesResponseError)
-
-export const getPostApiV1EntityVersionTablesUrl = (params?: PostApiV1EntityVersionTablesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityVersion/tables`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityVersion/tables?${stringifiedParams}` : `/api/v1/EntityVersion/tables`
-}
-
-export const postApiV1EntityVersionTables = async (params?: PostApiV1EntityVersionTablesParams, options?: RequestInit): Promise<postApiV1EntityVersionTablesResponse> => {
-
-  return speedRequest<postApiV1EntityVersionTablesResponse>(getPostApiV1EntityVersionTablesUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -1732,66 +1058,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityVersionTablesMutationOptions(options));
     }
 
-export type deleteApiV1EntityVersionCopiesResponse200 = {
-  data: void
-  status: 200
-}
+export const deleteApiV1EntityVersionCopies = (
+    params?: DeleteApiV1EntityVersionCopiesParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1EntityVersionCopiesResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type deleteApiV1EntityVersionCopiesResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1EntityVersionCopiesResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1EntityVersionCopiesResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1EntityVersionCopiesResponseSuccess = (deleteApiV1EntityVersionCopiesResponse200) & {
-  headers: Headers;
-};
-export type deleteApiV1EntityVersionCopiesResponseError = (deleteApiV1EntityVersionCopiesResponse400ApplicationJson | deleteApiV1EntityVersionCopiesResponse400ApplicationXml | deleteApiV1EntityVersionCopiesResponse406ApplicationJson | deleteApiV1EntityVersionCopiesResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1EntityVersionCopiesResponse = (deleteApiV1EntityVersionCopiesResponseSuccess | deleteApiV1EntityVersionCopiesResponseError)
-
-export const getDeleteApiV1EntityVersionCopiesUrl = (params?: DeleteApiV1EntityVersionCopiesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityVersion/copies`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityVersion/copies?${stringifiedParams}` : `/api/v1/EntityVersion/copies`
-}
-
-export const deleteApiV1EntityVersionCopies = async (params?: DeleteApiV1EntityVersionCopiesParams, options?: RequestInit): Promise<deleteApiV1EntityVersionCopiesResponse> => {
-
-  return speedRequest<deleteApiV1EntityVersionCopiesResponse>(getDeleteApiV1EntityVersionCopiesUrl(params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -1838,68 +1116,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1EntityVersionCopiesMutationOptions(options));
     }
 
-export type postApiV1EntityVersionEntitiesTableIdResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityVersionEntitiesTableId = (
+    tableId: string,
+    params?: PostApiV1EntityVersionEntitiesTableIdParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityVersionEntitiesTableIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1EntityVersionEntitiesTableIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityVersionEntitiesTableIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesTableIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesTableIdResponseSuccess = (postApiV1EntityVersionEntitiesTableIdResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityVersionEntitiesTableIdResponseError = (postApiV1EntityVersionEntitiesTableIdResponse400ApplicationJson | postApiV1EntityVersionEntitiesTableIdResponse400ApplicationXml | postApiV1EntityVersionEntitiesTableIdResponse406ApplicationJson | postApiV1EntityVersionEntitiesTableIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityVersionEntitiesTableIdResponse = (postApiV1EntityVersionEntitiesTableIdResponseSuccess | postApiV1EntityVersionEntitiesTableIdResponseError)
-
-export const getPostApiV1EntityVersionEntitiesTableIdUrl = (tableId: string,
-    params?: PostApiV1EntityVersionEntitiesTableIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityVersion/entities/${tableId}`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityVersion/entities/${tableId}?${stringifiedParams}` : `/api/v1/EntityVersion/entities/${tableId}`
-}
-
-export const postApiV1EntityVersionEntitiesTableId = async (tableId: string,
-    params?: PostApiV1EntityVersionEntitiesTableIdParams, options?: RequestInit): Promise<postApiV1EntityVersionEntitiesTableIdResponse> => {
-
-  return speedRequest<postApiV1EntityVersionEntitiesTableIdResponse>(getPostApiV1EntityVersionEntitiesTableIdUrl(tableId,params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -1946,69 +1175,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityVersionEntitiesTableIdMutationOptions(options));
     }
 
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse200 = {
-  data: void
-  status: 200
-}
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponseSuccess = (postApiV1EntityVersionEntitiesTableIdAreaResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityVersionEntitiesTableIdAreaResponseError = (postApiV1EntityVersionEntitiesTableIdAreaResponse400ApplicationJson | postApiV1EntityVersionEntitiesTableIdAreaResponse400ApplicationXml | postApiV1EntityVersionEntitiesTableIdAreaResponse406ApplicationJson | postApiV1EntityVersionEntitiesTableIdAreaResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityVersionEntitiesTableIdAreaResponse = (postApiV1EntityVersionEntitiesTableIdAreaResponseSuccess | postApiV1EntityVersionEntitiesTableIdAreaResponseError)
-
-export const getPostApiV1EntityVersionEntitiesTableIdAreaUrl = (tableId: string,
-    params?: PostApiV1EntityVersionEntitiesTableIdAreaParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityVersion/entities/${tableId}/area?${stringifiedParams}` : `/api/v1/EntityVersion/entities/${tableId}/area`
-}
-
-export const postApiV1EntityVersionEntitiesTableIdArea = async (tableId: string,
+export const postApiV1EntityVersionEntitiesTableIdArea = (
+    tableId: string,
     postApiV1EntityVersionEntitiesTableIdAreaBody?: string,
-    params?: PostApiV1EntityVersionEntitiesTableIdAreaParams, options?: RequestInit): Promise<postApiV1EntityVersionEntitiesTableIdAreaResponse> => {
+    params?: PostApiV1EntityVersionEntitiesTableIdAreaParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1EntityVersionEntitiesTableIdAreaResponse>(getPostApiV1EntityVersionEntitiesTableIdAreaUrl(tableId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1EntityVersionEntitiesTableIdAreaBody)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/EntityVersion/entities/${tableId}/area`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1EntityVersionEntitiesTableIdAreaBody,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2055,67 +1237,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityVersionEntitiesTableIdAreaMutationOptions(options));
     }
 
-export type postApiV1EntityVersionEntitiesAreaResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1EntityVersionEntitiesArea = (
+    postApiV1EntityVersionEntitiesAreaBody?: string,
+    params?: PostApiV1EntityVersionEntitiesAreaParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1EntityVersionEntitiesAreaResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1EntityVersionEntitiesAreaResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1EntityVersionEntitiesAreaResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesAreaResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1EntityVersionEntitiesAreaResponseSuccess = (postApiV1EntityVersionEntitiesAreaResponse200) & {
-  headers: Headers;
-};
-export type postApiV1EntityVersionEntitiesAreaResponseError = (postApiV1EntityVersionEntitiesAreaResponse400ApplicationJson | postApiV1EntityVersionEntitiesAreaResponse400ApplicationXml | postApiV1EntityVersionEntitiesAreaResponse406ApplicationJson | postApiV1EntityVersionEntitiesAreaResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1EntityVersionEntitiesAreaResponse = (postApiV1EntityVersionEntitiesAreaResponseSuccess | postApiV1EntityVersionEntitiesAreaResponseError)
-
-export const getPostApiV1EntityVersionEntitiesAreaUrl = (params?: PostApiV1EntityVersionEntitiesAreaParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/EntityVersion/entities/area`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1EntityVersionEntitiesAreaBody,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/EntityVersion/entities/area?${stringifiedParams}` : `/api/v1/EntityVersion/entities/area`
-}
-
-export const postApiV1EntityVersionEntitiesArea = async (postApiV1EntityVersionEntitiesAreaBody?: string,
-    params?: PostApiV1EntityVersionEntitiesAreaParams, options?: RequestInit): Promise<postApiV1EntityVersionEntitiesAreaResponse> => {
-
-  return speedRequest<postApiV1EntityVersionEntitiesAreaResponse>(getPostApiV1EntityVersionEntitiesAreaUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1EntityVersionEntitiesAreaBody)
-  }
-);}
-
 
 
 
@@ -2162,72 +1298,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1EntityVersionEntitiesAreaMutationOptions(options));
     }
 
-export type postApiV1ExportableReportsGetReportDataResponse200ApplicationJson = {
-  data: ExportableReportResult[]
-  status: 200
-}
+export const postApiV1ExportableReportsGetReportData = (
+    exportableReportOptions?: ExportableReportOptions,
+    params?: PostApiV1ExportableReportsGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ExportableReportsGetReportDataResponse200ApplicationXml = {
-  data: ExportableReportResult[]
-  status: 200
-}
 
-export type postApiV1ExportableReportsGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ExportableReportsGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ExportableReportsGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ExportableReportsGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ExportableReportsGetReportDataResponseSuccess = (postApiV1ExportableReportsGetReportDataResponse200ApplicationJson | postApiV1ExportableReportsGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1ExportableReportsGetReportDataResponseError = (postApiV1ExportableReportsGetReportDataResponse400ApplicationJson | postApiV1ExportableReportsGetReportDataResponse400ApplicationXml | postApiV1ExportableReportsGetReportDataResponse406ApplicationJson | postApiV1ExportableReportsGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ExportableReportsGetReportDataResponse = (postApiV1ExportableReportsGetReportDataResponseSuccess | postApiV1ExportableReportsGetReportDataResponseError)
-
-export const getPostApiV1ExportableReportsGetReportDataUrl = (params?: PostApiV1ExportableReportsGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ExportableReportResult[]>(
+      {url: `/api/v1/ExportableReports/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: exportableReportOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ExportableReports/getReportData?${stringifiedParams}` : `/api/v1/ExportableReports/getReportData`
-}
-
-export const postApiV1ExportableReportsGetReportData = async (exportableReportOptions?: ExportableReportOptions,
-    params?: PostApiV1ExportableReportsGetReportDataParams, options?: RequestInit): Promise<postApiV1ExportableReportsGetReportDataResponse> => {
-
-  return speedRequest<postApiV1ExportableReportsGetReportDataResponse>(getPostApiV1ExportableReportsGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(exportableReportOptions)
-  }
-);}
-
 
 
 
@@ -2274,71 +1359,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ExportableReportsGetReportDataMutationOptions(options));
     }
 
-export type getApiV1FunctionalTypeResponse200ApplicationJson = {
-  data: NameAndIdDto[]
-  status: 200
-}
+export const getApiV1FunctionalType = (
+    params?: GetApiV1FunctionalTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1FunctionalTypeResponse200ApplicationXml = {
-  data: NameAndIdDto[]
-  status: 200
-}
 
-export type getApiV1FunctionalTypeResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1FunctionalTypeResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1FunctionalTypeResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1FunctionalTypeResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1FunctionalTypeResponseSuccess = (getApiV1FunctionalTypeResponse200ApplicationJson | getApiV1FunctionalTypeResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1FunctionalTypeResponseError = (getApiV1FunctionalTypeResponse400ApplicationJson | getApiV1FunctionalTypeResponse400ApplicationXml | getApiV1FunctionalTypeResponse406ApplicationJson | getApiV1FunctionalTypeResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1FunctionalTypeResponse = (getApiV1FunctionalTypeResponseSuccess | getApiV1FunctionalTypeResponseError)
-
-export const getGetApiV1FunctionalTypeUrl = (params?: GetApiV1FunctionalTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<NameAndIdDto[]>(
+      {url: `/api/v1/FunctionalType`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/FunctionalType?${stringifiedParams}` : `/api/v1/FunctionalType`
-}
-
-export const getApiV1FunctionalType = async (params?: GetApiV1FunctionalTypeParams, options?: RequestInit): Promise<getApiV1FunctionalTypeResponse> => {
-
-  return speedRequest<getApiV1FunctionalTypeResponse>(getGetApiV1FunctionalTypeUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2359,7 +1391,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1FunctionalType>>> = ({ signal }) => getApiV1FunctionalType(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1FunctionalType>>> = ({ signal }) => getApiV1FunctionalType(params, signal);
 
 
 
@@ -2391,71 +1423,18 @@ export function useGetApiV1FunctionalType<TData = Awaited<ReturnType<typeof getA
 
 
 
-export type getApiV1ImpactResponse200ApplicationJson = {
-  data: Impact[]
-  status: 200
-}
+export const getApiV1Impact = (
+    params?: GetApiV1ImpactParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1ImpactResponse200ApplicationXml = {
-  data: Impact[]
-  status: 200
-}
 
-export type getApiV1ImpactResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1ImpactResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1ImpactResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactResponseSuccess = (getApiV1ImpactResponse200ApplicationJson | getApiV1ImpactResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1ImpactResponseError = (getApiV1ImpactResponse400ApplicationJson | getApiV1ImpactResponse400ApplicationXml | getApiV1ImpactResponse406ApplicationJson | getApiV1ImpactResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1ImpactResponse = (getApiV1ImpactResponseSuccess | getApiV1ImpactResponseError)
-
-export const getGetApiV1ImpactUrl = (params?: GetApiV1ImpactParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<Impact[]>(
+      {url: `/api/v1/Impact`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact?${stringifiedParams}` : `/api/v1/Impact`
-}
-
-export const getApiV1Impact = async (params?: GetApiV1ImpactParams, options?: RequestInit): Promise<getApiV1ImpactResponse> => {
-
-  return speedRequest<getApiV1ImpactResponse>(getGetApiV1ImpactUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2476,7 +1455,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Impact>>> = ({ signal }) => getApiV1Impact(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Impact>>> = ({ signal }) => getApiV1Impact(params, signal);
 
 
 
@@ -2508,72 +1487,21 @@ export function useGetApiV1Impact<TData = Awaited<ReturnType<typeof getApiV1Impa
 
 
 
-export type postApiV1ImpactResponse201ApplicationJson = {
-  data: Impact
-  status: 201
-}
+export const postApiV1Impact = (
+    impact?: Impact,
+    params?: PostApiV1ImpactParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ImpactResponse201ApplicationXml = {
-  data: Impact
-  status: 201
-}
 
-export type postApiV1ImpactResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactResponseSuccess = (postApiV1ImpactResponse201ApplicationJson | postApiV1ImpactResponse201ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1ImpactResponseError = (postApiV1ImpactResponse400ApplicationJson | postApiV1ImpactResponse400ApplicationXml | postApiV1ImpactResponse406ApplicationJson | postApiV1ImpactResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ImpactResponse = (postApiV1ImpactResponseSuccess | postApiV1ImpactResponseError)
-
-export const getPostApiV1ImpactUrl = (params?: PostApiV1ImpactParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<Impact>(
+      {url: `/api/v1/Impact`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: impact,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact?${stringifiedParams}` : `/api/v1/Impact`
-}
-
-export const postApiV1Impact = async (impact?: Impact,
-    params?: PostApiV1ImpactParams, options?: RequestInit): Promise<postApiV1ImpactResponse> => {
-
-  return speedRequest<postApiV1ImpactResponse>(getPostApiV1ImpactUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(impact)
-  }
-);}
-
 
 
 
@@ -2620,73 +1548,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ImpactMutationOptions(options));
     }
 
-export type getImpactByIdResponse200ApplicationJson = {
-  data: Impact
-  status: 200
-}
+export const getImpactById = (
+    id: string,
+    params?: GetImpactByIdParams,
+ signal?: AbortSignal
+) => {
 
-export type getImpactByIdResponse200ApplicationXml = {
-  data: Impact
-  status: 200
-}
 
-export type getImpactByIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getImpactByIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getImpactByIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getImpactByIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getImpactByIdResponseSuccess = (getImpactByIdResponse200ApplicationJson | getImpactByIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getImpactByIdResponseError = (getImpactByIdResponse400ApplicationJson | getImpactByIdResponse400ApplicationXml | getImpactByIdResponse406ApplicationJson | getImpactByIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getImpactByIdResponse = (getImpactByIdResponseSuccess | getImpactByIdResponseError)
-
-export const getGetImpactByIdUrl = (id: string,
-    params?: GetImpactByIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<Impact>(
+      {url: `/api/v1/Impact/${id}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}?${stringifiedParams}` : `/api/v1/Impact/${id}`
-}
-
-export const getImpactById = async (id: string,
-    params?: GetImpactByIdParams, options?: RequestInit): Promise<getImpactByIdResponse> => {
-
-  return speedRequest<getImpactByIdResponse>(getGetImpactByIdUrl(id,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2709,7 +1583,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getImpactById>>> = ({ signal }) => getImpactById(id,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getImpactById>>> = ({ signal }) => getImpactById(id,params, signal);
 
 
 
@@ -2742,74 +1616,22 @@ export function useGetImpactById<TData = Awaited<ReturnType<typeof getImpactById
 
 
 
-export type putApiV1ImpactIdResponse200ApplicationJson = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdResponse200ApplicationXml = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdResponseSuccess = (putApiV1ImpactIdResponse200ApplicationJson | putApiV1ImpactIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type putApiV1ImpactIdResponseError = (putApiV1ImpactIdResponse400ApplicationJson | putApiV1ImpactIdResponse400ApplicationXml | putApiV1ImpactIdResponse406ApplicationJson | putApiV1ImpactIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type putApiV1ImpactIdResponse = (putApiV1ImpactIdResponseSuccess | putApiV1ImpactIdResponseError)
-
-export const getPutApiV1ImpactIdUrl = (id: string,
-    params?: PutApiV1ImpactIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}?${stringifiedParams}` : `/api/v1/Impact/${id}`
-}
-
-export const putApiV1ImpactId = async (id: string,
+export const putApiV1ImpactId = (
+    id: string,
     impact?: Impact,
-    params?: PutApiV1ImpactIdParams, options?: RequestInit): Promise<putApiV1ImpactIdResponse> => {
+    params?: PutApiV1ImpactIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<putApiV1ImpactIdResponse>(getPutApiV1ImpactIdUrl(id,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(impact)
-  }
-);}
 
+      return speedRequest<Impact>(
+      {url: `/api/v1/Impact/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: impact,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2856,78 +1678,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPutApiV1ImpactIdMutationOptions(options));
     }
 
-export type deleteApiV1ImpactIdResponse204 = {
-  data: void
-  status: 204
-}
+export const deleteApiV1ImpactId = (
+    id: string,
+    params?: DeleteApiV1ImpactIdParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1ImpactIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type deleteApiV1ImpactIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1ImpactIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdResponseSuccess = (deleteApiV1ImpactIdResponse204) & {
-  headers: Headers;
-};
-export type deleteApiV1ImpactIdResponseError = (deleteApiV1ImpactIdResponse400ApplicationJson | deleteApiV1ImpactIdResponse400ApplicationXml | deleteApiV1ImpactIdResponse404ApplicationJson | deleteApiV1ImpactIdResponse404ApplicationXml | deleteApiV1ImpactIdResponse406ApplicationJson | deleteApiV1ImpactIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1ImpactIdResponse = (deleteApiV1ImpactIdResponseSuccess | deleteApiV1ImpactIdResponseError)
-
-export const getDeleteApiV1ImpactIdUrl = (id: string,
-    params?: DeleteApiV1ImpactIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Impact/${id}`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}?${stringifiedParams}` : `/api/v1/Impact/${id}`
-}
-
-export const deleteApiV1ImpactId = async (id: string,
-    params?: DeleteApiV1ImpactIdParams, options?: RequestInit): Promise<deleteApiV1ImpactIdResponse> => {
-
-  return speedRequest<deleteApiV1ImpactIdResponse>(getDeleteApiV1ImpactIdUrl(id,params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -2974,85 +1737,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1ImpactIdMutationOptions(options));
     }
 
-export type putApiV1ImpactIdSegmentsSegmentIdResponse200ApplicationJson = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse200ApplicationXml = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponseSuccess = (putApiV1ImpactIdSegmentsSegmentIdResponse200ApplicationJson | putApiV1ImpactIdSegmentsSegmentIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type putApiV1ImpactIdSegmentsSegmentIdResponseError = (putApiV1ImpactIdSegmentsSegmentIdResponse400ApplicationJson | putApiV1ImpactIdSegmentsSegmentIdResponse400ApplicationXml | putApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationJson | putApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationXml | putApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationJson | putApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type putApiV1ImpactIdSegmentsSegmentIdResponse = (putApiV1ImpactIdSegmentsSegmentIdResponseSuccess | putApiV1ImpactIdSegmentsSegmentIdResponseError)
-
-export const getPutApiV1ImpactIdSegmentsSegmentIdUrl = (id: string,
+export const putApiV1ImpactIdSegmentsSegmentId = (
+    id: string,
     segmentId: string,
-    params?: PutApiV1ImpactIdSegmentsSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: PutApiV1ImpactIdSegmentsSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<Impact>(
+      {url: `/api/v1/Impact/${id}/segments/${segmentId}`, method: 'PUT',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}/segments/${segmentId}?${stringifiedParams}` : `/api/v1/Impact/${id}/segments/${segmentId}`
-}
-
-export const putApiV1ImpactIdSegmentsSegmentId = async (id: string,
-    segmentId: string,
-    params?: PutApiV1ImpactIdSegmentsSegmentIdParams, options?: RequestInit): Promise<putApiV1ImpactIdSegmentsSegmentIdResponse> => {
-
-  return speedRequest<putApiV1ImpactIdSegmentsSegmentIdResponse>(getPutApiV1ImpactIdSegmentsSegmentIdUrl(id,segmentId,params),
-  {
-    ...options,
-    method: 'PUT'
-
-
-  }
-);}
-
 
 
 
@@ -3099,70 +1797,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPutApiV1ImpactIdSegmentsSegmentIdMutationOptions(options));
     }
 
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponseSuccess = (deleteApiV1ImpactIdSegmentsSegmentIdResponse204) & {
-  headers: Headers;
-};
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponseError = (deleteApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationJson | deleteApiV1ImpactIdSegmentsSegmentIdResponse404ApplicationXml | deleteApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationJson | deleteApiV1ImpactIdSegmentsSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1ImpactIdSegmentsSegmentIdResponse = (deleteApiV1ImpactIdSegmentsSegmentIdResponseSuccess | deleteApiV1ImpactIdSegmentsSegmentIdResponseError)
-
-export const getDeleteApiV1ImpactIdSegmentsSegmentIdUrl = (id: string,
+export const deleteApiV1ImpactIdSegmentsSegmentId = (
+    id: string,
     segmentId: string,
-    params?: DeleteApiV1ImpactIdSegmentsSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: DeleteApiV1ImpactIdSegmentsSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Impact/${id}/segments/${segmentId}`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}/segments/${segmentId}?${stringifiedParams}` : `/api/v1/Impact/${id}/segments/${segmentId}`
-}
-
-export const deleteApiV1ImpactIdSegmentsSegmentId = async (id: string,
-    segmentId: string,
-    params?: DeleteApiV1ImpactIdSegmentsSegmentIdParams, options?: RequestInit): Promise<deleteApiV1ImpactIdSegmentsSegmentIdResponse> => {
-
-  return speedRequest<deleteApiV1ImpactIdSegmentsSegmentIdResponse>(getDeleteApiV1ImpactIdSegmentsSegmentIdUrl(id,segmentId,params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -3209,85 +1857,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1ImpactIdSegmentsSegmentIdMutationOptions(options));
     }
 
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse200ApplicationJson = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse200ApplicationXml = {
-  data: Impact
-  status: 200
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponseSuccess = (putApiV1ImpactIdImpactTypeImpactTypeIdResponse200ApplicationJson | putApiV1ImpactIdImpactTypeImpactTypeIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponseError = (putApiV1ImpactIdImpactTypeImpactTypeIdResponse400ApplicationJson | putApiV1ImpactIdImpactTypeImpactTypeIdResponse400ApplicationXml | putApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationJson | putApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationXml | putApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationJson | putApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type putApiV1ImpactIdImpactTypeImpactTypeIdResponse = (putApiV1ImpactIdImpactTypeImpactTypeIdResponseSuccess | putApiV1ImpactIdImpactTypeImpactTypeIdResponseError)
-
-export const getPutApiV1ImpactIdImpactTypeImpactTypeIdUrl = (id: string,
+export const putApiV1ImpactIdImpactTypeImpactTypeId = (
+    id: string,
     impactTypeId: string,
-    params?: PutApiV1ImpactIdImpactTypeImpactTypeIdParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: PutApiV1ImpactIdImpactTypeImpactTypeIdParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<Impact>(
+      {url: `/api/v1/Impact/${id}/impactType/${impactTypeId}`, method: 'PUT',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}/impactType/${impactTypeId}?${stringifiedParams}` : `/api/v1/Impact/${id}/impactType/${impactTypeId}`
-}
-
-export const putApiV1ImpactIdImpactTypeImpactTypeId = async (id: string,
-    impactTypeId: string,
-    params?: PutApiV1ImpactIdImpactTypeImpactTypeIdParams, options?: RequestInit): Promise<putApiV1ImpactIdImpactTypeImpactTypeIdResponse> => {
-
-  return speedRequest<putApiV1ImpactIdImpactTypeImpactTypeIdResponse>(getPutApiV1ImpactIdImpactTypeImpactTypeIdUrl(id,impactTypeId,params),
-  {
-    ...options,
-    method: 'PUT'
-
-
-  }
-);}
-
 
 
 
@@ -3334,70 +1917,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPutApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options));
     }
 
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponseSuccess = (deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse204) & {
-  headers: Headers;
-};
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponseError = (deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationJson | deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse404ApplicationXml | deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationJson | deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse = (deleteApiV1ImpactIdImpactTypeImpactTypeIdResponseSuccess | deleteApiV1ImpactIdImpactTypeImpactTypeIdResponseError)
-
-export const getDeleteApiV1ImpactIdImpactTypeImpactTypeIdUrl = (id: string,
+export const deleteApiV1ImpactIdImpactTypeImpactTypeId = (
+    id: string,
     impactTypeId: string,
-    params?: DeleteApiV1ImpactIdImpactTypeImpactTypeIdParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: DeleteApiV1ImpactIdImpactTypeImpactTypeIdParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Impact/${id}/impactType/${impactTypeId}`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/${id}/impactType/${impactTypeId}?${stringifiedParams}` : `/api/v1/Impact/${id}/impactType/${impactTypeId}`
-}
-
-export const deleteApiV1ImpactIdImpactTypeImpactTypeId = async (id: string,
-    impactTypeId: string,
-    params?: DeleteApiV1ImpactIdImpactTypeImpactTypeIdParams, options?: RequestInit): Promise<deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse> => {
-
-  return speedRequest<deleteApiV1ImpactIdImpactTypeImpactTypeIdResponse>(getDeleteApiV1ImpactIdImpactTypeImpactTypeIdUrl(id,impactTypeId,params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -3444,72 +1977,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options));
     }
 
-export type postApiV1ImpactHotspotsResponse200ApplicationJson = {
-  data: ImpactDto[]
-  status: 200
-}
+export const postApiV1ImpactHotspots = (
+    impactAggregationOptions?: ImpactAggregationOptions,
+    params?: PostApiV1ImpactHotspotsParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ImpactHotspotsResponse200ApplicationXml = {
-  data: ImpactDto[]
-  status: 200
-}
 
-export type postApiV1ImpactHotspotsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactHotspotsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactHotspotsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactHotspotsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactHotspotsResponseSuccess = (postApiV1ImpactHotspotsResponse200ApplicationJson | postApiV1ImpactHotspotsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1ImpactHotspotsResponseError = (postApiV1ImpactHotspotsResponse400ApplicationJson | postApiV1ImpactHotspotsResponse400ApplicationXml | postApiV1ImpactHotspotsResponse406ApplicationJson | postApiV1ImpactHotspotsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ImpactHotspotsResponse = (postApiV1ImpactHotspotsResponseSuccess | postApiV1ImpactHotspotsResponseError)
-
-export const getPostApiV1ImpactHotspotsUrl = (params?: PostApiV1ImpactHotspotsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ImpactDto[]>(
+      {url: `/api/v1/Impact/hotspots`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: impactAggregationOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/hotspots?${stringifiedParams}` : `/api/v1/Impact/hotspots`
-}
-
-export const postApiV1ImpactHotspots = async (impactAggregationOptions?: ImpactAggregationOptions,
-    params?: PostApiV1ImpactHotspotsParams, options?: RequestInit): Promise<postApiV1ImpactHotspotsResponse> => {
-
-  return speedRequest<postApiV1ImpactHotspotsResponse>(getPostApiV1ImpactHotspotsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(impactAggregationOptions)
-  }
-);}
-
 
 
 
@@ -3556,68 +2038,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ImpactHotspotsMutationOptions(options));
     }
 
-export type postApiV1ImpactAggregateIdResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1ImpactAggregateId = (
+    id: string,
+    params?: PostApiV1ImpactAggregateIdParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ImpactAggregateIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1ImpactAggregateIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactAggregateIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactAggregateIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactAggregateIdResponseSuccess = (postApiV1ImpactAggregateIdResponse200) & {
-  headers: Headers;
-};
-export type postApiV1ImpactAggregateIdResponseError = (postApiV1ImpactAggregateIdResponse400ApplicationJson | postApiV1ImpactAggregateIdResponse400ApplicationXml | postApiV1ImpactAggregateIdResponse406ApplicationJson | postApiV1ImpactAggregateIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ImpactAggregateIdResponse = (postApiV1ImpactAggregateIdResponseSuccess | postApiV1ImpactAggregateIdResponseError)
-
-export const getPostApiV1ImpactAggregateIdUrl = (id: string,
-    params?: PostApiV1ImpactAggregateIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Impact/aggregate/${id}`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/aggregate/${id}?${stringifiedParams}` : `/api/v1/Impact/aggregate/${id}`
-}
-
-export const postApiV1ImpactAggregateId = async (id: string,
-    params?: PostApiV1ImpactAggregateIdParams, options?: RequestInit): Promise<postApiV1ImpactAggregateIdResponse> => {
-
-  return speedRequest<postApiV1ImpactAggregateIdResponse>(getPostApiV1ImpactAggregateIdUrl(id,params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -3664,66 +2097,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ImpactAggregateIdMutationOptions(options));
     }
 
-export type postApiV1ImpactAggregateResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1ImpactAggregate = (
+    params?: PostApiV1ImpactAggregateParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ImpactAggregateResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1ImpactAggregateResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactAggregateResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactAggregateResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactAggregateResponseSuccess = (postApiV1ImpactAggregateResponse200) & {
-  headers: Headers;
-};
-export type postApiV1ImpactAggregateResponseError = (postApiV1ImpactAggregateResponse400ApplicationJson | postApiV1ImpactAggregateResponse400ApplicationXml | postApiV1ImpactAggregateResponse406ApplicationJson | postApiV1ImpactAggregateResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ImpactAggregateResponse = (postApiV1ImpactAggregateResponseSuccess | postApiV1ImpactAggregateResponseError)
-
-export const getPostApiV1ImpactAggregateUrl = (params?: PostApiV1ImpactAggregateParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Impact/aggregate`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Impact/aggregate?${stringifiedParams}` : `/api/v1/Impact/aggregate`
-}
-
-export const postApiV1ImpactAggregate = async (params?: PostApiV1ImpactAggregateParams, options?: RequestInit): Promise<postApiV1ImpactAggregateResponse> => {
-
-  return speedRequest<postApiV1ImpactAggregateResponse>(getPostApiV1ImpactAggregateUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -3770,61 +2155,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ImpactAggregateMutationOptions(options));
     }
 
-export type getApiV1ImpactTypeResponse200ApplicationJson = {
-  data: ImpactType[]
-  status: 200
-}
+export const getApiV1ImpactType = (
+    params?: GetApiV1ImpactTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1ImpactTypeResponse200ApplicationXml = {
-  data: ImpactType[]
-  status: 200
-}
 
-export type getApiV1ImpactTypeResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactTypeResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactTypeResponseSuccess = (getApiV1ImpactTypeResponse200ApplicationJson | getApiV1ImpactTypeResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1ImpactTypeResponseError = (getApiV1ImpactTypeResponse406ApplicationJson | getApiV1ImpactTypeResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1ImpactTypeResponse = (getApiV1ImpactTypeResponseSuccess | getApiV1ImpactTypeResponseError)
-
-export const getGetApiV1ImpactTypeUrl = (params?: GetApiV1ImpactTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ImpactType[]>(
+      {url: `/api/v1/ImpactType`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ImpactType?${stringifiedParams}` : `/api/v1/ImpactType`
-}
-
-export const getApiV1ImpactType = async (params?: GetApiV1ImpactTypeParams, options?: RequestInit): Promise<getApiV1ImpactTypeResponse> => {
-
-  return speedRequest<getApiV1ImpactTypeResponse>(getGetApiV1ImpactTypeUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -3845,7 +2187,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1ImpactType>>> = ({ signal }) => getApiV1ImpactType(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1ImpactType>>> = ({ signal }) => getApiV1ImpactType(params, signal);
 
 
 
@@ -3877,72 +2219,21 @@ export function useGetApiV1ImpactType<TData = Awaited<ReturnType<typeof getApiV1
 
 
 
-export type postApiV1ImpactTypeResponse200ApplicationJson = {
-  data: ImpactType
-  status: 200
-}
+export const postApiV1ImpactType = (
+    impactType?: ImpactType,
+    params?: PostApiV1ImpactTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ImpactTypeResponse200ApplicationXml = {
-  data: ImpactType
-  status: 200
-}
 
-export type postApiV1ImpactTypeResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactTypeResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ImpactTypeResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactTypeResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ImpactTypeResponseSuccess = (postApiV1ImpactTypeResponse200ApplicationJson | postApiV1ImpactTypeResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1ImpactTypeResponseError = (postApiV1ImpactTypeResponse400ApplicationJson | postApiV1ImpactTypeResponse400ApplicationXml | postApiV1ImpactTypeResponse406ApplicationJson | postApiV1ImpactTypeResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ImpactTypeResponse = (postApiV1ImpactTypeResponseSuccess | postApiV1ImpactTypeResponseError)
-
-export const getPostApiV1ImpactTypeUrl = (params?: PostApiV1ImpactTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ImpactType>(
+      {url: `/api/v1/ImpactType`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: impactType,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ImpactType?${stringifiedParams}` : `/api/v1/ImpactType`
-}
-
-export const postApiV1ImpactType = async (impactType?: ImpactType,
-    params?: PostApiV1ImpactTypeParams, options?: RequestInit): Promise<postApiV1ImpactTypeResponse> => {
-
-  return speedRequest<postApiV1ImpactTypeResponse>(getPostApiV1ImpactTypeUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(impactType)
-  }
-);}
-
 
 
 
@@ -3989,73 +2280,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1ImpactTypeMutationOptions(options));
     }
 
-export type getApiV1ImpactTypeIdResponse200ApplicationJson = {
-  data: ImpactType
-  status: 200
-}
+export const getApiV1ImpactTypeId = (
+    id: string,
+    params?: GetApiV1ImpactTypeIdParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1ImpactTypeIdResponse200ApplicationXml = {
-  data: ImpactType
-  status: 200
-}
 
-export type getApiV1ImpactTypeIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getApiV1ImpactTypeIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type getApiV1ImpactTypeIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactTypeIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1ImpactTypeIdResponseSuccess = (getApiV1ImpactTypeIdResponse200ApplicationJson | getApiV1ImpactTypeIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1ImpactTypeIdResponseError = (getApiV1ImpactTypeIdResponse404ApplicationJson | getApiV1ImpactTypeIdResponse404ApplicationXml | getApiV1ImpactTypeIdResponse406ApplicationJson | getApiV1ImpactTypeIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1ImpactTypeIdResponse = (getApiV1ImpactTypeIdResponseSuccess | getApiV1ImpactTypeIdResponseError)
-
-export const getGetApiV1ImpactTypeIdUrl = (id: string,
-    params?: GetApiV1ImpactTypeIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ImpactType>(
+      {url: `/api/v1/ImpactType/${id}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ImpactType/${id}?${stringifiedParams}` : `/api/v1/ImpactType/${id}`
-}
-
-export const getApiV1ImpactTypeId = async (id: string,
-    params?: GetApiV1ImpactTypeIdParams, options?: RequestInit): Promise<getApiV1ImpactTypeIdResponse> => {
-
-  return speedRequest<getApiV1ImpactTypeIdResponse>(getGetApiV1ImpactTypeIdUrl(id,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -4078,7 +2315,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>> = ({ signal }) => getApiV1ImpactTypeId(id,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>> = ({ signal }) => getApiV1ImpactTypeId(id,params, signal);
 
 
 
@@ -4111,84 +2348,22 @@ export function useGetApiV1ImpactTypeId<TData = Awaited<ReturnType<typeof getApi
 
 
 
-export type putApiV1ImpactTypeIdResponse200ApplicationJson = {
-  data: ImpactType
-  status: 200
-}
-
-export type putApiV1ImpactTypeIdResponse200ApplicationXml = {
-  data: ImpactType
-  status: 200
-}
-
-export type putApiV1ImpactTypeIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactTypeIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1ImpactTypeIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactTypeIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type putApiV1ImpactTypeIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactTypeIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1ImpactTypeIdResponseSuccess = (putApiV1ImpactTypeIdResponse200ApplicationJson | putApiV1ImpactTypeIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type putApiV1ImpactTypeIdResponseError = (putApiV1ImpactTypeIdResponse400ApplicationJson | putApiV1ImpactTypeIdResponse400ApplicationXml | putApiV1ImpactTypeIdResponse404ApplicationJson | putApiV1ImpactTypeIdResponse404ApplicationXml | putApiV1ImpactTypeIdResponse406ApplicationJson | putApiV1ImpactTypeIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type putApiV1ImpactTypeIdResponse = (putApiV1ImpactTypeIdResponseSuccess | putApiV1ImpactTypeIdResponseError)
-
-export const getPutApiV1ImpactTypeIdUrl = (id: string,
-    params?: PutApiV1ImpactTypeIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ImpactType/${id}?${stringifiedParams}` : `/api/v1/ImpactType/${id}`
-}
-
-export const putApiV1ImpactTypeId = async (id: string,
+export const putApiV1ImpactTypeId = (
+    id: string,
     impactType?: ImpactType,
-    params?: PutApiV1ImpactTypeIdParams, options?: RequestInit): Promise<putApiV1ImpactTypeIdResponse> => {
+    params?: PutApiV1ImpactTypeIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<putApiV1ImpactTypeIdResponse>(getPutApiV1ImpactTypeIdUrl(id,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(impactType)
-  }
-);}
 
+      return speedRequest<ImpactType>(
+      {url: `/api/v1/ImpactType/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: impactType,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -4235,68 +2410,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPutApiV1ImpactTypeIdMutationOptions(options));
     }
 
-export type deleteApiV1ImpactTypeIdResponse204 = {
-  data: void
-  status: 204
-}
+export const deleteApiV1ImpactTypeId = (
+    id: string,
+    params?: DeleteApiV1ImpactTypeIdParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1ImpactTypeIdResponse404ApplicationJson = {
-  data: ProblemDetails
-  status: 404
-}
 
-export type deleteApiV1ImpactTypeIdResponse404ApplicationXml = {
-  data: ProblemDetails
-  status: 404
-}
-
-export type deleteApiV1ImpactTypeIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactTypeIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1ImpactTypeIdResponseSuccess = (deleteApiV1ImpactTypeIdResponse204) & {
-  headers: Headers;
-};
-export type deleteApiV1ImpactTypeIdResponseError = (deleteApiV1ImpactTypeIdResponse404ApplicationJson | deleteApiV1ImpactTypeIdResponse404ApplicationXml | deleteApiV1ImpactTypeIdResponse406ApplicationJson | deleteApiV1ImpactTypeIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1ImpactTypeIdResponse = (deleteApiV1ImpactTypeIdResponseSuccess | deleteApiV1ImpactTypeIdResponseError)
-
-export const getDeleteApiV1ImpactTypeIdUrl = (id: string,
-    params?: DeleteApiV1ImpactTypeIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/ImpactType/${id}`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ImpactType/${id}?${stringifiedParams}` : `/api/v1/ImpactType/${id}`
-}
-
-export const deleteApiV1ImpactTypeId = async (id: string,
-    params?: DeleteApiV1ImpactTypeIdParams, options?: RequestInit): Promise<deleteApiV1ImpactTypeIdResponse> => {
-
-  return speedRequest<deleteApiV1ImpactTypeIdResponse>(getDeleteApiV1ImpactTypeIdUrl(id,params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -4343,49 +2469,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1ImpactTypeIdMutationOptions(options));
     }
 
-export type postApiV1MonthlyAggregationResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const postApiV1MonthlyAggregation = (
+    params?: PostApiV1MonthlyAggregationParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1MonthlyAggregationResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type postApiV1MonthlyAggregationResponseError = (postApiV1MonthlyAggregationResponse406ApplicationJson | postApiV1MonthlyAggregationResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1MonthlyAggregationResponse = (postApiV1MonthlyAggregationResponseError)
-
-export const getPostApiV1MonthlyAggregationUrl = (params?: PostApiV1MonthlyAggregationParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/MonthlyAggregation`, method: 'POST',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation?${stringifiedParams}` : `/api/v1/MonthlyAggregation`
-}
-
-export const postApiV1MonthlyAggregation = async (params?: PostApiV1MonthlyAggregationParams, options?: RequestInit): Promise<postApiV1MonthlyAggregationResponse> => {
-
-  return speedRequest<postApiV1MonthlyAggregationResponse>(getPostApiV1MonthlyAggregationUrl(params),
-  {
-    ...options,
-    method: 'POST'
-
-
-  }
-);}
-
 
 
 
@@ -4432,66 +2527,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1MonthlyAggregationMutationOptions(options));
     }
 
-export type deleteApiV1MonthlyAggregationResponse200 = {
-  data: void
-  status: 200
-}
+export const deleteApiV1MonthlyAggregation = (
+    params?: DeleteApiV1MonthlyAggregationParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1MonthlyAggregationResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type deleteApiV1MonthlyAggregationResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1MonthlyAggregationResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1MonthlyAggregationResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1MonthlyAggregationResponseSuccess = (deleteApiV1MonthlyAggregationResponse200) & {
-  headers: Headers;
-};
-export type deleteApiV1MonthlyAggregationResponseError = (deleteApiV1MonthlyAggregationResponse400ApplicationJson | deleteApiV1MonthlyAggregationResponse400ApplicationXml | deleteApiV1MonthlyAggregationResponse406ApplicationJson | deleteApiV1MonthlyAggregationResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1MonthlyAggregationResponse = (deleteApiV1MonthlyAggregationResponseSuccess | deleteApiV1MonthlyAggregationResponseError)
-
-export const getDeleteApiV1MonthlyAggregationUrl = (params?: DeleteApiV1MonthlyAggregationParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation?${stringifiedParams}` : `/api/v1/MonthlyAggregation`
-}
-
-export const deleteApiV1MonthlyAggregation = async (params?: DeleteApiV1MonthlyAggregationParams, options?: RequestInit): Promise<deleteApiV1MonthlyAggregationResponse> => {
-
-  return speedRequest<deleteApiV1MonthlyAggregationResponse>(getDeleteApiV1MonthlyAggregationUrl(params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -4538,75 +2585,20 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1MonthlyAggregationMutationOptions(options));
     }
 
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse200ApplicationJson = {
-  data: MonthlyAggregationSimplified[]
-  status: 200
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse200ApplicationXml = {
-  data: MonthlyAggregationSimplified[]
-  status: 200
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponseSuccess = (getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse200ApplicationJson | getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponseError = (getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse400ApplicationJson | getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse400ApplicationXml | getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse406ApplicationJson | getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse = (getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponseSuccess | getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponseError)
-
-export const getGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodUrl = (monthAggClassification: AggClassification,
+export const getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod = (
+    monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<MonthlyAggregationSimplified[]>(
+      {url: `/api/v1/MonthlyAggregation/latest/${monthAggClassification}/${timePeriod}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/latest/${monthAggClassification}/${timePeriod}?${stringifiedParams}` : `/api/v1/MonthlyAggregation/latest/${monthAggClassification}/${timePeriod}`
-}
-
-export const getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod = async (monthAggClassification: AggClassification,
-    timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: RequestInit): Promise<getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse> => {
-
-  return speedRequest<getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodResponse>(getGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodUrl(monthAggClassification,timePeriod,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -4631,7 +2623,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>> = ({ signal }) => getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod(monthAggClassification,timePeriod,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>> = ({ signal }) => getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod(monthAggClassification,timePeriod,params, signal);
 
 
 
@@ -4665,72 +2657,21 @@ export function useGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePer
 
 
 
-export type postApiV1MonthlyAggregationHotspotsResponse200ApplicationJson = {
-  data: RouteSpeed[]
-  status: 200
-}
+export const postApiV1MonthlyAggregationHotspots = (
+    monthlyAggregationOptions?: MonthlyAggregationOptions,
+    params?: PostApiV1MonthlyAggregationHotspotsParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1MonthlyAggregationHotspotsResponse200ApplicationXml = {
-  data: RouteSpeed[]
-  status: 200
-}
 
-export type postApiV1MonthlyAggregationHotspotsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1MonthlyAggregationHotspotsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1MonthlyAggregationHotspotsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationHotspotsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationHotspotsResponseSuccess = (postApiV1MonthlyAggregationHotspotsResponse200ApplicationJson | postApiV1MonthlyAggregationHotspotsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1MonthlyAggregationHotspotsResponseError = (postApiV1MonthlyAggregationHotspotsResponse400ApplicationJson | postApiV1MonthlyAggregationHotspotsResponse400ApplicationXml | postApiV1MonthlyAggregationHotspotsResponse406ApplicationJson | postApiV1MonthlyAggregationHotspotsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1MonthlyAggregationHotspotsResponse = (postApiV1MonthlyAggregationHotspotsResponseSuccess | postApiV1MonthlyAggregationHotspotsResponseError)
-
-export const getPostApiV1MonthlyAggregationHotspotsUrl = (params?: PostApiV1MonthlyAggregationHotspotsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<RouteSpeed[]>(
+      {url: `/api/v1/MonthlyAggregation/hotspots`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: monthlyAggregationOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/hotspots?${stringifiedParams}` : `/api/v1/MonthlyAggregation/hotspots`
-}
-
-export const postApiV1MonthlyAggregationHotspots = async (monthlyAggregationOptions?: MonthlyAggregationOptions,
-    params?: PostApiV1MonthlyAggregationHotspotsParams, options?: RequestInit): Promise<postApiV1MonthlyAggregationHotspotsResponse> => {
-
-  return speedRequest<postApiV1MonthlyAggregationHotspotsResponse>(getPostApiV1MonthlyAggregationHotspotsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(monthlyAggregationOptions)
-  }
-);}
-
 
 
 
@@ -4777,69 +2718,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1MonthlyAggregationHotspotsMutationOptions(options));
     }
 
-export type postApiV1MonthlyAggregationSourceSourceIdResponse200 = {
-  data: void
-  status: 200
-}
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponseSuccess = (postApiV1MonthlyAggregationSourceSourceIdResponse200) & {
-  headers: Headers;
-};
-export type postApiV1MonthlyAggregationSourceSourceIdResponseError = (postApiV1MonthlyAggregationSourceSourceIdResponse400ApplicationJson | postApiV1MonthlyAggregationSourceSourceIdResponse400ApplicationXml | postApiV1MonthlyAggregationSourceSourceIdResponse406ApplicationJson | postApiV1MonthlyAggregationSourceSourceIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1MonthlyAggregationSourceSourceIdResponse = (postApiV1MonthlyAggregationSourceSourceIdResponseSuccess | postApiV1MonthlyAggregationSourceSourceIdResponseError)
-
-export const getPostApiV1MonthlyAggregationSourceSourceIdUrl = (sourceId: number,
-    params?: PostApiV1MonthlyAggregationSourceSourceIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/source/${sourceId}?${stringifiedParams}` : `/api/v1/MonthlyAggregation/source/${sourceId}`
-}
-
-export const postApiV1MonthlyAggregationSourceSourceId = async (sourceId: number,
+export const postApiV1MonthlyAggregationSourceSourceId = (
+    sourceId: number,
     postApiV1MonthlyAggregationSourceSourceIdBody?: string,
-    params?: PostApiV1MonthlyAggregationSourceSourceIdParams, options?: RequestInit): Promise<postApiV1MonthlyAggregationSourceSourceIdResponse> => {
+    params?: PostApiV1MonthlyAggregationSourceSourceIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1MonthlyAggregationSourceSourceIdResponse>(getPostApiV1MonthlyAggregationSourceSourceIdUrl(sourceId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1MonthlyAggregationSourceSourceIdBody)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/source/${sourceId}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1MonthlyAggregationSourceSourceIdBody,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -4886,67 +2780,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1MonthlyAggregationSourceSourceIdMutationOptions(options));
     }
 
-export type postApiV1MonthlyAggregationSegmentResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1MonthlyAggregationSegment = (
+    monthlyAggregation?: MonthlyAggregation,
+    params?: PostApiV1MonthlyAggregationSegmentParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1MonthlyAggregationSegmentResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1MonthlyAggregationSegmentResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1MonthlyAggregationSegmentResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationSegmentResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1MonthlyAggregationSegmentResponseSuccess = (postApiV1MonthlyAggregationSegmentResponse200) & {
-  headers: Headers;
-};
-export type postApiV1MonthlyAggregationSegmentResponseError = (postApiV1MonthlyAggregationSegmentResponse400ApplicationJson | postApiV1MonthlyAggregationSegmentResponse400ApplicationXml | postApiV1MonthlyAggregationSegmentResponse406ApplicationJson | postApiV1MonthlyAggregationSegmentResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1MonthlyAggregationSegmentResponse = (postApiV1MonthlyAggregationSegmentResponseSuccess | postApiV1MonthlyAggregationSegmentResponseError)
-
-export const getPostApiV1MonthlyAggregationSegmentUrl = (params?: PostApiV1MonthlyAggregationSegmentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/segment`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: monthlyAggregation,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/segment?${stringifiedParams}` : `/api/v1/MonthlyAggregation/segment`
-}
-
-export const postApiV1MonthlyAggregationSegment = async (monthlyAggregation?: MonthlyAggregation,
-    params?: PostApiV1MonthlyAggregationSegmentParams, options?: RequestInit): Promise<postApiV1MonthlyAggregationSegmentResponse> => {
-
-  return speedRequest<postApiV1MonthlyAggregationSegmentResponse>(getPostApiV1MonthlyAggregationSegmentUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(monthlyAggregation)
-  }
-);}
-
 
 
 
@@ -4993,66 +2841,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1MonthlyAggregationSegmentMutationOptions(options));
     }
 
-export type deleteApiV1MonthlyAggregationDuplicatesResponse200 = {
-  data: void
-  status: 200
-}
+export const deleteApiV1MonthlyAggregationDuplicates = (
+    params?: DeleteApiV1MonthlyAggregationDuplicatesParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1MonthlyAggregationDuplicatesResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type deleteApiV1MonthlyAggregationDuplicatesResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1MonthlyAggregationDuplicatesResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1MonthlyAggregationDuplicatesResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1MonthlyAggregationDuplicatesResponseSuccess = (deleteApiV1MonthlyAggregationDuplicatesResponse200) & {
-  headers: Headers;
-};
-export type deleteApiV1MonthlyAggregationDuplicatesResponseError = (deleteApiV1MonthlyAggregationDuplicatesResponse400ApplicationJson | deleteApiV1MonthlyAggregationDuplicatesResponse400ApplicationXml | deleteApiV1MonthlyAggregationDuplicatesResponse406ApplicationJson | deleteApiV1MonthlyAggregationDuplicatesResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1MonthlyAggregationDuplicatesResponse = (deleteApiV1MonthlyAggregationDuplicatesResponseSuccess | deleteApiV1MonthlyAggregationDuplicatesResponseError)
-
-export const getDeleteApiV1MonthlyAggregationDuplicatesUrl = (params?: DeleteApiV1MonthlyAggregationDuplicatesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/duplicates`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/duplicates?${stringifiedParams}` : `/api/v1/MonthlyAggregation/duplicates`
-}
-
-export const deleteApiV1MonthlyAggregationDuplicates = async (params?: DeleteApiV1MonthlyAggregationDuplicatesParams, options?: RequestInit): Promise<deleteApiV1MonthlyAggregationDuplicatesResponse> => {
-
-  return speedRequest<deleteApiV1MonthlyAggregationDuplicatesResponse>(getDeleteApiV1MonthlyAggregationDuplicatesUrl(params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -5099,77 +2899,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1MonthlyAggregationDuplicatesMutationOptions(options));
     }
 
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse200ApplicationJson = {
-  data: MonthlyAggregationSimplified[]
-  status: 200
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse200ApplicationXml = {
-  data: MonthlyAggregationSimplified[]
-  status: 200
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponseSuccess = (getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse200ApplicationJson | getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponseError = (getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse400ApplicationJson | getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse400ApplicationXml | getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse406ApplicationJson | getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse = (getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponseSuccess | getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponseError)
-
-export const getGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodUrl = (segmentId: string,
+export const getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod = (
+    segmentId: string,
     monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams,) => {
-  const normalizedParams = new URLSearchParams();
+    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams,
+ signal?: AbortSignal
+) => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<MonthlyAggregationSimplified[]>(
+      {url: `/api/v1/MonthlyAggregation/segments/${segmentId}/${monthAggClassification}/${timePeriod}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/segments/${segmentId}/${monthAggClassification}/${timePeriod}?${stringifiedParams}` : `/api/v1/MonthlyAggregation/segments/${segmentId}/${monthAggClassification}/${timePeriod}`
-}
-
-export const getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod = async (segmentId: string,
-    monthAggClassification: AggClassification,
-    timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: RequestInit): Promise<getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse> => {
-
-  return speedRequest<getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodResponse>(getGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodUrl(segmentId,monthAggClassification,timePeriod,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5196,7 +2940,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>> = ({ signal }) => getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod(segmentId,monthAggClassification,timePeriod,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>> = ({ signal }) => getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod(segmentId,monthAggClassification,timePeriod,params, signal);
 
 
 
@@ -5231,66 +2975,18 @@ export function useGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassifica
 
 
 
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1MonthlyAggregationFilteringTimePeriods = (
+    params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponseSuccess = (getApiV1MonthlyAggregationFilteringTimePeriodsResponse200) & {
-  headers: Headers;
-};
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponseError = (getApiV1MonthlyAggregationFilteringTimePeriodsResponse400ApplicationJson | getApiV1MonthlyAggregationFilteringTimePeriodsResponse400ApplicationXml | getApiV1MonthlyAggregationFilteringTimePeriodsResponse406ApplicationJson | getApiV1MonthlyAggregationFilteringTimePeriodsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1MonthlyAggregationFilteringTimePeriodsResponse = (getApiV1MonthlyAggregationFilteringTimePeriodsResponseSuccess | getApiV1MonthlyAggregationFilteringTimePeriodsResponseError)
-
-export const getGetApiV1MonthlyAggregationFilteringTimePeriodsUrl = (params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/filtering-time-periods`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/filtering-time-periods?${stringifiedParams}` : `/api/v1/MonthlyAggregation/filtering-time-periods`
-}
-
-export const getApiV1MonthlyAggregationFilteringTimePeriods = async (params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: RequestInit): Promise<getApiV1MonthlyAggregationFilteringTimePeriodsResponse> => {
-
-  return speedRequest<getApiV1MonthlyAggregationFilteringTimePeriodsResponse>(getGetApiV1MonthlyAggregationFilteringTimePeriodsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5311,7 +3007,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>> = ({ signal }) => getApiV1MonthlyAggregationFilteringTimePeriods(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>> = ({ signal }) => getApiV1MonthlyAggregationFilteringTimePeriods(params, signal);
 
 
 
@@ -5343,66 +3039,18 @@ export function useGetApiV1MonthlyAggregationFilteringTimePeriods<TData = Awaite
 
 
 
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1MonthlyAggregationMonthAggClassifications = (
+    params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponseSuccess = (getApiV1MonthlyAggregationMonthAggClassificationsResponse200) & {
-  headers: Headers;
-};
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponseError = (getApiV1MonthlyAggregationMonthAggClassificationsResponse400ApplicationJson | getApiV1MonthlyAggregationMonthAggClassificationsResponse400ApplicationXml | getApiV1MonthlyAggregationMonthAggClassificationsResponse406ApplicationJson | getApiV1MonthlyAggregationMonthAggClassificationsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1MonthlyAggregationMonthAggClassificationsResponse = (getApiV1MonthlyAggregationMonthAggClassificationsResponseSuccess | getApiV1MonthlyAggregationMonthAggClassificationsResponseError)
-
-export const getGetApiV1MonthlyAggregationMonthAggClassificationsUrl = (params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/month-agg-classifications`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/month-agg-classifications?${stringifiedParams}` : `/api/v1/MonthlyAggregation/month-agg-classifications`
-}
-
-export const getApiV1MonthlyAggregationMonthAggClassifications = async (params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: RequestInit): Promise<getApiV1MonthlyAggregationMonthAggClassificationsResponse> => {
-
-  return speedRequest<getApiV1MonthlyAggregationMonthAggClassificationsResponse>(getGetApiV1MonthlyAggregationMonthAggClassificationsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5423,7 +3071,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>> = ({ signal }) => getApiV1MonthlyAggregationMonthAggClassifications(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>> = ({ signal }) => getApiV1MonthlyAggregationMonthAggClassifications(params, signal);
 
 
 
@@ -5455,66 +3103,18 @@ export function useGetApiV1MonthlyAggregationMonthAggClassifications<TData = Awa
 
 
 
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1MonthlyAggregationSpeedCategoryFilters = (
+    params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponseSuccess = (getApiV1MonthlyAggregationSpeedCategoryFiltersResponse200) & {
-  headers: Headers;
-};
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponseError = (getApiV1MonthlyAggregationSpeedCategoryFiltersResponse400ApplicationJson | getApiV1MonthlyAggregationSpeedCategoryFiltersResponse400ApplicationXml | getApiV1MonthlyAggregationSpeedCategoryFiltersResponse406ApplicationJson | getApiV1MonthlyAggregationSpeedCategoryFiltersResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1MonthlyAggregationSpeedCategoryFiltersResponse = (getApiV1MonthlyAggregationSpeedCategoryFiltersResponseSuccess | getApiV1MonthlyAggregationSpeedCategoryFiltersResponseError)
-
-export const getGetApiV1MonthlyAggregationSpeedCategoryFiltersUrl = (params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/MonthlyAggregation/speed-category-filters`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MonthlyAggregation/speed-category-filters?${stringifiedParams}` : `/api/v1/MonthlyAggregation/speed-category-filters`
-}
-
-export const getApiV1MonthlyAggregationSpeedCategoryFilters = async (params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: RequestInit): Promise<getApiV1MonthlyAggregationSpeedCategoryFiltersResponse> => {
-
-  return speedRequest<getApiV1MonthlyAggregationSpeedCategoryFiltersResponse>(getGetApiV1MonthlyAggregationSpeedCategoryFiltersUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5535,7 +3135,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>> = ({ signal }) => getApiV1MonthlyAggregationSpeedCategoryFilters(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>> = ({ signal }) => getApiV1MonthlyAggregationSpeedCategoryFilters(params, signal);
 
 
 
@@ -5567,71 +3167,18 @@ export function useGetApiV1MonthlyAggregationSpeedCategoryFilters<TData = Awaite
 
 
 
-export type getApiV1RegionResponse200ApplicationJson = {
-  data: NameAndIdDto[]
-  status: 200
-}
+export const getApiV1Region = (
+    params?: GetApiV1RegionParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1RegionResponse200ApplicationXml = {
-  data: NameAndIdDto[]
-  status: 200
-}
 
-export type getApiV1RegionResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1RegionResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1RegionResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1RegionResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1RegionResponseSuccess = (getApiV1RegionResponse200ApplicationJson | getApiV1RegionResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type getApiV1RegionResponseError = (getApiV1RegionResponse400ApplicationJson | getApiV1RegionResponse400ApplicationXml | getApiV1RegionResponse406ApplicationJson | getApiV1RegionResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1RegionResponse = (getApiV1RegionResponseSuccess | getApiV1RegionResponseError)
-
-export const getGetApiV1RegionUrl = (params?: GetApiV1RegionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<NameAndIdDto[]>(
+      {url: `/api/v1/Region`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region?${stringifiedParams}` : `/api/v1/Region`
-}
-
-export const getApiV1Region = async (params?: GetApiV1RegionParams, options?: RequestInit): Promise<getApiV1RegionResponse> => {
-
-  return speedRequest<getApiV1RegionResponse>(getGetApiV1RegionUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5652,7 +3199,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Region>>> = ({ signal }) => getApiV1Region(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Region>>> = ({ signal }) => getApiV1Region(params, signal);
 
 
 
@@ -5684,66 +3231,18 @@ export function useGetApiV1Region<TData = Awaited<ReturnType<typeof getApiV1Regi
 
 
 
-export type getApiV1SegmentResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1Segment = (
+    params?: GetApiV1SegmentParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1SegmentResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1SegmentResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1SegmentResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentResponseSuccess = (getApiV1SegmentResponse200) & {
-  headers: Headers;
-};
-export type getApiV1SegmentResponseError = (getApiV1SegmentResponse400ApplicationJson | getApiV1SegmentResponse400ApplicationXml | getApiV1SegmentResponse406ApplicationJson | getApiV1SegmentResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1SegmentResponse = (getApiV1SegmentResponseSuccess | getApiV1SegmentResponseError)
-
-export const getGetApiV1SegmentUrl = (params?: GetApiV1SegmentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Segment`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment?${stringifiedParams}` : `/api/v1/Segment`
-}
-
-export const getApiV1Segment = async (params?: GetApiV1SegmentParams, options?: RequestInit): Promise<getApiV1SegmentResponse> => {
-
-  return speedRequest<getApiV1SegmentResponse>(getGetApiV1SegmentUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5764,7 +3263,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Segment>>> = ({ signal }) => getApiV1Segment(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1Segment>>> = ({ signal }) => getApiV1Segment(params, signal);
 
 
 
@@ -5796,67 +3295,21 @@ export function useGetApiV1Segment<TData = Awaited<ReturnType<typeof getApiV1Seg
 
 
 
-export type postApiV1SegmentResponse200 = {
-  data: void
-  status: 200
-}
+export const postApiV1Segment = (
+    postApiV1SegmentBody?: string[],
+    params?: PostApiV1SegmentParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SegmentResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1SegmentResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentResponseSuccess = (postApiV1SegmentResponse200) & {
-  headers: Headers;
-};
-export type postApiV1SegmentResponseError = (postApiV1SegmentResponse400ApplicationJson | postApiV1SegmentResponse400ApplicationXml | postApiV1SegmentResponse406ApplicationJson | postApiV1SegmentResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentResponse = (postApiV1SegmentResponseSuccess | postApiV1SegmentResponseError)
-
-export const getPostApiV1SegmentUrl = (params?: PostApiV1SegmentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Segment`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1SegmentBody,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment?${stringifiedParams}` : `/api/v1/Segment`
-}
-
-export const postApiV1Segment = async (postApiV1SegmentBody?: string[],
-    params?: PostApiV1SegmentParams, options?: RequestInit): Promise<postApiV1SegmentResponse> => {
-
-  return speedRequest<postApiV1SegmentResponse>(getPostApiV1SegmentUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1SegmentBody)
-  }
-);}
-
 
 
 
@@ -5903,66 +3356,18 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentMutationOptions(options));
     }
 
-export type getApiV1SegmentAllSegmentsResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1SegmentAllSegments = (
+    params?: GetApiV1SegmentAllSegmentsParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1SegmentAllSegmentsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1SegmentAllSegmentsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1SegmentAllSegmentsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentAllSegmentsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentAllSegmentsResponseSuccess = (getApiV1SegmentAllSegmentsResponse200) & {
-  headers: Headers;
-};
-export type getApiV1SegmentAllSegmentsResponseError = (getApiV1SegmentAllSegmentsResponse400ApplicationJson | getApiV1SegmentAllSegmentsResponse400ApplicationXml | getApiV1SegmentAllSegmentsResponse406ApplicationJson | getApiV1SegmentAllSegmentsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1SegmentAllSegmentsResponse = (getApiV1SegmentAllSegmentsResponseSuccess | getApiV1SegmentAllSegmentsResponseError)
-
-export const getGetApiV1SegmentAllSegmentsUrl = (params?: GetApiV1SegmentAllSegmentsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/AllSegments`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/AllSegments?${stringifiedParams}` : `/api/v1/Segment/AllSegments`
-}
-
-export const getApiV1SegmentAllSegments = async (params?: GetApiV1SegmentAllSegmentsParams, options?: RequestInit): Promise<getApiV1SegmentAllSegmentsResponse> => {
-
-  return speedRequest<getApiV1SegmentAllSegmentsResponse>(getGetApiV1SegmentAllSegmentsUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -5983,7 +3388,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>> = ({ signal }) => getApiV1SegmentAllSegments(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>> = ({ signal }) => getApiV1SegmentAllSegments(params, signal);
 
 
 
@@ -6015,68 +3420,19 @@ export function useGetApiV1SegmentAllSegments<TData = Awaited<ReturnType<typeof 
 
 
 
-export type getApiV1SegmentSegmentIdResponse200 = {
-  data: void
-  status: 200
-}
+export const getApiV1SegmentSegmentId = (
+    segmentId: string,
+    params?: GetApiV1SegmentSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-export type getApiV1SegmentSegmentIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getApiV1SegmentSegmentIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getApiV1SegmentSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getApiV1SegmentSegmentIdResponseSuccess = (getApiV1SegmentSegmentIdResponse200) & {
-  headers: Headers;
-};
-export type getApiV1SegmentSegmentIdResponseError = (getApiV1SegmentSegmentIdResponse400ApplicationJson | getApiV1SegmentSegmentIdResponse400ApplicationXml | getApiV1SegmentSegmentIdResponse406ApplicationJson | getApiV1SegmentSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getApiV1SegmentSegmentIdResponse = (getApiV1SegmentSegmentIdResponseSuccess | getApiV1SegmentSegmentIdResponseError)
-
-export const getGetApiV1SegmentSegmentIdUrl = (segmentId: string,
-    params?: GetApiV1SegmentSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/${segmentId}`, method: 'GET',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/${segmentId}?${stringifiedParams}` : `/api/v1/Segment/${segmentId}`
-}
-
-export const getApiV1SegmentSegmentId = async (segmentId: string,
-    params?: GetApiV1SegmentSegmentIdParams, options?: RequestInit): Promise<getApiV1SegmentSegmentIdResponse> => {
-
-  return speedRequest<getApiV1SegmentSegmentIdResponse>(getGetApiV1SegmentSegmentIdUrl(segmentId,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -6099,7 +3455,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>> = ({ signal }) => getApiV1SegmentSegmentId(segmentId,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>> = ({ signal }) => getApiV1SegmentSegmentId(segmentId,params, signal);
 
 
 
@@ -6132,72 +3488,21 @@ export function useGetApiV1SegmentSegmentId<TData = Awaited<ReturnType<typeof ge
 
 
 
-export type postApiV1SegmentSpeedsResponse200ApplicationJson = {
-  data: HourlySpeed[]
-  status: 200
-}
+export const postApiV1SegmentSpeeds = (
+    segmentRequestDto?: SegmentRequestDto,
+    params?: PostApiV1SegmentSpeedsParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SegmentSpeedsResponse200ApplicationXml = {
-  data: HourlySpeed[]
-  status: 200
-}
 
-export type postApiV1SegmentSpeedsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSpeedsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSpeedsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSpeedsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSpeedsResponseSuccess = (postApiV1SegmentSpeedsResponse200ApplicationJson | postApiV1SegmentSpeedsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SegmentSpeedsResponseError = (postApiV1SegmentSpeedsResponse400ApplicationJson | postApiV1SegmentSpeedsResponse400ApplicationXml | postApiV1SegmentSpeedsResponse406ApplicationJson | postApiV1SegmentSpeedsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentSpeedsResponse = (postApiV1SegmentSpeedsResponseSuccess | postApiV1SegmentSpeedsResponseError)
-
-export const getPostApiV1SegmentSpeedsUrl = (params?: PostApiV1SegmentSpeedsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<HourlySpeed[]>(
+      {url: `/api/v1/Segment/speeds`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: segmentRequestDto,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/speeds?${stringifiedParams}` : `/api/v1/Segment/speeds`
-}
-
-export const postApiV1SegmentSpeeds = async (segmentRequestDto?: SegmentRequestDto,
-    params?: PostApiV1SegmentSpeedsParams, options?: RequestInit): Promise<postApiV1SegmentSpeedsResponse> => {
-
-  return speedRequest<postApiV1SegmentSpeedsResponse>(getPostApiV1SegmentSpeedsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(segmentRequestDto)
-  }
-);}
-
 
 
 
@@ -6244,74 +3549,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentSpeedsMutationOptions(options));
     }
 
-export type postApiV1SegmentSegmentIdSpeedsResponse200ApplicationJson = {
-  data: HourlySpeed[]
-  status: 200
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponse200ApplicationXml = {
-  data: HourlySpeed[]
-  status: 200
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdSpeedsResponseSuccess = (postApiV1SegmentSegmentIdSpeedsResponse200ApplicationJson | postApiV1SegmentSegmentIdSpeedsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SegmentSegmentIdSpeedsResponseError = (postApiV1SegmentSegmentIdSpeedsResponse400ApplicationJson | postApiV1SegmentSegmentIdSpeedsResponse400ApplicationXml | postApiV1SegmentSegmentIdSpeedsResponse406ApplicationJson | postApiV1SegmentSegmentIdSpeedsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentSegmentIdSpeedsResponse = (postApiV1SegmentSegmentIdSpeedsResponseSuccess | postApiV1SegmentSegmentIdSpeedsResponseError)
-
-export const getPostApiV1SegmentSegmentIdSpeedsUrl = (segmentId: string,
-    params?: PostApiV1SegmentSegmentIdSpeedsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/${segmentId}/speeds?${stringifiedParams}` : `/api/v1/Segment/${segmentId}/speeds`
-}
-
-export const postApiV1SegmentSegmentIdSpeeds = async (segmentId: string,
+export const postApiV1SegmentSegmentIdSpeeds = (
+    segmentId: string,
     segmentRequestDto?: SegmentRequestDto,
-    params?: PostApiV1SegmentSegmentIdSpeedsParams, options?: RequestInit): Promise<postApiV1SegmentSegmentIdSpeedsResponse> => {
+    params?: PostApiV1SegmentSegmentIdSpeedsParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1SegmentSegmentIdSpeedsResponse>(getPostApiV1SegmentSegmentIdSpeedsUrl(segmentId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(segmentRequestDto)
-  }
-);}
 
+      return speedRequest<HourlySpeed[]>(
+      {url: `/api/v1/Segment/${segmentId}/speeds`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: segmentRequestDto,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -6358,67 +3611,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentSegmentIdSpeedsMutationOptions(options));
     }
 
-export type postApiV1SegmentAddSegmentResponse201 = {
-  data: void
-  status: 201
-}
+export const postApiV1SegmentAddSegment = (
+    newSegment?: NewSegment,
+    params?: PostApiV1SegmentAddSegmentParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SegmentAddSegmentResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type postApiV1SegmentAddSegmentResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentAddSegmentResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentAddSegmentResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentAddSegmentResponseSuccess = (postApiV1SegmentAddSegmentResponse201) & {
-  headers: Headers;
-};
-export type postApiV1SegmentAddSegmentResponseError = (postApiV1SegmentAddSegmentResponse400ApplicationJson | postApiV1SegmentAddSegmentResponse400ApplicationXml | postApiV1SegmentAddSegmentResponse406ApplicationJson | postApiV1SegmentAddSegmentResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentAddSegmentResponse = (postApiV1SegmentAddSegmentResponseSuccess | postApiV1SegmentAddSegmentResponseError)
-
-export const getPostApiV1SegmentAddSegmentUrl = (params?: PostApiV1SegmentAddSegmentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/AddSegment`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: newSegment,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/AddSegment?${stringifiedParams}` : `/api/v1/Segment/AddSegment`
-}
-
-export const postApiV1SegmentAddSegment = async (newSegment?: NewSegment,
-    params?: PostApiV1SegmentAddSegmentParams, options?: RequestInit): Promise<postApiV1SegmentAddSegmentResponse> => {
-
-  return speedRequest<postApiV1SegmentAddSegmentResponse>(getPostApiV1SegmentAddSegmentUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(newSegment)
-  }
-);}
-
 
 
 
@@ -6465,69 +3672,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentAddSegmentMutationOptions(options));
     }
 
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse201 = {
-  data: void
-  status: 201
-}
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponseSuccess = (postApiV1SegmentSegmentIdEntitiesReplaceResponse201) & {
-  headers: Headers;
-};
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponseError = (postApiV1SegmentSegmentIdEntitiesReplaceResponse400ApplicationJson | postApiV1SegmentSegmentIdEntitiesReplaceResponse400ApplicationXml | postApiV1SegmentSegmentIdEntitiesReplaceResponse406ApplicationJson | postApiV1SegmentSegmentIdEntitiesReplaceResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentSegmentIdEntitiesReplaceResponse = (postApiV1SegmentSegmentIdEntitiesReplaceResponseSuccess | postApiV1SegmentSegmentIdEntitiesReplaceResponseError)
-
-export const getPostApiV1SegmentSegmentIdEntitiesReplaceUrl = (segmentId: string,
-    params?: PostApiV1SegmentSegmentIdEntitiesReplaceParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/${segmentId}/Entities/Replace?${stringifiedParams}` : `/api/v1/Segment/${segmentId}/Entities/Replace`
-}
-
-export const postApiV1SegmentSegmentIdEntitiesReplace = async (segmentId: string,
+export const postApiV1SegmentSegmentIdEntitiesReplace = (
+    segmentId: string,
     postApiV1SegmentSegmentIdEntitiesReplaceBody?: string[],
-    params?: PostApiV1SegmentSegmentIdEntitiesReplaceParams, options?: RequestInit): Promise<postApiV1SegmentSegmentIdEntitiesReplaceResponse> => {
+    params?: PostApiV1SegmentSegmentIdEntitiesReplaceParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1SegmentSegmentIdEntitiesReplaceResponse>(getPostApiV1SegmentSegmentIdEntitiesReplaceUrl(segmentId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1SegmentSegmentIdEntitiesReplaceBody)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/${segmentId}/Entities/Replace`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1SegmentSegmentIdEntitiesReplaceBody,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -6574,69 +3734,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentSegmentIdEntitiesReplaceMutationOptions(options));
     }
 
-export type postApiV1SegmentSegmentIdEntitiesAddResponse201 = {
-  data: void
-  status: 201
-}
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponseSuccess = (postApiV1SegmentSegmentIdEntitiesAddResponse201) & {
-  headers: Headers;
-};
-export type postApiV1SegmentSegmentIdEntitiesAddResponseError = (postApiV1SegmentSegmentIdEntitiesAddResponse400ApplicationJson | postApiV1SegmentSegmentIdEntitiesAddResponse400ApplicationXml | postApiV1SegmentSegmentIdEntitiesAddResponse406ApplicationJson | postApiV1SegmentSegmentIdEntitiesAddResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SegmentSegmentIdEntitiesAddResponse = (postApiV1SegmentSegmentIdEntitiesAddResponseSuccess | postApiV1SegmentSegmentIdEntitiesAddResponseError)
-
-export const getPostApiV1SegmentSegmentIdEntitiesAddUrl = (segmentId: string,
-    params?: PostApiV1SegmentSegmentIdEntitiesAddParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/${segmentId}/Entities/Add?${stringifiedParams}` : `/api/v1/Segment/${segmentId}/Entities/Add`
-}
-
-export const postApiV1SegmentSegmentIdEntitiesAdd = async (segmentId: string,
+export const postApiV1SegmentSegmentIdEntitiesAdd = (
+    segmentId: string,
     postApiV1SegmentSegmentIdEntitiesAddBody?: string[],
-    params?: PostApiV1SegmentSegmentIdEntitiesAddParams, options?: RequestInit): Promise<postApiV1SegmentSegmentIdEntitiesAddResponse> => {
+    params?: PostApiV1SegmentSegmentIdEntitiesAddParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1SegmentSegmentIdEntitiesAddResponse>(getPostApiV1SegmentSegmentIdEntitiesAddUrl(segmentId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(postApiV1SegmentSegmentIdEntitiesAddBody)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/${segmentId}/Entities/Add`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: postApiV1SegmentSegmentIdEntitiesAddBody,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -6683,69 +3796,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SegmentSegmentIdEntitiesAddMutationOptions(options));
     }
 
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse201 = {
-  data: void
-  status: 201
-}
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponseSuccess = (deleteApiV1SegmentSegmentIdEntitiesDeleteResponse201) & {
-  headers: Headers;
-};
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponseError = (deleteApiV1SegmentSegmentIdEntitiesDeleteResponse400ApplicationJson | deleteApiV1SegmentSegmentIdEntitiesDeleteResponse400ApplicationXml | deleteApiV1SegmentSegmentIdEntitiesDeleteResponse406ApplicationJson | deleteApiV1SegmentSegmentIdEntitiesDeleteResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1SegmentSegmentIdEntitiesDeleteResponse = (deleteApiV1SegmentSegmentIdEntitiesDeleteResponseSuccess | deleteApiV1SegmentSegmentIdEntitiesDeleteResponseError)
-
-export const getDeleteApiV1SegmentSegmentIdEntitiesDeleteUrl = (segmentId: string,
-    params?: DeleteApiV1SegmentSegmentIdEntitiesDeleteParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/${segmentId}/Entities/Delete?${stringifiedParams}` : `/api/v1/Segment/${segmentId}/Entities/Delete`
-}
-
-export const deleteApiV1SegmentSegmentIdEntitiesDelete = async (segmentId: string,
+export const deleteApiV1SegmentSegmentIdEntitiesDelete = (
+    segmentId: string,
     deleteApiV1SegmentSegmentIdEntitiesDeleteBody?: string[],
-    params?: DeleteApiV1SegmentSegmentIdEntitiesDeleteParams, options?: RequestInit): Promise<deleteApiV1SegmentSegmentIdEntitiesDeleteResponse> => {
+    params?: DeleteApiV1SegmentSegmentIdEntitiesDeleteParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<deleteApiV1SegmentSegmentIdEntitiesDeleteResponse>(getDeleteApiV1SegmentSegmentIdEntitiesDeleteUrl(segmentId,params),
-  {
-    ...options,
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(deleteApiV1SegmentSegmentIdEntitiesDeleteBody)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/${segmentId}/Entities/Delete`, method: 'DELETE',
+      headers: {'Content-Type': 'application/json', },
+      data: deleteApiV1SegmentSegmentIdEntitiesDeleteBody,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -6792,69 +3858,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1SegmentSegmentIdEntitiesDeleteMutationOptions(options));
     }
 
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponseSuccess = (putApiV1SegmentUpdateSegmentSegmentIdResponse204) & {
-  headers: Headers;
-};
-export type putApiV1SegmentUpdateSegmentSegmentIdResponseError = (putApiV1SegmentUpdateSegmentSegmentIdResponse400ApplicationJson | putApiV1SegmentUpdateSegmentSegmentIdResponse400ApplicationXml | putApiV1SegmentUpdateSegmentSegmentIdResponse406ApplicationJson | putApiV1SegmentUpdateSegmentSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type putApiV1SegmentUpdateSegmentSegmentIdResponse = (putApiV1SegmentUpdateSegmentSegmentIdResponseSuccess | putApiV1SegmentUpdateSegmentSegmentIdResponseError)
-
-export const getPutApiV1SegmentUpdateSegmentSegmentIdUrl = (segmentId: string,
-    params?: PutApiV1SegmentUpdateSegmentSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/UpdateSegment/${segmentId}?${stringifiedParams}` : `/api/v1/Segment/UpdateSegment/${segmentId}`
-}
-
-export const putApiV1SegmentUpdateSegmentSegmentId = async (segmentId: string,
+export const putApiV1SegmentUpdateSegmentSegmentId = (
+    segmentId: string,
     newSegmentWithId?: NewSegmentWithId,
-    params?: PutApiV1SegmentUpdateSegmentSegmentIdParams, options?: RequestInit): Promise<putApiV1SegmentUpdateSegmentSegmentIdResponse> => {
+    params?: PutApiV1SegmentUpdateSegmentSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<putApiV1SegmentUpdateSegmentSegmentIdResponse>(getPutApiV1SegmentUpdateSegmentSegmentIdUrl(segmentId,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(newSegmentWithId)
-  }
-);}
 
+      return speedRequest<void>(
+      {url: `/api/v1/Segment/UpdateSegment/${segmentId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: newSegmentWithId,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -6901,51 +3920,19 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPutApiV1SegmentUpdateSegmentSegmentIdMutationOptions(options));
     }
 
-export type deleteApiV1SegmentDeleteSegmentSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
+export const deleteApiV1SegmentDeleteSegmentSegmentId = (
+    segmentId: string,
+    params?: DeleteApiV1SegmentDeleteSegmentSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-export type deleteApiV1SegmentDeleteSegmentSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
 
-;
-export type deleteApiV1SegmentDeleteSegmentSegmentIdResponseError = (deleteApiV1SegmentDeleteSegmentSegmentIdResponse406ApplicationJson | deleteApiV1SegmentDeleteSegmentSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type deleteApiV1SegmentDeleteSegmentSegmentIdResponse = (deleteApiV1SegmentDeleteSegmentSegmentIdResponseError)
-
-export const getDeleteApiV1SegmentDeleteSegmentSegmentIdUrl = (segmentId: string,
-    params?: DeleteApiV1SegmentDeleteSegmentSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<unknown>(
+      {url: `/api/v1/Segment/DeleteSegment/${segmentId}`, method: 'DELETE',
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Segment/DeleteSegment/${segmentId}?${stringifiedParams}` : `/api/v1/Segment/DeleteSegment/${segmentId}`
-}
-
-export const deleteApiV1SegmentDeleteSegmentSegmentId = async (segmentId: string,
-    params?: DeleteApiV1SegmentDeleteSegmentSegmentIdParams, options?: RequestInit): Promise<deleteApiV1SegmentDeleteSegmentSegmentIdResponse> => {
-
-  return speedRequest<deleteApiV1SegmentDeleteSegmentSegmentIdResponse>(getDeleteApiV1SegmentDeleteSegmentSegmentIdUrl(segmentId,params),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
 
 
 
@@ -6992,72 +3979,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteApiV1SegmentDeleteSegmentSegmentIdMutationOptions(options));
     }
 
-export type postApiV1SpeedComplianceGetReportDataResponse200ApplicationJson = {
-  data: SpeedComplianceDto[]
-  status: 200
-}
+export const postApiV1SpeedComplianceGetReportData = (
+    speedComplianceOptions?: SpeedComplianceOptions,
+    params?: PostApiV1SpeedComplianceGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedComplianceGetReportDataResponse200ApplicationXml = {
-  data: SpeedComplianceDto[]
-  status: 200
-}
 
-export type postApiV1SpeedComplianceGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedComplianceGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedComplianceGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedComplianceGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedComplianceGetReportDataResponseSuccess = (postApiV1SpeedComplianceGetReportDataResponse200ApplicationJson | postApiV1SpeedComplianceGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedComplianceGetReportDataResponseError = (postApiV1SpeedComplianceGetReportDataResponse400ApplicationJson | postApiV1SpeedComplianceGetReportDataResponse400ApplicationXml | postApiV1SpeedComplianceGetReportDataResponse406ApplicationJson | postApiV1SpeedComplianceGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedComplianceGetReportDataResponse = (postApiV1SpeedComplianceGetReportDataResponseSuccess | postApiV1SpeedComplianceGetReportDataResponseError)
-
-export const getPostApiV1SpeedComplianceGetReportDataUrl = (params?: PostApiV1SpeedComplianceGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<SpeedComplianceDto[]>(
+      {url: `/api/v1/SpeedCompliance/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedComplianceOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedCompliance/getReportData?${stringifiedParams}` : `/api/v1/SpeedCompliance/getReportData`
-}
-
-export const postApiV1SpeedComplianceGetReportData = async (speedComplianceOptions?: SpeedComplianceOptions,
-    params?: PostApiV1SpeedComplianceGetReportDataParams, options?: RequestInit): Promise<postApiV1SpeedComplianceGetReportDataResponse> => {
-
-  return speedRequest<postApiV1SpeedComplianceGetReportDataResponse>(getPostApiV1SpeedComplianceGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedComplianceOptions)
-  }
-);}
-
 
 
 
@@ -7104,74 +4040,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedComplianceGetReportDataMutationOptions(options));
     }
 
-export type postApiV1SpeedFromImpactImpactImpactIdResponse200ApplicationJson = {
-  data: SpeedFromImpactDto[]
-  status: 200
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse200ApplicationXml = {
-  data: SpeedFromImpactDto[]
-  status: 200
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponseSuccess = (postApiV1SpeedFromImpactImpactImpactIdResponse200ApplicationJson | postApiV1SpeedFromImpactImpactImpactIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedFromImpactImpactImpactIdResponseError = (postApiV1SpeedFromImpactImpactImpactIdResponse400ApplicationJson | postApiV1SpeedFromImpactImpactImpactIdResponse400ApplicationXml | postApiV1SpeedFromImpactImpactImpactIdResponse406ApplicationJson | postApiV1SpeedFromImpactImpactImpactIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedFromImpactImpactImpactIdResponse = (postApiV1SpeedFromImpactImpactImpactIdResponseSuccess | postApiV1SpeedFromImpactImpactImpactIdResponseError)
-
-export const getPostApiV1SpeedFromImpactImpactImpactIdUrl = (impactId: string,
-    params?: PostApiV1SpeedFromImpactImpactImpactIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedFromImpact/impact/${impactId}?${stringifiedParams}` : `/api/v1/SpeedFromImpact/impact/${impactId}`
-}
-
-export const postApiV1SpeedFromImpactImpactImpactId = async (impactId: string,
+export const postApiV1SpeedFromImpactImpactImpactId = (
+    impactId: string,
     speedFromImpactOptions?: SpeedFromImpactOptions,
-    params?: PostApiV1SpeedFromImpactImpactImpactIdParams, options?: RequestInit): Promise<postApiV1SpeedFromImpactImpactImpactIdResponse> => {
+    params?: PostApiV1SpeedFromImpactImpactImpactIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1SpeedFromImpactImpactImpactIdResponse>(getPostApiV1SpeedFromImpactImpactImpactIdUrl(impactId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedFromImpactOptions)
-  }
-);}
 
+      return speedRequest<SpeedFromImpactDto[]>(
+      {url: `/api/v1/SpeedFromImpact/impact/${impactId}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedFromImpactOptions,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -7218,74 +4102,22 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedFromImpactImpactImpactIdMutationOptions(options));
     }
 
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse200ApplicationJson = {
-  data: SpeedFromImpactDto[]
-  status: 200
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse200ApplicationXml = {
-  data: SpeedFromImpactDto[]
-  status: 200
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponseSuccess = (postApiV1SpeedFromImpactSegmentSegmentIdResponse200ApplicationJson | postApiV1SpeedFromImpactSegmentSegmentIdResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponseError = (postApiV1SpeedFromImpactSegmentSegmentIdResponse400ApplicationJson | postApiV1SpeedFromImpactSegmentSegmentIdResponse400ApplicationXml | postApiV1SpeedFromImpactSegmentSegmentIdResponse406ApplicationJson | postApiV1SpeedFromImpactSegmentSegmentIdResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedFromImpactSegmentSegmentIdResponse = (postApiV1SpeedFromImpactSegmentSegmentIdResponseSuccess | postApiV1SpeedFromImpactSegmentSegmentIdResponseError)
-
-export const getPostApiV1SpeedFromImpactSegmentSegmentIdUrl = (segmentId: string,
-    params?: PostApiV1SpeedFromImpactSegmentSegmentIdParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedFromImpact/segment/${segmentId}?${stringifiedParams}` : `/api/v1/SpeedFromImpact/segment/${segmentId}`
-}
-
-export const postApiV1SpeedFromImpactSegmentSegmentId = async (segmentId: string,
+export const postApiV1SpeedFromImpactSegmentSegmentId = (
+    segmentId: string,
     speedFromImpactOptions?: SpeedFromImpactOptions,
-    params?: PostApiV1SpeedFromImpactSegmentSegmentIdParams, options?: RequestInit): Promise<postApiV1SpeedFromImpactSegmentSegmentIdResponse> => {
+    params?: PostApiV1SpeedFromImpactSegmentSegmentIdParams,
+ signal?: AbortSignal
+) => {
 
-  return speedRequest<postApiV1SpeedFromImpactSegmentSegmentIdResponse>(getPostApiV1SpeedFromImpactSegmentSegmentIdUrl(segmentId,params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedFromImpactOptions)
-  }
-);}
 
+      return speedRequest<SpeedFromImpactDto[]>(
+      {url: `/api/v1/SpeedFromImpact/segment/${segmentId}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedFromImpactOptions,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -7332,67 +4164,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedFromImpactSegmentSegmentIdMutationOptions(options));
     }
 
-export type getRouteSpeedsResponse200 = {
-  data: void
-  status: 200
-}
+export const getRouteSpeeds = (
+    routeSpeedOptions?: RouteSpeedOptions,
+    params?: GetRouteSpeedsParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteSpeedsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
 
-export type getRouteSpeedsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getRouteSpeedsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getRouteSpeedsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getRouteSpeedsResponseSuccess = (getRouteSpeedsResponse200) & {
-  headers: Headers;
-};
-export type getRouteSpeedsResponseError = (getRouteSpeedsResponse400ApplicationJson | getRouteSpeedsResponse400ApplicationXml | getRouteSpeedsResponse406ApplicationJson | getRouteSpeedsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type getRouteSpeedsResponse = (getRouteSpeedsResponseSuccess | getRouteSpeedsResponseError)
-
-export const getGetRouteSpeedsUrl = (params?: GetRouteSpeedsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<void>(
+      {url: `/api/v1/SpeedManagement/GetRouteSpeeds`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: routeSpeedOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedManagement/GetRouteSpeeds?${stringifiedParams}` : `/api/v1/SpeedManagement/GetRouteSpeeds`
-}
-
-export const getRouteSpeeds = async (routeSpeedOptions?: RouteSpeedOptions,
-    params?: GetRouteSpeedsParams, options?: RequestInit): Promise<getRouteSpeedsResponse> => {
-
-  return speedRequest<getRouteSpeedsResponse>(getGetRouteSpeedsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(routeSpeedOptions)
-  }
-);}
-
 
 
 
@@ -7439,72 +4225,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getGetRouteSpeedsMutationOptions(options));
     }
 
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse200ApplicationJson = {
-  data: MonthlyHistoricalRouteData[]
-  status: 200
-}
+export const postApiV1SpeedManagementGetMonthlyHistoricalSpeeds = (
+    historicalSpeedOptions?: HistoricalSpeedOptions,
+    params?: PostApiV1SpeedManagementGetMonthlyHistoricalSpeedsParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse200ApplicationXml = {
-  data: MonthlyHistoricalRouteData[]
-  status: 200
-}
 
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponseSuccess = (postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse200ApplicationJson | postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponseError = (postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse400ApplicationJson | postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse400ApplicationXml | postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse406ApplicationJson | postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse = (postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponseSuccess | postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponseError)
-
-export const getPostApiV1SpeedManagementGetMonthlyHistoricalSpeedsUrl = (params?: PostApiV1SpeedManagementGetMonthlyHistoricalSpeedsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<MonthlyHistoricalRouteData[]>(
+      {url: `/api/v1/SpeedManagement/GetMonthlyHistoricalSpeeds`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: historicalSpeedOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedManagement/GetMonthlyHistoricalSpeeds?${stringifiedParams}` : `/api/v1/SpeedManagement/GetMonthlyHistoricalSpeeds`
-}
-
-export const postApiV1SpeedManagementGetMonthlyHistoricalSpeeds = async (historicalSpeedOptions?: HistoricalSpeedOptions,
-    params?: PostApiV1SpeedManagementGetMonthlyHistoricalSpeedsParams, options?: RequestInit): Promise<postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse> => {
-
-  return speedRequest<postApiV1SpeedManagementGetMonthlyHistoricalSpeedsResponse>(getPostApiV1SpeedManagementGetMonthlyHistoricalSpeedsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(historicalSpeedOptions)
-  }
-);}
-
 
 
 
@@ -7551,72 +4286,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedManagementGetMonthlyHistoricalSpeedsMutationOptions(options));
     }
 
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse200ApplicationJson = {
-  data: DailyHistoricalRouteData[]
-  status: 200
-}
+export const postApiV1SpeedManagementGetDailyHistoricalSpeeds = (
+    historicalSpeedOptions?: HistoricalSpeedOptions,
+    params?: PostApiV1SpeedManagementGetDailyHistoricalSpeedsParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse200ApplicationXml = {
-  data: DailyHistoricalRouteData[]
-  status: 200
-}
 
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponseSuccess = (postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse200ApplicationJson | postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponseError = (postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse400ApplicationJson | postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse400ApplicationXml | postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse406ApplicationJson | postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse = (postApiV1SpeedManagementGetDailyHistoricalSpeedsResponseSuccess | postApiV1SpeedManagementGetDailyHistoricalSpeedsResponseError)
-
-export const getPostApiV1SpeedManagementGetDailyHistoricalSpeedsUrl = (params?: PostApiV1SpeedManagementGetDailyHistoricalSpeedsParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<DailyHistoricalRouteData[]>(
+      {url: `/api/v1/SpeedManagement/GetDailyHistoricalSpeeds`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: historicalSpeedOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedManagement/GetDailyHistoricalSpeeds?${stringifiedParams}` : `/api/v1/SpeedManagement/GetDailyHistoricalSpeeds`
-}
-
-export const postApiV1SpeedManagementGetDailyHistoricalSpeeds = async (historicalSpeedOptions?: HistoricalSpeedOptions,
-    params?: PostApiV1SpeedManagementGetDailyHistoricalSpeedsParams, options?: RequestInit): Promise<postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse> => {
-
-  return speedRequest<postApiV1SpeedManagementGetDailyHistoricalSpeedsResponse>(getPostApiV1SpeedManagementGetDailyHistoricalSpeedsUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(historicalSpeedOptions)
-  }
-);}
-
 
 
 
@@ -7663,72 +4347,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedManagementGetDailyHistoricalSpeedsMutationOptions(options));
     }
 
-export type postApiV1SpeedOverDistanceGetReportDataResponse200ApplicationJson = {
-  data: SpeedOverDistanceDto[]
-  status: 200
-}
+export const postApiV1SpeedOverDistanceGetReportData = (
+    speedOverDistanceOptions?: SpeedOverDistanceOptions,
+    params?: PostApiV1SpeedOverDistanceGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedOverDistanceGetReportDataResponse200ApplicationXml = {
-  data: SpeedOverDistanceDto[]
-  status: 200
-}
 
-export type postApiV1SpeedOverDistanceGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedOverDistanceGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedOverDistanceGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedOverDistanceGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedOverDistanceGetReportDataResponseSuccess = (postApiV1SpeedOverDistanceGetReportDataResponse200ApplicationJson | postApiV1SpeedOverDistanceGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedOverDistanceGetReportDataResponseError = (postApiV1SpeedOverDistanceGetReportDataResponse400ApplicationJson | postApiV1SpeedOverDistanceGetReportDataResponse400ApplicationXml | postApiV1SpeedOverDistanceGetReportDataResponse406ApplicationJson | postApiV1SpeedOverDistanceGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedOverDistanceGetReportDataResponse = (postApiV1SpeedOverDistanceGetReportDataResponseSuccess | postApiV1SpeedOverDistanceGetReportDataResponseError)
-
-export const getPostApiV1SpeedOverDistanceGetReportDataUrl = (params?: PostApiV1SpeedOverDistanceGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<SpeedOverDistanceDto[]>(
+      {url: `/api/v1/SpeedOverDistance/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedOverDistanceOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedOverDistance/getReportData?${stringifiedParams}` : `/api/v1/SpeedOverDistance/getReportData`
-}
-
-export const postApiV1SpeedOverDistanceGetReportData = async (speedOverDistanceOptions?: SpeedOverDistanceOptions,
-    params?: PostApiV1SpeedOverDistanceGetReportDataParams, options?: RequestInit): Promise<postApiV1SpeedOverDistanceGetReportDataResponse> => {
-
-  return speedRequest<postApiV1SpeedOverDistanceGetReportDataResponse>(getPostApiV1SpeedOverDistanceGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedOverDistanceOptions)
-  }
-);}
-
 
 
 
@@ -7775,72 +4408,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedOverDistanceGetReportDataMutationOptions(options));
     }
 
-export type postApiV1SpeedOverTimeGetReportDataResponse200ApplicationJson = {
-  data: SpeedOverTimeDto
-  status: 200
-}
+export const postApiV1SpeedOverTimeGetReportData = (
+    speedOverTimeOptions?: SpeedOverTimeOptions,
+    params?: PostApiV1SpeedOverTimeGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedOverTimeGetReportDataResponse200ApplicationXml = {
-  data: SpeedOverTimeDto
-  status: 200
-}
 
-export type postApiV1SpeedOverTimeGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedOverTimeGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedOverTimeGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedOverTimeGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedOverTimeGetReportDataResponseSuccess = (postApiV1SpeedOverTimeGetReportDataResponse200ApplicationJson | postApiV1SpeedOverTimeGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedOverTimeGetReportDataResponseError = (postApiV1SpeedOverTimeGetReportDataResponse400ApplicationJson | postApiV1SpeedOverTimeGetReportDataResponse400ApplicationXml | postApiV1SpeedOverTimeGetReportDataResponse406ApplicationJson | postApiV1SpeedOverTimeGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedOverTimeGetReportDataResponse = (postApiV1SpeedOverTimeGetReportDataResponseSuccess | postApiV1SpeedOverTimeGetReportDataResponseError)
-
-export const getPostApiV1SpeedOverTimeGetReportDataUrl = (params?: PostApiV1SpeedOverTimeGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<SpeedOverTimeDto>(
+      {url: `/api/v1/SpeedOverTime/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedOverTimeOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedOverTime/getReportData?${stringifiedParams}` : `/api/v1/SpeedOverTime/getReportData`
-}
-
-export const postApiV1SpeedOverTimeGetReportData = async (speedOverTimeOptions?: SpeedOverTimeOptions,
-    params?: PostApiV1SpeedOverTimeGetReportDataParams, options?: RequestInit): Promise<postApiV1SpeedOverTimeGetReportDataResponse> => {
-
-  return speedRequest<postApiV1SpeedOverTimeGetReportDataResponse>(getPostApiV1SpeedOverTimeGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedOverTimeOptions)
-  }
-);}
-
 
 
 
@@ -7887,72 +4469,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedOverTimeGetReportDataMutationOptions(options));
     }
 
-export type postApiV1SpeedVariabilityGetReportDataResponse200ApplicationJson = {
-  data: SpeedVariabilityDto
-  status: 200
-}
+export const postApiV1SpeedVariabilityGetReportData = (
+    speedVariabilityOptions?: SpeedVariabilityOptions,
+    params?: PostApiV1SpeedVariabilityGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedVariabilityGetReportDataResponse200ApplicationXml = {
-  data: SpeedVariabilityDto
-  status: 200
-}
 
-export type postApiV1SpeedVariabilityGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedVariabilityGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedVariabilityGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedVariabilityGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedVariabilityGetReportDataResponseSuccess = (postApiV1SpeedVariabilityGetReportDataResponse200ApplicationJson | postApiV1SpeedVariabilityGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedVariabilityGetReportDataResponseError = (postApiV1SpeedVariabilityGetReportDataResponse400ApplicationJson | postApiV1SpeedVariabilityGetReportDataResponse400ApplicationXml | postApiV1SpeedVariabilityGetReportDataResponse406ApplicationJson | postApiV1SpeedVariabilityGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedVariabilityGetReportDataResponse = (postApiV1SpeedVariabilityGetReportDataResponseSuccess | postApiV1SpeedVariabilityGetReportDataResponseError)
-
-export const getPostApiV1SpeedVariabilityGetReportDataUrl = (params?: PostApiV1SpeedVariabilityGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<SpeedVariabilityDto>(
+      {url: `/api/v1/SpeedVariability/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedVariabilityOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedVariability/getReportData?${stringifiedParams}` : `/api/v1/SpeedVariability/getReportData`
-}
-
-export const postApiV1SpeedVariabilityGetReportData = async (speedVariabilityOptions?: SpeedVariabilityOptions,
-    params?: PostApiV1SpeedVariabilityGetReportDataParams, options?: RequestInit): Promise<postApiV1SpeedVariabilityGetReportDataResponse> => {
-
-  return speedRequest<postApiV1SpeedVariabilityGetReportDataResponse>(getPostApiV1SpeedVariabilityGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedVariabilityOptions)
-  }
-);}
-
 
 
 
@@ -7999,72 +4530,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedVariabilityGetReportDataMutationOptions(options));
     }
 
-export type postApiV1SpeedViolationsGetReportDataResponse200ApplicationJson = {
-  data: SpeedViolationsDto[]
-  status: 200
-}
+export const postApiV1SpeedViolationsGetReportData = (
+    speedViolationsOptions?: SpeedViolationsOptions,
+    params?: PostApiV1SpeedViolationsGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1SpeedViolationsGetReportDataResponse200ApplicationXml = {
-  data: SpeedViolationsDto[]
-  status: 200
-}
 
-export type postApiV1SpeedViolationsGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedViolationsGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1SpeedViolationsGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedViolationsGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1SpeedViolationsGetReportDataResponseSuccess = (postApiV1SpeedViolationsGetReportDataResponse200ApplicationJson | postApiV1SpeedViolationsGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1SpeedViolationsGetReportDataResponseError = (postApiV1SpeedViolationsGetReportDataResponse400ApplicationJson | postApiV1SpeedViolationsGetReportDataResponse400ApplicationXml | postApiV1SpeedViolationsGetReportDataResponse406ApplicationJson | postApiV1SpeedViolationsGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1SpeedViolationsGetReportDataResponse = (postApiV1SpeedViolationsGetReportDataResponseSuccess | postApiV1SpeedViolationsGetReportDataResponseError)
-
-export const getPostApiV1SpeedViolationsGetReportDataUrl = (params?: PostApiV1SpeedViolationsGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<SpeedViolationsDto[]>(
+      {url: `/api/v1/SpeedViolations/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: speedViolationsOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/SpeedViolations/getReportData?${stringifiedParams}` : `/api/v1/SpeedViolations/getReportData`
-}
-
-export const postApiV1SpeedViolationsGetReportData = async (speedViolationsOptions?: SpeedViolationsOptions,
-    params?: PostApiV1SpeedViolationsGetReportDataParams, options?: RequestInit): Promise<postApiV1SpeedViolationsGetReportDataResponse> => {
-
-  return speedRequest<postApiV1SpeedViolationsGetReportDataResponse>(getPostApiV1SpeedViolationsGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(speedViolationsOptions)
-  }
-);}
-
 
 
 
@@ -8111,72 +4591,21 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getPostApiV1SpeedViolationsGetReportDataMutationOptions(options));
     }
 
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse200ApplicationJson = {
-  data: ViolationsAndExtremeViolationsDto[]
-  status: 200
-}
+export const postApiV1ViolationsAndExtremeViolationsGetReportData = (
+    violationsAndExtremeViolationsOptions?: ViolationsAndExtremeViolationsOptions,
+    params?: PostApiV1ViolationsAndExtremeViolationsGetReportDataParams,
+ signal?: AbortSignal
+) => {
 
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse200ApplicationXml = {
-  data: ViolationsAndExtremeViolationsDto[]
-  status: 200
-}
 
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse400ApplicationJson = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse400ApplicationXml = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse406ApplicationJson = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse406ApplicationXml = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponseSuccess = (postApiV1ViolationsAndExtremeViolationsGetReportDataResponse200ApplicationJson | postApiV1ViolationsAndExtremeViolationsGetReportDataResponse200ApplicationXml) & {
-  headers: Headers;
-};
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponseError = (postApiV1ViolationsAndExtremeViolationsGetReportDataResponse400ApplicationJson | postApiV1ViolationsAndExtremeViolationsGetReportDataResponse400ApplicationXml | postApiV1ViolationsAndExtremeViolationsGetReportDataResponse406ApplicationJson | postApiV1ViolationsAndExtremeViolationsGetReportDataResponse406ApplicationXml) & {
-  headers: Headers;
-};
-
-export type postApiV1ViolationsAndExtremeViolationsGetReportDataResponse = (postApiV1ViolationsAndExtremeViolationsGetReportDataResponseSuccess | postApiV1ViolationsAndExtremeViolationsGetReportDataResponseError)
-
-export const getPostApiV1ViolationsAndExtremeViolationsGetReportDataUrl = (params?: PostApiV1ViolationsAndExtremeViolationsGetReportDataParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return speedRequest<ViolationsAndExtremeViolationsDto[]>(
+      {url: `/api/v1/ViolationsAndExtremeViolations/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: violationsAndExtremeViolationsOptions,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/ViolationsAndExtremeViolations/getReportData?${stringifiedParams}` : `/api/v1/ViolationsAndExtremeViolations/getReportData`
-}
-
-export const postApiV1ViolationsAndExtremeViolationsGetReportData = async (violationsAndExtremeViolationsOptions?: ViolationsAndExtremeViolationsOptions,
-    params?: PostApiV1ViolationsAndExtremeViolationsGetReportDataParams, options?: RequestInit): Promise<postApiV1ViolationsAndExtremeViolationsGetReportDataResponse> => {
-
-  return speedRequest<postApiV1ViolationsAndExtremeViolationsGetReportDataResponse>(getPostApiV1ViolationsAndExtremeViolationsGetReportDataUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(violationsAndExtremeViolationsOptions)
-  }
-);}
-
 
 
 

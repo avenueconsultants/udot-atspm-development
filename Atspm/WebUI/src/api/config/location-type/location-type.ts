@@ -52,261 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getLocationTypeLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getLocationTypeLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getLocationTypeLocationsFromKeyResponseSuccess = (getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJson | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getLocationTypeLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getLocationTypeLocationsFromKeyResponse200ApplicationXml | getLocationTypeLocationsFromKeyResponse200TextPlain | getLocationTypeLocationsFromKeyResponse200ApplicationOctetStream | getLocationTypeLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getLocationTypeLocationsFromKeyResponseError = (getLocationTypeLocationsFromKeyResponse400 | getLocationTypeLocationsFromKeyResponse404 | getLocationTypeLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getLocationTypeLocationsFromKeyResponse = (getLocationTypeLocationsFromKeyResponseSuccess | getLocationTypeLocationsFromKeyResponseError)
-
-export const getGetLocationTypeLocationsFromKeyUrl = (key: number,
-    params?: GetLocationTypeLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/${key}/locations?${stringifiedParams}` : `/api/v1/LocationType/${key}/locations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getLocationTypeLocationsFromKey = async (key: number,
-    params?: GetLocationTypeLocationsFromKeyParams, options?: RequestInit): Promise<getLocationTypeLocationsFromKeyResponse> => {
-
-  return configRequest<getLocationTypeLocationsFromKeyResponse>(getGetLocationTypeLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getLocationTypeLocationsFromKey = (
+    key: number,
+    params?: GetLocationTypeLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/LocationType/${key}/locations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -329,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeLocationsFromKey>>> = ({ signal }) => getLocationTypeLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeLocationsFromKey>>> = ({ signal }) => getLocationTypeLocationsFromKey(key,params, signal);
 
 
 
@@ -364,261 +126,23 @@ export function useGetLocationTypeLocationsFromKey<TData = Awaited<ReturnType<ty
 
 
 
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getLocationTypeLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getLocationTypeLocationsCountFromKeyResponseSuccess = (getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJson | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getLocationTypeLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getLocationTypeLocationsCountFromKeyResponse200ApplicationXml | getLocationTypeLocationsCountFromKeyResponse200TextPlain | getLocationTypeLocationsCountFromKeyResponse200ApplicationOctetStream | getLocationTypeLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getLocationTypeLocationsCountFromKeyResponseError = (getLocationTypeLocationsCountFromKeyResponse400 | getLocationTypeLocationsCountFromKeyResponse404 | getLocationTypeLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getLocationTypeLocationsCountFromKeyResponse = (getLocationTypeLocationsCountFromKeyResponseSuccess | getLocationTypeLocationsCountFromKeyResponseError)
-
-export const getGetLocationTypeLocationsCountFromKeyUrl = (key: number,
-    params?: GetLocationTypeLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/${key}/locations/$count?${stringifiedParams}` : `/api/v1/LocationType/${key}/locations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getLocationTypeLocationsCountFromKey = async (key: number,
-    params?: GetLocationTypeLocationsCountFromKeyParams, options?: RequestInit): Promise<getLocationTypeLocationsCountFromKeyResponse> => {
-
-  return configRequest<getLocationTypeLocationsCountFromKeyResponse>(getGetLocationTypeLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getLocationTypeLocationsCountFromKey = (
+    key: number,
+    params?: GetLocationTypeLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/LocationType/${key}/locations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -641,7 +165,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeLocationsCountFromKey>>> = ({ signal }) => getLocationTypeLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeLocationsCountFromKey>>> = ({ signal }) => getLocationTypeLocationsCountFromKey(key,params, signal);
 
 
 
@@ -676,251 +200,19 @@ export function useGetLocationTypeLocationsCountFromKey<TData = Awaited<ReturnTy
 
 
 
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
+export const getLocationType = (
+    params?: GetLocationTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
 
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFull = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNone = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJson = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationXml = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200TextPlain = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getLocationTypeResponse200TextJson = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getLocationTypeResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getLocationTypeResponseSuccess = (getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimal | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataFull | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataNone | getLocationTypeResponse200ApplicationJsonOdataStreamingTrue | getLocationTypeResponse200ApplicationJsonOdataStreamingFalse | getLocationTypeResponse200ApplicationJson | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationJsonIEEE754CompatibleFalse | getLocationTypeResponse200ApplicationJsonIEEE754CompatibleTrue | getLocationTypeResponse200ApplicationXml | getLocationTypeResponse200TextPlain | getLocationTypeResponse200ApplicationOctetStream | getLocationTypeResponse200TextJson) & {
-  headers: Headers;
-};
-export type getLocationTypeResponseError = (getLocationTypeResponse400 | getLocationTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getLocationTypeResponse = (getLocationTypeResponseSuccess | getLocationTypeResponseError)
-
-export const getGetLocationTypeUrl = (params?: GetLocationTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<LocationType[] | Blob>(
+      {url: `/api/v1/LocationType`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType?${stringifiedParams}` : `/api/v1/LocationType`
-}
-
-export const getLocationType = async (params?: GetLocationTypeParams, options?: RequestInit): Promise<getLocationTypeResponse> => {
-
-  return configRequest<getLocationTypeResponse>(getGetLocationTypeUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -941,7 +233,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationType>>> = ({ signal }) => getLocationType(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationType>>> = ({ signal }) => getLocationType(params, signal);
 
 
 
@@ -972,57 +264,21 @@ export function useGetLocationType<TData = Awaited<ReturnType<typeof getLocation
 
 
 
-export type postLocationTypeResponse201 = {
-  data: void
-  status: 201
-}
+export const postLocationType = (
+    locationType?: LocationType,
+    params?: PostLocationTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type postLocationTypeResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postLocationTypeResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postLocationTypeResponseSuccess = (postLocationTypeResponse201) & {
-  headers: Headers;
-};
-export type postLocationTypeResponseError = (postLocationTypeResponse400 | postLocationTypeResponse406) & {
-  headers: Headers;
-};
-
-export type postLocationTypeResponse = (postLocationTypeResponseSuccess | postLocationTypeResponseError)
-
-export const getPostLocationTypeUrl = (params?: PostLocationTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/LocationType`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: locationType,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType?${stringifiedParams}` : `/api/v1/LocationType`
-}
-
-export const postLocationType = async (locationType?: LocationType,
-    params?: PostLocationTypeParams, options?: RequestInit): Promise<postLocationTypeResponse> => {
-
-  return configRequest<postLocationTypeResponse>(getPostLocationTypeUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(locationType)
-  }
-);}
-
 
 
 
@@ -1068,251 +324,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostLocationTypeMutationOptions(options));
     }
-    export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
+    export const getLocationTypeCount = (
+    params?: GetLocationTypeCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
 
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJson = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationXml = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200TextPlain = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getLocationTypeCountResponse200TextJson = {
-  data: LocationType[]
-  status: 200
-}
-
-export type getLocationTypeCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getLocationTypeCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getLocationTypeCountResponseSuccess = (getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimal | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFull | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNone | getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrue | getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalse | getLocationTypeCountResponse200ApplicationJson | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationJsonIEEE754CompatibleFalse | getLocationTypeCountResponse200ApplicationJsonIEEE754CompatibleTrue | getLocationTypeCountResponse200ApplicationXml | getLocationTypeCountResponse200TextPlain | getLocationTypeCountResponse200ApplicationOctetStream | getLocationTypeCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getLocationTypeCountResponseError = (getLocationTypeCountResponse400 | getLocationTypeCountResponse406) & {
-  headers: Headers;
-};
-
-export type getLocationTypeCountResponse = (getLocationTypeCountResponseSuccess | getLocationTypeCountResponseError)
-
-export const getGetLocationTypeCountUrl = (params?: GetLocationTypeCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<LocationType[] | Blob>(
+      {url: `/api/v1/LocationType/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/$count?${stringifiedParams}` : `/api/v1/LocationType/$count`
-}
-
-export const getLocationTypeCount = async (params?: GetLocationTypeCountParams, options?: RequestInit): Promise<getLocationTypeCountResponse> => {
-
-  return configRequest<getLocationTypeCountResponse>(getGetLocationTypeCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1333,7 +357,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeCount>>> = ({ signal }) => getLocationTypeCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeCount>>> = ({ signal }) => getLocationTypeCount(params, signal);
 
 
 
@@ -1364,253 +388,20 @@ export function useGetLocationTypeCount<TData = Awaited<ReturnType<typeof getLoc
 
 
 
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: LocationType
-  status: 200
-}
+export const getLocationTypeFromKey = (
+    key: number,
+    params?: GetLocationTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: LocationType
-  status: 200
-}
 
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJson = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationXml = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200TextPlain = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse200TextJson = {
-  data: LocationType
-  status: 200
-}
-
-export type getLocationTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getLocationTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getLocationTypeFromKeyResponseSuccess = (getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFull | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNone | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalse | getLocationTypeFromKeyResponse200ApplicationJson | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getLocationTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getLocationTypeFromKeyResponse200ApplicationXml | getLocationTypeFromKeyResponse200TextPlain | getLocationTypeFromKeyResponse200ApplicationOctetStream | getLocationTypeFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getLocationTypeFromKeyResponseError = (getLocationTypeFromKeyResponse404 | getLocationTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getLocationTypeFromKeyResponse = (getLocationTypeFromKeyResponseSuccess | getLocationTypeFromKeyResponseError)
-
-export const getGetLocationTypeFromKeyUrl = (key: number,
-    params?: GetLocationTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<LocationType | Blob>(
+      {url: `/api/v1/LocationType/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/${key}?${stringifiedParams}` : `/api/v1/LocationType/${key}`
-}
-
-export const getLocationTypeFromKey = async (key: number,
-    params?: GetLocationTypeFromKeyParams, options?: RequestInit): Promise<getLocationTypeFromKeyResponse> => {
-
-  return configRequest<getLocationTypeFromKeyResponse>(getGetLocationTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1633,7 +424,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeFromKey>>> = ({ signal }) => getLocationTypeFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLocationTypeFromKey>>> = ({ signal }) => getLocationTypeFromKey(key,params, signal);
 
 
 
@@ -1665,64 +456,22 @@ export function useGetLocationTypeFromKey<TData = Awaited<ReturnType<typeof getL
 
 
 
-export type putLocationTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putLocationTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putLocationTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putLocationTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putLocationTypeFromKeyResponseSuccess = (putLocationTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putLocationTypeFromKeyResponseError = (putLocationTypeFromKeyResponse400 | putLocationTypeFromKeyResponse404 | putLocationTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putLocationTypeFromKeyResponse = (putLocationTypeFromKeyResponseSuccess | putLocationTypeFromKeyResponseError)
-
-export const getPutLocationTypeFromKeyUrl = (key: number,
-    params?: PutLocationTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/${key}?${stringifiedParams}` : `/api/v1/LocationType/${key}`
-}
-
-export const putLocationTypeFromKey = async (key: number,
+export const putLocationTypeFromKey = (
+    key: number,
     locationType?: LocationType,
-    params?: PutLocationTypeFromKeyParams, options?: RequestInit): Promise<putLocationTypeFromKeyResponse> => {
+    params?: PutLocationTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putLocationTypeFromKeyResponse>(getPutLocationTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(locationType)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/LocationType/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: locationType,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1768,64 +517,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutLocationTypeFromKeyMutationOptions(options));
     }
-    export type patchLocationTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchLocationTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchLocationTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchLocationTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchLocationTypeFromKeyResponseSuccess = (patchLocationTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchLocationTypeFromKeyResponseError = (patchLocationTypeFromKeyResponse400 | patchLocationTypeFromKeyResponse404 | patchLocationTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchLocationTypeFromKeyResponse = (patchLocationTypeFromKeyResponseSuccess | patchLocationTypeFromKeyResponseError)
-
-export const getPatchLocationTypeFromKeyUrl = (key: number,
-    params?: PatchLocationTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/LocationType/${key}?${stringifiedParams}` : `/api/v1/LocationType/${key}`
-}
-
-export const patchLocationTypeFromKey = async (key: number,
+    export const patchLocationTypeFromKey = (
+    key: number,
     locationType?: LocationType,
-    params?: PatchLocationTypeFromKeyParams, options?: RequestInit): Promise<patchLocationTypeFromKeyResponse> => {
+    params?: PatchLocationTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchLocationTypeFromKeyResponse>(getPatchLocationTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(locationType)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/LocationType/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: locationType,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1871,54 +578,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchLocationTypeFromKeyMutationOptions(options));
     }
-    export type deleteLocationTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteLocationTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteLocationTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteLocationTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteLocationTypeFromKeyResponseSuccess = (deleteLocationTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteLocationTypeFromKeyResponseError = (deleteLocationTypeFromKeyResponse400 | deleteLocationTypeFromKeyResponse404 | deleteLocationTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteLocationTypeFromKeyResponse = (deleteLocationTypeFromKeyResponseSuccess | deleteLocationTypeFromKeyResponseError)
-
-export const getDeleteLocationTypeFromKeyUrl = (key: number,) => {
+    export const deleteLocationTypeFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/LocationType/${key}`
-}
-
-export const deleteLocationTypeFromKey = async (key: number, options?: RequestInit): Promise<deleteLocationTypeFromKeyResponse> => {
-
-  return configRequest<deleteLocationTypeFromKeyResponse>(getDeleteLocationTypeFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/LocationType/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

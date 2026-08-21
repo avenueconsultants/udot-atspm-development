@@ -52,261 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRegionLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRegionLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRegionLocationsFromKeyResponseSuccess = (getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRegionLocationsFromKeyResponse200ApplicationJson | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRegionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRegionLocationsFromKeyResponse200ApplicationXml | getRegionLocationsFromKeyResponse200TextPlain | getRegionLocationsFromKeyResponse200ApplicationOctetStream | getRegionLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRegionLocationsFromKeyResponseError = (getRegionLocationsFromKeyResponse400 | getRegionLocationsFromKeyResponse404 | getRegionLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRegionLocationsFromKeyResponse = (getRegionLocationsFromKeyResponseSuccess | getRegionLocationsFromKeyResponseError)
-
-export const getGetRegionLocationsFromKeyUrl = (key: number,
-    params?: GetRegionLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/${key}/locations?${stringifiedParams}` : `/api/v1/Region/${key}/locations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getRegionLocationsFromKey = async (key: number,
-    params?: GetRegionLocationsFromKeyParams, options?: RequestInit): Promise<getRegionLocationsFromKeyResponse> => {
-
-  return configRequest<getRegionLocationsFromKeyResponse>(getGetRegionLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRegionLocationsFromKey = (
+    key: number,
+    params?: GetRegionLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Region/${key}/locations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -329,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionLocationsFromKey>>> = ({ signal }) => getRegionLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionLocationsFromKey>>> = ({ signal }) => getRegionLocationsFromKey(key,params, signal);
 
 
 
@@ -364,261 +126,23 @@ export function useGetRegionLocationsFromKey<TData = Awaited<ReturnType<typeof g
 
 
 
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getRegionLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRegionLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRegionLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRegionLocationsCountFromKeyResponseSuccess = (getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRegionLocationsCountFromKeyResponse200ApplicationJson | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRegionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRegionLocationsCountFromKeyResponse200ApplicationXml | getRegionLocationsCountFromKeyResponse200TextPlain | getRegionLocationsCountFromKeyResponse200ApplicationOctetStream | getRegionLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRegionLocationsCountFromKeyResponseError = (getRegionLocationsCountFromKeyResponse400 | getRegionLocationsCountFromKeyResponse404 | getRegionLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRegionLocationsCountFromKeyResponse = (getRegionLocationsCountFromKeyResponseSuccess | getRegionLocationsCountFromKeyResponseError)
-
-export const getGetRegionLocationsCountFromKeyUrl = (key: number,
-    params?: GetRegionLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/${key}/locations/$count?${stringifiedParams}` : `/api/v1/Region/${key}/locations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getRegionLocationsCountFromKey = async (key: number,
-    params?: GetRegionLocationsCountFromKeyParams, options?: RequestInit): Promise<getRegionLocationsCountFromKeyResponse> => {
-
-  return configRequest<getRegionLocationsCountFromKeyResponse>(getGetRegionLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRegionLocationsCountFromKey = (
+    key: number,
+    params?: GetRegionLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Region/${key}/locations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -641,7 +165,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionLocationsCountFromKey>>> = ({ signal }) => getRegionLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionLocationsCountFromKey>>> = ({ signal }) => getRegionLocationsCountFromKey(key,params, signal);
 
 
 
@@ -676,251 +200,19 @@ export function useGetRegionLocationsCountFromKey<TData = Awaited<ReturnType<typ
 
 
 
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
+export const getRegion = (
+    params?: GetRegionParams,
+ signal?: AbortSignal
+) => {
 
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
 
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFull = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNone = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJson = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationXml = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200TextPlain = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRegionResponse200TextJson = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRegionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRegionResponseSuccess = (getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRegionResponse200ApplicationJsonOdataMetadataMinimal | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRegionResponse200ApplicationJsonOdataMetadataFull | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRegionResponse200ApplicationJsonOdataMetadataNone | getRegionResponse200ApplicationJsonOdataStreamingTrue | getRegionResponse200ApplicationJsonOdataStreamingFalse | getRegionResponse200ApplicationJson | getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRegionResponse200ApplicationJsonIEEE754CompatibleFalse | getRegionResponse200ApplicationJsonIEEE754CompatibleTrue | getRegionResponse200ApplicationXml | getRegionResponse200TextPlain | getRegionResponse200ApplicationOctetStream | getRegionResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRegionResponseError = (getRegionResponse400 | getRegionResponse406) & {
-  headers: Headers;
-};
-
-export type getRegionResponse = (getRegionResponseSuccess | getRegionResponseError)
-
-export const getGetRegionUrl = (params?: GetRegionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Region[] | Blob>(
+      {url: `/api/v1/Region`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region?${stringifiedParams}` : `/api/v1/Region`
-}
-
-export const getRegion = async (params?: GetRegionParams, options?: RequestInit): Promise<getRegionResponse> => {
-
-  return configRequest<getRegionResponse>(getGetRegionUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -941,7 +233,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegion>>> = ({ signal }) => getRegion(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegion>>> = ({ signal }) => getRegion(params, signal);
 
 
 
@@ -972,57 +264,21 @@ export function useGetRegion<TData = Awaited<ReturnType<typeof getRegion>>, TErr
 
 
 
-export type postRegionResponse201 = {
-  data: void
-  status: 201
-}
+export const postRegion = (
+    region?: Region,
+    params?: PostRegionParams,
+ signal?: AbortSignal
+) => {
 
-export type postRegionResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postRegionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postRegionResponseSuccess = (postRegionResponse201) & {
-  headers: Headers;
-};
-export type postRegionResponseError = (postRegionResponse400 | postRegionResponse406) & {
-  headers: Headers;
-};
-
-export type postRegionResponse = (postRegionResponseSuccess | postRegionResponseError)
-
-export const getPostRegionUrl = (params?: PostRegionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Region`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: region,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region?${stringifiedParams}` : `/api/v1/Region`
-}
-
-export const postRegion = async (region?: Region,
-    params?: PostRegionParams, options?: RequestInit): Promise<postRegionResponse> => {
-
-  return configRequest<postRegionResponse>(getPostRegionUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(region)
-  }
-);}
-
 
 
 
@@ -1068,251 +324,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostRegionMutationOptions(options));
     }
-    export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
+    export const getRegionCount = (
+    params?: GetRegionCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
 
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJson = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationXml = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200TextPlain = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRegionCountResponse200TextJson = {
-  data: Region[]
-  status: 200
-}
-
-export type getRegionCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRegionCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRegionCountResponseSuccess = (getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRegionCountResponse200ApplicationJsonOdataMetadataMinimal | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRegionCountResponse200ApplicationJsonOdataMetadataFull | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRegionCountResponse200ApplicationJsonOdataMetadataNone | getRegionCountResponse200ApplicationJsonOdataStreamingTrue | getRegionCountResponse200ApplicationJsonOdataStreamingFalse | getRegionCountResponse200ApplicationJson | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRegionCountResponse200ApplicationJsonIEEE754CompatibleFalse | getRegionCountResponse200ApplicationJsonIEEE754CompatibleTrue | getRegionCountResponse200ApplicationXml | getRegionCountResponse200TextPlain | getRegionCountResponse200ApplicationOctetStream | getRegionCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRegionCountResponseError = (getRegionCountResponse400 | getRegionCountResponse406) & {
-  headers: Headers;
-};
-
-export type getRegionCountResponse = (getRegionCountResponseSuccess | getRegionCountResponseError)
-
-export const getGetRegionCountUrl = (params?: GetRegionCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Region[] | Blob>(
+      {url: `/api/v1/Region/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/$count?${stringifiedParams}` : `/api/v1/Region/$count`
-}
-
-export const getRegionCount = async (params?: GetRegionCountParams, options?: RequestInit): Promise<getRegionCountResponse> => {
-
-  return configRequest<getRegionCountResponse>(getGetRegionCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1333,7 +357,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionCount>>> = ({ signal }) => getRegionCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionCount>>> = ({ signal }) => getRegionCount(params, signal);
 
 
 
@@ -1364,253 +388,20 @@ export function useGetRegionCount<TData = Awaited<ReturnType<typeof getRegionCou
 
 
 
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Region
-  status: 200
-}
+export const getRegionFromKey = (
+    key: number,
+    params?: GetRegionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Region
-  status: 200
-}
 
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJson = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationXml = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200TextPlain = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRegionFromKeyResponse200TextJson = {
-  data: Region
-  status: 200
-}
-
-export type getRegionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRegionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRegionFromKeyResponseSuccess = (getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFull | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNone | getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRegionFromKeyResponse200ApplicationJson | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRegionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRegionFromKeyResponse200ApplicationXml | getRegionFromKeyResponse200TextPlain | getRegionFromKeyResponse200ApplicationOctetStream | getRegionFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRegionFromKeyResponseError = (getRegionFromKeyResponse404 | getRegionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRegionFromKeyResponse = (getRegionFromKeyResponseSuccess | getRegionFromKeyResponseError)
-
-export const getGetRegionFromKeyUrl = (key: number,
-    params?: GetRegionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Region | Blob>(
+      {url: `/api/v1/Region/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/${key}?${stringifiedParams}` : `/api/v1/Region/${key}`
-}
-
-export const getRegionFromKey = async (key: number,
-    params?: GetRegionFromKeyParams, options?: RequestInit): Promise<getRegionFromKeyResponse> => {
-
-  return configRequest<getRegionFromKeyResponse>(getGetRegionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1633,7 +424,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionFromKey>>> = ({ signal }) => getRegionFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRegionFromKey>>> = ({ signal }) => getRegionFromKey(key,params, signal);
 
 
 
@@ -1665,64 +456,22 @@ export function useGetRegionFromKey<TData = Awaited<ReturnType<typeof getRegionF
 
 
 
-export type putRegionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putRegionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putRegionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putRegionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putRegionFromKeyResponseSuccess = (putRegionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putRegionFromKeyResponseError = (putRegionFromKeyResponse400 | putRegionFromKeyResponse404 | putRegionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putRegionFromKeyResponse = (putRegionFromKeyResponseSuccess | putRegionFromKeyResponseError)
-
-export const getPutRegionFromKeyUrl = (key: number,
-    params?: PutRegionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/${key}?${stringifiedParams}` : `/api/v1/Region/${key}`
-}
-
-export const putRegionFromKey = async (key: number,
+export const putRegionFromKey = (
+    key: number,
     region?: Region,
-    params?: PutRegionFromKeyParams, options?: RequestInit): Promise<putRegionFromKeyResponse> => {
+    params?: PutRegionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putRegionFromKeyResponse>(getPutRegionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(region)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Region/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: region,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1768,64 +517,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutRegionFromKeyMutationOptions(options));
     }
-    export type patchRegionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchRegionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchRegionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchRegionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchRegionFromKeyResponseSuccess = (patchRegionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchRegionFromKeyResponseError = (patchRegionFromKeyResponse400 | patchRegionFromKeyResponse404 | patchRegionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchRegionFromKeyResponse = (patchRegionFromKeyResponseSuccess | patchRegionFromKeyResponseError)
-
-export const getPatchRegionFromKeyUrl = (key: number,
-    params?: PatchRegionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Region/${key}?${stringifiedParams}` : `/api/v1/Region/${key}`
-}
-
-export const patchRegionFromKey = async (key: number,
+    export const patchRegionFromKey = (
+    key: number,
     region?: Region,
-    params?: PatchRegionFromKeyParams, options?: RequestInit): Promise<patchRegionFromKeyResponse> => {
+    params?: PatchRegionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchRegionFromKeyResponse>(getPatchRegionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(region)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Region/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: region,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1871,54 +578,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchRegionFromKeyMutationOptions(options));
     }
-    export type deleteRegionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteRegionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteRegionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteRegionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteRegionFromKeyResponseSuccess = (deleteRegionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteRegionFromKeyResponseError = (deleteRegionFromKeyResponse400 | deleteRegionFromKeyResponse404 | deleteRegionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteRegionFromKeyResponse = (deleteRegionFromKeyResponseSuccess | deleteRegionFromKeyResponseError)
-
-export const getDeleteRegionFromKeyUrl = (key: number,) => {
+    export const deleteRegionFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Region/${key}`
-}
-
-export const deleteRegionFromKey = async (key: number, options?: RequestInit): Promise<deleteRegionFromKeyResponse> => {
-
-  return configRequest<deleteRegionFromKeyResponse>(getDeleteRegionFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Region/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

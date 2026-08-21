@@ -55,261 +55,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistancePreviousLocationsFromKeyResponseSuccess = (getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJson | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationXml | getRouteDistancePreviousLocationsFromKeyResponse200TextPlain | getRouteDistancePreviousLocationsFromKeyResponse200ApplicationOctetStream | getRouteDistancePreviousLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistancePreviousLocationsFromKeyResponseError = (getRouteDistancePreviousLocationsFromKeyResponse400 | getRouteDistancePreviousLocationsFromKeyResponse404 | getRouteDistancePreviousLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistancePreviousLocationsFromKeyResponse = (getRouteDistancePreviousLocationsFromKeyResponseSuccess | getRouteDistancePreviousLocationsFromKeyResponseError)
-
-export const getGetRouteDistancePreviousLocationsFromKeyUrl = (key: number,
-    params?: GetRouteDistancePreviousLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}/previousLocations?${stringifiedParams}` : `/api/v1/RouteDistance/${key}/previousLocations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteDistancePreviousLocationsFromKey = async (key: number,
-    params?: GetRouteDistancePreviousLocationsFromKeyParams, options?: RequestInit): Promise<getRouteDistancePreviousLocationsFromKeyResponse> => {
-
-  return configRequest<getRouteDistancePreviousLocationsFromKeyResponse>(getGetRouteDistancePreviousLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteDistancePreviousLocationsFromKey = (
+    key: number,
+    params?: GetRouteDistancePreviousLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/RouteDistance/${key}/previousLocations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -332,7 +94,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistancePreviousLocationsFromKey>>> = ({ signal }) => getRouteDistancePreviousLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistancePreviousLocationsFromKey>>> = ({ signal }) => getRouteDistancePreviousLocationsFromKey(key,params, signal);
 
 
 
@@ -367,261 +129,23 @@ export function useGetRouteDistancePreviousLocationsFromKey<TData = Awaited<Retu
 
 
 
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponseSuccess = (getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJson | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationXml | getRouteDistancePreviousLocationsCountFromKeyResponse200TextPlain | getRouteDistancePreviousLocationsCountFromKeyResponse200ApplicationOctetStream | getRouteDistancePreviousLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistancePreviousLocationsCountFromKeyResponseError = (getRouteDistancePreviousLocationsCountFromKeyResponse400 | getRouteDistancePreviousLocationsCountFromKeyResponse404 | getRouteDistancePreviousLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistancePreviousLocationsCountFromKeyResponse = (getRouteDistancePreviousLocationsCountFromKeyResponseSuccess | getRouteDistancePreviousLocationsCountFromKeyResponseError)
-
-export const getGetRouteDistancePreviousLocationsCountFromKeyUrl = (key: number,
-    params?: GetRouteDistancePreviousLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}/previousLocations/$count?${stringifiedParams}` : `/api/v1/RouteDistance/${key}/previousLocations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteDistancePreviousLocationsCountFromKey = async (key: number,
-    params?: GetRouteDistancePreviousLocationsCountFromKeyParams, options?: RequestInit): Promise<getRouteDistancePreviousLocationsCountFromKeyResponse> => {
-
-  return configRequest<getRouteDistancePreviousLocationsCountFromKeyResponse>(getGetRouteDistancePreviousLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteDistancePreviousLocationsCountFromKey = (
+    key: number,
+    params?: GetRouteDistancePreviousLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/RouteDistance/${key}/previousLocations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -644,7 +168,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistancePreviousLocationsCountFromKey>>> = ({ signal }) => getRouteDistancePreviousLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistancePreviousLocationsCountFromKey>>> = ({ signal }) => getRouteDistancePreviousLocationsCountFromKey(key,params, signal);
 
 
 
@@ -679,261 +203,23 @@ export function useGetRouteDistancePreviousLocationsCountFromKey<TData = Awaited
 
 
 
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceNextLocationsFromKeyResponseSuccess = (getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJson | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceNextLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceNextLocationsFromKeyResponse200ApplicationXml | getRouteDistanceNextLocationsFromKeyResponse200TextPlain | getRouteDistanceNextLocationsFromKeyResponse200ApplicationOctetStream | getRouteDistanceNextLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistanceNextLocationsFromKeyResponseError = (getRouteDistanceNextLocationsFromKeyResponse400 | getRouteDistanceNextLocationsFromKeyResponse404 | getRouteDistanceNextLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceNextLocationsFromKeyResponse = (getRouteDistanceNextLocationsFromKeyResponseSuccess | getRouteDistanceNextLocationsFromKeyResponseError)
-
-export const getGetRouteDistanceNextLocationsFromKeyUrl = (key: number,
-    params?: GetRouteDistanceNextLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}/nextLocations?${stringifiedParams}` : `/api/v1/RouteDistance/${key}/nextLocations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteDistanceNextLocationsFromKey = async (key: number,
-    params?: GetRouteDistanceNextLocationsFromKeyParams, options?: RequestInit): Promise<getRouteDistanceNextLocationsFromKeyResponse> => {
-
-  return configRequest<getRouteDistanceNextLocationsFromKeyResponse>(getGetRouteDistanceNextLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteDistanceNextLocationsFromKey = (
+    key: number,
+    params?: GetRouteDistanceNextLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/RouteDistance/${key}/nextLocations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -956,7 +242,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceNextLocationsFromKey>>> = ({ signal }) => getRouteDistanceNextLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceNextLocationsFromKey>>> = ({ signal }) => getRouteDistanceNextLocationsFromKey(key,params, signal);
 
 
 
@@ -991,261 +277,23 @@ export function useGetRouteDistanceNextLocationsFromKey<TData = Awaited<ReturnTy
 
 
 
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceNextLocationsCountFromKeyResponseSuccess = (getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJson | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationXml | getRouteDistanceNextLocationsCountFromKeyResponse200TextPlain | getRouteDistanceNextLocationsCountFromKeyResponse200ApplicationOctetStream | getRouteDistanceNextLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistanceNextLocationsCountFromKeyResponseError = (getRouteDistanceNextLocationsCountFromKeyResponse400 | getRouteDistanceNextLocationsCountFromKeyResponse404 | getRouteDistanceNextLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceNextLocationsCountFromKeyResponse = (getRouteDistanceNextLocationsCountFromKeyResponseSuccess | getRouteDistanceNextLocationsCountFromKeyResponseError)
-
-export const getGetRouteDistanceNextLocationsCountFromKeyUrl = (key: number,
-    params?: GetRouteDistanceNextLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}/nextLocations/$count?${stringifiedParams}` : `/api/v1/RouteDistance/${key}/nextLocations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getRouteDistanceNextLocationsCountFromKey = async (key: number,
-    params?: GetRouteDistanceNextLocationsCountFromKeyParams, options?: RequestInit): Promise<getRouteDistanceNextLocationsCountFromKeyResponse> => {
-
-  return configRequest<getRouteDistanceNextLocationsCountFromKeyResponse>(getGetRouteDistanceNextLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getRouteDistanceNextLocationsCountFromKey = (
+    key: number,
+    params?: GetRouteDistanceNextLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/RouteDistance/${key}/nextLocations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -1268,7 +316,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceNextLocationsCountFromKey>>> = ({ signal }) => getRouteDistanceNextLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceNextLocationsCountFromKey>>> = ({ signal }) => getRouteDistanceNextLocationsCountFromKey(key,params, signal);
 
 
 
@@ -1303,258 +351,24 @@ export function useGetRouteDistanceNextLocationsCountFromKey<TData = Awaited<Ret
 
 
 
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJson = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationXml = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200TextPlain = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200TextJson = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse204 = {
-  data: void
-  status: 204
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponseSuccess = (getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJson | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationXml | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200TextPlain | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200ApplicationOctetStream | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse200TextJson | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse204) & {
-  headers: Headers;
-};
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponseError = (getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse = (getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponseSuccess | getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponseError)
-
-export const getGetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBUrl = (locationA: string,
-    locationB: string,
-    params?: GetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/GetRouteDistanceByLocationIdentifiers(locationA=${locationA},locationB=${locationB})?${stringifiedParams}` : `/api/v1/RouteDistance/GetRouteDistanceByLocationIdentifiers(locationA=${locationA},locationB=${locationB})`
-}
-
 /**
  * @summary Gets the Utah.Udot.Atspm.Data.Models.RouteDistance that contains locationA and locationB
  */
-export const getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB = async (locationA: string,
+export const getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB = (
+    locationA: string,
     locationB: string,
-    params?: GetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBParams, options?: RequestInit): Promise<getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse> => {
-
-  return configRequest<getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBResponse>(getGetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBUrl(locationA,locationB,params),
-  {
-    ...options,
-    method: 'GET'
+    params?: GetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteDistance | Blob | void>(
+      {url: `/api/v1/RouteDistance/GetRouteDistanceByLocationIdentifiers(locationA=${locationA},locationB=${locationB})`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -1579,7 +393,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB>>> = ({ signal }) => getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB(locationA,locationB,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB>>> = ({ signal }) => getRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationB(locationA,locationB,params, signal);
 
 
 
@@ -1615,251 +429,19 @@ export function useGetRouteDistanceRouteDistanceByLocationIdentifiersFromLocatio
 
 
 
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
+export const getRouteDistance = (
+    params?: GetRouteDistanceParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
 
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJson = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationXml = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200TextPlain = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceResponse200TextJson = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistanceResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceResponseSuccess = (getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceResponse200ApplicationJson | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceResponse200ApplicationXml | getRouteDistanceResponse200TextPlain | getRouteDistanceResponse200ApplicationOctetStream | getRouteDistanceResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistanceResponseError = (getRouteDistanceResponse400 | getRouteDistanceResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceResponse = (getRouteDistanceResponseSuccess | getRouteDistanceResponseError)
-
-export const getGetRouteDistanceUrl = (params?: GetRouteDistanceParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<RouteDistance[] | Blob>(
+      {url: `/api/v1/RouteDistance`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance?${stringifiedParams}` : `/api/v1/RouteDistance`
-}
-
-export const getRouteDistance = async (params?: GetRouteDistanceParams, options?: RequestInit): Promise<getRouteDistanceResponse> => {
-
-  return configRequest<getRouteDistanceResponse>(getGetRouteDistanceUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1880,7 +462,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistance>>> = ({ signal }) => getRouteDistance(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistance>>> = ({ signal }) => getRouteDistance(params, signal);
 
 
 
@@ -1911,57 +493,21 @@ export function useGetRouteDistance<TData = Awaited<ReturnType<typeof getRouteDi
 
 
 
-export type postRouteDistanceResponse201 = {
-  data: void
-  status: 201
-}
+export const postRouteDistance = (
+    routeDistance?: RouteDistance,
+    params?: PostRouteDistanceParams,
+ signal?: AbortSignal
+) => {
 
-export type postRouteDistanceResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postRouteDistanceResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postRouteDistanceResponseSuccess = (postRouteDistanceResponse201) & {
-  headers: Headers;
-};
-export type postRouteDistanceResponseError = (postRouteDistanceResponse400 | postRouteDistanceResponse406) & {
-  headers: Headers;
-};
-
-export type postRouteDistanceResponse = (postRouteDistanceResponseSuccess | postRouteDistanceResponseError)
-
-export const getPostRouteDistanceUrl = (params?: PostRouteDistanceParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/RouteDistance`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: routeDistance,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance?${stringifiedParams}` : `/api/v1/RouteDistance`
-}
-
-export const postRouteDistance = async (routeDistance?: RouteDistance,
-    params?: PostRouteDistanceParams, options?: RequestInit): Promise<postRouteDistanceResponse> => {
-
-  return configRequest<postRouteDistanceResponse>(getPostRouteDistanceUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(routeDistance)
-  }
-);}
-
 
 
 
@@ -2007,251 +553,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostRouteDistanceMutationOptions(options));
     }
-    export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
+    export const getRouteDistanceCount = (
+    params?: GetRouteDistanceCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
 
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJson = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationXml = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200TextPlain = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceCountResponse200TextJson = {
-  data: RouteDistance[]
-  status: 200
-}
-
-export type getRouteDistanceCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getRouteDistanceCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceCountResponseSuccess = (getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceCountResponse200ApplicationJson | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceCountResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceCountResponse200ApplicationXml | getRouteDistanceCountResponse200TextPlain | getRouteDistanceCountResponse200ApplicationOctetStream | getRouteDistanceCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistanceCountResponseError = (getRouteDistanceCountResponse400 | getRouteDistanceCountResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceCountResponse = (getRouteDistanceCountResponseSuccess | getRouteDistanceCountResponseError)
-
-export const getGetRouteDistanceCountUrl = (params?: GetRouteDistanceCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<RouteDistance[] | Blob>(
+      {url: `/api/v1/RouteDistance/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/$count?${stringifiedParams}` : `/api/v1/RouteDistance/$count`
-}
-
-export const getRouteDistanceCount = async (params?: GetRouteDistanceCountParams, options?: RequestInit): Promise<getRouteDistanceCountResponse> => {
-
-  return configRequest<getRouteDistanceCountResponse>(getGetRouteDistanceCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2272,7 +586,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceCount>>> = ({ signal }) => getRouteDistanceCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceCount>>> = ({ signal }) => getRouteDistanceCount(params, signal);
 
 
 
@@ -2303,253 +617,20 @@ export function useGetRouteDistanceCount<TData = Awaited<ReturnType<typeof getRo
 
 
 
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
+export const getRouteDistanceFromKey = (
+    key: number,
+    params?: GetRouteDistanceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
 
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJson = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationXml = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200TextPlain = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse200TextJson = {
-  data: RouteDistance
-  status: 200
-}
-
-export type getRouteDistanceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getRouteDistanceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getRouteDistanceFromKeyResponseSuccess = (getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFull | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNone | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalse | getRouteDistanceFromKeyResponse200ApplicationJson | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getRouteDistanceFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getRouteDistanceFromKeyResponse200ApplicationXml | getRouteDistanceFromKeyResponse200TextPlain | getRouteDistanceFromKeyResponse200ApplicationOctetStream | getRouteDistanceFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getRouteDistanceFromKeyResponseError = (getRouteDistanceFromKeyResponse404 | getRouteDistanceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getRouteDistanceFromKeyResponse = (getRouteDistanceFromKeyResponseSuccess | getRouteDistanceFromKeyResponseError)
-
-export const getGetRouteDistanceFromKeyUrl = (key: number,
-    params?: GetRouteDistanceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<RouteDistance | Blob>(
+      {url: `/api/v1/RouteDistance/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}?${stringifiedParams}` : `/api/v1/RouteDistance/${key}`
-}
-
-export const getRouteDistanceFromKey = async (key: number,
-    params?: GetRouteDistanceFromKeyParams, options?: RequestInit): Promise<getRouteDistanceFromKeyResponse> => {
-
-  return configRequest<getRouteDistanceFromKeyResponse>(getGetRouteDistanceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2572,7 +653,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceFromKey>>> = ({ signal }) => getRouteDistanceFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRouteDistanceFromKey>>> = ({ signal }) => getRouteDistanceFromKey(key,params, signal);
 
 
 
@@ -2604,64 +685,22 @@ export function useGetRouteDistanceFromKey<TData = Awaited<ReturnType<typeof get
 
 
 
-export type putRouteDistanceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putRouteDistanceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putRouteDistanceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putRouteDistanceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putRouteDistanceFromKeyResponseSuccess = (putRouteDistanceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putRouteDistanceFromKeyResponseError = (putRouteDistanceFromKeyResponse400 | putRouteDistanceFromKeyResponse404 | putRouteDistanceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putRouteDistanceFromKeyResponse = (putRouteDistanceFromKeyResponseSuccess | putRouteDistanceFromKeyResponseError)
-
-export const getPutRouteDistanceFromKeyUrl = (key: number,
-    params?: PutRouteDistanceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}?${stringifiedParams}` : `/api/v1/RouteDistance/${key}`
-}
-
-export const putRouteDistanceFromKey = async (key: number,
+export const putRouteDistanceFromKey = (
+    key: number,
     routeDistance?: RouteDistance,
-    params?: PutRouteDistanceFromKeyParams, options?: RequestInit): Promise<putRouteDistanceFromKeyResponse> => {
+    params?: PutRouteDistanceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putRouteDistanceFromKeyResponse>(getPutRouteDistanceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(routeDistance)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/RouteDistance/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: routeDistance,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2707,64 +746,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutRouteDistanceFromKeyMutationOptions(options));
     }
-    export type patchRouteDistanceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchRouteDistanceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchRouteDistanceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchRouteDistanceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchRouteDistanceFromKeyResponseSuccess = (patchRouteDistanceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchRouteDistanceFromKeyResponseError = (patchRouteDistanceFromKeyResponse400 | patchRouteDistanceFromKeyResponse404 | patchRouteDistanceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchRouteDistanceFromKeyResponse = (patchRouteDistanceFromKeyResponseSuccess | patchRouteDistanceFromKeyResponseError)
-
-export const getPatchRouteDistanceFromKeyUrl = (key: number,
-    params?: PatchRouteDistanceFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/RouteDistance/${key}?${stringifiedParams}` : `/api/v1/RouteDistance/${key}`
-}
-
-export const patchRouteDistanceFromKey = async (key: number,
+    export const patchRouteDistanceFromKey = (
+    key: number,
     routeDistance?: RouteDistance,
-    params?: PatchRouteDistanceFromKeyParams, options?: RequestInit): Promise<patchRouteDistanceFromKeyResponse> => {
+    params?: PatchRouteDistanceFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchRouteDistanceFromKeyResponse>(getPatchRouteDistanceFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(routeDistance)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/RouteDistance/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: routeDistance,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -2810,54 +807,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchRouteDistanceFromKeyMutationOptions(options));
     }
-    export type deleteRouteDistanceFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteRouteDistanceFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteRouteDistanceFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteRouteDistanceFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteRouteDistanceFromKeyResponseSuccess = (deleteRouteDistanceFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteRouteDistanceFromKeyResponseError = (deleteRouteDistanceFromKeyResponse400 | deleteRouteDistanceFromKeyResponse404 | deleteRouteDistanceFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteRouteDistanceFromKeyResponse = (deleteRouteDistanceFromKeyResponseSuccess | deleteRouteDistanceFromKeyResponseError)
-
-export const getDeleteRouteDistanceFromKeyUrl = (key: number,) => {
+    export const deleteRouteDistanceFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/RouteDistance/${key}`
-}
-
-export const deleteRouteDistanceFromKey = async (key: number, options?: RequestInit): Promise<deleteRouteDistanceFromKeyResponse> => {
-
-  return configRequest<deleteRouteDistanceFromKeyResponse>(getDeleteRouteDistanceFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/RouteDistance/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

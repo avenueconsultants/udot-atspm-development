@@ -52,261 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getJurisdictionLocationsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getJurisdictionLocationsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getJurisdictionLocationsFromKeyResponseSuccess = (getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFull | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNone | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJson | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getJurisdictionLocationsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getJurisdictionLocationsFromKeyResponse200ApplicationXml | getJurisdictionLocationsFromKeyResponse200TextPlain | getJurisdictionLocationsFromKeyResponse200ApplicationOctetStream | getJurisdictionLocationsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getJurisdictionLocationsFromKeyResponseError = (getJurisdictionLocationsFromKeyResponse400 | getJurisdictionLocationsFromKeyResponse404 | getJurisdictionLocationsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getJurisdictionLocationsFromKeyResponse = (getJurisdictionLocationsFromKeyResponseSuccess | getJurisdictionLocationsFromKeyResponseError)
-
-export const getGetJurisdictionLocationsFromKeyUrl = (key: number,
-    params?: GetJurisdictionLocationsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/${key}/locations?${stringifiedParams}` : `/api/v1/Jurisdiction/${key}/locations`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getJurisdictionLocationsFromKey = async (key: number,
-    params?: GetJurisdictionLocationsFromKeyParams, options?: RequestInit): Promise<getJurisdictionLocationsFromKeyResponse> => {
-
-  return configRequest<getJurisdictionLocationsFromKeyResponse>(getGetJurisdictionLocationsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getJurisdictionLocationsFromKey = (
+    key: number,
+    params?: GetJurisdictionLocationsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Jurisdiction/${key}/locations`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -329,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>> = ({ signal }) => getJurisdictionLocationsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>> = ({ signal }) => getJurisdictionLocationsFromKey(key,params, signal);
 
 
 
@@ -364,261 +126,23 @@ export function useGetJurisdictionLocationsFromKey<TData = Awaited<ReturnType<ty
 
 
 
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationXml = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200TextPlain = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse200TextJson = {
-  data: Location[]
-  status: 200
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getJurisdictionLocationsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getJurisdictionLocationsCountFromKeyResponseSuccess = (getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJson | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getJurisdictionLocationsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getJurisdictionLocationsCountFromKeyResponse200ApplicationXml | getJurisdictionLocationsCountFromKeyResponse200TextPlain | getJurisdictionLocationsCountFromKeyResponse200ApplicationOctetStream | getJurisdictionLocationsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getJurisdictionLocationsCountFromKeyResponseError = (getJurisdictionLocationsCountFromKeyResponse400 | getJurisdictionLocationsCountFromKeyResponse404 | getJurisdictionLocationsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getJurisdictionLocationsCountFromKeyResponse = (getJurisdictionLocationsCountFromKeyResponseSuccess | getJurisdictionLocationsCountFromKeyResponseError)
-
-export const getGetJurisdictionLocationsCountFromKeyUrl = (key: number,
-    params?: GetJurisdictionLocationsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/${key}/locations/$count?${stringifiedParams}` : `/api/v1/Jurisdiction/${key}/locations/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
-export const getJurisdictionLocationsCountFromKey = async (key: number,
-    params?: GetJurisdictionLocationsCountFromKeyParams, options?: RequestInit): Promise<getJurisdictionLocationsCountFromKeyResponse> => {
-
-  return configRequest<getJurisdictionLocationsCountFromKeyResponse>(getGetJurisdictionLocationsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getJurisdictionLocationsCountFromKey = (
+    key: number,
+    params?: GetJurisdictionLocationsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Location[] | Blob>(
+      {url: `/api/v1/Jurisdiction/${key}/locations/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -641,7 +165,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>> = ({ signal }) => getJurisdictionLocationsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>> = ({ signal }) => getJurisdictionLocationsCountFromKey(key,params, signal);
 
 
 
@@ -676,251 +200,19 @@ export function useGetJurisdictionLocationsCountFromKey<TData = Awaited<ReturnTy
 
 
 
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
+export const getJurisdiction = (
+    params?: GetJurisdictionParams,
+ signal?: AbortSignal
+) => {
 
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
 
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFull = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNone = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJson = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationXml = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200TextPlain = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getJurisdictionResponse200TextJson = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getJurisdictionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getJurisdictionResponseSuccess = (getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimal | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataFull | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataNone | getJurisdictionResponse200ApplicationJsonOdataStreamingTrue | getJurisdictionResponse200ApplicationJsonOdataStreamingFalse | getJurisdictionResponse200ApplicationJson | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationJsonIEEE754CompatibleFalse | getJurisdictionResponse200ApplicationJsonIEEE754CompatibleTrue | getJurisdictionResponse200ApplicationXml | getJurisdictionResponse200TextPlain | getJurisdictionResponse200ApplicationOctetStream | getJurisdictionResponse200TextJson) & {
-  headers: Headers;
-};
-export type getJurisdictionResponseError = (getJurisdictionResponse400 | getJurisdictionResponse406) & {
-  headers: Headers;
-};
-
-export type getJurisdictionResponse = (getJurisdictionResponseSuccess | getJurisdictionResponseError)
-
-export const getGetJurisdictionUrl = (params?: GetJurisdictionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Jurisdiction[] | Blob>(
+      {url: `/api/v1/Jurisdiction`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction?${stringifiedParams}` : `/api/v1/Jurisdiction`
-}
-
-export const getJurisdiction = async (params?: GetJurisdictionParams, options?: RequestInit): Promise<getJurisdictionResponse> => {
-
-  return configRequest<getJurisdictionResponse>(getGetJurisdictionUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -941,7 +233,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdiction>>> = ({ signal }) => getJurisdiction(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdiction>>> = ({ signal }) => getJurisdiction(params, signal);
 
 
 
@@ -972,57 +264,21 @@ export function useGetJurisdiction<TData = Awaited<ReturnType<typeof getJurisdic
 
 
 
-export type postJurisdictionResponse201 = {
-  data: void
-  status: 201
-}
+export const postJurisdiction = (
+    jurisdiction?: Jurisdiction,
+    params?: PostJurisdictionParams,
+ signal?: AbortSignal
+) => {
 
-export type postJurisdictionResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postJurisdictionResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postJurisdictionResponseSuccess = (postJurisdictionResponse201) & {
-  headers: Headers;
-};
-export type postJurisdictionResponseError = (postJurisdictionResponse400 | postJurisdictionResponse406) & {
-  headers: Headers;
-};
-
-export type postJurisdictionResponse = (postJurisdictionResponseSuccess | postJurisdictionResponseError)
-
-export const getPostJurisdictionUrl = (params?: PostJurisdictionParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/Jurisdiction`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: jurisdiction,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction?${stringifiedParams}` : `/api/v1/Jurisdiction`
-}
-
-export const postJurisdiction = async (jurisdiction?: Jurisdiction,
-    params?: PostJurisdictionParams, options?: RequestInit): Promise<postJurisdictionResponse> => {
-
-  return configRequest<postJurisdictionResponse>(getPostJurisdictionUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(jurisdiction)
-  }
-);}
-
 
 
 
@@ -1068,251 +324,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostJurisdictionMutationOptions(options));
     }
-    export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
+    export const getJurisdictionCount = (
+    params?: GetJurisdictionCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
 
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJson = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationXml = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200TextPlain = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getJurisdictionCountResponse200TextJson = {
-  data: Jurisdiction[]
-  status: 200
-}
-
-export type getJurisdictionCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getJurisdictionCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getJurisdictionCountResponseSuccess = (getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimal | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFull | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNone | getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrue | getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalse | getJurisdictionCountResponse200ApplicationJson | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationJsonIEEE754CompatibleFalse | getJurisdictionCountResponse200ApplicationJsonIEEE754CompatibleTrue | getJurisdictionCountResponse200ApplicationXml | getJurisdictionCountResponse200TextPlain | getJurisdictionCountResponse200ApplicationOctetStream | getJurisdictionCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getJurisdictionCountResponseError = (getJurisdictionCountResponse400 | getJurisdictionCountResponse406) & {
-  headers: Headers;
-};
-
-export type getJurisdictionCountResponse = (getJurisdictionCountResponseSuccess | getJurisdictionCountResponseError)
-
-export const getGetJurisdictionCountUrl = (params?: GetJurisdictionCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Jurisdiction[] | Blob>(
+      {url: `/api/v1/Jurisdiction/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/$count?${stringifiedParams}` : `/api/v1/Jurisdiction/$count`
-}
-
-export const getJurisdictionCount = async (params?: GetJurisdictionCountParams, options?: RequestInit): Promise<getJurisdictionCountResponse> => {
-
-  return configRequest<getJurisdictionCountResponse>(getGetJurisdictionCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1333,7 +357,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionCount>>> = ({ signal }) => getJurisdictionCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionCount>>> = ({ signal }) => getJurisdictionCount(params, signal);
 
 
 
@@ -1364,253 +388,20 @@ export function useGetJurisdictionCount<TData = Awaited<ReturnType<typeof getJur
 
 
 
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Jurisdiction
-  status: 200
-}
+export const getJurisdictionFromKey = (
+    key: number,
+    params?: GetJurisdictionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Jurisdiction
-  status: 200
-}
 
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJson = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationXml = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200TextPlain = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse200TextJson = {
-  data: Jurisdiction
-  status: 200
-}
-
-export type getJurisdictionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getJurisdictionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getJurisdictionFromKeyResponseSuccess = (getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFull | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNone | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalse | getJurisdictionFromKeyResponse200ApplicationJson | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getJurisdictionFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getJurisdictionFromKeyResponse200ApplicationXml | getJurisdictionFromKeyResponse200TextPlain | getJurisdictionFromKeyResponse200ApplicationOctetStream | getJurisdictionFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getJurisdictionFromKeyResponseError = (getJurisdictionFromKeyResponse404 | getJurisdictionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getJurisdictionFromKeyResponse = (getJurisdictionFromKeyResponseSuccess | getJurisdictionFromKeyResponseError)
-
-export const getGetJurisdictionFromKeyUrl = (key: number,
-    params?: GetJurisdictionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<Jurisdiction | Blob>(
+      {url: `/api/v1/Jurisdiction/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/${key}?${stringifiedParams}` : `/api/v1/Jurisdiction/${key}`
-}
-
-export const getJurisdictionFromKey = async (key: number,
-    params?: GetJurisdictionFromKeyParams, options?: RequestInit): Promise<getJurisdictionFromKeyResponse> => {
-
-  return configRequest<getJurisdictionFromKeyResponse>(getGetJurisdictionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1633,7 +424,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionFromKey>>> = ({ signal }) => getJurisdictionFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getJurisdictionFromKey>>> = ({ signal }) => getJurisdictionFromKey(key,params, signal);
 
 
 
@@ -1665,64 +456,22 @@ export function useGetJurisdictionFromKey<TData = Awaited<ReturnType<typeof getJ
 
 
 
-export type putJurisdictionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putJurisdictionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putJurisdictionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putJurisdictionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putJurisdictionFromKeyResponseSuccess = (putJurisdictionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putJurisdictionFromKeyResponseError = (putJurisdictionFromKeyResponse400 | putJurisdictionFromKeyResponse404 | putJurisdictionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putJurisdictionFromKeyResponse = (putJurisdictionFromKeyResponseSuccess | putJurisdictionFromKeyResponseError)
-
-export const getPutJurisdictionFromKeyUrl = (key: number,
-    params?: PutJurisdictionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/${key}?${stringifiedParams}` : `/api/v1/Jurisdiction/${key}`
-}
-
-export const putJurisdictionFromKey = async (key: number,
+export const putJurisdictionFromKey = (
+    key: number,
     jurisdiction?: Jurisdiction,
-    params?: PutJurisdictionFromKeyParams, options?: RequestInit): Promise<putJurisdictionFromKeyResponse> => {
+    params?: PutJurisdictionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putJurisdictionFromKeyResponse>(getPutJurisdictionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(jurisdiction)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Jurisdiction/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: jurisdiction,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1768,64 +517,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutJurisdictionFromKeyMutationOptions(options));
     }
-    export type patchJurisdictionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchJurisdictionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchJurisdictionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchJurisdictionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchJurisdictionFromKeyResponseSuccess = (patchJurisdictionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchJurisdictionFromKeyResponseError = (patchJurisdictionFromKeyResponse400 | patchJurisdictionFromKeyResponse404 | patchJurisdictionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchJurisdictionFromKeyResponse = (patchJurisdictionFromKeyResponseSuccess | patchJurisdictionFromKeyResponseError)
-
-export const getPatchJurisdictionFromKeyUrl = (key: number,
-    params?: PatchJurisdictionFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/Jurisdiction/${key}?${stringifiedParams}` : `/api/v1/Jurisdiction/${key}`
-}
-
-export const patchJurisdictionFromKey = async (key: number,
+    export const patchJurisdictionFromKey = (
+    key: number,
     jurisdiction?: Jurisdiction,
-    params?: PatchJurisdictionFromKeyParams, options?: RequestInit): Promise<patchJurisdictionFromKeyResponse> => {
+    params?: PatchJurisdictionFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchJurisdictionFromKeyResponse>(getPatchJurisdictionFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(jurisdiction)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/Jurisdiction/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: jurisdiction,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1871,54 +578,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchJurisdictionFromKeyMutationOptions(options));
     }
-    export type deleteJurisdictionFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteJurisdictionFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteJurisdictionFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteJurisdictionFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteJurisdictionFromKeyResponseSuccess = (deleteJurisdictionFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteJurisdictionFromKeyResponseError = (deleteJurisdictionFromKeyResponse400 | deleteJurisdictionFromKeyResponse404 | deleteJurisdictionFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteJurisdictionFromKeyResponse = (deleteJurisdictionFromKeyResponseSuccess | deleteJurisdictionFromKeyResponseError)
-
-export const getDeleteJurisdictionFromKeyUrl = (key: number,) => {
+    export const deleteJurisdictionFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/Jurisdiction/${key}`
-}
-
-export const deleteJurisdictionFromKey = async (key: number, options?: RequestInit): Promise<deleteJurisdictionFromKeyResponse> => {
-
-  return configRequest<deleteJurisdictionFromKeyResponse>(getDeleteJurisdictionFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/Jurisdiction/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

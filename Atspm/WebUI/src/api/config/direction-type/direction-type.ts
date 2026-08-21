@@ -57,261 +57,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationXml = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200TextPlain = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse200TextJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeApproachesFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypeApproachesFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeApproachesFromKeyResponseSuccess = (getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJson | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeApproachesFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeApproachesFromKeyResponse200ApplicationXml | getDirectionTypeApproachesFromKeyResponse200TextPlain | getDirectionTypeApproachesFromKeyResponse200ApplicationOctetStream | getDirectionTypeApproachesFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeApproachesFromKeyResponseError = (getDirectionTypeApproachesFromKeyResponse400 | getDirectionTypeApproachesFromKeyResponse404 | getDirectionTypeApproachesFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeApproachesFromKeyResponse = (getDirectionTypeApproachesFromKeyResponseSuccess | getDirectionTypeApproachesFromKeyResponseError)
-
-export const getGetDirectionTypeApproachesFromKeyUrl = (key: string,
-    params?: GetDirectionTypeApproachesFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/approaches?${stringifiedParams}` : `/api/v1/DirectionType/${key}/approaches`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
-export const getDirectionTypeApproachesFromKey = async (key: string,
-    params?: GetDirectionTypeApproachesFromKeyParams, options?: RequestInit): Promise<getDirectionTypeApproachesFromKeyResponse> => {
-
-  return configRequest<getDirectionTypeApproachesFromKeyResponse>(getGetDirectionTypeApproachesFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypeApproachesFromKey = (
+    key: string,
+    params?: GetDirectionTypeApproachesFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Approach[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/approaches`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -334,7 +96,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>> = ({ signal }) => getDirectionTypeApproachesFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>> = ({ signal }) => getDirectionTypeApproachesFromKey(key,params, signal);
 
 
 
@@ -369,261 +131,23 @@ export function useGetDirectionTypeApproachesFromKey<TData = Awaited<ReturnType<
 
 
 
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationXml = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200TextPlain = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse200TextJson = {
-  data: Approach[]
-  status: 200
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeApproachesCountFromKeyResponseSuccess = (getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJson | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeApproachesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeApproachesCountFromKeyResponse200ApplicationXml | getDirectionTypeApproachesCountFromKeyResponse200TextPlain | getDirectionTypeApproachesCountFromKeyResponse200ApplicationOctetStream | getDirectionTypeApproachesCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeApproachesCountFromKeyResponseError = (getDirectionTypeApproachesCountFromKeyResponse400 | getDirectionTypeApproachesCountFromKeyResponse404 | getDirectionTypeApproachesCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeApproachesCountFromKeyResponse = (getDirectionTypeApproachesCountFromKeyResponseSuccess | getDirectionTypeApproachesCountFromKeyResponseError)
-
-export const getGetDirectionTypeApproachesCountFromKeyUrl = (key: string,
-    params?: GetDirectionTypeApproachesCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/approaches/$count?${stringifiedParams}` : `/api/v1/DirectionType/${key}/approaches/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
-export const getDirectionTypeApproachesCountFromKey = async (key: string,
-    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: RequestInit): Promise<getDirectionTypeApproachesCountFromKeyResponse> => {
-
-  return configRequest<getDirectionTypeApproachesCountFromKeyResponse>(getGetDirectionTypeApproachesCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypeApproachesCountFromKey = (
+    key: string,
+    params?: GetDirectionTypeApproachesCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<Approach[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/approaches/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -646,7 +170,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>> = ({ signal }) => getDirectionTypeApproachesCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>> = ({ signal }) => getDirectionTypeApproachesCountFromKey(key,params, signal);
 
 
 
@@ -681,261 +205,23 @@ export function useGetDirectionTypeApproachesCountFromKey<TData = Awaited<Return
 
 
 
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponseSuccess = (getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJson | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationXml | getDirectionTypePrimaryDirectionsFromKeyResponse200TextPlain | getDirectionTypePrimaryDirectionsFromKeyResponse200ApplicationOctetStream | getDirectionTypePrimaryDirectionsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypePrimaryDirectionsFromKeyResponseError = (getDirectionTypePrimaryDirectionsFromKeyResponse400 | getDirectionTypePrimaryDirectionsFromKeyResponse404 | getDirectionTypePrimaryDirectionsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypePrimaryDirectionsFromKeyResponse = (getDirectionTypePrimaryDirectionsFromKeyResponseSuccess | getDirectionTypePrimaryDirectionsFromKeyResponseError)
-
-export const getGetDirectionTypePrimaryDirectionsFromKeyUrl = (key: string,
-    params?: GetDirectionTypePrimaryDirectionsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/primaryDirections?${stringifiedParams}` : `/api/v1/DirectionType/${key}/primaryDirections`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getDirectionTypePrimaryDirectionsFromKey = async (key: string,
-    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: RequestInit): Promise<getDirectionTypePrimaryDirectionsFromKeyResponse> => {
-
-  return configRequest<getDirectionTypePrimaryDirectionsFromKeyResponse>(getGetDirectionTypePrimaryDirectionsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypePrimaryDirectionsFromKey = (
+    key: string,
+    params?: GetDirectionTypePrimaryDirectionsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/primaryDirections`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -958,7 +244,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>> = ({ signal }) => getDirectionTypePrimaryDirectionsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>> = ({ signal }) => getDirectionTypePrimaryDirectionsFromKey(key,params, signal);
 
 
 
@@ -993,261 +279,23 @@ export function useGetDirectionTypePrimaryDirectionsFromKey<TData = Awaited<Retu
 
 
 
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponseSuccess = (getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJson | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationXml | getDirectionTypePrimaryDirectionsCountFromKeyResponse200TextPlain | getDirectionTypePrimaryDirectionsCountFromKeyResponse200ApplicationOctetStream | getDirectionTypePrimaryDirectionsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponseError = (getDirectionTypePrimaryDirectionsCountFromKeyResponse400 | getDirectionTypePrimaryDirectionsCountFromKeyResponse404 | getDirectionTypePrimaryDirectionsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypePrimaryDirectionsCountFromKeyResponse = (getDirectionTypePrimaryDirectionsCountFromKeyResponseSuccess | getDirectionTypePrimaryDirectionsCountFromKeyResponseError)
-
-export const getGetDirectionTypePrimaryDirectionsCountFromKeyUrl = (key: string,
-    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/primaryDirections/$count?${stringifiedParams}` : `/api/v1/DirectionType/${key}/primaryDirections/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getDirectionTypePrimaryDirectionsCountFromKey = async (key: string,
-    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: RequestInit): Promise<getDirectionTypePrimaryDirectionsCountFromKeyResponse> => {
-
-  return configRequest<getDirectionTypePrimaryDirectionsCountFromKeyResponse>(getGetDirectionTypePrimaryDirectionsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypePrimaryDirectionsCountFromKey = (
+    key: string,
+    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/primaryDirections/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -1270,7 +318,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>> = ({ signal }) => getDirectionTypePrimaryDirectionsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>> = ({ signal }) => getDirectionTypePrimaryDirectionsCountFromKey(key,params, signal);
 
 
 
@@ -1305,261 +353,23 @@ export function useGetDirectionTypePrimaryDirectionsCountFromKey<TData = Awaited
 
 
 
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponseSuccess = (getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJson | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationXml | getDirectionTypeOpposingDirectionsFromKeyResponse200TextPlain | getDirectionTypeOpposingDirectionsFromKeyResponse200ApplicationOctetStream | getDirectionTypeOpposingDirectionsFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeOpposingDirectionsFromKeyResponseError = (getDirectionTypeOpposingDirectionsFromKeyResponse400 | getDirectionTypeOpposingDirectionsFromKeyResponse404 | getDirectionTypeOpposingDirectionsFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeOpposingDirectionsFromKeyResponse = (getDirectionTypeOpposingDirectionsFromKeyResponseSuccess | getDirectionTypeOpposingDirectionsFromKeyResponseError)
-
-export const getGetDirectionTypeOpposingDirectionsFromKeyUrl = (key: string,
-    params?: GetDirectionTypeOpposingDirectionsFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/opposingDirections?${stringifiedParams}` : `/api/v1/DirectionType/${key}/opposingDirections`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getDirectionTypeOpposingDirectionsFromKey = async (key: string,
-    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: RequestInit): Promise<getDirectionTypeOpposingDirectionsFromKeyResponse> => {
-
-  return configRequest<getDirectionTypeOpposingDirectionsFromKeyResponse>(getGetDirectionTypeOpposingDirectionsFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypeOpposingDirectionsFromKey = (
+    key: string,
+    params?: GetDirectionTypeOpposingDirectionsFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/opposingDirections`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -1582,7 +392,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>> = ({ signal }) => getDirectionTypeOpposingDirectionsFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>> = ({ signal }) => getDirectionTypeOpposingDirectionsFromKey(key,params, signal);
 
 
 
@@ -1617,261 +427,23 @@ export function useGetDirectionTypeOpposingDirectionsFromKey<TData = Awaited<Ret
 
 
 
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationXml = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200TextPlain = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse200TextJson = {
-  data: RouteLocation[]
-  status: 200
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponseSuccess = (getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJson | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationXml | getDirectionTypeOpposingDirectionsCountFromKeyResponse200TextPlain | getDirectionTypeOpposingDirectionsCountFromKeyResponse200ApplicationOctetStream | getDirectionTypeOpposingDirectionsCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponseError = (getDirectionTypeOpposingDirectionsCountFromKeyResponse400 | getDirectionTypeOpposingDirectionsCountFromKeyResponse404 | getDirectionTypeOpposingDirectionsCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeOpposingDirectionsCountFromKeyResponse = (getDirectionTypeOpposingDirectionsCountFromKeyResponseSuccess | getDirectionTypeOpposingDirectionsCountFromKeyResponseError)
-
-export const getGetDirectionTypeOpposingDirectionsCountFromKeyUrl = (key: string,
-    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}/opposingDirections/$count?${stringifiedParams}` : `/api/v1/DirectionType/${key}/opposingDirections/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
-export const getDirectionTypeOpposingDirectionsCountFromKey = async (key: string,
-    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: RequestInit): Promise<getDirectionTypeOpposingDirectionsCountFromKeyResponse> => {
-
-  return configRequest<getDirectionTypeOpposingDirectionsCountFromKeyResponse>(getGetDirectionTypeOpposingDirectionsCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getDirectionTypeOpposingDirectionsCountFromKey = (
+    key: string,
+    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<RouteLocation[] | Blob>(
+      {url: `/api/v1/DirectionType/${key}/opposingDirections/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -1894,7 +466,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>> = ({ signal }) => getDirectionTypeOpposingDirectionsCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>> = ({ signal }) => getDirectionTypeOpposingDirectionsCountFromKey(key,params, signal);
 
 
 
@@ -1929,251 +501,19 @@ export function useGetDirectionTypeOpposingDirectionsCountFromKey<TData = Awaite
 
 
 
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
+export const getDirectionType = (
+    params?: GetDirectionTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
 
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFull = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNone = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJson = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationXml = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200TextPlain = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeResponse200TextJson = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeResponseSuccess = (getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeResponse200ApplicationJson | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeResponse200ApplicationXml | getDirectionTypeResponse200TextPlain | getDirectionTypeResponse200ApplicationOctetStream | getDirectionTypeResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeResponseError = (getDirectionTypeResponse400 | getDirectionTypeResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeResponse = (getDirectionTypeResponseSuccess | getDirectionTypeResponseError)
-
-export const getGetDirectionTypeUrl = (params?: GetDirectionTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DirectionType[] | Blob>(
+      {url: `/api/v1/DirectionType`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType?${stringifiedParams}` : `/api/v1/DirectionType`
-}
-
-export const getDirectionType = async (params?: GetDirectionTypeParams, options?: RequestInit): Promise<getDirectionTypeResponse> => {
-
-  return configRequest<getDirectionTypeResponse>(getGetDirectionTypeUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2194,7 +534,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionType>>> = ({ signal }) => getDirectionType(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionType>>> = ({ signal }) => getDirectionType(params, signal);
 
 
 
@@ -2225,57 +565,21 @@ export function useGetDirectionType<TData = Awaited<ReturnType<typeof getDirecti
 
 
 
-export type postDirectionTypeResponse201 = {
-  data: void
-  status: 201
-}
+export const postDirectionType = (
+    directionType?: DirectionType,
+    params?: PostDirectionTypeParams,
+ signal?: AbortSignal
+) => {
 
-export type postDirectionTypeResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postDirectionTypeResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postDirectionTypeResponseSuccess = (postDirectionTypeResponse201) & {
-  headers: Headers;
-};
-export type postDirectionTypeResponseError = (postDirectionTypeResponse400 | postDirectionTypeResponse406) & {
-  headers: Headers;
-};
-
-export type postDirectionTypeResponse = (postDirectionTypeResponseSuccess | postDirectionTypeResponseError)
-
-export const getPostDirectionTypeUrl = (params?: PostDirectionTypeParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/DirectionType`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: directionType,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType?${stringifiedParams}` : `/api/v1/DirectionType`
-}
-
-export const postDirectionType = async (directionType?: DirectionType,
-    params?: PostDirectionTypeParams, options?: RequestInit): Promise<postDirectionTypeResponse> => {
-
-  return configRequest<postDirectionTypeResponse>(getPostDirectionTypeUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(directionType)
-  }
-);}
-
 
 
 
@@ -2321,251 +625,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostDirectionTypeMutationOptions(options));
     }
-    export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
+    export const getDirectionTypeCount = (
+    params?: GetDirectionTypeCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
 
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJson = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationXml = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200TextPlain = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeCountResponse200TextJson = {
-  data: DirectionType[]
-  status: 200
-}
-
-export type getDirectionTypeCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getDirectionTypeCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeCountResponseSuccess = (getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeCountResponse200ApplicationJson | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeCountResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeCountResponse200ApplicationXml | getDirectionTypeCountResponse200TextPlain | getDirectionTypeCountResponse200ApplicationOctetStream | getDirectionTypeCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeCountResponseError = (getDirectionTypeCountResponse400 | getDirectionTypeCountResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeCountResponse = (getDirectionTypeCountResponseSuccess | getDirectionTypeCountResponseError)
-
-export const getGetDirectionTypeCountUrl = (params?: GetDirectionTypeCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DirectionType[] | Blob>(
+      {url: `/api/v1/DirectionType/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/$count?${stringifiedParams}` : `/api/v1/DirectionType/$count`
-}
-
-export const getDirectionTypeCount = async (params?: GetDirectionTypeCountParams, options?: RequestInit): Promise<getDirectionTypeCountResponse> => {
-
-  return configRequest<getDirectionTypeCountResponse>(getGetDirectionTypeCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2586,7 +658,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeCount>>> = ({ signal }) => getDirectionTypeCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeCount>>> = ({ signal }) => getDirectionTypeCount(params, signal);
 
 
 
@@ -2617,253 +689,20 @@ export function useGetDirectionTypeCount<TData = Awaited<ReturnType<typeof getDi
 
 
 
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: DirectionType
-  status: 200
-}
+export const getDirectionTypeFromKey = (
+    key: string,
+    params?: GetDirectionTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: DirectionType
-  status: 200
-}
 
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJson = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationXml = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200TextPlain = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse200TextJson = {
-  data: DirectionType
-  status: 200
-}
-
-export type getDirectionTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getDirectionTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getDirectionTypeFromKeyResponseSuccess = (getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFull | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNone | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalse | getDirectionTypeFromKeyResponse200ApplicationJson | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getDirectionTypeFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getDirectionTypeFromKeyResponse200ApplicationXml | getDirectionTypeFromKeyResponse200TextPlain | getDirectionTypeFromKeyResponse200ApplicationOctetStream | getDirectionTypeFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getDirectionTypeFromKeyResponseError = (getDirectionTypeFromKeyResponse404 | getDirectionTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getDirectionTypeFromKeyResponse = (getDirectionTypeFromKeyResponseSuccess | getDirectionTypeFromKeyResponseError)
-
-export const getGetDirectionTypeFromKeyUrl = (key: string,
-    params?: GetDirectionTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<DirectionType | Blob>(
+      {url: `/api/v1/DirectionType/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}?${stringifiedParams}` : `/api/v1/DirectionType/${key}`
-}
-
-export const getDirectionTypeFromKey = async (key: string,
-    params?: GetDirectionTypeFromKeyParams, options?: RequestInit): Promise<getDirectionTypeFromKeyResponse> => {
-
-  return configRequest<getDirectionTypeFromKeyResponse>(getGetDirectionTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -2886,7 +725,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeFromKey>>> = ({ signal }) => getDirectionTypeFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDirectionTypeFromKey>>> = ({ signal }) => getDirectionTypeFromKey(key,params, signal);
 
 
 
@@ -2918,64 +757,22 @@ export function useGetDirectionTypeFromKey<TData = Awaited<ReturnType<typeof get
 
 
 
-export type putDirectionTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putDirectionTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putDirectionTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putDirectionTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putDirectionTypeFromKeyResponseSuccess = (putDirectionTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putDirectionTypeFromKeyResponseError = (putDirectionTypeFromKeyResponse400 | putDirectionTypeFromKeyResponse404 | putDirectionTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putDirectionTypeFromKeyResponse = (putDirectionTypeFromKeyResponseSuccess | putDirectionTypeFromKeyResponseError)
-
-export const getPutDirectionTypeFromKeyUrl = (key: string,
-    params?: PutDirectionTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}?${stringifiedParams}` : `/api/v1/DirectionType/${key}`
-}
-
-export const putDirectionTypeFromKey = async (key: string,
+export const putDirectionTypeFromKey = (
+    key: string,
     directionType?: DirectionType,
-    params?: PutDirectionTypeFromKeyParams, options?: RequestInit): Promise<putDirectionTypeFromKeyResponse> => {
+    params?: PutDirectionTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putDirectionTypeFromKeyResponse>(getPutDirectionTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(directionType)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/DirectionType/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: directionType,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -3021,64 +818,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutDirectionTypeFromKeyMutationOptions(options));
     }
-    export type patchDirectionTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchDirectionTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchDirectionTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchDirectionTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchDirectionTypeFromKeyResponseSuccess = (patchDirectionTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchDirectionTypeFromKeyResponseError = (patchDirectionTypeFromKeyResponse400 | patchDirectionTypeFromKeyResponse404 | patchDirectionTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchDirectionTypeFromKeyResponse = (patchDirectionTypeFromKeyResponseSuccess | patchDirectionTypeFromKeyResponseError)
-
-export const getPatchDirectionTypeFromKeyUrl = (key: string,
-    params?: PatchDirectionTypeFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/DirectionType/${key}?${stringifiedParams}` : `/api/v1/DirectionType/${key}`
-}
-
-export const patchDirectionTypeFromKey = async (key: string,
+    export const patchDirectionTypeFromKey = (
+    key: string,
     directionType?: DirectionType,
-    params?: PatchDirectionTypeFromKeyParams, options?: RequestInit): Promise<patchDirectionTypeFromKeyResponse> => {
+    params?: PatchDirectionTypeFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchDirectionTypeFromKeyResponse>(getPatchDirectionTypeFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(directionType)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/DirectionType/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: directionType,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -3124,54 +879,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchDirectionTypeFromKeyMutationOptions(options));
     }
-    export type deleteDirectionTypeFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteDirectionTypeFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteDirectionTypeFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteDirectionTypeFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteDirectionTypeFromKeyResponseSuccess = (deleteDirectionTypeFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteDirectionTypeFromKeyResponseError = (deleteDirectionTypeFromKeyResponse400 | deleteDirectionTypeFromKeyResponse404 | deleteDirectionTypeFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteDirectionTypeFromKeyResponse = (deleteDirectionTypeFromKeyResponseSuccess | deleteDirectionTypeFromKeyResponseError)
-
-export const getDeleteDirectionTypeFromKeyUrl = (key: string,) => {
+    export const deleteDirectionTypeFromKey = (
+    key: string,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/DirectionType/${key}`
-}
-
-export const deleteDirectionTypeFromKey = async (key: string, options?: RequestInit): Promise<deleteDirectionTypeFromKeyResponse> => {
-
-  return configRequest<deleteDirectionTypeFromKeyResponse>(getDeleteDirectionTypeFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/DirectionType/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

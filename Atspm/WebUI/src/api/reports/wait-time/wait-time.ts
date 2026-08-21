@@ -45,47 +45,20 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getWaitTimeTestDataResponse200 = {
-  data: WaitTimeResult[]
-  status: 200
-}
-
-export type getWaitTimeTestDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getWaitTimeTestDataResponseSuccess = (getWaitTimeTestDataResponse200) & {
-  headers: Headers;
-};
-export type getWaitTimeTestDataResponseError = (getWaitTimeTestDataResponse406) & {
-  headers: Headers;
-};
-
-export type getWaitTimeTestDataResponse = (getWaitTimeTestDataResponseSuccess | getWaitTimeTestDataResponseError)
-
-export const getGetWaitTimeTestDataUrl = () => {
-
-
-
-
-  return `/api/v1/WaitTime/test`
-}
-
 /**
  * @summary Get example data for testing
  */
-export const getWaitTimeTestData = async ( options?: RequestInit): Promise<getWaitTimeTestDataResponse> => {
+export const getWaitTimeTestData = (
 
-  return reportsRequest<getWaitTimeTestDataResponse>(getGetWaitTimeTestDataUrl(),
-  {
-    ...options,
-    method: 'GET'
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return reportsRequest<WaitTimeResult[]>(
+      {url: `/api/v1/WaitTime/test`, method: 'GET', signal
+    },
+      );
+    }
 
 
 
@@ -106,7 +79,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWaitTimeTestData>>> = ({ signal }) => getWaitTimeTestData({ signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWaitTimeTestData>>> = ({ signal }) => getWaitTimeTestData(signal);
 
 
 
@@ -140,52 +113,22 @@ export function useGetWaitTimeTestData<TData = Awaited<ReturnType<typeof getWait
 
 
 
-export type getWaitTimeReportDataResponse200 = {
-  data: WaitTimeResult[]
-  status: 200
-}
-
-export type getWaitTimeReportDataResponse400 = {
-  data: ProblemDetails
-  status: 400
-}
-
-export type getWaitTimeReportDataResponse406 = {
-  data: ProblemDetails
-  status: 406
-}
-
-export type getWaitTimeReportDataResponseSuccess = (getWaitTimeReportDataResponse200) & {
-  headers: Headers;
-};
-export type getWaitTimeReportDataResponseError = (getWaitTimeReportDataResponse400 | getWaitTimeReportDataResponse406) & {
-  headers: Headers;
-};
-
-export type getWaitTimeReportDataResponse = (getWaitTimeReportDataResponseSuccess | getWaitTimeReportDataResponseError)
-
-export const getGetWaitTimeReportDataUrl = () => {
-
-
-
-
-  return `/api/v1/WaitTime/getReportData`
-}
-
 /**
  * @summary Get report data
  */
-export const getWaitTimeReportData = async (waitTimeOptions?: WaitTimeOptions, options?: RequestInit): Promise<getWaitTimeReportDataResponse> => {
+export const getWaitTimeReportData = (
+    waitTimeOptions?: WaitTimeOptions,
+ signal?: AbortSignal
+) => {
 
-  return reportsRequest<getWaitTimeReportDataResponse>(getGetWaitTimeReportDataUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(waitTimeOptions)
-  }
-);}
 
+      return reportsRequest<WaitTimeResult[]>(
+      {url: `/api/v1/WaitTime/getReportData`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: waitTimeOptions, signal
+    },
+      );
+    }
 
 
 

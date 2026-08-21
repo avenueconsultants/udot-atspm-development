@@ -52,261 +52,23 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJson = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationXml = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200TextPlain = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse200TextJson = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureCommentMeasureTypesFromKeyResponseSuccess = (getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFull | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNone | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJson | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationXml | getMeasureCommentMeasureTypesFromKeyResponse200TextPlain | getMeasureCommentMeasureTypesFromKeyResponse200ApplicationOctetStream | getMeasureCommentMeasureTypesFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureCommentMeasureTypesFromKeyResponseError = (getMeasureCommentMeasureTypesFromKeyResponse400 | getMeasureCommentMeasureTypesFromKeyResponse404 | getMeasureCommentMeasureTypesFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureCommentMeasureTypesFromKeyResponse = (getMeasureCommentMeasureTypesFromKeyResponseSuccess | getMeasureCommentMeasureTypesFromKeyResponseError)
-
-export const getGetMeasureCommentMeasureTypesFromKeyUrl = (key: number,
-    params?: GetMeasureCommentMeasureTypesFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/${key}/measureTypes?${stringifiedParams}` : `/api/v1/MeasureComment/${key}/measureTypes`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
-export const getMeasureCommentMeasureTypesFromKey = async (key: number,
-    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: RequestInit): Promise<getMeasureCommentMeasureTypesFromKeyResponse> => {
-
-  return configRequest<getMeasureCommentMeasureTypesFromKeyResponse>(getGetMeasureCommentMeasureTypesFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getMeasureCommentMeasureTypesFromKey = (
+    key: number,
+    params?: GetMeasureCommentMeasureTypesFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<MeasureType[] | Blob>(
+      {url: `/api/v1/MeasureComment/${key}/measureTypes`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -329,7 +91,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>> = ({ signal }) => getMeasureCommentMeasureTypesFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>> = ({ signal }) => getMeasureCommentMeasureTypesFromKey(key,params, signal);
 
 
 
@@ -364,261 +126,23 @@ export function useGetMeasureCommentMeasureTypesFromKey<TData = Awaited<ReturnTy
 
 
 
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJson = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationXml = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200TextPlain = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse200TextJson = {
-  data: MeasureType[]
-  status: 200
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponseSuccess = (getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFull | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNone | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJson | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationXml | getMeasureCommentMeasureTypesCountFromKeyResponse200TextPlain | getMeasureCommentMeasureTypesCountFromKeyResponse200ApplicationOctetStream | getMeasureCommentMeasureTypesCountFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureCommentMeasureTypesCountFromKeyResponseError = (getMeasureCommentMeasureTypesCountFromKeyResponse400 | getMeasureCommentMeasureTypesCountFromKeyResponse404 | getMeasureCommentMeasureTypesCountFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureCommentMeasureTypesCountFromKeyResponse = (getMeasureCommentMeasureTypesCountFromKeyResponseSuccess | getMeasureCommentMeasureTypesCountFromKeyResponseError)
-
-export const getGetMeasureCommentMeasureTypesCountFromKeyUrl = (key: number,
-    params?: GetMeasureCommentMeasureTypesCountFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/${key}/measureTypes/$count?${stringifiedParams}` : `/api/v1/MeasureComment/${key}/measureTypes/$count`
-}
-
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
-export const getMeasureCommentMeasureTypesCountFromKey = async (key: number,
-    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: RequestInit): Promise<getMeasureCommentMeasureTypesCountFromKeyResponse> => {
-
-  return configRequest<getMeasureCommentMeasureTypesCountFromKeyResponse>(getGetMeasureCommentMeasureTypesCountFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
+export const getMeasureCommentMeasureTypesCountFromKey = (
+    key: number,
+    params?: GetMeasureCommentMeasureTypesCountFromKeyParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<MeasureType[] | Blob>(
+      {url: `/api/v1/MeasureComment/${key}/measureTypes/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -641,7 +165,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>> = ({ signal }) => getMeasureCommentMeasureTypesCountFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>> = ({ signal }) => getMeasureCommentMeasureTypesCountFromKey(key,params, signal);
 
 
 
@@ -676,251 +200,19 @@ export function useGetMeasureCommentMeasureTypesCountFromKey<TData = Awaited<Ret
 
 
 
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
+export const getMeasureComment = (
+    params?: GetMeasureCommentParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
 
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJson = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationXml = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200TextPlain = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureCommentResponse200TextJson = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureCommentResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureCommentResponseSuccess = (getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimal | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataFull | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataNone | getMeasureCommentResponse200ApplicationJsonOdataStreamingTrue | getMeasureCommentResponse200ApplicationJsonOdataStreamingFalse | getMeasureCommentResponse200ApplicationJson | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureCommentResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureCommentResponse200ApplicationXml | getMeasureCommentResponse200TextPlain | getMeasureCommentResponse200ApplicationOctetStream | getMeasureCommentResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureCommentResponseError = (getMeasureCommentResponse400 | getMeasureCommentResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureCommentResponse = (getMeasureCommentResponseSuccess | getMeasureCommentResponseError)
-
-export const getGetMeasureCommentUrl = (params?: GetMeasureCommentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureComment[] | Blob>(
+      {url: `/api/v1/MeasureComment`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment?${stringifiedParams}` : `/api/v1/MeasureComment`
-}
-
-export const getMeasureComment = async (params?: GetMeasureCommentParams, options?: RequestInit): Promise<getMeasureCommentResponse> => {
-
-  return configRequest<getMeasureCommentResponse>(getGetMeasureCommentUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -941,7 +233,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureComment>>> = ({ signal }) => getMeasureComment(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureComment>>> = ({ signal }) => getMeasureComment(params, signal);
 
 
 
@@ -972,57 +264,21 @@ export function useGetMeasureComment<TData = Awaited<ReturnType<typeof getMeasur
 
 
 
-export type postMeasureCommentResponse201 = {
-  data: void
-  status: 201
-}
+export const postMeasureComment = (
+    measureComment?: MeasureComment,
+    params?: PostMeasureCommentParams,
+ signal?: AbortSignal
+) => {
 
-export type postMeasureCommentResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postMeasureCommentResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postMeasureCommentResponseSuccess = (postMeasureCommentResponse201) & {
-  headers: Headers;
-};
-export type postMeasureCommentResponseError = (postMeasureCommentResponse400 | postMeasureCommentResponse406) & {
-  headers: Headers;
-};
-
-export type postMeasureCommentResponse = (postMeasureCommentResponseSuccess | postMeasureCommentResponseError)
-
-export const getPostMeasureCommentUrl = (params?: PostMeasureCommentParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/MeasureComment`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureComment,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment?${stringifiedParams}` : `/api/v1/MeasureComment`
-}
-
-export const postMeasureComment = async (measureComment?: MeasureComment,
-    params?: PostMeasureCommentParams, options?: RequestInit): Promise<postMeasureCommentResponse> => {
-
-  return configRequest<postMeasureCommentResponse>(getPostMeasureCommentUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureComment)
-  }
-);}
-
 
 
 
@@ -1068,251 +324,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostMeasureCommentMutationOptions(options));
     }
-    export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
+    export const getMeasureCommentCount = (
+    params?: GetMeasureCommentCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
 
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJson = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationXml = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200TextPlain = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureCommentCountResponse200TextJson = {
-  data: MeasureComment[]
-  status: 200
-}
-
-export type getMeasureCommentCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureCommentCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureCommentCountResponseSuccess = (getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimal | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFull | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNone | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrue | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalse | getMeasureCommentCountResponse200ApplicationJson | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureCommentCountResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureCommentCountResponse200ApplicationXml | getMeasureCommentCountResponse200TextPlain | getMeasureCommentCountResponse200ApplicationOctetStream | getMeasureCommentCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureCommentCountResponseError = (getMeasureCommentCountResponse400 | getMeasureCommentCountResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureCommentCountResponse = (getMeasureCommentCountResponseSuccess | getMeasureCommentCountResponseError)
-
-export const getGetMeasureCommentCountUrl = (params?: GetMeasureCommentCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureComment[] | Blob>(
+      {url: `/api/v1/MeasureComment/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/$count?${stringifiedParams}` : `/api/v1/MeasureComment/$count`
-}
-
-export const getMeasureCommentCount = async (params?: GetMeasureCommentCountParams, options?: RequestInit): Promise<getMeasureCommentCountResponse> => {
-
-  return configRequest<getMeasureCommentCountResponse>(getGetMeasureCommentCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1333,7 +357,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentCount>>> = ({ signal }) => getMeasureCommentCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentCount>>> = ({ signal }) => getMeasureCommentCount(params, signal);
 
 
 
@@ -1364,253 +388,20 @@ export function useGetMeasureCommentCount<TData = Awaited<ReturnType<typeof getM
 
 
 
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureComment
-  status: 200
-}
+export const getMeasureCommentFromKey = (
+    key: number,
+    params?: GetMeasureCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureComment
-  status: 200
-}
 
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJson = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationXml = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200TextPlain = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse200TextJson = {
-  data: MeasureComment
-  status: 200
-}
-
-export type getMeasureCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMeasureCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureCommentFromKeyResponseSuccess = (getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFull | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNone | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMeasureCommentFromKeyResponse200ApplicationJson | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureCommentFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureCommentFromKeyResponse200ApplicationXml | getMeasureCommentFromKeyResponse200TextPlain | getMeasureCommentFromKeyResponse200ApplicationOctetStream | getMeasureCommentFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureCommentFromKeyResponseError = (getMeasureCommentFromKeyResponse404 | getMeasureCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureCommentFromKeyResponse = (getMeasureCommentFromKeyResponseSuccess | getMeasureCommentFromKeyResponseError)
-
-export const getGetMeasureCommentFromKeyUrl = (key: number,
-    params?: GetMeasureCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureComment | Blob>(
+      {url: `/api/v1/MeasureComment/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/${key}?${stringifiedParams}` : `/api/v1/MeasureComment/${key}`
-}
-
-export const getMeasureCommentFromKey = async (key: number,
-    params?: GetMeasureCommentFromKeyParams, options?: RequestInit): Promise<getMeasureCommentFromKeyResponse> => {
-
-  return configRequest<getMeasureCommentFromKeyResponse>(getGetMeasureCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1633,7 +424,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentFromKey>>> = ({ signal }) => getMeasureCommentFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureCommentFromKey>>> = ({ signal }) => getMeasureCommentFromKey(key,params, signal);
 
 
 
@@ -1665,64 +456,22 @@ export function useGetMeasureCommentFromKey<TData = Awaited<ReturnType<typeof ge
 
 
 
-export type putMeasureCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putMeasureCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putMeasureCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putMeasureCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putMeasureCommentFromKeyResponseSuccess = (putMeasureCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putMeasureCommentFromKeyResponseError = (putMeasureCommentFromKeyResponse400 | putMeasureCommentFromKeyResponse404 | putMeasureCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putMeasureCommentFromKeyResponse = (putMeasureCommentFromKeyResponseSuccess | putMeasureCommentFromKeyResponseError)
-
-export const getPutMeasureCommentFromKeyUrl = (key: number,
-    params?: PutMeasureCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/${key}?${stringifiedParams}` : `/api/v1/MeasureComment/${key}`
-}
-
-export const putMeasureCommentFromKey = async (key: number,
+export const putMeasureCommentFromKey = (
+    key: number,
     measureComment?: MeasureComment,
-    params?: PutMeasureCommentFromKeyParams, options?: RequestInit): Promise<putMeasureCommentFromKeyResponse> => {
+    params?: PutMeasureCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putMeasureCommentFromKeyResponse>(getPutMeasureCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureComment)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureComment/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureComment,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1768,64 +517,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutMeasureCommentFromKeyMutationOptions(options));
     }
-    export type patchMeasureCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchMeasureCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchMeasureCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchMeasureCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchMeasureCommentFromKeyResponseSuccess = (patchMeasureCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchMeasureCommentFromKeyResponseError = (patchMeasureCommentFromKeyResponse400 | patchMeasureCommentFromKeyResponse404 | patchMeasureCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchMeasureCommentFromKeyResponse = (patchMeasureCommentFromKeyResponseSuccess | patchMeasureCommentFromKeyResponseError)
-
-export const getPatchMeasureCommentFromKeyUrl = (key: number,
-    params?: PatchMeasureCommentFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureComment/${key}?${stringifiedParams}` : `/api/v1/MeasureComment/${key}`
-}
-
-export const patchMeasureCommentFromKey = async (key: number,
+    export const patchMeasureCommentFromKey = (
+    key: number,
     measureComment?: MeasureComment,
-    params?: PatchMeasureCommentFromKeyParams, options?: RequestInit): Promise<patchMeasureCommentFromKeyResponse> => {
+    params?: PatchMeasureCommentFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchMeasureCommentFromKeyResponse>(getPatchMeasureCommentFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureComment)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureComment/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureComment,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1871,54 +578,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchMeasureCommentFromKeyMutationOptions(options));
     }
-    export type deleteMeasureCommentFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteMeasureCommentFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteMeasureCommentFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteMeasureCommentFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteMeasureCommentFromKeyResponseSuccess = (deleteMeasureCommentFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteMeasureCommentFromKeyResponseError = (deleteMeasureCommentFromKeyResponse400 | deleteMeasureCommentFromKeyResponse404 | deleteMeasureCommentFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteMeasureCommentFromKeyResponse = (deleteMeasureCommentFromKeyResponseSuccess | deleteMeasureCommentFromKeyResponseError)
-
-export const getDeleteMeasureCommentFromKeyUrl = (key: number,) => {
+    export const deleteMeasureCommentFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/MeasureComment/${key}`
-}
-
-export const deleteMeasureCommentFromKey = async (key: number, options?: RequestInit): Promise<deleteMeasureCommentFromKeyResponse> => {
-
-  return configRequest<deleteMeasureCommentFromKeyResponse>(getDeleteMeasureCommentFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/MeasureComment/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 

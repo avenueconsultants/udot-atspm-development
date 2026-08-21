@@ -50,249 +50,22 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFull = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNone = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJson = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationXml = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200TextPlain = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse200TextJson = {
-  data: string[]
-  status: 200
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponseSuccess = (getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJson | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationXml | getMeasureOptionPresetMeasureOptionPresetTypesResponse200TextPlain | getMeasureOptionPresetMeasureOptionPresetTypesResponse200ApplicationOctetStream | getMeasureOptionPresetMeasureOptionPresetTypesResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponseError = (getMeasureOptionPresetMeasureOptionPresetTypesResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionPresetMeasureOptionPresetTypesResponse = (getMeasureOptionPresetMeasureOptionPresetTypesResponseSuccess | getMeasureOptionPresetMeasureOptionPresetTypesResponseError)
-
-export const getGetMeasureOptionPresetMeasureOptionPresetTypesUrl = (params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset/GetMeasureOptionPresetTypes?${stringifiedParams}` : `/api/v1/MeasureOptionPreset/GetMeasureOptionPresetTypes`
-}
-
 /**
  * @summary Retrieves a list of measure option preset types.
  */
-export const getMeasureOptionPresetMeasureOptionPresetTypes = async (params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: RequestInit): Promise<getMeasureOptionPresetMeasureOptionPresetTypesResponse> => {
-
-  return configRequest<getMeasureOptionPresetMeasureOptionPresetTypesResponse>(getGetMeasureOptionPresetMeasureOptionPresetTypesUrl(params),
-  {
-    ...options,
-    method: 'GET'
+export const getMeasureOptionPresetMeasureOptionPresetTypes = (
+    params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams,
+ signal?: AbortSignal
+) => {
 
 
-  }
-);}
-
+      return configRequest<string[] | Blob>(
+      {url: `/api/v1/MeasureOptionPreset/GetMeasureOptionPresetTypes`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
+    }
 
 
 
@@ -313,7 +86,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>> = ({ signal }) => getMeasureOptionPresetMeasureOptionPresetTypes(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>> = ({ signal }) => getMeasureOptionPresetMeasureOptionPresetTypes(params, signal);
 
 
 
@@ -347,251 +120,19 @@ export function useGetMeasureOptionPresetMeasureOptionPresetTypes<TData = Awaite
 
 
 
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
+export const getMeasureOptionPreset = (
+    params?: GetMeasureOptionPresetParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
 
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJson = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationXml = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200TextPlain = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse200TextJson = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureOptionPresetResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionPresetResponseSuccess = (getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionPresetResponse200ApplicationJson | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionPresetResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionPresetResponse200ApplicationXml | getMeasureOptionPresetResponse200TextPlain | getMeasureOptionPresetResponse200ApplicationOctetStream | getMeasureOptionPresetResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionPresetResponseError = (getMeasureOptionPresetResponse400 | getMeasureOptionPresetResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionPresetResponse = (getMeasureOptionPresetResponseSuccess | getMeasureOptionPresetResponseError)
-
-export const getGetMeasureOptionPresetUrl = (params?: GetMeasureOptionPresetParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOptionPreset[] | Blob>(
+      {url: `/api/v1/MeasureOptionPreset`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset?${stringifiedParams}` : `/api/v1/MeasureOptionPreset`
-}
-
-export const getMeasureOptionPreset = async (params?: GetMeasureOptionPresetParams, options?: RequestInit): Promise<getMeasureOptionPresetResponse> => {
-
-  return configRequest<getMeasureOptionPresetResponse>(getGetMeasureOptionPresetUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -612,7 +153,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPreset>>> = ({ signal }) => getMeasureOptionPreset(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPreset>>> = ({ signal }) => getMeasureOptionPreset(params, signal);
 
 
 
@@ -643,57 +184,21 @@ export function useGetMeasureOptionPreset<TData = Awaited<ReturnType<typeof getM
 
 
 
-export type postMeasureOptionPresetResponse201 = {
-  data: void
-  status: 201
-}
+export const postMeasureOptionPreset = (
+    measureOptionPreset?: MeasureOptionPreset,
+    params?: PostMeasureOptionPresetParams,
+ signal?: AbortSignal
+) => {
 
-export type postMeasureOptionPresetResponse400 = {
-  data: void
-  status: 400
-}
 
-export type postMeasureOptionPresetResponse406 = {
-  data: void
-  status: 406
-}
-
-export type postMeasureOptionPresetResponseSuccess = (postMeasureOptionPresetResponse201) & {
-  headers: Headers;
-};
-export type postMeasureOptionPresetResponseError = (postMeasureOptionPresetResponse400 | postMeasureOptionPresetResponse406) & {
-  headers: Headers;
-};
-
-export type postMeasureOptionPresetResponse = (postMeasureOptionPresetResponseSuccess | postMeasureOptionPresetResponseError)
-
-export const getPostMeasureOptionPresetUrl = (params?: PostMeasureOptionPresetParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOptionPreset`, method: 'POST',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOptionPreset,
+        params, signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset?${stringifiedParams}` : `/api/v1/MeasureOptionPreset`
-}
-
-export const postMeasureOptionPreset = async (measureOptionPreset?: MeasureOptionPreset,
-    params?: PostMeasureOptionPresetParams, options?: RequestInit): Promise<postMeasureOptionPresetResponse> => {
-
-  return configRequest<postMeasureOptionPresetResponse>(getPostMeasureOptionPresetUrl(params),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOptionPreset)
-  }
-);}
-
 
 
 
@@ -739,251 +244,19 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPostMeasureOptionPresetMutationOptions(options));
     }
-    export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
+    export const getMeasureOptionPresetCount = (
+    params?: GetMeasureOptionPresetCountParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
 
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJson = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationXml = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200TextPlain = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse200TextJson = {
-  data: MeasureOptionPreset[]
-  status: 200
-}
-
-export type getMeasureOptionPresetCountResponse400 = {
-  data: void
-  status: 400
-}
-
-export type getMeasureOptionPresetCountResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionPresetCountResponseSuccess = (getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionPresetCountResponse200ApplicationJson | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionPresetCountResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionPresetCountResponse200ApplicationXml | getMeasureOptionPresetCountResponse200TextPlain | getMeasureOptionPresetCountResponse200ApplicationOctetStream | getMeasureOptionPresetCountResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionPresetCountResponseError = (getMeasureOptionPresetCountResponse400 | getMeasureOptionPresetCountResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionPresetCountResponse = (getMeasureOptionPresetCountResponseSuccess | getMeasureOptionPresetCountResponseError)
-
-export const getGetMeasureOptionPresetCountUrl = (params?: GetMeasureOptionPresetCountParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOptionPreset[] | Blob>(
+      {url: `/api/v1/MeasureOptionPreset/$count`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset/$count?${stringifiedParams}` : `/api/v1/MeasureOptionPreset/$count`
-}
-
-export const getMeasureOptionPresetCount = async (params?: GetMeasureOptionPresetCountParams, options?: RequestInit): Promise<getMeasureOptionPresetCountResponse> => {
-
-  return configRequest<getMeasureOptionPresetCountResponse>(getGetMeasureOptionPresetCountUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1004,7 +277,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>> = ({ signal }) => getMeasureOptionPresetCount(params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>> = ({ signal }) => getMeasureOptionPresetCount(params, signal);
 
 
 
@@ -1035,253 +308,20 @@ export function useGetMeasureOptionPresetCount<TData = Awaited<ReturnType<typeof
 
 
 
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
+export const getMeasureOptionPresetFromKey = (
+    key: number,
+    params?: GetMeasureOptionPresetFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
 
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimal = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFull = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNone = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJson = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationXml = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200TextPlain = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200ApplicationOctetStream = {
-  data: Blob
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse200TextJson = {
-  data: MeasureOptionPreset
-  status: 200
-}
-
-export type getMeasureOptionPresetFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type getMeasureOptionPresetFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type getMeasureOptionPresetFromKeyResponseSuccess = (getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimal | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFull | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNone | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJson | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataMinimalIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataFullIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataMetadataNoneIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingTrueIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonOdataStreamingFalseIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationJsonIEEE754CompatibleFalse | getMeasureOptionPresetFromKeyResponse200ApplicationJsonIEEE754CompatibleTrue | getMeasureOptionPresetFromKeyResponse200ApplicationXml | getMeasureOptionPresetFromKeyResponse200TextPlain | getMeasureOptionPresetFromKeyResponse200ApplicationOctetStream | getMeasureOptionPresetFromKeyResponse200TextJson) & {
-  headers: Headers;
-};
-export type getMeasureOptionPresetFromKeyResponseError = (getMeasureOptionPresetFromKeyResponse404 | getMeasureOptionPresetFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type getMeasureOptionPresetFromKeyResponse = (getMeasureOptionPresetFromKeyResponseSuccess | getMeasureOptionPresetFromKeyResponseError)
-
-export const getGetMeasureOptionPresetFromKeyUrl = (key: number,
-    params?: GetMeasureOptionPresetFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
+      return configRequest<MeasureOptionPreset | Blob>(
+      {url: `/api/v1/MeasureOptionPreset/${key}`, method: 'GET',
+        params,
+        responseType: 'blob', signal
+    },
+      );
     }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset/${key}?${stringifiedParams}` : `/api/v1/MeasureOptionPreset/${key}`
-}
-
-export const getMeasureOptionPresetFromKey = async (key: number,
-    params?: GetMeasureOptionPresetFromKeyParams, options?: RequestInit): Promise<getMeasureOptionPresetFromKeyResponse> => {
-
-  return configRequest<getMeasureOptionPresetFromKeyResponse>(getGetMeasureOptionPresetFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 
 
@@ -1304,7 +344,7 @@ const {query: queryOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>> = ({ signal }) => getMeasureOptionPresetFromKey(key,params, { signal });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>> = ({ signal }) => getMeasureOptionPresetFromKey(key,params, signal);
 
 
 
@@ -1336,64 +376,22 @@ export function useGetMeasureOptionPresetFromKey<TData = Awaited<ReturnType<type
 
 
 
-export type putMeasureOptionPresetFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type putMeasureOptionPresetFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type putMeasureOptionPresetFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type putMeasureOptionPresetFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type putMeasureOptionPresetFromKeyResponseSuccess = (putMeasureOptionPresetFromKeyResponse204) & {
-  headers: Headers;
-};
-export type putMeasureOptionPresetFromKeyResponseError = (putMeasureOptionPresetFromKeyResponse400 | putMeasureOptionPresetFromKeyResponse404 | putMeasureOptionPresetFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type putMeasureOptionPresetFromKeyResponse = (putMeasureOptionPresetFromKeyResponseSuccess | putMeasureOptionPresetFromKeyResponseError)
-
-export const getPutMeasureOptionPresetFromKeyUrl = (key: number,
-    params?: PutMeasureOptionPresetFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset/${key}?${stringifiedParams}` : `/api/v1/MeasureOptionPreset/${key}`
-}
-
-export const putMeasureOptionPresetFromKey = async (key: number,
+export const putMeasureOptionPresetFromKey = (
+    key: number,
     measureOptionPreset?: MeasureOptionPreset,
-    params?: PutMeasureOptionPresetFromKeyParams, options?: RequestInit): Promise<putMeasureOptionPresetFromKeyResponse> => {
+    params?: PutMeasureOptionPresetFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<putMeasureOptionPresetFromKeyResponse>(getPutMeasureOptionPresetFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOptionPreset)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOptionPreset/${key}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOptionPreset,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1439,64 +437,22 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPutMeasureOptionPresetFromKeyMutationOptions(options));
     }
-    export type patchMeasureOptionPresetFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type patchMeasureOptionPresetFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type patchMeasureOptionPresetFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type patchMeasureOptionPresetFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type patchMeasureOptionPresetFromKeyResponseSuccess = (patchMeasureOptionPresetFromKeyResponse204) & {
-  headers: Headers;
-};
-export type patchMeasureOptionPresetFromKeyResponseError = (patchMeasureOptionPresetFromKeyResponse400 | patchMeasureOptionPresetFromKeyResponse404 | patchMeasureOptionPresetFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type patchMeasureOptionPresetFromKeyResponse = (patchMeasureOptionPresetFromKeyResponseSuccess | patchMeasureOptionPresetFromKeyResponseError)
-
-export const getPatchMeasureOptionPresetFromKeyUrl = (key: number,
-    params?: PatchMeasureOptionPresetFromKeyParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/api/v1/MeasureOptionPreset/${key}?${stringifiedParams}` : `/api/v1/MeasureOptionPreset/${key}`
-}
-
-export const patchMeasureOptionPresetFromKey = async (key: number,
+    export const patchMeasureOptionPresetFromKey = (
+    key: number,
     measureOptionPreset?: MeasureOptionPreset,
-    params?: PatchMeasureOptionPresetFromKeyParams, options?: RequestInit): Promise<patchMeasureOptionPresetFromKeyResponse> => {
+    params?: PatchMeasureOptionPresetFromKeyParams,
+ signal?: AbortSignal
+) => {
 
-  return configRequest<patchMeasureOptionPresetFromKeyResponse>(getPatchMeasureOptionPresetFromKeyUrl(key,params),
-  {
-    ...options,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', ...options?.headers },
-    body: JSON.stringify(measureOptionPreset)
-  }
-);}
 
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOptionPreset/${key}`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      data: measureOptionPreset,
+        params, signal
+    },
+      );
+    }
 
 
 
@@ -1542,54 +498,17 @@ const {mutation: mutationOptions} = options ?
       > => {
       return useMutation(getPatchMeasureOptionPresetFromKeyMutationOptions(options));
     }
-    export type deleteMeasureOptionPresetFromKeyResponse204 = {
-  data: void
-  status: 204
-}
-
-export type deleteMeasureOptionPresetFromKeyResponse400 = {
-  data: void
-  status: 400
-}
-
-export type deleteMeasureOptionPresetFromKeyResponse404 = {
-  data: void
-  status: 404
-}
-
-export type deleteMeasureOptionPresetFromKeyResponse406 = {
-  data: void
-  status: 406
-}
-
-export type deleteMeasureOptionPresetFromKeyResponseSuccess = (deleteMeasureOptionPresetFromKeyResponse204) & {
-  headers: Headers;
-};
-export type deleteMeasureOptionPresetFromKeyResponseError = (deleteMeasureOptionPresetFromKeyResponse400 | deleteMeasureOptionPresetFromKeyResponse404 | deleteMeasureOptionPresetFromKeyResponse406) & {
-  headers: Headers;
-};
-
-export type deleteMeasureOptionPresetFromKeyResponse = (deleteMeasureOptionPresetFromKeyResponseSuccess | deleteMeasureOptionPresetFromKeyResponseError)
-
-export const getDeleteMeasureOptionPresetFromKeyUrl = (key: number,) => {
+    export const deleteMeasureOptionPresetFromKey = (
+    key: number,
+ signal?: AbortSignal
+) => {
 
 
-
-
-  return `/api/v1/MeasureOptionPreset/${key}`
-}
-
-export const deleteMeasureOptionPresetFromKey = async (key: number, options?: RequestInit): Promise<deleteMeasureOptionPresetFromKeyResponse> => {
-
-  return configRequest<deleteMeasureOptionPresetFromKeyResponse>(getDeleteMeasureOptionPresetFromKeyUrl(key),
-  {
-    ...options,
-    method: 'DELETE'
-
-
-  }
-);}
-
+      return configRequest<void>(
+      {url: `/api/v1/MeasureOptionPreset/${key}`, method: 'DELETE', signal
+    },
+      );
+    }
 
 
 
