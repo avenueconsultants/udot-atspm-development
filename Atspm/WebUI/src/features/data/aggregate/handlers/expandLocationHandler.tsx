@@ -1,8 +1,4 @@
-import {
-  LaneType,
-  Location,
-  LocationExpanded,
-} from '@/features/locations/types'
+import { LaneTypes, Location, RouteLocationDto } from '@/api/config'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export interface ExpandLocationHandler {
@@ -30,7 +26,7 @@ export interface ExpandDetectorForAggregation {
   dectectorIdentifier: string
   detChannel: number
   laneNumber: number
-  laneType: LaneType
+  laneType: LaneTypes
   exclude: boolean
 }
 
@@ -51,20 +47,14 @@ export interface ExpandLocationForAggregation {
   approaches: ExpandApproachForAggregation[]
 }
 
-interface props {
-  locations: LocationExpanded[]
-  setSelectedLocations: Dispatch<SetStateAction<LocationExpanded[]>>
-  changeLocation(location: Location | null): void
-}
-
 export const useExpandLocationHandler = ({
   locations,
   setSelectedLocations,
   changeLocation,
 }: {
-  locations: Location[];
-  setSelectedLocations: Dispatch<SetStateAction<Location[]>>;
-  changeLocation: (location: Location | null) => void;
+  locations: RouteLocationDto[]
+  setSelectedLocations: Dispatch<SetStateAction<RouteLocationDto[]>>
+  changeLocation: (location: Location | null) => void
 }): ExpandLocationHandler => {
   const [updatedLocations, setUpdatedLocations] = useState<
     ExpandLocationForAggregation[]
@@ -78,32 +68,32 @@ export const useExpandLocationHandler = ({
         );
 
         return {
-          locationIdentifier: location.locationIdentifier,
-          primaryName: location.primaryName,
-          secondaryName: location.secondaryName,
+          locationIdentifier: location.locationIdentifier ?? '',
+          primaryName: location.primaryName ?? '',
+          secondaryName: location.secondaryName ?? '',
           exclude: existingLocation?.exclude ?? false,
           open: existingLocation?.open ?? false,
-          approaches: location.approaches.map((approach) => {
+          approaches: (location.approaches ?? []).map((approach) => {
             const existingApproach = existingLocation?.approaches.find(
               (a) => a.approachId === approach.id
             );
 
             return {
-              approachId: approach.id,
-              description: approach.description,
+              approachId: approach.id ?? 0,
+              description: approach.description ?? '',
               exclude: existingApproach?.exclude ?? false,
               open: existingApproach?.open ?? false,
-              detectors: approach.detectors.map((detector) => {
+              detectors: (approach.detectors ?? []).map((detector) => {
                 const existingDetector = existingApproach?.detectors.find(
                   (d) => d.id === detector.id
                 );
 
                 return {
-                  id: detector.id,
-                  dectectorIdentifier: detector.dectectorIdentifier,
-                  detChannel: detector.detectorChannel,
-                  laneNumber: detector.laneNumber as number,
-                  laneType: detector.laneType as LaneType,
+                  id: detector.id ?? 0,
+                  dectectorIdentifier: detector.dectectorIdentifier ?? '',
+                  detChannel: detector.detectorChannel ?? 0,
+                  laneNumber: detector.laneNumber ?? 0,
+                  laneType: detector.laneType as LaneTypes,
                   exclude: existingDetector?.exclude ?? false,
                 }
               }),

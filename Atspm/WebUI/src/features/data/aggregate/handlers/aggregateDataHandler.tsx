@@ -6,9 +6,12 @@ import {
   RouteHandler,
   useRouteHandler,
 } from '@/components/handlers/routeHandler'
-import { useGetLocation } from '@/features/locations/api'
-import { LocationExpanded } from '@/features/locations/types'
-import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
+import {
+  Location,
+  RouteLocationDto,
+  useGetLocationFromKey,
+  useGetRouteRouteViewFromId,
+} from '@/api/config'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { startOfToday, startOfTomorrow } from 'date-fns'
@@ -64,6 +67,22 @@ export interface AggregateOptionsHandler
   handleRunAnalysis(): void
 }
 
+// selectedLocations mixes locations picked individually (from a single
+// Location lookup) with locations pulled in from a selected route (from
+// RouteLocationDto, which carries denormalized display fields the plain
+// Location navigation properties don't). RouteLocationDto already has
+// everything the UI needs from either source, so it's the shared shape;
+// individually-picked locations are adapted into it here.
+const toRouteLocationDto = (location: Location): RouteLocationDto => ({
+  locationIdentifier: location.locationIdentifier,
+  primaryName: location.primaryName,
+  secondaryName: location.secondaryName,
+  latitude: location.latitude,
+  longitude: location.longitude,
+  locationId: location.id,
+  approaches: location.approaches as unknown as RouteLocationDto['approaches'],
+})
+
 export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   const [startDateTime, setStartDateTime] = useState(startOfToday())
   const [endDateTime, setEndDateTime] = useState(startOfTomorrow())
@@ -88,30 +107,36 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     'line' | 'bar' | 'pie'
   >(chartTypeOptions[0].id)
   const [binSize, setBinSize] = useState<number>(binSizeMarks[0].value)
-  const [locationId, setLocationId] = useState<string>('')
+  const [locationId, setLocationId] = useState<number | undefined>(undefined)
   const [averageOrSum, setAverageOrSum] = useState<number>(0)
   const [selectedLocations, setSelectedLocations] = useState<
-    LocationExpanded[]
+    RouteLocationDto[]
   >([])
   const [aggregatedData, setAggregatedData] = useState<AggregateData[]>([])
   const [routeExpandedLocations, setRouteExpandedLocations] = useState<
-    LocationExpanded[]
+    RouteLocationDto[]
   >([])
-  const {
-    data: locationExpandedData,
-    refetch: refetchLocationExpanded,
-    status,
-  } = useGetLocation(locationId)
+  const { data: locationExpandedData, status } = useGetLocationFromKey(
+    locationId ?? 0,
+    {
+      expand:
+        'areas, devices, approaches($expand=Detectors($expand=DetectionTypes, detectorComments))',
+    },
+    { query: { enabled: locationId != null } }
+  )
   const postMutation = usePostAggregateData()
   const routeHandler = useRouteHandler()
+  const routeIdNumber = routeHandler.routeId
+    ? Number(routeHandler.routeId)
+    : undefined
   const {
     data: routeWithExpandedLocations,
-    refetch: refectRouteExpanded,
     status: routeStatus,
-  } = useGetRouteWithExpandedLocations({
-    routeId: routeHandler.routeId,
-    includeLocationDetail: true,
-  })
+  } = useGetRouteRouteViewFromId(
+    routeIdNumber ?? 0,
+    { includeLocationDetail: true },
+    { query: { enabled: routeIdNumber != null } }
+  )
   const locationHandler = useLocationHandler()
   const expandedLocationsHandler = useExpandLocationHandler({
     locations: selectedLocations,
@@ -119,7 +144,9 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     changeLocation: locationHandler.changeLocation,
   })
 
-  const locationIds = selectedLocations.map((location) => location.id)
+  const locationIdentifiers = selectedLocations.map(
+    (location) => location.locationIdentifier
+  )
 
   const getAggregateTypeEnumValue = (enumString: string): number => {
     if (Object.values(AggregationType).includes(enumString)) {
@@ -179,7 +206,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
 
   const createAggregateObject = (): AggregateApiData => {
     const locationIdentifiers = selectedLocations.map(
-      (location) => location.locationIdentifier
+      (location) => location.locationIdentifier ?? ''
     )
     const metric = metricType.split('-')
     const aggregationType = getAggregateTypeEnumValue(metric[0])
@@ -217,26 +244,25 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     if (routeHandler.routeId) {
       setSelectedLocations([])
       setRouteExpandedLocations([])
-      refectRouteExpanded()
     }
-  }, [refectRouteExpanded, routeHandler.routeId])
+  }, [routeHandler.routeId])
 
   useEffect(() => {
     if (routeExpandedLocations && routeExpandedLocations.length > 0) {
       const filteredExpandedLocations = routeExpandedLocations.filter(
-        (location) => !locationIds.includes(location.id)
+        (location) =>
+          !locationIdentifiers.includes(location.locationIdentifier)
       )
       if (filteredExpandedLocations.length > 0) {
         setSelectedLocations((prev) => [...prev, ...filteredExpandedLocations])
       }
       setRouteExpandedLocations([])
     }
-  }, [locationIds, routeExpandedLocations])
+  }, [locationIdentifiers, routeExpandedLocations])
 
   useEffect(() => {
     if (routeStatus === 'success' && routeWithExpandedLocations) {
-      const locationsExpandedData = routeWithExpandedLocations.routeLocations
-      setRouteExpandedLocations(locationsExpandedData)
+      setRouteExpandedLocations(routeWithExpandedLocations.routeLocations ?? [])
     }
   }, [routeStatus, routeWithExpandedLocations])
 
@@ -244,27 +270,21 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     if (locationHandler.location) {
       setLocationId(locationHandler.location.id)
     } else if (locationHandler.location === null) {
-      setLocationId('')
+      setLocationId(undefined)
     }
   }, [locationHandler.location])
 
   useEffect(() => {
-    if (locationId !== '') {
-      refetchLocationExpanded()
-    }
-  }, [locationId, refetchLocationExpanded])
-
-  useEffect(() => {
     if (status === 'success' && locationExpandedData) {
-      setSelectedLocations((prevArr) => {
-        return prevArr.some(
+      const asRouteLocation = toRouteLocationDto(locationExpandedData)
+      setSelectedLocations((prevArr) =>
+        prevArr.some(
           (location) =>
-            location.locationIdentifier ===
-            locationExpandedData.value[0].locationIdentifier
+            location.locationIdentifier === asRouteLocation.locationIdentifier
         )
           ? prevArr
-          : [...prevArr, ...locationExpandedData.value]
-      })
+          : [...prevArr, asRouteLocation]
+      )
     }
   }, [locationExpandedData, status])
 
