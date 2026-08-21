@@ -1,10 +1,12 @@
+import {
+  useGetArea,
+  useGetJurisdiction,
+  useGetRegion,
+} from '@/api/config'
 import { useGetRolesRoles } from '@/api/identity/atspmAuthenticationApi'
 import ATSPMDialog from '@/components/ATSPMDialog/ATSPMDialog'
 import CustomSelect from '@/components/customSelect/CustomSelect'
-import { useGetAreas } from '@/features/areas/api/areaApi'
 import { Role } from '@/features/identity/types/roles'
-import { useGetJurisdiction } from '@/features/jurisdictions/api/jurisdictionApi'
-import { useGetRegion } from '@/features/region/api/regionApi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -70,7 +72,7 @@ const normalizeNumberArray = (value: unknown): number[] => {
 
 const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
   const { data: roles, isLoading } = useGetRolesRoles<Role[]>()
-  const { data: areasData, isLoading: areasLoading } = useGetAreas()
+  const { data: areasData, isLoading: areasLoading } = useGetArea()
   const { data: jurisdictionsData, isLoading: jurisdictionsLoading } =
     useGetJurisdiction()
   const { data: regionsData, isLoading: regionsLoading } = useGetRegion()

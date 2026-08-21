@@ -55,10 +55,9 @@ export const getDetectorComment = (
 ) => {
 
 
-      return configRequest<DetectorComment[] | Blob>(
+      return configRequest<DetectorComment[]>(
       {url: `/DetectorComment`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DetectorComment[] | Blob>(
+      return configRequest<DetectorComment[]>(
       {url: `/DetectorComment/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getDetectorCommentFromKey = (
 ) => {
 
 
-      return configRequest<DetectorComment | Blob>(
+      return configRequest<DetectorComment>(
       {url: `/DetectorComment/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

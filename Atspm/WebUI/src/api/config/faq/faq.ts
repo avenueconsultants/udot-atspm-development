@@ -55,10 +55,9 @@ export const getFaq = (
 ) => {
 
 
-      return configRequest<Faq[] | Blob>(
+      return configRequest<Faq[]>(
       {url: `/Faq`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Faq[] | Blob>(
+      return configRequest<Faq[]>(
       {url: `/Faq/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getFaqFromKey = (
 ) => {
 
 
-      return configRequest<Faq | Blob>(
+      return configRequest<Faq>(
       {url: `/Faq/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

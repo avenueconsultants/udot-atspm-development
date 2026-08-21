@@ -1,6 +1,6 @@
+import { Faq } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog/ATSPMDialog'
 import TextEditor from '@/components/TextEditor/JoditTextEditor'
-import { Faq } from '@/features/faq/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, FormControl, InputLabel, OutlinedInput } from '@mui/material'
 import { useEffect, useState } from 'react'

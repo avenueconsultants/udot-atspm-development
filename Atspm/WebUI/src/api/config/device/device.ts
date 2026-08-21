@@ -62,10 +62,9 @@ export const getDeviceActiveDevicesByLocationFromLocationId = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/Device/GetActiveDevicesByLocation(locationId=${locationId})`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -135,10 +134,9 @@ export const getDeviceActiveDevicesCount = (
 ) => {
 
 
-      return configRequest<DeviceGroup[] | Blob>(
+      return configRequest<DeviceGroup[]>(
       {url: `/Device/GetActiveDevicesCount`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -202,10 +200,9 @@ export const getDevice = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/Device`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -326,10 +323,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/Device/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -391,10 +387,9 @@ export const getDeviceFromKey = (
 ) => {
 
 
-      return configRequest<Device | Blob>(
+      return configRequest<Device>(
       {url: `/Device/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

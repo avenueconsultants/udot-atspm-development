@@ -55,10 +55,9 @@ export const getWatchDogIgnoreEvent = (
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent[] | Blob>(
+      return configRequest<WatchDogIgnoreEvent[]>(
       {url: `/WatchDogIgnoreEvent`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent[] | Blob>(
+      return configRequest<WatchDogIgnoreEvent[]>(
       {url: `/WatchDogIgnoreEvent/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getWatchDogIgnoreEventFromKey = (
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent | Blob>(
+      return configRequest<WatchDogIgnoreEvent>(
       {url: `/WatchDogIgnoreEvent/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

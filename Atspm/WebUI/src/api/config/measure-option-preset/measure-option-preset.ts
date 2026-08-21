@@ -59,10 +59,9 @@ export const getMeasureOptionPresetMeasureOptionPresetTypes = (
 ) => {
 
 
-      return configRequest<string[] | Blob>(
+      return configRequest<string[]>(
       {url: `/MeasureOptionPreset/GetMeasureOptionPresetTypes`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -126,10 +125,9 @@ export const getMeasureOptionPreset = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[] | Blob>(
+      return configRequest<MeasureOptionPreset[]>(
       {url: `/MeasureOptionPreset`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -250,10 +248,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[] | Blob>(
+      return configRequest<MeasureOptionPreset[]>(
       {url: `/MeasureOptionPreset/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -315,10 +312,9 @@ export const getMeasureOptionPresetFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset | Blob>(
+      return configRequest<MeasureOptionPreset>(
       {url: `/MeasureOptionPreset/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

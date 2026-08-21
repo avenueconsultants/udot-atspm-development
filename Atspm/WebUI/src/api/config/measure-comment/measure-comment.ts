@@ -62,10 +62,9 @@ export const getMeasureCommentMeasureTypesFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/MeasureComment/${key}/measureTypes`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -136,10 +135,9 @@ export const getMeasureCommentMeasureTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/MeasureComment/${key}/measureTypes/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -206,10 +204,9 @@ export const getMeasureComment = (
 ) => {
 
 
-      return configRequest<MeasureComment[] | Blob>(
+      return configRequest<MeasureComment[]>(
       {url: `/MeasureComment`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -330,10 +327,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureComment[] | Blob>(
+      return configRequest<MeasureComment[]>(
       {url: `/MeasureComment/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -395,10 +391,9 @@ export const getMeasureCommentFromKey = (
 ) => {
 
 
-      return configRequest<MeasureComment | Blob>(
+      return configRequest<MeasureComment>(
       {url: `/MeasureComment/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

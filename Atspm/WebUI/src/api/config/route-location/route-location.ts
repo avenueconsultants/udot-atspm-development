@@ -55,10 +55,9 @@ export const getRouteLocation = (
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/RouteLocation`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/RouteLocation/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getRouteLocationFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation | Blob>(
+      return configRequest<RouteLocation>(
       {url: `/RouteLocation/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

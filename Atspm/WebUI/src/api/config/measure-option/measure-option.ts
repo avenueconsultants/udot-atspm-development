@@ -55,10 +55,9 @@ export const getMeasureOption = (
 ) => {
 
 
-      return configRequest<MeasureOption[] | Blob>(
+      return configRequest<MeasureOption[]>(
       {url: `/MeasureOption`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureOption[] | Blob>(
+      return configRequest<MeasureOption[]>(
       {url: `/MeasureOption/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getMeasureOptionFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOption | Blob>(
+      return configRequest<MeasureOption>(
       {url: `/MeasureOption/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

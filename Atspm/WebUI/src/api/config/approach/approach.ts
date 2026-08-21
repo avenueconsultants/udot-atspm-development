@@ -65,10 +65,9 @@ export const getApproachDetectorsFromKey = (
 ) => {
 
 
-      return configRequest<Detector[] | Blob>(
+      return configRequest<Detector[]>(
       {url: `/Approach/${key}/detectors`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -139,10 +138,9 @@ export const getApproachDetectorsCountFromKey = (
 ) => {
 
 
-      return configRequest<Detector[] | Blob>(
+      return configRequest<Detector[]>(
       {url: `/Approach/${key}/detectors/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -336,10 +334,9 @@ export const getApproach = (
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/Approach`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -460,10 +457,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/Approach/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -525,10 +521,9 @@ export const getApproachFromKey = (
 ) => {
 
 
-      return configRequest<Approach | Blob>(
+      return configRequest<Approach>(
       {url: `/Approach/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

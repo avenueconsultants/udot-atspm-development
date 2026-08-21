@@ -1,18 +1,19 @@
+import {
+  Region,
+  useDeleteRegionFromKey,
+  useGetRegion,
+  usePatchRegionFromKey,
+  usePostRegion,
+} from '@/api/config'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useRegion } from '@/features/generic/api/getData'
 import {
   PageNames,
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
 import { useLatestVersionOfAllLocations } from '@/features/locations/api'
-import {
-  useCreateRegion,
-  useDeleteRegion,
-  useEditRegion,
-} from '@/features/region/api/regionApi'
 import RegionEditorModal from '@/features/regions/components/RegionEditorModal'
 import { formatInstantAsLocalDate, formatInstantAsLocalDateTime } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
@@ -24,24 +25,28 @@ const RegionsAdmin = () => {
     'LocationConfiguration:Delete'
   )
 
-  const { mutateAsync: createMutation } = useCreateRegion()
-  const { mutateAsync: deleteMutation } = useDeleteRegion()
-  const { mutateAsync: editMutation } = useEditRegion()
+  const { mutateAsync: createMutation } = usePostRegion()
+  const { mutateAsync: deleteMutation } = useDeleteRegionFromKey()
+  const { mutateAsync: editMutation } = usePatchRegionFromKey()
 
   const { data: locationsData } = useLatestVersionOfAllLocations()
   const locations = locationsData?.value
 
-  const { data: regionData, isLoading, refetch: refetchRegions } = useRegion()
+  const {
+    data: regionData,
+    isLoading,
+    refetch: refetchRegions,
+  } = useGetRegion()
 
   const regions = regionData?.value
 
   if (pageAccess.isLoading) {
     return null
   }
-  const HandleCreateRegion = async (regionData) => {
+  const HandleCreateRegion = async (regionData: Region) => {
     const { id, description } = regionData
     try {
-      await createMutation({ id, description })
+      await createMutation({ data: { id, description } })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
@@ -50,19 +55,19 @@ const RegionsAdmin = () => {
 
   const HandleDeleteRegion = async (id: number) => {
     try {
-      await deleteMutation(id)
+      await deleteMutation({ key: id })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
     }
   }
 
-  const HandleEditRegion = async (regionData) => {
+  const HandleEditRegion = async (regionData: Region) => {
     const { id, description } = regionData
     try {
       await editMutation({
         data: { id, description },
-        id,
+        key: id,
       })
       refetchRegions()
     } catch (error) {

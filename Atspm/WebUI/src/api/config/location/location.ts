@@ -78,10 +78,9 @@ export const getLocationApproachesFromKey = (
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/Location/${key}/approaches`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -152,10 +151,9 @@ export const getLocationApproachesCountFromKey = (
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/Location/${key}/approaches/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -226,10 +224,9 @@ export const getLocationAreasFromKey = (
 ) => {
 
 
-      return configRequest<Area[] | Blob>(
+      return configRequest<Area[]>(
       {url: `/Location/${key}/areas`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -300,10 +297,9 @@ export const getLocationAreasCountFromKey = (
 ) => {
 
 
-      return configRequest<Area[] | Blob>(
+      return configRequest<Area[]>(
       {url: `/Location/${key}/areas/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -374,10 +370,9 @@ export const getLocationDevicesFromKey = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/Location/${key}/devices`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -448,10 +443,9 @@ export const getLocationDevicesCountFromKey = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/Location/${key}/devices/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -522,10 +516,9 @@ export const getLocationCopyLocationToNewVersionFromKey = (
 ) => {
 
 
-      return configRequest<Location | Blob>(
+      return configRequest<Location>(
       {url: `/Location/${key}/CopyLocationToNewVersion`, method: 'POST',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -715,10 +708,9 @@ export const getLocationLatestVersionOfLocationFromIdentifier = (
 ) => {
 
 
-      return configRequest<Location | Blob>(
+      return configRequest<Location>(
       {url: `/Location/GetLatestVersionOfLocation(identifier=${identifier})`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -789,10 +781,9 @@ export const getLocationAllVersionsOfLocationFromIdentifier = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Location/GetAllVersionsOfLocation(identifier=${identifier})`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -862,10 +853,9 @@ export const getLocationLatestVersionOfAllLocations = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Location/GetLatestVersionOfAllLocations`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -932,10 +922,9 @@ export const getLocationDetectionTypeCount = (
 ) => {
 
 
-      return configRequest<DetectionTypeGroup[] | Blob>(
+      return configRequest<DetectionTypeGroup[]>(
       {url: `/Location/GetDetectionTypeCount`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -1002,10 +991,9 @@ export const getLocationLocationsForSearch = (
 ) => {
 
 
-      return configRequest<SearchLocation[] | Blob>(
+      return configRequest<SearchLocation[]>(
       {url: `/Location/GetLocationsForSearch`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -1069,10 +1057,9 @@ export const getLocation = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Location`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -1193,10 +1180,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Location/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -1258,10 +1244,9 @@ export const getLocationFromKey = (
 ) => {
 
 
-      return configRequest<Location | Blob>(
+      return configRequest<Location>(
       {url: `/Location/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

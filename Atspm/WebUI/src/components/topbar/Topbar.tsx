@@ -1,7 +1,7 @@
+import { useGetMenuItems } from '@/api/config'
 import AdminMenu from '@/components/topbar/AdminMenu'
 import { transformMenuItems } from '@/components/topbar/menuUtils'
 import { doesUserHaveAccess } from '@/features/identity/utils'
-import { useGetMenuItems } from '@/features/menuItems/api/getMenuItems'
 import { useSidebarStore } from '@/stores/sidebar'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import MenuIcon from '@mui/icons-material/Menu'

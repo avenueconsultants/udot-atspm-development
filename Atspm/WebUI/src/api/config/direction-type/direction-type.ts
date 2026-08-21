@@ -67,10 +67,9 @@ export const getDirectionTypeApproachesFromKey = (
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/DirectionType/${key}/approaches`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -141,10 +140,9 @@ export const getDirectionTypeApproachesCountFromKey = (
 ) => {
 
 
-      return configRequest<Approach[] | Blob>(
+      return configRequest<Approach[]>(
       {url: `/DirectionType/${key}/approaches/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -215,10 +213,9 @@ export const getDirectionTypePrimaryDirectionsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/DirectionType/${key}/primaryDirections`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -289,10 +286,9 @@ export const getDirectionTypePrimaryDirectionsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/DirectionType/${key}/primaryDirections/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -363,10 +359,9 @@ export const getDirectionTypeOpposingDirectionsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/DirectionType/${key}/opposingDirections`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -437,10 +432,9 @@ export const getDirectionTypeOpposingDirectionsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[] | Blob>(
+      return configRequest<RouteLocation[]>(
       {url: `/DirectionType/${key}/opposingDirections/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -507,10 +501,9 @@ export const getDirectionType = (
 ) => {
 
 
-      return configRequest<DirectionType[] | Blob>(
+      return configRequest<DirectionType[]>(
       {url: `/DirectionType`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -631,10 +624,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DirectionType[] | Blob>(
+      return configRequest<DirectionType[]>(
       {url: `/DirectionType/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -696,10 +688,9 @@ export const getDirectionTypeFromKey = (
 ) => {
 
 
-      return configRequest<DirectionType | Blob>(
+      return configRequest<DirectionType>(
       {url: `/DirectionType/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

@@ -55,10 +55,9 @@ export const getMenuItems = (
 ) => {
 
 
-      return configRequest<MenuItem[] | Blob>(
+      return configRequest<MenuItem[]>(
       {url: `/MenuItems`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MenuItem[] | Blob>(
+      return configRequest<MenuItem[]>(
       {url: `/MenuItems/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getMenuItemsFromKey = (
 ) => {
 
 
-      return configRequest<MenuItem | Blob>(
+      return configRequest<MenuItem>(
       {url: `/MenuItems/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

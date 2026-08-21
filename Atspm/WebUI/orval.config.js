@@ -20,13 +20,53 @@
 // `/api/v1` themselves - would otherwise double up. Strip that leading segment
 // here rather than changing the shared axios base URLs, since ~90 hand-written
 // call sites elsewhere still assume the baked-in prefix.
-const stripApiV1Prefix = (spec) => ({
-  ...spec,
-  paths: Object.fromEntries(
-    Object.entries(spec.paths ?? {}).map(([path, pathItem]) => [
+const stripApiV1PrefixFromPaths = (paths) =>
+  Object.fromEntries(
+    Object.entries(paths ?? {}).map(([path, pathItem]) => [
       path.replace(/^\/api\/v1(?=\/|$)/, ''),
       pathItem,
     ])
+  )
+
+// OData/Swashbuckle declares a large set of content-type variants per
+// response, including "application/octet-stream" as a generic fallback -
+// present on every collection endpoint here, not just genuine file/binary
+// ones. Orval treats octet-stream/pdf/zip as binary and sets
+// responseType: 'blob' on the whole operation when any is present, which
+// would make axios hand back a raw Blob instead of parsing the JSON these
+// endpoints actually return (config/identity have no real file-download
+// endpoints, so this is always the boilerplate case here). Drop just those
+// three from response content maps; every other declared content type
+// (the many application/json variants, xml, text/plain) is left alone.
+const BINARY_CONTENT_TYPES = new Set([
+  'application/octet-stream',
+  'application/pdf',
+  'application/zip',
+])
+
+const stripBoilerplateBinaryContentTypes = (paths) => {
+  for (const pathItem of Object.values(paths ?? {})) {
+    for (const operation of Object.values(pathItem ?? {})) {
+      if (!operation || typeof operation !== 'object' || !operation.responses) {
+        continue
+      }
+      for (const response of Object.values(operation.responses)) {
+        if (!response?.content) continue
+        for (const contentType of Object.keys(response.content)) {
+          if (BINARY_CONTENT_TYPES.has(contentType.split(';')[0].trim())) {
+            delete response.content[contentType]
+          }
+        }
+      }
+    }
+  }
+  return paths
+}
+
+const sanitizeSpec = (spec) => ({
+  ...spec,
+  paths: stripBoilerplateBinaryContentTypes(
+    stripApiV1PrefixFromPaths(spec.paths)
   ),
 })
 
@@ -35,7 +75,7 @@ module.exports = {
     input: {
       target: './api-specs/config-spec.json',
       override: {
-        transformer: stripApiV1Prefix,
+        transformer: sanitizeSpec,
       },
     },
     output: {
@@ -98,7 +138,7 @@ module.exports = {
     input: {
       target: './api-specs/identity-spec.json',
       override: {
-        transformer: stripApiV1Prefix,
+        transformer: sanitizeSpec,
       },
     },
     output: {

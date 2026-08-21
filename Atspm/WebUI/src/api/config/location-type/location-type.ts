@@ -62,10 +62,9 @@ export const getLocationTypeLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/LocationType/${key}/locations`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -136,10 +135,9 @@ export const getLocationTypeLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/LocationType/${key}/locations/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -206,10 +204,9 @@ export const getLocationType = (
 ) => {
 
 
-      return configRequest<LocationType[] | Blob>(
+      return configRequest<LocationType[]>(
       {url: `/LocationType`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -330,10 +327,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<LocationType[] | Blob>(
+      return configRequest<LocationType[]>(
       {url: `/LocationType/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -395,10 +391,9 @@ export const getLocationTypeFromKey = (
 ) => {
 
 
-      return configRequest<LocationType | Blob>(
+      return configRequest<LocationType>(
       {url: `/LocationType/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

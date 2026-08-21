@@ -62,10 +62,9 @@ export const getAreaLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Area/${key}/locations`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -136,10 +135,9 @@ export const getAreaLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Area/${key}/locations/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -206,10 +204,9 @@ export const getArea = (
 ) => {
 
 
-      return configRequest<Area[] | Blob>(
+      return configRequest<Area[]>(
       {url: `/Area`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -330,10 +327,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Area[] | Blob>(
+      return configRequest<Area[]>(
       {url: `/Area/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -395,10 +391,9 @@ export const getAreaFromKey = (
 ) => {
 
 
-      return configRequest<Area | Blob>(
+      return configRequest<Area>(
       {url: `/Area/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

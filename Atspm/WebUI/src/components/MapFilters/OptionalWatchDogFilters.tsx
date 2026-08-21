@@ -1,9 +1,7 @@
-import { useGetAreas } from '@/features/areas/api/areaApi'
-import { useGetJurisdiction } from '@/features/jurisdictions/api/jurisdictionApi'
+import { useGetArea, useGetJurisdiction, useGetRegion } from '@/api/config'
 import { useLatestVersionOfAllLocations } from '@/features/locations/api'
 import SelectLocationNoMap from '@/features/locations/components/selectLocation/SelectLocationNoMap'
 import { Location } from '@/features/locations/types/Location'
-import { useGetRegion } from '@/features/region/api/regionApi'
 import { IssueTypeSelect } from '@/features/watchdog/components/issueTypeSelect'
 import { Autocomplete, Box, TextField } from '@mui/material'
 import { SyntheticEvent, useState } from 'react'
@@ -27,7 +25,7 @@ const OptionalWatchDogFilters = ({
 }: OptionalWatchDogFiltersProps) => {
   const [location, setLocation] = useState<Location | null>(null)
 
-  const { data: areasData } = useGetAreas()
+  const { data: areasData } = useGetArea()
   const { data: regionsData } = useGetRegion()
   const { data: jurisdictionsData } = useGetJurisdiction()
   const { data: locationsData } = useLatestVersionOfAllLocations()

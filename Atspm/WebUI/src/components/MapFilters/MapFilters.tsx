@@ -1,9 +1,7 @@
-import { useGetAreas } from "@/features/areas/api/areaApi";
+import { useGetArea, useGetJurisdiction, useGetRegion } from "@/api/config";
 import { useGetMeasureTypes } from "@/features/charts/api/getMeasureTypes";
-import { useGetJurisdiction } from "@/features/jurisdictions/api/jurisdictionApi";
 import { useLocationTypes } from "@/features/locations/api/getLocationTypes";
 import { Filters } from "@/features/locations/components/selectLocation";
-import { useGetRegion } from "@/features/region/api/regionApi";
 import { Autocomplete, Box, Paper, TextField, Typography } from "@mui/material";
 import { SyntheticEvent, memo } from "react";
 
@@ -28,7 +26,7 @@ const MapFilters = ({
   locationsTotal,
   locationsFiltered,
 }: MapFiltersProps) => {
-  const { data: areasData } = useGetAreas();
+  const { data: areasData } = useGetArea();
   const { data: regionsData } = useGetRegion();
   const { data: jurisdictionsData } = useGetJurisdiction();
   const { data: measureTypeData } = useGetMeasureTypes();

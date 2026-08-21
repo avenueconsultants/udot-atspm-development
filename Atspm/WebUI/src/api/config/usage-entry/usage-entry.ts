@@ -55,10 +55,9 @@ export const getUsageEntry = (
 ) => {
 
 
-      return configRequest<UsageEntry[] | Blob>(
+      return configRequest<UsageEntry[]>(
       {url: `/UsageEntry`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<UsageEntry[] | Blob>(
+      return configRequest<UsageEntry[]>(
       {url: `/UsageEntry/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getUsageEntryFromKey = (
 ) => {
 
 
-      return configRequest<UsageEntry | Blob>(
+      return configRequest<UsageEntry>(
       {url: `/UsageEntry/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

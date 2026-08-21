@@ -1,6 +1,5 @@
+import { Faq, useGetFaq } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useGetFaqs } from '@/features/faq/api'
-import { Faq } from '@/features/faq/types'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -12,7 +11,7 @@ import {
 import { Markup } from 'interweave'
 
 const FAQ = () => {
-  const faqQuery = useGetFaqs()
+  const faqQuery = useGetFaq()
 
   if (faqQuery.isLoading) return 'Loading...'
 

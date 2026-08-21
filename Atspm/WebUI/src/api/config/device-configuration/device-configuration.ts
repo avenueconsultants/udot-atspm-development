@@ -63,10 +63,9 @@ export const getDeviceConfigurationDevicesFromKey = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/DeviceConfiguration/${key}/devices`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -137,10 +136,9 @@ export const getDeviceConfigurationDevicesCountFromKey = (
 ) => {
 
 
-      return configRequest<Device[] | Blob>(
+      return configRequest<Device[]>(
       {url: `/DeviceConfiguration/${key}/devices/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -211,10 +209,9 @@ export const getDeviceConfigurationEventLogDecoders = (
 ) => {
 
 
-      return configRequest<string[] | Blob>(
+      return configRequest<string[]>(
       {url: `/DeviceConfiguration/GetEventLogDecoders`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -279,10 +276,9 @@ export const getDeviceConfiguration = (
 ) => {
 
 
-      return configRequest<DeviceConfiguration[] | Blob>(
+      return configRequest<DeviceConfiguration[]>(
       {url: `/DeviceConfiguration`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -403,10 +399,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DeviceConfiguration[] | Blob>(
+      return configRequest<DeviceConfiguration[]>(
       {url: `/DeviceConfiguration/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -468,10 +463,9 @@ export const getDeviceConfigurationFromKey = (
 ) => {
 
 
-      return configRequest<DeviceConfiguration | Blob>(
+      return configRequest<DeviceConfiguration>(
       {url: `/DeviceConfiguration/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

@@ -62,10 +62,9 @@ export const getRegionLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Region/${key}/locations`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -136,10 +135,9 @@ export const getRegionLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Region/${key}/locations/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -206,10 +204,9 @@ export const getRegion = (
 ) => {
 
 
-      return configRequest<Region[] | Blob>(
+      return configRequest<Region[]>(
       {url: `/Region`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -330,10 +327,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Region[] | Blob>(
+      return configRequest<Region[]>(
       {url: `/Region/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -395,10 +391,9 @@ export const getRegionFromKey = (
 ) => {
 
 
-      return configRequest<Region | Blob>(
+      return configRequest<Region>(
       {url: `/Region/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

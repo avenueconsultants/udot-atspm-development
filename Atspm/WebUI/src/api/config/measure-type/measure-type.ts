@@ -68,10 +68,9 @@ export const getMeasureTypeDetectionTypesFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[] | Blob>(
+      return configRequest<DetectionType[]>(
       {url: `/MeasureType/${key}/detectionTypes`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -142,10 +141,9 @@ export const getMeasureTypeDetectionTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[] | Blob>(
+      return configRequest<DetectionType[]>(
       {url: `/MeasureType/${key}/detectionTypes/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -216,10 +214,9 @@ export const getMeasureTypeMeasureCommentsFromKey = (
 ) => {
 
 
-      return configRequest<MeasureComment[] | Blob>(
+      return configRequest<MeasureComment[]>(
       {url: `/MeasureType/${key}/measureComments`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -290,10 +287,9 @@ export const getMeasureTypeMeasureCommentsCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureComment[] | Blob>(
+      return configRequest<MeasureComment[]>(
       {url: `/MeasureType/${key}/measureComments/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -364,10 +360,9 @@ export const getMeasureTypeMeasureOptionPresetsFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[] | Blob>(
+      return configRequest<MeasureOptionPreset[]>(
       {url: `/MeasureType/${key}/measureOptionPresets`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -438,10 +433,9 @@ export const getMeasureTypeMeasureOptionPresetsCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[] | Blob>(
+      return configRequest<MeasureOptionPreset[]>(
       {url: `/MeasureType/${key}/measureOptionPresets/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -508,10 +502,9 @@ export const getMeasureType = (
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/MeasureType`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -632,10 +625,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/MeasureType/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -697,10 +689,9 @@ export const getMeasureTypeFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType | Blob>(
+      return configRequest<MeasureType>(
       {url: `/MeasureType/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

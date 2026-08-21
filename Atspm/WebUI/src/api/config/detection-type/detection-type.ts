@@ -65,10 +65,9 @@ export const getDetectionTypeDetectorsFromKey = (
 ) => {
 
 
-      return configRequest<Detector[] | Blob>(
+      return configRequest<Detector[]>(
       {url: `/DetectionType/${key}/detectors`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -139,10 +138,9 @@ export const getDetectionTypeDetectorsCountFromKey = (
 ) => {
 
 
-      return configRequest<Detector[] | Blob>(
+      return configRequest<Detector[]>(
       {url: `/DetectionType/${key}/detectors/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -213,10 +211,9 @@ export const getDetectionTypeMeasureTypesFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/DetectionType/${key}/measureTypes`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -287,10 +284,9 @@ export const getDetectionTypeMeasureTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[] | Blob>(
+      return configRequest<MeasureType[]>(
       {url: `/DetectionType/${key}/measureTypes/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -357,10 +353,9 @@ export const getDetectionType = (
 ) => {
 
 
-      return configRequest<DetectionType[] | Blob>(
+      return configRequest<DetectionType[]>(
       {url: `/DetectionType`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -481,10 +476,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DetectionType[] | Blob>(
+      return configRequest<DetectionType[]>(
       {url: `/DetectionType/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -546,10 +540,9 @@ export const getDetectionTypeFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType | Blob>(
+      return configRequest<DetectionType>(
       {url: `/DetectionType/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

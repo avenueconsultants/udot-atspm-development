@@ -55,10 +55,9 @@ export const getProduct = (
 ) => {
 
 
-      return configRequest<Product[] | Blob>(
+      return configRequest<Product[]>(
       {url: `/Product`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -179,10 +178,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Product[] | Blob>(
+      return configRequest<Product[]>(
       {url: `/Product/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -244,10 +242,9 @@ export const getProductFromKey = (
 ) => {
 
 
-      return configRequest<Product | Blob>(
+      return configRequest<Product>(
       {url: `/Product/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }

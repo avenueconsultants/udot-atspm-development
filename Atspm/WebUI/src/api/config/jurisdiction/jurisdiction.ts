@@ -62,10 +62,9 @@ export const getJurisdictionLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Jurisdiction/${key}/locations`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -136,10 +135,9 @@ export const getJurisdictionLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[] | Blob>(
+      return configRequest<Location[]>(
       {url: `/Jurisdiction/${key}/locations/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -206,10 +204,9 @@ export const getJurisdiction = (
 ) => {
 
 
-      return configRequest<Jurisdiction[] | Blob>(
+      return configRequest<Jurisdiction[]>(
       {url: `/Jurisdiction`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -330,10 +327,9 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Jurisdiction[] | Blob>(
+      return configRequest<Jurisdiction[]>(
       {url: `/Jurisdiction/$count`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
@@ -395,10 +391,9 @@ export const getJurisdictionFromKey = (
 ) => {
 
 
-      return configRequest<Jurisdiction | Blob>(
+      return configRequest<Jurisdiction>(
       {url: `/Jurisdiction/${key}`, method: 'GET',
-        params,
-        responseType: 'blob', signal
+        params, signal
     },
       );
     }
