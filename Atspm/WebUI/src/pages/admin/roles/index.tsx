@@ -106,7 +106,8 @@ const RolesAdmin = () => {
     protectedRoles.push('SpeedConfigurationAdmin')
   }
 
-  const HandleDeleteRole = async (roleName: string) => {
+  const HandleDeleteRole = async (roleNameKey: string | number) => {
+    const roleName = String(roleNameKey)
     if (protectedRoles.includes(roleName)) {
       return
     }

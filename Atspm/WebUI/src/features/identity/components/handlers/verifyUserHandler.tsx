@@ -1,7 +1,7 @@
+import { useAccountVerifyUserPasswordReset } from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import { addMinutes } from 'date-fns'
 import { FormEvent, useEffect, useState } from 'react'
-import { useVerifyUser } from '../../api/verifyUser'
 import { VerifyUserResponseDto } from '../../types/verifyUserResponseDto'
 import { PasswordHandler, ResponseHandler } from './baseHandler'
 
@@ -19,13 +19,11 @@ export const useVerifyUserHandler = (): VerifyUserHandler => {
   const [data, setData] = useState<VerifyUserResponseDto>()
 
   const {
+    mutate: verifyUser,
     data: verifyTokenData,
-    refetch,
     status,
     error,
-  } = useVerifyUser({
-    password,
-  })
+  } = useAccountVerifyUserPasswordReset()
 
   useEffect(() => {
     if (status === 'error' && error) {
@@ -60,7 +58,7 @@ export const useVerifyUserHandler = (): VerifyUserHandler => {
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setSubmitted(true)
-    refetch()
+    verifyUser({ data: { password } })
   }
 
   const component: VerifyUserHandler = {

@@ -3,8 +3,9 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 
 import Link from 'next/link'
 
-import { useUserInfo } from '@/features/identity/api/getUserInfo'
+import { useGetProfileProfile } from '@/api/identity/atspmAuthenticationApi'
 import Login from '@/features/identity/components/signin'
+import { ProfileData } from '@/features/identity/types/profile'
 import { useSidebarStore } from '@/stores/sidebar'
 import {
   Avatar,
@@ -66,7 +67,7 @@ function getColorFromName(firstName: string, lastName: string): string {
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { data: userData, refetch } = useUserInfo({})
+  const { data: userData, refetch } = useGetProfileProfile<ProfileData>()
   const { closeSideBar } = useSidebarStore()
 
   useEffect(() => {

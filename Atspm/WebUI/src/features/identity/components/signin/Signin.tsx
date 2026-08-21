@@ -1,5 +1,5 @@
+import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import NextImage from '@/components/NextImage'
-import { useLogin } from '@/features/identity/api/getLogin'
 import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
 import { buildApiUrl } from '@/lib/axios'
@@ -23,18 +23,18 @@ export default function Signin() {
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const {
-    refetch,
-    data: queryData,
+    mutate: login,
+    data: mutationData,
     status,
     isLoading,
     error: queryDataError,
-  } = useLogin({ email, password })
+  } = useAccountLogin()
 
   useEffect(() => {
-    if (queryData) {
-      setData(queryData as IdentityDto)
+    if (mutationData) {
+      setData(mutationData as IdentityDto)
     }
-  }, [data, queryData])
+  }, [data, mutationData])
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -65,14 +65,14 @@ export default function Signin() {
     }
 
     if (isValid) {
-      refetch()
+      login({ data: { email, password, rememberMe: false } })
     }
   }
 
   useEffect(() => {
     setEmailError(null)
     if (queryDataError) {
-      setErrors(queryDataError.response.data.message)
+      setErrors((queryDataError as any)?.response?.data?.message)
     }
   }, [queryDataError, email])
 

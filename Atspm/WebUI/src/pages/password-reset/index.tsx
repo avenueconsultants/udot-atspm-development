@@ -1,4 +1,4 @@
-import { useResetPassword } from '@/features/identity/api/resetPassword'
+import { useAccountForgotPassword } from '@/api/identity/atspmAuthenticationApi'
 import {
   Alert,
   Box,
@@ -19,7 +19,7 @@ const ChangePassword = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const { refetch, data } = useResetPassword({ email })
+  const { mutate: resetPassword } = useAccountForgotPassword()
   const router = useRouter()
 
   const handleSnackbarClose = () => {
@@ -38,7 +38,7 @@ const ChangePassword = () => {
     }
 
     setInvalidEmail(false)
-    refetch()
+    resetPassword({ data: { email } })
     setIsSubmitted(true)
   }
 

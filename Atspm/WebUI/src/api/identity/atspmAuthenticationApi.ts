@@ -264,7 +264,7 @@ export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accoun
 
 
 
-export const accountOIDCLoginCallback = (
+export const postAccountOIDCLoginCallback = (
 
  signal?: AbortSignal
 ) => {
@@ -279,11 +279,11 @@ export const accountOIDCLoginCallback = (
 
 
 
-export const getAccountOIDCLoginCallbackMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError,void, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError,void, TContext> => {
+export const getPostAccountOIDCLoginCallbackMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>, TError,void, TContext> => {
 
-const mutationKey = ['accountOIDCLoginCallback'];
+const mutationKey = ['postAccountOIDCLoginCallback'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -293,10 +293,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>, void> = () => {
 
 
-          return  accountOIDCLoginCallback()
+          return  postAccountOIDCLoginCallback()
         }
 
 
@@ -306,22 +306,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountOIDCLoginCallbackMutationResult = NonNullable<Awaited<ReturnType<typeof accountOIDCLoginCallback>>>
+    export type PostAccountOIDCLoginCallbackMutationResult = NonNullable<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>>
 
-    export type AccountOIDCLoginCallbackMutationError = ProblemDetails
+    export type PostAccountOIDCLoginCallbackMutationError = ProblemDetails
 
-    export const useAccountOIDCLoginCallback = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError,void, TContext>, }
+    export const usePostAccountOIDCLoginCallback = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>, TError,void, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountOIDCLoginCallback>>,
+        Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getAccountOIDCLoginCallbackMutationOptions(options));
+      return useMutation(getPostAccountOIDCLoginCallbackMutationOptions(options));
     }
 
-export const accountOIDCLoginCallback = (
+export const getAccountOIDCLoginCallback = (
 
  signal?: AbortSignal
 ) => {
@@ -336,42 +336,42 @@ export const accountOIDCLoginCallback = (
 
 
 
-export const getAccountOIDCLoginCallbackQueryKey = () => {
+export const getGetAccountOIDCLoginCallbackQueryKey = () => {
     return [
     `/Account/OIDCLoginCallback`
     ] as const;
     }
 
 
-export const getAccountOIDCLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError, TData>, }
+export const getGetAccountOIDCLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getAccountOIDCLoginCallbackQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAccountOIDCLoginCallbackQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof accountOIDCLoginCallback>>> = ({ signal }) => accountOIDCLoginCallback(signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>> = ({ signal }) => getAccountOIDCLoginCallback(signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type AccountOIDCLoginCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof accountOIDCLoginCallback>>>
-export type AccountOIDCLoginCallbackQueryError = ProblemDetails
+export type GetAccountOIDCLoginCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>>
+export type GetAccountOIDCLoginCallbackQueryError = ProblemDetails
 
 
 
-export function useAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof accountOIDCLoginCallback>>, TError, TData>, }
+export function useGetAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>, }
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getAccountOIDCLoginCallbackQueryOptions(options)
+  const queryOptions = getGetAccountOIDCLoginCallbackQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -384,7 +384,7 @@ export function useAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof ac
 
 
 
-export const accountLinkExternalLogin = (
+export const getAccountLinkExternalLogin = (
 
  signal?: AbortSignal
 ) => {
@@ -399,11 +399,11 @@ export const accountLinkExternalLogin = (
 
 
 
-export const getAccountLinkExternalLoginMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountLinkExternalLogin>>, TError,void, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountLinkExternalLogin>>, TError,void, TContext> => {
+export const getGetAccountLinkExternalLoginMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>, TError,void, TContext> => {
 
-const mutationKey = ['accountLinkExternalLogin'];
+const mutationKey = ['getAccountLinkExternalLogin'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -413,10 +413,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountLinkExternalLogin>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>, void> = () => {
 
 
-          return  accountLinkExternalLogin()
+          return  getAccountLinkExternalLogin()
         }
 
 
@@ -426,22 +426,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountLinkExternalLoginMutationResult = NonNullable<Awaited<ReturnType<typeof accountLinkExternalLogin>>>
+    export type GetAccountLinkExternalLoginMutationResult = NonNullable<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>>
 
-    export type AccountLinkExternalLoginMutationError = ProblemDetails
+    export type GetAccountLinkExternalLoginMutationError = ProblemDetails
 
-    export const useAccountLinkExternalLogin = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountLinkExternalLogin>>, TError,void, TContext>, }
+    export const useGetAccountLinkExternalLogin = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>, TError,void, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountLinkExternalLogin>>,
+        Awaited<ReturnType<typeof getAccountLinkExternalLogin>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getAccountLinkExternalLoginMutationOptions(options));
+      return useMutation(getGetAccountLinkExternalLoginMutationOptions(options));
     }
 
-export const accountLogout = (
+export const getAccountLogout = (
 
  signal?: AbortSignal
 ) => {
@@ -456,11 +456,11 @@ export const accountLogout = (
 
 
 
-export const getAccountLogoutMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountLogout>>, TError,void, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountLogout>>, TError,void, TContext> => {
+export const getGetAccountLogoutMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLogout>>, TError,void, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAccountLogout>>, TError,void, TContext> => {
 
-const mutationKey = ['accountLogout'];
+const mutationKey = ['getAccountLogout'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -470,10 +470,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountLogout>>, void> = () => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAccountLogout>>, void> = () => {
 
 
-          return  accountLogout()
+          return  getAccountLogout()
         }
 
 
@@ -483,22 +483,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof accountLogout>>>
+    export type GetAccountLogoutMutationResult = NonNullable<Awaited<ReturnType<typeof getAccountLogout>>>
 
-    export type AccountLogoutMutationError = ProblemDetails
+    export type GetAccountLogoutMutationError = ProblemDetails
 
-    export const useAccountLogout = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountLogout>>, TError,void, TContext>, }
+    export const useGetAccountLogout = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLogout>>, TError,void, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountLogout>>,
+        Awaited<ReturnType<typeof getAccountLogout>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getAccountLogoutMutationOptions(options));
+      return useMutation(getGetAccountLogoutMutationOptions(options));
     }
 
-export const accountChangePassword = (
+export const getAccountChangePassword = (
     changePasswordViewModel?: ChangePasswordViewModel,
  signal?: AbortSignal
 ) => {
@@ -515,11 +515,11 @@ export const accountChangePassword = (
 
 
 
-export const getAccountChangePasswordMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext> => {
+export const getGetAccountChangePasswordMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAccountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext> => {
 
-const mutationKey = ['accountChangePassword'];
+const mutationKey = ['getAccountChangePassword'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -529,10 +529,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountChangePassword>>, {data?: ChangePasswordViewModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAccountChangePassword>>, {data?: ChangePasswordViewModel}> = (props) => {
           const {data} = props ?? {};
 
-          return  accountChangePassword(data,)
+          return  getAccountChangePassword(data,)
         }
 
 
@@ -542,22 +542,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof accountChangePassword>>>
-    export type AccountChangePasswordMutationBody = ChangePasswordViewModel | undefined
-    export type AccountChangePasswordMutationError = ProblemDetails
+    export type GetAccountChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof getAccountChangePassword>>>
+    export type GetAccountChangePasswordMutationBody = ChangePasswordViewModel | undefined
+    export type GetAccountChangePasswordMutationError = ProblemDetails
 
-    export const useAccountChangePassword = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext>, }
+    export const useGetAccountChangePassword = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountChangePassword>>,
+        Awaited<ReturnType<typeof getAccountChangePassword>>,
         TError,
         {data?: ChangePasswordViewModel},
         TContext
       > => {
-      return useMutation(getAccountChangePasswordMutationOptions(options));
+      return useMutation(getGetAccountChangePasswordMutationOptions(options));
     }
 
-export const accountForgotPassword = (
+export const getAccountForgotPassword = (
     forgotPasswordViewModel?: ForgotPasswordViewModel,
  signal?: AbortSignal
 ) => {
@@ -574,11 +574,11 @@ export const accountForgotPassword = (
 
 
 
-export const getAccountForgotPasswordMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext> => {
+export const getGetAccountForgotPasswordMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAccountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext> => {
 
-const mutationKey = ['accountForgotPassword'];
+const mutationKey = ['getAccountForgotPassword'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -588,10 +588,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountForgotPassword>>, {data?: ForgotPasswordViewModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAccountForgotPassword>>, {data?: ForgotPasswordViewModel}> = (props) => {
           const {data} = props ?? {};
 
-          return  accountForgotPassword(data,)
+          return  getAccountForgotPassword(data,)
         }
 
 
@@ -601,22 +601,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof accountForgotPassword>>>
-    export type AccountForgotPasswordMutationBody = ForgotPasswordViewModel | undefined
-    export type AccountForgotPasswordMutationError = ProblemDetails
+    export type GetAccountForgotPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof getAccountForgotPassword>>>
+    export type GetAccountForgotPasswordMutationBody = ForgotPasswordViewModel | undefined
+    export type GetAccountForgotPasswordMutationError = ProblemDetails
 
-    export const useAccountForgotPassword = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext>, }
+    export const useGetAccountForgotPassword = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountForgotPassword>>,
+        Awaited<ReturnType<typeof getAccountForgotPassword>>,
         TError,
         {data?: ForgotPasswordViewModel},
         TContext
       > => {
-      return useMutation(getAccountForgotPasswordMutationOptions(options));
+      return useMutation(getGetAccountForgotPasswordMutationOptions(options));
     }
 
-export const accountVerifyUserPasswordReset = (
+export const getAccountVerifyUserPasswordReset = (
     verifyUserPasswordResetViewModel?: VerifyUserPasswordResetViewModel,
  signal?: AbortSignal
 ) => {
@@ -633,11 +633,11 @@ export const accountVerifyUserPasswordReset = (
 
 
 
-export const getAccountVerifyUserPasswordResetMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext> => {
+export const getGetAccountVerifyUserPasswordResetMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext> => {
 
-const mutationKey = ['accountVerifyUserPasswordReset'];
+const mutationKey = ['getAccountVerifyUserPasswordReset'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -647,10 +647,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>, {data?: VerifyUserPasswordResetViewModel}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>, {data?: VerifyUserPasswordResetViewModel}> = (props) => {
           const {data} = props ?? {};
 
-          return  accountVerifyUserPasswordReset(data,)
+          return  getAccountVerifyUserPasswordReset(data,)
         }
 
 
@@ -660,25 +660,25 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type AccountVerifyUserPasswordResetMutationResult = NonNullable<Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>>
-    export type AccountVerifyUserPasswordResetMutationBody = VerifyUserPasswordResetViewModel | undefined
-    export type AccountVerifyUserPasswordResetMutationError = ProblemDetails
+    export type GetAccountVerifyUserPasswordResetMutationResult = NonNullable<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>>
+    export type GetAccountVerifyUserPasswordResetMutationBody = VerifyUserPasswordResetViewModel | undefined
+    export type GetAccountVerifyUserPasswordResetMutationError = ProblemDetails
 
-    export const useAccountVerifyUserPasswordReset = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext>, }
+    export const useGetAccountVerifyUserPasswordReset = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof accountVerifyUserPasswordReset>>,
+        Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>,
         TError,
         {data?: VerifyUserPasswordResetViewModel},
         TContext
       > => {
-      return useMutation(getAccountVerifyUserPasswordResetMutationOptions(options));
+      return useMutation(getGetAccountVerifyUserPasswordResetMutationOptions(options));
     }
 
 /**
  * @summary Generates and stores a new API key for the authenticated user.
  */
-export const apiKeyCreate = (
+export const getApiKeyCreate = (
     createApiKeyDto?: CreateApiKeyDto,
  signal?: AbortSignal
 ) => {
@@ -695,11 +695,11 @@ export const apiKeyCreate = (
 
 
 
-export const getApiKeyCreateMutationOptions = <TError = ProblemDetails | void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof apiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext> => {
+export const getGetApiKeyCreateMutationOptions = <TError = ProblemDetails | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext> => {
 
-const mutationKey = ['apiKeyCreate'];
+const mutationKey = ['getApiKeyCreate'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -709,10 +709,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof apiKeyCreate>>, {data?: CreateApiKeyDto}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getApiKeyCreate>>, {data?: CreateApiKeyDto}> = (props) => {
           const {data} = props ?? {};
 
-          return  apiKeyCreate(data,)
+          return  getApiKeyCreate(data,)
         }
 
 
@@ -722,22 +722,22 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type ApiKeyCreateMutationResult = NonNullable<Awaited<ReturnType<typeof apiKeyCreate>>>
-    export type ApiKeyCreateMutationBody = CreateApiKeyDto | undefined
-    export type ApiKeyCreateMutationError = ProblemDetails | void
+    export type GetApiKeyCreateMutationResult = NonNullable<Awaited<ReturnType<typeof getApiKeyCreate>>>
+    export type GetApiKeyCreateMutationBody = CreateApiKeyDto | undefined
+    export type GetApiKeyCreateMutationError = ProblemDetails | void
 
     /**
  * @summary Generates and stores a new API key for the authenticated user.
  */
-export const useApiKeyCreate = <TError = ProblemDetails | void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof apiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
+export const useGetApiKeyCreate = <TError = ProblemDetails | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
  ): UseMutationResult<
-        Awaited<ReturnType<typeof apiKeyCreate>>,
+        Awaited<ReturnType<typeof getApiKeyCreate>>,
         TError,
         {data?: CreateApiKeyDto},
         TContext
       > => {
-      return useMutation(getApiKeyCreateMutationOptions(options));
+      return useMutation(getGetApiKeyCreateMutationOptions(options));
     }
 
 /**

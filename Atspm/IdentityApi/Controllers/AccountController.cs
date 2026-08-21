@@ -133,10 +133,20 @@ namespace Identity.Controllers
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
+        // Split into two distinctly-named actions (same route, same body) rather
+        // than one action carrying both [HttpPost]/[HttpGet]: Swashbuckle/orval
+        // generate one client function per action name, so a single action
+        // handling two verbs produced a duplicate "OIDCLoginCallback" export in
+        // the generated TypeScript client.
         [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
         [HttpPost("OIDCLoginCallback")]
+        public async Task<IActionResult> OIDCLoginCallbackPost() => await OIDCLoginCallback();
+
+        [Authorize(AuthenticationSchemes = OpenIdConnectDefaults.AuthenticationScheme)]
         [HttpGet("OIDCLoginCallback")]
-        public async Task<IActionResult> OIDCLoginCallback()
+        public async Task<IActionResult> OIDCLoginCallbackGet() => await OIDCLoginCallback();
+
+        private async Task<IActionResult> OIDCLoginCallback()
         {
             var info = await signInManager.GetExternalLoginInfoAsync();
 

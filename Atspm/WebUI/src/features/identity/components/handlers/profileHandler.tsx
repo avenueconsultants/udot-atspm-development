@@ -1,11 +1,14 @@
+import {
+  useGetProfileProfile,
+  useGetProfileUpdateProfile,
+} from '@/api/identity/atspmAuthenticationApi'
+import { useNotificationStore } from '@/stores/notifications'
 import { useEffect, useState } from 'react'
-import { useEditUserInfo } from '../../api/editUserInfo'
-import { useUserInfo } from '../../api/getUserInfo'
-import UserDto from '../../types/userDto'
+import { ProfileData } from '../../types/profile'
 import { ResponseHandler } from './baseHandler'
 
 export interface ProfileHandler extends ResponseHandler {
-  profileData: UserDto
+  profileData: ProfileData
   submitted: boolean
   isEditing: boolean
   isLoading: boolean
@@ -23,8 +26,8 @@ export const useProfileHandler = (): ProfileHandler => {
   const [responseSuccess, setResponseSuccess] = useState(false)
   const [responseError, setResponseError] = useState(false)
   const [phoneNumberError, setPhoneNumberError] = useState<string | null>(null)
-  const profileData = useUserInfo({})
-  const [formData, setFormData] = useState<UserDto>({
+  const { data: profileResponse } = useGetProfileProfile<ProfileData>()
+  const [formData, setFormData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
     agency: '',
@@ -33,29 +36,37 @@ export const useProfileHandler = (): ProfileHandler => {
     roles: '',
   })
 
+  const addNotification = useNotificationStore((state) => state.addNotification)
   const {
-    refetch,
+    mutate: saveProfile,
     data: saveUser,
     isSuccess,
     error,
-  } = useEditUserInfo({ userInfo: formData })
+  } = useGetProfileUpdateProfile({
+    mutation: {
+      onSuccess: () => {
+        addNotification({ type: 'success', title: 'Profile updated' })
+      },
+      onError: () => {
+        addNotification({ type: 'error', title: 'Failed to update profile' })
+      },
+    },
+  })
 
   useEffect(() => {
-    if (profileData.data) {
+    if (profileResponse) {
       setFormData({
-        firstName: profileData.data.firstName,
-        lastName: profileData.data.lastName,
-        agency: profileData.data.agency,
-        email: profileData.data.email,
-        phoneNumber: profileData.data?.phoneNumber
-          ? profileData.data?.phoneNumber
-          : '',
-        roles: profileData.data.roles,
+        firstName: profileResponse.firstName,
+        lastName: profileResponse.lastName,
+        agency: profileResponse.agency,
+        email: profileResponse.email,
+        phoneNumber: profileResponse.phoneNumber || '',
+        roles: profileResponse.roles,
       })
       setIsLoading(false)
-      validatePhoneNumber(profileData.data?.phoneNumber || '')
+      validatePhoneNumber(profileResponse.phoneNumber || '')
     }
-  }, [profileData.data])
+  }, [profileResponse])
 
   useEffect(() => {
     if (saveUser !== undefined && isSuccess) {
@@ -92,7 +103,15 @@ export const useProfileHandler = (): ProfileHandler => {
 
   const handleSaveClick = () => {
     if (!phoneNumberError) {
-      refetch()
+      saveProfile({
+        data: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          agency: formData.agency,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+        },
+      })
     }
   }
 

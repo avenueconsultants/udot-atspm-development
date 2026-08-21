@@ -3,7 +3,8 @@ import { useGetUsageEntry } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { UsageEntryFiltersState } from '@/features/data/components/UsageEntryFilters'
 import UsageOverviewTab from '@/features/data/components/UsageSummaryTab'
-import { useGetAllUsers } from '@/features/identity/api/getAllUsers'
+import { useGetUsersUsers } from '@/api/identity/atspmAuthenticationApi'
+import { UserDTO } from '@/api/identity/atspmAuthenticationApi.schemas'
 import Authorization from '@/lib/Authorization'
 import {
   localDateTimeToUtcODataLiteral,
@@ -36,7 +37,7 @@ export default function UsageEntriesPage() {
   const { data: usageData, isFetching: usageLoading } =
     useGetUsageEntry(usageParams)
 
-  const { data: userData, isLoading: usersLoading } = useGetAllUsers()
+  const { data: userData, isLoading: usersLoading } = useGetUsersUsers<UserDTO[]>()
 
   const rows = useMemo(
     () => (usageData?.value ?? []) as UsageEntry[],

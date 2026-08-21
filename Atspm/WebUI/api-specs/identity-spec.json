@@ -118,7 +118,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountOIDCLoginCallback",
+        "operationId": "PostAccountOIDCLoginCallback",
         "responses": {
           "406": {
             "description": "Not Acceptable",
@@ -136,7 +136,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountOIDCLoginCallback",
+        "operationId": "GetAccountOIDCLoginCallback",
         "responses": {
           "406": {
             "description": "Not Acceptable",
@@ -156,7 +156,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountLinkExternalLogin",
+        "operationId": "GetAccountLinkExternalLogin",
         "responses": {
           "406": {
             "description": "Not Acceptable",
@@ -176,7 +176,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountLogout",
+        "operationId": "GetAccountLogout",
         "responses": {
           "406": {
             "description": "Not Acceptable",
@@ -196,7 +196,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountChangePassword",
+        "operationId": "GetAccountChangePassword",
         "requestBody": {
           "content": {
             "application/json": {
@@ -235,7 +235,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountForgotPassword",
+        "operationId": "GetAccountForgotPassword",
         "requestBody": {
           "content": {
             "application/json": {
@@ -274,7 +274,7 @@
         "tags": [
           "Account"
         ],
-        "operationId": "AccountVerifyUserPasswordReset",
+        "operationId": "GetAccountVerifyUserPasswordReset",
         "requestBody": {
           "content": {
             "application/json": {
@@ -314,7 +314,7 @@
           "ApiKey"
         ],
         "summary": "Generates and stores a new API key for the authenticated user.",
-        "operationId": "ApiKeyCreate",
+        "operationId": "GetApiKeyCreate",
         "requestBody": {
           "description": "The details for the new API key.",
           "content": {

@@ -1,6 +1,6 @@
+import { useAccountRegister } from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import { FormEvent, useEffect, useState } from 'react'
-import { useCreateUser } from '../../api/createUser'
 import IdentityDto from '../../types/identityDto'
 import { EmailAndPasswordHandler, ResponseHandler } from './baseHandler'
 
@@ -34,26 +34,20 @@ export const useRegistrationHandler = (): RegistrationHandler => {
   const [data, setData] = useState<IdentityDto>()
 
   const {
-    refetch,
-    data: queryData,
+    mutate: register,
+    data: mutationData,
     error,
     status,
-  } = useCreateUser({
-    email,
-    password,
-    firstName,
-    lastName,
-    agency,
-  })
+  } = useAccountRegister()
 
   useEffect(() => {
     if (status === 'error' && error) {
       setData((error as any).response.data as IdentityDto)
     }
-    if (queryData) {
-      setData(queryData as IdentityDto)
+    if (mutationData) {
+      setData(mutationData as IdentityDto)
     }
-  }, [error, queryData, status])
+  }, [error, mutationData, status])
 
   useEffect(() => {
     if (status === 'success' && data !== undefined) {
@@ -137,7 +131,7 @@ export const useRegistrationHandler = (): RegistrationHandler => {
     if (passwordError) {
       return
     }
-    refetch()
+    register({ data: { email, password, firstName, lastName, agency } })
   }
 
   const component: RegistrationHandler = {
