@@ -4769,7 +4769,7 @@
         },
         "additionalProperties": false
       },
-      "KeyValuePair`2": {
+      "KeyValuePairOfDateTimeInt32": {
         "type": "object",
         "properties": {
           "key": {
@@ -9381,7 +9381,7 @@
             "nullable": true
           },
           "peakHour": {
-            "$ref": "#/components/schemas/KeyValuePair`2"
+            "$ref": "#/components/schemas/KeyValuePairOfDateTimeInt32"
           },
           "peakHourFactor": {
             "type": "number",
@@ -9748,7 +9748,7 @@
         },
         "additionalProperties": false
       },
-      "WatchDogModel`1": {
+      "WatchDogModelOfWatchDogFirmwareCount": {
         "type": "object",
         "properties": {
           "name": {
@@ -9816,7 +9816,7 @@
           "model": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WatchDogModel`1"
+              "$ref": "#/components/schemas/WatchDogModelOfWatchDogFirmwareCount"
             },
             "nullable": true
           }
