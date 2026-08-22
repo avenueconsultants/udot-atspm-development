@@ -15,6 +15,16 @@
 // limitations under the License.
 // #endregion
 import {
+  getApproachDelayReportData,
+  getApproachSpeedReportData,
+  getApproachVolumeReportData,
+  getArrivalOnRedReportData,
+  getPurdueCoordinationDiagramReportData,
+  getSplitFailReportData,
+  getSplitMonitorReportData,
+  getWaitTimeReportData,
+} from '@/api/reports'
+import {
   ChartOptions,
   ChartType,
   RawChartResponse,
@@ -44,6 +54,13 @@ export const TypeApiMap: Record<ChartType, string> = {
   [ChartType.PurdueSplitFailure]: '/api/v1/SplitFail/GetReportData',
   [ChartType.SplitMonitor]: '/api/v1/SplitMonitor/GetReportData',
   [ChartType.TimingAndActuation]: '/api/v1/TimingAndActuation/GetReportData',
+  // PriorityDetails is never selectable as a top-level chart (no entry in
+  // SelectChart's abbreviationToChartType) - PrioritySummaryChart calls
+  // getPriorityDetailsReportData directly as a click-driven drill-down,
+  // bypassing this dispatcher entirely. This URL is also stale (singular
+  // "PriorityDetail" vs the real "/api/v1/PriorityDetails/getReportData"),
+  // which confirms it's unreachable here. Left only so TypeApiMap stays a
+  // total Record<ChartType, string>.
   [ChartType.PriorityDetails]: '/api/v1/PriorityDetail/GetReportData',
   [ChartType.TurningMovementCounts]:
     '/api/v1/TurningMovementCounts/GetReportData',
@@ -75,16 +92,38 @@ const mapStringBooleansToBoolean = (obj: ChartOptions) => {
   }, {})
 }
 
+// Chart types whose generated report-data fetcher (src/api/reports) has been
+// verified to accept/return the same shape this dispatcher already sends/
+// expects, so they can call the generated client directly instead of the
+// hardcoded URL below. Chart types not listed here still go through the
+// legacy reportsAxios.post(TypeApiMap[type], ...) path until their options/
+// response shapes are reconciled.
+const GeneratedChartFetchers: Partial<
+  Record<ChartType, (options: StringBooleanMap) => Promise<unknown>>
+> = {
+  [ChartType.ApproachDelay]: getApproachDelayReportData,
+  [ChartType.ApproachSpeed]: getApproachSpeedReportData,
+  [ChartType.ApproachVolume]: getApproachVolumeReportData,
+  [ChartType.ArrivalsOnRed]: getArrivalOnRedReportData,
+  [ChartType.PurdueCoordinationDiagram]: getPurdueCoordinationDiagramReportData,
+  [ChartType.PurdueSplitFailure]: getSplitFailReportData,
+  [ChartType.SplitMonitor]: getSplitMonitorReportData,
+  [ChartType.WaitTime]: getWaitTimeReportData,
+}
+
 export const getCharts = async (
   type: ChartType,
   options: ChartOptions
 ): Promise<TransformedChartResponse> => {
-  const endpoint = TypeApiMap[type]
   const transformedOptions = mapStringBooleansToBoolean(options)
   transformedOptions.start = dateToTimestamp(transformedOptions.start as Date)
   transformedOptions.end = dateToTimestamp(transformedOptions.end as Date)
 
-  const response = await reportsAxios.post(endpoint, transformedOptions)
+  const generatedFetcher = GeneratedChartFetchers[type]
+  const response = generatedFetcher
+    ? await generatedFetcher(transformedOptions)
+    : await reportsAxios.post(TypeApiMap[type], transformedOptions)
+
   return transformChartData({
     type,
     data: response,
