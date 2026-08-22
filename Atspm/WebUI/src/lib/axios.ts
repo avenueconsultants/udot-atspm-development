@@ -56,7 +56,9 @@ export const initializeAxiosInstances = async (envVariables?: EnvVariables) => {
   const env = envVariables ?? (await getEnv())
 
   if (env.CONFIG_URL) {
-    configAxios = createAxiosInstance(buildApiBaseUrl(env.CONFIG_URL, true))
+    configAxios = createAxiosInstance(buildApiBaseUrl(env.CONFIG_URL, true), {
+      unwrapOData: true,
+    })
   }
   if (env.REPORTS_URL) {
     reportsAxios = createAxiosInstance(buildApiBaseUrl(env.REPORTS_URL))
@@ -72,13 +74,18 @@ export const initializeAxiosInstances = async (envVariables?: EnvVariables) => {
   }
 }
 
-function createAxiosInstance(baseURL: string) {
+function createAxiosInstance(
+  baseURL: string,
+  options: { unwrapOData?: boolean } = {}
+) {
   const instance = axios.create({ baseURL })
 
   instance.interceptors.request.use(authRequestInterceptor)
   instance.interceptors.response.use(
     (response) => {
-      return unwrapODataValue(response.data)
+      return options.unwrapOData
+        ? unwrapODataValue(response.data)
+        : response.data
     },
     (error) => Promise.reject(error)
   )
@@ -88,15 +95,18 @@ function createAxiosInstance(baseURL: string) {
 
 // OData's [EnableQuery] formatter wraps collection responses as
 // { "@odata.context": "...", "value": [...] }. Unwrap it here so every
-// consumer of these axios instances can treat responses as plain data,
-// regardless of which endpoints happen to be OData-backed.
+// consumer of the config API (the only OData-backed surface) can treat
+// responses as plain data. Requiring `value` to be an array - true for
+// every OData collection envelope - keeps this from misfiring on a
+// single-entity response whose DTO happens to have its own `value` field
+// (e.g. MeasureOption).
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function unwrapODataValue(data: unknown): any {
   if (
     data !== null &&
     typeof data === 'object' &&
     !Array.isArray(data) &&
-    Object.prototype.hasOwnProperty.call(data, 'value') &&
+    Array.isArray((data as { value?: unknown }).value) &&
     Object.prototype.hasOwnProperty.call(data, '@odata.context')
   ) {
     return (data as { value: unknown }).value

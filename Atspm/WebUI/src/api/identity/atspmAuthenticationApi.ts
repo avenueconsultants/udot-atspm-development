@@ -685,7 +685,7 @@ export const getApiKeyCreate = (
 
 
       return identityRequest<void>(
-      {url: `/api/ApiKey/create`, method: 'POST',
+      {url: `/ApiKey/create`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: createApiKeyDto, signal
     },
@@ -695,7 +695,7 @@ export const getApiKeyCreate = (
 
 
 
-export const getGetApiKeyCreateMutationOptions = <TError = ProblemDetails | void,
+export const getGetApiKeyCreateMutationOptions = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext> => {
 
@@ -724,12 +724,12 @@ const {mutation: mutationOptions} = options ?
 
     export type GetApiKeyCreateMutationResult = NonNullable<Awaited<ReturnType<typeof getApiKeyCreate>>>
     export type GetApiKeyCreateMutationBody = CreateApiKeyDto | undefined
-    export type GetApiKeyCreateMutationError = ProblemDetails | void
+    export type GetApiKeyCreateMutationError = ProblemDetails
 
     /**
  * @summary Generates and stores a new API key for the authenticated user.
  */
-export const useGetApiKeyCreate = <TError = ProblemDetails | void,
+export const useGetApiKeyCreate = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
  ): UseMutationResult<
         Awaited<ReturnType<typeof getApiKeyCreate>>,
@@ -750,7 +750,7 @@ export const getApiKeyMyKeys = (
 
 
       return identityRequest<void>(
-      {url: `/api/ApiKey/my-keys`, method: 'GET', signal
+      {url: `/ApiKey/my-keys`, method: 'GET', signal
     },
       );
     }
@@ -760,12 +760,12 @@ export const getApiKeyMyKeys = (
 
 export const getGetApiKeyMyKeysQueryKey = () => {
     return [
-    `/api/ApiKey/my-keys`
+    `/ApiKey/my-keys`
     ] as const;
     }
 
 
-export const getGetApiKeyMyKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = void>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>, }
+export const getGetApiKeyMyKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -784,14 +784,14 @@ const {query: queryOptions} = options ?? {};
 }
 
 export type GetApiKeyMyKeysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiKeyMyKeys>>>
-export type GetApiKeyMyKeysQueryError = void
+export type GetApiKeyMyKeysQueryError = ProblemDetails
 
 
 /**
  * @summary Retrieves all active, non-revoked API keys belonging to the authenticated user.
  */
 
-export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = void>(
+export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>(
   options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>, }
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -819,7 +819,7 @@ export const getApiKeyAllKeys = (
 
 
       return identityRequest<void>(
-      {url: `/api/ApiKey/all-keys`, method: 'GET', signal
+      {url: `/ApiKey/all-keys`, method: 'GET', signal
     },
       );
     }
@@ -829,12 +829,12 @@ export const getApiKeyAllKeys = (
 
 export const getGetApiKeyAllKeysQueryKey = () => {
     return [
-    `/api/ApiKey/all-keys`
+    `/ApiKey/all-keys`
     ] as const;
     }
 
 
-export const getGetApiKeyAllKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = void>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>, }
+export const getGetApiKeyAllKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -853,14 +853,14 @@ const {query: queryOptions} = options ?? {};
 }
 
 export type GetApiKeyAllKeysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiKeyAllKeys>>>
-export type GetApiKeyAllKeysQueryError = void
+export type GetApiKeyAllKeysQueryError = ProblemDetails
 
 
 /**
  * @summary Retrieves all active, non-revoked API keys in the system.
  */
 
-export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = void>(
+export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>(
   options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>, }
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -888,7 +888,7 @@ export const getApiKeyRevokeFromId = (
 
 
       return identityRequest<void>(
-      {url: `/api/ApiKey/revoke/${id}`, method: 'POST', signal
+      {url: `/ApiKey/revoke/${id}`, method: 'POST', signal
     },
       );
     }
@@ -896,7 +896,7 @@ export const getApiKeyRevokeFromId = (
 
 
 
-export const getGetApiKeyRevokeFromIdMutationOptions = <TError = void | ProblemDetails,
+export const getGetApiKeyRevokeFromIdMutationOptions = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyRevokeFromId>>, TError,{id: number}, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof getApiKeyRevokeFromId>>, TError,{id: number}, TContext> => {
 
@@ -925,12 +925,12 @@ const {mutation: mutationOptions} = options ?
 
     export type GetApiKeyRevokeFromIdMutationResult = NonNullable<Awaited<ReturnType<typeof getApiKeyRevokeFromId>>>
 
-    export type GetApiKeyRevokeFromIdMutationError = void | ProblemDetails
+    export type GetApiKeyRevokeFromIdMutationError = ProblemDetails
 
     /**
  * @summary Marks a specific API key as revoked to prevent further use.
  */
-export const useGetApiKeyRevokeFromId = <TError = void | ProblemDetails,
+export const useGetApiKeyRevokeFromId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyRevokeFromId>>, TError,{id: number}, TContext>, }
  ): UseMutationResult<
         Awaited<ReturnType<typeof getApiKeyRevokeFromId>>,

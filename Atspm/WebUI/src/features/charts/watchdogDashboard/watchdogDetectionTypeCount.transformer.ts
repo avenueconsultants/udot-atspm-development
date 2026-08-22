@@ -23,7 +23,7 @@ const transformDetectionTypeCountData = (
   const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0)
   const seriesData = data.map((item) => ({
     value: item.count ?? 0,
-    name: item.id,
+    name: item.id ?? 'Unknown',
   }))
 
   return {

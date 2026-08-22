@@ -52,10 +52,15 @@ export const getLinkPivotForTsd = async (
         : undefined,
   })
 
-  return results.map((r) => ({
-    direction: (r.direction ?? '') as 'Primary' | 'Opposing',
-    data: r.data ? toRawLinkPivotData(r.data) : toRawLinkPivotData({}),
-  }))
+  const withData: RawLinkPivotForTsdData[] = []
+  for (const r of results) {
+    if (!r.data) continue
+    withData.push({
+      direction: (r.direction ?? '') as 'Primary' | 'Opposing',
+      data: toRawLinkPivotData(r.data),
+    })
+  }
+  return withData
 }
 
 export const useLinkPivotForTsd = ({

@@ -83,7 +83,7 @@ module.exports = {
       target: './config-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       templates: './orval-templates',
       mode: 'tags-split',
       override: {
@@ -103,7 +103,7 @@ module.exports = {
       target: './report-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       templates: './orval-templates',
       mode: 'tags-split',
       override: {
@@ -123,7 +123,7 @@ module.exports = {
       target: './data-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       templates: './orval-templates',
       mode: 'tags-split',
       override: {
@@ -146,7 +146,7 @@ module.exports = {
       target: './atspmAuthenticationApi.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       templates: './orval-templates',
       mode: 'split',
       override: {
@@ -166,7 +166,7 @@ module.exports = {
       target: './aTSPMSpeedManagementApi.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       templates: './orval-templates',
       mode: 'split',
       override: {

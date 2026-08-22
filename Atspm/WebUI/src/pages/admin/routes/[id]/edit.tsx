@@ -29,7 +29,10 @@ const RouteAdmin = () => {
   const { addNotification } = useNotificationStore()
 
   const { data: locationsData } = useGetLocationLocationsForSearch()
-  const { data: route } = useGetRouteRouteViewFromId(Number(id))
+  const routeId = typeof id === 'string' ? Number(id) : NaN
+  const { data: route } = useGetRouteRouteViewFromId(routeId, undefined, {
+    query: { enabled: typeof id === 'string' && id !== '' },
+  })
   const { data: routeDistancesData } = useGetRouteDistance()
   const { mutate: updateRoute } = useUpsertRouteRoute()
 

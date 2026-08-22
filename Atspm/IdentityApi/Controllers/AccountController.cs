@@ -127,7 +127,7 @@ namespace Identity.Controllers
         [HttpGet("external-login")]
         public IActionResult ExternalLogin()
         {
-            var redirectUri = Url.Action("OIDCLoginCallback", "Account");
+            var redirectUri = Url.Action(nameof(OIDCLoginCallbackGet), "Account");
             var properties = signInManager.ConfigureExternalAuthenticationProperties(OpenIdConnectDefaults.AuthenticationScheme, redirectUri);
 
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);

@@ -64,14 +64,16 @@ const CommentCell = ({
   const [editCommentId, setEditCommentId] = useState<number | null>(null)
   const [commentText, setCommentText] = useState('')
 
-  const { refetch, data: commentsData } = useGetDetectorComment()
+  const { refetch, data: commentsData } = useGetDetectorComment({
+    filter: `detectorId eq ${detector.id}`,
+  })
   const { mutate: addComment } = usePostDetectorComment()
   const { mutate: deleteComment } = useDeleteDetectorCommentFromKey()
   const { mutate: updateComment } = usePatchDetectorCommentFromKey()
 
   const comments =
     commentsData
-      ?.filter((c) => c.detectorId === detector.id)
+      ?.slice()
       .sort(
         (a, b) =>
           new Date(b.timeStamp ?? 0).getTime() -

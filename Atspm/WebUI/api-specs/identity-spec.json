@@ -308,7 +308,7 @@
         }
       }
     },
-    "/api/ApiKey/create": {
+    "/api/v1/ApiKey/create": {
       "post": {
         "tags": [
           "ApiKey"
@@ -337,13 +337,27 @@
         },
         "responses": {
           "406": {
-            "description": "Not Acceptable"
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "200": {
             "description": "Returns the generated raw key. Note: This is only shown once."
           },
           "401": {
-            "description": "Unauthorized if the user identity cannot be resolved."
+            "description": "Unauthorized if the user identity cannot be resolved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request",
@@ -368,7 +382,7 @@
         }
       }
     },
-    "/api/ApiKey/my-keys": {
+    "/api/v1/ApiKey/my-keys": {
       "get": {
         "tags": [
           "ApiKey"
@@ -377,21 +391,42 @@
         "operationId": "GetApiKeyMyKeys",
         "responses": {
           "406": {
-            "description": "Not Acceptable"
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "200": {
             "description": "Returns the list of keys associated with the user."
           },
           "401": {
-            "description": "Unauthorized if the user identity cannot be resolved."
+            "description": "Unauthorized if the user identity cannot be resolved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden if the user lacks the required view permission."
+            "description": "Forbidden if the user lacks the required view permission.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/ApiKey/all-keys": {
+    "/api/v1/ApiKey/all-keys": {
       "get": {
         "tags": [
           "ApiKey"
@@ -400,21 +435,42 @@
         "operationId": "GetApiKeyAllKeys",
         "responses": {
           "406": {
-            "description": "Not Acceptable"
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "200": {
             "description": "Returns the complete list of system keys."
           },
           "401": {
-            "description": "Unauthorized if the user identity cannot be resolved."
+            "description": "Unauthorized if the user identity cannot be resolved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden if the user lacks global view permissions."
+            "description": "Forbidden if the user lacks global view permissions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/ApiKey/revoke/{id}": {
+    "/api/v1/ApiKey/revoke/{id}": {
       "post": {
         "tags": [
           "ApiKey"
@@ -435,16 +491,37 @@
         ],
         "responses": {
           "406": {
-            "description": "Not Acceptable"
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "200": {
             "description": "The key was successfully revoked."
           },
           "401": {
-            "description": "Unauthorized if the user identity cannot be resolved."
+            "description": "Unauthorized if the user identity cannot be resolved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden if the user lacks the required revoke permission."
+            "description": "Forbidden if the user lacks the required revoke permission.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           },
           "404": {
             "description": "The key was not found or the user does not own it.",

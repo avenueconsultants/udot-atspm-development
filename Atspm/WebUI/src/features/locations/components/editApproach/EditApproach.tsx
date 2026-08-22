@@ -244,7 +244,8 @@ function EditApproach({ approach }: ApproachAdminProps) {
                 findDirectionType(saved.directionTypeId)?.name ||
                 DirectionTypes.NA,
               detectors: detectorsArray.sort(
-                (a: any, b: any) => a.detectorChannel - b.detectorChannel
+                (a: any, b: any) =>
+                  (a.detectorChannel ?? 0) - (b.detectorChannel ?? 0)
               ),
             }
 

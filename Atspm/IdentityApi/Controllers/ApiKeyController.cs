@@ -15,6 +15,7 @@
 // limitations under the License.
 #endregion
 
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -35,8 +36,8 @@ namespace Utah.Udot.ATSPM.IdentityApi.Controllers
     /// Provides endpoints for managing API keys, including creation, retrieval, and revocation.
     /// </summary>
     [Authorize]
-    [Route("api/[controller]")]
-    public class ApiKeyController : ControllerBase
+    [ApiVersion("1.0")]
+    public class ApiKeyController : IdentityControllerBase
     {
         private readonly IdentityContext _context;
         private readonly UserManager<ApplicationUser> _userManager;

@@ -90,7 +90,9 @@ const DirectionSelect = ({
       <Select
         error={hasErrors && !directionTypeId}
         value={
-          !!formattedValue || approaches?.length === 0 ? '' : formattedValue
+          directionTypeId == null || approaches?.length === 0
+            ? ''
+            : formattedValue
         }
         onChange={handleSelectChange}
         displayEmpty
