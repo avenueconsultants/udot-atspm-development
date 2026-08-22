@@ -1,6 +1,7 @@
 import {
   Approach,
   SearchLocation as Location,
+  TransitSignalPriorityOptions,
   useGetLocationLatestVersionOfAllLocations,
   useGetMeasureType,
   useGetMeasureTypeMeasureOptionPresetsFromKey,
@@ -39,7 +40,7 @@ export interface TspLocation extends Location {
 export const getPhases = (location: TspLocation) => {
   return Array.from(
     new Set(location.approaches?.map((a) => a.protectedPhaseNumber) || [])
-  ).sort((a, b) => a - b)
+  ).sort((a, b) => (a ?? 0) - (b ?? 0))
 }
 
 export type TspErrorState =
@@ -67,14 +68,14 @@ export default function TspReportPage() {
     isLoading: loadingReport,
   } = useGetTransitSignalPriorityReportData()
   const { data: locationsData } = useGetLocationLatestVersionOfAllLocations()
-  const locations = locationsData?.value || []
+  const locations = locationsData || []
   const { data: measureTypesData } = useGetMeasureType()
-  const measureTypes = measureTypesData?.value || []
+  const measureTypes = measureTypesData || []
   const { data: savedOptionsData } =
     useGetMeasureTypeMeasureOptionPresetsFromKey(
-      measureTypes.find((m) => m.abbreviation === 'TSP')?.id
+      measureTypes.find((m) => m.abbreviation === 'TSP')?.id ?? 0
     )
-  const savedOptions = savedOptionsData?.value || []
+  const savedOptions = savedOptionsData || []
 
   function renderErrorAlert() {
     if (errorState.type === 'NO_LOCATIONS') {
@@ -141,28 +142,30 @@ export default function TspReportPage() {
       (option) => option.id === Number(e.target.value)
     )
     if (selectedParameters) {
-      setSelectedReport(selectedParameters.id)
+      setSelectedReport(selectedParameters.id ?? 0)
+      const savedOption = selectedParameters.option as TransitSignalPriorityOptions
+      const locationsAndPhases = savedOption.locationsAndPhases ?? []
       const locationsWithApproaches = await getLocationWithApproaches(
-        selectedParameters.option.locationsAndPhases.map((loc) => {
-          return locations.find(
-            (l) => l.locationIdentifier === loc.locationIdentifier
-          )
-        })
+        (locationsAndPhases
+          .map((loc) => {
+            return locations.find(
+              (l) => l.locationIdentifier === loc.locationIdentifier
+            )
+          })
+          .filter((l): l is NonNullable<typeof l> => l != null) as unknown) as Location[]
       )
-      const locationsWithApproachesWithPhases = locationsWithApproaches.map(
-        (loc) => {
+      const locationsWithApproachesWithPhases: TspLocation[] =
+        locationsWithApproaches.map((loc) => {
           return {
             ...loc,
-            designatedPhases: selectedParameters.option.locationsAndPhases.find(
-              (l) => l.locationIdentifier === loc.locationIdentifier
-            )?.designatedPhases,
+            designatedPhases:
+              locationsAndPhases.find(
+                (l) => l.locationIdentifier === loc.locationIdentifier
+              )?.designatedPhases ?? [],
           }
-        }
-      )
+        }) as unknown as TspLocation[]
       setReportOptions({
-        selectedDays: selectedParameters.option.dates.map(
-          (date) => new Date(date)
-        ),
+        selectedDays: (savedOption.dates ?? []).map((date) => new Date(date)),
         locations: locationsWithApproachesWithPhases,
       })
     } else {

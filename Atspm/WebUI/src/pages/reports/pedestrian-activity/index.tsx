@@ -28,14 +28,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const activeTransportationSchema = z.object({
-  locations: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      approaches: z.array(z.any()),
-      locationIdentifier: z.string(),
-    })
-  ),
+  locations: z.array(z.custom<Location>()),
   timeUnit: z.number(),
   startDate: z.date(),
   endDate: z.date(),
@@ -93,7 +86,7 @@ async function resolveLocationsByIdentifier(
     expand: 'approaches',
   })
 
-  const found = resp?.value ?? []
+  const found = resp ?? []
 
   const byIdentifier = new Map(found.map((l) => [l.locationIdentifier, l]))
   return ids.map((id) => byIdentifier.get(id)).filter(Boolean) as Location[]
@@ -148,8 +141,8 @@ const ActiveTransportation = () => {
         const hydrated = await resolveLocationsByIdentifier(qs.locations)
         const ordered = hydrated.sort(
           (a, b) =>
-            qs.locations.indexOf(a.locationIdentifier) -
-            qs.locations.indexOf(b.locationIdentifier)
+            qs.locations.indexOf(a.locationIdentifier ?? '') -
+            qs.locations.indexOf(b.locationIdentifier ?? '')
         )
         if (ordered.length > 0) setValue('locations', ordered)
       })()
@@ -238,7 +231,7 @@ const ActiveTransportation = () => {
     setErrorState({ type: 'NONE' })
 
     await setQs({
-      locations: formData.locations.map((l) => l.locationIdentifier),
+      locations: formData.locations.map((l) => l.locationIdentifier ?? ''),
       timeUnit: formData.timeUnit,
       start: formData.startDate,
       end: formData.endDate,
@@ -248,7 +241,7 @@ const ActiveTransportation = () => {
     const charts = await fetchPedestrianData({
       data: {
         locationIdentifiers: formData.locations.map(
-          (l) => l.locationIdentifier
+          (l) => l.locationIdentifier ?? ''
         ),
         startDate: dateToTimestamp(formData.startDate),
         endDate: dateToTimestamp(formData.endDate),

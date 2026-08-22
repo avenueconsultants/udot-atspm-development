@@ -28,7 +28,7 @@ export default function TspReport({ report, reportOptions }: TspReportProps) {
   const isLoggedIn = !!Cookies.get('loggedIn')
   const { addNotification } = useNotificationStore()
   const { data: measureTypesData } = useGetMeasureType()
-  const measureTypes = measureTypesData?.value || []
+  const measureTypes = measureTypesData || []
   const contentRef = useRef<HTMLDivElement>(null)
   const [currentTab, setCurrentTab] = useState('0')
   const [isModalOpen, setModalOpen] = useState(false)
