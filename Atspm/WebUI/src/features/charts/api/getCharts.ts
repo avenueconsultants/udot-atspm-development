@@ -24,6 +24,7 @@ import {
   getPurdueCoordinationDiagramReportData,
   getSplitFailReportData,
   getSplitMonitorReportData,
+  getTurningMovementCountsReportData,
   getWaitTimeReportData,
   getYellowRedActivationsReportData,
 } from '@/api/reports'
@@ -113,6 +114,7 @@ const GeneratedChartFetchers: Partial<
   [ChartType.PreemptionDetails]: getPreemptDetailReportData,
   [ChartType.PurdueSplitFailure]: getSplitFailReportData,
   [ChartType.SplitMonitor]: getSplitMonitorReportData,
+  [ChartType.TurningMovementCounts]: getTurningMovementCountsReportData,
   [ChartType.WaitTime]: getWaitTimeReportData,
   [ChartType.YellowAndRedActuations]: getYellowRedActivationsReportData,
 }

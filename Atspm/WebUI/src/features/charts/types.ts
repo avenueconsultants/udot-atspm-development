@@ -17,7 +17,7 @@
 import { EChartsOption } from 'echarts'
 import { ApproachVolumeSummaryData } from './approachVolume/types'
 import { ChartType, ToolType } from './common/types'
-import type { RawTurningMovementCountTableRow } from './turningMovementCounts/types'
+import type { NormalizedTurningMovementCountTableRow } from './turningMovementCounts/types'
 
 export interface ExtendedEChartsOption extends EChartsOption {
   displayProp?: {
@@ -86,7 +86,7 @@ export interface TransformedTurningMovementCountsResponse {
   data: {
     displayProps?: TurningMovementCountsTableDisplayProps
     labels: Labels
-    table: RawTurningMovementCountTableRow[]
+    table: NormalizedTurningMovementCountTableRow[]
     charts: StandardChart[]
     peakHour?: {
       peakHourFactor: number | null

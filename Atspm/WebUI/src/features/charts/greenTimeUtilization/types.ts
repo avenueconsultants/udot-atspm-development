@@ -17,10 +17,10 @@
 import {
   BaseChartData,
   BaseChartOptions,
+  BasePlan as Plan,
   ChartType,
   DataPoint,
 } from '@/features/charts/common/types'
-import { Plan } from '../turningMovementCounts/types'
 
 export interface GreenTimeUtilizationChartOptions extends BaseChartOptions {
   xAxisBinSize: number
