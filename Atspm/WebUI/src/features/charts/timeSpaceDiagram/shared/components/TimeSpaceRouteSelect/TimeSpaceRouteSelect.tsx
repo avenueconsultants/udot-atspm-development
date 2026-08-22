@@ -12,7 +12,6 @@ import {
 } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material'
 import type { ReactNode } from 'react'
-import { useEffect } from 'react'
 
 interface Props {
   handler: TSBaseHandler
@@ -84,15 +83,11 @@ export const TimeSpaceRouteSelect = ({
   renderRouteDetails,
 }: Props) => {
   const routeIdNumber = handler.routeId ? Number(handler.routeId) : undefined
-  const { data: routeData, refetch } = useGetRouteRouteViewFromId(
+  const { data: routeData } = useGetRouteRouteViewFromId(
     routeIdNumber ?? 0,
     { includeLocationDetail: true },
     { query: { enabled: !!routeIdNumber } }
   )
-
-  useEffect(() => {
-    if (handler.routeId) refetch()
-  }, [handler.routeId, refetch])
 
   if (routeData && routeData.routeLocations === undefined) return null
 

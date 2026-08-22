@@ -72,7 +72,11 @@ function IgnoreEventEditorModal({
     await onSave({
       ...data,
       start: toUTCDateStamp(startDate),
-      end: endDate ? toUTCDateStamp(endDate) : undefined,
+      // The generated WatchDogIgnoreEvent.end type has no null variant, but
+      // the PATCH endpoint uses OData Delta<T> semantics where an omitted
+      // (undefined) key means "no change" - sending null is what actually
+      // clears the end date server-side.
+      end: (endDate ? toUTCDateStamp(endDate) : null) as string | undefined,
     })
     onClose()
   }

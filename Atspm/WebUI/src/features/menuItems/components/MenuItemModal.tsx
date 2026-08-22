@@ -87,7 +87,7 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
 
   const topLevelMenuItems = useMemo(
     () =>
-      menuItemsData?.value.filter(
+      menuItemsData?.filter(
         (item: GeneratedMenuItem) => item.parentId === null
       ),
     [menuItemsData]
@@ -95,7 +95,7 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
 
   const parentItem = useMemo(
     () =>
-      menuItemsData?.value.find(
+      menuItemsData?.find(
         (item: GeneratedMenuItem) => item.id === watch('parentId')
       ),
     [menuItemsData, watch]
@@ -105,7 +105,7 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
     link: string | null | undefined,
     id: number | null
   ) => {
-    const children = menuItemsData?.value.filter(
+    const children = menuItemsData?.filter(
       (item: GeneratedMenuItem) => item.parentId === id
     )
     return !(children && children.length > 0 && link)

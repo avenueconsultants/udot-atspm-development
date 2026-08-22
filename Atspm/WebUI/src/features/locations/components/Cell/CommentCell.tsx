@@ -132,7 +132,7 @@ const CommentCell = ({
   }
 
   const handleSaveComment = () => {
-    if (editCommentId) {
+    if (editCommentId !== null) {
       updateComment(
         { key: editCommentId, data: { comment: commentText } },
         { onSuccess: () => refetch() }
@@ -164,7 +164,7 @@ const CommentCell = ({
   }
 
   const handleConfirmDelete = () => {
-    if (editCommentId) {
+    if (editCommentId !== null) {
       deleteComment(
         { key: editCommentId },
         { onSuccess: () => refetch() }
@@ -299,7 +299,7 @@ const CommentCell = ({
           }}
         >
           <Typography variant="h6" gutterBottom>
-            {editCommentId ? 'Edit Comment' : 'Add Comment'}
+            {editCommentId !== null ? 'Edit Comment' : 'Add Comment'}
           </Typography>
           <TextField
             autoFocus

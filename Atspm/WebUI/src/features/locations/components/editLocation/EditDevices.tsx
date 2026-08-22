@@ -27,7 +27,9 @@ const EditDevices = () => {
   const [deleteDeviceId, setDeleteDeviceId] = useState<number | null>(null)
 
   const { data: devicesData, refetch: refetchDevices } =
-    useGetLocationDevicesFromKey(locationId ?? 0)
+    useGetLocationDevicesFromKey(locationId ?? 0, undefined, {
+      query: { enabled: locationId != null },
+    })
   const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
   const { mutate: deleteDevice } = useDeleteDeviceFromKey()
 

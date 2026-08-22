@@ -24,7 +24,6 @@ import { Color, lightenColor } from '../utils'
 // below actually reads off `response`.
 type RawWatchdogData = WatchDogIssueTypeGroup & {
   name: string
-  products: NonNullable<WatchDogIssueTypeGroup['products']>
 }
 
 interface TransformedWatchdogData {
@@ -135,7 +134,7 @@ function transformData(
   const totalIssueCount = filteredData.reduce(
     (sum, item) =>
       sum +
-      item.products.reduce(
+      (item.products ?? []).reduce(
         (productSum, product) =>
           productSum +
           (product.model ?? []).reduce(
@@ -153,7 +152,7 @@ function transformData(
     const originalIndex = data.findIndex(
       (originalItem) => originalItem.name === item.name
     )
-    const issueTypeCount = item.products.reduce(
+    const issueTypeCount = (item.products ?? []).reduce(
       (sum, product) =>
         sum +
         (product.model ?? []).reduce(
@@ -175,7 +174,7 @@ function transformData(
       itemStyle: {
         color: issueTypeColors[originalIndex % issueTypeColors.length],
       },
-      children: item.products.map((product) => {
+      children: (item.products ?? []).map((product) => {
         const productCount = (product.model ?? []).reduce(
           (sum, model) =>
             sum + (model.firmware ?? []).reduce((fwSum, fw) => fwSum + (fw.counts ?? 0), 0),

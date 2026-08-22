@@ -92,8 +92,8 @@ export function createPlans<T extends BasePlan>(
     const plan = []
     const planColor = i % 2 === 0 ? Color.PlanA : Color.PlanB
 
-    const startTime = new Date(plans[i].start).toISOString()
-    const endTime = new Date(plans[i].end).toISOString()
+    const startTime = new Date(plans[i].start || Date.now()).toISOString()
+    const endTime = new Date(plans[i].end || Date.now()).toISOString()
 
     let planInfo = `{plan|${plans[i].planDescription}}`
 

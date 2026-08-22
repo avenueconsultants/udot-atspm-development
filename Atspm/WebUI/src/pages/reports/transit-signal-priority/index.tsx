@@ -71,9 +71,14 @@ export default function TspReportPage() {
   const locations = locationsData || []
   const { data: measureTypesData } = useGetMeasureType()
   const measureTypes = measureTypesData || []
+  const tspMeasureTypeId = measureTypes.find(
+    (m) => m.abbreviation === 'TSP'
+  )?.id
   const { data: savedOptionsData } =
     useGetMeasureTypeMeasureOptionPresetsFromKey(
-      measureTypes.find((m) => m.abbreviation === 'TSP')?.id ?? 0
+      tspMeasureTypeId ?? 0,
+      undefined,
+      { query: { enabled: tspMeasureTypeId != null } }
     )
   const savedOptions = savedOptionsData || []
 

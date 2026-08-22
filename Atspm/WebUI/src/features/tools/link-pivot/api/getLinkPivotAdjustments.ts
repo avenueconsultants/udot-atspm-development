@@ -129,7 +129,8 @@ export const getLinkPivotAdjustment = async (
   const result = await getLinkPivotReportData({
     ...transformedOptions,
     routeId:
-      transformedOptions.routeId != null
+      typeof transformedOptions.routeId === 'string' &&
+      transformedOptions.routeId !== ''
         ? Number(transformedOptions.routeId)
         : undefined,
   })

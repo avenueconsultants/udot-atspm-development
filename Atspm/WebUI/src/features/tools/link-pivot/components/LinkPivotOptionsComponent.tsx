@@ -12,7 +12,6 @@ import {
   Select,
   TextField,
 } from '@mui/material'
-import { useEffect } from 'react'
 import { LinkPivotHandler, StreamType } from '../handlers/linkPivotHandlers'
 
 interface Props {
@@ -33,7 +32,7 @@ export const LinkPivotOptionsComponent = (props: Props) => {
   const { handler } = props
 
   const routeIdNumber = handler.routeId ? Number(handler.routeId) : undefined
-  const { data: routeData, refetch } = useGetRouteRouteViewFromId(
+  const { data: routeData } = useGetRouteRouteViewFromId(
     routeIdNumber ?? 0,
     { includeLocationDetail: true },
     { query: { enabled: !!routeIdNumber } }
@@ -56,10 +55,6 @@ export const LinkPivotOptionsComponent = (props: Props) => {
       })
       // sort so 1 comes before 2, etc.
       .sort((a, b) => a.order - b.order) || []
-
-  useEffect(() => {
-    if (handler.routeId) refetch()
-  }, [handler.routeId, refetch])
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>

@@ -153,8 +153,8 @@ function toSrmEntityTracks(
       timestampMs: p.timestampMs ?? 0,
       intersectionId: p.intersectionId ?? undefined,
     })),
-    startingIntersection: undefined,
-    headingDirection: undefined,
+    startingIntersection: t.startingIntersection ?? undefined,
+    headingDirection: t.headingDirection ?? undefined,
   }))
 }
 
@@ -177,7 +177,7 @@ function toRawTimeSpaceHistoricData(
     calculatedDistanceToNext: 0,
     calculatedDistanceToPrevious: 0,
     isIgnoredLocation: false,
-    offsetLengthChangeEvents: null,
+    offsetLengthChangeEvents: r.offsetLengthChangeEvents ?? null,
     greenTimeEvents: toDetectorEvents(r.greenTimeEvents),
     laneByLaneCountDetectors: toDetectorEventsWithDistance(
       r.laneByLaneCountDetectors
@@ -197,13 +197,13 @@ function toRawTimeSpaceHistoricData(
     },
     order: r.order ?? 0,
     cycleLength: r.cycleLength ?? null,
-    isPhaseOverLap: false,
-    tspNumberCheckins: 0,
-    tspNumberCheckouts: 0,
-    tspNumberEarlyGreens: 0,
-    tspNumberExtendedGreens: 0,
+    isPhaseOverLap: r.isPhaseOverLap ?? false,
+    tspNumberCheckins: r.tspNumberCheckins ?? 0,
+    tspNumberCheckouts: r.tspNumberCheckouts ?? 0,
+    tspNumberEarlyGreens: r.tspNumberEarlyGreens ?? 0,
+    tspNumberExtendedGreens: r.tspNumberExtendedGreens ?? 0,
     tspEvents: toIndianaEvents(r.tspEvents),
-    priorityAndPreemptionEvents: null,
+    priorityAndPreemptionEvents: r.priorityAndPreemptionEvents ?? null,
     srmEntityTracks: toSrmEntityTracks(r.srmEntityTracks),
   }
 }
@@ -245,7 +245,8 @@ export const getTools = async (
   const transformedOptions = mapStringBooleansToBoolean(options)
 
   const routeId =
-    transformedOptions.routeId != null
+    typeof transformedOptions.routeId === 'string' &&
+    transformedOptions.routeId !== ''
       ? Number(transformedOptions.routeId)
       : undefined
 

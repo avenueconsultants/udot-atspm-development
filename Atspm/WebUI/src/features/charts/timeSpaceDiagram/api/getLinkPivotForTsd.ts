@@ -46,7 +46,8 @@ export const getLinkPivotForTsd = async (
   const results = await getLinkPivotLinkPivotForTSD({
     ...transformedOptions,
     routeId:
-      transformedOptions.routeId != null
+      typeof transformedOptions.routeId === 'string' &&
+      transformedOptions.routeId !== ''
         ? Number(transformedOptions.routeId)
         : undefined,
   })
