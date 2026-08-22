@@ -24,6 +24,7 @@ import {
   getSplitFailReportData,
   getSplitMonitorReportData,
   getWaitTimeReportData,
+  getYellowRedActivationsReportData,
 } from '@/api/reports'
 import {
   ChartOptions,
@@ -111,6 +112,7 @@ const GeneratedChartFetchers: Partial<
   [ChartType.PurdueSplitFailure]: getSplitFailReportData,
   [ChartType.SplitMonitor]: getSplitMonitorReportData,
   [ChartType.WaitTime]: getWaitTimeReportData,
+  [ChartType.YellowAndRedActuations]: getYellowRedActivationsReportData,
 }
 
 export const getCharts = async (
