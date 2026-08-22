@@ -56,10 +56,16 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
   useEffect(() => {
     if (data) {
       Object.entries(data).forEach(([key, value]) => {
-        setValue(
-          key as keyof MenuItemFormData,
-          key === 'displayOrder' ? Number(value) : value
-        )
+        if (key === 'displayOrder') {
+          setValue(key, Number(value))
+        } else if (key === 'parentId') {
+          // The Select's "None (top level)" option is keyed on 0, but the
+          // API represents top-level items with parentId: null - normalize
+          // so MUI doesn't warn about a null value on a controlled Select.
+          setValue(key, (value as number | null) ?? 0)
+        } else {
+          setValue(key as keyof MenuItemFormData, value)
+        }
       })
     } else {
       setValue('id', 0)

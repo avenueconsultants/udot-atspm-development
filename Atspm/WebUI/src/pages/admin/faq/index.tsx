@@ -34,7 +34,7 @@ const FaqAdmin = () => {
   const { mutateAsync: editMutation } = usePatchFaqFromKey()
 
   const { data: faqData, isLoading, refetch: refetchFaqData } = useGetFaq()
-  const faqs = faqData?.value
+  const faqs = faqData
 
   if (pageAccess.isLoading) {
     return

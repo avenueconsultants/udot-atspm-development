@@ -78,12 +78,30 @@ function createAxiosInstance(baseURL: string) {
   instance.interceptors.request.use(authRequestInterceptor)
   instance.interceptors.response.use(
     (response) => {
-      return response.data
+      return unwrapODataValue(response.data)
     },
     (error) => Promise.reject(error)
   )
 
   return instance
+}
+
+// OData's [EnableQuery] formatter wraps collection responses as
+// { "@odata.context": "...", "value": [...] }. Unwrap it here so every
+// consumer of these axios instances can treat responses as plain data,
+// regardless of which endpoints happen to be OData-backed.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function unwrapODataValue(data: unknown): any {
+  if (
+    data !== null &&
+    typeof data === 'object' &&
+    !Array.isArray(data) &&
+    Object.prototype.hasOwnProperty.call(data, 'value') &&
+    Object.prototype.hasOwnProperty.call(data, '@odata.context')
+  ) {
+    return (data as { value: unknown }).value
+  }
+  return data
 }
 
 // Request interceptor to add the Authorization header

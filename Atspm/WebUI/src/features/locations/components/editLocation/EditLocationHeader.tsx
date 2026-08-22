@@ -60,7 +60,7 @@ export default function EditLocationHeader() {
       { enabled: false }
     )
 
-  const locationVersions = versionsData?.value
+  const locationVersions = versionsData
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -179,7 +179,7 @@ export default function EditLocationHeader() {
     if (deleteAction === 'deleteLocation') handleDeleteLocationConfirm()
   }
 
-  const locationType = locationTypeData?.value.find(
+  const locationType = locationTypeData?.find(
     (type) => type.id === location.locationTypeId
   )
   const locationTypeConfig = getLocationTypeConfig(locationType?.id)

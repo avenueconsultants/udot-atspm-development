@@ -37,9 +37,9 @@ const JurisdictionsAdmin = () => {
   const { mutateAsync: editMutation } = usePatchJurisdictionFromKey()
   const { mutateAsync: deleteMutation } = useDeleteJurisdictionFromKey()
   const { data: locationsData } = useGetLocationLocationsForSearch()
-  const locations = locationsData?.value
+  const locations = locationsData
 
-  const jurisdictions = jurisdictionData?.value
+  const jurisdictions = jurisdictionData
 
   if (pageAccess.isLoading) {
     return null

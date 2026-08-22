@@ -38,7 +38,7 @@ const MapFilters = ({
   const regions = regionsData;
   const locationTypes = locationTypeData;
   const jurisdictions = jurisdictionsData;
-  const measureTypes = measureTypeData?.value;
+  const measureTypes = measureTypeData;
 
   const handleFilterChange = (key: keyof Filters, value: number | null) => {
     onFilterChange({ [key]: value });

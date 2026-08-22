@@ -29,7 +29,7 @@ const MeasureDefaults = () => {
     return
   }
 
-  const chartDefaults = chartDefaultsData?.value
+  const chartDefaults = chartDefaultsData
 
   const getChartDefaults = (chartType: string) => {
     return chartDefaults?.find((chart) => chart.chartType === chartType)

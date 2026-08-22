@@ -252,7 +252,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Regions"
             name="regionIds"
             value={field.value}
-            data={regionsData?.value}
+            data={regionsData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))
@@ -273,7 +273,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Jurisdictions"
             name="jurisdictionIds"
             value={field.value}
-            data={jurisdictionsData?.value}
+            data={jurisdictionsData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))
@@ -294,7 +294,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Areas"
             name="areaIds"
             value={field.value}
-            data={areasData?.value}
+            data={areasData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))

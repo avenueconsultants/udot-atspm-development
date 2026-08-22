@@ -34,8 +34,8 @@ const AreasAdmin = () => {
   const { data: locationsData } = useGetLocationLocationsForSearch()
   const { data: areaData, isLoading, refetch: refetchAreas } = useGetArea()
 
-  const locations = locationsData?.value
-  const areas = areaData?.value
+  const locations = locationsData
+  const areas = areaData
 
   if (pageAccess.isLoading) {
     return null

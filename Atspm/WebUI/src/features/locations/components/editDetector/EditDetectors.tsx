@@ -78,10 +78,10 @@ const EditDetectors = ({
   const { data: dtData } = useGetDetectionType()
   const { data: ltData } = useGetLocationType()
   const detectionTypes = useMemo(
-    () => (dtData?.value ?? []) as DetectionType[],
+    () => (dtData ?? []) as unknown as DetectionType[],
     [dtData]
   )
-  const locationType = ltData?.value?.find(
+  const locationType = ltData?.find(
     (t) => t.id === location?.locationTypeId
   )
   const detectionOptions = useMemo(

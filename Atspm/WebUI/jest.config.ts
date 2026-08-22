@@ -29,8 +29,11 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  // Add more setup options before each test is run
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFiles: ['<rootDir>/jest.polyfills.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  // Playwright E2E specs live under e2e/ and run via `npx playwright test`,
+  // not Jest - exclude them so Jest doesn't try to pick them up.
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/e2e/'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

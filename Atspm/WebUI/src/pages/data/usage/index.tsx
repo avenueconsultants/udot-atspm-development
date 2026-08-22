@@ -40,7 +40,7 @@ export default function UsageEntriesPage() {
   const { data: userData, isLoading: usersLoading } = useGetUsersUsers<UserDTO[]>()
 
   const rows = useMemo(
-    () => (usageData?.value ?? []) as UsageEntry[],
+    () => (usageData ?? []) as UsageEntry[],
     [usageData]
   )
   const users = useMemo(() => userData || [], [userData])

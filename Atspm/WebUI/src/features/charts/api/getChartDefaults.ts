@@ -18,7 +18,6 @@ import { ChartType } from '@/features/charts/common/types'
 import { ChartDefaults, Default } from '@/features/charts/types'
 import { configAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { ApiResponse } from '@/types'
 import { useQuery } from 'react-query'
 
 const normalizeString = (str: string) => str.replace(/\s+/g, '').toLowerCase()
@@ -39,14 +38,12 @@ const determineChartType = (chartName: string): ChartType | 'Unknown' => {
   return 'Unknown'
 }
 
-export const getChartDefaults = async (): Promise<
-  ApiResponse<ChartDefaults>
-> => {
-  const response = await configAxios.get<ApiResponse<ChartDefaults[]>>(
+export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
+  const response = (await configAxios.get(
     '/MeasureType?expand=measureOptions'
-  )
+  )) as unknown as ChartDefaults[]
 
-  const enhancedData = response.value.map((chart: ChartDefaults) => ({
+  return response.map((chart: ChartDefaults) => ({
     ...chart,
     chartType: determineChartType(chart.name),
     measureOptions: chart.measureOptions.reduce(
@@ -57,11 +54,6 @@ export const getChartDefaults = async (): Promise<
       {} as Record<string, Default>
     ),
   }))
-
-  return {
-    ...response,
-    value: enhancedData,
-  }
 }
 
 type QueryFnType = typeof getChartDefaults

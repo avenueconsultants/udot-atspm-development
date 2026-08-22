@@ -46,7 +46,7 @@ export default function Topbar() {
     window.open(path, '_blank')
   }
 
-  const menuItems = menuItemsData ? transformMenuItems(menuItemsData.value) : []
+  const menuItems = menuItemsData ? transformMenuItems(menuItemsData) : []
 
   useEffect(() => {
     // This effect runs once when the component mounts but could be triggered on certain conditions like user authentication status change

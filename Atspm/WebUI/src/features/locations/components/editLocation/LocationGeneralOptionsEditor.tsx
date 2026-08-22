@@ -72,7 +72,7 @@ const LocationGeneralOptionsEditor = () => {
 
     const areas = []
     for (const id of value as number[]) {
-      const area = areasData?.value.find((area) => area.id === id)
+      const area = areasData?.find((area) => area.id === id)
       if (area) {
         areas.push(area)
       }
@@ -216,7 +216,7 @@ const LocationGeneralOptionsEditor = () => {
                       label="Location Type"
                       name="locationTypeId"
                       value={location.locationTypeId}
-                      data={locationTypeData?.value.map((type) => ({
+                      data={locationTypeData?.map((type) => ({
                         id: type.id,
                         name: type.name,
                       }))}
@@ -353,7 +353,7 @@ const LocationGeneralOptionsEditor = () => {
                     label="Region"
                     name="regionId"
                     value={location.regionId}
-                    data={regionsData?.value}
+                    data={regionsData}
                     onChange={(e) => handleSelectChange('regionId', e)}
                     displayProperty="description"
                     fullWidth
@@ -364,7 +364,7 @@ const LocationGeneralOptionsEditor = () => {
                     label="Jurisdiction"
                     name="jurisdictionId"
                     value={location.jurisdictionId}
-                    data={jurisdictionData?.value}
+                    data={jurisdictionData}
                     onChange={(e) => handleSelectChange('jurisdictionId', e)}
                     displayProperty="name"
                     fullWidth
@@ -375,7 +375,7 @@ const LocationGeneralOptionsEditor = () => {
                     label="Areas"
                     name="areas"
                     value={location?.areas?.map((area) => area.id)}
-                    data={areasData?.value}
+                    data={areasData}
                     onChange={handleAreaChange}
                     onDelete={handleAreaDelete}
                     displayProperty="name"

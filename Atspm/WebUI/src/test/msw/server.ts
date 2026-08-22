@@ -1,6 +1,6 @@
 // #region license
 // Copyright 2026 Utah Departement of Transportation
-// for WebUI - getMeasureTypes.ts
+// for WebUI - server.ts
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { MeasureType } from '@/features/charts/types'
-import { useGetRequest } from '@/hooks/useGetRequest'
+import { setupServer } from 'msw/node'
 
-const route = '/MeasureType'
-export function useGetMeasureTypes() {
-  return useGetRequest<MeasureType[]>({ route })
-}
+// Starts with no handlers registered. Each test (or describe block) adds the
+// handlers it needs via `server.use(...)`, typically the orval-generated
+// `get<Resource>MockHandler(...)` factories from `src/api/**/*.msw.ts`,
+// optionally overridden with fixed data instead of their default faker
+// output. Lifecycle (listen/resetHandlers/close) is wired in jest.setup.ts.
+export const server = setupServer()

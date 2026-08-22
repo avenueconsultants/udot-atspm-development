@@ -34,7 +34,7 @@ const MenuItemsAdmin = () => {
     isLoading,
     refetch: refetchMenuItems,
   } = useGetMenuItems()
-  const menuItems = menuItemsData?.value
+  const menuItems = menuItemsData
 
   if (pageAccess.isLoading) {
     return

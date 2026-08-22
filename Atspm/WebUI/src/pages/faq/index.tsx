@@ -25,7 +25,7 @@ const FAQ = () => {
 
   return (
     <ResponsivePageLayout title="Frequently Asked Questions">
-      {faqQuery.data.value.map((faq: Faq) => (
+      {faqQuery.data.map((faq: Faq) => (
         <Accordion key={faq.id}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="body1" fontWeight="bold">

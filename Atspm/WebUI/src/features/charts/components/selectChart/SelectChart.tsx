@@ -95,7 +95,7 @@ const SelectChart = ({
 
   const chartDefaultsRaw =
     chartDefaultsData &&
-    chartDefaultsData.value.find((chart) => chart.chartType === chartType)
+    chartDefaultsData.find((chart) => chart.chartType === chartType)
       ?.measureOptions
 
   const chartDefaultsForUi: Default[] | undefined = useMemo(() => {
@@ -137,7 +137,7 @@ const SelectChart = ({
   const availableCharts = useMemo(() => {
     if (!measureTypesData || !location) return {}
 
-    const unsortedCharts = measureTypesData.value.reduce(
+    const unsortedCharts = measureTypesData.reduce(
       (acc, measureType) => {
         if (
           location?.charts?.includes(measureType.id) &&
