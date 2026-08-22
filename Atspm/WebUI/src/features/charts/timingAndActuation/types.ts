@@ -14,11 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  BaseChartData,
-  BaseChartOptions,
-  ChartType,
-} from '@/features/charts/common/types'
+import { TimingAndActuationsForPhaseResult } from '@/api/reports'
+import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
 import { EChartsOption } from 'echarts'
 
 export interface TimingAndActuationChartOptions extends BaseChartOptions {
@@ -75,27 +72,10 @@ export interface BasicDetectors {
   events: DetectorEvent[]
 }
 
-export interface AdvancedDetectors extends BasicDetectors {
-  isOffset: boolean
-}
+/** @deprecated advanceCountDetectors/advancePresenceDetectors are BasicDetectors[] now - the backend response never distinguished an "isOffset" advanced variant, and the transformer never read it. */
+export type AdvancedDetectors = BasicDetectors
 
-export interface RawTimingAndActuationData extends BaseChartData {
-  phaseNumber: number
-  isPhaseOverLap: boolean
-  phaseNumberSort: string
-  getPermissivePhase: boolean
-  pedestrianIntervals: PedestrianInterval[] | []
-  pedestrianEvents: BasicDetectors[] | []
-  stopBarDetectors: BasicDetectors[] | []
-  laneByLanesDetectors: BasicDetectors[] | []
-  advanceCountDetectors: AdvancedDetectors[] | []
-  advancePresenceDetectors: AdvancedDetectors[] | []
-  cycleAllEvents: Cycle[] | null
-  phaseCustomEvents: unknown
-  approachId: number
-  approachDescription: string
-  phaseType: string
-}
+export type RawTimingAndActuationData = TimingAndActuationsForPhaseResult
 
 export interface RawTimingAndActuationResponse {
   type: ChartType.TimingAndActuation
