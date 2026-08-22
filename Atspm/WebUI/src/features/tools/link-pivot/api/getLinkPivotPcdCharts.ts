@@ -14,12 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  mapStringBooleansToBoolean,
-  toolTypeApiMap,
-} from '@/features/charts/api/getTools'
+import { getLinkPivotPcdData } from '@/api/reports'
+import { mapStringBooleansToBoolean } from '@/features/charts/api/getTools'
 import { ToolOptions, ToolType } from '@/features/charts/common/types'
-import { reportsAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { useQuery } from 'react-query'
 import { RawLinkPivotPcdData, RawLinkPivotPcdResponse } from '../types'
@@ -39,13 +36,10 @@ export const getLinkPivotPcdCharts = async (
   type: ToolType.LpPcd,
   options: ToolOptions
 ): Promise<RawLinkPivotPcdResponse> => {
-  const endpoint = toolTypeApiMap[type]
-
   const transformedOptions = mapStringBooleansToBoolean(options)
-  const response: RawLinkPivotPcdData = await reportsAxios.post(
-    endpoint,
+  const response = (await getLinkPivotPcdData(
     transformedOptions
-  )
+  )) as unknown as RawLinkPivotPcdData
 
   return { type, data: response }
 }
