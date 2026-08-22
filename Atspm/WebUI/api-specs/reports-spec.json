@@ -3501,7 +3501,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WatchDogIssueTypeGroup"
+                  "$ref": "#/components/schemas/WatchDogDashboardGroup"
                 }
               }
             }
@@ -9613,6 +9613,50 @@
         "type": "integer",
         "format": "int32"
       },
+      "WatchDogControllerTypeGroup": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogModelOfWatchDogFirmwareWithIssueType"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WatchDogDashboardGroup": {
+        "type": "object",
+        "properties": {
+          "issueTypeGroup": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogIssueTypeGroup"
+            },
+            "nullable": true
+          },
+          "detectionTypeGroup": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogDetectionTypeGroup"
+            },
+            "nullable": true
+          },
+          "controllerTypeGroup": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogControllerTypeGroup"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WatchDogDashboardOptions": {
         "type": "object",
         "properties": {
@@ -9627,7 +9671,72 @@
         },
         "additionalProperties": false
       },
+      "WatchDogDetectionTypeGroup": {
+        "type": "object",
+        "properties": {
+          "detectionType": {
+            "$ref": "#/components/schemas/DetectionTypes"
+          },
+          "hardware": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogHardwareCount"
+            },
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WatchDogFirmwareCount": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "counts": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WatchDogFirmwareWithIssueType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueType": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogIssueTypeCount"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WatchDogHardwareCount": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "counts": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WatchDogIssueTypeCount": {
         "type": "object",
         "properties": {
           "name": {
@@ -9759,6 +9868,23 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/WatchDogFirmwareCount"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WatchDogModelOfWatchDogFirmwareWithIssueType": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "firmware": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WatchDogFirmwareWithIssueType"
             },
             "nullable": true
           }

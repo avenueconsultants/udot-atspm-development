@@ -17,35 +17,34 @@ jest.mock('@/components/AdminTable/DeleteModal', () => ({
   default: () => <div>Delete Modal</div>,
 }))
 
-jest.mock('@/features/watchdog/api/watchdogIgnoreEvents', () => ({
+jest.mock('@/api/config', () => ({
   __esModule: true,
-  useGetWatchdogIgnoreEvents: () => ({
-    data: {
-      value: [
-        {
-          id: 1,
-          locationId: 100,
-          locationIdentifier: '001',
-          start: '2026-03-01T00:00:00',
-          end: '2026-03-31T00:00:00',
-          issueType: 'RecordCount',
-          componentType: 'Location',
-          componentId: 100,
-          phase: 2,
-          created: '2026-03-01T00:00:00',
-          modified: '2026-03-02T00:00:00',
-          createdBy: 'tester',
-          modifiedBy: 'tester',
-        },
-      ],
-    },
+  ...jest.requireActual('@/api/config'),
+  useGetWatchDogIgnoreEvent: () => ({
+    data: [
+      {
+        id: 1,
+        locationId: 100,
+        locationIdentifier: '001',
+        start: '2026-03-01T00:00:00',
+        end: '2026-03-31T00:00:00',
+        issueType: 1,
+        componentType: 0,
+        componentId: 100,
+        phase: 2,
+        created: '2026-03-01T00:00:00',
+        modified: '2026-03-02T00:00:00',
+        createdBy: 'tester',
+        modifiedBy: 'tester',
+      },
+    ],
     isLoading: false,
     refetch: jest.fn(),
   }),
-  useEditWatchdogIgnoreEvents: () => ({
+  usePatchWatchDogIgnoreEventFromKey: () => ({
     mutateAsync: jest.fn(),
   }),
-  useDeleteWatchdogIgnoreEvents: () => ({
+  useDeleteWatchDogIgnoreEventFromKey: () => ({
     mutateAsync: jest.fn(),
   }),
 }))

@@ -14,15 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { DetectionTypeCount } from '@/features/watchdog/types'
+import { DetectionTypeGroup } from '@/api/config'
 import { EChartsOption } from 'echarts'
 
 const transformDetectionTypeCountData = (
-  data: DetectionTypeCount[]
+  data: DetectionTypeGroup[]
 ): EChartsOption => {
-  const total = data.reduce((sum, item) => sum + item.count, 0)
+  const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0)
   const seriesData = data.map((item) => ({
-    value: item.count,
+    value: item.count ?? 0,
     name: item.id,
   }))
 

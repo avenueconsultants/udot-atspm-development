@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { DeviceCount } from '@/features/watchdog/types'
+import { DeviceGroup } from '@/api/config'
 import { EChartsOption } from 'echarts'
 
-const transformDeviceCountData = (data: DeviceCount[]): EChartsOption => {
-  const total = data.reduce((sum, item) => sum + item.count, 0)
+const transformDeviceCountData = (data: DeviceGroup[]): EChartsOption => {
+  const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0)
 
   const seriesData = data.map((item) => ({
-    value: item.count,
+    value: item.count ?? 0,
     name: `${item.manufacturer}: \n${item.model} - ${item.firmware}`,
   }))
 

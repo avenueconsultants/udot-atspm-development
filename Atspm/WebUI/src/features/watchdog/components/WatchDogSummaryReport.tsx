@@ -1,8 +1,10 @@
+import {
+  useGetDeviceActiveDevicesCount,
+  useGetLocationDetectionTypeCount,
+} from '@/api/config'
+import { useGetWatchDogDashboardDashboardGroup } from '@/api/reports'
 import { StyledPaper } from '@/components/StyledPaper'
 import WatchdogChartsContainer from '@/features/charts/watchdogDashboard/components/WatchdogChartsContainer'
-import { useGetDetectionTypeCount } from '@/features/watchdog/api/GetDetectionTypeCount'
-import { useGetDeviceCount } from '@/features/watchdog/api/getDeviceCount'
-import { useGetWatchdogDashboardData } from '@/features/watchdog/api/getWatchdogDashboardData'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton } from '@mui/lab'
@@ -18,20 +20,16 @@ const WatchdogSummaryReport = () => {
   const [endDateTime, setEndDateTime] = useState(subDays(startOfTomorrow(), 1))
 
   const {
+    mutate: fetchDashboardData,
     data: dashboardData,
-    refetch: fetchDashboardData,
     isLoading,
     error,
-  } = useGetWatchdogDashboardData({
-    start: toUTCDateStamp(startDateTime),
-    end: toUTCDateStamp(endDateTime),
-    enabled: false,
-  })
+  } = useGetWatchDogDashboardDashboardGroup()
 
-  const { data: deviceCount } = useGetDeviceCount()
-  const { data: detectionTypeCount } = useGetDetectionTypeCount(
-    toUTCDateStamp(endDateTime)
-  )
+  const { data: deviceCount } = useGetDeviceActiveDevicesCount()
+  const { data: detectionTypeCount } = useGetLocationDetectionTypeCount({
+    date: toUTCDateStamp(endDateTime),
+  })
   const data = {
     ...dashboardData,
     deviceCount,
@@ -39,7 +37,12 @@ const WatchdogSummaryReport = () => {
   }
 
   const handleGenerateSummary = () => {
-    fetchDashboardData()
+    fetchDashboardData({
+      data: {
+        start: toUTCDateStamp(startDateTime),
+        end: toUTCDateStamp(endDateTime),
+      },
+    })
   }
 
   const handleStartDateTimeChange = (date: Date) => {

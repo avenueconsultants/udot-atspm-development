@@ -1,49 +1,52 @@
+import {
+  useDeleteWatchDogIgnoreEventFromKey,
+  usePatchWatchDogIgnoreEventFromKey,
+  useGetWatchDogIgnoreEvent,
+  WatchDogComponentTypes,
+  WatchDogIgnoreEvent,
+} from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
-import {
-  useDeleteWatchdogIgnoreEvents,
-  useEditWatchdogIgnoreEvents,
-  useGetWatchdogIgnoreEvents,
-} from '@/features/watchdog/api/watchdogIgnoreEvents'
 import { useNotificationStore } from '@/stores/notifications'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import { Box, Button, TextField } from '@mui/material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { type FormEvent, useEffect, useMemo, useState } from 'react'
 
-type ComponentType = 'Location' | 'Approach' | 'Detector' | null
-
-type WatchdogIgnoreEvent = {
-  id: number
-  locationId: number
-  locationIdentifier: string
-  start: string
-  end: string | null
-  issueType: string
-  componentType: ComponentType
-  componentId: number | null
-  phase: number | null
-  created?: string
-  modified?: string
-  createdBy?: string
-  modifiedBy?: string
-}
-
-function componentLabel(e: WatchdogIgnoreEvent) {
-  if (!e.componentType) return 'Location'
-  if (e.componentType === 'Location')
+function componentLabel(e: WatchDogIgnoreEvent) {
+  if (e.componentType == null) return 'Location'
+  if (e.componentType === WatchDogComponentTypes.NUMBER_0)
     return `Location (${e.componentId ?? '—'})`
-  if (e.componentType === 'Approach')
+  if (e.componentType === WatchDogComponentTypes.NUMBER_1)
     return `Approach (${e.componentId ?? '—'})`
   return `Detector (${e.componentId ?? '—'})`
 }
 
+const issueTypeLabels: Record<number, string> = {
+  1: 'Record Count',
+  2: 'Low Detector Hits',
+  3: 'Stuck Ped',
+  4: 'Force Off Threshold',
+  5: 'Max Out Threshold',
+  6: 'Unconfigured Approach',
+  7: 'Unconfigured Detector',
+  8: 'Missing Mainline Data',
+  9: 'Stuck Queue Detection',
+  10: 'Low Ramp Detector Hits',
+  11: 'Ramp Missed Detector Hits',
+}
+
+function issueTypeLabel(issueType: WatchDogIgnoreEvent['issueType']) {
+  if (issueType == null) return ''
+  return issueTypeLabels[issueType] ?? String(issueType)
+}
+
 type IgnoreEventEditorModalProps = {
   open: boolean
-  onSave: (row: WatchdogIgnoreEvent) => void | Promise<void>
+  onSave: (row: WatchDogIgnoreEvent) => void | Promise<void>
   onClose: () => void
-  data?: WatchdogIgnoreEvent | null
+  data?: WatchDogIgnoreEvent | null
 }
 
 function IgnoreEventEditorModal({
@@ -69,7 +72,7 @@ function IgnoreEventEditorModal({
     await onSave({
       ...data,
       start: toUTCDateStamp(startDate),
-      end: endDate ? toUTCDateStamp(endDate) : null,
+      end: endDate ? toUTCDateStamp(endDate) : undefined,
     })
     onClose()
   }
@@ -102,7 +105,7 @@ function IgnoreEventEditorModal({
         margin="dense"
         fullWidth
         label="Issue"
-        value={data?.issueType ?? ''}
+        value={issueTypeLabel(data?.issueType)}
         disabled
       />
       <TextField
@@ -149,12 +152,12 @@ function IgnoreEventEditorModal({
 export default function WatchdogIgnoredEvents() {
   const { addNotification } = useNotificationStore()
 
-  const { data, isLoading, refetch } = useGetWatchdogIgnoreEvents()
-  const { mutateAsync: editIgnore } = useEditWatchdogIgnoreEvents()
-  const { mutateAsync: deleteIgnore } = useDeleteWatchdogIgnoreEvents()
+  const { data, isLoading, refetch } = useGetWatchDogIgnoreEvent()
+  const { mutateAsync: editIgnore } = usePatchWatchDogIgnoreEventFromKey()
+  const { mutateAsync: deleteIgnore } = useDeleteWatchDogIgnoreEventFromKey()
 
   const rows = useMemo(() => {
-    const value = (data?.value ?? []) as WatchdogIgnoreEvent[]
+    const value = data ?? []
     return value.slice().sort((a, b) => {
       const ak = `${a.locationIdentifier}-${a.componentType ?? 'Global'}-${
         a.componentId ?? -1
@@ -164,13 +167,14 @@ export default function WatchdogIgnoredEvents() {
       }-${b.issueType}-${b.phase ?? -1}`
       return ak.localeCompare(bk)
     })
-  }, [data?.value])
+  }, [data])
 
   if (isLoading) return <Box height="500px">Loading…</Box>
 
   const tableData = rows.map((r) => ({
     ...r,
     component: componentLabel(r),
+    issueTypeDisplay: issueTypeLabel(r.issueType),
     phaseDisplay: r.phase ?? '—',
     endDisplay: r.end ?? '—',
   }))
@@ -178,17 +182,17 @@ export default function WatchdogIgnoredEvents() {
   const cells = [
     { key: 'locationIdentifier', label: 'Location' },
     { key: 'component', label: 'Component' },
-    { key: 'issueType', label: 'Issue' },
+    { key: 'issueTypeDisplay', label: 'Issue' },
     { key: 'key', label: 'Key' },
     { key: 'phaseDisplay', label: 'Phase' },
     { key: 'start', label: 'Start' },
     { key: 'endDisplay', label: 'End' },
   ]
 
-  const handleEditRow = async (updated: WatchdogIgnoreEvent) => {
+  const handleEditRow = async (updated: WatchDogIgnoreEvent) => {
     try {
       await editIgnore({
-        id: updated.id,
+        key: updated.id ?? 0,
         data: {
           locationId: updated.locationId,
           locationIdentifier: updated.locationIdentifier,
@@ -210,7 +214,7 @@ export default function WatchdogIgnoredEvents() {
 
   const handleDeleteById = async (id: string | number) => {
     try {
-      await deleteIgnore(Number(id))
+      await deleteIgnore({ key: Number(id) })
       addNotification({ title: 'Ignore Event Removed', type: 'success' })
       await refetch()
     } catch {

@@ -2200,15 +2200,31 @@ export const WatchDogComponentTypes = {
   NUMBER_2: 2,
 } as const;
 
-export interface WatchDogDashboardOptions {
-  start?: string;
-  end?: string;
-}
-
-export interface WatchDogFirmwareCount {
+export interface WatchDogIssueTypeCount {
   /** @nullable */
   name?: string | null;
   counts?: number;
+}
+
+export interface WatchDogFirmwareWithIssueType {
+  /** @nullable */
+  name?: string | null;
+  /** @nullable */
+  issueType?: WatchDogIssueTypeCount[] | null;
+}
+
+export interface WatchDogModelOfWatchDogFirmwareWithIssueType {
+  /** @nullable */
+  name?: string | null;
+  /** @nullable */
+  firmware?: WatchDogFirmwareWithIssueType[] | null;
+}
+
+export interface WatchDogControllerTypeGroup {
+  /** @nullable */
+  name?: string | null;
+  /** @nullable */
+  model?: WatchDogModelOfWatchDogFirmwareWithIssueType[] | null;
 }
 
 export type WatchDogIssueTypes = typeof WatchDogIssueTypes[keyof typeof WatchDogIssueTypes];
@@ -2227,6 +2243,12 @@ export const WatchDogIssueTypes = {
   NUMBER_10: 10,
   NUMBER_11: 11,
 } as const;
+
+export interface WatchDogFirmwareCount {
+  /** @nullable */
+  name?: string | null;
+  counts?: number;
+}
 
 export interface WatchDogModelOfWatchDogFirmwareCount {
   /** @nullable */
@@ -2248,6 +2270,34 @@ export interface WatchDogIssueTypeGroup {
   products?: WatchDogProductInfo[] | null;
   /** @nullable */
   name?: string | null;
+}
+
+export interface WatchDogHardwareCount {
+  /** @nullable */
+  name?: string | null;
+  counts?: number;
+}
+
+export interface WatchDogDetectionTypeGroup {
+  detectionType?: DetectionTypes;
+  /** @nullable */
+  hardware?: WatchDogHardwareCount[] | null;
+  /** @nullable */
+  name?: string | null;
+}
+
+export interface WatchDogDashboardGroup {
+  /** @nullable */
+  issueTypeGroup?: WatchDogIssueTypeGroup[] | null;
+  /** @nullable */
+  detectionTypeGroup?: WatchDogDetectionTypeGroup[] | null;
+  /** @nullable */
+  controllerTypeGroup?: WatchDogControllerTypeGroup[] | null;
+}
+
+export interface WatchDogDashboardOptions {
+  start?: string;
+  end?: string;
 }
 
 export interface WatchDogLogEventDTO {
