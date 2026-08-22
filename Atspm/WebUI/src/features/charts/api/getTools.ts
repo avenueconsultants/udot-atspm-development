@@ -14,14 +14,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { reportsAxios } from '@/lib/axios'
+import {
+  CycleEventsDto,
+  DataPointWithDetectorCheckBase,
+  getTimeSpaceDiagramAverageReportData,
+  getTimeSpaceDiagramReportData,
+  IndianaEvent,
+  TimeSpaceDetectorEventDto,
+  TimeSpaceDiagramAverageResult,
+  TimeSpaceDiagramResultForPhase,
+  TmcEventDto as GeneratedTmcEventDto,
+} from '@/api/reports'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { useQuery } from 'react-query'
 import { ToolOptions, ToolType } from '../common/types'
 import {
+  Cycle,
+  PedestrianInterval,
+} from '../timingAndActuation/types'
+import {
+  RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
+  RawTimeSpaceHistoricData,
+  TimeSpaceDetectorEvent,
+  TimeSpaceDetectorEventWithDistanceDTO,
   TimeSpaceResponseData,
+  TmcEventDto,
 } from '../timeSpaceDiagram/shared/types'
 
 export const toolTypeApiMap: Record<ToolType, string> = {
@@ -65,23 +84,197 @@ export const mapStringBooleansToBoolean = (obj: ToolOptions) => {
   }, {})
 }
 
+function toCycles(events: CycleEventsDto[] | null | undefined): Cycle[] {
+  return (events ?? []).map((e) => ({
+    start: e.start ?? '',
+    value: e.value ?? 0,
+  }))
+}
+
+function toPedestrianIntervals(
+  events: CycleEventsDto[] | null | undefined
+): PedestrianInterval[] {
+  return toCycles(events)
+}
+
+function toDetectorEvents(
+  events: DataPointWithDetectorCheckBase[] | null | undefined
+): TimeSpaceDetectorEvent[] {
+  return (events ?? []).map((e) => ({
+    initialX: e.initialX ?? '',
+    isDetectorOn: e.isDetectorOn,
+  }))
+}
+
+function toDetectorEventsWithDistance(
+  events: TimeSpaceDetectorEventDto[] | null | undefined
+): TimeSpaceDetectorEventWithDistanceDTO[] {
+  return (events ?? []).map((e) => ({
+    distanceToStopBar: e.distanceToStopBar ?? 0,
+    detectorOn: e.detectorOn ?? null,
+    detectorOff: e.detectorOff ?? null,
+  }))
+}
+
+function toTmcEvents(
+  events: GeneratedTmcEventDto[] | null | undefined,
+  isLeftTurnEvent: boolean
+): TmcEventDto[] {
+  return (events ?? []).map((e) => ({
+    start: e.start ?? '',
+    value: e.value ?? 0,
+    isRightTurnEvent: !isLeftTurnEvent,
+    isLeftTurnEvent,
+    laneType: '',
+    directionTypes: '',
+  }))
+}
+
+function toIndianaEvents(
+  events: IndianaEvent[] | null | undefined
+): RawTimeSpaceHistoricData['tspEvents'] {
+  return (events ?? []).map((e) => ({
+    locationIdentifier: e.locationIdentifier ?? '',
+    timestamp: e.timestamp ?? '',
+    eventCode: e.eventCode ?? 0,
+    eventParam: e.eventParam ?? 0,
+  }))
+}
+
+function toSrmEntityTracks(
+  tracks: TimeSpaceDiagramResultForPhase['srmEntityTracks']
+): RawTimeSpaceHistoricData['srmEntityTracks'] {
+  if (tracks == null) return null
+  return tracks.map((t) => ({
+    entityId: t.entityId ?? '',
+    points: (t.points ?? []).map((p) => ({
+      time: p.time ?? '',
+      distance: p.distance ?? 0,
+      timestampMs: p.timestampMs ?? 0,
+      intersectionId: p.intersectionId ?? undefined,
+    })),
+    startingIntersection: undefined,
+    headingDirection: undefined,
+  }))
+}
+
+function toRawTimeSpaceHistoricData(
+  r: TimeSpaceDiagramResultForPhase
+): RawTimeSpaceHistoricData {
+  return {
+    locationIdentifier: r.locationIdentifier ?? '',
+    locationDescription: r.locationDescription ?? '',
+    start: r.start ?? '',
+    end: r.end ?? '',
+    phaseNumber: r.phaseNumber ?? 0,
+    phaseNumberSort: '',
+    distanceToNextLocation: r.distanceToNextLocation ?? 0,
+    distanceToPreviousLocation: r.distanceToPreviousLocation ?? 0,
+    speed: r.speed ?? 0,
+    approachId: r.approachId ?? 0,
+    approachDescription: r.approachDescription ?? '',
+    phaseType: r.phaseType === 'Opposing' ? 'Opposing' : 'Primary',
+    calculatedDistanceToNext: 0,
+    calculatedDistanceToPrevious: 0,
+    isIgnoredLocation: false,
+    offsetLengthChangeEvents: null,
+    greenTimeEvents: toDetectorEvents(r.greenTimeEvents),
+    laneByLaneCountDetectors: toDetectorEventsWithDistance(
+      r.laneByLaneCountDetectors
+    ),
+    advanceCountDetectors: toDetectorEventsWithDistance(
+      r.advanceCountDetectors
+    ),
+    stopBarPresenceDetectors: toDetectorEventsWithDistance(
+      r.stopBarPresenceDetectors
+    ),
+    cycleAllEvents: r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
+    pedestrianIntervals: toPedestrianIntervals(r.pedestrianIntervals),
+    percentArrivalOnGreen: r.percentArrivalOnGreen ?? null,
+    tmcForPhase: {
+      leftTurnEvents: toTmcEvents(r.tmcForPhase?.leftTurnEvents, true),
+      rightTurnEvents: toTmcEvents(r.tmcForPhase?.rightTurnEvents, false),
+    },
+    order: r.order ?? 0,
+    cycleLength: r.cycleLength ?? null,
+    isPhaseOverLap: false,
+    tspNumberCheckins: 0,
+    tspNumberCheckouts: 0,
+    tspNumberEarlyGreens: 0,
+    tspNumberExtendedGreens: 0,
+    tspEvents: toIndianaEvents(r.tspEvents),
+    priorityAndPreemptionEvents: null,
+    srmEntityTracks: toSrmEntityTracks(r.srmEntityTracks),
+  }
+}
+
+function toRawTimeSpaceAverageData(
+  r: TimeSpaceDiagramAverageResult
+): RawTimeSpaceAverageData {
+  return {
+    locationIdentifier: r.locationIdentifier ?? '',
+    locationDescription: r.locationDescription ?? '',
+    start: r.start ?? '',
+    end: r.end ?? '',
+    phaseNumber: r.phaseNumber ?? 0,
+    phaseNumberSort: '',
+    distanceToNextLocation: r.distanceToNextLocation ?? 0,
+    distanceToPreviousLocation: r.distanceToPreviousLocation ?? 0,
+    speed: r.speed ?? 0,
+    approachId: r.approachId ?? 0,
+    approachDescription: r.approachDescription ?? '',
+    phaseType: r.phaseType === 'Opposing' ? 'Opposing' : 'Primary',
+    calculatedDistanceToNext: 0,
+    calculatedDistanceToPrevious: 0,
+    isIgnoredLocation: false,
+    offsetLengthChangeEvents: null,
+    order: r.order ?? 0,
+    offset: r.offset ?? null,
+    cycleLength: r.cycleLength ?? null,
+    programmedSplit: r.programmedSplit ?? 0,
+    coordinatedPhases: r.coordinatedPhases ?? false,
+    greenTimeEvents: toDetectorEvents(r.greenTimeEvents),
+    cycleAllEvents: r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
+  }
+}
+
 export const getTools = async (
   type: ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage,
   options: ToolOptions
 ): Promise<RawTimeSpaceDiagramResponse> => {
-  const endpoint = toolTypeApiMap[type]
-
   const transformedOptions = mapStringBooleansToBoolean(options)
+
+  const routeId =
+    transformedOptions.routeId != null
+      ? Number(transformedOptions.routeId)
+      : undefined
+
+  let response: TimeSpaceResponseData
 
   if (type === ToolType.TimeSpaceHistoric) {
     transformedOptions.start = dateToTimestamp(transformedOptions.start as Date)
     transformedOptions.end = dateToTimestamp(transformedOptions.end as Date)
-  }
 
-  const response = (await reportsAxios.post(
-    endpoint,
-    transformedOptions
-  )) as TimeSpaceResponseData
+    const results = await getTimeSpaceDiagramReportData({
+      ...transformedOptions,
+      routeId,
+    })
+    response = results.map((r) => ({
+      error: r.error ?? null,
+      result: r.result ? toRawTimeSpaceHistoricData(r.result) : null,
+      isSuccess: r.isSuccess ?? false,
+    }))
+  } else {
+    const results = await getTimeSpaceDiagramAverageReportData({
+      ...transformedOptions,
+      routeId,
+    })
+    response = results.map((r) => ({
+      error: r.error ?? null,
+      result: r.result ? toRawTimeSpaceAverageData(r.result) : null,
+      isSuccess: r.isSuccess ?? false,
+    }))
+  }
 
   return {
     type,

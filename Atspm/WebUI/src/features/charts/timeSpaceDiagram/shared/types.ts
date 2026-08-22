@@ -44,8 +44,8 @@ export interface TimeSpaceDetectorEvent {
 
 export interface TimeSpaceDetectorEventWithDistanceDTO {
   distanceToStopBar: number
-  detectorOn: Date
-  detectorOff: Date
+  detectorOn: string | null
+  detectorOff: string | null
 }
 
 export interface LocationWithSequence {
