@@ -178,22 +178,6 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
     right: 210,
   })
 
-  const dataZoom: EChartsOption['dataZoom'] = [
-    {
-      type: 'inside',
-      show: true,
-      filterMode: 'weakFilter',
-      minSpan: 0.2,
-    },
-    {
-      type: 'slider',
-      show: true,
-      filterMode: 'weakFilter',
-      minSpan: 0.2,
-      xAxisIndex: [0, 1],
-    },
-  ]
-
   const toolbox = createToolbox(
     {
       title: formatExportFileName(

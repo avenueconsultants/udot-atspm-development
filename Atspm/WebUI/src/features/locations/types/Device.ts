@@ -35,13 +35,3 @@ export type Product = {
   webPage: string
   notes: string
 }
-
-export enum DeviceType {
-  Unknown,
-  SignalController,
-  RampController,
-  AICamera,
-  FIRCamera,
-  LidarSensor,
-  WavetronixSpeed,
-}

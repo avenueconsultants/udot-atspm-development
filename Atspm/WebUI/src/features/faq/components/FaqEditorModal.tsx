@@ -45,7 +45,7 @@ const FaqEditorModal = ({ data: faq, isOpen, onClose, onSave }: ModalProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields, isSubmitted },
+    formState: { errors, isSubmitted },
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),

@@ -41,7 +41,7 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<RoleFormData>({
     defaultValues: {
       roleName: data?.role || '',

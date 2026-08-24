@@ -210,7 +210,6 @@ export default function EntityClusterGroup({
           entities={clearGuide}
           associatedEntityIds={associatedEntityIds}
           setAssociatedEntityIds={setAssociatedEntityIds}
-          setHoveredEntity={setHoveredEntity}
         />
       </Pane>
     </>

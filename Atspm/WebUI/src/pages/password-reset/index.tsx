@@ -16,7 +16,6 @@ const ChangePassword = () => {
   const [email, setEmail] = useState<string>('')
   const [invalidEmail, setInvalidEmail] = useState(false)
   const [showSnackbar, setShowSnackbar] = useState(false)
-  const [snackbarMessage, setSnackbarMessage] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const { mutate: resetPassword } = useGetAccountForgotPassword()
@@ -115,9 +114,7 @@ const ChangePassword = () => {
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >
-        <Alert onClose={handleSnackbarClose} severity="success">
-          {snackbarMessage}
-        </Alert>
+        <Alert onClose={handleSnackbarClose} severity="success"></Alert>
       </Snackbar>
     </Container>
   )

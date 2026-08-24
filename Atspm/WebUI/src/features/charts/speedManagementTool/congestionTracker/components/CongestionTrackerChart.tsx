@@ -1,4 +1,3 @@
-import { ChartType } from '@/features/charts/common/types'
 import { transformCongestionTrackerData } from '@/features/charts/speedManagementTool/congestionTracker/congestionTracker.transformer'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import type { ECharts, EChartsOption, SetOptionOpts } from 'echarts'
@@ -9,7 +8,6 @@ import { useEffect, useRef, useState } from 'react'
 export interface CongestionChartProps {
   id: string
   option: EChartsOption
-  chartType?: ChartType
   style?: CSSProperties
   settings?: SetOptionOpts
   loading?: boolean
@@ -20,7 +18,6 @@ export interface CongestionChartProps {
 export default function CongestionChart({
   id,
   option,
-  chartType,
   style,
   settings,
   loading,

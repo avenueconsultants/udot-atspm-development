@@ -140,7 +140,10 @@ function transformData(
           (product.model ?? []).reduce(
             (modelSum, model) =>
               modelSum +
-              (model.firmware ?? []).reduce((fwSum, fw) => fwSum + (fw.counts ?? 0), 0),
+              (model.firmware ?? []).reduce(
+                (fwSum, fw) => fwSum + (fw.counts ?? 0),
+                0
+              ),
             0
           ),
         0
@@ -158,7 +161,10 @@ function transformData(
         (product.model ?? []).reduce(
           (modelSum, model) =>
             modelSum +
-            (model.firmware ?? []).reduce((fwSum, fw) => fwSum + (fw.counts ?? 0), 0),
+            (model.firmware ?? []).reduce(
+              (fwSum, fw) => fwSum + (fw.counts ?? 0),
+              0
+            ),
           0
         ),
       0
@@ -175,12 +181,6 @@ function transformData(
         color: issueTypeColors[originalIndex % issueTypeColors.length],
       },
       children: (item.products ?? []).map((product) => {
-        const productCount = (product.model ?? []).reduce(
-          (sum, model) =>
-            sum + (model.firmware ?? []).reduce((fwSum, fw) => fwSum + (fw.counts ?? 0), 0),
-          0
-        )
-
         return {
           name: `${product.name}`,
           itemStyle: {
@@ -190,11 +190,6 @@ function transformData(
             ),
           },
           children: (product.model ?? []).map((model) => {
-            const modelCount = (model.firmware ?? []).reduce(
-              (sum, fw) => sum + (fw.counts ?? 0),
-              0
-            )
-
             return {
               name: `${model.name}`,
               itemStyle: {

@@ -13,7 +13,6 @@ interface ApproachSpeedChartOptionsProps {
 export const ApproachSpeedChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: ApproachSpeedChartOptionsProps) => {
   const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 

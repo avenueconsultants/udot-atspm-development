@@ -206,22 +206,6 @@ const ActiveTransportation = () => {
     setValue('locations', newLocations)
   }
 
-  const handleUpdateLocation = (updatedLocation: Location) => {
-    const updatedLocations = locations.map((loc) =>
-      loc.id === updatedLocation.id ? updatedLocation : loc
-    )
-    setValue('locations', updatedLocations)
-
-    if (errorState.type === 'MISSING_PHASES') {
-      const newIDs = new Set(errorState.locationIDs)
-      if (newIDs.size === 0) {
-        setErrorState({ type: 'NONE' })
-      } else {
-        setErrorState({ type: 'MISSING_PHASES', locationIDs: newIDs })
-      }
-    }
-  }
-
   const handleGenerateReport = async () => {
     const formData = form.getValues()
     if (formData.locations.length === 0) {
@@ -318,7 +302,6 @@ const ActiveTransportation = () => {
         setPhase={(phase) => setValue('phase', phase)}
         onLocationDelete={handleLocationDelete}
         onReorderLocations={handleReorderLocations}
-        onUpdateLocation={handleUpdateLocation}
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>

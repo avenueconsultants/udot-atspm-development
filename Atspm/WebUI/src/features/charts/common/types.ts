@@ -81,15 +81,9 @@ import {
   RawYellowAndRedActuationsResponse,
   YellowAndRedActuationsChartOptions,
 } from '@/features/charts/yellowAndRedActuations/types'
-import {
-  LinkPivotOptions,
-  RawLinkPivotPcdResponse,
-} from '@/features/tools/link-pivot/types'
+import { LinkPivotOptions } from '@/features/tools/link-pivot/types'
 import { RawRampMeteringResponse } from '../rampMetering/types'
-import {
-  RawTimeSpaceDiagramResponse,
-  TimeSpaceOptions,
-} from '../timeSpaceDiagram/shared/types'
+import { TimeSpaceOptions } from '../timeSpaceDiagram/shared/types'
 
 export interface BaseChartOptions {
   locationIdentifier: string
@@ -155,10 +149,6 @@ export type RawChartResponse =
   | RawYellowAndRedActuationsResponse
   | RawRampMeteringResponse
 
-export type RawToolResponse =
-  | RawTimeSpaceDiagramResponse
-  | RawLinkPivotPcdResponse
-
 export type ChartOptions =
   | BaseChartOptions
   | ApproachDelayChartOptions
@@ -180,26 +170,6 @@ export type ChartOptions =
   | YellowAndRedActuationsChartOptions
 
 export type ToolOptions = TimeSpaceOptions | LinkPivotOptions
-
-export type ChartOptionType =
-  | 'ApproachDelay'
-  | 'ApproachSpeed'
-  | 'ApproachVolume'
-  | 'ArrivalsOnRed'
-  | 'GreenTimeUtilization'
-  | 'LeftTurnGapAnalysis'
-  | 'PedestrianDelay'
-  | 'PreemptionDetails'
-  | 'PrioritySummary'
-  | 'PurdueCoordinationDiagram'
-  | 'PurduePhaseTermination'
-  | 'PurdueSplitFailure'
-  | 'SplitMonitor'
-  | 'TimingAndActuation'
-  | 'TurningMovementCounts'
-  | 'WaitTime'
-  | 'YellowAndRedActuations'
-  | 'RampMetering'
 
 export enum ChartType {
   ApproachDelay = 'ApproachDelay',

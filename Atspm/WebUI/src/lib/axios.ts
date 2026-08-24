@@ -142,29 +142,3 @@ export const dataRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
 export const speedRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
   return speedAxios.request<unknown, T>(config)
 }
-
-function stripZFromDates(data: any): void {
-  if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-      if (typeof data[i] === 'object' && data[i] !== null) {
-        stripZFromDates(data[i])
-      } else if (typeof data[i] === 'string' && isIsoTimestamp(data[i])) {
-        data[i] = data[i].replace(/Z$/, '')
-      }
-    }
-  } else if (data && typeof data === 'object') {
-    for (const key of Object.keys(data)) {
-      const value = data[key]
-      if (value !== null && typeof value === 'object') {
-        stripZFromDates(value)
-      } else if (typeof value === 'string' && isIsoTimestamp(value)) {
-        data[key] = value.replace(/Z$/, '')
-      }
-    }
-  }
-}
-
-function isIsoTimestamp(str: string): boolean {
-  // matches e.g. 2025-02-18T23:59:59, optionally followed by .digits, and optional Z
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?$/.test(str)
-}

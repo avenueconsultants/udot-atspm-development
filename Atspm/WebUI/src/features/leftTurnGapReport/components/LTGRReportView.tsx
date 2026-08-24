@@ -357,9 +357,6 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       yPos += 10
 
       doc.text('Cycles With Pedestrian Calls: ', 15, yPos + 10)
-      const pedCallsTextWidth = doc.getTextWidth(
-        'Cycles With Pedestrian Calls: '
-      )
       doc.setFont('helvetica', 'bold')
       doc.text(
         `${reportData.cyclesWithPedCallNum || ' '} (${
@@ -393,9 +390,6 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       doc.setFontSize(8)
 
       doc.text('Left Turn Movement Volume: ', 105, yPos - 20)
-      const leftTurnVolumeTextWidth = doc.getTextWidth(
-        'Left Turn Movement Volume: '
-      )
       doc.setFont('helvetica', 'bold')
       doc.text(
         `${

@@ -376,60 +376,6 @@ export const ReportDisplayComponent = (props: Props) => {
     fetchReportContent()
   }, [data, generateReportContent, options, routeSpeeds])
 
-  const handleDownload = useReactToPrint({
-    onPrintError: (error) => console.log(error),
-    contentRef: contentRef,
-    print: async (printIframe) => {
-      const document = printIframe.contentDocument
-      if (document) {
-        const { default: html2pdf } = await import('html2pdf.js')
-        const html = document.getElementsByClassName('test')[0]
-        const exporter = new html2pdf(html)
-        await exporter.getPdf(true)
-      }
-    },
-    pageStyle: `
-    @page {
-      size: A4;
-      @top-center {
-        content: "";
-      }
-      @bottom-left {
-        content: counter(page);
-        font-size: 10pt;
-      }
-      @bottom-center {
-        content: "CONFIDENTIAL: RECORDS PRODUCED WITH THIS REQUEST MAY BE PROTECTED UNDER 23 USC 407.";
-        font-size: 8pt;
-        font-weight: bold;
-      }
-    }
-    @media print {
-      body {
-        -webkit-print-color-adjust: exact;
-      }
-      .MuiBox-root {
-        width: 100%;
-      }
-      .MuiTypography-root {
-        font-size: 12pt;
-      }
-      .MuiTable-root {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .MuiTableCell-root {
-      }
-      .page-break {
-        page-break-before: always;
-      }
-      // .avoid-page-break {
-      //   break-inside: avoid;
-      // }
-    }
-  `,
-  })
-
   const generateTable = (report: ExportableReportResult, index: number) => {
     const { headers, rows, boldedColumn } = getTableData(report)
     return (

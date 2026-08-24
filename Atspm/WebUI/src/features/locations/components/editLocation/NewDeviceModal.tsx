@@ -196,7 +196,7 @@ const DeviceModal = ({
             refetchDevices()
             onClose()
           },
-          onError: (error) => {
+          onError: () => {
             addNotification({ title: 'Device Update Failed', type: 'error' })
           },
         }
@@ -209,7 +209,7 @@ const DeviceModal = ({
             refetchDevices()
             onClose()
           },
-          onError: (error) => {
+          onError: () => {
             addNotification({ title: 'Device Creation Failed', type: 'error' })
           },
         }

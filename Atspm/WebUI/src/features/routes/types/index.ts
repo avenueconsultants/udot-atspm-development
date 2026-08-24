@@ -14,17 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { Approach, LocationExpanded } from '@/features/locations/types'
-
-export interface RouteApproaches {
-  id: number
-  direction: string
-  phase: string
-  overlap: boolean
-  primary: boolean
-  opposing: boolean
-  locationIdentifier: string
-}
+import { Approach } from '@/features/locations/types'
 
 export interface RouteLocation {
   approaches: Approach[]
@@ -74,10 +64,4 @@ export interface RouteDistance {
   id: number
   locationIdentifierA: string
   locationIdentifierB: string
-}
-
-export interface RouteWithExpandedLocations {
-  id: number
-  name: string
-  routeLocations: LocationExpanded[]
 }

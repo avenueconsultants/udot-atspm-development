@@ -17,22 +17,18 @@
 import {
   CycleEventsDto,
   DataPointWithDetectorCheckBase,
+  TmcEventDto as GeneratedTmcEventDto,
   getTimeSpaceDiagramAverageReportData,
   getTimeSpaceDiagramReportData,
   IndianaEvent,
   TimeSpaceDetectorEventDto,
   TimeSpaceDiagramAverageResult,
   TimeSpaceDiagramResultForPhase,
-  TmcEventDto as GeneratedTmcEventDto,
 } from '@/api/reports'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { useQuery } from '@tanstack/react-query'
 import { ToolOptions, ToolType } from '../common/types'
-import {
-  Cycle,
-  PedestrianInterval,
-} from '../timingAndActuation/types'
 import {
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
@@ -42,14 +38,7 @@ import {
   TimeSpaceResponseData,
   TmcEventDto,
 } from '../timeSpaceDiagram/shared/types'
-
-export const toolTypeApiMap: Record<ToolType, string> = {
-  [ToolType.TimeSpaceHistoric]: '/api/v1/TimeSpaceDiagram/GetReportData',
-  [ToolType.TimeSpaceAverage]: '/api/v1/TimeSpaceDiagramAverage/GetReportData',
-  [ToolType.LinkPivot]: '/api/v1/LinkPivot/GetReportData',
-  [ToolType.LpPcd]: '/api/v1/LinkPivot/getPcdData',
-  [ToolType.LpTsd]: '/api/v1/LinkPivot/getLinkPivotForTsd',
-}
+import { Cycle, PedestrianInterval } from '../timingAndActuation/types'
 
 type QueryFnType = typeof getTools
 
@@ -188,7 +177,8 @@ function toRawTimeSpaceHistoricData(
     stopBarPresenceDetectors: toDetectorEventsWithDistance(
       r.stopBarPresenceDetectors
     ),
-    cycleAllEvents: r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
+    cycleAllEvents:
+      r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
     pedestrianIntervals: toPedestrianIntervals(r.pedestrianIntervals),
     percentArrivalOnGreen: r.percentArrivalOnGreen ?? null,
     tmcForPhase: {
@@ -234,7 +224,8 @@ function toRawTimeSpaceAverageData(
     programmedSplit: r.programmedSplit ?? 0,
     coordinatedPhases: r.coordinatedPhases ?? false,
     greenTimeEvents: toDetectorEvents(r.greenTimeEvents),
-    cycleAllEvents: r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
+    cycleAllEvents:
+      r.cycleAllEvents != null ? toCycles(r.cycleAllEvents) : null,
   }
 }
 

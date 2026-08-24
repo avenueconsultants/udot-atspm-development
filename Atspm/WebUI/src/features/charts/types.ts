@@ -104,13 +104,6 @@ export interface TransformedTimingAndActuationResponse {
   }
 }
 
-export interface TransformedRampMeteringResponse {
-  type: ChartType
-  data: {
-    charts: StandardChart[]
-  }
-}
-
 export type TransformedChartResponse =
   | TransformedDefaultResponse
   | TransformedApproachVolumeResponse
@@ -134,12 +127,4 @@ export type Default = {
   id: number
   option: string
   value: string | number | boolean | number[]
-}
-export interface MeasureType {
-  id: number
-  name: string
-  abbreviation: string
-  showOnWebsite: boolean
-  showOnAggregationSite: boolean
-  displayOrder: number
 }

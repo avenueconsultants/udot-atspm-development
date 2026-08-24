@@ -728,12 +728,6 @@ export function formatDataPointForStepView(
   return pairs
 }
 
-export interface ChildObject {
-  type: string
-  shape: { [key: string]: any } // Define shape properties as needed
-  style: { [key: string]: any } // Define style properties as needed
-}
-
 export function createPolyLines(
   dataForView: any[],
   api: CustomSeriesRenderItemAPI,

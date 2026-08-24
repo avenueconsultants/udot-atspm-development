@@ -16,7 +16,6 @@
 // #endregion
 import { TimingAndActuationsForPhaseResult } from '@/api/reports'
 import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
-import { EChartsOption } from 'echarts'
 
 export interface TimingAndActuationChartOptions extends BaseChartOptions {
   showPedestrianIntervals: boolean
@@ -48,10 +47,6 @@ export interface TimingAndActuationChartOptionsDefaults {
   globalEventParamsList: { id: number; value: string; option: string }
 }
 
-export interface TimingAndActuationEChartsOption extends EChartsOption {
-  amountOfSegments: number
-}
-
 export interface DetectorEvent {
   detectorOn: string
   detectorOff: string
@@ -71,9 +66,6 @@ export interface BasicDetectors {
   name: string
   events: DetectorEvent[]
 }
-
-/** @deprecated advanceCountDetectors/advancePresenceDetectors are BasicDetectors[] now - the backend response never distinguished an "isOffset" advanced variant, and the transformer never read it. */
-export type AdvancedDetectors = BasicDetectors
 
 export type RawTimingAndActuationData = TimingAndActuationsForPhaseResult
 

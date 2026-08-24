@@ -1,6 +1,6 @@
+import UserModal from '@/features/identity/components/users/UserModal'
 import { Location } from '@/features/locations/types'
 import RoleModal from '@/features/roles/components/RoleModal'
-import UserModal from '@/features/identity/components/users/UserModal'
 import AddIcon from '@mui/icons-material/Add'
 import CancelIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
@@ -30,7 +30,6 @@ import {
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
-  GridRowsProp,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarExport,
@@ -77,14 +76,7 @@ interface GenericChartProps {
   hasEditPrivileges: boolean
   hasDeletePrivileges: boolean
 }
-interface EditToolbarProps {
-  baseRowType: string
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void
-  setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-  ) => void
-}
-function EditToolbar(props: EditToolbarProps) {
+function EditToolbar() {
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
@@ -353,7 +345,6 @@ function GenericAdminChart({
           processRowUpdate={processRowUpdate}
           autoHeight
           slots={{ toolbar: EditToolbar }}
-          slotProps={{ toolbar: { baseRowType, setRows, setRowModesModel } }}
           pageSizeOptions={[{ value: 100, label: '100' }]}
           sx={{
             [`& .${gridClasses.cell}`]: {

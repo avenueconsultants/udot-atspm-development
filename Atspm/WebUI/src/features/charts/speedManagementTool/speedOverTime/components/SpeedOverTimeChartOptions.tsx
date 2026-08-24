@@ -38,12 +38,12 @@ const SpeedOverTimeChartOptions = ({
       : null
   )
 
-  const [selectedSource, setSelectedSource] = useState<DataSource>(sourceId)
+  const [selectedSource] = useState<DataSource>(sourceId)
   const [selectedTimeOptions, setSelectedTimeOptions] = useState<TimeOptions>(
     TimeOptions.Hour
   )
-  const [startTime, setStartTime] = useState<Date | null>(new Date())
-  const [endTime, setEndTime] = useState<Date | null>(new Date())
+  const [startTime] = useState<Date | null>(new Date())
+  const [endTime] = useState<Date | null>(new Date())
 
   useEffect(() => {
     if (startDate && endDate && startTime && endTime) {
@@ -92,32 +92,8 @@ const SpeedOverTimeChartOptions = ({
     }
   }
 
-  const handleSourceChange = (event: SelectChangeEvent<number>) => {
-    setSelectedSource(event.target.value as DataSource)
-  }
-
   const handleTimeOptionsChange = (event: SelectChangeEvent<TimeOptions>) => {
     setSelectedTimeOptions(event.target.value as TimeOptions)
-  }
-
-  const handleStartTimeChange = (time: Date | null) => {
-    if (time && isValid(time)) {
-      setStartTime(time)
-      // You can add error handling for time if needed
-    } else {
-      setStartTime(null)
-      // Handle time errors if necessary
-    }
-  }
-
-  const handleEndTimeChange = (time: Date | null) => {
-    if (time && isValid(time)) {
-      setEndTime(time)
-      // You can add error handling for time if needed
-    } else {
-      setEndTime(null)
-      // Handle time errors if necessary
-    }
   }
 
   return (
