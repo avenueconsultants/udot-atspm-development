@@ -19,7 +19,7 @@ const ApproachOptions = () => {
   } = useLocationWizardStore()
   const { approaches, location, addApproach } = useLocationStore()
 
-  const { mutateAsync, isLoading } = useGetLocationSyncLocationFromKey()
+  const { mutateAsync, isPending: isLoading } = useGetLocationSyncLocationFromKey()
 
   const [categories, setCategories] = useState({
     foundPhases: [] as string[],

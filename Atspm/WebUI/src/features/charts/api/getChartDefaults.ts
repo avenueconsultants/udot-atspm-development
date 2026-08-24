@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { getMeasureType } from '@/api/config'
 import { ChartType } from '@/features/charts/common/types'
 import { ChartDefaults, Default } from '@/features/charts/types'
-import { configAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 const normalizeString = (str: string) => str.replace(/\s+/g, '').toLowerCase()
 
@@ -39,9 +39,9 @@ const determineChartType = (chartName: string): ChartType | 'Unknown' => {
 }
 
 export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
-  const response = (await configAxios.get(
-    '/MeasureType?expand=measureOptions'
-  )) as unknown as ChartDefaults[]
+  const response = (await getMeasureType({
+    expand: 'measureOptions',
+  })) as unknown as ChartDefaults[]
 
   return response.map((chart: ChartDefaults) => ({
     ...chart,

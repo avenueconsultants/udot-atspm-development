@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Area,
@@ -81,7 +86,7 @@ export const getGetAreaLocationsFromKeyQueryKey = (key: number,
 
 
 export const getGetAreaLocationsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError = void>(key: number,
-    params?: GetAreaLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>, }
+    params?: GetAreaLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -96,26 +101,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAreaLocationsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getAreaLocationsFromKey>>>
 export type GetAreaLocationsFromKeyQueryError = void
 
 
+export function useGetAreaLocationsFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetAreaLocationsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaLocationsFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaLocationsFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
 
 export function useGetAreaLocationsFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError = void>(
  key: number,
-    params?: GetAreaLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAreaLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAreaLocationsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -154,7 +186,7 @@ export const getGetAreaLocationsCountFromKeyQueryKey = (key: number,
 
 
 export const getGetAreaLocationsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError = void>(key: number,
-    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>, }
+    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -169,26 +201,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAreaLocationsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>>
 export type GetAreaLocationsCountFromKeyQueryError = void
 
 
+export function useGetAreaLocationsCountFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetAreaLocationsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaLocationsCountFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaLocationsCountFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
 
 export function useGetAreaLocationsCountFromKey<TData = Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError = void>(
  key: number,
-    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAreaLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAreaLocationsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -221,7 +280,7 @@ export const getGetAreaQueryKey = (params?: GetAreaParams,) => {
     }
 
 
-export const getGetAreaQueryOptions = <TData = Awaited<ReturnType<typeof getArea>>, TError = void>(params?: GetAreaParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>, }
+export const getGetAreaQueryOptions = <TData = Awaited<ReturnType<typeof getArea>>, TError = void>(params?: GetAreaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -236,22 +295,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAreaQueryResult = NonNullable<Awaited<ReturnType<typeof getArea>>>
 export type GetAreaQueryError = void
 
 
+export function useGetArea<TData = Awaited<ReturnType<typeof getArea>>, TError = void>(
+ params: undefined |  GetAreaParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getArea>>,
+          TError,
+          Awaited<ReturnType<typeof getArea>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetArea<TData = Awaited<ReturnType<typeof getArea>>, TError = void>(
+ params?: GetAreaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getArea>>,
+          TError,
+          Awaited<ReturnType<typeof getArea>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetArea<TData = Awaited<ReturnType<typeof getArea>>, TError = void>(
+ params?: GetAreaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetArea<TData = Awaited<ReturnType<typeof getArea>>, TError = void>(
- params?: GetAreaParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetAreaParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArea>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAreaQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -313,13 +396,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostArea = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postArea>>, TError,{data?: Area;params?: PostAreaParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postArea>>,
         TError,
         {data?: Area;params?: PostAreaParams},
         TContext
       > => {
-      return useMutation(getPostAreaMutationOptions(options));
+      return useMutation(getPostAreaMutationOptions(options), queryClient);
     }
     export const getAreaCount = (
     params?: GetAreaCountParams,
@@ -344,7 +427,7 @@ export const getGetAreaCountQueryKey = (params?: GetAreaCountParams,) => {
     }
 
 
-export const getGetAreaCountQueryOptions = <TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(params?: GetAreaCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>, }
+export const getGetAreaCountQueryOptions = <TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(params?: GetAreaCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -359,22 +442,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAreaCountQueryResult = NonNullable<Awaited<ReturnType<typeof getAreaCount>>>
 export type GetAreaCountQueryError = void
 
 
+export function useGetAreaCount<TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(
+ params: undefined |  GetAreaCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaCount>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaCount<TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(
+ params?: GetAreaCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaCount>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaCount<TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(
+ params?: GetAreaCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetAreaCount<TData = Awaited<ReturnType<typeof getAreaCount>>, TError = void>(
- params?: GetAreaCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetAreaCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAreaCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -410,7 +517,7 @@ export const getGetAreaFromKeyQueryKey = (key: number,
 
 
 export const getGetAreaFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getAreaFromKey>>, TError = void>(key: number,
-    params?: GetAreaFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>, }
+    params?: GetAreaFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -425,23 +532,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAreaFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getAreaFromKey>>>
 export type GetAreaFromKeyQueryError = void
 
 
+export function useGetAreaFromKey<TData = Awaited<ReturnType<typeof getAreaFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetAreaFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaFromKey<TData = Awaited<ReturnType<typeof getAreaFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAreaFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getAreaFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAreaFromKey<TData = Awaited<ReturnType<typeof getAreaFromKey>>, TError = void>(
+ key: number,
+    params?: GetAreaFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetAreaFromKey<TData = Awaited<ReturnType<typeof getAreaFromKey>>, TError = void>(
  key: number,
-    params?: GetAreaFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAreaFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAreaFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAreaFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -504,13 +638,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutAreaFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putAreaFromKey>>, TError,{key: number;data?: Area;params?: PutAreaFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putAreaFromKey>>,
         TError,
         {key: number;data?: Area;params?: PutAreaFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutAreaFromKeyMutationOptions(options));
+      return useMutation(getPutAreaFromKeyMutationOptions(options), queryClient);
     }
     export const patchAreaFromKey = (
     key: number,
@@ -565,13 +699,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchAreaFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchAreaFromKey>>, TError,{key: number;data?: Area;params?: PatchAreaFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchAreaFromKey>>,
         TError,
         {key: number;data?: Area;params?: PatchAreaFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchAreaFromKeyMutationOptions(options));
+      return useMutation(getPatchAreaFromKeyMutationOptions(options), queryClient);
     }
     export const deleteAreaFromKey = (
     key: number,
@@ -621,11 +755,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteAreaFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAreaFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteAreaFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteAreaFromKeyMutationOptions(options));
+      return useMutation(getDeleteAreaFromKeyMutationOptions(options), queryClient);
     }

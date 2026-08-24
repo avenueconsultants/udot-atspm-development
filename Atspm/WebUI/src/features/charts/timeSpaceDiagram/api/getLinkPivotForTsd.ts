@@ -19,7 +19,7 @@ import { toRawLinkPivotData } from '@/features/tools/link-pivot/api/getLinkPivot
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { mapStringBooleansToBoolean } from '../../api/getTools'
 import { ToolOptions, ToolType } from '../../common/types'
 

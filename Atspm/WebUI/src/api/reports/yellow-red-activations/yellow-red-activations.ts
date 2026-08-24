@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -70,7 +75,7 @@ export const getGetYellowRedActivationsTestDataQueryKey = () => {
     }
 
 
-export const getGetYellowRedActivationsTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>, }
+export const getGetYellowRedActivationsTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetYellowRedActivationsTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>>
 export type GetYellowRedActivationsTestDataQueryError = ProblemDetails
 
 
+export function useGetYellowRedActivationsTestData<TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getYellowRedActivationsTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getYellowRedActivationsTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetYellowRedActivationsTestData<TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getYellowRedActivationsTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getYellowRedActivationsTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetYellowRedActivationsTestData<TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetYellowRedActivationsTestData<TData = Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getYellowRedActivationsTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetYellowRedActivationsTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetYellowRedActivationsReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getYellowRedActivationsReportData>>, TError,{data?: YellowRedActivationsOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getYellowRedActivationsReportData>>,
         TError,
         {data?: YellowRedActivationsOptions},
         TContext
       > => {
-      return useMutation(getGetYellowRedActivationsReportDataMutationOptions(options));
+      return useMutation(getGetYellowRedActivationsReportDataMutationOptions(options), queryClient);
     }

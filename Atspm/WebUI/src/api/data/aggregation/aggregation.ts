@@ -7,13 +7,18 @@
  */
 import {
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   CompressedDataBase,
@@ -71,7 +76,7 @@ export const getGetAggregationDataTypesQueryKey = () => {
     }
 
 
-export const getGetAggregationDataTypesQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>, }
+export const getGetAggregationDataTypesQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -86,25 +91,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationDataTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationDataTypes>>>
 export type GetAggregationDataTypesQueryError = ProblemDetails
 
 
+export function useGetAggregationDataTypes<TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataTypes<TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataTypes<TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the available derived data types defined in the system.
  */
 
 export function useGetAggregationDataTypes<TData = Awaited<ReturnType<typeof getAggregationDataTypes>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationDataTypesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -161,7 +190,7 @@ export const getGetAggregationStreamDataFromLocationIdentifierQueryKey = (locati
 
 
 export const getGetAggregationStreamDataFromLocationIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(locationIdentifier: string,
-    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>, }
+    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -176,26 +205,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationStreamDataFromLocationIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>>
 export type GetAggregationStreamDataFromLocationIdentifierQueryError = ProblemDetails
 
 
+export function useGetAggregationStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params: undefined |  GetAggregationStreamDataFromLocationIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location within a given date range.
  */
 
 export function useGetAggregationStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
  locationIdentifier: string,
-    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAggregationStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationStreamDataFromLocationIdentifierQueryOptions(locationIdentifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -248,7 +304,7 @@ export const getGetAggregationDataFromLocationIdentifierQueryKey = (locationIden
 
 
 export const getGetAggregationDataFromLocationIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError = ProblemDetails>(locationIdentifier: string,
-    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>, }
+    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -263,26 +319,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationDataFromLocationIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>>
 export type GetAggregationDataFromLocationIdentifierQueryError = ProblemDetails
 
 
+export function useGetAggregationDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params: undefined |  GetAggregationDataFromLocationIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location within a given date range.
  */
 
 export function useGetAggregationDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError = ProblemDetails>(
  locationIdentifier: string,
-    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAggregationDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationDataFromLocationIdentifierQueryOptions(locationIdentifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -337,7 +420,7 @@ export const getGetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryKe
 
 export const getGetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -352,13 +435,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>>
 export type GetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetAggregationStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params: undefined |  GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location and data type within a given date range.
  */
@@ -366,13 +479,13 @@ export type GetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryError 
 export function useGetAggregationStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAggregationStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationStreamDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -428,7 +541,7 @@ export const getGetAggregationDataFromLocationIdentifierAndDataTypeQueryKey = (l
 
 export const getGetAggregationDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -443,13 +556,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>>
 export type GetAggregationDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetAggregationDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params: undefined |  GetAggregationDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location and data type within a given date range.
  */
@@ -457,13 +600,13 @@ export type GetAggregationDataFromLocationIdentifierAndDataTypeQueryError = Prob
 export function useGetAggregationDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAggregationDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -510,7 +653,7 @@ export const getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeQuery
 
 export const getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -525,13 +668,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>>
 export type GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetAggregationDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params: undefined |  GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAggregationDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
+    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the distinct days that contain data for a specific location and data type
 within the given date range.
@@ -540,13 +713,13 @@ within the given date range.
 export function useGetAggregationDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'AggregationApproachBase' | 'ApproachPcdAggregation' | 'ApproachSpeedAggregation' | 'ApproachSplitFailAggregation' | 'ApproachYellowRedActivationAggregation' | 'DetectorEventCountAggregation' | 'PhaseCycleAggregation' | 'PhaseLeftTurnGapAggregation' | 'PhasePedAggregation' | 'PhaseSplitMonitorAggregation' | 'PhaseTerminationAggregation' | 'PreemptionAggregation' | 'PriorityAggregation' | 'SignalEventCountAggregation',
-    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetAggregationDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAggregationDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAggregationDaysWithDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }

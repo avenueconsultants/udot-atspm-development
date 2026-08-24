@@ -18,7 +18,7 @@ import { LinkPivotAdjustment, LinkPivotApproachLink, LinkPivotResult, getLinkPiv
 import { mapStringBooleansToBoolean } from '@/features/charts/api/getTools'
 import { ToolOptions, ToolType } from '@/features/charts/common/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { AdjustmentDto, ApproachLinksDto, RawLinkPivotData } from '../types'
 
 type QueryFnType = typeof getLinkPivotAdjustment

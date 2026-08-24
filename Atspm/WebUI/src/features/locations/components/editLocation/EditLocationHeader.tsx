@@ -28,7 +28,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 const modalStyle = {
   position: 'absolute' as const,

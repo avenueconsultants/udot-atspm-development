@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Faq,
@@ -72,7 +77,7 @@ export const getGetFaqQueryKey = (params?: GetFaqParams,) => {
     }
 
 
-export const getGetFaqQueryOptions = <TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(params?: GetFaqParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>, }
+export const getGetFaqQueryOptions = <TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(params?: GetFaqParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -87,22 +92,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetFaqQueryResult = NonNullable<Awaited<ReturnType<typeof getFaq>>>
 export type GetFaqQueryError = void
 
 
+export function useGetFaq<TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(
+ params: undefined |  GetFaqParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaq>>,
+          TError,
+          Awaited<ReturnType<typeof getFaq>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaq<TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(
+ params?: GetFaqParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaq>>,
+          TError,
+          Awaited<ReturnType<typeof getFaq>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaq<TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(
+ params?: GetFaqParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetFaq<TData = Awaited<ReturnType<typeof getFaq>>, TError = void>(
- params?: GetFaqParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetFaqParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaq>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetFaqQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -164,13 +193,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostFaq = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postFaq>>, TError,{data?: Faq;params?: PostFaqParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postFaq>>,
         TError,
         {data?: Faq;params?: PostFaqParams},
         TContext
       > => {
-      return useMutation(getPostFaqMutationOptions(options));
+      return useMutation(getPostFaqMutationOptions(options), queryClient);
     }
     export const getFaqCount = (
     params?: GetFaqCountParams,
@@ -195,7 +224,7 @@ export const getGetFaqCountQueryKey = (params?: GetFaqCountParams,) => {
     }
 
 
-export const getGetFaqCountQueryOptions = <TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(params?: GetFaqCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>, }
+export const getGetFaqCountQueryOptions = <TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(params?: GetFaqCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -210,22 +239,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetFaqCountQueryResult = NonNullable<Awaited<ReturnType<typeof getFaqCount>>>
 export type GetFaqCountQueryError = void
 
 
+export function useGetFaqCount<TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(
+ params: undefined |  GetFaqCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaqCount>>,
+          TError,
+          Awaited<ReturnType<typeof getFaqCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaqCount<TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(
+ params?: GetFaqCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaqCount>>,
+          TError,
+          Awaited<ReturnType<typeof getFaqCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaqCount<TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(
+ params?: GetFaqCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetFaqCount<TData = Awaited<ReturnType<typeof getFaqCount>>, TError = void>(
- params?: GetFaqCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetFaqCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetFaqCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -261,7 +314,7 @@ export const getGetFaqFromKeyQueryKey = (key: number,
 
 
 export const getGetFaqFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getFaqFromKey>>, TError = void>(key: number,
-    params?: GetFaqFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>, }
+    params?: GetFaqFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -276,23 +329,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetFaqFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getFaqFromKey>>>
 export type GetFaqFromKeyQueryError = void
 
 
+export function useGetFaqFromKey<TData = Awaited<ReturnType<typeof getFaqFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetFaqFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaqFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getFaqFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaqFromKey<TData = Awaited<ReturnType<typeof getFaqFromKey>>, TError = void>(
+ key: number,
+    params?: GetFaqFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFaqFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getFaqFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetFaqFromKey<TData = Awaited<ReturnType<typeof getFaqFromKey>>, TError = void>(
+ key: number,
+    params?: GetFaqFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetFaqFromKey<TData = Awaited<ReturnType<typeof getFaqFromKey>>, TError = void>(
  key: number,
-    params?: GetFaqFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetFaqFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFaqFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetFaqFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -355,13 +435,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutFaqFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putFaqFromKey>>, TError,{key: number;data?: Faq;params?: PutFaqFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putFaqFromKey>>,
         TError,
         {key: number;data?: Faq;params?: PutFaqFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutFaqFromKeyMutationOptions(options));
+      return useMutation(getPutFaqFromKeyMutationOptions(options), queryClient);
     }
     export const patchFaqFromKey = (
     key: number,
@@ -416,13 +496,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchFaqFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchFaqFromKey>>, TError,{key: number;data?: Faq;params?: PatchFaqFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchFaqFromKey>>,
         TError,
         {key: number;data?: Faq;params?: PatchFaqFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchFaqFromKeyMutationOptions(options));
+      return useMutation(getPatchFaqFromKeyMutationOptions(options), queryClient);
     }
     export const deleteFaqFromKey = (
     key: number,
@@ -472,11 +552,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteFaqFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFaqFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteFaqFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteFaqFromKeyMutationOptions(options));
+      return useMutation(getDeleteFaqFromKeyMutationOptions(options), queryClient);
     }

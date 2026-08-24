@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   PreemptServiceOptions,
@@ -70,7 +75,7 @@ export const getGetPreemptServiceTestDataQueryKey = () => {
     }
 
 
-export const getGetPreemptServiceTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>, }
+export const getGetPreemptServiceTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetPreemptServiceTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getPreemptServiceTestData>>>
 export type GetPreemptServiceTestDataQueryError = ProblemDetails
 
 
+export function useGetPreemptServiceTestData<TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreemptServiceTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getPreemptServiceTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreemptServiceTestData<TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreemptServiceTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getPreemptServiceTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreemptServiceTestData<TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetPreemptServiceTestData<TData = Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreemptServiceTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetPreemptServiceTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetPreemptServiceReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getPreemptServiceReportData>>, TError,{data?: PreemptServiceOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getPreemptServiceReportData>>,
         TError,
         {data?: PreemptServiceOptions},
         TContext
       > => {
-      return useMutation(getGetPreemptServiceReportDataMutationOptions(options));
+      return useMutation(getGetPreemptServiceReportDataMutationOptions(options), queryClient);
     }

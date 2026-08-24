@@ -112,7 +112,7 @@ const WatchDogLogs = () => {
   } = useGetWatchDogIgnoreEvent()
   const {
     data: watchdogLogsData,
-    isLoading: isWatchdogLogsLoading,
+    isPending: isWatchdogLogsLoading,
     error: watchdogLogsError,
     mutateAsync: fetchWatchdogLogs,
     isSuccess: isWatchdogLogsSuccess,

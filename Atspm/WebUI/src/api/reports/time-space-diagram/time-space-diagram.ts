@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -97,13 +102,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetTimeSpaceDiagramSrmData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramSrmData>>, TError,{data?: TimeSpaceDiagramSrmOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getTimeSpaceDiagramSrmData>>,
         TError,
         {data?: TimeSpaceDiagramSrmOptions},
         TContext
       > => {
-      return useMutation(getGetTimeSpaceDiagramSrmDataMutationOptions(options));
+      return useMutation(getGetTimeSpaceDiagramSrmDataMutationOptions(options), queryClient);
     }
     /**
  * @summary Get example data for testing
@@ -130,7 +135,7 @@ export const getGetTimeSpaceDiagramTestDataQueryKey = () => {
     }
 
 
-export const getGetTimeSpaceDiagramTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>, }
+export const getGetTimeSpaceDiagramTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -145,25 +150,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetTimeSpaceDiagramTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>>
 export type GetTimeSpaceDiagramTestDataQueryError = ProblemDetails
 
 
+export function useGetTimeSpaceDiagramTestData<TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimeSpaceDiagramTestData<TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimeSpaceDiagramTestData<TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetTimeSpaceDiagramTestData<TData = Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetTimeSpaceDiagramTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -229,11 +258,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetTimeSpaceDiagramReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getTimeSpaceDiagramReportData>>, TError,{data?: TimeSpaceDiagramOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getTimeSpaceDiagramReportData>>,
         TError,
         {data?: TimeSpaceDiagramOptions},
         TContext
       > => {
-      return useMutation(getGetTimeSpaceDiagramReportDataMutationOptions(options));
+      return useMutation(getGetTimeSpaceDiagramReportDataMutationOptions(options), queryClient);
     }

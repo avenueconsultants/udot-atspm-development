@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   LeftTurnSplitFailOptions,
@@ -70,7 +75,7 @@ export const getGetLeftTurnSplitFailTestDataQueryKey = () => {
     }
 
 
-export const getGetLeftTurnSplitFailTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>, }
+export const getGetLeftTurnSplitFailTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLeftTurnSplitFailTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>>
 export type GetLeftTurnSplitFailTestDataQueryError = ProblemDetails
 
 
+export function useGetLeftTurnSplitFailTestData<TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLeftTurnSplitFailTestData<TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLeftTurnSplitFailTestData<TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetLeftTurnSplitFailTestData<TData = Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLeftTurnSplitFailTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetLeftTurnSplitFailReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLeftTurnSplitFailReportData>>, TError,{data?: LeftTurnSplitFailOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLeftTurnSplitFailReportData>>,
         TError,
         {data?: LeftTurnSplitFailOptions},
         TContext
       > => {
-      return useMutation(getGetLeftTurnSplitFailReportDataMutationOptions(options));
+      return useMutation(getGetLeftTurnSplitFailReportDataMutationOptions(options), queryClient);
     }

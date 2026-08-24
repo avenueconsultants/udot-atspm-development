@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   LinkPivotForTsd,
@@ -99,13 +104,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetLinkPivotPcdData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLinkPivotPcdData>>, TError,{data?: LinkPivotPcdOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLinkPivotPcdData>>,
         TError,
         {data?: LinkPivotPcdOptions},
         TContext
       > => {
-      return useMutation(getGetLinkPivotPcdDataMutationOptions(options));
+      return useMutation(getGetLinkPivotPcdDataMutationOptions(options), queryClient);
     }
     export const getLinkPivotLinkPivotForTSD = (
     timeSpaceDiagramOptions?: TimeSpaceDiagramOptions,
@@ -157,13 +162,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetLinkPivotLinkPivotForTSD = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLinkPivotLinkPivotForTSD>>, TError,{data?: TimeSpaceDiagramOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLinkPivotLinkPivotForTSD>>,
         TError,
         {data?: TimeSpaceDiagramOptions},
         TContext
       > => {
-      return useMutation(getGetLinkPivotLinkPivotForTSDMutationOptions(options));
+      return useMutation(getGetLinkPivotLinkPivotForTSDMutationOptions(options), queryClient);
     }
     /**
  * @summary Get example data for testing
@@ -190,7 +195,7 @@ export const getGetLinkPivotTestDataQueryKey = () => {
     }
 
 
-export const getGetLinkPivotTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>, }
+export const getGetLinkPivotTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -205,25 +210,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLinkPivotTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getLinkPivotTestData>>>
 export type GetLinkPivotTestDataQueryError = ProblemDetails
 
 
+export function useGetLinkPivotTestData<TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLinkPivotTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLinkPivotTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLinkPivotTestData<TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLinkPivotTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLinkPivotTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLinkPivotTestData<TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetLinkPivotTestData<TData = Awaited<ReturnType<typeof getLinkPivotTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLinkPivotTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLinkPivotTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -289,11 +318,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetLinkPivotReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLinkPivotReportData>>, TError,{data?: LinkPivotOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLinkPivotReportData>>,
         TError,
         {data?: LinkPivotOptions},
         TContext
       > => {
-      return useMutation(getGetLinkPivotReportDataMutationOptions(options));
+      return useMutation(getGetLinkPivotReportDataMutationOptions(options), queryClient);
     }

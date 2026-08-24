@@ -66,7 +66,7 @@ export default function TimeSpaceResultsContainer({
 
   const [srmError, setSrmError] = useState<string | null>(null)
   const [hasAppliedSrm, setHasAppliedSrm] = useState(false)
-  const { mutateAsync: fetchSrmData, isLoading: isApplyingSrm } =
+  const { mutateAsync: fetchSrmData, isPending: isApplyingSrm } =
     useTimeSpaceSrmData()
 
   const locations = getPrimaryTimeSpaceLocations(baseTimeSpaceData)

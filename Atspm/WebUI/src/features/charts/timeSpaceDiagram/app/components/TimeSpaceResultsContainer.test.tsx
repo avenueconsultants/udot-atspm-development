@@ -29,7 +29,7 @@ jest.mock('@/features/charts/api', () => ({
 jest.mock('@/features/charts/timeSpaceDiagram/api/getTimeSpaceSrmData', () => ({
   useTimeSpaceSrmData: () => ({
     mutateAsync: jest.fn(),
-    isLoading: false,
+    isPending: false,
   }),
 }))
 

@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetMeasureOptionPresetCountParams,
@@ -76,7 +81,7 @@ export const getGetMeasureOptionPresetMeasureOptionPresetTypesQueryKey = (params
     }
 
 
-export const getGetMeasureOptionPresetMeasureOptionPresetTypesQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>, }
+export const getGetMeasureOptionPresetMeasureOptionPresetTypesQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -91,25 +96,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureOptionPresetMeasureOptionPresetTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>>
 export type GetMeasureOptionPresetMeasureOptionPresetTypesQueryError = void
 
 
+export function useGetMeasureOptionPresetMeasureOptionPresetTypes<TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(
+ params: undefined |  GetMeasureOptionPresetMeasureOptionPresetTypesParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetMeasureOptionPresetTypes<TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(
+ params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetMeasureOptionPresetTypes<TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(
+ params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves a list of measure option preset types.
  */
 
 export function useGetMeasureOptionPresetMeasureOptionPresetTypes<TData = Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError = void>(
- params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetMeasureOptionPresetMeasureOptionPresetTypesParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetMeasureOptionPresetTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureOptionPresetMeasureOptionPresetTypesQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -142,7 +171,7 @@ export const getGetMeasureOptionPresetQueryKey = (params?: GetMeasureOptionPrese
     }
 
 
-export const getGetMeasureOptionPresetQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(params?: GetMeasureOptionPresetParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>, }
+export const getGetMeasureOptionPresetQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(params?: GetMeasureOptionPresetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -157,22 +186,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureOptionPresetQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureOptionPreset>>>
 export type GetMeasureOptionPresetQueryError = void
 
 
+export function useGetMeasureOptionPreset<TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(
+ params: undefined |  GetMeasureOptionPresetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPreset>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPreset>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPreset<TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(
+ params?: GetMeasureOptionPresetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPreset>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPreset>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPreset<TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(
+ params?: GetMeasureOptionPresetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureOptionPreset<TData = Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError = void>(
- params?: GetMeasureOptionPresetParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetMeasureOptionPresetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPreset>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureOptionPresetQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -234,13 +287,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostMeasureOptionPreset = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postMeasureOptionPreset>>, TError,{data?: MeasureOptionPreset;params?: PostMeasureOptionPresetParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postMeasureOptionPreset>>,
         TError,
         {data?: MeasureOptionPreset;params?: PostMeasureOptionPresetParams},
         TContext
       > => {
-      return useMutation(getPostMeasureOptionPresetMutationOptions(options));
+      return useMutation(getPostMeasureOptionPresetMutationOptions(options), queryClient);
     }
     export const getMeasureOptionPresetCount = (
     params?: GetMeasureOptionPresetCountParams,
@@ -265,7 +318,7 @@ export const getGetMeasureOptionPresetCountQueryKey = (params?: GetMeasureOption
     }
 
 
-export const getGetMeasureOptionPresetCountQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(params?: GetMeasureOptionPresetCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>, }
+export const getGetMeasureOptionPresetCountQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(params?: GetMeasureOptionPresetCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -280,22 +333,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureOptionPresetCountQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>>
 export type GetMeasureOptionPresetCountQueryError = void
 
 
+export function useGetMeasureOptionPresetCount<TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(
+ params: undefined |  GetMeasureOptionPresetCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetCount>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetCount<TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(
+ params?: GetMeasureOptionPresetCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetCount>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetCount<TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(
+ params?: GetMeasureOptionPresetCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureOptionPresetCount<TData = Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError = void>(
- params?: GetMeasureOptionPresetCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetMeasureOptionPresetCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureOptionPresetCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -331,7 +408,7 @@ export const getGetMeasureOptionPresetFromKeyQueryKey = (key: number,
 
 
 export const getGetMeasureOptionPresetFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError = void>(key: number,
-    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>, }
+    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -346,23 +423,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureOptionPresetFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>>
 export type GetMeasureOptionPresetFromKeyQueryError = void
 
 
+export function useGetMeasureOptionPresetFromKey<TData = Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetMeasureOptionPresetFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetFromKey<TData = Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureOptionPresetFromKey<TData = Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureOptionPresetFromKey<TData = Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError = void>(
  key: number,
-    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetMeasureOptionPresetFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureOptionPresetFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureOptionPresetFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -425,13 +529,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutMeasureOptionPresetFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putMeasureOptionPresetFromKey>>, TError,{key: number;data?: MeasureOptionPreset;params?: PutMeasureOptionPresetFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putMeasureOptionPresetFromKey>>,
         TError,
         {key: number;data?: MeasureOptionPreset;params?: PutMeasureOptionPresetFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutMeasureOptionPresetFromKeyMutationOptions(options));
+      return useMutation(getPutMeasureOptionPresetFromKeyMutationOptions(options), queryClient);
     }
     export const patchMeasureOptionPresetFromKey = (
     key: number,
@@ -486,13 +590,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchMeasureOptionPresetFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchMeasureOptionPresetFromKey>>, TError,{key: number;data?: MeasureOptionPreset;params?: PatchMeasureOptionPresetFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchMeasureOptionPresetFromKey>>,
         TError,
         {key: number;data?: MeasureOptionPreset;params?: PatchMeasureOptionPresetFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchMeasureOptionPresetFromKeyMutationOptions(options));
+      return useMutation(getPatchMeasureOptionPresetFromKeyMutationOptions(options), queryClient);
     }
     export const deleteMeasureOptionPresetFromKey = (
     key: number,
@@ -542,11 +646,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteMeasureOptionPresetFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMeasureOptionPresetFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteMeasureOptionPresetFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteMeasureOptionPresetFromKeyMutationOptions(options));
+      return useMutation(getDeleteMeasureOptionPresetFromKeyMutationOptions(options), queryClient);
     }

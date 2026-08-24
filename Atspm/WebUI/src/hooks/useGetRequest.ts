@@ -16,7 +16,7 @@
 // #endregion
 import { configAxios } from '@/lib/axios'
 import { AxiosHeaders, AxiosInstance } from 'axios'
-import { QueryKey, UseQueryOptions, useQuery } from 'react-query'
+import { QueryKey, UseQueryOptions, useQuery } from '@tanstack/react-query'
 
 export async function getRequest<T>(
   route: string,
@@ -41,9 +41,10 @@ export function useGetRequest<T>({
   headers,
   enabled = true,
 }: UseDataOptions<T>) {
-  return useQuery<T, unknown>(
-    [route],
-    () => getRequest<T>(route, axiosInstance, headers),
-    { ...config, enabled }
-  )
+  return useQuery<T, unknown>({
+    queryKey: [route],
+    queryFn: () => getRequest<T>(route, axiosInstance, headers),
+    ...config,
+    enabled,
+  })
 }

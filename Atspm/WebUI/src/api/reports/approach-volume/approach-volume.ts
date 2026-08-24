@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ApproachVolumeOptions,
@@ -97,7 +102,7 @@ export const getGetApproachVolumeTestDataQueryKey = () => {
     }
 
 
-export const getGetApproachVolumeTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>, }
+export const getGetApproachVolumeTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -112,25 +117,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachVolumeTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachVolumeTestData>>>
 export type GetApproachVolumeTestDataQueryError = ProblemDetails
 
 
+export function useGetApproachVolumeTestData<TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachVolumeTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachVolumeTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachVolumeTestData<TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachVolumeTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachVolumeTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachVolumeTestData<TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetApproachVolumeTestData<TData = Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachVolumeTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachVolumeTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -196,11 +225,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetApproachVolumeReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApproachVolumeReportData>>, TError,{data?: NonReadonly<ApproachVolumeOptions>}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getApproachVolumeReportData>>,
         TError,
         {data?: NonReadonly<ApproachVolumeOptions>},
         TContext
       > => {
-      return useMutation(getGetApproachVolumeReportDataMutationOptions(options));
+      return useMutation(getGetApproachVolumeReportDataMutationOptions(options), queryClient);
     }

@@ -20,17 +20,29 @@ import {
   QueryClient,
   UseMutationOptions,
   UseQueryOptions,
-} from 'react-query'
+} from '@tanstack/react-query'
 import { PromiseValue } from 'type-fest'
 
 const queryConfig: DefaultOptions = {
   queries: {
-    useErrorBoundary: true,
+    throwOnError: true,
     refetchOnWindowFocus: false,
     retry: false,
   },
 }
 
+// Shared app-wide instance - _app.tsx passes this same object to
+// QueryClientProvider rather than creating its own via useState.
+// useUpdateChartDefaults (src/features/charts/api/updateChartDefaults.ts) -
+// the last surviving hand-written mutation hook with this shape - imports
+// this singleton directly (not useQueryClient()) to drive cache
+// invalidation, so if a future App component goes back to instantiating its
+// own QueryClient, that hook's optimistic updates and invalidateQueries
+// calls will silently stop reaching the on-screen cache again. A per-render
+// instance would normally be preferred (it's the standard SSR-safe pattern)
+// but this app never runs a query during SSR - _app.tsx keeps <Component />
+// unmounted until client-side axios init finishes - so a single shared
+// instance is safe here.
 export const queryClient = new QueryClient({ defaultOptions: queryConfig })
 
 export type ExtractFnReturnType<FnType extends (...args: any) => any> =

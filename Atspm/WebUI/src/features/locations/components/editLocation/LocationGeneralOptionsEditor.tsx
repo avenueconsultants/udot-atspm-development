@@ -30,7 +30,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers'
 import { format, parseISO } from 'date-fns'
 import { ChangeEvent } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 const LocationGeneralOptionsEditor = () => {
   const { location, handleLocationEdit, setLocation } = useLocationStore()

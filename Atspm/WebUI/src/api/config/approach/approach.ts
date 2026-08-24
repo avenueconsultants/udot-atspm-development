@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Approach,
@@ -84,7 +89,7 @@ export const getGetApproachDetectorsFromKeyQueryKey = (key: number,
 
 
 export const getGetApproachDetectorsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError = void>(key: number,
-    params?: GetApproachDetectorsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>, }
+    params?: GetApproachDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -99,26 +104,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachDetectorsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>>
 export type GetApproachDetectorsFromKeyQueryError = void
 
 
+export function useGetApproachDetectorsFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetApproachDetectorsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachDetectorsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachDetectorsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachDetectorsFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachDetectorsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachDetectorsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachDetectorsFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
 
 export function useGetApproachDetectorsFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError = void>(
  key: number,
-    params?: GetApproachDetectorsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApproachDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachDetectorsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -157,7 +189,7 @@ export const getGetApproachDetectorsCountFromKeyQueryKey = (key: number,
 
 
 export const getGetApproachDetectorsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError = void>(key: number,
-    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>, }
+    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -172,26 +204,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachDetectorsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>>
 export type GetApproachDetectorsCountFromKeyQueryError = void
 
 
+export function useGetApproachDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetApproachDetectorsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
 
 export function useGetApproachDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError = void>(
  key: number,
-    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApproachDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachDetectorsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachDetectorsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -253,13 +312,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useUpsertApproachApproach = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof upsertApproachApproach>>, TError,{data?: ApproachDto;params?: UpsertApproachApproachParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof upsertApproachApproach>>,
         TError,
         {data?: ApproachDto;params?: UpsertApproachApproachParams},
         TContext
       > => {
-      return useMutation(getUpsertApproachApproachMutationOptions(options));
+      return useMutation(getUpsertApproachApproachMutationOptions(options), queryClient);
     }
     export const getApproachApproachDtoFromId = (
     id: number,
@@ -287,7 +346,7 @@ export const getGetApproachApproachDtoFromIdQueryKey = (id: number,
 
 
 export const getGetApproachApproachDtoFromIdQueryOptions = <TData = Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError = void>(id: number,
-    params?: GetApproachApproachDtoFromIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>, }
+    params?: GetApproachApproachDtoFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -302,23 +361,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachApproachDtoFromIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>>
 export type GetApproachApproachDtoFromIdQueryError = void
 
 
+export function useGetApproachApproachDtoFromId<TData = Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError = void>(
+ id: number,
+    params: undefined |  GetApproachApproachDtoFromIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachApproachDtoFromId>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachApproachDtoFromId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachApproachDtoFromId<TData = Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError = void>(
+ id: number,
+    params?: GetApproachApproachDtoFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachApproachDtoFromId>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachApproachDtoFromId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachApproachDtoFromId<TData = Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError = void>(
+ id: number,
+    params?: GetApproachApproachDtoFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApproachApproachDtoFromId<TData = Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError = void>(
  id: number,
-    params?: GetApproachApproachDtoFromIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApproachApproachDtoFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachApproachDtoFromId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachApproachDtoFromIdQueryOptions(id,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -351,7 +437,7 @@ export const getGetApproachQueryKey = (params?: GetApproachParams,) => {
     }
 
 
-export const getGetApproachQueryOptions = <TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(params?: GetApproachParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>, }
+export const getGetApproachQueryOptions = <TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(params?: GetApproachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -366,22 +452,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachQueryResult = NonNullable<Awaited<ReturnType<typeof getApproach>>>
 export type GetApproachQueryError = void
 
 
+export function useGetApproach<TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(
+ params: undefined |  GetApproachParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproach>>,
+          TError,
+          Awaited<ReturnType<typeof getApproach>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproach<TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(
+ params?: GetApproachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproach>>,
+          TError,
+          Awaited<ReturnType<typeof getApproach>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproach<TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(
+ params?: GetApproachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApproach<TData = Awaited<ReturnType<typeof getApproach>>, TError = void>(
- params?: GetApproachParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApproachParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproach>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -443,13 +553,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApproach = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApproach>>, TError,{data?: Approach;params?: PostApproachParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApproach>>,
         TError,
         {data?: Approach;params?: PostApproachParams},
         TContext
       > => {
-      return useMutation(getPostApproachMutationOptions(options));
+      return useMutation(getPostApproachMutationOptions(options), queryClient);
     }
     export const getApproachCount = (
     params?: GetApproachCountParams,
@@ -474,7 +584,7 @@ export const getGetApproachCountQueryKey = (params?: GetApproachCountParams,) =>
     }
 
 
-export const getGetApproachCountQueryOptions = <TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(params?: GetApproachCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>, }
+export const getGetApproachCountQueryOptions = <TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(params?: GetApproachCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -489,22 +599,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachCountQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachCount>>>
 export type GetApproachCountQueryError = void
 
 
+export function useGetApproachCount<TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(
+ params: undefined |  GetApproachCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachCount>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachCount<TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(
+ params?: GetApproachCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachCount>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachCount<TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(
+ params?: GetApproachCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApproachCount<TData = Awaited<ReturnType<typeof getApproachCount>>, TError = void>(
- params?: GetApproachCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApproachCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -540,7 +674,7 @@ export const getGetApproachFromKeyQueryKey = (key: number,
 
 
 export const getGetApproachFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getApproachFromKey>>, TError = void>(key: number,
-    params?: GetApproachFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>, }
+    params?: GetApproachFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -555,23 +689,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApproachFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getApproachFromKey>>>
 export type GetApproachFromKeyQueryError = void
 
 
+export function useGetApproachFromKey<TData = Awaited<ReturnType<typeof getApproachFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetApproachFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachFromKey<TData = Awaited<ReturnType<typeof getApproachFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApproachFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getApproachFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApproachFromKey<TData = Awaited<ReturnType<typeof getApproachFromKey>>, TError = void>(
+ key: number,
+    params?: GetApproachFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApproachFromKey<TData = Awaited<ReturnType<typeof getApproachFromKey>>, TError = void>(
  key: number,
-    params?: GetApproachFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApproachFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApproachFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApproachFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -634,13 +795,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApproachFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApproachFromKey>>, TError,{key: number;data?: Approach;params?: PutApproachFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApproachFromKey>>,
         TError,
         {key: number;data?: Approach;params?: PutApproachFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutApproachFromKeyMutationOptions(options));
+      return useMutation(getPutApproachFromKeyMutationOptions(options), queryClient);
     }
     export const patchApproachFromKey = (
     key: number,
@@ -695,13 +856,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchApproachFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchApproachFromKey>>, TError,{key: number;data?: Approach;params?: PatchApproachFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchApproachFromKey>>,
         TError,
         {key: number;data?: Approach;params?: PatchApproachFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchApproachFromKeyMutationOptions(options));
+      return useMutation(getPatchApproachFromKeyMutationOptions(options), queryClient);
     }
     export const deleteApproachFromKey = (
     key: number,
@@ -751,11 +912,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApproachFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApproachFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApproachFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteApproachFromKeyMutationOptions(options));
+      return useMutation(getDeleteApproachFromKeyMutationOptions(options), queryClient);
     }

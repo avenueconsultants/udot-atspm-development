@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   PrioritySummaryOptions,
@@ -70,7 +75,7 @@ export const getGetPrioritySummaryTestDataQueryKey = () => {
     }
 
 
-export const getGetPrioritySummaryTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>, }
+export const getGetPrioritySummaryTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetPrioritySummaryTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getPrioritySummaryTestData>>>
 export type GetPrioritySummaryTestDataQueryError = ProblemDetails
 
 
+export function useGetPrioritySummaryTestData<TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrioritySummaryTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getPrioritySummaryTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPrioritySummaryTestData<TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPrioritySummaryTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getPrioritySummaryTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPrioritySummaryTestData<TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetPrioritySummaryTestData<TData = Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPrioritySummaryTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetPrioritySummaryTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetPrioritySummaryReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getPrioritySummaryReportData>>, TError,{data?: PrioritySummaryOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getPrioritySummaryReportData>>,
         TError,
         {data?: PrioritySummaryOptions},
         TContext
       > => {
-      return useMutation(getGetPrioritySummaryReportDataMutationOptions(options));
+      return useMutation(getGetPrioritySummaryReportDataMutationOptions(options), queryClient);
     }

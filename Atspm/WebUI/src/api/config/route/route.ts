@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetRouteCountParams,
@@ -84,7 +89,7 @@ export const getGetRouteRouteLocationsFromKeyQueryKey = (key: number,
 
 
 export const getGetRouteRouteLocationsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError = void>(key: number,
-    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>, }
+    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -99,26 +104,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteRouteLocationsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>>
 export type GetRouteRouteLocationsFromKeyQueryError = void
 
 
+export function useGetRouteRouteLocationsFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetRouteRouteLocationsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteLocationsFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteLocationsFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetRouteRouteLocationsFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError = void>(
  key: number,
-    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetRouteRouteLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteRouteLocationsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -157,7 +189,7 @@ export const getGetRouteRouteLocationsCountFromKeyQueryKey = (key: number,
 
 
 export const getGetRouteRouteLocationsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError = void>(key: number,
-    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>, }
+    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -172,26 +204,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteRouteLocationsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>>
 export type GetRouteRouteLocationsCountFromKeyQueryError = void
 
 
+export function useGetRouteRouteLocationsCountFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetRouteRouteLocationsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteLocationsCountFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteLocationsCountFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetRouteRouteLocationsCountFromKey<TData = Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError = void>(
  key: number,
-    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetRouteRouteLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteRouteLocationsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -259,13 +318,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useUpsertRouteRoute = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof upsertRouteRoute>>, TError,{data?: RouteDto;params?: UpsertRouteRouteParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof upsertRouteRoute>>,
         TError,
         {data?: RouteDto;params?: UpsertRouteRouteParams},
         TContext
       > => {
-      return useMutation(getUpsertRouteRouteMutationOptions(options));
+      return useMutation(getUpsertRouteRouteMutationOptions(options), queryClient);
     }
     export const getRouteRouteViewFromId = (
     id: number,
@@ -293,7 +352,7 @@ export const getGetRouteRouteViewFromIdQueryKey = (id: number,
 
 
 export const getGetRouteRouteViewFromIdQueryOptions = <TData = Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError = void>(id: number,
-    params?: GetRouteRouteViewFromIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>, }
+    params?: GetRouteRouteViewFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -308,23 +367,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteRouteViewFromIdQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteRouteViewFromId>>>
 export type GetRouteRouteViewFromIdQueryError = void
 
 
+export function useGetRouteRouteViewFromId<TData = Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError = void>(
+ id: number,
+    params: undefined |  GetRouteRouteViewFromIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteViewFromId>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteViewFromId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteViewFromId<TData = Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError = void>(
+ id: number,
+    params?: GetRouteRouteViewFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteRouteViewFromId>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteRouteViewFromId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteRouteViewFromId<TData = Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError = void>(
+ id: number,
+    params?: GetRouteRouteViewFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetRouteRouteViewFromId<TData = Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError = void>(
  id: number,
-    params?: GetRouteRouteViewFromIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetRouteRouteViewFromIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteRouteViewFromId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteRouteViewFromIdQueryOptions(id,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -357,7 +443,7 @@ export const getGetRouteQueryKey = (params?: GetRouteParams,) => {
     }
 
 
-export const getGetRouteQueryOptions = <TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(params?: GetRouteParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>, }
+export const getGetRouteQueryOptions = <TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(params?: GetRouteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -372,22 +458,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteQueryResult = NonNullable<Awaited<ReturnType<typeof getRoute>>>
 export type GetRouteQueryError = void
 
 
+export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(
+ params: undefined |  GetRouteParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoute>>,
+          TError,
+          Awaited<ReturnType<typeof getRoute>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(
+ params?: GetRouteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRoute>>,
+          TError,
+          Awaited<ReturnType<typeof getRoute>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(
+ params?: GetRouteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetRoute<TData = Awaited<ReturnType<typeof getRoute>>, TError = void>(
- params?: GetRouteParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetRouteParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRoute>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -449,13 +559,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostRoute = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postRoute>>, TError,{data?: Route;params?: PostRouteParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postRoute>>,
         TError,
         {data?: Route;params?: PostRouteParams},
         TContext
       > => {
-      return useMutation(getPostRouteMutationOptions(options));
+      return useMutation(getPostRouteMutationOptions(options), queryClient);
     }
     export const getRouteCount = (
     params?: GetRouteCountParams,
@@ -480,7 +590,7 @@ export const getGetRouteCountQueryKey = (params?: GetRouteCountParams,) => {
     }
 
 
-export const getGetRouteCountQueryOptions = <TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(params?: GetRouteCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>, }
+export const getGetRouteCountQueryOptions = <TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(params?: GetRouteCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -495,22 +605,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteCountQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteCount>>>
 export type GetRouteCountQueryError = void
 
 
+export function useGetRouteCount<TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(
+ params: undefined |  GetRouteCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteCount>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteCount<TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(
+ params?: GetRouteCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteCount>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteCount<TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(
+ params?: GetRouteCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetRouteCount<TData = Awaited<ReturnType<typeof getRouteCount>>, TError = void>(
- params?: GetRouteCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetRouteCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -546,7 +680,7 @@ export const getGetRouteFromKeyQueryKey = (key: number,
 
 
 export const getGetRouteFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getRouteFromKey>>, TError = void>(key: number,
-    params?: GetRouteFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>, }
+    params?: GetRouteFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -561,23 +695,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRouteFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getRouteFromKey>>>
 export type GetRouteFromKeyQueryError = void
 
 
+export function useGetRouteFromKey<TData = Awaited<ReturnType<typeof getRouteFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetRouteFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteFromKey<TData = Awaited<ReturnType<typeof getRouteFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRouteFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getRouteFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRouteFromKey<TData = Awaited<ReturnType<typeof getRouteFromKey>>, TError = void>(
+ key: number,
+    params?: GetRouteFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetRouteFromKey<TData = Awaited<ReturnType<typeof getRouteFromKey>>, TError = void>(
  key: number,
-    params?: GetRouteFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetRouteFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRouteFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRouteFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -640,13 +801,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutRouteFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putRouteFromKey>>, TError,{key: number;data?: Route;params?: PutRouteFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putRouteFromKey>>,
         TError,
         {key: number;data?: Route;params?: PutRouteFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutRouteFromKeyMutationOptions(options));
+      return useMutation(getPutRouteFromKeyMutationOptions(options), queryClient);
     }
     export const patchRouteFromKey = (
     key: number,
@@ -701,13 +862,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchRouteFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchRouteFromKey>>, TError,{key: number;data?: Route;params?: PatchRouteFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchRouteFromKey>>,
         TError,
         {key: number;data?: Route;params?: PatchRouteFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchRouteFromKeyMutationOptions(options));
+      return useMutation(getPatchRouteFromKeyMutationOptions(options), queryClient);
     }
     export const deleteRouteFromKey = (
     key: number,
@@ -757,11 +918,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteRouteFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRouteFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteRouteFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteRouteFromKeyMutationOptions(options));
+      return useMutation(getDeleteRouteFromKeyMutationOptions(options), queryClient);
     }

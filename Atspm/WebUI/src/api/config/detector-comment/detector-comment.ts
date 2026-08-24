@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   DetectorComment,
@@ -72,7 +77,7 @@ export const getGetDetectorCommentQueryKey = (params?: GetDetectorCommentParams,
     }
 
 
-export const getGetDetectorCommentQueryOptions = <TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(params?: GetDetectorCommentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>, }
+export const getGetDetectorCommentQueryOptions = <TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(params?: GetDetectorCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -87,22 +92,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectorCommentQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectorComment>>>
 export type GetDetectorCommentQueryError = void
 
 
+export function useGetDetectorComment<TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(
+ params: undefined |  GetDetectorCommentParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorComment>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorComment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorComment<TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(
+ params?: GetDetectorCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorComment>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorComment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorComment<TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(
+ params?: GetDetectorCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectorComment<TData = Awaited<ReturnType<typeof getDetectorComment>>, TError = void>(
- params?: GetDetectorCommentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDetectorCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorComment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectorCommentQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -164,13 +193,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostDetectorComment = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDetectorComment>>, TError,{data?: DetectorComment;params?: PostDetectorCommentParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postDetectorComment>>,
         TError,
         {data?: DetectorComment;params?: PostDetectorCommentParams},
         TContext
       > => {
-      return useMutation(getPostDetectorCommentMutationOptions(options));
+      return useMutation(getPostDetectorCommentMutationOptions(options), queryClient);
     }
     export const getDetectorCommentCount = (
     params?: GetDetectorCommentCountParams,
@@ -195,7 +224,7 @@ export const getGetDetectorCommentCountQueryKey = (params?: GetDetectorCommentCo
     }
 
 
-export const getGetDetectorCommentCountQueryOptions = <TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(params?: GetDetectorCommentCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>, }
+export const getGetDetectorCommentCountQueryOptions = <TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(params?: GetDetectorCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -210,22 +239,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectorCommentCountQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectorCommentCount>>>
 export type GetDetectorCommentCountQueryError = void
 
 
+export function useGetDetectorCommentCount<TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(
+ params: undefined |  GetDetectorCommentCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorCommentCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorCommentCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorCommentCount<TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(
+ params?: GetDetectorCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorCommentCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorCommentCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorCommentCount<TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(
+ params?: GetDetectorCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectorCommentCount<TData = Awaited<ReturnType<typeof getDetectorCommentCount>>, TError = void>(
- params?: GetDetectorCommentCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDetectorCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectorCommentCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -261,7 +314,7 @@ export const getGetDetectorCommentFromKeyQueryKey = (key: number,
 
 
 export const getGetDetectorCommentFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError = void>(key: number,
-    params?: GetDetectorCommentFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>, }
+    params?: GetDetectorCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -276,23 +329,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectorCommentFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectorCommentFromKey>>>
 export type GetDetectorCommentFromKeyQueryError = void
 
 
+export function useGetDetectorCommentFromKey<TData = Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetDetectorCommentFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorCommentFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorCommentFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorCommentFromKey<TData = Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError = void>(
+ key: number,
+    params?: GetDetectorCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectorCommentFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectorCommentFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectorCommentFromKey<TData = Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError = void>(
+ key: number,
+    params?: GetDetectorCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectorCommentFromKey<TData = Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError = void>(
  key: number,
-    params?: GetDetectorCommentFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectorCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectorCommentFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectorCommentFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -355,13 +435,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutDetectorCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDetectorCommentFromKey>>, TError,{key: number;data?: DetectorComment;params?: PutDetectorCommentFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putDetectorCommentFromKey>>,
         TError,
         {key: number;data?: DetectorComment;params?: PutDetectorCommentFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutDetectorCommentFromKeyMutationOptions(options));
+      return useMutation(getPutDetectorCommentFromKeyMutationOptions(options), queryClient);
     }
     export const patchDetectorCommentFromKey = (
     key: number,
@@ -416,13 +496,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchDetectorCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchDetectorCommentFromKey>>, TError,{key: number;data?: DetectorComment;params?: PatchDetectorCommentFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchDetectorCommentFromKey>>,
         TError,
         {key: number;data?: DetectorComment;params?: PatchDetectorCommentFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchDetectorCommentFromKeyMutationOptions(options));
+      return useMutation(getPatchDetectorCommentFromKeyMutationOptions(options), queryClient);
     }
     export const deleteDetectorCommentFromKey = (
     key: number,
@@ -472,11 +552,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteDetectorCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDetectorCommentFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteDetectorCommentFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteDetectorCommentFromKeyMutationOptions(options));
+      return useMutation(getDeleteDetectorCommentFromKeyMutationOptions(options), queryClient);
     }

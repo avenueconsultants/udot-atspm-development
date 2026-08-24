@@ -27,7 +27,7 @@ import {
   purdueCoordinationDiagramPlan,
 } from '@/features/charts/purdueCoordinationDiagram/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { RawLinkPivotPcdData, RawLinkPivotPcdResponse } from '../types'
 
 type QueryFnType = typeof getLinkPivotPcdCharts

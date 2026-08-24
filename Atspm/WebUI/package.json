@@ -27,7 +27,8 @@
     "@mui/material": "^5.13.6",
     "@mui/x-data-grid": "^7.27.3",
     "@mui/x-date-pickers": "^6.19.2",
-    "@tanstack/react-query-devtools": "^4.29.17",
+    "@tanstack/react-query": "^5.102.2",
+    "@tanstack/react-query-devtools": "^5.102.2",
     "@turf/helpers": "^7.2.0",
     "@turf/line-offset": "^7.2.0",
     "@turf/turf": "^7.2.0",
@@ -63,7 +64,6 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-number-format": "^5.3.1",
-    "react-query": "^3.39.3",
     "react-to-print": "^3.0.5",
     "sanitize-html": "^2.14.0",
     "sharp": "^0.33.1",
@@ -150,7 +150,7 @@
             {
               "patterns": [
                 "next/*",
-                "react-query",
+                "@tanstack/react-query",
                 "axios",
                 "@/lib/axios",
                 "@/features/routes/*",
@@ -175,7 +175,7 @@
             {
               "patterns": [
                 "next/*",
-                "react-query",
+                "@tanstack/react-query",
                 "axios",
                 "@/lib/axios",
                 "@/features/routes/*",

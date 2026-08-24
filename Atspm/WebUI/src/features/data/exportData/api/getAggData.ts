@@ -14,30 +14,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { useGetRequest } from '@/hooks/useGetRequest'
-import { dataAxios } from '@/lib/axios'
-import { ApiResponse } from '@/types'
-import { AxiosHeaders } from 'axios'
-import Cookies from 'js-cookie'
+import { getAggregationDataFromLocationIdentifierAndDataType } from '@/api/data'
+import { useQuery } from '@tanstack/react-query'
 
-const token = Cookies.get('token')
-const headers: AxiosHeaders = new AxiosHeaders({
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${token}`,
-})
+// The backend's Aggregation/GetArchivedAggregations route was folded into
+// the shared DataControllerBase.GetData(locationIdentifier, dataType, start,
+// end) action - this now calls that instead of a route that no longer exists.
+type AggregationDataType = Parameters<
+  typeof getAggregationDataFromLocationIdentifierAndDataType
+>[1]
 
 export function useGetAggData(
-  locationIdentifier: number,
-  dataType: string,
+  locationIdentifier: string,
+  dataType: AggregationDataType,
   start: Date,
   end: Date
 ) {
-  const route = `/api/v1/Aggregation/GetArchivedAggregations/${locationIdentifier}/${dataType}?start=${start}&end=${end}`
-
-  return useGetRequest<ApiResponse<string[]>>({
-    route,
-    axiosInstance: dataAxios,
-    headers,
+  return useQuery({
+    queryKey: ['aggData', locationIdentifier, dataType, start, end],
+    queryFn: () =>
+      getAggregationDataFromLocationIdentifierAndDataType(
+        locationIdentifier,
+        dataType,
+        { start: start.toISOString(), end: end.toISOString() }
+      ),
     enabled: false,
   })
 }

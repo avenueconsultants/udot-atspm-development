@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetWatchDogIgnoreEventCountParams,
@@ -72,7 +77,7 @@ export const getGetWatchDogIgnoreEventQueryKey = (params?: GetWatchDogIgnoreEven
     }
 
 
-export const getGetWatchDogIgnoreEventQueryOptions = <TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(params?: GetWatchDogIgnoreEventParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>, }
+export const getGetWatchDogIgnoreEventQueryOptions = <TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(params?: GetWatchDogIgnoreEventParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -87,22 +92,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWatchDogIgnoreEventQueryResult = NonNullable<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>>
 export type GetWatchDogIgnoreEventQueryError = void
 
 
+export function useGetWatchDogIgnoreEvent<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(
+ params: undefined |  GetWatchDogIgnoreEventParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEvent<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(
+ params?: GetWatchDogIgnoreEventParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEvent<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(
+ params?: GetWatchDogIgnoreEventParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetWatchDogIgnoreEvent<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError = void>(
- params?: GetWatchDogIgnoreEventParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetWatchDogIgnoreEventParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEvent>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWatchDogIgnoreEventQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -164,13 +193,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostWatchDogIgnoreEvent = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postWatchDogIgnoreEvent>>, TError,{data?: WatchDogIgnoreEvent;params?: PostWatchDogIgnoreEventParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postWatchDogIgnoreEvent>>,
         TError,
         {data?: WatchDogIgnoreEvent;params?: PostWatchDogIgnoreEventParams},
         TContext
       > => {
-      return useMutation(getPostWatchDogIgnoreEventMutationOptions(options));
+      return useMutation(getPostWatchDogIgnoreEventMutationOptions(options), queryClient);
     }
     export const getWatchDogIgnoreEventCount = (
     params?: GetWatchDogIgnoreEventCountParams,
@@ -195,7 +224,7 @@ export const getGetWatchDogIgnoreEventCountQueryKey = (params?: GetWatchDogIgnor
     }
 
 
-export const getGetWatchDogIgnoreEventCountQueryOptions = <TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(params?: GetWatchDogIgnoreEventCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>, }
+export const getGetWatchDogIgnoreEventCountQueryOptions = <TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(params?: GetWatchDogIgnoreEventCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -210,22 +239,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWatchDogIgnoreEventCountQueryResult = NonNullable<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>>
 export type GetWatchDogIgnoreEventCountQueryError = void
 
 
+export function useGetWatchDogIgnoreEventCount<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(
+ params: undefined |  GetWatchDogIgnoreEventCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEventCount<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(
+ params?: GetWatchDogIgnoreEventCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEventCount<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(
+ params?: GetWatchDogIgnoreEventCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetWatchDogIgnoreEventCount<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError = void>(
- params?: GetWatchDogIgnoreEventCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetWatchDogIgnoreEventCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWatchDogIgnoreEventCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -261,7 +314,7 @@ export const getGetWatchDogIgnoreEventFromKeyQueryKey = (key: number,
 
 
 export const getGetWatchDogIgnoreEventFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError = void>(key: number,
-    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>, }
+    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -276,23 +329,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWatchDogIgnoreEventFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>>
 export type GetWatchDogIgnoreEventFromKeyQueryError = void
 
 
+export function useGetWatchDogIgnoreEventFromKey<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetWatchDogIgnoreEventFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEventFromKey<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError = void>(
+ key: number,
+    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchDogIgnoreEventFromKey<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError = void>(
+ key: number,
+    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetWatchDogIgnoreEventFromKey<TData = Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError = void>(
  key: number,
-    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetWatchDogIgnoreEventFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchDogIgnoreEventFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWatchDogIgnoreEventFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -355,13 +435,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutWatchDogIgnoreEventFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putWatchDogIgnoreEventFromKey>>, TError,{key: number;data?: WatchDogIgnoreEvent;params?: PutWatchDogIgnoreEventFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putWatchDogIgnoreEventFromKey>>,
         TError,
         {key: number;data?: WatchDogIgnoreEvent;params?: PutWatchDogIgnoreEventFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutWatchDogIgnoreEventFromKeyMutationOptions(options));
+      return useMutation(getPutWatchDogIgnoreEventFromKeyMutationOptions(options), queryClient);
     }
     export const patchWatchDogIgnoreEventFromKey = (
     key: number,
@@ -416,13 +496,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchWatchDogIgnoreEventFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchWatchDogIgnoreEventFromKey>>, TError,{key: number;data?: WatchDogIgnoreEvent;params?: PatchWatchDogIgnoreEventFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchWatchDogIgnoreEventFromKey>>,
         TError,
         {key: number;data?: WatchDogIgnoreEvent;params?: PatchWatchDogIgnoreEventFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchWatchDogIgnoreEventFromKeyMutationOptions(options));
+      return useMutation(getPatchWatchDogIgnoreEventFromKeyMutationOptions(options), queryClient);
     }
     export const deleteWatchDogIgnoreEventFromKey = (
     key: number,
@@ -472,11 +552,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteWatchDogIgnoreEventFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteWatchDogIgnoreEventFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteWatchDogIgnoreEventFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteWatchDogIgnoreEventFromKeyMutationOptions(options));
+      return useMutation(getDeleteWatchDogIgnoreEventFromKeyMutationOptions(options), queryClient);
     }

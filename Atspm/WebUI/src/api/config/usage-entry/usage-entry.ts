@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetUsageEntryCountParams,
@@ -72,7 +77,7 @@ export const getGetUsageEntryQueryKey = (params?: GetUsageEntryParams,) => {
     }
 
 
-export const getGetUsageEntryQueryOptions = <TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(params?: GetUsageEntryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>, }
+export const getGetUsageEntryQueryOptions = <TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(params?: GetUsageEntryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -87,22 +92,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetUsageEntryQueryResult = NonNullable<Awaited<ReturnType<typeof getUsageEntry>>>
 export type GetUsageEntryQueryError = void
 
 
+export function useGetUsageEntry<TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(
+ params: undefined |  GetUsageEntryParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntry>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntry>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntry<TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(
+ params?: GetUsageEntryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntry>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntry>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntry<TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(
+ params?: GetUsageEntryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUsageEntry<TData = Awaited<ReturnType<typeof getUsageEntry>>, TError = void>(
- params?: GetUsageEntryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetUsageEntryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntry>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetUsageEntryQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -164,13 +193,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostUsageEntry = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postUsageEntry>>, TError,{data?: UsageEntry;params?: PostUsageEntryParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postUsageEntry>>,
         TError,
         {data?: UsageEntry;params?: PostUsageEntryParams},
         TContext
       > => {
-      return useMutation(getPostUsageEntryMutationOptions(options));
+      return useMutation(getPostUsageEntryMutationOptions(options), queryClient);
     }
     export const getUsageEntryCount = (
     params?: GetUsageEntryCountParams,
@@ -195,7 +224,7 @@ export const getGetUsageEntryCountQueryKey = (params?: GetUsageEntryCountParams,
     }
 
 
-export const getGetUsageEntryCountQueryOptions = <TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(params?: GetUsageEntryCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>, }
+export const getGetUsageEntryCountQueryOptions = <TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(params?: GetUsageEntryCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -210,22 +239,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetUsageEntryCountQueryResult = NonNullable<Awaited<ReturnType<typeof getUsageEntryCount>>>
 export type GetUsageEntryCountQueryError = void
 
 
+export function useGetUsageEntryCount<TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(
+ params: undefined |  GetUsageEntryCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntryCount>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntryCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntryCount<TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(
+ params?: GetUsageEntryCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntryCount>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntryCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntryCount<TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(
+ params?: GetUsageEntryCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUsageEntryCount<TData = Awaited<ReturnType<typeof getUsageEntryCount>>, TError = void>(
- params?: GetUsageEntryCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetUsageEntryCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetUsageEntryCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -261,7 +314,7 @@ export const getGetUsageEntryFromKeyQueryKey = (key: number,
 
 
 export const getGetUsageEntryFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError = void>(key: number,
-    params?: GetUsageEntryFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>, }
+    params?: GetUsageEntryFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -276,23 +329,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetUsageEntryFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getUsageEntryFromKey>>>
 export type GetUsageEntryFromKeyQueryError = void
 
 
+export function useGetUsageEntryFromKey<TData = Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetUsageEntryFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntryFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntryFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntryFromKey<TData = Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError = void>(
+ key: number,
+    params?: GetUsageEntryFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsageEntryFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getUsageEntryFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsageEntryFromKey<TData = Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError = void>(
+ key: number,
+    params?: GetUsageEntryFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUsageEntryFromKey<TData = Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError = void>(
  key: number,
-    params?: GetUsageEntryFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetUsageEntryFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsageEntryFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetUsageEntryFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -355,13 +435,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutUsageEntryFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putUsageEntryFromKey>>, TError,{key: number;data?: UsageEntry;params?: PutUsageEntryFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putUsageEntryFromKey>>,
         TError,
         {key: number;data?: UsageEntry;params?: PutUsageEntryFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutUsageEntryFromKeyMutationOptions(options));
+      return useMutation(getPutUsageEntryFromKeyMutationOptions(options), queryClient);
     }
     export const patchUsageEntryFromKey = (
     key: number,
@@ -416,13 +496,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchUsageEntryFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchUsageEntryFromKey>>, TError,{key: number;data?: UsageEntry;params?: PatchUsageEntryFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchUsageEntryFromKey>>,
         TError,
         {key: number;data?: UsageEntry;params?: PatchUsageEntryFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchUsageEntryFromKeyMutationOptions(options));
+      return useMutation(getPatchUsageEntryFromKeyMutationOptions(options), queryClient);
     }
     export const deleteUsageEntryFromKey = (
     key: number,
@@ -472,11 +552,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteUsageEntryFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsageEntryFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUsageEntryFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteUsageEntryFromKeyMutationOptions(options));
+      return useMutation(getDeleteUsageEntryFromKeyMutationOptions(options), queryClient);
     }

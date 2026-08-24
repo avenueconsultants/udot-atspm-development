@@ -7,13 +7,18 @@
  */
 import {
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   CompressedDataBase,
@@ -90,7 +95,7 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryKey =
 
 export const getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>, }
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -105,13 +110,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>>
 export type GetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryError = ProblemDetails
 
 
+export function useGetEventLogStreamDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params: undefined |  GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location, device, and data type within a given date range.
  */
@@ -119,13 +154,13 @@ export type GetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryError = P
 export function useGetEventLogStreamDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
  locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogStreamDataFromLocationIdentifierAndDeviceIdQueryOptions(locationIdentifier,deviceId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -170,7 +205,7 @@ export const getGetEventLogDataFromLocationIdentifierAndDeviceIdQueryKey = (loca
 
 export const getGetEventLogDataFromLocationIdentifierAndDeviceIdQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>, }
+    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -185,13 +220,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDataFromLocationIdentifierAndDeviceIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>>
 export type GetEventLogDataFromLocationIdentifierAndDeviceIdQueryError = ProblemDetails
 
 
+export function useGetEventLogDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params: undefined |  GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    deviceId: number,
+    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location, device, and data type within a given date range.
  */
@@ -199,13 +264,13 @@ export type GetEventLogDataFromLocationIdentifierAndDeviceIdQueryError = Problem
 export function useGetEventLogDataFromLocationIdentifierAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError = ProblemDetails>(
  locationIdentifier: string,
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogDataFromLocationIdentifierAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDataFromLocationIdentifierAndDeviceIdQueryOptions(locationIdentifier,deviceId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -257,7 +322,7 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceI
 export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>, }
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -272,13 +337,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>>
 export type GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryError = ProblemDetails
 
 
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params: undefined |  GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location, device, and data type within a given date range.
  */
@@ -287,13 +385,13 @@ export function useGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDevi
  locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogStreamDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryOptions(locationIdentifier,dataType,deviceId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -341,7 +439,7 @@ export const getGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdQuery
 export const getGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>, }
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -356,13 +454,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined && deviceId !== null && deviceId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>>
 export type GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryError = ProblemDetails
 
 
+export function useGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params: undefined |  GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    deviceId: number,
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location, device, and data type within a given date range.
  */
@@ -371,13 +502,13 @@ export function useGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId<T
  locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
     deviceId: number,
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataTypeAndDeviceId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDataFromLocationIdentifierAndDataTypeAndDeviceIdQueryOptions(locationIdentifier,dataType,deviceId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -412,7 +543,7 @@ export const getGetEventLogDataTypesQueryKey = () => {
     }
 
 
-export const getGetEventLogDataTypesQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>, }
+export const getGetEventLogDataTypesQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -427,25 +558,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDataTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDataTypes>>>
 export type GetEventLogDataTypesQueryError = ProblemDetails
 
 
+export function useGetEventLogDataTypes<TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataTypes<TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataTypes<TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the available derived data types defined in the system.
  */
 
 export function useGetEventLogDataTypes<TData = Awaited<ReturnType<typeof getEventLogDataTypes>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDataTypesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -502,7 +657,7 @@ export const getGetEventLogStreamDataFromLocationIdentifierQueryKey = (locationI
 
 
 export const getGetEventLogStreamDataFromLocationIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(locationIdentifier: string,
-    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>, }
+    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -517,26 +672,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogStreamDataFromLocationIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>>
 export type GetEventLogStreamDataFromLocationIdentifierQueryError = ProblemDetails
 
 
+export function useGetEventLogStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params: undefined |  GetEventLogStreamDataFromLocationIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location within a given date range.
  */
 
 export function useGetEventLogStreamDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError = ProblemDetails>(
  locationIdentifier: string,
-    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogStreamDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogStreamDataFromLocationIdentifierQueryOptions(locationIdentifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -589,7 +771,7 @@ export const getGetEventLogDataFromLocationIdentifierQueryKey = (locationIdentif
 
 
 export const getGetEventLogDataFromLocationIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError = ProblemDetails>(locationIdentifier: string,
-    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>, }
+    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -604,26 +786,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDataFromLocationIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>>
 export type GetEventLogDataFromLocationIdentifierQueryError = ProblemDetails
 
 
+export function useGetEventLogDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params: undefined |  GetEventLogDataFromLocationIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location within a given date range.
  */
 
 export function useGetEventLogDataFromLocationIdentifier<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError = ProblemDetails>(
  locationIdentifier: string,
-    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogDataFromLocationIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDataFromLocationIdentifierQueryOptions(locationIdentifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -678,7 +887,7 @@ export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryKey =
 
 export const getGetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -693,13 +902,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>>
 export type GetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params: undefined |  GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Streams archived data records for a specific location and data type within a given date range.
  */
@@ -707,13 +946,13 @@ export type GetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryError = P
 export function useGetEventLogStreamDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogStreamDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogStreamDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogStreamDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -769,7 +1008,7 @@ export const getGetEventLogDataFromLocationIdentifierAndDataTypeQueryKey = (loca
 
 export const getGetEventLogDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -784,13 +1023,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>>
 export type GetEventLogDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetEventLogDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params: undefined |  GetEventLogDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves archived data records for a specific location and data type within a given date range.
  */
@@ -798,13 +1067,13 @@ export type GetEventLogDataFromLocationIdentifierAndDataTypeQueryError = Problem
 export function useGetEventLogDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -851,7 +1120,7 @@ export const getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeQueryKey
 
 export const getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeQueryOptions = <TData = Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>, }
+    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -866,13 +1135,43 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationIdentifier !== null && locationIdentifier !== undefined && dataType !== null && dataType !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>>
 export type GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeQueryError = ProblemDetails
 
 
+export function useGetEventLogDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params: undefined |  GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>,
+          TError,
+          Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventLogDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
+ locationIdentifier: string,
+    dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
+    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the distinct days that contain data for a specific location and data type
 within the given date range.
@@ -881,13 +1180,13 @@ within the given date range.
 export function useGetEventLogDaysWithDataFromLocationIdentifierAndDataType<TData = Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError = ProblemDetails>(
  locationIdentifier: string,
     dataType: 'IndianaEvent' | 'PedestrianCounter' | 'SpeedEvent',
-    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetEventLogDaysWithDataFromLocationIdentifierAndDataTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventLogDaysWithDataFromLocationIdentifierAndDataType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetEventLogDaysWithDataFromLocationIdentifierAndDataTypeQueryOptions(locationIdentifier,dataType,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }

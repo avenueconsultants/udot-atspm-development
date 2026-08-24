@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -70,7 +75,7 @@ export const getGetTimingAndActuationTestDataQueryKey = () => {
     }
 
 
-export const getGetTimingAndActuationTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>, }
+export const getGetTimingAndActuationTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetTimingAndActuationTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getTimingAndActuationTestData>>>
 export type GetTimingAndActuationTestDataQueryError = ProblemDetails
 
 
+export function useGetTimingAndActuationTestData<TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimingAndActuationTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTimingAndActuationTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimingAndActuationTestData<TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTimingAndActuationTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTimingAndActuationTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTimingAndActuationTestData<TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetTimingAndActuationTestData<TData = Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTimingAndActuationTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetTimingAndActuationTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetTimingAndActuationReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getTimingAndActuationReportData>>, TError,{data?: TimingAndActuationsOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getTimingAndActuationReportData>>,
         TError,
         {data?: TimingAndActuationsOptions},
         TContext
       > => {
-      return useMutation(getGetTimingAndActuationReportDataMutationOptions(options));
+      return useMutation(getGetTimingAndActuationReportDataMutationOptions(options), queryClient);
     }

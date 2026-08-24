@@ -1,6 +1,5 @@
-import { SearchLocation as Location } from '@/api/config'
+import { SearchLocation as Location, useGetMeasureType } from '@/api/config'
 import { useChartDefaults } from '@/features/charts/api/getChartDefaults'
-import { useGetMeasureTypes } from '@/features/charts/api/getMeasureTypes'
 import { ApproachDelayChartOptions } from '@/features/charts/approachDelay/components/ApproachDelayChartOptions'
 import { ApproachSpeedChartOptions } from '@/features/charts/approachSpeed/components/ApproachSpeedChartOptions'
 import { ApproachVolumeChartOptions } from '@/features/charts/approachVolume/components/ApproachVolumeChartOptions'
@@ -91,7 +90,7 @@ const SelectChart = ({
   location,
 }: SelectChartProps) => {
   const { data: chartDefaultsData, isLoading } = useChartDefaults()
-  const { data: measureTypesData } = useGetMeasureTypes()
+  const { data: measureTypesData } = useGetMeasureType()
 
   const chartDefaultsRaw =
     chartDefaultsData &&

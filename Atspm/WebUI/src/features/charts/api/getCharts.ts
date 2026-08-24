@@ -43,7 +43,7 @@ import { TransformedChartResponse } from '@/features/charts/types'
 import { reportsAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { transformChartData } from './transformData'
 
 export const TypeApiMap: Record<ChartType, string> = {

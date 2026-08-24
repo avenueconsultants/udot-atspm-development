@@ -4,7 +4,7 @@ import { Alert, Button, Typography } from '@mui/material'
 
 export default function AtspmSourcePanel() {
   const { addNotification } = useNotificationStore()
-  const { mutateAsync: refreshAtspm, isLoading } =
+  const { mutateAsync: refreshAtspm, isPending: isLoading } =
     usePostApiV1EntityFileAtspmRefresh()
 
   const handleRefresh = async () => {

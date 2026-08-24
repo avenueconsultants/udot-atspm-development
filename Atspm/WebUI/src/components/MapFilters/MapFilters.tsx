@@ -2,9 +2,9 @@ import {
   useGetArea,
   useGetJurisdiction,
   useGetLocationType,
+  useGetMeasureType,
   useGetRegion,
 } from "@/api/config";
-import { useGetMeasureTypes } from "@/features/charts/api/getMeasureTypes";
 import { Autocomplete, Box, Paper, TextField, Typography } from "@mui/material";
 import { SyntheticEvent, memo } from "react";
 
@@ -32,7 +32,7 @@ const MapFilters = ({
   const { data: areasData } = useGetArea();
   const { data: regionsData } = useGetRegion();
   const { data: jurisdictionsData } = useGetJurisdiction();
-  const { data: measureTypeData } = useGetMeasureTypes();
+  const { data: measureTypeData } = useGetMeasureType();
   const { data: locationTypeData } = useGetLocationType();
   const areas = areasData;
   const regions = regionsData;

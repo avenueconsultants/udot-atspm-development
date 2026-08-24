@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -70,7 +75,7 @@ export const getGetTransitSignalPriorityTestDataQueryKey = () => {
     }
 
 
-export const getGetTransitSignalPriorityTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>, }
+export const getGetTransitSignalPriorityTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetTransitSignalPriorityTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>>
 export type GetTransitSignalPriorityTestDataQueryError = ProblemDetails
 
 
+export function useGetTransitSignalPriorityTestData<TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTransitSignalPriorityTestData<TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTransitSignalPriorityTestData<TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetTransitSignalPriorityTestData<TData = Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTransitSignalPriorityTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetTransitSignalPriorityTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetTransitSignalPriorityReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getTransitSignalPriorityReportData>>, TError,{data?: TransitSignalPriorityOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getTransitSignalPriorityReportData>>,
         TError,
         {data?: TransitSignalPriorityOptions},
         TContext
       > => {
-      return useMutation(getGetTransitSignalPriorityReportDataMutationOptions(options));
+      return useMutation(getGetTransitSignalPriorityReportDataMutationOptions(options), queryClient);
     }

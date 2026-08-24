@@ -65,7 +65,7 @@ export default function TspReportPage() {
   const {
     data: reportResponse,
     mutateAsync: fetchTspReport,
-    isLoading: loadingReport,
+    isPending: loadingReport,
   } = useGetTransitSignalPriorityReportData()
   const { data: locationsData } = useGetLocationLatestVersionOfAllLocations()
   const locations = locationsData || []

@@ -7,13 +7,18 @@
  */
 import {
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetVersionCurrentVersionParams,
@@ -71,7 +76,7 @@ export const getGetVersionCurrentVersionQueryKey = (params?: GetVersionCurrentVe
     }
 
 
-export const getGetVersionCurrentVersionQueryOptions = <TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(params?: GetVersionCurrentVersionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>, }
+export const getGetVersionCurrentVersionQueryOptions = <TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(params?: GetVersionCurrentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -86,25 +91,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetVersionCurrentVersionQueryResult = NonNullable<Awaited<ReturnType<typeof getVersionCurrentVersion>>>
 export type GetVersionCurrentVersionQueryError = void
 
 
+export function useGetVersionCurrentVersion<TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(
+ params: undefined |  GetVersionCurrentVersionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionCurrentVersion>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionCurrentVersion>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionCurrentVersion<TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(
+ params?: GetVersionCurrentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionCurrentVersion>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionCurrentVersion>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionCurrentVersion<TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(
+ params?: GetVersionCurrentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the specific release details for the version currently running in this environment.
  */
 
 export function useGetVersionCurrentVersion<TData = Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError = void>(
- params?: GetVersionCurrentVersionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetVersionCurrentVersionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionCurrentVersion>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetVersionCurrentVersionQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -145,7 +174,7 @@ export const getGetVersionLatestVersionFromPreReleaseQueryKey = (preRelease: boo
 
 
 export const getGetVersionLatestVersionFromPreReleaseQueryOptions = <TData = Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError = void>(preRelease: boolean,
-    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>, }
+    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -160,26 +189,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: preRelease !== null && preRelease !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: preRelease !== null && preRelease !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetVersionLatestVersionFromPreReleaseQueryResult = NonNullable<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>>
 export type GetVersionLatestVersionFromPreReleaseQueryError = void
 
 
+export function useGetVersionLatestVersionFromPreRelease<TData = Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params: undefined |  GetVersionLatestVersionFromPreReleaseParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionLatestVersionFromPreRelease<TData = Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionLatestVersionFromPreRelease<TData = Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves the most recent release published to the GitHub repository.
  */
 
 export function useGetVersionLatestVersionFromPreRelease<TData = Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError = void>(
  preRelease: boolean,
-    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetVersionLatestVersionFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionLatestVersionFromPreRelease>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetVersionLatestVersionFromPreReleaseQueryOptions(preRelease,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -220,7 +276,7 @@ export const getGetVersionVersionHistoryFromPreReleaseQueryKey = (preRelease: bo
 
 
 export const getGetVersionVersionHistoryFromPreReleaseQueryOptions = <TData = Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError = void>(preRelease: boolean,
-    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>, }
+    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -235,26 +291,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: preRelease !== null && preRelease !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: preRelease !== null && preRelease !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetVersionVersionHistoryFromPreReleaseQueryResult = NonNullable<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>>
 export type GetVersionVersionHistoryFromPreReleaseQueryError = void
 
 
+export function useGetVersionVersionHistoryFromPreRelease<TData = Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params: undefined |  GetVersionVersionHistoryFromPreReleaseParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionVersionHistoryFromPreRelease<TData = Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>,
+          TError,
+          Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetVersionVersionHistoryFromPreRelease<TData = Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError = void>(
+ preRelease: boolean,
+    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves a complete historical list of all releases associated with this project.
  */
 
 export function useGetVersionVersionHistoryFromPreRelease<TData = Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError = void>(
  preRelease: boolean,
-    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetVersionVersionHistoryFromPreReleaseParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getVersionVersionHistoryFromPreRelease>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetVersionVersionHistoryFromPreReleaseQueryOptions(preRelease,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }

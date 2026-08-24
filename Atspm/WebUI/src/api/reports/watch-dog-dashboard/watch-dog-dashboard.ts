@@ -7,12 +7,13 @@
  */
 import {
   useMutation
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
   MutationFunction,
+  QueryClient,
   UseMutationOptions,
   UseMutationResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -75,11 +76,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetWatchDogDashboardDashboardGroup = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getWatchDogDashboardDashboardGroup>>, TError,{data?: WatchDogDashboardOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getWatchDogDashboardDashboardGroup>>,
         TError,
         {data?: WatchDogDashboardOptions},
         TContext
       > => {
-      return useMutation(getGetWatchDogDashboardDashboardGroupMutationOptions(options));
+      return useMutation(getGetWatchDogDashboardDashboardGroupMutationOptions(options), queryClient);
     }

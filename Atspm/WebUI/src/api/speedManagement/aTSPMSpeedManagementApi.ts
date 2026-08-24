@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   AggClassification,
@@ -181,7 +186,7 @@ export const getGetApiV1AccessCategoryQueryKey = (params?: GetApiV1AccessCategor
     }
 
 
-export const getGetApiV1AccessCategoryQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(params?: GetApiV1AccessCategoryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>, }
+export const getGetApiV1AccessCategoryQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(params?: GetApiV1AccessCategoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -196,22 +201,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1AccessCategoryQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1AccessCategory>>>
 export type GetApiV1AccessCategoryQueryError = ProblemDetails
 
 
+export function useGetApiV1AccessCategory<TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1AccessCategoryParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1AccessCategory>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1AccessCategory>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1AccessCategory<TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(
+ params?: GetApiV1AccessCategoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1AccessCategory>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1AccessCategory>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1AccessCategory<TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(
+ params?: GetApiV1AccessCategoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1AccessCategory<TData = Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError = ProblemDetails>(
- params?: GetApiV1AccessCategoryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1AccessCategoryParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1AccessCategory>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1AccessCategoryQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -245,7 +274,7 @@ export const getGetApiV1CityQueryKey = (params?: GetApiV1CityParams,) => {
     }
 
 
-export const getGetApiV1CityQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(params?: GetApiV1CityParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>, }
+export const getGetApiV1CityQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(params?: GetApiV1CityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -260,22 +289,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1CityQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1City>>>
 export type GetApiV1CityQueryError = ProblemDetails
 
 
+export function useGetApiV1City<TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1CityParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1City>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1City>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1City<TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(
+ params?: GetApiV1CityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1City>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1City>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1City<TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(
+ params?: GetApiV1CityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1City<TData = Awaited<ReturnType<typeof getApiV1City>>, TError = ProblemDetails>(
- params?: GetApiV1CityParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1CityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1City>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1CityQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -338,13 +391,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1CongestionTrackingGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1CongestionTrackingGetReportData>>, TError,{data?: CongestionTrackingOptions;params?: PostApiV1CongestionTrackingGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1CongestionTrackingGetReportData>>,
         TError,
         {data?: CongestionTrackingOptions;params?: PostApiV1CongestionTrackingGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1CongestionTrackingGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1CongestionTrackingGetReportDataMutationOptions(options), queryClient);
     }
 
 export const getApiV1County = (
@@ -370,7 +423,7 @@ export const getGetApiV1CountyQueryKey = (params?: GetApiV1CountyParams,) => {
     }
 
 
-export const getGetApiV1CountyQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(params?: GetApiV1CountyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>, }
+export const getGetApiV1CountyQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(params?: GetApiV1CountyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -385,22 +438,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1CountyQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1County>>>
 export type GetApiV1CountyQueryError = ProblemDetails
 
 
+export function useGetApiV1County<TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1CountyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1County>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1County>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1County<TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(
+ params?: GetApiV1CountyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1County>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1County>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1County<TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(
+ params?: GetApiV1CountyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1County<TData = Awaited<ReturnType<typeof getApiV1County>>, TError = ProblemDetails>(
- params?: GetApiV1CountyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1CountyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1County>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1CountyQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -460,13 +537,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1DataImporterStartRedownload = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1DataImporterStartRedownload>>, TError,{params?: PostApiV1DataImporterStartRedownloadParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1DataImporterStartRedownload>>,
         TError,
         {params?: PostApiV1DataImporterStartRedownloadParams},
         TContext
       > => {
-      return useMutation(getPostApiV1DataImporterStartRedownloadMutationOptions(options));
+      return useMutation(getPostApiV1DataImporterStartRedownloadMutationOptions(options), queryClient);
     }
 
 export const postApiV1DataImporterDownloadHourlyData = (
@@ -518,13 +595,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1DataImporterDownloadHourlyData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1DataImporterDownloadHourlyData>>, TError,{params?: PostApiV1DataImporterDownloadHourlyDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1DataImporterDownloadHourlyData>>,
         TError,
         {params?: PostApiV1DataImporterDownloadHourlyDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1DataImporterDownloadHourlyDataMutationOptions(options));
+      return useMutation(getPostApiV1DataImporterDownloadHourlyDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1DataImporterDownloadClearguideHourly = (
@@ -576,13 +653,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1DataImporterDownloadClearguideHourly = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1DataImporterDownloadClearguideHourly>>, TError,{params?: PostApiV1DataImporterDownloadClearguideHourlyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1DataImporterDownloadClearguideHourly>>,
         TError,
         {params?: PostApiV1DataImporterDownloadClearguideHourlyParams},
         TContext
       > => {
-      return useMutation(getPostApiV1DataImporterDownloadClearguideHourlyMutationOptions(options));
+      return useMutation(getPostApiV1DataImporterDownloadClearguideHourlyMutationOptions(options), queryClient);
     }
 
 export const postApiV1DataImporterClearTempDataForClearguide = (
@@ -634,13 +711,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1DataImporterClearTempDataForClearguide = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1DataImporterClearTempDataForClearguide>>, TError,{params?: PostApiV1DataImporterClearTempDataForClearguideParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1DataImporterClearTempDataForClearguide>>,
         TError,
         {params?: PostApiV1DataImporterClearTempDataForClearguideParams},
         TContext
       > => {
-      return useMutation(getPostApiV1DataImporterClearTempDataForClearguideMutationOptions(options));
+      return useMutation(getPostApiV1DataImporterClearTempDataForClearguideMutationOptions(options), queryClient);
     }
 
 export const postApiV1DataQualityGetReportData = (
@@ -695,13 +772,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1DataQualityGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1DataQualityGetReportData>>, TError,{data?: DataQualityOptions;params?: PostApiV1DataQualityGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1DataQualityGetReportData>>,
         TError,
         {data?: DataQualityOptions;params?: PostApiV1DataQualityGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1DataQualityGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1DataQualityGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1EffectivenessOfStrategiesGetReportData = (
@@ -756,13 +833,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EffectivenessOfStrategiesGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EffectivenessOfStrategiesGetReportData>>, TError,{data?: EffectivenessOfStrategiesOptions;params?: PostApiV1EffectivenessOfStrategiesGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EffectivenessOfStrategiesGetReportData>>,
         TError,
         {data?: EffectivenessOfStrategiesOptions;params?: PostApiV1EffectivenessOfStrategiesGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EffectivenessOfStrategiesGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1EffectivenessOfStrategiesGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityGetEntitiesWithinRange = (
@@ -817,13 +894,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityGetEntitiesWithinRange = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityGetEntitiesWithinRange>>, TError,{data?: EntityRequestOptions;params?: PostApiV1EntityGetEntitiesWithinRangeParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityGetEntitiesWithinRange>>,
         TError,
         {data?: EntityRequestOptions;params?: PostApiV1EntityGetEntitiesWithinRangeParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityGetEntitiesWithinRangeMutationOptions(options));
+      return useMutation(getPostApiV1EntityGetEntitiesWithinRangeMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityFileGeojsonFetchFile = (
@@ -875,13 +952,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityFileGeojsonFetchFile = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityFileGeojsonFetchFile>>, TError,{params?: PostApiV1EntityFileGeojsonFetchFileParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityFileGeojsonFetchFile>>,
         TError,
         {params?: PostApiV1EntityFileGeojsonFetchFileParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityFileGeojsonFetchFileMutationOptions(options));
+      return useMutation(getPostApiV1EntityFileGeojsonFetchFileMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityFileShapefileFetchFile = (
@@ -933,13 +1010,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityFileShapefileFetchFile = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityFileShapefileFetchFile>>, TError,{params?: PostApiV1EntityFileShapefileFetchFileParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityFileShapefileFetchFile>>,
         TError,
         {params?: PostApiV1EntityFileShapefileFetchFileParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityFileShapefileFetchFileMutationOptions(options));
+      return useMutation(getPostApiV1EntityFileShapefileFetchFileMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityFileAtspmRefresh = (
@@ -991,13 +1068,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityFileAtspmRefresh = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityFileAtspmRefresh>>, TError,{params?: PostApiV1EntityFileAtspmRefreshParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityFileAtspmRefresh>>,
         TError,
         {params?: PostApiV1EntityFileAtspmRefreshParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityFileAtspmRefreshMutationOptions(options));
+      return useMutation(getPostApiV1EntityFileAtspmRefreshMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityVersionTables = (
@@ -1049,13 +1126,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityVersionTables = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityVersionTables>>, TError,{params?: PostApiV1EntityVersionTablesParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityVersionTables>>,
         TError,
         {params?: PostApiV1EntityVersionTablesParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityVersionTablesMutationOptions(options));
+      return useMutation(getPostApiV1EntityVersionTablesMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1EntityVersionCopies = (
@@ -1107,13 +1184,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1EntityVersionCopies = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1EntityVersionCopies>>, TError,{params?: DeleteApiV1EntityVersionCopiesParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1EntityVersionCopies>>,
         TError,
         {params?: DeleteApiV1EntityVersionCopiesParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1EntityVersionCopiesMutationOptions(options));
+      return useMutation(getDeleteApiV1EntityVersionCopiesMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityVersionEntitiesTableId = (
@@ -1166,13 +1243,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityVersionEntitiesTableId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesTableId>>, TError,{tableId: string;params?: PostApiV1EntityVersionEntitiesTableIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesTableId>>,
         TError,
         {tableId: string;params?: PostApiV1EntityVersionEntitiesTableIdParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityVersionEntitiesTableIdMutationOptions(options));
+      return useMutation(getPostApiV1EntityVersionEntitiesTableIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityVersionEntitiesTableIdArea = (
@@ -1228,13 +1305,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityVersionEntitiesTableIdArea = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesTableIdArea>>, TError,{tableId: string;data?: string;params?: PostApiV1EntityVersionEntitiesTableIdAreaParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesTableIdArea>>,
         TError,
         {tableId: string;data?: string;params?: PostApiV1EntityVersionEntitiesTableIdAreaParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityVersionEntitiesTableIdAreaMutationOptions(options));
+      return useMutation(getPostApiV1EntityVersionEntitiesTableIdAreaMutationOptions(options), queryClient);
     }
 
 export const postApiV1EntityVersionEntitiesArea = (
@@ -1289,13 +1366,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1EntityVersionEntitiesArea = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesArea>>, TError,{data?: string;params?: PostApiV1EntityVersionEntitiesAreaParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1EntityVersionEntitiesArea>>,
         TError,
         {data?: string;params?: PostApiV1EntityVersionEntitiesAreaParams},
         TContext
       > => {
-      return useMutation(getPostApiV1EntityVersionEntitiesAreaMutationOptions(options));
+      return useMutation(getPostApiV1EntityVersionEntitiesAreaMutationOptions(options), queryClient);
     }
 
 export const postApiV1ExportableReportsGetReportData = (
@@ -1350,13 +1427,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ExportableReportsGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ExportableReportsGetReportData>>, TError,{data?: ExportableReportOptions;params?: PostApiV1ExportableReportsGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ExportableReportsGetReportData>>,
         TError,
         {data?: ExportableReportOptions;params?: PostApiV1ExportableReportsGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ExportableReportsGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1ExportableReportsGetReportDataMutationOptions(options), queryClient);
     }
 
 export const getApiV1FunctionalType = (
@@ -1382,7 +1459,7 @@ export const getGetApiV1FunctionalTypeQueryKey = (params?: GetApiV1FunctionalTyp
     }
 
 
-export const getGetApiV1FunctionalTypeQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(params?: GetApiV1FunctionalTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>, }
+export const getGetApiV1FunctionalTypeQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(params?: GetApiV1FunctionalTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1397,22 +1474,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1FunctionalTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1FunctionalType>>>
 export type GetApiV1FunctionalTypeQueryError = ProblemDetails
 
 
+export function useGetApiV1FunctionalType<TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1FunctionalTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1FunctionalType>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1FunctionalType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1FunctionalType<TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(
+ params?: GetApiV1FunctionalTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1FunctionalType>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1FunctionalType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1FunctionalType<TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(
+ params?: GetApiV1FunctionalTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1FunctionalType<TData = Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError = ProblemDetails>(
- params?: GetApiV1FunctionalTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1FunctionalTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1FunctionalType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1FunctionalTypeQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1446,7 +1547,7 @@ export const getGetApiV1ImpactQueryKey = (params?: GetApiV1ImpactParams,) => {
     }
 
 
-export const getGetApiV1ImpactQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(params?: GetApiV1ImpactParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>, }
+export const getGetApiV1ImpactQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(params?: GetApiV1ImpactParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1461,22 +1562,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1ImpactQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1Impact>>>
 export type GetApiV1ImpactQueryError = ProblemDetails
 
 
+export function useGetApiV1Impact<TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1ImpactParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Impact>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Impact>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Impact<TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(
+ params?: GetApiV1ImpactParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Impact>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Impact>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Impact<TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(
+ params?: GetApiV1ImpactParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1Impact<TData = Awaited<ReturnType<typeof getApiV1Impact>>, TError = ProblemDetails>(
- params?: GetApiV1ImpactParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1ImpactParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Impact>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1ImpactQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1539,13 +1664,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1Impact = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1Impact>>, TError,{data?: Impact;params?: PostApiV1ImpactParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1Impact>>,
         TError,
         {data?: Impact;params?: PostApiV1ImpactParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ImpactMutationOptions(options));
+      return useMutation(getPostApiV1ImpactMutationOptions(options), queryClient);
     }
 
 export const getImpactById = (
@@ -1574,7 +1699,7 @@ export const getGetImpactByIdQueryKey = (id: string,
 
 
 export const getGetImpactByIdQueryOptions = <TData = Awaited<ReturnType<typeof getImpactById>>, TError = ProblemDetails>(id: string,
-    params?: GetImpactByIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>, }
+    params?: GetImpactByIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1589,23 +1714,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetImpactByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getImpactById>>>
 export type GetImpactByIdQueryError = ProblemDetails
 
 
+export function useGetImpactById<TData = Awaited<ReturnType<typeof getImpactById>>, TError = ProblemDetails>(
+ id: string,
+    params: undefined |  GetImpactByIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactById>>,
+          TError,
+          Awaited<ReturnType<typeof getImpactById>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetImpactById<TData = Awaited<ReturnType<typeof getImpactById>>, TError = ProblemDetails>(
+ id: string,
+    params?: GetImpactByIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getImpactById>>,
+          TError,
+          Awaited<ReturnType<typeof getImpactById>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetImpactById<TData = Awaited<ReturnType<typeof getImpactById>>, TError = ProblemDetails>(
+ id: string,
+    params?: GetImpactByIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetImpactById<TData = Awaited<ReturnType<typeof getImpactById>>, TError = ProblemDetails>(
  id: string,
-    params?: GetImpactByIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetImpactByIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getImpactById>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetImpactByIdQueryOptions(id,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1669,13 +1821,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApiV1ImpactId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiV1ImpactId>>, TError,{id: string;data?: Impact;params?: PutApiV1ImpactIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiV1ImpactId>>,
         TError,
         {id: string;data?: Impact;params?: PutApiV1ImpactIdParams},
         TContext
       > => {
-      return useMutation(getPutApiV1ImpactIdMutationOptions(options));
+      return useMutation(getPutApiV1ImpactIdMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1ImpactId = (
@@ -1728,13 +1880,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1ImpactId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1ImpactId>>, TError,{id: string;params?: DeleteApiV1ImpactIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1ImpactId>>,
         TError,
         {id: string;params?: DeleteApiV1ImpactIdParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1ImpactIdMutationOptions(options));
+      return useMutation(getDeleteApiV1ImpactIdMutationOptions(options), queryClient);
     }
 
 export const putApiV1ImpactIdSegmentsSegmentId = (
@@ -1788,13 +1940,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApiV1ImpactIdSegmentsSegmentId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiV1ImpactIdSegmentsSegmentId>>, TError,{id: string;segmentId: string;params?: PutApiV1ImpactIdSegmentsSegmentIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiV1ImpactIdSegmentsSegmentId>>,
         TError,
         {id: string;segmentId: string;params?: PutApiV1ImpactIdSegmentsSegmentIdParams},
         TContext
       > => {
-      return useMutation(getPutApiV1ImpactIdSegmentsSegmentIdMutationOptions(options));
+      return useMutation(getPutApiV1ImpactIdSegmentsSegmentIdMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1ImpactIdSegmentsSegmentId = (
@@ -1848,13 +2000,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1ImpactIdSegmentsSegmentId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1ImpactIdSegmentsSegmentId>>, TError,{id: string;segmentId: string;params?: DeleteApiV1ImpactIdSegmentsSegmentIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1ImpactIdSegmentsSegmentId>>,
         TError,
         {id: string;segmentId: string;params?: DeleteApiV1ImpactIdSegmentsSegmentIdParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1ImpactIdSegmentsSegmentIdMutationOptions(options));
+      return useMutation(getDeleteApiV1ImpactIdSegmentsSegmentIdMutationOptions(options), queryClient);
     }
 
 export const putApiV1ImpactIdImpactTypeImpactTypeId = (
@@ -1908,13 +2060,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApiV1ImpactIdImpactTypeImpactTypeId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiV1ImpactIdImpactTypeImpactTypeId>>, TError,{id: string;impactTypeId: string;params?: PutApiV1ImpactIdImpactTypeImpactTypeIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiV1ImpactIdImpactTypeImpactTypeId>>,
         TError,
         {id: string;impactTypeId: string;params?: PutApiV1ImpactIdImpactTypeImpactTypeIdParams},
         TContext
       > => {
-      return useMutation(getPutApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options));
+      return useMutation(getPutApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1ImpactIdImpactTypeImpactTypeId = (
@@ -1968,13 +2120,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1ImpactIdImpactTypeImpactTypeId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1ImpactIdImpactTypeImpactTypeId>>, TError,{id: string;impactTypeId: string;params?: DeleteApiV1ImpactIdImpactTypeImpactTypeIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1ImpactIdImpactTypeImpactTypeId>>,
         TError,
         {id: string;impactTypeId: string;params?: DeleteApiV1ImpactIdImpactTypeImpactTypeIdParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options));
+      return useMutation(getDeleteApiV1ImpactIdImpactTypeImpactTypeIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1ImpactHotspots = (
@@ -2029,13 +2181,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ImpactHotspots = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ImpactHotspots>>, TError,{data?: ImpactAggregationOptions;params?: PostApiV1ImpactHotspotsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ImpactHotspots>>,
         TError,
         {data?: ImpactAggregationOptions;params?: PostApiV1ImpactHotspotsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ImpactHotspotsMutationOptions(options));
+      return useMutation(getPostApiV1ImpactHotspotsMutationOptions(options), queryClient);
     }
 
 export const postApiV1ImpactAggregateId = (
@@ -2088,13 +2240,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ImpactAggregateId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ImpactAggregateId>>, TError,{id: string;params?: PostApiV1ImpactAggregateIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ImpactAggregateId>>,
         TError,
         {id: string;params?: PostApiV1ImpactAggregateIdParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ImpactAggregateIdMutationOptions(options));
+      return useMutation(getPostApiV1ImpactAggregateIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1ImpactAggregate = (
@@ -2146,13 +2298,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ImpactAggregate = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ImpactAggregate>>, TError,{params?: PostApiV1ImpactAggregateParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ImpactAggregate>>,
         TError,
         {params?: PostApiV1ImpactAggregateParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ImpactAggregateMutationOptions(options));
+      return useMutation(getPostApiV1ImpactAggregateMutationOptions(options), queryClient);
     }
 
 export const getApiV1ImpactType = (
@@ -2178,7 +2330,7 @@ export const getGetApiV1ImpactTypeQueryKey = (params?: GetApiV1ImpactTypeParams,
     }
 
 
-export const getGetApiV1ImpactTypeQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(params?: GetApiV1ImpactTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>, }
+export const getGetApiV1ImpactTypeQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(params?: GetApiV1ImpactTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -2193,22 +2345,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1ImpactTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1ImpactType>>>
 export type GetApiV1ImpactTypeQueryError = ProblemDetails
 
 
+export function useGetApiV1ImpactType<TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1ImpactTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1ImpactType>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1ImpactType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1ImpactType<TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(
+ params?: GetApiV1ImpactTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1ImpactType>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1ImpactType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1ImpactType<TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(
+ params?: GetApiV1ImpactTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1ImpactType<TData = Awaited<ReturnType<typeof getApiV1ImpactType>>, TError = ProblemDetails>(
- params?: GetApiV1ImpactTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1ImpactTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1ImpactTypeQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -2271,13 +2447,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ImpactType = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ImpactType>>, TError,{data?: ImpactType;params?: PostApiV1ImpactTypeParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ImpactType>>,
         TError,
         {data?: ImpactType;params?: PostApiV1ImpactTypeParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ImpactTypeMutationOptions(options));
+      return useMutation(getPostApiV1ImpactTypeMutationOptions(options), queryClient);
     }
 
 export const getApiV1ImpactTypeId = (
@@ -2306,7 +2482,7 @@ export const getGetApiV1ImpactTypeIdQueryKey = (id: string,
 
 
 export const getGetApiV1ImpactTypeIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError = ProblemDetails>(id: string,
-    params?: GetApiV1ImpactTypeIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>, }
+    params?: GetApiV1ImpactTypeIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -2321,23 +2497,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1ImpactTypeIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>>
 export type GetApiV1ImpactTypeIdQueryError = ProblemDetails
 
 
+export function useGetApiV1ImpactTypeId<TData = Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError = ProblemDetails>(
+ id: string,
+    params: undefined |  GetApiV1ImpactTypeIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1ImpactTypeId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1ImpactTypeId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1ImpactTypeId<TData = Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError = ProblemDetails>(
+ id: string,
+    params?: GetApiV1ImpactTypeIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1ImpactTypeId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1ImpactTypeId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1ImpactTypeId<TData = Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError = ProblemDetails>(
+ id: string,
+    params?: GetApiV1ImpactTypeIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1ImpactTypeId<TData = Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError = ProblemDetails>(
  id: string,
-    params?: GetApiV1ImpactTypeIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApiV1ImpactTypeIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1ImpactTypeId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1ImpactTypeIdQueryOptions(id,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -2401,13 +2604,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApiV1ImpactTypeId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiV1ImpactTypeId>>, TError,{id: string;data?: ImpactType;params?: PutApiV1ImpactTypeIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiV1ImpactTypeId>>,
         TError,
         {id: string;data?: ImpactType;params?: PutApiV1ImpactTypeIdParams},
         TContext
       > => {
-      return useMutation(getPutApiV1ImpactTypeIdMutationOptions(options));
+      return useMutation(getPutApiV1ImpactTypeIdMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1ImpactTypeId = (
@@ -2460,13 +2663,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1ImpactTypeId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1ImpactTypeId>>, TError,{id: string;params?: DeleteApiV1ImpactTypeIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1ImpactTypeId>>,
         TError,
         {id: string;params?: DeleteApiV1ImpactTypeIdParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1ImpactTypeIdMutationOptions(options));
+      return useMutation(getDeleteApiV1ImpactTypeIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1MonthlyAggregation = (
@@ -2518,13 +2721,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1MonthlyAggregation = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1MonthlyAggregation>>, TError,{params?: PostApiV1MonthlyAggregationParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1MonthlyAggregation>>,
         TError,
         {params?: PostApiV1MonthlyAggregationParams},
         TContext
       > => {
-      return useMutation(getPostApiV1MonthlyAggregationMutationOptions(options));
+      return useMutation(getPostApiV1MonthlyAggregationMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1MonthlyAggregation = (
@@ -2576,13 +2779,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1MonthlyAggregation = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1MonthlyAggregation>>, TError,{params?: DeleteApiV1MonthlyAggregationParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1MonthlyAggregation>>,
         TError,
         {params?: DeleteApiV1MonthlyAggregationParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1MonthlyAggregationMutationOptions(options));
+      return useMutation(getDeleteApiV1MonthlyAggregationMutationOptions(options), queryClient);
     }
 
 export const getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod = (
@@ -2614,7 +2817,7 @@ export const getGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod
 
 export const getGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>, }
+    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -2629,24 +2832,54 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: monthAggClassification !== null && monthAggClassification !== undefined && timePeriod !== null && timePeriod !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: monthAggClassification !== null && monthAggClassification !== undefined && timePeriod !== null && timePeriod !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>>
 export type GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodQueryError = ProblemDetails
 
 
+export function useGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params: undefined |  GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
  monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriod>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1MonthlyAggregationLatestMonthAggClassificationTimePeriodQueryOptions(monthAggClassification,timePeriod,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -2709,13 +2942,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1MonthlyAggregationHotspots = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1MonthlyAggregationHotspots>>, TError,{data?: MonthlyAggregationOptions;params?: PostApiV1MonthlyAggregationHotspotsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1MonthlyAggregationHotspots>>,
         TError,
         {data?: MonthlyAggregationOptions;params?: PostApiV1MonthlyAggregationHotspotsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1MonthlyAggregationHotspotsMutationOptions(options));
+      return useMutation(getPostApiV1MonthlyAggregationHotspotsMutationOptions(options), queryClient);
     }
 
 export const postApiV1MonthlyAggregationSourceSourceId = (
@@ -2771,13 +3004,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1MonthlyAggregationSourceSourceId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1MonthlyAggregationSourceSourceId>>, TError,{sourceId: number;data?: string;params?: PostApiV1MonthlyAggregationSourceSourceIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1MonthlyAggregationSourceSourceId>>,
         TError,
         {sourceId: number;data?: string;params?: PostApiV1MonthlyAggregationSourceSourceIdParams},
         TContext
       > => {
-      return useMutation(getPostApiV1MonthlyAggregationSourceSourceIdMutationOptions(options));
+      return useMutation(getPostApiV1MonthlyAggregationSourceSourceIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1MonthlyAggregationSegment = (
@@ -2832,13 +3065,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1MonthlyAggregationSegment = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1MonthlyAggregationSegment>>, TError,{data?: MonthlyAggregation;params?: PostApiV1MonthlyAggregationSegmentParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1MonthlyAggregationSegment>>,
         TError,
         {data?: MonthlyAggregation;params?: PostApiV1MonthlyAggregationSegmentParams},
         TContext
       > => {
-      return useMutation(getPostApiV1MonthlyAggregationSegmentMutationOptions(options));
+      return useMutation(getPostApiV1MonthlyAggregationSegmentMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1MonthlyAggregationDuplicates = (
@@ -2890,13 +3123,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1MonthlyAggregationDuplicates = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1MonthlyAggregationDuplicates>>, TError,{params?: DeleteApiV1MonthlyAggregationDuplicatesParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1MonthlyAggregationDuplicates>>,
         TError,
         {params?: DeleteApiV1MonthlyAggregationDuplicatesParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1MonthlyAggregationDuplicatesMutationOptions(options));
+      return useMutation(getDeleteApiV1MonthlyAggregationDuplicatesMutationOptions(options), queryClient);
     }
 
 export const getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod = (
@@ -2931,7 +3164,7 @@ export const getGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificatio
 export const getGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(segmentId: string,
     monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>, }
+    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -2946,25 +3179,58 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: segmentId !== null && segmentId !== undefined && monthAggClassification !== null && monthAggClassification !== undefined && timePeriod !== null && timePeriod !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: segmentId !== null && segmentId !== undefined && monthAggClassification !== null && monthAggClassification !== undefined && timePeriod !== null && timePeriod !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>>
 export type GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodQueryError = ProblemDetails
 
 
+export function useGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ segmentId: string,
+    monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params: undefined |  GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ segmentId: string,
+    monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
+ segmentId: string,
+    monthAggClassification: AggClassification,
+    timePeriod: TimePeriodFilter,
+    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError = ProblemDetails>(
  segmentId: string,
     monthAggClassification: AggClassification,
     timePeriod: TimePeriodFilter,
-    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriod>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1MonthlyAggregationSegmentsSegmentIdMonthAggClassificationTimePeriodQueryOptions(segmentId,monthAggClassification,timePeriod,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -2998,7 +3264,7 @@ export const getGetApiV1MonthlyAggregationFilteringTimePeriodsQueryKey = (params
     }
 
 
-export const getGetApiV1MonthlyAggregationFilteringTimePeriodsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>, }
+export const getGetApiV1MonthlyAggregationFilteringTimePeriodsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3013,22 +3279,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1MonthlyAggregationFilteringTimePeriodsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>>
 export type GetApiV1MonthlyAggregationFilteringTimePeriodsQueryError = ProblemDetails
 
 
+export function useGetApiV1MonthlyAggregationFilteringTimePeriods<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationFilteringTimePeriods<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationFilteringTimePeriods<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1MonthlyAggregationFilteringTimePeriods<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError = ProblemDetails>(
- params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1MonthlyAggregationFilteringTimePeriodsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationFilteringTimePeriods>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1MonthlyAggregationFilteringTimePeriodsQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3062,7 +3352,7 @@ export const getGetApiV1MonthlyAggregationMonthAggClassificationsQueryKey = (par
     }
 
 
-export const getGetApiV1MonthlyAggregationMonthAggClassificationsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>, }
+export const getGetApiV1MonthlyAggregationMonthAggClassificationsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3077,22 +3367,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1MonthlyAggregationMonthAggClassificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>>
 export type GetApiV1MonthlyAggregationMonthAggClassificationsQueryError = ProblemDetails
 
 
+export function useGetApiV1MonthlyAggregationMonthAggClassifications<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1MonthlyAggregationMonthAggClassificationsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationMonthAggClassifications<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationMonthAggClassifications<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1MonthlyAggregationMonthAggClassifications<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError = ProblemDetails>(
- params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1MonthlyAggregationMonthAggClassificationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationMonthAggClassifications>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1MonthlyAggregationMonthAggClassificationsQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3126,7 +3440,7 @@ export const getGetApiV1MonthlyAggregationSpeedCategoryFiltersQueryKey = (params
     }
 
 
-export const getGetApiV1MonthlyAggregationSpeedCategoryFiltersQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>, }
+export const getGetApiV1MonthlyAggregationSpeedCategoryFiltersQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3141,22 +3455,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1MonthlyAggregationSpeedCategoryFiltersQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>>
 export type GetApiV1MonthlyAggregationSpeedCategoryFiltersQueryError = ProblemDetails
 
 
+export function useGetApiV1MonthlyAggregationSpeedCategoryFilters<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationSpeedCategoryFilters<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1MonthlyAggregationSpeedCategoryFilters<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(
+ params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1MonthlyAggregationSpeedCategoryFilters<TData = Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError = ProblemDetails>(
- params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1MonthlyAggregationSpeedCategoryFiltersParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1MonthlyAggregationSpeedCategoryFilters>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1MonthlyAggregationSpeedCategoryFiltersQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3190,7 +3528,7 @@ export const getGetApiV1RegionQueryKey = (params?: GetApiV1RegionParams,) => {
     }
 
 
-export const getGetApiV1RegionQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(params?: GetApiV1RegionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>, }
+export const getGetApiV1RegionQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(params?: GetApiV1RegionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3205,22 +3543,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1RegionQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1Region>>>
 export type GetApiV1RegionQueryError = ProblemDetails
 
 
+export function useGetApiV1Region<TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1RegionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Region>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Region>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Region<TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(
+ params?: GetApiV1RegionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Region>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Region>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Region<TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(
+ params?: GetApiV1RegionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1Region<TData = Awaited<ReturnType<typeof getApiV1Region>>, TError = ProblemDetails>(
- params?: GetApiV1RegionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1RegionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Region>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1RegionQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3254,7 +3616,7 @@ export const getGetApiV1SegmentQueryKey = (params?: GetApiV1SegmentParams,) => {
     }
 
 
-export const getGetApiV1SegmentQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(params?: GetApiV1SegmentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>, }
+export const getGetApiV1SegmentQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(params?: GetApiV1SegmentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3269,22 +3631,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1SegmentQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1Segment>>>
 export type GetApiV1SegmentQueryError = ProblemDetails
 
 
+export function useGetApiV1Segment<TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1SegmentParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Segment>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Segment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Segment<TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(
+ params?: GetApiV1SegmentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1Segment>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1Segment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1Segment<TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(
+ params?: GetApiV1SegmentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1Segment<TData = Awaited<ReturnType<typeof getApiV1Segment>>, TError = ProblemDetails>(
- params?: GetApiV1SegmentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1SegmentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1Segment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1SegmentQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3347,13 +3733,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1Segment = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1Segment>>, TError,{data?: string[];params?: PostApiV1SegmentParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1Segment>>,
         TError,
         {data?: string[];params?: PostApiV1SegmentParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentMutationOptions(options));
+      return useMutation(getPostApiV1SegmentMutationOptions(options), queryClient);
     }
 
 export const getApiV1SegmentAllSegments = (
@@ -3379,7 +3765,7 @@ export const getGetApiV1SegmentAllSegmentsQueryKey = (params?: GetApiV1SegmentAl
     }
 
 
-export const getGetApiV1SegmentAllSegmentsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>, }
+export const getGetApiV1SegmentAllSegmentsQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3394,22 +3780,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1SegmentAllSegmentsQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>>
 export type GetApiV1SegmentAllSegmentsQueryError = ProblemDetails
 
 
+export function useGetApiV1SegmentAllSegments<TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(
+ params: undefined |  GetApiV1SegmentAllSegmentsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1SegmentAllSegments<TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(
+ params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1SegmentAllSegments<TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(
+ params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1SegmentAllSegments<TData = Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError = ProblemDetails>(
- params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetApiV1SegmentAllSegmentsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentAllSegments>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1SegmentAllSegmentsQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3446,7 +3856,7 @@ export const getGetApiV1SegmentSegmentIdQueryKey = (segmentId: string,
 
 
 export const getGetApiV1SegmentSegmentIdQueryOptions = <TData = Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError = ProblemDetails>(segmentId: string,
-    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>, }
+    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -3461,23 +3871,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: segmentId !== null && segmentId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: segmentId !== null && segmentId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiV1SegmentSegmentIdQueryResult = NonNullable<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>>
 export type GetApiV1SegmentSegmentIdQueryError = ProblemDetails
 
 
+export function useGetApiV1SegmentSegmentId<TData = Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError = ProblemDetails>(
+ segmentId: string,
+    params: undefined |  GetApiV1SegmentSegmentIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1SegmentSegmentId<TData = Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError = ProblemDetails>(
+ segmentId: string,
+    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>,
+          TError,
+          Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiV1SegmentSegmentId<TData = Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError = ProblemDetails>(
+ segmentId: string,
+    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetApiV1SegmentSegmentId<TData = Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError = ProblemDetails>(
  segmentId: string,
-    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetApiV1SegmentSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiV1SegmentSegmentId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiV1SegmentSegmentIdQueryOptions(segmentId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -3540,13 +3977,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SegmentSpeeds = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SegmentSpeeds>>, TError,{data?: SegmentRequestDto;params?: PostApiV1SegmentSpeedsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SegmentSpeeds>>,
         TError,
         {data?: SegmentRequestDto;params?: PostApiV1SegmentSpeedsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentSpeedsMutationOptions(options));
+      return useMutation(getPostApiV1SegmentSpeedsMutationOptions(options), queryClient);
     }
 
 export const postApiV1SegmentSegmentIdSpeeds = (
@@ -3602,13 +4039,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SegmentSegmentIdSpeeds = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SegmentSegmentIdSpeeds>>, TError,{segmentId: string;data?: SegmentRequestDto;params?: PostApiV1SegmentSegmentIdSpeedsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SegmentSegmentIdSpeeds>>,
         TError,
         {segmentId: string;data?: SegmentRequestDto;params?: PostApiV1SegmentSegmentIdSpeedsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentSegmentIdSpeedsMutationOptions(options));
+      return useMutation(getPostApiV1SegmentSegmentIdSpeedsMutationOptions(options), queryClient);
     }
 
 export const postApiV1SegmentAddSegment = (
@@ -3663,13 +4100,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SegmentAddSegment = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SegmentAddSegment>>, TError,{data?: NewSegment;params?: PostApiV1SegmentAddSegmentParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SegmentAddSegment>>,
         TError,
         {data?: NewSegment;params?: PostApiV1SegmentAddSegmentParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentAddSegmentMutationOptions(options));
+      return useMutation(getPostApiV1SegmentAddSegmentMutationOptions(options), queryClient);
     }
 
 export const postApiV1SegmentSegmentIdEntitiesReplace = (
@@ -3725,13 +4162,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SegmentSegmentIdEntitiesReplace = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SegmentSegmentIdEntitiesReplace>>, TError,{segmentId: string;data?: string[];params?: PostApiV1SegmentSegmentIdEntitiesReplaceParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SegmentSegmentIdEntitiesReplace>>,
         TError,
         {segmentId: string;data?: string[];params?: PostApiV1SegmentSegmentIdEntitiesReplaceParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentSegmentIdEntitiesReplaceMutationOptions(options));
+      return useMutation(getPostApiV1SegmentSegmentIdEntitiesReplaceMutationOptions(options), queryClient);
     }
 
 export const postApiV1SegmentSegmentIdEntitiesAdd = (
@@ -3787,13 +4224,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SegmentSegmentIdEntitiesAdd = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SegmentSegmentIdEntitiesAdd>>, TError,{segmentId: string;data?: string[];params?: PostApiV1SegmentSegmentIdEntitiesAddParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SegmentSegmentIdEntitiesAdd>>,
         TError,
         {segmentId: string;data?: string[];params?: PostApiV1SegmentSegmentIdEntitiesAddParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SegmentSegmentIdEntitiesAddMutationOptions(options));
+      return useMutation(getPostApiV1SegmentSegmentIdEntitiesAddMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1SegmentSegmentIdEntitiesDelete = (
@@ -3849,13 +4286,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1SegmentSegmentIdEntitiesDelete = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1SegmentSegmentIdEntitiesDelete>>, TError,{segmentId: string;data?: string[];params?: DeleteApiV1SegmentSegmentIdEntitiesDeleteParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1SegmentSegmentIdEntitiesDelete>>,
         TError,
         {segmentId: string;data?: string[];params?: DeleteApiV1SegmentSegmentIdEntitiesDeleteParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1SegmentSegmentIdEntitiesDeleteMutationOptions(options));
+      return useMutation(getDeleteApiV1SegmentSegmentIdEntitiesDeleteMutationOptions(options), queryClient);
     }
 
 export const putApiV1SegmentUpdateSegmentSegmentId = (
@@ -3911,13 +4348,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutApiV1SegmentUpdateSegmentSegmentId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putApiV1SegmentUpdateSegmentSegmentId>>, TError,{segmentId: string;data?: NewSegmentWithId;params?: PutApiV1SegmentUpdateSegmentSegmentIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putApiV1SegmentUpdateSegmentSegmentId>>,
         TError,
         {segmentId: string;data?: NewSegmentWithId;params?: PutApiV1SegmentUpdateSegmentSegmentIdParams},
         TContext
       > => {
-      return useMutation(getPutApiV1SegmentUpdateSegmentSegmentIdMutationOptions(options));
+      return useMutation(getPutApiV1SegmentUpdateSegmentSegmentIdMutationOptions(options), queryClient);
     }
 
 export const deleteApiV1SegmentDeleteSegmentSegmentId = (
@@ -3970,13 +4407,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteApiV1SegmentDeleteSegmentSegmentId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteApiV1SegmentDeleteSegmentSegmentId>>, TError,{segmentId: string;params?: DeleteApiV1SegmentDeleteSegmentSegmentIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteApiV1SegmentDeleteSegmentSegmentId>>,
         TError,
         {segmentId: string;params?: DeleteApiV1SegmentDeleteSegmentSegmentIdParams},
         TContext
       > => {
-      return useMutation(getDeleteApiV1SegmentDeleteSegmentSegmentIdMutationOptions(options));
+      return useMutation(getDeleteApiV1SegmentDeleteSegmentSegmentIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedComplianceGetReportData = (
@@ -4031,13 +4468,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedComplianceGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedComplianceGetReportData>>, TError,{data?: SpeedComplianceOptions;params?: PostApiV1SpeedComplianceGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedComplianceGetReportData>>,
         TError,
         {data?: SpeedComplianceOptions;params?: PostApiV1SpeedComplianceGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedComplianceGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1SpeedComplianceGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedFromImpactImpactImpactId = (
@@ -4093,13 +4530,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedFromImpactImpactImpactId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedFromImpactImpactImpactId>>, TError,{impactId: string;data?: SpeedFromImpactOptions;params?: PostApiV1SpeedFromImpactImpactImpactIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedFromImpactImpactImpactId>>,
         TError,
         {impactId: string;data?: SpeedFromImpactOptions;params?: PostApiV1SpeedFromImpactImpactImpactIdParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedFromImpactImpactImpactIdMutationOptions(options));
+      return useMutation(getPostApiV1SpeedFromImpactImpactImpactIdMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedFromImpactSegmentSegmentId = (
@@ -4155,13 +4592,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedFromImpactSegmentSegmentId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedFromImpactSegmentSegmentId>>, TError,{segmentId: string;data?: SpeedFromImpactOptions;params?: PostApiV1SpeedFromImpactSegmentSegmentIdParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedFromImpactSegmentSegmentId>>,
         TError,
         {segmentId: string;data?: SpeedFromImpactOptions;params?: PostApiV1SpeedFromImpactSegmentSegmentIdParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedFromImpactSegmentSegmentIdMutationOptions(options));
+      return useMutation(getPostApiV1SpeedFromImpactSegmentSegmentIdMutationOptions(options), queryClient);
     }
 
 export const getRouteSpeeds = (
@@ -4216,13 +4653,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetRouteSpeeds = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getRouteSpeeds>>, TError,{data?: RouteSpeedOptions;params?: GetRouteSpeedsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getRouteSpeeds>>,
         TError,
         {data?: RouteSpeedOptions;params?: GetRouteSpeedsParams},
         TContext
       > => {
-      return useMutation(getGetRouteSpeedsMutationOptions(options));
+      return useMutation(getGetRouteSpeedsMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedManagementGetMonthlyHistoricalSpeeds = (
@@ -4277,13 +4714,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedManagementGetMonthlyHistoricalSpeeds = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedManagementGetMonthlyHistoricalSpeeds>>, TError,{data?: HistoricalSpeedOptions;params?: PostApiV1SpeedManagementGetMonthlyHistoricalSpeedsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedManagementGetMonthlyHistoricalSpeeds>>,
         TError,
         {data?: HistoricalSpeedOptions;params?: PostApiV1SpeedManagementGetMonthlyHistoricalSpeedsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedManagementGetMonthlyHistoricalSpeedsMutationOptions(options));
+      return useMutation(getPostApiV1SpeedManagementGetMonthlyHistoricalSpeedsMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedManagementGetDailyHistoricalSpeeds = (
@@ -4338,13 +4775,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedManagementGetDailyHistoricalSpeeds = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedManagementGetDailyHistoricalSpeeds>>, TError,{data?: HistoricalSpeedOptions;params?: PostApiV1SpeedManagementGetDailyHistoricalSpeedsParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedManagementGetDailyHistoricalSpeeds>>,
         TError,
         {data?: HistoricalSpeedOptions;params?: PostApiV1SpeedManagementGetDailyHistoricalSpeedsParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedManagementGetDailyHistoricalSpeedsMutationOptions(options));
+      return useMutation(getPostApiV1SpeedManagementGetDailyHistoricalSpeedsMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedOverDistanceGetReportData = (
@@ -4399,13 +4836,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedOverDistanceGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedOverDistanceGetReportData>>, TError,{data?: SpeedOverDistanceOptions;params?: PostApiV1SpeedOverDistanceGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedOverDistanceGetReportData>>,
         TError,
         {data?: SpeedOverDistanceOptions;params?: PostApiV1SpeedOverDistanceGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedOverDistanceGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1SpeedOverDistanceGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedOverTimeGetReportData = (
@@ -4460,13 +4897,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedOverTimeGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedOverTimeGetReportData>>, TError,{data?: SpeedOverTimeOptions;params?: PostApiV1SpeedOverTimeGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedOverTimeGetReportData>>,
         TError,
         {data?: SpeedOverTimeOptions;params?: PostApiV1SpeedOverTimeGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedOverTimeGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1SpeedOverTimeGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedVariabilityGetReportData = (
@@ -4521,13 +4958,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedVariabilityGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedVariabilityGetReportData>>, TError,{data?: SpeedVariabilityOptions;params?: PostApiV1SpeedVariabilityGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedVariabilityGetReportData>>,
         TError,
         {data?: SpeedVariabilityOptions;params?: PostApiV1SpeedVariabilityGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedVariabilityGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1SpeedVariabilityGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1SpeedViolationsGetReportData = (
@@ -4582,13 +5019,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1SpeedViolationsGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1SpeedViolationsGetReportData>>, TError,{data?: SpeedViolationsOptions;params?: PostApiV1SpeedViolationsGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1SpeedViolationsGetReportData>>,
         TError,
         {data?: SpeedViolationsOptions;params?: PostApiV1SpeedViolationsGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1SpeedViolationsGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1SpeedViolationsGetReportDataMutationOptions(options), queryClient);
     }
 
 export const postApiV1ViolationsAndExtremeViolationsGetReportData = (
@@ -4643,12 +5080,12 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostApiV1ViolationsAndExtremeViolationsGetReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postApiV1ViolationsAndExtremeViolationsGetReportData>>, TError,{data?: ViolationsAndExtremeViolationsOptions;params?: PostApiV1ViolationsAndExtremeViolationsGetReportDataParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postApiV1ViolationsAndExtremeViolationsGetReportData>>,
         TError,
         {data?: ViolationsAndExtremeViolationsOptions;params?: PostApiV1ViolationsAndExtremeViolationsGetReportDataParams},
         TContext
       > => {
-      return useMutation(getPostApiV1ViolationsAndExtremeViolationsGetReportDataMutationOptions(options));
+      return useMutation(getPostApiV1ViolationsAndExtremeViolationsGetReportDataMutationOptions(options), queryClient);
     }
 

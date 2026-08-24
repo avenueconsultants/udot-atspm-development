@@ -15,8 +15,8 @@
 // limitations under the License.
 // #endregion
 import { render, RenderOptions } from '@testing-library/react'
-import { ReactElement, ReactNode } from 'react'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactElement, ReactNode, useState } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Any component that calls a generated `use*` hook needs a QueryClientProvider
 // in its tree - render() from '@testing-library/react' alone isn't enough.
@@ -30,11 +30,14 @@ function createTestQueryClient() {
   })
 }
 
+// useState (not a plain call in the render body) keeps the client's identity
+// stable across re-renders - v5's QueryClientProvider mounts/unmounts on
+// client identity change, so a rerender() in a test would otherwise reset
+// the query cache mid-test.
 function AllProviders({ children }: { children: ReactNode }) {
+  const [client] = useState(createTestQueryClient)
   return (
-    <QueryClientProvider client={createTestQueryClient()}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
   )
 }
 

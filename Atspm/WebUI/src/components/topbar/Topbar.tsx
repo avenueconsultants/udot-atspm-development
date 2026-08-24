@@ -10,7 +10,7 @@ import { Box, Button, IconButton, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import DropDownButton from './DropdownButton'
 import UserMenu from './UserMenu'
 

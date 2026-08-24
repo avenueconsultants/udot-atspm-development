@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GreenTimeUtilizationOptions,
@@ -70,7 +75,7 @@ export const getGetGreenTimeUtilizationTestDataQueryKey = () => {
     }
 
 
-export const getGetGreenTimeUtilizationTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>, }
+export const getGetGreenTimeUtilizationTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetGreenTimeUtilizationTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>>
 export type GetGreenTimeUtilizationTestDataQueryError = ProblemDetails
 
 
+export function useGetGreenTimeUtilizationTestData<TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGreenTimeUtilizationTestData<TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGreenTimeUtilizationTestData<TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetGreenTimeUtilizationTestData<TData = Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetGreenTimeUtilizationTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetGreenTimeUtilizationReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getGreenTimeUtilizationReportData>>, TError,{data?: GreenTimeUtilizationOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getGreenTimeUtilizationReportData>>,
         TError,
         {data?: GreenTimeUtilizationOptions},
         TContext
       > => {
-      return useMutation(getGetGreenTimeUtilizationReportDataMutationOptions(options));
+      return useMutation(getGetGreenTimeUtilizationReportDataMutationOptions(options), queryClient);
     }

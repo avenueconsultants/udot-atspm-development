@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ArrivalOnRedOptions,
@@ -70,7 +75,7 @@ export const getGetArrivalOnRedTestDataQueryKey = () => {
     }
 
 
-export const getGetArrivalOnRedTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>, }
+export const getGetArrivalOnRedTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetArrivalOnRedTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getArrivalOnRedTestData>>>
 export type GetArrivalOnRedTestDataQueryError = ProblemDetails
 
 
+export function useGetArrivalOnRedTestData<TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getArrivalOnRedTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getArrivalOnRedTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetArrivalOnRedTestData<TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getArrivalOnRedTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getArrivalOnRedTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetArrivalOnRedTestData<TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetArrivalOnRedTestData<TData = Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getArrivalOnRedTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetArrivalOnRedTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetArrivalOnRedReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getArrivalOnRedReportData>>, TError,{data?: ArrivalOnRedOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getArrivalOnRedReportData>>,
         TError,
         {data?: ArrivalOnRedOptions},
         TContext
       > => {
-      return useMutation(getGetArrivalOnRedReportDataMutationOptions(options));
+      return useMutation(getGetArrivalOnRedReportDataMutationOptions(options), queryClient);
     }

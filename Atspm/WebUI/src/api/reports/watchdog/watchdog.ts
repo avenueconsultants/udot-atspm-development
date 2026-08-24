@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -67,7 +72,7 @@ export const getGetWatchdogIssueTypesQueryKey = () => {
     }
 
 
-export const getGetWatchdogIssueTypesQueryOptions = <TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>, }
+export const getGetWatchdogIssueTypesQueryOptions = <TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -82,22 +87,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWatchdogIssueTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getWatchdogIssueTypes>>>
 export type GetWatchdogIssueTypesQueryError = ProblemDetails
 
 
+export function useGetWatchdogIssueTypes<TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchdogIssueTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchdogIssueTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchdogIssueTypes<TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchdogIssueTypes>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchdogIssueTypes>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchdogIssueTypes<TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetWatchdogIssueTypes<TData = Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogIssueTypes>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWatchdogIssueTypesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -132,7 +161,7 @@ export const getGetWatchdogTestDataQueryKey = () => {
     }
 
 
-export const getGetWatchdogTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>, }
+export const getGetWatchdogTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -147,25 +176,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetWatchdogTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getWatchdogTestData>>>
 export type GetWatchdogTestDataQueryError = ProblemDetails
 
 
+export function useGetWatchdogTestData<TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchdogTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchdogTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchdogTestData<TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWatchdogTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getWatchdogTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWatchdogTestData<TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetWatchdogTestData<TData = Awaited<ReturnType<typeof getWatchdogTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWatchdogTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWatchdogTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -231,11 +284,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetWatchdogReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getWatchdogReportData>>, TError,{data?: WatchDogOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getWatchdogReportData>>,
         TError,
         {data?: WatchDogOptions},
         TContext
       > => {
-      return useMutation(getGetWatchdogReportDataMutationOptions(options));
+      return useMutation(getGetWatchdogReportDataMutationOptions(options), queryClient);
     }

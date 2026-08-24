@@ -14,20 +14,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { usePostRequest } from '@/hooks/usePostRequest'
-import { reportsAxios } from '@/lib/axios'
-import { AxiosHeaders } from 'axios'
-
-const route = '/api/v1/Aggregation/getReportData'
-const headers: AxiosHeaders = new AxiosHeaders({
-  'Content-Type': 'application/json',
-})
+import { getAggregationReportData } from '@/api/reports'
+import { useNotificationStore } from '@/stores/notifications'
+import { useMutation } from '@tanstack/react-query'
 
 export function usePostAggregateData() {
-  const mutation = usePostRequest({
-    url: route,
-    axiosInstance: reportsAxios,
-    headers,
+  const { addNotification } = useNotificationStore()
+
+  return useMutation({
+    mutationFn: getAggregationReportData,
+    onError: (error) => {
+      addNotification({
+        type: 'error',
+        title: 'Error fetching aggregate data',
+        message: (error as Error).message || 'An error occurred',
+      })
+    },
   })
-  return mutation
 }

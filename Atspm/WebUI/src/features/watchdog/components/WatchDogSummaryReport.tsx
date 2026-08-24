@@ -22,7 +22,7 @@ const WatchdogSummaryReport = () => {
   const {
     mutate: fetchDashboardData,
     data: dashboardData,
-    isLoading,
+    isPending: isLoading,
     error,
   } = useGetWatchDogDashboardDashboardGroup()
 

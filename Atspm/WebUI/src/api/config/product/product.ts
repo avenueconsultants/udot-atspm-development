@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetProductCountParams,
@@ -72,7 +77,7 @@ export const getGetProductQueryKey = (params?: GetProductParams,) => {
     }
 
 
-export const getGetProductQueryOptions = <TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(params?: GetProductParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>, }
+export const getGetProductQueryOptions = <TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(params?: GetProductParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -87,22 +92,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetProductQueryResult = NonNullable<Awaited<ReturnType<typeof getProduct>>>
 export type GetProductQueryError = void
 
 
+export function useGetProduct<TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(
+ params: undefined |  GetProductParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProduct>>,
+          TError,
+          Awaited<ReturnType<typeof getProduct>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProduct<TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(
+ params?: GetProductParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProduct>>,
+          TError,
+          Awaited<ReturnType<typeof getProduct>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProduct<TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(
+ params?: GetProductParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetProduct<TData = Awaited<ReturnType<typeof getProduct>>, TError = void>(
- params?: GetProductParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetProductParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProduct>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProductQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -164,13 +193,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostProduct = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postProduct>>, TError,{data?: Product;params?: PostProductParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postProduct>>,
         TError,
         {data?: Product;params?: PostProductParams},
         TContext
       > => {
-      return useMutation(getPostProductMutationOptions(options));
+      return useMutation(getPostProductMutationOptions(options), queryClient);
     }
     export const getProductCount = (
     params?: GetProductCountParams,
@@ -195,7 +224,7 @@ export const getGetProductCountQueryKey = (params?: GetProductCountParams,) => {
     }
 
 
-export const getGetProductCountQueryOptions = <TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(params?: GetProductCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>, }
+export const getGetProductCountQueryOptions = <TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(params?: GetProductCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -210,22 +239,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetProductCountQueryResult = NonNullable<Awaited<ReturnType<typeof getProductCount>>>
 export type GetProductCountQueryError = void
 
 
+export function useGetProductCount<TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(
+ params: undefined |  GetProductCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProductCount>>,
+          TError,
+          Awaited<ReturnType<typeof getProductCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProductCount<TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(
+ params?: GetProductCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProductCount>>,
+          TError,
+          Awaited<ReturnType<typeof getProductCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProductCount<TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(
+ params?: GetProductCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetProductCount<TData = Awaited<ReturnType<typeof getProductCount>>, TError = void>(
- params?: GetProductCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetProductCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProductCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -261,7 +314,7 @@ export const getGetProductFromKeyQueryKey = (key: number,
 
 
 export const getGetProductFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getProductFromKey>>, TError = void>(key: number,
-    params?: GetProductFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>, }
+    params?: GetProductFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -276,23 +329,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetProductFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getProductFromKey>>>
 export type GetProductFromKeyQueryError = void
 
 
+export function useGetProductFromKey<TData = Awaited<ReturnType<typeof getProductFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetProductFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProductFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getProductFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProductFromKey<TData = Awaited<ReturnType<typeof getProductFromKey>>, TError = void>(
+ key: number,
+    params?: GetProductFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProductFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getProductFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProductFromKey<TData = Awaited<ReturnType<typeof getProductFromKey>>, TError = void>(
+ key: number,
+    params?: GetProductFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetProductFromKey<TData = Awaited<ReturnType<typeof getProductFromKey>>, TError = void>(
  key: number,
-    params?: GetProductFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetProductFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProductFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProductFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -355,13 +435,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutProductFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putProductFromKey>>, TError,{key: number;data?: Product;params?: PutProductFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putProductFromKey>>,
         TError,
         {key: number;data?: Product;params?: PutProductFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutProductFromKeyMutationOptions(options));
+      return useMutation(getPutProductFromKeyMutationOptions(options), queryClient);
     }
     export const patchProductFromKey = (
     key: number,
@@ -416,13 +496,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchProductFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchProductFromKey>>, TError,{key: number;data?: Product;params?: PatchProductFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchProductFromKey>>,
         TError,
         {key: number;data?: Product;params?: PatchProductFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchProductFromKeyMutationOptions(options));
+      return useMutation(getPatchProductFromKeyMutationOptions(options), queryClient);
     }
     export const deleteProductFromKey = (
     key: number,
@@ -472,11 +552,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteProductFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteProductFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteProductFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteProductFromKeyMutationOptions(options));
+      return useMutation(getDeleteProductFromKeyMutationOptions(options), queryClient);
     }

@@ -27,7 +27,7 @@ import {
 } from '@/api/reports'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ToolOptions, ToolType } from '../common/types'
 import {
   Cycle,

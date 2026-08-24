@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Approach,
@@ -97,7 +102,7 @@ export const getGetLocationApproachesFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationApproachesFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError = void>(key: number,
-    params?: GetLocationApproachesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>, }
+    params?: GetLocationApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -112,26 +117,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationApproachesFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationApproachesFromKey>>>
 export type GetLocationApproachesFromKeyQueryError = void
 
 
+export function useGetLocationApproachesFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationApproachesFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationApproachesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationApproachesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationApproachesFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationApproachesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationApproachesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationApproachesFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
 
 export function useGetLocationApproachesFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationApproachesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationApproachesFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -170,7 +202,7 @@ export const getGetLocationApproachesCountFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationApproachesCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError = void>(key: number,
-    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>, }
+    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -185,26 +217,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationApproachesCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>>
 export type GetLocationApproachesCountFromKeyQueryError = void
 
 
+export function useGetLocationApproachesCountFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationApproachesCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationApproachesCountFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationApproachesCountFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
 
 export function useGetLocationApproachesCountFromKey<TData = Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationApproachesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationApproachesCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -243,7 +302,7 @@ export const getGetLocationAreasFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationAreasFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError = void>(key: number,
-    params?: GetLocationAreasFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>, }
+    params?: GetLocationAreasFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -258,26 +317,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationAreasFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationAreasFromKey>>>
 export type GetLocationAreasFromKeyQueryError = void
 
 
+export function useGetLocationAreasFromKey<TData = Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationAreasFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAreasFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAreasFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAreasFromKey<TData = Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationAreasFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAreasFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAreasFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAreasFromKey<TData = Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationAreasFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Area navigation property action
  */
 
 export function useGetLocationAreasFromKey<TData = Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationAreasFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationAreasFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationAreasFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -316,7 +402,7 @@ export const getGetLocationAreasCountFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationAreasCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError = void>(key: number,
-    params?: GetLocationAreasCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>, }
+    params?: GetLocationAreasCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -331,26 +417,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationAreasCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>>
 export type GetLocationAreasCountFromKeyQueryError = void
 
 
+export function useGetLocationAreasCountFromKey<TData = Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationAreasCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAreasCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAreasCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAreasCountFromKey<TData = Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationAreasCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAreasCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAreasCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAreasCountFromKey<TData = Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationAreasCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Area navigation property action
  */
 
 export function useGetLocationAreasCountFromKey<TData = Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationAreasCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationAreasCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAreasCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationAreasCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -389,7 +502,7 @@ export const getGetLocationDevicesFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationDevicesFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError = void>(key: number,
-    params?: GetLocationDevicesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>, }
+    params?: GetLocationDevicesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -404,26 +517,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationDevicesFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationDevicesFromKey>>>
 export type GetLocationDevicesFromKeyQueryError = void
 
 
+export function useGetLocationDevicesFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationDevicesFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDevicesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDevicesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDevicesFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationDevicesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDevicesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDevicesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDevicesFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationDevicesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Device navigation property action
  */
 
 export function useGetLocationDevicesFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationDevicesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationDevicesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationDevicesFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -462,7 +602,7 @@ export const getGetLocationDevicesCountFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationDevicesCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError = void>(key: number,
-    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>, }
+    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -477,26 +617,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationDevicesCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>>
 export type GetLocationDevicesCountFromKeyQueryError = void
 
 
+export function useGetLocationDevicesCountFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationDevicesCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDevicesCountFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDevicesCountFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Device navigation property action
  */
 
 export function useGetLocationDevicesCountFromKey<TData = Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationDevicesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDevicesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationDevicesCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -562,13 +729,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetLocationCopyLocationToNewVersionFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLocationCopyLocationToNewVersionFromKey>>, TError,{key: number;params?: GetLocationCopyLocationToNewVersionFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLocationCopyLocationToNewVersionFromKey>>,
         TError,
         {key: number;params?: GetLocationCopyLocationToNewVersionFromKeyParams},
         TContext
       > => {
-      return useMutation(getGetLocationCopyLocationToNewVersionFromKeyMutationOptions(options));
+      return useMutation(getGetLocationCopyLocationToNewVersionFromKeyMutationOptions(options), queryClient);
     }
     /**
  * @summary Marks Utah.Udot.Atspm.Data.Models.Location to deleted
@@ -626,13 +793,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useDeleteLocationSetLocationTodFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLocationSetLocationTodFromKey>>, TError,{key: number;params?: DeleteLocationSetLocationTodFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteLocationSetLocationTodFromKey>>,
         TError,
         {key: number;params?: DeleteLocationSetLocationTodFromKeyParams},
         TContext
       > => {
-      return useMutation(getDeleteLocationSetLocationTodFromKeyMutationOptions(options));
+      return useMutation(getDeleteLocationSetLocationTodFromKeyMutationOptions(options), queryClient);
     }
     /**
  * @summary Marks Utah.Udot.Atspm.Data.Models.Location to deleted
@@ -690,13 +857,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useDeleteLocationAllVersionsFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLocationAllVersionsFromKey>>, TError,{key: string;params?: DeleteLocationAllVersionsFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteLocationAllVersionsFromKey>>,
         TError,
         {key: string;params?: DeleteLocationAllVersionsFromKeyParams},
         TContext
       > => {
-      return useMutation(getDeleteLocationAllVersionsFromKeyMutationOptions(options));
+      return useMutation(getDeleteLocationAllVersionsFromKeyMutationOptions(options), queryClient);
     }
     /**
  * @summary Get latest version of Utah.Udot.Atspm.Data.Models.Location and related entities that match identifier
@@ -727,7 +894,7 @@ export const getGetLocationLatestVersionOfLocationFromIdentifierQueryKey = (iden
 
 
 export const getGetLocationLatestVersionOfLocationFromIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError = void>(identifier: string,
-    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>, }
+    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -742,26 +909,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: identifier !== null && identifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: identifier !== null && identifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationLatestVersionOfLocationFromIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>>
 export type GetLocationLatestVersionOfLocationFromIdentifierQueryError = void
 
 
+export function useGetLocationLatestVersionOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params: undefined |  GetLocationLatestVersionOfLocationFromIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLatestVersionOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLatestVersionOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get latest version of Utah.Udot.Atspm.Data.Models.Location and related entities that match identifier
  */
 
 export function useGetLocationLatestVersionOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError = void>(
  identifier: string,
-    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationLatestVersionOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfLocationFromIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationLatestVersionOfLocationFromIdentifierQueryOptions(identifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -800,7 +994,7 @@ export const getGetLocationAllVersionsOfLocationFromIdentifierQueryKey = (identi
 
 
 export const getGetLocationAllVersionsOfLocationFromIdentifierQueryOptions = <TData = Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError = void>(identifier: string,
-    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>, }
+    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -815,26 +1009,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: identifier !== null && identifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: identifier !== null && identifier !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationAllVersionsOfLocationFromIdentifierQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>>
 export type GetLocationAllVersionsOfLocationFromIdentifierQueryError = void
 
 
+export function useGetLocationAllVersionsOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params: undefined |  GetLocationAllVersionsOfLocationFromIdentifierParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAllVersionsOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationAllVersionsOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError = void>(
+ identifier: string,
+    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get all active Utah.Udot.Atspm.Data.Models.Location that match identifier
  */
 
 export function useGetLocationAllVersionsOfLocationFromIdentifier<TData = Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError = void>(
  identifier: string,
-    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationAllVersionsOfLocationFromIdentifierParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationAllVersionsOfLocationFromIdentifier>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationAllVersionsOfLocationFromIdentifierQueryOptions(identifier,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -870,7 +1091,7 @@ export const getGetLocationLatestVersionOfAllLocationsQueryKey = (params?: GetLo
     }
 
 
-export const getGetLocationLatestVersionOfAllLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>, }
+export const getGetLocationLatestVersionOfAllLocationsQueryOptions = <TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -885,25 +1106,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationLatestVersionOfAllLocationsQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>>
 export type GetLocationLatestVersionOfAllLocationsQueryError = void
 
 
+export function useGetLocationLatestVersionOfAllLocations<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(
+ params: undefined |  GetLocationLatestVersionOfAllLocationsParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLatestVersionOfAllLocations<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(
+ params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLatestVersionOfAllLocations<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(
+ params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get latest version of all Utah.Udot.Atspm.Data.Models.Location
  */
 
 export function useGetLocationLatestVersionOfAllLocations<TData = Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError = void>(
- params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetLocationLatestVersionOfAllLocationsParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLatestVersionOfAllLocations>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationLatestVersionOfAllLocationsQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -939,7 +1184,7 @@ export const getGetLocationDetectionTypeCountQueryKey = (params?: GetLocationDet
     }
 
 
-export const getGetLocationDetectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(params?: GetLocationDetectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>, }
+export const getGetLocationDetectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(params?: GetLocationDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -954,25 +1199,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationDetectionTypeCountQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>>
 export type GetLocationDetectionTypeCountQueryError = void
 
 
+export function useGetLocationDetectionTypeCount<TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(
+ params: undefined |  GetLocationDetectionTypeCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDetectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDetectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDetectionTypeCount<TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(
+ params?: GetLocationDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationDetectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationDetectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationDetectionTypeCount<TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(
+ params?: GetLocationDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get count of Device Types using correct version of all Utah.Udot.Atspm.Data.Models.Location
  */
 
 export function useGetLocationDetectionTypeCount<TData = Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError = void>(
- params?: GetLocationDetectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetLocationDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationDetectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationDetectionTypeCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1008,7 +1277,7 @@ export const getGetLocationLocationsForSearchQueryKey = (params?: GetLocationLoc
     }
 
 
-export const getGetLocationLocationsForSearchQueryOptions = <TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(params?: GetLocationLocationsForSearchParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>, }
+export const getGetLocationLocationsForSearchQueryOptions = <TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(params?: GetLocationLocationsForSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1023,25 +1292,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationLocationsForSearchQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationLocationsForSearch>>>
 export type GetLocationLocationsForSearchQueryError = void
 
 
+export function useGetLocationLocationsForSearch<TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(
+ params: undefined |  GetLocationLocationsForSearchParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLocationsForSearch>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLocationsForSearch>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLocationsForSearch<TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(
+ params?: GetLocationLocationsForSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationLocationsForSearch>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationLocationsForSearch>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationLocationsForSearch<TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(
+ params?: GetLocationLocationsForSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Gets an optimized list of Utah.Udot.Atspm.ConfigApi.Models.SearchLocation to use for Location selection
  */
 
 export function useGetLocationLocationsForSearch<TData = Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError = void>(
- params?: GetLocationLocationsForSearchParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetLocationLocationsForSearchParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationLocationsForSearch>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationLocationsForSearchQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1074,7 +1367,7 @@ export const getGetLocationQueryKey = (params?: GetLocationParams,) => {
     }
 
 
-export const getGetLocationQueryOptions = <TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(params?: GetLocationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>, }
+export const getGetLocationQueryOptions = <TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(params?: GetLocationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1089,22 +1382,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationQueryResult = NonNullable<Awaited<ReturnType<typeof getLocation>>>
 export type GetLocationQueryError = void
 
 
+export function useGetLocation<TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(
+ params: undefined |  GetLocationParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocation>>,
+          TError,
+          Awaited<ReturnType<typeof getLocation>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocation<TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(
+ params?: GetLocationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocation>>,
+          TError,
+          Awaited<ReturnType<typeof getLocation>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocation<TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(
+ params?: GetLocationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetLocation<TData = Awaited<ReturnType<typeof getLocation>>, TError = void>(
- params?: GetLocationParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetLocationParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocation>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1166,13 +1483,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostLocation = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postLocation>>, TError,{data?: Location;params?: PostLocationParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postLocation>>,
         TError,
         {data?: Location;params?: PostLocationParams},
         TContext
       > => {
-      return useMutation(getPostLocationMutationOptions(options));
+      return useMutation(getPostLocationMutationOptions(options), queryClient);
     }
     export const getLocationCount = (
     params?: GetLocationCountParams,
@@ -1197,7 +1514,7 @@ export const getGetLocationCountQueryKey = (params?: GetLocationCountParams,) =>
     }
 
 
-export const getGetLocationCountQueryOptions = <TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(params?: GetLocationCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>, }
+export const getGetLocationCountQueryOptions = <TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(params?: GetLocationCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1212,22 +1529,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationCountQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationCount>>>
 export type GetLocationCountQueryError = void
 
 
+export function useGetLocationCount<TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(
+ params: undefined |  GetLocationCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationCount>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationCount<TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(
+ params?: GetLocationCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationCount>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationCount<TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(
+ params?: GetLocationCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetLocationCount<TData = Awaited<ReturnType<typeof getLocationCount>>, TError = void>(
- params?: GetLocationCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetLocationCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1263,7 +1604,7 @@ export const getGetLocationFromKeyQueryKey = (key: number,
 
 
 export const getGetLocationFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getLocationFromKey>>, TError = void>(key: number,
-    params?: GetLocationFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>, }
+    params?: GetLocationFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1278,23 +1619,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLocationFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getLocationFromKey>>>
 export type GetLocationFromKeyQueryError = void
 
 
+export function useGetLocationFromKey<TData = Awaited<ReturnType<typeof getLocationFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetLocationFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationFromKey<TData = Awaited<ReturnType<typeof getLocationFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLocationFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getLocationFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLocationFromKey<TData = Awaited<ReturnType<typeof getLocationFromKey>>, TError = void>(
+ key: number,
+    params?: GetLocationFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetLocationFromKey<TData = Awaited<ReturnType<typeof getLocationFromKey>>, TError = void>(
  key: number,
-    params?: GetLocationFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetLocationFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLocationFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLocationFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1357,13 +1725,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutLocationFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putLocationFromKey>>, TError,{key: number;data?: Location;params?: PutLocationFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putLocationFromKey>>,
         TError,
         {key: number;data?: Location;params?: PutLocationFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutLocationFromKeyMutationOptions(options));
+      return useMutation(getPutLocationFromKeyMutationOptions(options), queryClient);
     }
     export const patchLocationFromKey = (
     key: number,
@@ -1418,13 +1786,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchLocationFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchLocationFromKey>>, TError,{key: number;data?: Location;params?: PatchLocationFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchLocationFromKey>>,
         TError,
         {key: number;data?: Location;params?: PatchLocationFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchLocationFromKeyMutationOptions(options));
+      return useMutation(getPatchLocationFromKeyMutationOptions(options), queryClient);
     }
     export const deleteLocationFromKey = (
     key: number,
@@ -1474,11 +1842,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteLocationFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteLocationFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteLocationFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteLocationFromKeyMutationOptions(options));
+      return useMutation(getDeleteLocationFromKeyMutationOptions(options), queryClient);
     }

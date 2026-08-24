@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   DetectionType,
@@ -84,7 +89,7 @@ export const getGetDetectionTypeDetectorsFromKeyQueryKey = (key: string,
 
 
 export const getGetDetectionTypeDetectorsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError = void>(key: string,
-    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>, }
+    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -99,26 +104,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeDetectorsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>>
 export type GetDetectionTypeDetectorsFromKeyQueryError = void
 
 
+export function useGetDetectionTypeDetectorsFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDetectionTypeDetectorsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeDetectorsFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeDetectorsFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
 
 export function useGetDetectionTypeDetectorsFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError = void>(
  key: string,
-    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectionTypeDetectorsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeDetectorsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -157,7 +189,7 @@ export const getGetDetectionTypeDetectorsCountFromKeyQueryKey = (key: string,
 
 
 export const getGetDetectionTypeDetectorsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError = void>(key: string,
-    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>, }
+    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -172,26 +204,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeDetectorsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>>
 export type GetDetectionTypeDetectorsCountFromKeyQueryError = void
 
 
+export function useGetDetectionTypeDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDetectionTypeDetectorsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Detector navigation property action
  */
 
 export function useGetDetectionTypeDetectorsCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError = void>(
  key: string,
-    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectionTypeDetectorsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeDetectorsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeDetectorsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -230,7 +289,7 @@ export const getGetDetectionTypeMeasureTypesFromKeyQueryKey = (key: string,
 
 
 export const getGetDetectionTypeMeasureTypesFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError = void>(key: string,
-    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>, }
+    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -245,26 +304,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeMeasureTypesFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>>
 export type GetDetectionTypeMeasureTypesFromKeyQueryError = void
 
 
+export function useGetDetectionTypeMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDetectionTypeMeasureTypesFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
 
 export function useGetDetectionTypeMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError = void>(
  key: string,
-    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectionTypeMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeMeasureTypesFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -303,7 +389,7 @@ export const getGetDetectionTypeMeasureTypesCountFromKeyQueryKey = (key: string,
 
 
 export const getGetDetectionTypeMeasureTypesCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError = void>(key: string,
-    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>, }
+    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -318,26 +404,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeMeasureTypesCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>>
 export type GetDetectionTypeMeasureTypesCountFromKeyQueryError = void
 
 
+export function useGetDetectionTypeMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDetectionTypeMeasureTypesCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
 
 export function useGetDetectionTypeMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError = void>(
  key: string,
-    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectionTypeMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeMeasureTypesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeMeasureTypesCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -370,7 +483,7 @@ export const getGetDetectionTypeQueryKey = (params?: GetDetectionTypeParams,) =>
     }
 
 
-export const getGetDetectionTypeQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(params?: GetDetectionTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>, }
+export const getGetDetectionTypeQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(params?: GetDetectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -385,22 +498,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionType>>>
 export type GetDetectionTypeQueryError = void
 
 
+export function useGetDetectionType<TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(
+ params: undefined |  GetDetectionTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionType>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionType<TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(
+ params?: GetDetectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionType>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionType<TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(
+ params?: GetDetectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectionType<TData = Awaited<ReturnType<typeof getDetectionType>>, TError = void>(
- params?: GetDetectionTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDetectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -462,13 +599,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostDetectionType = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDetectionType>>, TError,{data?: DetectionType;params?: PostDetectionTypeParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postDetectionType>>,
         TError,
         {data?: DetectionType;params?: PostDetectionTypeParams},
         TContext
       > => {
-      return useMutation(getPostDetectionTypeMutationOptions(options));
+      return useMutation(getPostDetectionTypeMutationOptions(options), queryClient);
     }
     export const getDetectionTypeCount = (
     params?: GetDetectionTypeCountParams,
@@ -493,7 +630,7 @@ export const getGetDetectionTypeCountQueryKey = (params?: GetDetectionTypeCountP
     }
 
 
-export const getGetDetectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(params?: GetDetectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>, }
+export const getGetDetectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(params?: GetDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -508,22 +645,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeCountQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeCount>>>
 export type GetDetectionTypeCountQueryError = void
 
 
+export function useGetDetectionTypeCount<TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(
+ params: undefined |  GetDetectionTypeCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeCount<TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(
+ params?: GetDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeCount<TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(
+ params?: GetDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectionTypeCount<TData = Awaited<ReturnType<typeof getDetectionTypeCount>>, TError = void>(
- params?: GetDetectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDetectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -559,7 +720,7 @@ export const getGetDetectionTypeFromKeyQueryKey = (key: string,
 
 
 export const getGetDetectionTypeFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError = void>(key: string,
-    params?: GetDetectionTypeFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>, }
+    params?: GetDetectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -574,23 +735,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDetectionTypeFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDetectionTypeFromKey>>>
 export type GetDetectionTypeFromKeyQueryError = void
 
 
+export function useGetDetectionTypeFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDetectionTypeFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDetectionTypeFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDetectionTypeFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDetectionTypeFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError = void>(
+ key: string,
+    params?: GetDetectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDetectionTypeFromKey<TData = Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError = void>(
  key: string,
-    params?: GetDetectionTypeFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDetectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDetectionTypeFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDetectionTypeFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -653,13 +841,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutDetectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDetectionTypeFromKey>>, TError,{key: string;data?: DetectionType;params?: PutDetectionTypeFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putDetectionTypeFromKey>>,
         TError,
         {key: string;data?: DetectionType;params?: PutDetectionTypeFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutDetectionTypeFromKeyMutationOptions(options));
+      return useMutation(getPutDetectionTypeFromKeyMutationOptions(options), queryClient);
     }
     export const patchDetectionTypeFromKey = (
     key: string,
@@ -714,13 +902,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchDetectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchDetectionTypeFromKey>>, TError,{key: string;data?: DetectionType;params?: PatchDetectionTypeFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchDetectionTypeFromKey>>,
         TError,
         {key: string;data?: DetectionType;params?: PatchDetectionTypeFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchDetectionTypeFromKeyMutationOptions(options));
+      return useMutation(getPatchDetectionTypeFromKeyMutationOptions(options), queryClient);
     }
     export const deleteDetectionTypeFromKey = (
     key: string,
@@ -770,11 +958,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteDetectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDetectionTypeFromKey>>, TError,{key: string}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteDetectionTypeFromKey>>,
         TError,
         {key: string},
         TContext
       > => {
-      return useMutation(getDeleteDetectionTypeFromKeyMutationOptions(options));
+      return useMutation(getDeleteDetectionTypeFromKeyMutationOptions(options), queryClient);
     }

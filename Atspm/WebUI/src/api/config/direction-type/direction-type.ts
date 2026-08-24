@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Approach,
@@ -86,7 +91,7 @@ export const getGetDirectionTypeApproachesFromKeyQueryKey = (key: string,
 
 
 export const getGetDirectionTypeApproachesFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>, }
+    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -101,26 +106,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeApproachesFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>>
 export type GetDirectionTypeApproachesFromKeyQueryError = void
 
 
+export function useGetDirectionTypeApproachesFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypeApproachesFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeApproachesFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeApproachesFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
 
 export function useGetDirectionTypeApproachesFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypeApproachesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeApproachesFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -159,7 +191,7 @@ export const getGetDirectionTypeApproachesCountFromKeyQueryKey = (key: string,
 
 
 export const getGetDirectionTypeApproachesCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>, }
+    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -174,26 +206,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeApproachesCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>>
 export type GetDirectionTypeApproachesCountFromKeyQueryError = void
 
 
+export function useGetDirectionTypeApproachesCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypeApproachesCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeApproachesCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeApproachesCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Approach navigation property action
  */
 
 export function useGetDirectionTypeApproachesCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypeApproachesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeApproachesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeApproachesCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -232,7 +291,7 @@ export const getGetDirectionTypePrimaryDirectionsFromKeyQueryKey = (key: string,
 
 
 export const getGetDirectionTypePrimaryDirectionsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>, }
+    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -247,26 +306,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypePrimaryDirectionsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>>
 export type GetDirectionTypePrimaryDirectionsFromKeyQueryError = void
 
 
+export function useGetDirectionTypePrimaryDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypePrimaryDirectionsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypePrimaryDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypePrimaryDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetDirectionTypePrimaryDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypePrimaryDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypePrimaryDirectionsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -305,7 +391,7 @@ export const getGetDirectionTypePrimaryDirectionsCountFromKeyQueryKey = (key: st
 
 
 export const getGetDirectionTypePrimaryDirectionsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>, }
+    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -320,26 +406,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypePrimaryDirectionsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>>
 export type GetDirectionTypePrimaryDirectionsCountFromKeyQueryError = void
 
 
+export function useGetDirectionTypePrimaryDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypePrimaryDirectionsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypePrimaryDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypePrimaryDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetDirectionTypePrimaryDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypePrimaryDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypePrimaryDirectionsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypePrimaryDirectionsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -378,7 +491,7 @@ export const getGetDirectionTypeOpposingDirectionsFromKeyQueryKey = (key: string
 
 
 export const getGetDirectionTypeOpposingDirectionsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>, }
+    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -393,26 +506,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeOpposingDirectionsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>>
 export type GetDirectionTypeOpposingDirectionsFromKeyQueryError = void
 
 
+export function useGetDirectionTypeOpposingDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypeOpposingDirectionsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeOpposingDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeOpposingDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetDirectionTypeOpposingDirectionsFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypeOpposingDirectionsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeOpposingDirectionsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -451,7 +591,7 @@ export const getGetDirectionTypeOpposingDirectionsCountFromKeyQueryKey = (key: s
 
 
 export const getGetDirectionTypeOpposingDirectionsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>, }
+    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -466,26 +606,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeOpposingDirectionsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>>
 export type GetDirectionTypeOpposingDirectionsCountFromKeyQueryError = void
 
 
+export function useGetDirectionTypeOpposingDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypeOpposingDirectionsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeOpposingDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeOpposingDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.RouteLocation navigation property action
  */
 
 export function useGetDirectionTypeOpposingDirectionsCountFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypeOpposingDirectionsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeOpposingDirectionsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeOpposingDirectionsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -518,7 +685,7 @@ export const getGetDirectionTypeQueryKey = (params?: GetDirectionTypeParams,) =>
     }
 
 
-export const getGetDirectionTypeQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(params?: GetDirectionTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>, }
+export const getGetDirectionTypeQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(params?: GetDirectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -533,22 +700,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionType>>>
 export type GetDirectionTypeQueryError = void
 
 
+export function useGetDirectionType<TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(
+ params: undefined |  GetDirectionTypeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionType>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionType<TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(
+ params?: GetDirectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionType>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionType>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionType<TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(
+ params?: GetDirectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDirectionType<TData = Awaited<ReturnType<typeof getDirectionType>>, TError = void>(
- params?: GetDirectionTypeParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDirectionTypeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionType>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -610,13 +801,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostDirectionType = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDirectionType>>, TError,{data?: DirectionType;params?: PostDirectionTypeParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postDirectionType>>,
         TError,
         {data?: DirectionType;params?: PostDirectionTypeParams},
         TContext
       > => {
-      return useMutation(getPostDirectionTypeMutationOptions(options));
+      return useMutation(getPostDirectionTypeMutationOptions(options), queryClient);
     }
     export const getDirectionTypeCount = (
     params?: GetDirectionTypeCountParams,
@@ -641,7 +832,7 @@ export const getGetDirectionTypeCountQueryKey = (params?: GetDirectionTypeCountP
     }
 
 
-export const getGetDirectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(params?: GetDirectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>, }
+export const getGetDirectionTypeCountQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(params?: GetDirectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -656,22 +847,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeCountQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeCount>>>
 export type GetDirectionTypeCountQueryError = void
 
 
+export function useGetDirectionTypeCount<TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(
+ params: undefined |  GetDirectionTypeCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeCount<TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(
+ params?: GetDirectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeCount<TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(
+ params?: GetDirectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDirectionTypeCount<TData = Awaited<ReturnType<typeof getDirectionTypeCount>>, TError = void>(
- params?: GetDirectionTypeCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDirectionTypeCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -707,7 +922,7 @@ export const getGetDirectionTypeFromKeyQueryKey = (key: string,
 
 
 export const getGetDirectionTypeFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError = void>(key: string,
-    params?: GetDirectionTypeFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>, }
+    params?: GetDirectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -722,23 +937,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDirectionTypeFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDirectionTypeFromKey>>>
 export type GetDirectionTypeFromKeyQueryError = void
 
 
+export function useGetDirectionTypeFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError = void>(
+ key: string,
+    params: undefined |  GetDirectionTypeFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDirectionTypeFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDirectionTypeFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDirectionTypeFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError = void>(
+ key: string,
+    params?: GetDirectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDirectionTypeFromKey<TData = Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError = void>(
  key: string,
-    params?: GetDirectionTypeFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDirectionTypeFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDirectionTypeFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDirectionTypeFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -801,13 +1043,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutDirectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDirectionTypeFromKey>>, TError,{key: string;data?: DirectionType;params?: PutDirectionTypeFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putDirectionTypeFromKey>>,
         TError,
         {key: string;data?: DirectionType;params?: PutDirectionTypeFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutDirectionTypeFromKeyMutationOptions(options));
+      return useMutation(getPutDirectionTypeFromKeyMutationOptions(options), queryClient);
     }
     export const patchDirectionTypeFromKey = (
     key: string,
@@ -862,13 +1104,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchDirectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchDirectionTypeFromKey>>, TError,{key: string;data?: DirectionType;params?: PatchDirectionTypeFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchDirectionTypeFromKey>>,
         TError,
         {key: string;data?: DirectionType;params?: PatchDirectionTypeFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchDirectionTypeFromKeyMutationOptions(options));
+      return useMutation(getPatchDirectionTypeFromKeyMutationOptions(options), queryClient);
     }
     export const deleteDirectionTypeFromKey = (
     key: string,
@@ -918,11 +1160,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteDirectionTypeFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDirectionTypeFromKey>>, TError,{key: string}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteDirectionTypeFromKey>>,
         TError,
         {key: string},
         TContext
       > => {
-      return useMutation(getDeleteDirectionTypeFromKeyMutationOptions(options));
+      return useMutation(getDeleteDirectionTypeFromKeyMutationOptions(options), queryClient);
     }

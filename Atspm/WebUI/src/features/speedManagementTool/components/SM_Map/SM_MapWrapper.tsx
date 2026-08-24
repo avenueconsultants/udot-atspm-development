@@ -88,7 +88,7 @@ const SM_MapWrapper = () => {
     setIsRequestChanged(change)
   }, [routeSpeedRequest, submittedRouteSpeedRequest])
 
-  const { mutateAsync: fetchRoutes, isLoading } = useGetRouteSpeeds()
+  const { mutateAsync: fetchRoutes, isPending: isLoading } = useGetRouteSpeeds()
 
   useEffect(() => {
     const fetchData = async () => {

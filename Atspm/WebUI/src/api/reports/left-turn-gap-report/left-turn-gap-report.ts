@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   LeftTurnGapReportOptions,
@@ -70,7 +75,7 @@ export const getGetLeftTurnGapReportTestDataQueryKey = () => {
     }
 
 
-export const getGetLeftTurnGapReportTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>, }
+export const getGetLeftTurnGapReportTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -85,25 +90,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetLeftTurnGapReportTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>>
 export type GetLeftTurnGapReportTestDataQueryError = ProblemDetails
 
 
+export function useGetLeftTurnGapReportTestData<TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLeftTurnGapReportTestData<TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetLeftTurnGapReportTestData<TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetLeftTurnGapReportTestData<TData = Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getLeftTurnGapReportTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetLeftTurnGapReportTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -169,11 +198,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetLeftTurnGapReportReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getLeftTurnGapReportReportData>>, TError,{data?: LeftTurnGapReportOptions}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getLeftTurnGapReportReportData>>,
         TError,
         {data?: LeftTurnGapReportOptions},
         TContext
       > => {
-      return useMutation(getGetLeftTurnGapReportReportDataMutationOptions(options));
+      return useMutation(getGetLeftTurnGapReportReportDataMutationOptions(options), queryClient);
     }

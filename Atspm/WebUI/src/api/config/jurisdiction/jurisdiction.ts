@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetJurisdictionCountParams,
@@ -81,7 +86,7 @@ export const getGetJurisdictionLocationsFromKeyQueryKey = (key: number,
 
 
 export const getGetJurisdictionLocationsFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError = void>(key: number,
-    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>, }
+    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -96,26 +101,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJurisdictionLocationsFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>>
 export type GetJurisdictionLocationsFromKeyQueryError = void
 
 
+export function useGetJurisdictionLocationsFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetJurisdictionLocationsFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionLocationsFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionLocationsFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
 
 export function useGetJurisdictionLocationsFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError = void>(
  key: number,
-    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetJurisdictionLocationsFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJurisdictionLocationsFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -154,7 +186,7 @@ export const getGetJurisdictionLocationsCountFromKeyQueryKey = (key: number,
 
 
 export const getGetJurisdictionLocationsCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError = void>(key: number,
-    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>, }
+    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -169,26 +201,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJurisdictionLocationsCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>>
 export type GetJurisdictionLocationsCountFromKeyQueryError = void
 
 
+export function useGetJurisdictionLocationsCountFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetJurisdictionLocationsCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionLocationsCountFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionLocationsCountFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.Location navigation property action
  */
 
 export function useGetJurisdictionLocationsCountFromKey<TData = Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError = void>(
  key: number,
-    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetJurisdictionLocationsCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionLocationsCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJurisdictionLocationsCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -221,7 +280,7 @@ export const getGetJurisdictionQueryKey = (params?: GetJurisdictionParams,) => {
     }
 
 
-export const getGetJurisdictionQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(params?: GetJurisdictionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>, }
+export const getGetJurisdictionQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(params?: GetJurisdictionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -236,22 +295,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJurisdictionQueryResult = NonNullable<Awaited<ReturnType<typeof getJurisdiction>>>
 export type GetJurisdictionQueryError = void
 
 
+export function useGetJurisdiction<TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(
+ params: undefined |  GetJurisdictionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdiction>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdiction>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdiction<TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(
+ params?: GetJurisdictionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdiction>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdiction>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdiction<TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(
+ params?: GetJurisdictionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetJurisdiction<TData = Awaited<ReturnType<typeof getJurisdiction>>, TError = void>(
- params?: GetJurisdictionParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetJurisdictionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdiction>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJurisdictionQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -313,13 +396,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostJurisdiction = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postJurisdiction>>, TError,{data?: Jurisdiction;params?: PostJurisdictionParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postJurisdiction>>,
         TError,
         {data?: Jurisdiction;params?: PostJurisdictionParams},
         TContext
       > => {
-      return useMutation(getPostJurisdictionMutationOptions(options));
+      return useMutation(getPostJurisdictionMutationOptions(options), queryClient);
     }
     export const getJurisdictionCount = (
     params?: GetJurisdictionCountParams,
@@ -344,7 +427,7 @@ export const getGetJurisdictionCountQueryKey = (params?: GetJurisdictionCountPar
     }
 
 
-export const getGetJurisdictionCountQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(params?: GetJurisdictionCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>, }
+export const getGetJurisdictionCountQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(params?: GetJurisdictionCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -359,22 +442,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJurisdictionCountQueryResult = NonNullable<Awaited<ReturnType<typeof getJurisdictionCount>>>
 export type GetJurisdictionCountQueryError = void
 
 
+export function useGetJurisdictionCount<TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(
+ params: undefined |  GetJurisdictionCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionCount>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionCount<TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(
+ params?: GetJurisdictionCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionCount>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionCount<TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(
+ params?: GetJurisdictionCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetJurisdictionCount<TData = Awaited<ReturnType<typeof getJurisdictionCount>>, TError = void>(
- params?: GetJurisdictionCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetJurisdictionCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJurisdictionCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -410,7 +517,7 @@ export const getGetJurisdictionFromKeyQueryKey = (key: number,
 
 
 export const getGetJurisdictionFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError = void>(key: number,
-    params?: GetJurisdictionFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>, }
+    params?: GetJurisdictionFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -425,23 +532,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetJurisdictionFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getJurisdictionFromKey>>>
 export type GetJurisdictionFromKeyQueryError = void
 
 
+export function useGetJurisdictionFromKey<TData = Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetJurisdictionFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionFromKey<TData = Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getJurisdictionFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getJurisdictionFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetJurisdictionFromKey<TData = Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError = void>(
+ key: number,
+    params?: GetJurisdictionFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetJurisdictionFromKey<TData = Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError = void>(
  key: number,
-    params?: GetJurisdictionFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetJurisdictionFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getJurisdictionFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetJurisdictionFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -504,13 +638,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutJurisdictionFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putJurisdictionFromKey>>, TError,{key: number;data?: Jurisdiction;params?: PutJurisdictionFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putJurisdictionFromKey>>,
         TError,
         {key: number;data?: Jurisdiction;params?: PutJurisdictionFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutJurisdictionFromKeyMutationOptions(options));
+      return useMutation(getPutJurisdictionFromKeyMutationOptions(options), queryClient);
     }
     export const patchJurisdictionFromKey = (
     key: number,
@@ -565,13 +699,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchJurisdictionFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchJurisdictionFromKey>>, TError,{key: number;data?: Jurisdiction;params?: PatchJurisdictionFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchJurisdictionFromKey>>,
         TError,
         {key: number;data?: Jurisdiction;params?: PatchJurisdictionFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchJurisdictionFromKeyMutationOptions(options));
+      return useMutation(getPatchJurisdictionFromKeyMutationOptions(options), queryClient);
     }
     export const deleteJurisdictionFromKey = (
     key: number,
@@ -621,11 +755,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteJurisdictionFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteJurisdictionFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteJurisdictionFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteJurisdictionFromKeyMutationOptions(options));
+      return useMutation(getDeleteJurisdictionFromKeyMutationOptions(options), queryClient);
     }

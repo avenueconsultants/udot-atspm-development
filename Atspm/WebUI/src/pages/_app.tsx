@@ -2,6 +2,7 @@ import Layout from '@/components/layout'
 import { RuntimeEnvProvider } from '@/contexts/RuntimeEnvContext'
 import { FeatureFlagProvider } from '@/feature-flags/FeatureFlagContext'
 import { initializeAxiosInstances } from '@/lib/axios'
+import { queryClient } from '@/lib/react-query'
 import '@/styles/globals.css'
 import { ColorModeContext, useMode } from '@/theme'
 import { getEnv, type EnvVariables } from '@/utils/getEnv'
@@ -16,12 +17,11 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { NuqsAdapter } from 'nuqs/adapters/next/pages'
 import { useEffect, useState } from 'react'
-import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { HydrationBoundary, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export default function App({ Component, pageProps }: AppProps) {
   const [theme, colorMode] = useMode()
-  const [queryClient] = useState(() => new QueryClient())
   const [isAxiosInitialized, setIsAxiosInitialized] = useState(false)
   const [runtimeEnv, setRuntimeEnv] = useState<EnvVariables | null>(null)
   const [initializationError, setInitializationError] = useState<string | null>(
@@ -67,7 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <RuntimeEnvProvider env={runtimeEnv}>
-        <Hydrate state={pageProps.dehydratedState}>
+        <HydrationBoundary state={pageProps.dehydratedState}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <NuqsAdapter>
               <FeatureFlagProvider>
@@ -91,7 +91,7 @@ export default function App({ Component, pageProps }: AppProps) {
               </FeatureFlagProvider>
             </NuqsAdapter>
           </LocalizationProvider>
-        </Hydrate>
+        </HydrationBoundary>
       </RuntimeEnvProvider>
     </QueryClientProvider>
   )

@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ProblemDetails,
@@ -97,7 +102,7 @@ export const getGetTurningMovementCountsTestDataQueryKey = () => {
     }
 
 
-export const getGetTurningMovementCountsTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>, }
+export const getGetTurningMovementCountsTestDataQueryOptions = <TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -112,25 +117,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetTurningMovementCountsTestDataQueryResult = NonNullable<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>>
 export type GetTurningMovementCountsTestDataQueryError = ProblemDetails
 
 
+export function useGetTurningMovementCountsTestData<TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTurningMovementCountsTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTurningMovementCountsTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTurningMovementCountsTestData<TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTurningMovementCountsTestData>>,
+          TError,
+          Awaited<ReturnType<typeof getTurningMovementCountsTestData>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetTurningMovementCountsTestData<TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get example data for testing
  */
 
 export function useGetTurningMovementCountsTestData<TData = Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTurningMovementCountsTestData>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetTurningMovementCountsTestDataQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -196,11 +225,11 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetTurningMovementCountsReportData = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getTurningMovementCountsReportData>>, TError,{data?: NonReadonly<TurningMovementCountsOptions>}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getTurningMovementCountsReportData>>,
         TError,
         {data?: NonReadonly<TurningMovementCountsOptions>},
         TContext
       > => {
-      return useMutation(getGetTurningMovementCountsReportDataMutationOptions(options));
+      return useMutation(getGetTurningMovementCountsReportDataMutationOptions(options), queryClient);
     }

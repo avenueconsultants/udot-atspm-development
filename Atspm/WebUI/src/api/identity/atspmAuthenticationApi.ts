@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   ChangePasswordViewModel,
@@ -133,13 +138,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useAccountRegister = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountRegister>>, TError,{data?: RegisterViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof accountRegister>>,
         TError,
         {data?: RegisterViewModel},
         TContext
       > => {
-      return useMutation(getAccountRegisterMutationOptions(options));
+      return useMutation(getAccountRegisterMutationOptions(options), queryClient);
     }
 
 export const accountLogin = (
@@ -192,13 +197,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useAccountLogin = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof accountLogin>>, TError,{data?: LoginViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof accountLogin>>,
         TError,
         {data?: LoginViewModel},
         TContext
       > => {
-      return useMutation(getAccountLoginMutationOptions(options));
+      return useMutation(getAccountLoginMutationOptions(options), queryClient);
     }
 
 export const accountExternalLogin = (
@@ -223,7 +228,7 @@ export const getAccountExternalLoginQueryKey = () => {
     }
 
 
-export const getAccountExternalLoginQueryOptions = <TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>, }
+export const getAccountExternalLoginQueryOptions = <TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -238,22 +243,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type AccountExternalLoginQueryResult = NonNullable<Awaited<ReturnType<typeof accountExternalLogin>>>
 export type AccountExternalLoginQueryError = ProblemDetails
 
 
+export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof accountExternalLogin>>,
+          TError,
+          Awaited<ReturnType<typeof accountExternalLogin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof accountExternalLogin>>,
+          TError,
+          Awaited<ReturnType<typeof accountExternalLogin>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useAccountExternalLogin<TData = Awaited<ReturnType<typeof accountExternalLogin>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof accountExternalLogin>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getAccountExternalLoginQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -312,13 +341,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostAccountOIDCLoginCallback = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>, TError,void, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postAccountOIDCLoginCallback>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getPostAccountOIDCLoginCallbackMutationOptions(options));
+      return useMutation(getPostAccountOIDCLoginCallbackMutationOptions(options), queryClient);
     }
 
 export const getAccountOIDCLoginCallback = (
@@ -343,7 +372,7 @@ export const getGetAccountOIDCLoginCallbackQueryKey = () => {
     }
 
 
-export const getGetAccountOIDCLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>, }
+export const getGetAccountOIDCLoginCallbackQueryOptions = <TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -358,22 +387,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetAccountOIDCLoginCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>>
 export type GetAccountOIDCLoginCallbackQueryError = ProblemDetails
 
 
+export function useGetAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>,
+          TError,
+          Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetAccountOIDCLoginCallback<TData = Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAccountOIDCLoginCallback>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAccountOIDCLoginCallbackQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -432,13 +485,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetAccountLinkExternalLogin = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLinkExternalLogin>>, TError,void, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getAccountLinkExternalLogin>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getGetAccountLinkExternalLoginMutationOptions(options));
+      return useMutation(getGetAccountLinkExternalLoginMutationOptions(options), queryClient);
     }
 
 export const getAccountLogout = (
@@ -489,13 +542,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetAccountLogout = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountLogout>>, TError,void, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getAccountLogout>>,
         TError,
         void,
         TContext
       > => {
-      return useMutation(getGetAccountLogoutMutationOptions(options));
+      return useMutation(getGetAccountLogoutMutationOptions(options), queryClient);
     }
 
 export const getAccountChangePassword = (
@@ -548,13 +601,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetAccountChangePassword = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountChangePassword>>, TError,{data?: ChangePasswordViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getAccountChangePassword>>,
         TError,
         {data?: ChangePasswordViewModel},
         TContext
       > => {
-      return useMutation(getGetAccountChangePasswordMutationOptions(options));
+      return useMutation(getGetAccountChangePasswordMutationOptions(options), queryClient);
     }
 
 export const getAccountForgotPassword = (
@@ -607,13 +660,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetAccountForgotPassword = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountForgotPassword>>, TError,{data?: ForgotPasswordViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getAccountForgotPassword>>,
         TError,
         {data?: ForgotPasswordViewModel},
         TContext
       > => {
-      return useMutation(getGetAccountForgotPasswordMutationOptions(options));
+      return useMutation(getGetAccountForgotPasswordMutationOptions(options), queryClient);
     }
 
 export const getAccountVerifyUserPasswordReset = (
@@ -666,13 +719,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetAccountVerifyUserPasswordReset = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>, TError,{data?: VerifyUserPasswordResetViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getAccountVerifyUserPasswordReset>>,
         TError,
         {data?: VerifyUserPasswordResetViewModel},
         TContext
       > => {
-      return useMutation(getGetAccountVerifyUserPasswordResetMutationOptions(options));
+      return useMutation(getGetAccountVerifyUserPasswordResetMutationOptions(options), queryClient);
     }
 
 /**
@@ -731,13 +784,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetApiKeyCreate = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyCreate>>, TError,{data?: CreateApiKeyDto}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getApiKeyCreate>>,
         TError,
         {data?: CreateApiKeyDto},
         TContext
       > => {
-      return useMutation(getGetApiKeyCreateMutationOptions(options));
+      return useMutation(getGetApiKeyCreateMutationOptions(options), queryClient);
     }
 
 /**
@@ -765,7 +818,7 @@ export const getGetApiKeyMyKeysQueryKey = () => {
     }
 
 
-export const getGetApiKeyMyKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>, }
+export const getGetApiKeyMyKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -780,25 +833,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiKeyMyKeysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiKeyMyKeys>>>
 export type GetApiKeyMyKeysQueryError = ProblemDetails
 
 
+export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiKeyMyKeys>>,
+          TError,
+          Awaited<ReturnType<typeof getApiKeyMyKeys>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiKeyMyKeys>>,
+          TError,
+          Awaited<ReturnType<typeof getApiKeyMyKeys>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves all active, non-revoked API keys belonging to the authenticated user.
  */
 
 export function useGetApiKeyMyKeys<TData = Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyMyKeys>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiKeyMyKeysQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -834,7 +911,7 @@ export const getGetApiKeyAllKeysQueryKey = () => {
     }
 
 
-export const getGetApiKeyAllKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>, }
+export const getGetApiKeyAllKeysQueryOptions = <TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -849,25 +926,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetApiKeyAllKeysQueryResult = NonNullable<Awaited<ReturnType<typeof getApiKeyAllKeys>>>
 export type GetApiKeyAllKeysQueryError = ProblemDetails
 
 
+export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiKeyAllKeys>>,
+          TError,
+          Awaited<ReturnType<typeof getApiKeyAllKeys>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getApiKeyAllKeys>>,
+          TError,
+          Awaited<ReturnType<typeof getApiKeyAllKeys>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Retrieves all active, non-revoked API keys in the system.
  */
 
 export function useGetApiKeyAllKeys<TData = Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getApiKeyAllKeys>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetApiKeyAllKeysQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -932,13 +1033,13 @@ const {mutation: mutationOptions} = options ?
  */
 export const useGetApiKeyRevokeFromId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getApiKeyRevokeFromId>>, TError,{id: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getApiKeyRevokeFromId>>,
         TError,
         {id: number},
         TContext
       > => {
-      return useMutation(getGetApiKeyRevokeFromIdMutationOptions(options));
+      return useMutation(getGetApiKeyRevokeFromIdMutationOptions(options), queryClient);
     }
 
 export const getClaimsClaims = (
@@ -963,7 +1064,7 @@ export const getGetClaimsClaimsQueryKey = () => {
     }
 
 
-export const getGetClaimsClaimsQueryOptions = <TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>, }
+export const getGetClaimsClaimsQueryOptions = <TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -978,22 +1079,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetClaimsClaimsQueryResult = NonNullable<Awaited<ReturnType<typeof getClaimsClaims>>>
 export type GetClaimsClaimsQueryError = ProblemDetails
 
 
+export function useGetClaimsClaims<TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClaimsClaims>>,
+          TError,
+          Awaited<ReturnType<typeof getClaimsClaims>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClaimsClaims<TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClaimsClaims>>,
+          TError,
+          Awaited<ReturnType<typeof getClaimsClaims>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClaimsClaims<TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetClaimsClaims<TData = Awaited<ReturnType<typeof getClaimsClaims>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaims>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetClaimsClaimsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1026,7 +1151,7 @@ export const getGetClaimsClaimsForRoleFromRoleNameQueryKey = (roleName: string,)
     }
 
 
-export const getGetClaimsClaimsForRoleFromRoleNameQueryOptions = <TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(roleName: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>, }
+export const getGetClaimsClaimsForRoleFromRoleNameQueryOptions = <TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(roleName: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1041,22 +1166,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: roleName !== null && roleName !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: roleName !== null && roleName !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetClaimsClaimsForRoleFromRoleNameQueryResult = NonNullable<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>>
 export type GetClaimsClaimsForRoleFromRoleNameQueryError = ProblemDetails
 
 
+export function useGetClaimsClaimsForRoleFromRoleName<TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(
+ roleName: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>,
+          TError,
+          Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClaimsClaimsForRoleFromRoleName<TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(
+ roleName: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>,
+          TError,
+          Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetClaimsClaimsForRoleFromRoleName<TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(
+ roleName: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetClaimsClaimsForRoleFromRoleName<TData = Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError = ProblemDetails>(
- roleName: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ roleName: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getClaimsClaimsForRoleFromRoleName>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetClaimsClaimsForRoleFromRoleNameQueryOptions(roleName,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1118,13 +1267,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetClaimsAddClaimToRoleFromRoleName = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getClaimsAddClaimToRoleFromRoleName>>, TError,{roleName: string;data?: ClaimModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getClaimsAddClaimToRoleFromRoleName>>,
         TError,
         {roleName: string;data?: ClaimModel},
         TContext
       > => {
-      return useMutation(getGetClaimsAddClaimToRoleFromRoleNameMutationOptions(options));
+      return useMutation(getGetClaimsAddClaimToRoleFromRoleNameMutationOptions(options), queryClient);
     }
 
 export const getClaimsRemoveClaimFromRoleAndRoleName = (
@@ -1178,13 +1327,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetClaimsRemoveClaimFromRoleAndRoleName = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getClaimsRemoveClaimFromRoleAndRoleName>>, TError,{roleName: string;data?: ClaimModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getClaimsRemoveClaimFromRoleAndRoleName>>,
         TError,
         {roleName: string;data?: ClaimModel},
         TContext
       > => {
-      return useMutation(getGetClaimsRemoveClaimFromRoleAndRoleNameMutationOptions(options));
+      return useMutation(getGetClaimsRemoveClaimFromRoleAndRoleNameMutationOptions(options), queryClient);
     }
 
 export const getClaimsAddClaimsToRoleFromRoleName = (
@@ -1238,13 +1387,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetClaimsAddClaimsToRoleFromRoleName = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getClaimsAddClaimsToRoleFromRoleName>>, TError,{roleName: string;data?: ClaimsModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getClaimsAddClaimsToRoleFromRoleName>>,
         TError,
         {roleName: string;data?: ClaimsModel},
         TContext
       > => {
-      return useMutation(getGetClaimsAddClaimsToRoleFromRoleNameMutationOptions(options));
+      return useMutation(getGetClaimsAddClaimsToRoleFromRoleNameMutationOptions(options), queryClient);
     }
 
 export const getProfileProfile = (
@@ -1269,7 +1418,7 @@ export const getGetProfileProfileQueryKey = () => {
     }
 
 
-export const getGetProfileProfileQueryOptions = <TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>, }
+export const getGetProfileProfileQueryOptions = <TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1284,22 +1433,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetProfileProfileQueryResult = NonNullable<Awaited<ReturnType<typeof getProfileProfile>>>
 export type GetProfileProfileQueryError = ProblemDetails
 
 
+export function useGetProfileProfile<TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProfileProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getProfileProfile>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProfileProfile<TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getProfileProfile>>,
+          TError,
+          Awaited<ReturnType<typeof getProfileProfile>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetProfileProfile<TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetProfileProfile<TData = Awaited<ReturnType<typeof getProfileProfile>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getProfileProfile>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetProfileProfileQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1360,13 +1533,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetProfileUpdateProfile = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getProfileUpdateProfile>>, TError,{data?: UpdateProfileViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getProfileUpdateProfile>>,
         TError,
         {data?: UpdateProfileViewModel},
         TContext
       > => {
-      return useMutation(getGetProfileUpdateProfileMutationOptions(options));
+      return useMutation(getGetProfileUpdateProfileMutationOptions(options), queryClient);
     }
 
 export const getRolesRoles = (
@@ -1391,7 +1564,7 @@ export const getGetRolesRolesQueryKey = () => {
     }
 
 
-export const getGetRolesRolesQueryOptions = <TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>, }
+export const getGetRolesRolesQueryOptions = <TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1406,22 +1579,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetRolesRolesQueryResult = NonNullable<Awaited<ReturnType<typeof getRolesRoles>>>
 export type GetRolesRolesQueryError = ProblemDetails
 
 
+export function useGetRolesRoles<TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRolesRoles>>,
+          TError,
+          Awaited<ReturnType<typeof getRolesRoles>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRolesRoles<TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getRolesRoles>>,
+          TError,
+          Awaited<ReturnType<typeof getRolesRoles>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetRolesRoles<TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetRolesRoles<TData = Awaited<ReturnType<typeof getRolesRoles>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRolesRoles>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetRolesRolesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1482,13 +1679,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useGetRolesCreateRole = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getRolesCreateRole>>, TError,{data?: CreateRoleViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof getRolesCreateRole>>,
         TError,
         {data?: CreateRoleViewModel},
         TContext
       > => {
-      return useMutation(getGetRolesCreateRoleMutationOptions(options));
+      return useMutation(getGetRolesCreateRoleMutationOptions(options), queryClient);
     }
 
 export const deleteRolesRoleFromRoleName = (
@@ -1539,13 +1736,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteRolesRoleFromRoleName = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteRolesRoleFromRoleName>>, TError,{roleName: string}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteRolesRoleFromRoleName>>,
         TError,
         {roleName: string},
         TContext
       > => {
-      return useMutation(getDeleteRolesRoleFromRoleNameMutationOptions(options));
+      return useMutation(getDeleteRolesRoleFromRoleNameMutationOptions(options), queryClient);
     }
 
 export const deleteTokenVerifyResetToken = (
@@ -1598,13 +1795,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteTokenVerifyResetToken = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTokenVerifyResetToken>>, TError,{data?: VerifyResetTokenViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteTokenVerifyResetToken>>,
         TError,
         {data?: VerifyResetTokenViewModel},
         TContext
       > => {
-      return useMutation(getDeleteTokenVerifyResetTokenMutationOptions(options));
+      return useMutation(getDeleteTokenVerifyResetTokenMutationOptions(options), queryClient);
     }
 
 export const deleteTokenVerifyConnectToken = (
@@ -1657,13 +1854,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteTokenVerifyConnectToken = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTokenVerifyConnectToken>>, TError,{data?: VerifyConnectTokenViewModel}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteTokenVerifyConnectToken>>,
         TError,
         {data?: VerifyConnectTokenViewModel},
         TContext
       > => {
-      return useMutation(getDeleteTokenVerifyConnectTokenMutationOptions(options));
+      return useMutation(getDeleteTokenVerifyConnectTokenMutationOptions(options), queryClient);
     }
 
 export const getUsersUsers = (
@@ -1688,7 +1885,7 @@ export const getGetUsersUsersQueryKey = () => {
     }
 
 
-export const getGetUsersUsersQueryOptions = <TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>, }
+export const getGetUsersUsersQueryOptions = <TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -1703,22 +1900,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetUsersUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getUsersUsers>>>
 export type GetUsersUsersQueryError = ProblemDetails
 
 
+export function useGetUsersUsers<TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersUsers>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersUsers>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsersUsers<TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getUsersUsers>>,
+          TError,
+          Awaited<ReturnType<typeof getUsersUsers>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetUsersUsers<TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetUsersUsers<TData = Awaited<ReturnType<typeof getUsersUsers>>, TError = ProblemDetails>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsersUsers>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetUsersUsersQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -1777,13 +1998,13 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteUsersUserFromUserId = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersUserFromUserId>>, TError,{userId: string}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUsersUserFromUserId>>,
         TError,
         {userId: string},
         TContext
       > => {
-      return useMutation(getDeleteUsersUserFromUserIdMutationOptions(options));
+      return useMutation(getDeleteUsersUserFromUserIdMutationOptions(options), queryClient);
     }
 
 export const deleteUsersAssignRole = (
@@ -1836,12 +2057,12 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteUsersAssignRole = <TError = ProblemDetails,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersAssignRole>>, TError,{data?: NonReadonly<UserDTO>}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteUsersAssignRole>>,
         TError,
         {data?: NonReadonly<UserDTO>},
         TContext
       > => {
-      return useMutation(getDeleteUsersAssignRoleMutationOptions(options));
+      return useMutation(getDeleteUsersAssignRoleMutationOptions(options), queryClient);
     }
 

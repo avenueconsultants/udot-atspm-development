@@ -93,7 +93,7 @@ async function resolveLocationsByIdentifier(
 }
 
 const ActiveTransportation = () => {
-  const { mutateAsync: fetchPedestrianData, isLoading } =
+  const { mutateAsync: fetchPedestrianData, isPending: isLoading } =
     useGetPedestrianAggregationLocationData()
 
   const defaultStart = useMemo(() => startOfDay(subYears(new Date(), 1)), [])

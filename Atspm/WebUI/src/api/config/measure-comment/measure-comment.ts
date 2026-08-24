@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   GetMeasureCommentCountParams,
@@ -81,7 +86,7 @@ export const getGetMeasureCommentMeasureTypesFromKeyQueryKey = (key: number,
 
 
 export const getGetMeasureCommentMeasureTypesFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError = void>(key: number,
-    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>, }
+    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -96,26 +101,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureCommentMeasureTypesFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>>
 export type GetMeasureCommentMeasureTypesFromKeyQueryError = void
 
 
+export function useGetMeasureCommentMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetMeasureCommentMeasureTypesFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
 
 export function useGetMeasureCommentMeasureTypesFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError = void>(
  key: number,
-    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetMeasureCommentMeasureTypesFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureCommentMeasureTypesFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -154,7 +186,7 @@ export const getGetMeasureCommentMeasureTypesCountFromKeyQueryKey = (key: number
 
 
 export const getGetMeasureCommentMeasureTypesCountFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError = void>(key: number,
-    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>, }
+    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -169,26 +201,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureCommentMeasureTypesCountFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>>
 export type GetMeasureCommentMeasureTypesCountFromKeyQueryError = void
 
 
+export function useGetMeasureCommentMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetMeasureCommentMeasureTypesCountFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Utah.Udot.Atspm.Data.Models.MeasureType navigation property action
  */
 
 export function useGetMeasureCommentMeasureTypesCountFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError = void>(
  key: number,
-    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetMeasureCommentMeasureTypesCountFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentMeasureTypesCountFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureCommentMeasureTypesCountFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -221,7 +280,7 @@ export const getGetMeasureCommentQueryKey = (params?: GetMeasureCommentParams,) 
     }
 
 
-export const getGetMeasureCommentQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(params?: GetMeasureCommentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>, }
+export const getGetMeasureCommentQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(params?: GetMeasureCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -236,22 +295,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureCommentQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureComment>>>
 export type GetMeasureCommentQueryError = void
 
 
+export function useGetMeasureComment<TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(
+ params: undefined |  GetMeasureCommentParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureComment>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureComment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureComment<TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(
+ params?: GetMeasureCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureComment>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureComment>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureComment<TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(
+ params?: GetMeasureCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureComment<TData = Awaited<ReturnType<typeof getMeasureComment>>, TError = void>(
- params?: GetMeasureCommentParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetMeasureCommentParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureComment>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureCommentQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -313,13 +396,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostMeasureComment = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postMeasureComment>>, TError,{data?: MeasureComment;params?: PostMeasureCommentParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postMeasureComment>>,
         TError,
         {data?: MeasureComment;params?: PostMeasureCommentParams},
         TContext
       > => {
-      return useMutation(getPostMeasureCommentMutationOptions(options));
+      return useMutation(getPostMeasureCommentMutationOptions(options), queryClient);
     }
     export const getMeasureCommentCount = (
     params?: GetMeasureCommentCountParams,
@@ -344,7 +427,7 @@ export const getGetMeasureCommentCountQueryKey = (params?: GetMeasureCommentCoun
     }
 
 
-export const getGetMeasureCommentCountQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(params?: GetMeasureCommentCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>, }
+export const getGetMeasureCommentCountQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(params?: GetMeasureCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -359,22 +442,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureCommentCountQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureCommentCount>>>
 export type GetMeasureCommentCountQueryError = void
 
 
+export function useGetMeasureCommentCount<TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(
+ params: undefined |  GetMeasureCommentCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentCount>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentCount<TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(
+ params?: GetMeasureCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentCount>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentCount<TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(
+ params?: GetMeasureCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureCommentCount<TData = Awaited<ReturnType<typeof getMeasureCommentCount>>, TError = void>(
- params?: GetMeasureCommentCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetMeasureCommentCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureCommentCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -410,7 +517,7 @@ export const getGetMeasureCommentFromKeyQueryKey = (key: number,
 
 
 export const getGetMeasureCommentFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError = void>(key: number,
-    params?: GetMeasureCommentFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>, }
+    params?: GetMeasureCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -425,23 +532,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetMeasureCommentFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getMeasureCommentFromKey>>>
 export type GetMeasureCommentFromKeyQueryError = void
 
 
+export function useGetMeasureCommentFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetMeasureCommentFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getMeasureCommentFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getMeasureCommentFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetMeasureCommentFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError = void>(
+ key: number,
+    params?: GetMeasureCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetMeasureCommentFromKey<TData = Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError = void>(
  key: number,
-    params?: GetMeasureCommentFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetMeasureCommentFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getMeasureCommentFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeasureCommentFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -504,13 +638,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutMeasureCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putMeasureCommentFromKey>>, TError,{key: number;data?: MeasureComment;params?: PutMeasureCommentFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putMeasureCommentFromKey>>,
         TError,
         {key: number;data?: MeasureComment;params?: PutMeasureCommentFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutMeasureCommentFromKeyMutationOptions(options));
+      return useMutation(getPutMeasureCommentFromKeyMutationOptions(options), queryClient);
     }
     export const patchMeasureCommentFromKey = (
     key: number,
@@ -565,13 +699,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchMeasureCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchMeasureCommentFromKey>>, TError,{key: number;data?: MeasureComment;params?: PatchMeasureCommentFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchMeasureCommentFromKey>>,
         TError,
         {key: number;data?: MeasureComment;params?: PatchMeasureCommentFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchMeasureCommentFromKeyMutationOptions(options));
+      return useMutation(getPatchMeasureCommentFromKeyMutationOptions(options), queryClient);
     }
     export const deleteMeasureCommentFromKey = (
     key: number,
@@ -621,11 +755,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteMeasureCommentFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMeasureCommentFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteMeasureCommentFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteMeasureCommentFromKeyMutationOptions(options));
+      return useMutation(getDeleteMeasureCommentFromKeyMutationOptions(options), queryClient);
     }

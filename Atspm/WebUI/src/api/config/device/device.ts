@@ -8,16 +8,21 @@
 import {
   useMutation,
   useQuery
-} from 'react-query';
+} from '@tanstack/react-query';
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryClient,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
   UseQueryResult
-} from 'react-query';
+} from '@tanstack/react-query';
 
 import type {
   Device,
@@ -81,7 +86,7 @@ export const getGetDeviceActiveDevicesByLocationFromLocationIdQueryKey = (locati
 
 
 export const getGetDeviceActiveDevicesByLocationFromLocationIdQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError = void>(locationId: number,
-    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>, }
+    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -96,26 +101,53 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: locationId !== null && locationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: locationId !== null && locationId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDeviceActiveDevicesByLocationFromLocationIdQueryResult = NonNullable<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>>
 export type GetDeviceActiveDevicesByLocationFromLocationIdQueryError = void
 
 
+export function useGetDeviceActiveDevicesByLocationFromLocationId<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError = void>(
+ locationId: number,
+    params: undefined |  GetDeviceActiveDevicesByLocationFromLocationIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceActiveDevicesByLocationFromLocationId<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError = void>(
+ locationId: number,
+    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceActiveDevicesByLocationFromLocationId<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError = void>(
+ locationId: number,
+    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Gets all Utah.Udot.Atspm.Data.Models.Device from locationId where Utah.Udot.Atspm.Data.Models.Device.DeviceStatus equals Utah.Udot.Atspm.Data.Enums.DeviceStatus.Active
  */
 
 export function useGetDeviceActiveDevicesByLocationFromLocationId<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError = void>(
  locationId: number,
-    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDeviceActiveDevicesByLocationFromLocationIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesByLocationFromLocationId>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDeviceActiveDevicesByLocationFromLocationIdQueryOptions(locationId,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -151,7 +183,7 @@ export const getGetDeviceActiveDevicesCountQueryKey = (params?: GetDeviceActiveD
     }
 
 
-export const getGetDeviceActiveDevicesCountQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(params?: GetDeviceActiveDevicesCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>, }
+export const getGetDeviceActiveDevicesCountQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(params?: GetDeviceActiveDevicesCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -166,25 +198,49 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDeviceActiveDevicesCountQueryResult = NonNullable<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>>
 export type GetDeviceActiveDevicesCountQueryError = void
 
 
+export function useGetDeviceActiveDevicesCount<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(
+ params: undefined |  GetDeviceActiveDevicesCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceActiveDevicesCount<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(
+ params?: GetDeviceActiveDevicesCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceActiveDevicesCount<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(
+ params?: GetDeviceActiveDevicesCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Gets a count of device type for all active devices Utah.Udot.Atspm.Data.Models.Device where Utah.Udot.Atspm.Data.Models.Device.DeviceStatus equals Utah.Udot.Atspm.Data.Enums.DeviceStatus.Active
  */
 
 export function useGetDeviceActiveDevicesCount<TData = Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError = void>(
- params?: GetDeviceActiveDevicesCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDeviceActiveDevicesCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceActiveDevicesCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDeviceActiveDevicesCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -217,7 +273,7 @@ export const getGetDeviceQueryKey = (params?: GetDeviceParams,) => {
     }
 
 
-export const getGetDeviceQueryOptions = <TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(params?: GetDeviceParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>, }
+export const getGetDeviceQueryOptions = <TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(params?: GetDeviceParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -232,22 +288,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDeviceQueryResult = NonNullable<Awaited<ReturnType<typeof getDevice>>>
 export type GetDeviceQueryError = void
 
 
+export function useGetDevice<TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(
+ params: undefined |  GetDeviceParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDevice>>,
+          TError,
+          Awaited<ReturnType<typeof getDevice>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDevice<TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(
+ params?: GetDeviceParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDevice>>,
+          TError,
+          Awaited<ReturnType<typeof getDevice>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDevice<TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(
+ params?: GetDeviceParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDevice<TData = Awaited<ReturnType<typeof getDevice>>, TError = void>(
- params?: GetDeviceParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDeviceParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDevice>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDeviceQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -309,13 +389,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePostDevice = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof postDevice>>, TError,{data?: Device;params?: PostDeviceParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof postDevice>>,
         TError,
         {data?: Device;params?: PostDeviceParams},
         TContext
       > => {
-      return useMutation(getPostDeviceMutationOptions(options));
+      return useMutation(getPostDeviceMutationOptions(options), queryClient);
     }
     export const getDeviceCount = (
     params?: GetDeviceCountParams,
@@ -340,7 +420,7 @@ export const getGetDeviceCountQueryKey = (params?: GetDeviceCountParams,) => {
     }
 
 
-export const getGetDeviceCountQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(params?: GetDeviceCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>, }
+export const getGetDeviceCountQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(params?: GetDeviceCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -355,22 +435,46 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDeviceCountQueryResult = NonNullable<Awaited<ReturnType<typeof getDeviceCount>>>
 export type GetDeviceCountQueryError = void
 
 
+export function useGetDeviceCount<TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(
+ params: undefined |  GetDeviceCountParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceCount<TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(
+ params?: GetDeviceCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceCount>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceCount>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceCount<TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(
+ params?: GetDeviceCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDeviceCount<TData = Awaited<ReturnType<typeof getDeviceCount>>, TError = void>(
- params?: GetDeviceCountParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+ params?: GetDeviceCountParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceCount>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDeviceCountQueryOptions(params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -406,7 +510,7 @@ export const getGetDeviceFromKeyQueryKey = (key: number,
 
 
 export const getGetDeviceFromKeyQueryOptions = <TData = Awaited<ReturnType<typeof getDeviceFromKey>>, TError = void>(key: number,
-    params?: GetDeviceFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>, }
+    params?: GetDeviceFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -421,23 +525,50 @@ const {query: queryOptions} = options ?? {};
 
 
 
-   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: key !== null && key !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetDeviceFromKeyQueryResult = NonNullable<Awaited<ReturnType<typeof getDeviceFromKey>>>
 export type GetDeviceFromKeyQueryError = void
 
 
+export function useGetDeviceFromKey<TData = Awaited<ReturnType<typeof getDeviceFromKey>>, TError = void>(
+ key: number,
+    params: undefined |  GetDeviceFromKeyParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceFromKey<TData = Awaited<ReturnType<typeof getDeviceFromKey>>, TError = void>(
+ key: number,
+    params?: GetDeviceFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDeviceFromKey>>,
+          TError,
+          Awaited<ReturnType<typeof getDeviceFromKey>>
+        > , 'initialData'
+      >, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDeviceFromKey<TData = Awaited<ReturnType<typeof getDeviceFromKey>>, TError = void>(
+ key: number,
+    params?: GetDeviceFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetDeviceFromKey<TData = Awaited<ReturnType<typeof getDeviceFromKey>>, TError = void>(
  key: number,
-    params?: GetDeviceFromKeyParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>, }
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+    params?: GetDeviceFromKeyParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDeviceFromKey>>, TError, TData>>, }
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetDeviceFromKeyQueryOptions(key,params,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   return withQueryKey(query, queryOptions.queryKey);
 }
@@ -500,13 +631,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePutDeviceFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof putDeviceFromKey>>, TError,{key: number;data?: Device;params?: PutDeviceFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof putDeviceFromKey>>,
         TError,
         {key: number;data?: Device;params?: PutDeviceFromKeyParams},
         TContext
       > => {
-      return useMutation(getPutDeviceFromKeyMutationOptions(options));
+      return useMutation(getPutDeviceFromKeyMutationOptions(options), queryClient);
     }
     export const patchDeviceFromKey = (
     key: number,
@@ -561,13 +692,13 @@ const {mutation: mutationOptions} = options ?
 
     export const usePatchDeviceFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof patchDeviceFromKey>>, TError,{key: number;data?: Device;params?: PatchDeviceFromKeyParams}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof patchDeviceFromKey>>,
         TError,
         {key: number;data?: Device;params?: PatchDeviceFromKeyParams},
         TContext
       > => {
-      return useMutation(getPatchDeviceFromKeyMutationOptions(options));
+      return useMutation(getPatchDeviceFromKeyMutationOptions(options), queryClient);
     }
     export const deleteDeviceFromKey = (
     key: number,
@@ -617,11 +748,11 @@ const {mutation: mutationOptions} = options ?
 
     export const useDeleteDeviceFromKey = <TError = void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDeviceFromKey>>, TError,{key: number}, TContext>, }
- ): UseMutationResult<
+ , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof deleteDeviceFromKey>>,
         TError,
         {key: number},
         TContext
       > => {
-      return useMutation(getDeleteDeviceFromKeyMutationOptions(options));
+      return useMutation(getDeleteDeviceFromKeyMutationOptions(options), queryClient);
     }

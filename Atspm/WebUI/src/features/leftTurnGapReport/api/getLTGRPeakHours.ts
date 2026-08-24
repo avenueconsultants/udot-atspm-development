@@ -15,7 +15,7 @@
 // limitations under the License.
 // #endregion
 import { ApiResponse } from '@/types'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 
