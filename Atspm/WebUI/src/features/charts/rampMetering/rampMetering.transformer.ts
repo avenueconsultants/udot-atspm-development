@@ -40,7 +40,7 @@ import {
   triangleSvgSymbol,
 } from '../utils'
 import {
-  DescriptionWithDataPoints,
+  NormalizedDescriptionWithDataPoints,
   QueueDetectorEvent,
   RampMeteringData,
   RawRampMeteringResponse,
@@ -52,7 +52,7 @@ function toDescriptionWithDataPoints(
     | { description?: string | null; value?: DataPointForDouble[] | null }[]
     | null
     | undefined
-): DescriptionWithDataPoints[] {
+): NormalizedDescriptionWithDataPoints[] {
   return (lanes ?? []).map((lane) => ({
     description: lane.description ?? '',
     value: toDataPoints(lane.value),

@@ -41,7 +41,7 @@ import {
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
 import {
-  ApproachDelayPlan,
+  NormalizedApproachDelayPlan,
   RawApproachDelayData,
   RawApproachDelayReponse,
 } from './types'
@@ -148,7 +148,7 @@ function transformData(data: RawApproachDelayData) {
     }
   )
 
-  const planOptions: PlanOptions<ApproachDelayPlan> = {
+  const planOptions: PlanOptions<NormalizedApproachDelayPlan> = {
     averageDelay: (value: number) => `AD: ${value}s`,
     totalDelay: (value: number) => {
       const num = Number((value / 3600).toFixed(1))

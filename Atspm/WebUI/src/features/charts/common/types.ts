@@ -81,7 +81,7 @@ import {
   RawYellowAndRedActuationsResponse,
   YellowAndRedActuationsChartOptions,
 } from '@/features/charts/yellowAndRedActuations/types'
-import { LinkPivotOptions } from '@/features/tools/link-pivot/types'
+import { LinkPivotFormOptions } from '@/features/tools/link-pivot/types'
 import { RawRampMeteringResponse } from '../rampMetering/types'
 import { TimeSpaceOptions } from '../timeSpaceDiagram/shared/types'
 
@@ -169,7 +169,7 @@ export type ChartOptions =
   | WaitTimeChartOptions
   | YellowAndRedActuationsChartOptions
 
-export type ToolOptions = TimeSpaceOptions | LinkPivotOptions
+export type ToolOptions = TimeSpaceOptions | LinkPivotFormOptions
 
 export enum ChartType {
   ApproachDelay = 'ApproachDelay',

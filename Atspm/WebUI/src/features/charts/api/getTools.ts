@@ -30,13 +30,13 @@ import { dateToTimestamp } from '@/utils/dateTime'
 import { useQuery } from '@tanstack/react-query'
 import { ToolOptions, ToolType } from '../common/types'
 import {
+  NormalizedTmcEvent,
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceDetectorEvent,
   TimeSpaceDetectorEventWithDistanceDTO,
   TimeSpaceResponseData,
-  TmcEventDto,
 } from '../timeSpaceDiagram/shared/types'
 import { Cycle, PedestrianInterval } from '../timingAndActuation/types'
 
@@ -106,16 +106,11 @@ function toDetectorEventsWithDistance(
 }
 
 function toTmcEvents(
-  events: GeneratedTmcEventDto[] | null | undefined,
-  isLeftTurnEvent: boolean
-): TmcEventDto[] {
+  events: GeneratedTmcEventDto[] | null | undefined
+): NormalizedTmcEvent[] {
   return (events ?? []).map((e) => ({
     start: e.start ?? '',
     value: e.value ?? 0,
-    isRightTurnEvent: !isLeftTurnEvent,
-    isLeftTurnEvent,
-    laneType: '',
-    directionTypes: '',
   }))
 }
 
@@ -182,8 +177,8 @@ function toRawTimeSpaceHistoricData(
     pedestrianIntervals: toPedestrianIntervals(r.pedestrianIntervals),
     percentArrivalOnGreen: r.percentArrivalOnGreen ?? null,
     tmcForPhase: {
-      leftTurnEvents: toTmcEvents(r.tmcForPhase?.leftTurnEvents, true),
-      rightTurnEvents: toTmcEvents(r.tmcForPhase?.rightTurnEvents, false),
+      leftTurnEvents: toTmcEvents(r.tmcForPhase?.leftTurnEvents),
+      rightTurnEvents: toTmcEvents(r.tmcForPhase?.rightTurnEvents),
     },
     order: r.order ?? 0,
     cycleLength: r.cycleLength ?? null,

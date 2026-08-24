@@ -1,5 +1,8 @@
 import { SpeedOverTimeOptions } from '@/api/speedManagement/aTSPMSpeedManagementApi.schemas'
-import { DataSource, TimeOptions } from '@/features/speedManagementTool/enums'
+import {
+  DataSource,
+  SpeedTimePeriod,
+} from '@/features/speedManagementTool/enums'
 import useSpeedManagementStore from '@/features/speedManagementTool/speedManagementStore'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import {
@@ -39,9 +42,8 @@ const SpeedOverTimeChartOptions = ({
   )
 
   const [selectedSource] = useState<DataSource>(sourceId)
-  const [selectedTimeOptions, setSelectedTimeOptions] = useState<TimeOptions>(
-    TimeOptions.Hour
-  )
+  const [selectedTimeOptions, setSelectedTimeOptions] =
+    useState<SpeedTimePeriod>(SpeedTimePeriod.Hour)
   const [startTime] = useState<Date | null>(new Date())
   const [endTime] = useState<Date | null>(new Date())
 
@@ -92,8 +94,10 @@ const SpeedOverTimeChartOptions = ({
     }
   }
 
-  const handleTimeOptionsChange = (event: SelectChangeEvent<TimeOptions>) => {
-    setSelectedTimeOptions(event.target.value as TimeOptions)
+  const handleTimeOptionsChange = (
+    event: SelectChangeEvent<SpeedTimePeriod>
+  ) => {
+    setSelectedTimeOptions(event.target.value as SpeedTimePeriod)
   }
 
   return (
@@ -155,9 +159,9 @@ const SpeedOverTimeChartOptions = ({
             label="Bin Size"
             onChange={handleTimeOptionsChange}
           >
-            <MenuItem value={TimeOptions.Hour}>Hour</MenuItem>
-            <MenuItem value={TimeOptions.Week}>Week</MenuItem>
-            <MenuItem value={TimeOptions.Month}>Month</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Hour}>Hour</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Week}>Week</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Month}>Month</MenuItem>
           </Select>
         </FormControl>
         {/* Uncomment and update the Source Select component if needed */}

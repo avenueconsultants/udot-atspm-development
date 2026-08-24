@@ -1,4 +1,8 @@
-import { useGetDetectionType, useGetLocationType } from '@/api/config'
+import {
+  DetectionType,
+  useGetDetectionType,
+  useGetLocationType,
+} from '@/api/config'
 import CalendarCell from '@/features/locations/components/Cell/CalendarCell'
 import CommentCell from '@/features/locations/components/Cell/CommentCell'
 import { MultiSelectCell } from '@/features/locations/components/Cell/MultiSelectCell'
@@ -14,7 +18,6 @@ import {
   ConfigApproach,
   useLocationStore,
 } from '@/features/locations/components/editLocation/locationStore'
-import { DetectionType } from '@/features/locations/types'
 import {
   alpha,
   Avatar,
@@ -77,17 +80,13 @@ const EditDetectors = ({
 
   const { data: dtData } = useGetDetectionType()
   const { data: ltData } = useGetLocationType()
-  const detectionTypes = useMemo(
-    () => (dtData ?? []) as unknown as DetectionType[],
-    [dtData]
-  )
-  const locationType = ltData?.find(
-    (t) => t.id === location?.locationTypeId
-  )
+  const detectionTypes = useMemo(() => dtData ?? [], [dtData])
+  const locationType = ltData?.find((t) => t.id === location?.locationTypeId)
   const detectionOptions = useMemo(
     () =>
       detectionTypes
-        .filter((d) => {
+        .filter((d): d is DetectionType & { abbreviation: string } => {
+          if (!d.abbreviation) return false
           if (locationType?.name === 'Intersection')
             return ['AC', 'AS', 'LLC', 'LLS', 'SBP', 'AP', 'PP'].includes(
               d.abbreviation
@@ -96,7 +95,10 @@ const EditDetectors = ({
             return ['P', 'D', 'IQ', 'EQ'].includes(d.abbreviation)
           return true
         })
-        .map((d) => ({ value: d.abbreviation, label: d.description })),
+        .map((d) => ({
+          value: d.abbreviation,
+          label: d.description ?? d.abbreviation,
+        })),
     [detectionTypes, locationType]
   )
 

@@ -1,6 +1,6 @@
+import { SearchLocation as Location } from '@/api/config'
 import { ExpandLocationHandler } from '@/features/data/aggregate/handlers/expandLocationHandler'
 import SelectLocation from '@/features/locations/components/selectLocation'
-import { Location } from '@/features/locations/types'
 import {
   Box,
   Button,

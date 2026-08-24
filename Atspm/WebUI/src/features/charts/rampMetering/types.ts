@@ -21,7 +21,7 @@ export interface RampMeteringChartOptionsDefaults {
   combineLanes: { id: number; value: string; option: string }
 }
 
-export interface DescriptionWithDataPoints {
+export interface NormalizedDescriptionWithDataPoints {
   description: string
   value: DataPoint[]
 }

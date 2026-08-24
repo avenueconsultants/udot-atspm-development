@@ -1,4 +1,10 @@
 import {
+  Location,
+  RouteLocationDto,
+  useGetLocationFromKey,
+  useGetRouteRouteViewFromId,
+} from '@/api/config'
+import {
   LocationHandler,
   useLocationHandler,
 } from '@/components/handlers/locationHandler'
@@ -6,12 +12,6 @@ import {
   RouteHandler,
   useRouteHandler,
 } from '@/components/handlers/routeHandler'
-import {
-  Location,
-  RouteLocationDto,
-  useGetLocationFromKey,
-  useGetRouteRouteViewFromId,
-} from '@/api/config'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { startOfToday, startOfTomorrow } from 'date-fns'
@@ -25,12 +25,12 @@ import {
 } from '../types/aggregateApiData'
 import { AggregateData } from '../types/aggregateData'
 import {
-  AggregationType,
-  MetricTypeOptionsList,
-  YAxisOptions,
+  aggregationTypeByName,
   binSizeMarks,
   chartTypeOptions,
+  MetricTypeOptionsList,
   xAxisOptions,
+  YAxisOptions,
 } from '../types/aggregateOptionsData'
 import {
   ExpandLocationHandler,
@@ -129,14 +129,12 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   const routeIdNumber = routeHandler.routeId
     ? Number(routeHandler.routeId)
     : undefined
-  const {
-    data: routeWithExpandedLocations,
-    status: routeStatus,
-  } = useGetRouteRouteViewFromId(
-    routeIdNumber ?? 0,
-    { includeLocationDetail: true },
-    { query: { enabled: routeIdNumber != null } }
-  )
+  const { data: routeWithExpandedLocations, status: routeStatus } =
+    useGetRouteRouteViewFromId(
+      routeIdNumber ?? 0,
+      { includeLocationDetail: true },
+      { query: { enabled: routeIdNumber != null } }
+    )
   const locationHandler = useLocationHandler()
   const expandedLocationsHandler = useExpandLocationHandler({
     locations: selectedLocations,
@@ -149,11 +147,10 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   )
 
   const getAggregateTypeEnumValue = (enumString: string): number => {
-    if (Object.values(AggregationType).includes(enumString)) {
-      // Type assertion to tell TypeScript that enumString is a valid member of AggregationType
-      return AggregationType[enumString as keyof typeof AggregationType]
-    }
-    return 0
+    return (
+      aggregationTypeByName[enumString as keyof typeof aggregationTypeByName] ??
+      aggregationTypeByName['Detector Activation Count']
+    )
   }
 
   const getDataTypeValue = (aggregateVal: string, dataVal: string): number => {
@@ -250,8 +247,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   useEffect(() => {
     if (routeExpandedLocations && routeExpandedLocations.length > 0) {
       const filteredExpandedLocations = routeExpandedLocations.filter(
-        (location) =>
-          !locationIdentifiers.includes(location.locationIdentifier)
+        (location) => !locationIdentifiers.includes(location.locationIdentifier)
       )
       if (filteredExpandedLocations.length > 0) {
         setSelectedLocations((prev) => [...prev, ...filteredExpandedLocations])

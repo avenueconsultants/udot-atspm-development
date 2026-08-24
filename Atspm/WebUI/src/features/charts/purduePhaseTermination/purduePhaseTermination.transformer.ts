@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { Phase } from '@/api/reports'
 import {
   createDataZoom,
   createDisplayProps,
@@ -31,7 +32,6 @@ import {
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
 import {
-  Phase,
   RawPurduePhaseTerminationData,
   RawPurduePhaseTerminationResponse,
 } from '@/features/charts/purduePhaseTermination/types'

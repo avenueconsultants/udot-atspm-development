@@ -11,7 +11,7 @@ import {
 import { LinkPivotPcdTimeWindow } from '../linkPivotPcdTimeWindow'
 import {
   LinkPivotComponentDto,
-  LinkPivotPcdOptions,
+  LinkPivotPcdFormOptions,
   RawExistingPcdData,
   RawLinkPivotPcdResponse,
   RawPredictedPcdData,
@@ -27,7 +27,7 @@ interface props {
 const createBasePcdOptions = (
   handler: LinkPivotPcdHandler,
   pcdDto: LinkPivotComponentDto
-): LinkPivotPcdOptions => {
+): LinkPivotPcdFormOptions => {
   return {
     startDate: toUTCDateStamp(handler.startDateTime),
     endDate: toUTCDateStamp(handler.endDateTime),
@@ -47,7 +47,7 @@ export const LinkPivotPcdComponent = ({ pcdDto, pcdTimeWindow }: props) => {
   const [existingPcd, setExistingPcd] = useState<RawExistingPcdData>()
   const [predictedPcd, setPredictedPcd] = useState<RawPredictedPcdData>()
 
-  const handleToolOptions = (value: Partial<LinkPivotPcdOptions>) => {
+  const handleToolOptions = (value: Partial<LinkPivotPcdFormOptions>) => {
     const [key, val] = Object.entries(value)[0]
     setToolOptions((prev) => ({ ...prev, [key]: val }))
   }
