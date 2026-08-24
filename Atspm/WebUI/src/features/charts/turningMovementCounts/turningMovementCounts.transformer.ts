@@ -28,13 +28,10 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
-import { DataPointForInt } from '@/api/reports'
-import {
-  ChartType,
-  DataPoint,
-} from '@/features/charts/common/types'
+import { ChartType } from '@/features/charts/common/types'
 import {
   ColumnGroup,
   Labels,
@@ -43,8 +40,8 @@ import {
 } from '@/features/charts/types'
 import {
   Color,
-  SolidLineSeriesSymbol,
   formatChartDateTimeRange,
+  SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
 import { addHours, format } from 'date-fns'
 import { EChartsOption, SeriesOption } from 'echarts'
@@ -59,15 +56,6 @@ import {
   RawTurningMovementCountsResponse,
   RawTurningMovementCountTableRow,
 } from './types'
-
-function toDataPoints(
-  points: DataPointForInt[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 function normalizeTableRow(
   row: RawTurningMovementCountTableRow
@@ -119,7 +107,10 @@ export default function transformTurningMovementCountsData(
   const labels = buildLabels(directions, movementTypes)
 
   const peakHour = response.data.peakHour?.key
-    ? { key: response.data.peakHour.key, value: response.data.peakHour.value ?? 0 }
+    ? {
+        key: response.data.peakHour.key,
+        value: response.data.peakHour.value ?? 0,
+      }
     : null
 
   const peakRow = buildPeakHourRow(table, peakHour, directions, movementTypes)
@@ -300,7 +291,10 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   return chartOptions
 }
 
-function formatNullableNumber(value: number | null | undefined, decimals?: number) {
+function formatNullableNumber(
+  value: number | null | undefined,
+  decimals?: number
+) {
   if (value == null) {
     return 'N/A'
   }

@@ -1,6 +1,6 @@
 import {
-  Region,
   SearchLocation as Location,
+  Region,
   useDeleteRegionFromKey,
   useGetLocationLocationsForSearch,
   useGetRegion,
@@ -16,11 +16,13 @@ import {
   useViewPage,
 } from '@/features/identity/pagesCheck'
 import RegionEditorModal from '@/features/regions/components/RegionEditorModal'
-import { formatInstantAsLocalDate, formatInstantAsLocalDateTime } from '@/utils/dateTime'
+import { useNotificationStore } from '@/stores/notifications'
+import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 
 const RegionsAdmin = () => {
   const pageAccess = useViewPage(PageNames.Region)
+  const { addNotification } = useNotificationStore()
   const hasLocationsEditClaim = useUserHasClaim('LocationConfiguration:Edit')
   const hasLocationsDeleteClaim = useUserHasClaim(
     'LocationConfiguration:Delete'
@@ -30,16 +32,9 @@ const RegionsAdmin = () => {
   const { mutateAsync: deleteMutation } = useDeleteRegionFromKey()
   const { mutateAsync: editMutation } = usePatchRegionFromKey()
 
-  const { data: locationsData } = useGetLocationLocationsForSearch()
-  const locations = locationsData
+  const { data: locations } = useGetLocationLocationsForSearch()
 
-  const {
-    data: regionData,
-    isLoading,
-    refetch: refetchRegions,
-  } = useGetRegion()
-
-  const regions = regionData
+  const { data: regions, isLoading, refetch: refetchRegions } = useGetRegion()
 
   if (pageAccess.isLoading) {
     return null
@@ -51,6 +46,7 @@ const RegionsAdmin = () => {
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Creating Region' })
     }
   }
 
@@ -60,6 +56,7 @@ const RegionsAdmin = () => {
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Deleting Region' })
     }
   }
 
@@ -73,6 +70,7 @@ const RegionsAdmin = () => {
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Editing Region' })
     }
   }
 

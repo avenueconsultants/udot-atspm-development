@@ -1,4 +1,4 @@
-import { useAccountVerifyUserPasswordReset } from '@/api/identity/atspmAuthenticationApi'
+import { useGetAccountVerifyUserPasswordReset } from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import { addMinutes } from 'date-fns'
 import { FormEvent, useEffect, useState } from 'react'
@@ -23,7 +23,7 @@ export const useVerifyUserHandler = (): VerifyUserHandler => {
     data: verifyTokenData,
     status,
     error,
-  } = useAccountVerifyUserPasswordReset()
+  } = useGetAccountVerifyUserPasswordReset()
 
   useEffect(() => {
     if (status === 'error' && error) {

@@ -64,9 +64,7 @@ const DeviceCard = ({
 }: DeviceCardProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
-  const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
-
-  const deviceConfigurations = deviceConfigurationsData
+  const { data: deviceConfigurations } = useGetDeviceConfiguration()
 
   if (!deviceConfigurations) return null
 

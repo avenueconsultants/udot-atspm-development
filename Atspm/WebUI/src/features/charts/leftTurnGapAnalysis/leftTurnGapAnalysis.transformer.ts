@@ -27,13 +27,10 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
-import { DataPointForDouble, DataPointForInt } from '@/api/reports'
-import {
-  ChartType,
-  DataPoint,
-} from '@/features/charts/common/types'
+import { ChartType } from '@/features/charts/common/types'
 import { TransformedChartResponse } from '@/features/charts/types'
 import {
   Color,
@@ -42,15 +39,6 @@ import {
 } from '@/features/charts/utils'
 import { EChartsOption, TooltipComponentOption } from 'echarts'
 import { RawLeftTurnGapAnalysisResponse, RawLeftTurnGapData } from './types'
-
-function toDataPoints(
-  points: (DataPointForInt | DataPointForDouble)[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 export default function transformLeftTurnGapAnalysisData(
   response: RawLeftTurnGapAnalysisResponse

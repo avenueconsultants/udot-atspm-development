@@ -17,7 +17,7 @@ import {
   useViewPage,
 } from '@/features/identity/pagesCheck'
 import { useNotificationStore } from '@/stores/notifications'
-import { formatInstantAsLocalDate, formatInstantAsLocalDateTime } from '@/utils/dateTime'
+import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 const AreasAdmin = () => {
   const pageAccess = useViewPage(PageNames.Areas)
@@ -31,11 +31,8 @@ const AreasAdmin = () => {
   const { mutateAsync: deleteArea } = useDeleteAreaFromKey()
   const { mutateAsync: updateArea } = usePatchAreaFromKey()
 
-  const { data: locationsData } = useGetLocationLocationsForSearch()
-  const { data: areaData, isLoading, refetch: refetchAreas } = useGetArea()
-
-  const locations = locationsData
-  const areas = areaData
+  const { data: locations } = useGetLocationLocationsForSearch()
+  const { data: areas, isLoading, refetch: refetchAreas } = useGetArea()
 
   if (pageAccess.isLoading) {
     return null

@@ -45,6 +45,14 @@ const queryConfig: DefaultOptions = {
 // instance is safe here.
 export const queryClient = new QueryClient({ defaultOptions: queryConfig })
 
+// This full-table lookup backs location pickers and several admin screens.
+// Match the generated query-key prefix so parameterized calls inherit the
+// same cache policy without wrapping or modifying generated hooks.
+queryClient.setQueryDefaults(['/Location/GetLocationsForSearch'], {
+  staleTime: 5 * 60 * 1000,
+  gcTime: Infinity,
+})
+
 export type ExtractFnReturnType<FnType extends (...args: any) => any> =
   PromiseValue<ReturnType<FnType>>
 

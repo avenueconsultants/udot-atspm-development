@@ -28,14 +28,10 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
-import { DataPointForDouble } from '@/api/reports'
-import {
-  ChartType,
-  DataPoint,
-  PlanOptions,
-} from '@/features/charts/common/types'
+import { ChartType, PlanOptions } from '@/features/charts/common/types'
 import { TransformedChartResponse } from '@/features/charts/types'
 import {
   Color,
@@ -48,15 +44,6 @@ import {
   RawYellowAndRedActuationsResponse,
   YellowAndRedActuationsPlan,
 } from './types'
-
-function toDataPoints(
-  points: DataPointForDouble[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 export default function transformYellowAndRedActuationsData(
   response: RawYellowAndRedActuationsResponse

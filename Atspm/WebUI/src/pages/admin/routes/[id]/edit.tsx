@@ -1,8 +1,8 @@
 import {
+  SearchLocation as Location,
   RouteDistanceDto,
   RouteDto,
   RouteLocationDto,
-  SearchLocation as Location,
   useGetLocationLocationsForSearch,
   useGetRouteDistance,
   useGetRouteRouteViewFromId,
@@ -28,7 +28,7 @@ const RouteAdmin = () => {
   const { id } = router.query
   const { addNotification } = useNotificationStore()
 
-  const { data: locationsData } = useGetLocationLocationsForSearch()
+  const { data: locations } = useGetLocationLocationsForSearch()
   const routeId = typeof id === 'string' ? Number(id) : NaN
   const { data: route } = useGetRouteRouteViewFromId(routeId, undefined, {
     query: { enabled: typeof id === 'string' && id !== '' },
@@ -42,8 +42,6 @@ const RouteAdmin = () => {
   const [hasLoaded, setHasLoaded] = useState(false)
   const [hasErrors, setHasErrors] = useState(false)
   const [routeDistances, setRouteDistances] = useState<RouteDistanceDto[]>([])
-
-  const locations = locationsData
 
   useEffect(() => {
     if (routeDistancesData) {
@@ -141,7 +139,7 @@ const RouteAdmin = () => {
         prev.nextLocationDistance = d
         prev.nextLocationDistanceId = d?.id ?? null
       } else {
-        curr.previousLocationDistance = undefined
+        curr.previousLocationDistance = null
         curr.previousLocationDistanceId = null
       }
 
@@ -157,7 +155,7 @@ const RouteAdmin = () => {
         next.previousLocationDistance = d
         next.previousLocationDistanceId = d?.id ?? null
       } else {
-        curr.nextLocationDistance = undefined
+        curr.nextLocationDistance = null
         curr.nextLocationDistanceId = null
       }
     }
@@ -165,9 +163,9 @@ const RouteAdmin = () => {
     affected.forEach((i) => recomputeAround(reIndexed, i))
 
     if (reIndexed.length > 0) {
-      reIndexed[0].previousLocationDistance = undefined
+      reIndexed[0].previousLocationDistance = null
       reIndexed[0].previousLocationDistanceId = null
-      reIndexed[reIndexed.length - 1].nextLocationDistance = undefined
+      reIndexed[reIndexed.length - 1].nextLocationDistance = null
       reIndexed[reIndexed.length - 1].nextLocationDistanceId = null
     }
 
@@ -199,7 +197,7 @@ const RouteAdmin = () => {
       opposingDirectionDescription: null,
       isPrimaryOverlap: undefined,
       isOpposingOverlap: undefined,
-      nextLocationDistance: undefined,
+      nextLocationDistance: null,
       nextLocationDistanceId: null,
     }
 
@@ -303,7 +301,7 @@ const RouteAdmin = () => {
             nextAfterDeleted.locationIdentifier ?? '',
             routeDistances
           )
-        : undefined
+        : null
     }
 
     let filtered = routeLocations.filter(
@@ -334,7 +332,8 @@ const RouteAdmin = () => {
     const hasErrorsLocal = routeLocations.some((rl, i) => {
       const notLast = i !== routeLocations.length - 1
       const missingDist = notLast && !rl.nextLocationDistance
-      const missingDir = rl.primaryDirectionId == null || rl.opposingDirectionId == null
+      const missingDir =
+        rl.primaryDirectionId == null || rl.opposingDirectionId == null
       return missingDist || missingDir
     })
 

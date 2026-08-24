@@ -1,4 +1,4 @@
-import { useAccountForgotPassword } from '@/api/identity/atspmAuthenticationApi'
+import { useGetAccountForgotPassword } from '@/api/identity/atspmAuthenticationApi'
 import {
   Alert,
   Box,
@@ -19,7 +19,7 @@ const ChangePassword = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('')
   const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const { mutate: resetPassword } = useAccountForgotPassword()
+  const { mutate: resetPassword } = useGetAccountForgotPassword()
   const router = useRouter()
 
   const handleSnackbarClose = () => {
@@ -68,7 +68,6 @@ const ChangePassword = () => {
               Please check your email for the change password link
             </Typography>
             <Button
-              
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleHomeButtonClick}

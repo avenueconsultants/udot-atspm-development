@@ -14,11 +14,13 @@ import {
   useViewPage,
 } from '@/features/identity/pagesCheck'
 import ProductEditorModal from '@/features/products/components/ProductEditorModal'
+import { useNotificationStore } from '@/stores/notifications'
 import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 
 const ProductsAdmin = () => {
   const pageAccess = useViewPage(PageNames.Products)
+  const { addNotification } = useNotificationStore()
 
   const hasDeviceEditClaim = useUserHasClaim('Device:Edit')
   const hasDeviceDeleteClaim = useUserHasClaim('Device:Delete')
@@ -28,12 +30,10 @@ const ProductsAdmin = () => {
   const { mutateAsync: editMutation } = usePatchProductFromKey()
 
   const {
-    data: productData,
+    data: products,
     isLoading,
     refetch: refetchProducts,
   } = useGetProduct()
-
-  const products = productData
 
   if (pageAccess.isLoading) {
     return
@@ -58,6 +58,7 @@ const ProductsAdmin = () => {
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Creating Product' })
     }
   }
 
@@ -67,6 +68,7 @@ const ProductsAdmin = () => {
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Deleting Product' })
     }
   }
 
@@ -80,6 +82,7 @@ const ProductsAdmin = () => {
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({ type: 'error', title: 'Error Editing Product' })
     }
   }
 

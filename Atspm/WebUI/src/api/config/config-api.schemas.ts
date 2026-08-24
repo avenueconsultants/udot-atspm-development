@@ -1320,10 +1320,10 @@ export interface RouteLocationDto {
   isOpposingOverlap?: boolean;
   /** @nullable */
   previousLocationDistanceId?: number | null;
-  previousLocationDistance?: RouteDistanceDto;
+  previousLocationDistance?: RouteDistanceDto | null;
   /** @nullable */
   nextLocationDistanceId?: number | null;
-  nextLocationDistance?: RouteDistanceDto;
+  nextLocationDistance?: RouteDistanceDto | null;
   /** @nullable */
   locationIdentifier?: string | null;
   longitude?: number;

@@ -27,9 +27,9 @@ import {
   createYAxis,
   formatDataPointForStepView,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
-import { DataPointForDouble } from '@/api/reports'
 import { ChartType, DataPoint } from '@/features/charts/common/types'
 import {
   Bin,
@@ -48,15 +48,6 @@ import {
   VisualMapComponentOption,
   XAXisComponentOption,
 } from 'echarts'
-
-function toDataPoints(
-  points: DataPointForDouble[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 export default function transformGreenTimeUtilizationData(
   response: RawGreenTimeUtilizationResponse
@@ -141,10 +132,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
   const amountOfVehiclesThrough = transformBins(bins)
   const xAxisValues = createTimeAxis(start, end, xAxisBinSize)
 
-  const programmedSplitsData = formatDataPointForStepView(
-    programmedSplits,
-    end
-  )
+  const programmedSplitsData = formatDataPointForStepView(programmedSplits, end)
 
   const averageSplitsData = formatDataPointForStepView(averageSplits, end)
 

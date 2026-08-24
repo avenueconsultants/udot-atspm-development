@@ -55,6 +55,18 @@ export function transformSeriesData(
   return series
 }
 
+export function toDataPoints(
+  points:
+    | ReadonlyArray<{ timestamp?: string | null; value?: number | null }>
+    | null
+    | undefined
+): DataPoint[] {
+  return (points ?? []).map((point) => ({
+    timestamp: point.timestamp ?? '',
+    value: point.value ?? 0,
+  }))
+}
+
 export function createSeries(...seriesInputs: ChartSeriesOption[]) {
   const defaultProperties: SeriesOption = {}
 

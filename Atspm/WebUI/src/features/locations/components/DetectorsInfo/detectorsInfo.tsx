@@ -1,9 +1,12 @@
-import { useGetDetectionType, useGetLocationType } from '@/api/config'
+import {
+  Location as LocationExpanded,
+  useGetDetectionType,
+  useGetLocationType,
+} from '@/api/config'
 import DetectionTypesCell from '@/features/locations/components/editDetector/DetectionTypesCell'
 import { laneTypeOptions } from '@/features/locations/components/editDetector/LaneTypeCell'
 import { movementTypeOptions } from '@/features/locations/components/editDetector/MovementTypeCell'
 import { hardwareTypes } from '@/features/locations/components/editDetector/selectOptions'
-import { Location as LocationExpanded } from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import { Box, SxProps, Theme } from '@mui/material'
@@ -102,9 +105,10 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
       latencyCorrection: detector.latencyCorrection,
       movementType: detector.movementType,
       laneNumber: detector.laneNumber,
-      laneType: laneTypeOptions.find(
-        (o) => o.abbreviation === (detector.laneType as unknown as string)
-      )?.description,
+      laneType:
+        detector.laneType == null
+          ? undefined
+          : laneTypeOptions[detector.laneType]?.description,
       distanceFromStopBar: detector.distanceFromStopBar,
       decisionPoint: detector.decisionPoint,
       movementDelay: detector.movementDelay,

@@ -15,12 +15,12 @@
 // limitations under the License.
 // #endregion
 import {
-  DataPointForDouble,
   LinkPivotPcdResult,
   PurdueCoordinationDiagramResult,
   getLinkPivotPcdData,
 } from '@/api/reports'
 import { mapStringBooleansToBoolean } from '@/features/charts/api/getTools'
+import { toDataPoints } from '@/features/charts/common/transformers'
 import { ToolOptions, ToolType } from '@/features/charts/common/types'
 import {
   RawPurdueCoordinationDiagramData,
@@ -39,15 +39,6 @@ type BaseOptions = {
 type UseToolsOptions = BaseOptions & {
   toolType: ToolType.LpPcd
   toolOptions: ToolOptions
-}
-
-function toDataPoints(
-  points: DataPointForDouble[] | null | undefined
-): { timestamp: string; value: number }[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
 }
 
 function toPcdData(
@@ -84,7 +75,9 @@ function toPcdData(
   }
 }
 
-function toRawLinkPivotPcdData(result: LinkPivotPcdResult): RawLinkPivotPcdData {
+function toRawLinkPivotPcdData(
+  result: LinkPivotPcdResult
+): RawLinkPivotPcdData {
   return {
     existingTotalAOG: result.existingTotalAOG ?? 0,
     existingTotalPAOG: result.existingTotalPAOG ?? 0,

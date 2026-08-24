@@ -14,7 +14,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { createDataZoom } from './transformers'
+import { createDataZoom, toDataPoints } from './transformers'
+
+describe('toDataPoints', () => {
+  it('normalizes missing collections and values', () => {
+    expect(toDataPoints(undefined)).toEqual([])
+    expect(
+      toDataPoints([
+        { timestamp: '2026-08-24T12:00:00Z', value: 3.5 },
+        { timestamp: null, value: null },
+      ])
+    ).toEqual([
+      { timestamp: '2026-08-24T12:00:00Z', value: 3.5 },
+      { timestamp: '', value: 0 },
+    ])
+  })
+})
 
 describe('createDataZoom', () => {
   it('disables data shadows for horizontal sliders by default', () => {

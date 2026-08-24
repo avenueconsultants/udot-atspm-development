@@ -29,17 +29,14 @@ const JurisdictionsAdmin = () => {
   )
 
   const {
-    data: jurisdictionData,
+    data: jurisdictions,
     isLoading,
     refetch: refetchJurisdictions,
   } = useGetJurisdiction()
   const { mutateAsync: createMutation } = usePostJurisdiction()
   const { mutateAsync: editMutation } = usePatchJurisdictionFromKey()
   const { mutateAsync: deleteMutation } = useDeleteJurisdictionFromKey()
-  const { data: locationsData } = useGetLocationLocationsForSearch()
-  const locations = locationsData
-
-  const jurisdictions = jurisdictionData
+  const { data: locations } = useGetLocationLocationsForSearch()
 
   if (pageAccess.isLoading) {
     return null

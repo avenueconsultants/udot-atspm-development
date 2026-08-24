@@ -28,9 +28,10 @@ import {
   createXAxis,
   createYAxis,
   formatDataPointForStepView,
+  toDataPoints,
   transformSeriesData,
 } from '../common/transformers'
-import { ChartType, DataPoint, MarkAreaData } from '../common/types'
+import { ChartType, MarkAreaData } from '../common/types'
 import { TransformedChartResponse } from '../types'
 import {
   Color,
@@ -45,15 +46,6 @@ import {
   RawRampMeteringResponse,
   TimeSpaceDetectorEvent,
 } from './types'
-
-function toDataPoints(
-  points: DataPointForDouble[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 function toDescriptionWithDataPoints(
   lanes:

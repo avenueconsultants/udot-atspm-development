@@ -99,16 +99,13 @@ const DeviceModal = ({
   locationId,
   refetchDevices,
 }: NewDeviceModalProps) => {
-  const { data: productsData } = useGetProduct()
-  const { data: deviceConfigurationsData } = useGetDeviceConfiguration()
+  const { data: products } = useGetProduct()
+  const { data: deviceConfigurations } = useGetDeviceConfiguration()
   const { mutate: updateDevice } = usePutDeviceFromKey()
   const { mutate: createDevice } = usePostDevice()
   const { data: deviceTypes } = useConfigEnums(ConfigEnum.DeviceTypes)
   const { data: deviceStatus } = useConfigEnums(ConfigEnum.DeviceStatus)
   const { addNotification } = useNotificationStore()
-
-  const deviceConfigurations = deviceConfigurationsData
-  const products = productsData
 
   const [filteredConfigurations, setFilteredConfigurations] = useState<
     DeviceConfiguration[]

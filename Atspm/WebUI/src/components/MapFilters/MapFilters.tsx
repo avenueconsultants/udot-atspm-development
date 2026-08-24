@@ -4,24 +4,24 @@ import {
   useGetLocationType,
   useGetMeasureType,
   useGetRegion,
-} from "@/api/config";
-import { Autocomplete, Box, Paper, TextField, Typography } from "@mui/material";
-import { SyntheticEvent, memo } from "react";
+} from '@/api/config'
+import { Autocomplete, Box, Paper, TextField, Typography } from '@mui/material'
+import { SyntheticEvent, memo } from 'react'
 
 type Filters = {
-  areaId: number | null;
-  regionId: number | null;
-  locationTypeId: number | null;
-  jurisdictionId: number | null;
-  measureTypeId: number | null;
-};
+  areaId: number | null
+  regionId: number | null
+  locationTypeId: number | null
+  jurisdictionId: number | null
+  measureTypeId: number | null
+}
 
 type MapFiltersProps = {
-  onFilterChange: (filters: Partial<Filters>) => void;
-  filters: Filters;
-  locationsTotal: number;
-  locationsFiltered: number;
-};
+  onFilterChange: (filters: Partial<Filters>) => void
+  filters: Filters
+  locationsTotal: number
+  locationsFiltered: number
+}
 
 const MapFilters = ({
   onFilterChange,
@@ -29,29 +29,24 @@ const MapFilters = ({
   locationsTotal,
   locationsFiltered,
 }: MapFiltersProps) => {
-  const { data: areasData } = useGetArea();
-  const { data: regionsData } = useGetRegion();
-  const { data: jurisdictionsData } = useGetJurisdiction();
-  const { data: measureTypeData } = useGetMeasureType();
-  const { data: locationTypeData } = useGetLocationType();
-  const areas = areasData;
-  const regions = regionsData;
-  const locationTypes = locationTypeData;
-  const jurisdictions = jurisdictionsData;
-  const measureTypes = measureTypeData;
+  const { data: areas } = useGetArea()
+  const { data: regions } = useGetRegion()
+  const { data: jurisdictions } = useGetJurisdiction()
+  const { data: measureTypes } = useGetMeasureType()
+  const { data: locationTypes } = useGetLocationType()
 
   const handleFilterChange = (key: keyof Filters, value: number | null) => {
-    onFilterChange({ [key]: value });
-  };
+    onFilterChange({ [key]: value })
+  }
 
   return (
     <Paper
       sx={{
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         gap: 2,
         padding: 2,
-        width: "200px",
+        width: '200px',
       }}
     >
       <Autocomplete
@@ -60,8 +55,8 @@ const MapFilters = ({
         options={areas?.map((area) => area.name) || []}
         renderInput={(params) => <TextField {...params} label="Area" />}
         onChange={(_: SyntheticEvent, val: string | null | undefined) => {
-          const id = areas?.find((area) => area.name === val)?.id || null;
-          handleFilterChange("areaId", id);
+          const id = areas?.find((area) => area.name === val)?.id || null
+          handleFilterChange('areaId', id)
         }}
       />
       <Autocomplete
@@ -76,8 +71,8 @@ const MapFilters = ({
         )}
         onChange={(_: SyntheticEvent, val: string | null | undefined) => {
           const id =
-            regions?.find((region) => region.description === val)?.id || null;
-          handleFilterChange("regionId", id);
+            regions?.find((region) => region.description === val)?.id || null
+          handleFilterChange('regionId', id)
         }}
       />
       <Autocomplete
@@ -92,8 +87,8 @@ const MapFilters = ({
         onChange={(_: SyntheticEvent, val: string | null | undefined) => {
           const id =
             jurisdictions?.find((jurisdiction) => jurisdiction.name === val)
-              ?.id || null;
-          handleFilterChange("jurisdictionId", id);
+              ?.id || null
+          handleFilterChange('jurisdictionId', id)
         }}
       />
       <Autocomplete
@@ -112,8 +107,8 @@ const MapFilters = ({
         onChange={(_: SyntheticEvent, val: string | null) => {
           const id =
             measureTypes?.find((measureType) => measureType.name === val)?.id ||
-            null;
-          handleFilterChange("measureTypeId", id);
+            null
+          handleFilterChange('measureTypeId', id)
         }}
       />
       <Autocomplete
@@ -130,18 +125,18 @@ const MapFilters = ({
         onChange={(_: SyntheticEvent, val: string | null | undefined) => {
           const id =
             locationTypes?.find((locationType) => locationType.name === val)
-              ?.id || null;
-          handleFilterChange("locationTypeId", id);
+              ?.id || null
+          handleFilterChange('locationTypeId', id)
         }}
       />
-      <Box display={"flex"} justifyContent={"space-between"}>
+      <Box display={'flex'} justifyContent={'space-between'}>
         <Typography variant="caption">Results</Typography>
         <Typography variant="caption">
           {locationsFiltered} / {locationsTotal}
         </Typography>
       </Box>
     </Paper>
-  );
-};
+  )
+}
 
-export default memo(MapFilters);
+export default memo(MapFilters)

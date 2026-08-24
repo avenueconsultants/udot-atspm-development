@@ -1,9 +1,10 @@
 import {
   Location,
   LocationVersionActions,
-  usePostLocation,
   useGetLocationLocationsForSearch,
+  usePostLocation,
 } from '@/api/config'
+import { useNotificationStore } from '@/stores/notifications'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
@@ -42,9 +43,9 @@ const NewLocationModal = ({
   closeModal,
   setLocation,
 }: NewLocationModalProps) => {
-  const { mutate: createLocation } = usePostLocation()
-  const { data: allLocationsData } = useGetLocationLocationsForSearch()
-  const allLocations = allLocationsData || []
+  const { mutateAsync: createLocation } = usePostLocation()
+  const { addNotification } = useNotificationStore()
+  const { data: allLocations = [] } = useGetLocationLocationsForSearch()
 
   const {
     control,
@@ -65,7 +66,7 @@ const NewLocationModal = ({
   )
   const locationIsLessThan10Characters = (locationIdentifier || '').length <= 10
 
-  const onSubmit = (data: NewLocationFormData) => {
+  const onSubmit = async (data: NewLocationFormData) => {
     const newLocation: Location = {
       locationIdentifier: data.locationIdentifier,
       note: '',
@@ -82,15 +83,13 @@ const NewLocationModal = ({
       versionAction: LocationVersionActions.NUMBER_10,
     }
 
-    createLocation(
-      { data: newLocation },
-      {
-        onSuccess: (createdData) => {
-          setLocation(createdData as unknown as Location)
-        },
-        onSettled: closeModal,
-      }
-    )
+    try {
+      const createdData = await createLocation({ data: newLocation })
+      setLocation(createdData as unknown as Location)
+      closeModal()
+    } catch {
+      addNotification({ type: 'error', title: 'Error Creating Location' })
+    }
   }
 
   const errorMessage = () => {

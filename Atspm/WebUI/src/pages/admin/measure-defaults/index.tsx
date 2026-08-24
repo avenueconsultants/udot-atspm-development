@@ -21,15 +21,13 @@ import {
 const MeasureDefaults = () => {
   const pageAccess = useViewPage(PageNames.MeasureDefaults)
 
-  const { data: chartDefaultsData, isLoading } = useChartDefaults()
+  const { data: chartDefaults, isLoading } = useChartDefaults()
   const { mutate } = useUpdateChartDefaults()
   const hasEditClaim = useUserHasClaim('GeneralConfiguration:Edit')
 
   if (pageAccess.isLoading) {
     return
   }
-
-  const chartDefaults = chartDefaultsData
 
   const getChartDefaults = (chartType: string) => {
     return chartDefaults?.find((chart) => chart.chartType === chartType)

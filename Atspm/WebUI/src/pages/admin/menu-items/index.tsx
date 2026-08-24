@@ -30,12 +30,10 @@ const MenuItemsAdmin = () => {
   const { mutateAsync: editMenuItem } = usePatchMenuItemsFromKey()
 
   const {
-    data: menuItemsData,
+    data: menuItems,
     isLoading,
     refetch: refetchMenuItems,
   } = useGetMenuItems()
-  const menuItems = menuItemsData
-
   if (pageAccess.isLoading) {
     return
   }

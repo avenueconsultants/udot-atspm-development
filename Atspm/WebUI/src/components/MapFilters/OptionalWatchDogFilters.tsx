@@ -29,15 +29,10 @@ const OptionalWatchDogFilters = ({
 }: OptionalWatchDogFiltersProps) => {
   const [location, setLocation] = useState<Location | null>(null)
 
-  const { data: areasData } = useGetArea()
-  const { data: regionsData } = useGetRegion()
-  const { data: jurisdictionsData } = useGetJurisdiction()
-  const { data: locationsData } = useGetLocationLocationsForSearch()
-
-  const areas = areasData || []
-  const regions = regionsData || []
-  const jurisdictions = jurisdictionsData || []
-  const locations = locationsData || []
+  const { data: areas = [] } = useGetArea()
+  const { data: regions = [] } = useGetRegion()
+  const { data: jurisdictions = [] } = useGetJurisdiction()
+  const { data: locations = [] } = useGetLocationLocationsForSearch()
 
   const handleAreaChange = (
     _: SyntheticEvent,

@@ -28,14 +28,10 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
-import { DataPointForDouble } from '@/api/reports'
-import {
-  ChartType,
-  DataPoint,
-  PlanOptions,
-} from '@/features/charts/common/types'
+import { ChartType, PlanOptions } from '@/features/charts/common/types'
 import {
   RawPedestrianDelayData,
   RawPedestrianDelayResponse,
@@ -49,15 +45,6 @@ import {
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
 import { EChartsOption } from 'echarts'
-
-function toDataPoints(
-  points: DataPointForDouble[] | null | undefined
-): DataPoint[] {
-  return (points ?? []).map((p) => ({
-    timestamp: p.timestamp ?? '',
-    value: p.value ?? 0,
-  }))
-}
 
 export default function transformPedestrianDelayData(
   response: RawPedestrianDelayResponse
@@ -225,8 +212,7 @@ function transformData(data: RawPedestrianDelayData) {
   }
   const planOptions: PlanOptions<pedestrianDelayPlan> = {
     pedRecallMessage: (value: string | null | undefined) => value ?? '',
-    cyclesWithPedRequests: (value: number | undefined) =>
-      `${value ?? 0} CPR`,
+    cyclesWithPedRequests: (value: number | undefined) => `${value ?? 0} CPR`,
     uniquePedDetections: (value: number | undefined) => `${value ?? 0} TBP`,
     averageDelaySeconds: (value: number | undefined) =>
       `${Math.round(value ?? 0)} AD`,

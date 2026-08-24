@@ -67,21 +67,17 @@ export default function TspReportPage() {
     mutateAsync: fetchTspReport,
     isPending: loadingReport,
   } = useGetTransitSignalPriorityReportData()
-  const { data: locationsData } = useGetLocationLatestVersionOfAllLocations()
-  const locations = locationsData || []
-  const { data: measureTypesData } = useGetMeasureType()
-  const measureTypes = measureTypesData || []
+  const { data: locations = [] } = useGetLocationLatestVersionOfAllLocations()
+  const { data: measureTypes = [] } = useGetMeasureType()
   const tspMeasureTypeId = measureTypes.find(
     (m) => m.abbreviation === 'TSP'
   )?.id
-  const { data: savedOptionsData } =
+  const { data: savedOptions = [] } =
     useGetMeasureTypeMeasureOptionPresetsFromKey(
       tspMeasureTypeId ?? 0,
       undefined,
       { query: { enabled: tspMeasureTypeId != null } }
     )
-  const savedOptions = savedOptionsData || []
-
   function renderErrorAlert() {
     if (errorState.type === 'NO_LOCATIONS') {
       return (
@@ -148,16 +144,19 @@ export default function TspReportPage() {
     )
     if (selectedParameters) {
       setSelectedReport(selectedParameters.id ?? 0)
-      const savedOption = selectedParameters.option as TransitSignalPriorityOptions
+      const savedOption =
+        selectedParameters.option as TransitSignalPriorityOptions
       const locationsAndPhases = savedOption.locationsAndPhases ?? []
       const locationsWithApproaches = await getLocationWithApproaches(
-        (locationsAndPhases
+        locationsAndPhases
           .map((loc) => {
             return locations.find(
               (l) => l.locationIdentifier === loc.locationIdentifier
             )
           })
-          .filter((l): l is NonNullable<typeof l> => l != null) as unknown) as Location[]
+          .filter(
+            (l): l is NonNullable<typeof l> => l != null
+          ) as unknown as Location[]
       )
       const locationsWithApproachesWithPhases: TspLocation[] =
         locationsWithApproaches.map((loc) => {

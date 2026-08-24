@@ -63,12 +63,34 @@ const stripBoilerplateBinaryContentTypes = (paths) => {
   return paths
 }
 
-const sanitizeSpec = (spec) => ({
-  ...spec,
-  paths: stripBoilerplateBinaryContentTypes(
-    stripApiV1PrefixFromPaths(spec.paths)
-  ),
-})
+// The route editor must send explicit nulls to clear distance navigation
+// properties. The server accepts null for these fields, but the generated
+// OpenAPI document currently omits that nullability metadata.
+const restoreNullableRouteDistances = (spec) => {
+  const routeLocationDto = spec.components?.schemas?.RouteLocationDto
+  const distanceProperties = [
+    'previousLocationDistance',
+    'nextLocationDistance',
+  ]
+
+  for (const propertyName of distanceProperties) {
+    const property = routeLocationDto?.properties?.[propertyName]
+    if (property) property.nullable = true
+  }
+
+  return spec
+}
+
+const sanitizeSpec = (inputSpec) => {
+  const spec = restoreNullableRouteDistances(inputSpec)
+
+  return {
+    ...spec,
+    paths: stripBoilerplateBinaryContentTypes(
+      stripApiV1PrefixFromPaths(spec.paths)
+    ),
+  }
+}
 
 module.exports = {
   config: {
@@ -84,7 +106,6 @@ module.exports = {
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
-      templates: './orval-templates',
       mode: 'tags-split',
       override: {
         mutator: {
@@ -104,7 +125,6 @@ module.exports = {
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
-      templates: './orval-templates',
       mode: 'tags-split',
       override: {
         mutator: {
@@ -124,7 +144,6 @@ module.exports = {
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
-      templates: './orval-templates',
       mode: 'tags-split',
       override: {
         mutator: {
@@ -147,7 +166,6 @@ module.exports = {
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
-      templates: './orval-templates',
       mode: 'split',
       override: {
         mutator: {
@@ -167,7 +185,6 @@ module.exports = {
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
-      templates: './orval-templates',
       mode: 'split',
       override: {
         mutator: {

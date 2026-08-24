@@ -1,6 +1,6 @@
 import {
-  useAccountChangePassword,
   useDeleteTokenVerifyResetToken,
+  useGetAccountChangePassword,
 } from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import Cookies from 'js-cookie'
@@ -51,10 +51,10 @@ export const useChangePasswordHandler = ({
     mutate: changePassword,
     data: changePasswordData,
     status,
-  } = useAccountChangePassword()
+  } = useGetAccountChangePassword()
 
   useEffect(() => {
-    if (status !== 'loading' && status === 'success') {
+    if (status === 'success') {
       setResponseSuccess(true)
     }
 
@@ -107,7 +107,9 @@ export const useChangePasswordHandler = ({
       return
     }
     setSubmitted(true)
-    changePassword({ data: { resetToken, newPassword: password, confirmPassword } })
+    changePassword({
+      data: { resetToken, newPassword: password, confirmPassword },
+    })
   }
 
   const component: ChangePasswordHandler = {

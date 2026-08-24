@@ -1,10 +1,6 @@
 import {
   ApproachDto,
-  DetectionHardwareTypes,
-  DetectionTypes,
   DirectionTypes,
-  LaneTypes,
-  MovementTypes,
   useUpsertApproachApproach,
 } from '@/api/config'
 import AuditInfo from '@/components/AuditInfo'
@@ -48,13 +44,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
   )
   const deleteDetector = useLocationStore((s) => s.deleteDetector)
   const channelMap = useLocationStore((s) => s.channelMap)
-  const errors = useLocationStore((s) => s.errors)
-  const warnings = useLocationStore((s) => s.warnings)
   const setErrors = useLocationStore((s) => s.setErrors)
-  const setWarnings = useLocationStore((s) => s.setWarnings)
-  const clearErrorsAndWarnings = useLocationStore(
-    (s) => s.clearErrorsAndWarnings
-  )
   const updateApproachInStore = useLocationStore((s) => s.updateApproach)
   const copyApproachInStore = useLocationStore((s) => s.copyApproach)
   const deleteApproachInStore = useLocationStore((s) => s.deleteApproach)
@@ -62,7 +52,6 @@ function EditApproach({ approach }: ApproachAdminProps) {
   const updateSavedApproaches = useLocationStore((s) => s.updateSavedApproach)
 
   const [open, setOpen] = useState(false)
-  const [openHistory, setOpenHistory] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [deleteMode, setDeleteMode] = useState(false)
   const [selectedDetectorIds, setSelectedDetectorIds] = useState<number[]>([])
@@ -168,8 +157,8 @@ function EditApproach({ approach }: ApproachAdminProps) {
 
     // Convert direction type from name -> numeric enum
     modifiedApproach.directionTypeId =
-      findDirectionType(modifiedApproach.directionTypeId)?.value ||
-      DirectionTypes.NA
+      findDirectionType(modifiedApproach.directionTypeId ?? 0)?.value ??
+      DirectionTypes.NUMBER_0
 
     // Detectors
     modifiedApproach.detectors.forEach((det) => {
@@ -212,42 +201,43 @@ function EditApproach({ approach }: ApproachAdminProps) {
       {
         onSuccess: (savedApproachDto) => {
           try {
-            // The store keeps detector/direction enum fields as their
-            // human-readable name (matched against ConfigEnum lookups
-            // below), not the numeric codes the API returns - normalize
-            // through a loosely-typed view rather than fight the two
-            // incompatible shapes.
-            const saved = savedApproachDto as any
-            const detectorsArray: any[] = saved.detectors || []
-            detectorsArray.forEach((detector: any) => {
-              detector.detectionTypes = detector.detectionTypes || []
-              detector.detectionTypes.forEach((dType: any) => {
-                dType.abbreviation =
-                  findDetectionType(dType.abbreviation)?.name ||
-                  DetectionTypes.NA
-              })
-              detector.detectionHardware =
-                findDetectionHardware(detector.detectionHardware)?.name ||
-                DetectionHardwareTypes.NA
-              detector.movementType =
-                findMovementType(detector.movementType)?.name ||
-                MovementTypes.NA
-              detector.laneType =
-                findLaneType(detector.laneType)?.name || LaneTypes.NA
-            })
+            const detectors = (savedApproachDto.detectors ?? [])
+              .map((detector) => ({
+                ...detector,
+                id: detector.id ?? 0,
+                approachId: detector.approachId ?? undefined,
+                detectionTypes: (detector.detectionTypes ?? []).map(
+                  (detectionType) => ({
+                    ...detectionType,
+                    abbreviation:
+                      findDetectionType(
+                        detectionType.abbreviation ?? detectionType.id ?? 0
+                      )?.name ?? 'NA',
+                  })
+                ),
+                detectionHardware:
+                  findDetectionHardware(detector.detectionHardware ?? 0)
+                    ?.name ?? 'NA',
+                movementType:
+                  findMovementType(detector.movementType ?? 0)?.name ?? 'NA',
+                laneType: findLaneType(detector.laneType ?? 0)?.name ?? 'NA',
+              }))
+              .sort(
+                (a, b) => (a.detectorChannel ?? 0) - (b.detectorChannel ?? 0)
+              )
 
             // Build final approach object for the store
-            const normalizedSaved: ConfigApproach = {
-              ...saved,
+            const normalizedSaved = {
+              ...savedApproachDto,
+              id: savedApproachDto.id ?? 0,
               isNew: false,
               directionTypeId:
-                findDirectionType(saved.directionTypeId)?.name ||
-                DirectionTypes.NA,
-              detectors: detectorsArray.sort(
-                (a: any, b: any) =>
-                  (a.detectorChannel ?? 0) - (b.detectorChannel ?? 0)
-              ),
-            }
+                findDirectionType(savedApproachDto.directionTypeId ?? 0)
+                  ?.name ?? 'NA',
+              protectedPhaseNumber:
+                savedApproachDto.protectedPhaseNumber ?? null,
+              detectors,
+            } as unknown as ConfigApproach
 
             if (approach.isNew) {
               deleteApproachInStore(approach)
@@ -328,7 +318,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
   }, [approach, deleteApproachInStore, addNotification])
 
   const leftBorderColor = useMemo(() => {
-    if (approach.directionTypeId === DirectionTypes.NA) {
+    if (String(approach.directionTypeId) === 'NA') {
       return 'lightgrey'
     }
 
@@ -413,7 +403,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
 
             <Box sx={{ mt: 1, ml: '1px' }}>
               <EditDetectors
-                showHistory={openHistory}
+                showHistory={false}
                 approach={approach}
                 deleteMode={deleteMode}
                 onSelectionChange={(ids) => setSelectedDetectorIds(ids)}
