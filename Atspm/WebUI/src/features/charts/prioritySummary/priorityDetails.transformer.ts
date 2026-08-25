@@ -102,9 +102,12 @@ function getIndicationDetails(
     : null
 }
 
-export interface RawPriorityDetailsResponse {
-  data: PriorityDetailsResult[]
-}
+// getPriorityDetailsReportData resolves to PriorityDetailsResult[] - the
+// response interceptor already unwraps the body - and this transformer has
+// always read `response` as that array. The declared shape still described
+// the pre-migration { data: [...] } envelope, which is why both this
+// function and its one caller in PrioritySummaryChart were type errors.
+export type RawPriorityDetailsResponse = PriorityDetailsResult[]
 
 export default function transformPriorityDetailsData(
   response: RawPriorityDetailsResponse
@@ -293,14 +296,28 @@ function getChartRangeMs(rows: PriorityDetailsResult[]) {
     }
   }
 
-  let min = Date.parse(rows[0].start)
-  let max = Date.parse(rows[0].end)
+  // Seeded from the first row, but every field on PriorityDetailsResult is
+  // nullable - so an unparseable first row left min/max as NaN, which no
+  // later comparison could replace (NaN fails every ordering test) and
+  // new Date(NaN).toISOString() then threw RangeError, taking down the whole
+  // drill-down. Seed from the first row that actually parses instead.
+  let min = Number.NaN
+  let max = Number.NaN
 
   for (const r of rows) {
     const s = Date.parse(r.start)
     const e = Date.parse(r.end)
-    if (!Number.isNaN(s) && s < min) min = s
-    if (!Number.isNaN(e) && e > max) max = e
+    if (!Number.isNaN(s) && (Number.isNaN(min) || s < min)) min = s
+    if (!Number.isNaN(e) && (Number.isNaN(max) || e > max)) max = e
+  }
+
+  if (Number.isNaN(min) || Number.isNaN(max)) {
+    return {
+      chartStartMs: 0,
+      chartEndMs: 0,
+      chartStartIso: '',
+      chartEndIso: '',
+    }
   }
 
   return {

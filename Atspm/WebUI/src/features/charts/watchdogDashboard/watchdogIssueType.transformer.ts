@@ -170,9 +170,12 @@ function transformData(
       0
     )
 
+    // Both denominators here are sums over the data, so they are 0 on a
+    // dashboard where nothing has been flagged yet - a normal state, not an
+    // error. Dividing anyway wrote a literal "NaN%" into the sunburst node
+    // labels.
     const issueTypePercentage = (
-      (issueTypeCount / totalIssueCount) *
-      100
+      totalIssueCount > 0 ? (issueTypeCount / totalIssueCount) * 100 : 0
     ).toFixed(1)
 
     return {
@@ -200,8 +203,9 @@ function transformData(
               },
               children: (model.firmware ?? []).map((fw) => {
                 const fwPercentage = (
-                  ((fw.counts ?? 0) / issueTypeCount) *
-                  100
+                  issueTypeCount > 0
+                    ? ((fw.counts ?? 0) / issueTypeCount) * 100
+                    : 0
                 ).toFixed(1)
                 return {
                   name: `${fw.name}\n${fwPercentage}%`,
