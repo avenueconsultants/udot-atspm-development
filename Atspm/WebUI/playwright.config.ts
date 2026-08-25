@@ -17,6 +17,11 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const PORT = 3000
+// E2E_BASE_URL points at an already-running, pre-built server (a deployed
+// environment, or `next start`) rather than the `next dev` this config
+// starts itself - named once and reused below so the four checks that used
+// to branch on it independently can't drift out of sync with each other.
+const isPrebuiltServer = !!process.env.E2E_BASE_URL
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${PORT}`
 
 export default defineConfig({
@@ -25,18 +30,20 @@ export default defineConfig({
   // multiple workers hammering it with concurrent cold navigations time out
   // (each first-visit compile can take longer than the parallel requests can
   // wait). A single worker avoids that contention; it only costs wall-clock
-  // time on a suite this size. E2E_BASE_URL points at a pre-built server, so
-  // it doesn't have this problem and can go fully parallel.
-  fullyParallel: !!process.env.E2E_BASE_URL,
+  // time on a suite this size. A prebuilt server doesn't have this problem
+  // and can go fully parallel - except in CI, where a shared/deployed
+  // backend still needs the old forced-serial safety net regardless of
+  // where the server came from.
+  fullyParallel: isPrebuiltServer,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.E2E_BASE_URL ? undefined : 1,
+  workers: process.env.CI ? 1 : isPrebuiltServer ? undefined : 1,
   reporter: 'html',
   // `next dev` compiles each route on its first request, which can push a
   // cold navigation's time-to-interactive past the 5s assertion default -
   // give assertions more room locally without letting a genuinely broken
   // page hang for too long.
-  expect: { timeout: process.env.E2E_BASE_URL ? 5_000 : 15_000 },
+  expect: { timeout: isPrebuiltServer ? 5_000 : 15_000 },
   use: {
     baseURL,
     trace: 'on-first-retry',
@@ -47,9 +54,9 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  // Skipped when E2E_BASE_URL points at an already-running server (e.g. in CI
-  // against a deployed environment) - only start one for local runs.
-  webServer: process.env.E2E_BASE_URL
+  // Skipped when pointed at an already-running server - only start one for
+  // local runs.
+  webServer: isPrebuiltServer
     ? undefined
     : {
         command: 'npm run dev',
