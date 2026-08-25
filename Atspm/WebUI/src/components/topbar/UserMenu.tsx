@@ -67,7 +67,9 @@ function getColorFromName(firstName: string, lastName: string): string {
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { data: userData, refetch } = useGetProfileProfile<ProfileData>()
+  const { data: userData, refetch } = useGetProfileProfile<ProfileData>({
+    query: { enabled: isLoggedIn },
+  })
   const { closeSideBar } = useSidebarStore()
 
   useEffect(() => {

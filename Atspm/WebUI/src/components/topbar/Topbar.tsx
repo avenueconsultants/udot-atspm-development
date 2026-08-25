@@ -32,7 +32,9 @@ const infoItems = [
 export default function Topbar() {
   const { toggleSidebar } = useSidebarStore()
   const [userHasAccess, setUserHasAccess] = useState(false)
-  const { data: menuItemsData, isLoading } = useGetMenuItems()
+  const { data: menuItemsData, isLoading } = useGetMenuItems(undefined, {
+    query: { enabled: userHasAccess },
+  })
   const queryClient = useQueryClient()
   useEffect(() => {
     setUserHasAccess(doesUserHaveAccess())
