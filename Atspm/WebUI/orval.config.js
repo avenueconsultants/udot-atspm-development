@@ -95,7 +95,7 @@ const sanitizeSpec = (inputSpec) => {
 module.exports = {
   config: {
     input: {
-      target: './api-specs/config-spec.json',
+      target: '../ConfigApi/config-spec.json',
       override: {
         transformer: sanitizeSpec,
       },
@@ -116,7 +116,7 @@ module.exports = {
   },
   reports: {
     input: {
-      target: './api-specs/reports-spec.json',
+      target: '../ReportApi/reports-spec.json',
     },
     output: {
       workspace: './src/api/reports',
@@ -134,7 +134,7 @@ module.exports = {
   },
   data: {
     input: {
-      target: './api-specs/data-spec.json',
+      target: '../DataApi/data-spec.json',
     },
     output: {
       workspace: './src/api/data',
@@ -152,7 +152,7 @@ module.exports = {
   },
   identity: {
     input: {
-      target: './api-specs/identity-spec.json',
+      target: '../IdentityApi/identity-spec.json',
       override: {
         transformer: sanitizeSpec,
       },
