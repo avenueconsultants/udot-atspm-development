@@ -159,6 +159,35 @@ function renderStopBarPresenceNode(
   )
 }
 
+// Cycle labels are built as a tree of echarts custom-render nodes - nested
+// { type: 'group', children: [...] } wrappers with the visible strings on
+// each leaf's style.text. Walking the whole tree lets a test assert what a
+// label shows without depending on how deeply it happens to be nested.
+function collectRenderTexts(node: unknown): string[] {
+  const texts: string[] = []
+
+  const walk = (current: unknown) => {
+    if (Array.isArray(current)) {
+      current.forEach(walk)
+      return
+    }
+    if (current === null || typeof current !== 'object') return
+
+    const entry = current as {
+      style?: { text?: unknown }
+      children?: unknown
+    }
+
+    if (typeof entry.style?.text === 'string' && entry.style.text !== '') {
+      texts.push(entry.style.text)
+    }
+    if (entry.children) walk(entry.children)
+  }
+
+  walk(node)
+  return texts
+}
+
 describe('transformTimeSpaceHistoricData detection series interaction', () => {
   beforeAll(() => {
     originalCanvasGetContext = HTMLCanvasElement.prototype.getContext
@@ -360,6 +389,23 @@ describe('transformTimeSpaceHistoricData detection series interaction', () => {
               leftTurnEvents: [{ start: '2026-04-07T08:27:00Z' }] as never[],
               rightTurnEvents: [{ start: '2026-04-07T08:28:00Z' }] as never[],
             },
+          }),
+        },
+        // The corridor needs a second location per direction for the turn
+        // markers to have a distance span to lean into - see the opposing
+        // SRM test for the same requirement.
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Primary', {
+            locationIdentifier: 'primary-location-2',
+          }),
+        },
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Opposing', {
+            locationIdentifier: 'opposing-location-2',
           }),
         },
       ],
@@ -855,6 +901,24 @@ describe('transformTimeSpaceHistoricData detection series interaction', () => {
                 ],
               },
             ],
+          }),
+        },
+        // A second location in each direction is what gives the corridor a
+        // distance span. With only one, every raw offset maps to the same
+        // display coordinate and the track collapses to a flat line, so the
+        // direction under test is not observable.
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Primary', {
+            locationIdentifier: 'primary-location-2',
+          }),
+        },
+        {
+          isSuccess: true,
+          error: null,
+          result: buildHistoricLocation('Opposing', {
+            locationIdentifier: 'opposing-location-2',
           }),
         },
       ],
