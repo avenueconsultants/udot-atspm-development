@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { throwOnQueryError } from '@/lib/react-query'
 import { render, RenderOptions } from '@testing-library/react'
 import { ReactElement, ReactNode, useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -21,10 +22,19 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 // Any component that calls a generated `use*` hook needs a QueryClientProvider
 // in its tree - render() from '@testing-library/react' alone isn't enough.
 // A fresh QueryClient per render keeps tests isolated from each other's cache.
+// throwOnError reuses the app's real policy (imported, not re-declared) so a
+// test can actually observe an error that would crash in production. This
+// used to be left unset, silently falling back to React Query's own default
+// of `false` while production ran with `true` - a gap that let a real
+// throw-on-error regression pass its own regression test.
 function createTestQueryClient() {
   return new QueryClient({
     defaultOptions: {
-      queries: { retry: false, refetchOnWindowFocus: false },
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+        throwOnError: throwOnQueryError,
+      },
       mutations: { retry: false },
     },
   })

@@ -32,9 +32,12 @@ const infoItems = [
 export default function Topbar() {
   const { toggleSidebar } = useSidebarStore()
   const [userHasAccess, setUserHasAccess] = useState(false)
-  const { data: menuItemsData, isLoading } = useGetMenuItems(undefined, {
-    query: { enabled: userHasAccess },
-  })
+  // Deliberately ungated: gating this on userHasAccess (which needs claims,
+  // not just a session) hid the whole nav from claims-less signed-in users
+  // and made it flash away and back on every load, since isLoading flips
+  // true the moment `enabled` does. A logged-out 401 no longer crashes the
+  // page - src/lib/react-query.ts stops auth errors from throwing app-wide.
+  const { data: menuItemsData, isLoading } = useGetMenuItems()
   const queryClient = useQueryClient()
   useEffect(() => {
     setUserHasAccess(doesUserHaveAccess())

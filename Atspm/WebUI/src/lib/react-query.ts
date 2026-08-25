@@ -23,9 +23,23 @@ import {
 } from '@tanstack/react-query'
 import { PromiseValue } from 'type-fest'
 
+// A 401/403 is an expected, recoverable condition rather than a defect: it
+// just means the visitor isn't signed in, or lacks a claim, for something a
+// component asked for. Throwing on those took down whole pages, because a
+// thrown query error only degrades gracefully if an ErrorBoundary sits above
+// every component that fetches - and the shared chrome (Topbar/Sidebar,
+// rendered by Layout) sits outside the one _app.tsx puts around the page.
+// Consumers get this for free rather than each having to remember a local
+// `throwOnError: false`, which is how the crash kept reappearing at new call
+// sites. Every other failure still throws, so genuine errors stay loud.
+export const throwOnQueryError = (error: unknown): boolean => {
+  const status = (error as AxiosError | null)?.response?.status
+  return status !== 401 && status !== 403
+}
+
 const queryConfig: DefaultOptions = {
   queries: {
-    throwOnError: true,
+    throwOnError: throwOnQueryError,
     refetchOnWindowFocus: false,
     retry: false,
   },

@@ -18,13 +18,11 @@ import type { Page } from '@playwright/test'
 
 // Every page renders inside the shared Layout, whose Topbar/UserMenu chrome
 // fetches /MenuItems (config API) and /Profile (identity API) unconditionally
-// - authenticated or not. React Query's app-wide `throwOnError: true` default
-// (src/lib/react-query.ts) means a 401 from either one - the real, live
-// backend's genuine response when there's no session cookie - throws during
-// render instead of just setting query error state, and Layout/Topbar aren't
-// wrapped in an error boundary, so it crashes the whole page instead of just
-// that component. Stubbing both keeps otherwise backend-independent e2e
-// tests from tripping over that.
+// - authenticated or not. Those 401 against the real, remote backend when
+// there's no session cookie. That no longer crashes the page (auth errors
+// don't throw app-wide, per src/lib/react-query.ts, and Layout now wraps its
+// chrome in an error boundary), but stubbing them still keeps these tests
+// off the live network so they stay fast and deterministic.
 export const mockAppShell = async (page: Page) => {
   await page.route('**/MenuItems*', (route) =>
     route.fulfill({
