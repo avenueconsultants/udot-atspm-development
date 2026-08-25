@@ -43,20 +43,28 @@ const RegionsAdmin = () => {
     const { id, description } = regionData
     try {
       await createMutation({ data: { id, description } })
+      addNotification({ title: 'Region created successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Creating Region' })
+      addNotification({
+        title: `Error creating region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
   const HandleDeleteRegion = async (id: string | number) => {
     try {
       await deleteMutation({ key: Number(id) })
+      addNotification({ title: 'Region deleted successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Deleting Region' })
+      addNotification({
+        title: `Error deleting region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
@@ -67,10 +75,14 @@ const RegionsAdmin = () => {
         data: { id, description },
         key: Number(id),
       })
+      addNotification({ title: 'Region updated successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Editing Region' })
+      addNotification({
+        title: `Error updating region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 

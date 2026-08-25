@@ -43,7 +43,7 @@ const SpeedOverTimeChartOptions = ({
 
   const [selectedSource] = useState<DataSource>(sourceId)
   const [selectedTimeOptions, setSelectedTimeOptions] =
-    useState<SpeedTimePeriod>(SpeedTimePeriod.Hour)
+    useState<SpeedTimePeriod>(SpeedTimePeriod.Day)
   const [startTime] = useState<Date | null>(new Date())
   const [endTime] = useState<Date | null>(new Date())
 
@@ -159,7 +159,7 @@ const SpeedOverTimeChartOptions = ({
             label="Bin Size"
             onChange={handleTimeOptionsChange}
           >
-            <MenuItem value={SpeedTimePeriod.Hour}>Hour</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Day}>Day</MenuItem>
             <MenuItem value={SpeedTimePeriod.Week}>Week</MenuItem>
             <MenuItem value={SpeedTimePeriod.Month}>Month</MenuItem>
           </Select>

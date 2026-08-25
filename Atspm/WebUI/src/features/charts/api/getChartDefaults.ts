@@ -46,7 +46,7 @@ export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
   return response.map((chart: ChartDefaults) => ({
     ...chart,
     chartType: determineChartType(chart.name),
-    measureOptions: chart.measureOptions.reduce(
+    measureOptions: (chart.measureOptions ?? []).reduce(
       (acc, current) => {
         acc[current.option] = current
         return acc

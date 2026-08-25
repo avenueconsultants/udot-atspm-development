@@ -287,7 +287,7 @@ const WatchDogLogs = () => {
             : undefined) ??
           logEvent.issueType ??
           0,
-        issueTypeId: logEvent.issueType,
+        issueTypeId: logEvent.issueType ?? 0,
         phase: logEvent.phase ?? null,
         details: logEvent.details ?? '',
         componentType: logEvent.componentType ?? 0,

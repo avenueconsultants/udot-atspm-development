@@ -4769,7 +4769,7 @@
         },
         "additionalProperties": false
       },
-      "KeyValuePairOfDateTimeInt32": {
+      "KeyValuePairOfDateTimeAndInt32": {
         "type": "object",
         "properties": {
           "key": {
@@ -9381,7 +9381,7 @@
             "nullable": true
           },
           "peakHour": {
-            "$ref": "#/components/schemas/KeyValuePairOfDateTimeInt32"
+            "$ref": "#/components/schemas/KeyValuePairOfDateTimeAndInt32"
           },
           "peakHourFactor": {
             "type": "number",

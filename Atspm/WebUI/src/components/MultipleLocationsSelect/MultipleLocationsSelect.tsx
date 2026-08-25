@@ -8,6 +8,7 @@ import {
 import { Filters } from '@/features/locations/components/selectLocation'
 import LocationInput from '@/features/locations/components/selectLocation/LocationInput'
 import SelectLocationMap from '@/features/locations/components/selectLocationMap'
+import { unwrapLocationFromKey } from '@/features/locations/utils/unwrapLocationFromKey'
 import { ChevronRight } from '@mui/icons-material'
 import AddIcon from '@mui/icons-material/Add'
 import {
@@ -199,11 +200,13 @@ export const getLocationWithApproaches = async (locations: Location[]) => {
   )
   const fullLocations = await Promise.all(
     validLocations.map((loc) =>
-      getLocationFromKey(loc.id, { expand: 'approaches' })
+      getLocationFromKey(loc.id, { expand: 'approaches' }).then(
+        unwrapLocationFromKey
+      )
     )
   )
   return validLocations.map((loc, index) => ({
     ...loc,
-    approaches: fullLocations[index].approaches ?? [],
+    approaches: fullLocations[index]?.approaches ?? [],
   }))
 }

@@ -595,7 +595,7 @@ export interface IndianaEvent {
   eventParam?: number;
 }
 
-export interface KeyValuePairOfDateTimeInt32 {
+export interface KeyValuePairOfDateTimeAndInt32 {
   key?: string;
   value?: number;
 }
@@ -2112,7 +2112,7 @@ export interface TurningMovementCountsResult {
   charts?: TurningMovementCountsLanesResult[] | null;
   /** @nullable */
   table?: TurningMovementCountData[] | null;
-  peakHour?: KeyValuePairOfDateTimeInt32;
+  peakHour?: KeyValuePairOfDateTimeAndInt32;
   /** @nullable */
   peakHourFactor?: number | null;
 }

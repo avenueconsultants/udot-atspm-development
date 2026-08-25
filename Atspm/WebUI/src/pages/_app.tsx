@@ -1,3 +1,4 @@
+import { AppErrorFallback } from '@/components/AppErrorFallback'
 import Layout from '@/components/layout'
 import { RuntimeEnvProvider } from '@/contexts/RuntimeEnvContext'
 import { FeatureFlagProvider } from '@/feature-flags/FeatureFlagContext'
@@ -15,12 +16,15 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { NuqsAdapter } from 'nuqs/adapters/next/pages'
 import { useEffect, useState } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { HydrationBoundary, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
   const [theme, colorMode] = useMode()
   const [isAxiosInitialized, setIsAxiosInitialized] = useState(false)
   const [runtimeEnv, setRuntimeEnv] = useState<EnvVariables | null>(null)
@@ -81,7 +85,12 @@ export default function App({ Component, pageProps }: AppProps) {
                           content="width=device-width, minimum-scale=1, maximum-scale=5"
                         />
                       </Head>
-                      <Component {...pageProps} />
+                      <ErrorBoundary
+                        FallbackComponent={AppErrorFallback}
+                        resetKeys={[router.asPath]}
+                      >
+                        <Component {...pageProps} />
+                      </ErrorBoundary>
                       {process.env.NODE_ENV === 'development' && (
                         <ReactQueryDevtools initialIsOpen={false} />
                       )}

@@ -54,6 +54,7 @@ export function useUdotSpeedLimitRoutes() {
         .then((res) => res.data as UdotSpeedLimitRoute)
     },
     enabled: !!route,
+    throwOnError: false,
   })
 }
 

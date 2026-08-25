@@ -105,7 +105,6 @@ module.exports = {
       target: './config-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
@@ -124,7 +123,6 @@ module.exports = {
       target: './report-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
@@ -143,7 +141,6 @@ module.exports = {
       target: './data-api.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
@@ -165,7 +162,6 @@ module.exports = {
       target: './atspmAuthenticationApi.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: true,
       mode: 'split',
       override: {
         mutator: {
@@ -184,7 +180,6 @@ module.exports = {
       target: './aTSPMSpeedManagementApi.ts',
       client: 'react-query',
       httpClient: 'axios',
-      mock: true,
       mode: 'split',
       override: {
         mutator: {

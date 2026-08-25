@@ -37,7 +37,7 @@ beforeAll(async () => {
     POWERED_BY_IMAGE_URL: undefined,
     SPEED_LIMIT_MAP_LAYER: undefined,
   })
-  server.listen({ onUnhandledRequest: 'warn' })
+  server.listen({ onUnhandledRequest: 'error' })
 })
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())

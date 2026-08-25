@@ -343,10 +343,8 @@ const RouteAdmin = () => {
     }
     setHasErrors(false)
 
-    const cloned: RouteDto = JSON.parse(JSON.stringify(updatedRoute))
-
     updateRoute(
-      { data: cloned },
+      { data: updatedRoute },
       {
         onSuccess: (savedRoute) => {
           addNotification({

@@ -21,6 +21,7 @@ import {
 import ApproachesInfo from '@/features/locations/components/ApproachesInfo/approachesInfo'
 import DetectorsInfo from '@/features/locations/components/DetectorsInfo/detectorsInfo'
 import LocationInfo from '@/features/locations/components/LocationInfo/locationInfo'
+import { unwrapLocationFromKey } from '@/features/locations/utils/unwrapLocationFromKey'
 import { format } from 'date-fns'
 
 interface LocationsConfigContainerProps {
@@ -53,7 +54,7 @@ function LocationsConfigContainer({
     }
   }, [versionData])
 
-  const { data: location } = useGetLocationFromKey(
+  const { data: locationFromKey } = useGetLocationFromKey(
     version.id,
     {
       expand:
@@ -61,6 +62,7 @@ function LocationsConfigContainer({
     },
     { query: { enabled: !!version.id } }
   )
+  const location = unwrapLocationFromKey(locationFromKey)
 
   const handleChange = (event: SelectChangeEvent) => {
     const id = Number(event.target.value)

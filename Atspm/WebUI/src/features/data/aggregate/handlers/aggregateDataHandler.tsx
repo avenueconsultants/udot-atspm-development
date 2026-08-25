@@ -13,6 +13,7 @@ import {
   useRouteHandler,
 } from '@/components/handlers/routeHandler'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
+import { unwrapLocationFromKey } from '@/features/locations/utils/unwrapLocationFromKey'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { startOfToday, startOfTomorrow } from 'date-fns'
 import { useEffect, useState } from 'react'
@@ -116,7 +117,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   const [routeExpandedLocations, setRouteExpandedLocations] = useState<
     RouteLocationDto[]
   >([])
-  const { data: locationExpandedData, status } = useGetLocationFromKey(
+  const { data: locationFromKey, status } = useGetLocationFromKey(
     locationId ?? 0,
     {
       expand:
@@ -124,6 +125,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     },
     { query: { enabled: locationId != null } }
   )
+  const locationExpandedData = unwrapLocationFromKey(locationFromKey)
   const postMutation = usePostAggregateData()
   const routeHandler = useRouteHandler()
   const routeIdNumber = routeHandler.routeId

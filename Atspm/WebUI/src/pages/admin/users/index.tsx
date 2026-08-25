@@ -1,5 +1,5 @@
 import {
-  useDeleteUsersAssignRole,
+  useDeleteUsersUpdate,
   useDeleteUsersUserFromUserId,
   useGetUsersUsers,
 } from '@/api/identity/atspmAuthenticationApi'
@@ -26,7 +26,7 @@ const UsersAdmin = () => {
   const { addNotification } = useNotificationStore()
 
   const { mutateAsync: deleteMutation } = useDeleteUsersUserFromUserId()
-  const { mutateAsync: updateMutation } = useDeleteUsersAssignRole()
+  const { mutateAsync: updateMutation } = useDeleteUsersUpdate()
   const {
     data: allUserData,
     isLoading: usersIsLoading,

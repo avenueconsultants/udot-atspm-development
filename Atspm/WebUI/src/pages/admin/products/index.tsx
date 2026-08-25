@@ -55,20 +55,34 @@ const ProductsAdmin = () => {
 
     try {
       await createMutation({ data: sanitizedProduct })
+      addNotification({
+        title: 'Product created successfully.',
+        type: 'success',
+      })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Creating Product' })
+      addNotification({
+        title: `Error creating product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
   const HandleDeleteProduct = async (id: string | number) => {
     try {
       await deleteMutation({ key: Number(id) })
+      addNotification({
+        title: 'Product deleted successfully.',
+        type: 'success',
+      })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Deleting Product' })
+      addNotification({
+        title: `Error deleting product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
@@ -79,10 +93,17 @@ const ProductsAdmin = () => {
         data: { manufacturer, model, webPage, notes },
         key: id,
       })
+      addNotification({
+        title: 'Product updated successfully.',
+        type: 'success',
+      })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
-      addNotification({ type: 'error', title: 'Error Editing Product' })
+      addNotification({
+        title: `Error updating product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 

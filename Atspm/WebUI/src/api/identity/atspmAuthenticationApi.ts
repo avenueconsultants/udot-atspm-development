@@ -2007,7 +2007,7 @@ const {mutation: mutationOptions} = options ?
       return useMutation(getDeleteUsersUserFromUserIdMutationOptions(options), queryClient);
     }
 
-export const deleteUsersAssignRole = (
+export const deleteUsersUpdate = (
     userDTO?: NonReadonly<UserDTO>,
  signal?: AbortSignal
 ) => {
@@ -2024,11 +2024,11 @@ export const deleteUsersAssignRole = (
 
 
 
-export const getDeleteUsersAssignRoleMutationOptions = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersAssignRole>>, TError,{data?: NonReadonly<UserDTO>}, TContext>, }
-): UseMutationOptions<Awaited<ReturnType<typeof deleteUsersAssignRole>>, TError,{data?: NonReadonly<UserDTO>}, TContext> => {
+export const getDeleteUsersUpdateMutationOptions = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersUpdate>>, TError,{data?: NonReadonly<UserDTO>}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteUsersUpdate>>, TError,{data?: NonReadonly<UserDTO>}, TContext> => {
 
-const mutationKey = ['deleteUsersAssignRole'];
+const mutationKey = ['deleteUsersUpdate'];
 const {mutation: mutationOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -2038,10 +2038,10 @@ const {mutation: mutationOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUsersAssignRole>>, {data?: NonReadonly<UserDTO>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUsersUpdate>>, {data?: NonReadonly<UserDTO>}> = (props) => {
           const {data} = props ?? {};
 
-          return  deleteUsersAssignRole(data,)
+          return  deleteUsersUpdate(data,)
         }
 
 
@@ -2051,18 +2051,18 @@ const {mutation: mutationOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type DeleteUsersAssignRoleMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsersAssignRole>>>
-    export type DeleteUsersAssignRoleMutationBody = NonReadonly<UserDTO> | undefined
-    export type DeleteUsersAssignRoleMutationError = ProblemDetails
+    export type DeleteUsersUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUsersUpdate>>>
+    export type DeleteUsersUpdateMutationBody = NonReadonly<UserDTO> | undefined
+    export type DeleteUsersUpdateMutationError = ProblemDetails
 
-    export const useDeleteUsersAssignRole = <TError = ProblemDetails,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersAssignRole>>, TError,{data?: NonReadonly<UserDTO>}, TContext>, }
+    export const useDeleteUsersUpdate = <TError = ProblemDetails,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUsersUpdate>>, TError,{data?: NonReadonly<UserDTO>}, TContext>, }
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof deleteUsersAssignRole>>,
+        Awaited<ReturnType<typeof deleteUsersUpdate>>,
         TError,
         {data?: NonReadonly<UserDTO>},
         TContext
       > => {
-      return useMutation(getDeleteUsersAssignRoleMutationOptions(options), queryClient);
+      return useMutation(getDeleteUsersUpdateMutationOptions(options), queryClient);
     }
 

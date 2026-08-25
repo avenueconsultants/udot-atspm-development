@@ -133,53 +133,42 @@ export const ReportDisplayComponent = (props: Props) => {
   ) => {
     switch (report.exportableReportType) {
       case ExportableReportType.Violations:
-      case ExportableReportType.MostImproved:
-        if (report.speedViolationCharts) {
-          const chartData = report.speedViolationCharts.find(
-            (chart) => chart.segmentId === segment.segmentId
-          )
-          if (chartData) {
-            const options = transformSpeedViolationsData([chartData])
-            return (
-              <Box className="avoid-page-break">
-                <SpeedViolationsChartContainer chartData={options} />
-              </Box>
-            )
-          }
-        }
-      case ExportableReportType.ComplianceToSpeedLimit:
-        if (report.speedComplianceCharts) {
-          const chartData = report.speedComplianceCharts.find(
-            (chart) => chart.segmentId === segment.segmentId
-          )
-          if (chartData) {
-            const options = transformSpeedComplianceData(
-              [chartData],
-              null,
-              false
-            )
-            return (
-              <Box className="avoid-page-break">
-                <SpeedComplianceChartsContainer chartData={options} />
-              </Box>
-            )
-          }
-        }
-      case ExportableReportType.SpeedVariability:
-        if (report.speedVariabilityCharts) {
-          const chartData = report.speedVariabilityCharts.find(
-            (chart) => chart.segmentId === segment.segmentId
-          )
-          if (chartData) {
-            const options = transformSpeedVariabilityData(chartData)
-            return (
-              <Box className="avoid-page-break">
-                <SpeedVariabilityChartContainer chartData={options} />
-              </Box>
-            )
-          }
-        }
-        return ''
+      case ExportableReportType.MostImproved: {
+        const chartData = report.speedViolationCharts?.find(
+          (chart) => chart.segmentId === segment.segmentId
+        )
+        if (!chartData) return ''
+        const options = transformSpeedViolationsData([chartData])
+        return (
+          <Box className="avoid-page-break">
+            <SpeedViolationsChartContainer chartData={options} />
+          </Box>
+        )
+      }
+      case ExportableReportType.ComplianceToSpeedLimit: {
+        const chartData = report.speedComplianceCharts?.find(
+          (chart) => chart.segmentId === segment.segmentId
+        )
+        if (!chartData) return ''
+        const options = transformSpeedComplianceData([chartData], null, false)
+        return (
+          <Box className="avoid-page-break">
+            <SpeedComplianceChartsContainer chartData={options} />
+          </Box>
+        )
+      }
+      case ExportableReportType.SpeedVariability: {
+        const chartData = report.speedVariabilityCharts?.find(
+          (chart) => chart.segmentId === segment.segmentId
+        )
+        if (!chartData) return ''
+        const options = transformSpeedVariabilityData(chartData)
+        return (
+          <Box className="avoid-page-break">
+            <SpeedVariabilityChartContainer chartData={options} />
+          </Box>
+        )
+      }
       default:
         return ''
     }
@@ -272,7 +261,7 @@ export const ReportDisplayComponent = (props: Props) => {
                     component="pre"
                     sx={{ whiteSpace: 'pre-wrap', fontSize: 14 }}
                   >
-                    {eoSCharts.length && generateEoSChart(eoSCharts)}
+                    {eoSCharts.length > 0 && generateEoSChart(eoSCharts)}
                   </Box>
                   <Divider
                     variant="fullWidth"
@@ -339,7 +328,10 @@ export const ReportDisplayComponent = (props: Props) => {
     const reports: ReactNode[] = []
     let index = 0
     for (const report of data) {
-      if (!report.reportData) {
+      const isEoS =
+        report.exportableReportType ===
+        ExportableReportType.EffectivenessOfStrategies
+      if (isEoS ? !report.impacts?.length : !report.reportData) {
         continue
       }
       const reportMap = await generateReportMap(report)
@@ -368,12 +360,20 @@ export const ReportDisplayComponent = (props: Props) => {
   }, [data, generateDataForReport, generateReportMap, options])
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchReportContent = async () => {
       const content = await generateReportContent()
-      setReportContent(content)
+      if (!cancelled) {
+        setReportContent(content)
+      }
     }
 
     fetchReportContent()
+
+    return () => {
+      cancelled = true
+    }
   }, [data, generateReportContent, options, routeSpeeds])
 
   const generateTable = (report: ExportableReportResult, index: number) => {

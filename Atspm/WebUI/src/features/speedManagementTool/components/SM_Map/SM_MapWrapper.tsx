@@ -12,6 +12,7 @@ import {
   type RoutesResponse,
   type SpeedManagementRoute,
 } from '@/features/speedManagementTool/types/routes'
+import { useNotificationStore } from '@/stores/notifications'
 import CloseIcon from '@mui/icons-material/Close'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import {
@@ -89,14 +90,33 @@ const SM_MapWrapper = () => {
   }, [routeSpeedRequest, submittedRouteSpeedRequest])
 
   const { mutateAsync: fetchRoutes, isPending: isLoading } = useGetRouteSpeeds()
+  const { addNotification } = useNotificationStore()
 
   useEffect(() => {
+    let cancelled = false
+
     const fetchData = async () => {
-      const response = await fetchRoutes({ data: submittedRouteSpeedRequest })
-      setRouteData(response as unknown as RoutesResponse)
+      try {
+        const response = await fetchRoutes({ data: submittedRouteSpeedRequest })
+        if (!cancelled) {
+          setRouteData(response as unknown as RoutesResponse)
+        }
+      } catch (error) {
+        console.error('Route speed fetch error:', error)
+        if (!cancelled) {
+          addNotification({
+            type: 'error',
+            title: 'Failed to load route speeds',
+          })
+        }
+      }
     }
     fetchData()
-  }, [submittedRouteSpeedRequest, fetchRoutes])
+
+    return () => {
+      cancelled = true
+    }
+  }, [submittedRouteSpeedRequest, fetchRoutes, addNotification])
 
   const handleOptionClick = () => {
     setSubmittedRouteSpeedRequest(routeSpeedRequest)
@@ -117,7 +137,18 @@ const SM_MapWrapper = () => {
     }
   }, [multiselect])
 
-  const { data: speedLimitData } = useUdotSpeedLimitRoutes()
+  const { data: speedLimitData, isError: isSpeedLimitError } =
+    useUdotSpeedLimitRoutes()
+
+  useEffect(() => {
+    if (isSpeedLimitError) {
+      console.error('Failed to load posted speed limit layer')
+      addNotification({
+        type: 'error',
+        title: 'Posted speed limit layer unavailable',
+      })
+    }
+  }, [isSpeedLimitError, addNotification])
 
   const speedLimitRoutes = useMemo(
     () =>

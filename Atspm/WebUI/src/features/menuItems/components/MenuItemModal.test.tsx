@@ -14,18 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { getGetMenuItemsMockHandler } from '@/api/config/menu-items/menu-items.msw'
 import { server } from '@/test/msw/server'
 import { renderWithProviders, screen, userEvent } from '@/test/test-utils'
+import { HttpResponse, http } from 'msw'
 import MenuItemModal from './MenuItemModal'
 
 describe('MenuItemModal', () => {
   it('loads menu items from the API and lists top-level items as parent options', async () => {
     server.use(
-      getGetMenuItemsMockHandler(() => [
-        { id: 1, name: 'Reports', parentId: null, displayOrder: 0 },
-        { id: 2, name: 'Report Detail', parentId: 1, displayOrder: 0 },
-      ])
+      http.get('*/MenuItems', () =>
+        HttpResponse.json([
+          { id: 1, name: 'Reports', parentId: null, displayOrder: 0 },
+          { id: 2, name: 'Report Detail', parentId: 1, displayOrder: 0 },
+        ])
+      )
     )
 
     renderWithProviders(
@@ -34,11 +36,9 @@ describe('MenuItemModal', () => {
 
     await userEvent.click(screen.getByRole('combobox', { name: /parent/i }))
 
-    // Top-level items (parentId: null) are valid parent choices... The
-    // generated MSW handler mock has a built-in ~1000ms artificial delay,
-    // so give this comfortably more than RTL's 1000ms default.
+    // Top-level items (parentId: null) are valid parent choices.
     expect(
-      await screen.findByRole('option', { name: 'Reports' }, { timeout: 2000 })
+      await screen.findByRole('option', { name: 'Reports' })
     ).toBeInTheDocument()
     // ...items that already have a parent are not.
     expect(

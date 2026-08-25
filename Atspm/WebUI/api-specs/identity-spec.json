@@ -1016,7 +1016,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "DeleteUsersAssignRole",
+        "operationId": "DeleteUsersUpdate",
         "requestBody": {
           "content": {
             "application/json": {

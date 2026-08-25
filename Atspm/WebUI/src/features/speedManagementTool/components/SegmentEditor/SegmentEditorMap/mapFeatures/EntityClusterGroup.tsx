@@ -197,7 +197,7 @@ export default function EntityClusterGroup({
             <EntityMarker
               key={e.id}
               entity={e}
-              isSelected={idsRef.current.includes(e.id)}
+              isSelected={associatedEntityIds.includes(e.id)}
               associatedEntityIds={associatedEntityIds}
               setAssociatedEntityIds={setAssociatedEntityIds}
               setHoveredEntity={setHoveredEntity}

@@ -136,7 +136,7 @@ static string SchemaIdWithGenericSupport(Type type)
     }
 
     var name = type.Name.Split('`')[0];
-    var args = string.Join(string.Empty, type.GetGenericArguments().Select(SchemaIdWithGenericSupport));
+    var args = string.Join("And", type.GetGenericArguments().Select(SchemaIdWithGenericSupport));
     return $"{name}Of{args}";
 }
 

@@ -6,6 +6,7 @@ import { PageNames, useViewPage } from '@/features/identity/pagesCheck'
 import { sortApproachesAndDetectors } from '@/features/locations/components/editApproach/utils/sortApproaches'
 import LocationEditor from '@/features/locations/components/editLocation/EditLocation'
 import NewLocationModal from '@/features/locations/components/editLocation/NewLocationModal'
+import { unwrapLocationFromKey } from '@/features/locations/utils/unwrapLocationFromKey'
 import {
   ConfigApproach,
   ConfigLocation,
@@ -18,10 +19,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 export async function getLocation(
   locationId: number
 ): Promise<ConfigLocation | null> {
-  const location = await getLocationFromKey(locationId, {
-    expand:
-      'areas, devices, approaches($expand=Detectors($expand=DetectionTypes, detectorComments))',
-  })
+  const location = unwrapLocationFromKey(
+    await getLocationFromKey(locationId, {
+      expand:
+        'areas, devices, approaches($expand=Detectors($expand=DetectionTypes, detectorComments))',
+    })
+  )
   if (!location?.id) return null
 
   const approaches: ConfigApproach[] = (location.approaches ?? []).map(
