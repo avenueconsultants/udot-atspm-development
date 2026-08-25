@@ -406,12 +406,25 @@ export function formatExportFileName(
     .filter((s) => s.length > 0)
     .join('_')
 
+  // Every field on the generated report types is nullable, so callers reach
+  // here with `data.start ?? ''` whenever the API omits a range. date-fns
+  // throws RangeError on an unparseable date, which took down the entire
+  // chart render rather than just degrading the export filename. Guard the
+  // same way formatChartDateTimeRange already does and fall back to the
+  // bare title.
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return cleanedTitle
+  }
+
   return (
     cleanedTitle +
     '_' +
-    format(startDate, 'yyyy-MM-dd_HH-mm') +
+    format(start, 'yyyy-MM-dd_HH-mm') +
     '_to_' +
-    format(endDate, 'yyyy-MM-dd_HH-mm')
+    format(end, 'yyyy-MM-dd_HH-mm')
   )
 }
 

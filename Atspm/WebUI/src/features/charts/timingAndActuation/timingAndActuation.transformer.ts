@@ -594,13 +594,17 @@ function getAllEventDetails() {
   )
 }
 
-function createTitleOnlyChart(data: RawTimingAndActuationData) {
-  const dateRange = formatChartDateTimeRange(data.start ?? '', data.end ?? '')
+// Called with response.data[0], which is undefined whenever the report API
+// returns no phase results for the window - a normal answer, not an error.
+// Every field is read defensively so the shared title chart still renders
+// above an empty chart list instead of throwing out of the transformer.
+function createTitleOnlyChart(data: RawTimingAndActuationData | undefined) {
+  const dateRange = formatChartDateTimeRange(data?.start ?? '', data?.end ?? '')
 
   return {
     title: createTitle({
       title: 'Timing and Actuation',
-      location: data.locationDescription ?? '',
+      location: data?.locationDescription ?? '',
       dateRange,
     }),
   }
