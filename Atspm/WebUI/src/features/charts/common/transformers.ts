@@ -41,14 +41,23 @@ export type ChartSeriesOption = SeriesOption & {
   binStepLineToggle?: boolean
 }
 
+// Accepts the raw nullable collections straight off the generated report
+// types. Several transformers destructure their series out of `data` and
+// hand them here without going through toDataPoints first, so a report with
+// no data for the window arrived as null and the bare `for...of` threw
+// "dataPoints is not iterable" - taking the chart down instead of drawing it
+// empty. Individual points are defaulted the same way toDataPoints does.
 export function transformSeriesData(
-  dataPoints: DataPoint[]
+  dataPoints:
+    | ReadonlyArray<{ timestamp?: string | null; value?: number | null }>
+    | null
+    | undefined
 ): (string | number)[][] {
   const series: (string | number)[][] = []
-  for (const dataPoint of dataPoints) {
+  for (const dataPoint of dataPoints ?? []) {
     const values: (string | number)[] = [
-      dataPoint.timestamp,
-      dataPoint.value.toFixed(2),
+      dataPoint?.timestamp ?? '',
+      (dataPoint?.value ?? 0).toFixed(2),
     ]
     series.push(values)
   }
@@ -89,8 +98,13 @@ function getMidpointTimestamp(start: string, end: string): string {
   return new Date((startTime + endTime) / 2).toISOString()
 }
 
+// `plans` is nullable on every generated report type, and several
+// transformers pass it through without defaulting it first, so a window with
+// no plan data reached here as null and the bare `.length` read threw. The
+// per-plan start/end check below already tolerates incomplete entries; this
+// extends the same tolerance to the collection itself.
 export function createPlans<T extends BasePlan>(
-  plans: T[],
+  plans: T[] | null | undefined,
   planYAxisIndex: number,
   options?: PlanOptions<T>,
   yLineLength?: number,
@@ -99,21 +113,22 @@ export function createPlans<T extends BasePlan>(
 ): SeriesOption {
   const markAreaData: MarkAreaData[] = []
   const planData: PlanData[] = []
+  const planList = plans ?? []
 
-  for (let i = 0; i < plans.length; i++) {
-    if (!plans[i].start || !plans[i].end) continue
+  for (let i = 0; i < planList.length; i++) {
+    if (!planList[i].start || !planList[i].end) continue
 
     const plan = []
     const planColor = i % 2 === 0 ? Color.PlanA : Color.PlanB
 
-    const startTime = new Date(plans[i].start).toISOString()
-    const endTime = new Date(plans[i].end).toISOString()
+    const startTime = new Date(planList[i].start).toISOString()
+    const endTime = new Date(planList[i].end).toISOString()
 
-    let planInfo = `{plan|${plans[i].planDescription ?? ''}}`
+    let planInfo = `{plan|${planList[i].planDescription ?? ''}}`
 
     for (const option in options) {
       const key = option as keyof Omit<T, keyof BasePlan>
-      const value = plans[i][key]
+      const value = planList[i][key]
 
       if (value == null) continue
 
@@ -157,7 +172,7 @@ export function createPlans<T extends BasePlan>(
     labelLayout: {
       y: yLineLength ? yLineLength : 130,
       moveOverlap: 'shiftX',
-      hideOverlap: plans.length > 10,
+      hideOverlap: planList.length > 10,
       draggable: true,
     },
     labelLine: {

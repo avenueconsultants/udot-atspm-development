@@ -84,6 +84,12 @@ export function formatChartDateTimeRange(
 ) {
   if (granularity) return formatChartDateRange(startDate, endDate, granularity)
 
+  // new Date(null) is the epoch rather than an Invalid Date, so the NaN guard
+  // below never caught a missing window - a report with no start/end rendered
+  // a confident "Wed, Dec 31, 1969" in the chart subtitle. Returning an empty
+  // string drops the row instead, which is what createTitle does with it.
+  if (!startDate || !endDate) return ''
+
   const start = new Date(startDate)
   const end = new Date(endDate)
 

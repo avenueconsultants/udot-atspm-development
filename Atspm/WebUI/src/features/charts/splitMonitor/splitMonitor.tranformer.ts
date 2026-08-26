@@ -64,16 +64,19 @@ export default function transformSplitMonitorData(
 }
 
 function transformData(data: RawSplitMonitorData) {
-  const {
-    plans,
-    programmedSplits,
-    gapOuts,
-    maxOuts,
-    forceOffs,
-    unknowns,
-    peds,
-    percentileSplit,
-  } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const plans = data.plans ?? []
+  const programmedSplits = data.programmedSplits ?? []
+  const gapOuts = data.gapOuts ?? []
+  const maxOuts = data.maxOuts ?? []
+  const forceOffs = data.forceOffs ?? []
+  const unknowns = data.unknowns ?? []
+  const peds = data.peds ?? []
+  const percentileSplit = data.percentileSplit ?? []
 
   const titleHeader = `Split Monitor\n${data.locationDescription} - ${data.phaseDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
