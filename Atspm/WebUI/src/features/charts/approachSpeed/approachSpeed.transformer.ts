@@ -42,11 +42,11 @@ import { EChartsOption, TooltipComponentOption } from 'echarts'
 import {
   ApproachSpeedPlan,
   RawApproachSpeedData,
-  RawApproachSpeedReponse,
+  RawApproachSpeedResponse,
 } from './types'
 
 export default function transformApproachDelayData(
-  response: RawApproachSpeedReponse
+  response: RawApproachSpeedResponse
 ): TransformedChartResponse {
   const charts = response.data.map((data) => {
     const chartOptions = transformData(data)

@@ -17,9 +17,7 @@
 import { ChartType } from '@/features/charts/common/types'
 import type { EChartsOption, SeriesOption } from 'echarts'
 import transformApproachSpeedData from './approachSpeed.transformer'
-// Note the spelling: the exported type is missing the 's' in
-// "Response". Matching it here rather than renaming the source type.
-import type { RawApproachSpeedReponse } from './types'
+import type { RawApproachSpeedResponse } from './types'
 
 // Approach speed: average, 15th, and 85th percentile speed series.
 // Every field on the generated result type is optional and nullable, so the
@@ -29,12 +27,12 @@ import type { RawApproachSpeedReponse } from './types'
 const seriesOf = (chart: EChartsOption) =>
   (chart.series ?? []) as SeriesOption[]
 
-const firstChart = (response: RawApproachSpeedReponse) =>
+const firstChart = (response: RawApproachSpeedResponse) =>
   transformApproachSpeedData(response).data.charts[0].chart as EChartsOption
 
 const points = (value: number) => [{ timestamp: '2026-04-01T08:00:00', value }]
 
-const populated = (): RawApproachSpeedReponse =>
+const populated = (): RawApproachSpeedResponse =>
   ({
     type: ChartType.ApproachSpeed,
     data: [
@@ -59,9 +57,9 @@ const populated = (): RawApproachSpeedReponse =>
         eightyFifthSpeeds: points(12.5),
       },
     ],
-  }) as unknown as RawApproachSpeedReponse
+  }) as unknown as RawApproachSpeedResponse
 
-const allNull = (): RawApproachSpeedReponse =>
+const allNull = (): RawApproachSpeedResponse =>
   ({
     type: ChartType.ApproachSpeed,
     data: [
@@ -80,7 +78,7 @@ const allNull = (): RawApproachSpeedReponse =>
         eightyFifthSpeeds: null,
       },
     ],
-  }) as unknown as RawApproachSpeedReponse
+  }) as unknown as RawApproachSpeedResponse
 
 describe('transformApproachSpeedData', () => {
   it('builds one chart per result', () => {
@@ -121,7 +119,7 @@ describe('transformApproachSpeedData', () => {
     const empty = {
       type: ChartType.ApproachSpeed,
       data: [],
-    } as unknown as RawApproachSpeedReponse
+    } as unknown as RawApproachSpeedResponse
 
     expect(transformApproachSpeedData(empty).data.charts).toEqual([])
   })

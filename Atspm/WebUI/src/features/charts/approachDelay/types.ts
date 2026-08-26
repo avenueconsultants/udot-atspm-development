@@ -51,7 +51,7 @@ export interface RawApproachDelayData extends BaseChartData {
   approachId: number
 }
 
-export interface RawApproachDelayReponse {
+export interface RawApproachDelayResponse {
   type: ChartType.ApproachDelay
   data: RawApproachDelayData[]
 }

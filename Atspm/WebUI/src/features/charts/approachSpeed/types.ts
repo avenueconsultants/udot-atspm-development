@@ -51,7 +51,7 @@ export interface RawApproachSpeedData extends BaseChartData {
   approachDescription: string
 }
 
-export interface RawApproachSpeedReponse {
+export interface RawApproachSpeedResponse {
   type: ChartType.ApproachSpeed
   data: RawApproachSpeedData[]
 }

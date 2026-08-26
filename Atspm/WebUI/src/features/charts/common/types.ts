@@ -18,11 +18,11 @@ import { PrioritySummaryResult } from '@/api/reports'
 import { PrioritySummaryOptions } from '@/api/reports/report-api.schemas'
 import {
   ApproachDelayChartOptions,
-  RawApproachDelayReponse,
+  RawApproachDelayResponse,
 } from '@/features/charts/approachDelay/types'
 import {
   ApproachSpeedChartOptions,
-  RawApproachSpeedReponse,
+  RawApproachSpeedResponse,
 } from '@/features/charts/approachSpeed/types'
 import {
   ApproachVolumeChartOptions,
@@ -130,8 +130,8 @@ export interface DataPoint {
 }
 
 export type RawChartResponse =
-  | RawApproachDelayReponse
-  | RawApproachSpeedReponse
+  | RawApproachDelayResponse
+  | RawApproachSpeedResponse
   | RawApproachVolumeResponse
   | RawArrivalsOnRedResponse
   | RawGreenTimeUtilizationResponse

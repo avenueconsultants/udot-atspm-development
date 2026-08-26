@@ -17,9 +17,7 @@
 import { ChartType } from '@/features/charts/common/types'
 import type { EChartsOption, SeriesOption } from 'echarts'
 import transformApproachDelayData from './approachDelay.transformer'
-// Note the spelling: the exported type is missing the 's' in
-// "Response". Matching it here rather than renaming the source type.
-import type { RawApproachDelayReponse } from './types'
+import type { RawApproachDelayResponse } from './types'
 
 // Approach delay: a per-vehicle series plus a total-delay series.
 // Every field on the generated result type is optional and nullable, so the
@@ -29,12 +27,12 @@ import type { RawApproachDelayReponse } from './types'
 const seriesOf = (chart: EChartsOption) =>
   (chart.series ?? []) as SeriesOption[]
 
-const firstChart = (response: RawApproachDelayReponse) =>
+const firstChart = (response: RawApproachDelayResponse) =>
   transformApproachDelayData(response).data.charts[0].chart as EChartsOption
 
 const points = (value: number) => [{ timestamp: '2026-04-01T08:00:00', value }]
 
-const populated = (): RawApproachDelayReponse =>
+const populated = (): RawApproachDelayResponse =>
   ({
     type: ChartType.ApproachDelay,
     data: [
@@ -57,9 +55,9 @@ const populated = (): RawApproachDelayReponse =>
         approachDelayDataPoints: points(12.5),
       },
     ],
-  }) as unknown as RawApproachDelayReponse
+  }) as unknown as RawApproachDelayResponse
 
-const allNull = (): RawApproachDelayReponse =>
+const allNull = (): RawApproachDelayResponse =>
   ({
     type: ChartType.ApproachDelay,
     data: [
@@ -76,7 +74,7 @@ const allNull = (): RawApproachDelayReponse =>
         approachDelayDataPoints: null,
       },
     ],
-  }) as unknown as RawApproachDelayReponse
+  }) as unknown as RawApproachDelayResponse
 
 describe('transformApproachDelayData', () => {
   it('builds one chart per result', () => {
@@ -117,7 +115,7 @@ describe('transformApproachDelayData', () => {
     const empty = {
       type: ChartType.ApproachDelay,
       data: [],
-    } as unknown as RawApproachDelayReponse
+    } as unknown as RawApproachDelayResponse
 
     expect(transformApproachDelayData(empty).data.charts).toEqual([])
   })

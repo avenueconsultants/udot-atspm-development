@@ -43,11 +43,11 @@ import {
 import {
   NormalizedApproachDelayPlan,
   RawApproachDelayData,
-  RawApproachDelayReponse,
+  RawApproachDelayResponse,
 } from './types'
 
 export default function transformApproachDelayData(
-  response: RawApproachDelayReponse
+  response: RawApproachDelayResponse
 ): TransformedChartResponse {
   const charts = response.data.map((data) => {
     const chartOptions = transformData(data)
