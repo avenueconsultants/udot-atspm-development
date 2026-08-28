@@ -1,7 +1,7 @@
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 
 import WatchdogIgnoredEventsTable from './WatchdogIgnoredEventsTable'
 
@@ -28,8 +28,8 @@ jest.mock('@/api/config', () => ({
         locationIdentifier: '001',
         start: '2026-03-01T00:00:00',
         end: '2026-03-31T00:00:00',
-        issueType: 1,
-        componentType: 0,
+        issueType: 'RecordCount',
+        componentType: 'Location',
         componentId: 100,
         phase: 2,
         created: '2026-03-01T00:00:00',

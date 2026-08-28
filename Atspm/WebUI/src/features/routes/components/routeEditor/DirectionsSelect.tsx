@@ -1,4 +1,9 @@
-import { RouteLocationDto, useGetLocationApproachesFromKey } from '@/api/config'
+import {
+  Approach,
+  DirectionTypes,
+  RouteLocationDto,
+  useGetLocationApproachesFromKey,
+} from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import {
@@ -33,7 +38,9 @@ const DirectionSelect = ({
   )
 
   const directionTypeId =
-    updateType === 'primary' ? link.primaryDirectionId : link.opposingDirectionId
+    updateType === 'primary'
+      ? link.primaryDirectionId
+      : link.opposingDirectionId
   const directionDescription =
     updateType === 'primary'
       ? link.primaryDirectionDescription
@@ -53,12 +60,20 @@ const DirectionSelect = ({
       (a, b) => (a.protectedPhaseNumber ?? 0) - (b.protectedPhaseNumber ?? 0)
     )
 
+  // Approaches arrive from the OData config API with directionTypeId as the
+  // member name ('NB'), while RouteLocationDto carries the numeric id. Option
+  // values use the number so the current value and the choices compare alike.
+  const directionIdOf = (approach: Approach) =>
+    approach.directionTypeId == null
+      ? undefined
+      : DirectionTypes[approach.directionTypeId]
+
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const [directionTypeIdStr, protectedPhaseNumberStr, isOverlapStr] =
       event.target.value.split('-')
     const selectedApproach = approaches?.find(
       (approach) =>
-        approach.directionTypeId === Number(directionTypeIdStr) &&
+        directionIdOf(approach) === Number(directionTypeIdStr) &&
         approach.protectedPhaseNumber === Number(protectedPhaseNumberStr)
     )
 
@@ -122,7 +137,7 @@ const DirectionSelect = ({
         {approaches?.map((approach, index) => (
           <MenuItem
             key={`${index}`}
-            value={`${approach.directionTypeId}-${approach.protectedPhaseNumber}-${approach.isProtectedPhaseOverlap}`}
+            value={`${directionIdOf(approach)}-${approach.protectedPhaseNumber}-${approach.isProtectedPhaseOverlap}`}
           >
             <Box
               sx={{

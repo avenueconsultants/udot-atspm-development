@@ -171,5 +171,9 @@ export const useCharts = ({
     enabled: false,
     queryKey: ['charts', chartType, chartOptions],
     queryFn: () => getCharts(chartType, chartOptions),
+    // A failed report belongs in ChartsContainer's inline alert, next to the
+    // button that triggered it. The app-wide policy would instead rethrow to
+    // the _app.tsx boundary and replace the page - selections included.
+    throwOnError: false,
   })
 }

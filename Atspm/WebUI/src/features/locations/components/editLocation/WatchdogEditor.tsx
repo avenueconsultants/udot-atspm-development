@@ -1,9 +1,9 @@
-import type { WatchDogIssueTypes as GeneratedWatchDogIssueType } from '@/api/config'
 import {
   useDeleteWatchDogIgnoreEventFromKey,
   useGetWatchDogIgnoreEvent,
   usePatchWatchDogIgnoreEventFromKey,
   usePostWatchDogIgnoreEvent,
+  WatchDogIssueTypesName,
 } from '@/api/config'
 import { useLocationStore } from '@/features/locations/components/editLocation/locationStore'
 import WatchDogDatePopup from '@/features/locations/components/editLocation/WatchDogDatePopup'
@@ -17,29 +17,19 @@ interface WatchdogEditorProps {
   hasEditPermission: boolean
 }
 
-const WatchDogIssueTypes = {
-  RecordCount: 1,
-  LowDetectorHits: 2,
-  StuckPed: 3,
-  ForceOffThreshold: 4,
-  MaxOutThreshold: 5,
-  UnconfiguredApproach: 6,
-  UnconfiguredDetector: 7,
-} as const satisfies Record<string, GeneratedWatchDogIssueType>
-
 interface WatchdogOption {
   id: number
   locationId: number
   locationIdentifier: string
   start: string
   end: string
-  issueType: GeneratedWatchDogIssueType
+  issueType: WatchDogIssueTypesName
 }
 
 interface WatchdogChoice {
   label: string
   description: string
-  issueType: GeneratedWatchDogIssueType
+  issueType: WatchDogIssueTypesName
 }
 
 const watchdogOptions: WatchdogChoice[] = [
@@ -47,43 +37,43 @@ const watchdogOptions: WatchdogChoice[] = [
     label: 'Record Count',
     description:
       'Report phases with record counts below a configured threshold over the previous day.',
-    issueType: WatchDogIssueTypes.RecordCount,
+    issueType: WatchDogIssueTypesName.RecordCount,
   },
   {
     label: 'Force Off Thresholds',
     description:
       'Report phases where the percentage of force offs exceeds a configured threshold within a specified number of activations during certain early morning hours.',
-    issueType: WatchDogIssueTypes.ForceOffThreshold,
+    issueType: WatchDogIssueTypesName.ForceOffThreshold,
   },
   {
     label: 'Max Out Thresholds',
     description:
       'Report signals where the percentage of max outs exceeds a configured threshold within a specified number of activations during certain early morning hours.',
-    issueType: WatchDogIssueTypes.MaxOutThreshold,
+    issueType: WatchDogIssueTypesName.MaxOutThreshold,
   },
   {
     label: 'Low Detector Counts',
     description:
       'Report phases with vehicle detector counts below a configured threshold during the previous day’s peak time period.',
-    issueType: WatchDogIssueTypes.LowDetectorHits,
+    issueType: WatchDogIssueTypesName.LowDetectorHits,
   },
   {
     label: 'Stuck Ped',
     description:
       'Report phases with pedestrian activations exceeding a configured threshold during certain early morning hours.',
-    issueType: WatchDogIssueTypes.StuckPed,
+    issueType: WatchDogIssueTypesName.StuckPed,
   },
   {
     label: 'Unconfigured Approach',
     description:
       'Identifies and processes incoming event data from controllers that lack a corresponding configuration for the specified approach.',
-    issueType: WatchDogIssueTypes.UnconfiguredApproach,
+    issueType: WatchDogIssueTypesName.UnconfiguredApproach,
   },
   {
     label: 'Unconfigured Detector',
     description:
       'Identifies and processes incoming event data from controllers that lack a corresponding configuration for the specified detector.',
-    issueType: WatchDogIssueTypes.UnconfiguredDetector,
+    issueType: WatchDogIssueTypesName.UnconfiguredDetector,
   },
 ]
 
@@ -125,7 +115,7 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
             locationIdentifier: event.locationIdentifier ?? '',
             start: event.start ?? '',
             end: event.end ?? '',
-            issueType: event.issueType ?? WatchDogIssueTypes.RecordCount,
+            issueType: event.issueType ?? WatchDogIssueTypesName.RecordCount,
           })
         )
       setIgnoreEvents(filteredEvents)

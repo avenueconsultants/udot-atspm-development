@@ -195,16 +195,11 @@ test('an empty report result reports no data instead of an empty chart', async (
   await expect(page.locator('#chart-0')).toHaveCount(0)
 })
 
-// Records what actually happens today, which is not what ChartsContainer
-// was written to do. It renders an inline `isError` Alert beside the button,
-// but that branch is unreachable for a report failure: the app-wide policy
-// in src/lib/react-query.ts rethrows everything except 401/403, so the error
-// escapes to the boundary in _app.tsx and replaces the entire page - the
-// Generate Charts button with it. A transient report-API blip therefore
-// costs the user their whole selection rather than showing an error next to
-// the run button. Change this test if useCharts is ever given a local
-// throwOnError:false to make that inline Alert reachable again.
-test('a failing report request currently replaces the page with the error boundary', async ({
+// useCharts opts out of the app-wide throwOnError policy (src/lib/react-query.ts
+// rethrows everything except 401/403 to the _app.tsx boundary), so a report
+// failure lands in ChartsContainer's inline alert - with the server's own
+// message - and the user keeps the page and their selections.
+test('a failing report request shows the error beside the button and keeps the page', async ({
   page,
 }) => {
   await stubBackend(page)
@@ -213,11 +208,12 @@ test('a failing report request currently replaces the page with the error bounda
   await page.goto(chartUrl())
   await generateCharts(page)
 
-  await expect(page.getByText('Something went wrong').first()).toBeVisible()
+  await expect(page.getByText('report api unavailable')).toBeVisible()
+  await expect(page.getByText('Something went wrong')).toHaveCount(0)
   await expect(page.locator('#chart-0')).toHaveCount(0)
   await expect(
     page.getByRole('button', { name: 'Generate Charts' })
-  ).toHaveCount(0)
+  ).toBeVisible()
 })
 
 test('generating without a location asks for one and sends no request', async ({

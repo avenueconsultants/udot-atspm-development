@@ -105,10 +105,8 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
       latencyCorrection: detector.latencyCorrection,
       movementType: detector.movementType,
       laneNumber: detector.laneNumber,
-      laneType:
-        detector.laneType == null
-          ? undefined
-          : laneTypeOptions[detector.laneType]?.description,
+      laneType: laneTypeOptions.find((opt) => opt.id === detector.laneType)
+        ?.description,
       distanceFromStopBar: detector.distanceFromStopBar,
       decisionPoint: detector.decisionPoint,
       movementDelay: detector.movementDelay,

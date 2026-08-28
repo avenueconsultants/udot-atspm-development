@@ -3,7 +3,12 @@ import {
   usePostWatchDogIgnoreEvent,
   WatchDogIgnoreEvent,
 } from '@/api/config'
-import { useGetWatchdogIssueTypes, useGetWatchdogReportData } from '@/api/reports'
+import {
+  useGetWatchdogIssueTypes,
+  useGetWatchdogReportData,
+  WatchDogComponentTypes,
+  WatchDogIssueTypes,
+} from '@/api/reports'
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
 import OptionalWatchDogFilters from '@/components/MapFilters/OptionalWatchDogFilters'
 import { StyledPaper } from '@/components/StyledPaper'
@@ -29,6 +34,7 @@ import {
 } from '@mui/material'
 import {
   DataGrid,
+  gridClasses,
   GridColDef,
   GridRenderCellParams,
   GridToolbarColumnsButton,
@@ -36,7 +42,6 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  gridClasses,
 } from '@mui/x-data-grid'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AxiosError } from 'axios'
@@ -78,6 +83,17 @@ const normalizeWatchdogValue = (value: number | string | null | undefined) =>
   String(value ?? '')
     .replace(/[^a-zA-Z0-9]/g, '')
     .toLowerCase()
+
+// The report API sends its enums as integers while the config API (OData)
+// sends and expects member names. Both generated consts describe the same C#
+// enums, so the keys of one are the values of the other.
+const enumMemberName = <T extends Record<string, number>>(
+  members: T,
+  value: number | undefined
+) =>
+  (Object.keys(members) as (keyof T & string)[]).find(
+    (name) => members[name] === value
+  )
 
 // Schema for filtering events (table of events)
 const watchdogLogsSchema = z.object({
@@ -194,7 +210,9 @@ const WatchDogLogs = () => {
     }) => {
       const now = new Date()
       const issueTypeName =
-        logEvent.issueType != null ? issueTypes?.[logEvent.issueType] : undefined
+        logEvent.issueType != null
+          ? issueTypes?.[logEvent.issueType]
+          : undefined
       const componentTypeName =
         logEvent.componentType === 0
           ? 'Location'
@@ -257,7 +275,6 @@ const WatchDogLogs = () => {
           matchesComponentId &&
           matchesPhase &&
           matchesKey
-
 
         if (!matchesEvent) return false
         if (isBefore(now, ignoreStart)) return false
@@ -342,9 +359,14 @@ const WatchDogLogs = () => {
             key: eventToIgnore.key != null ? String(eventToIgnore.key) : null,
             locationId: eventToIgnore.locationId,
             locationIdentifier: eventToIgnore.locationIdentifier,
-            issueType: eventToIgnore.issueTypeId as WatchDogIgnoreEvent['issueType'],
-            componentType:
-              eventToIgnore.componentType as WatchDogIgnoreEvent['componentType'],
+            issueType: enumMemberName(
+              WatchDogIssueTypes,
+              eventToIgnore.issueTypeId
+            ),
+            componentType: enumMemberName(
+              WatchDogComponentTypes,
+              eventToIgnore.componentType
+            ),
             componentId: eventToIgnore.componentId,
             phase: eventToIgnore.phase,
             start: toUTCDateStamp(data.start),

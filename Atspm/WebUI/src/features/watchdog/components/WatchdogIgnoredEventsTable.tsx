@@ -4,6 +4,7 @@ import {
   usePatchWatchDogIgnoreEventFromKey,
   WatchDogComponentTypesName,
   WatchDogIgnoreEvent,
+  WatchDogIssueTypesName,
 } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
 import AdminTable from '@/components/AdminTable/AdminTable'
@@ -23,22 +24,23 @@ function componentLabel(e: WatchDogIgnoreEvent) {
   return `Detector (${e.componentId ?? '—'})`
 }
 
-const issueTypeLabels: Record<number, string> = {
-  1: 'Record Count',
-  2: 'Low Detector Hits',
-  3: 'Stuck Ped',
-  4: 'Force Off Threshold',
-  5: 'Max Out Threshold',
-  6: 'Unconfigured Approach',
-  7: 'Unconfigured Detector',
-  8: 'Missing Mainline Data',
-  9: 'Stuck Queue Detection',
-  10: 'Low Ramp Detector Hits',
-  11: 'Ramp Missed Detector Hits',
+const issueTypeLabels: Record<WatchDogIssueTypesName, string> = {
+  [WatchDogIssueTypesName.RecordCount]: 'Record Count',
+  [WatchDogIssueTypesName.LowDetectorHits]: 'Low Detector Hits',
+  [WatchDogIssueTypesName.StuckPed]: 'Stuck Ped',
+  [WatchDogIssueTypesName.ForceOffThreshold]: 'Force Off Threshold',
+  [WatchDogIssueTypesName.MaxOutThreshold]: 'Max Out Threshold',
+  [WatchDogIssueTypesName.UnconfiguredApproach]: 'Unconfigured Approach',
+  [WatchDogIssueTypesName.UnconfiguredDetector]: 'Unconfigured Detector',
+  [WatchDogIssueTypesName.MissingMainlineData]: 'Missing Mainline Data',
+  [WatchDogIssueTypesName.StuckQueueDetection]: 'Stuck Queue Detection',
+  [WatchDogIssueTypesName.LowRampDetectorHits]: 'Low Ramp Detector Hits',
+  [WatchDogIssueTypesName.RampMissedDetectorHits]: 'Ramp Missed Detector Hits',
 }
 
 function issueTypeLabel(issueType: WatchDogIgnoreEvent['issueType']) {
   if (issueType == null) return ''
+  // An issue type this build doesn't know yet still shows as its raw name.
   return issueTypeLabels[issueType] ?? String(issueType)
 }
 
