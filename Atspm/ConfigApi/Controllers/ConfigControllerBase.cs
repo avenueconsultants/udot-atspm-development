@@ -87,7 +87,9 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
                 return NotFound(key);
             }
 
-            return Ok(SingleResult.Create(result).Queryable);
+            // The SingleResult itself, not its Queryable: [EnableQuery] serializes the
+            // former as one entity and the latter as a { value: [...] } collection.
+            return Ok(SingleResult.Create(result));
         }
 
         /// <summary>

@@ -25,17 +25,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RegisterViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RegisterViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RegisterViewModel"
+                  }
+                ]
               }
             }
           }
@@ -64,17 +76,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LoginViewModel"
+                  }
+                ]
               }
             }
           }
@@ -201,17 +225,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ChangePasswordViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ChangePasswordViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangePasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ChangePasswordViewModel"
+                  }
+                ]
               }
             }
           }
@@ -240,17 +276,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ForgotPasswordViewModel"
+                  }
+                ]
               }
             }
           }
@@ -279,17 +327,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyUserPasswordResetViewModel"
+                  }
+                ]
               }
             }
           }
@@ -320,17 +380,32 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApiKeyDto"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateApiKeyDto"
+                  }
+                ],
+                "description": "Data transfer object used for providing the necessary information to create a new API key."
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApiKeyDto"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateApiKeyDto"
+                  }
+                ],
+                "description": "Data transfer object used for providing the necessary information to create a new API key."
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateApiKeyDto"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateApiKeyDto"
+                  }
+                ],
+                "description": "Data transfer object used for providing the necessary information to create a new API key."
               }
             }
           }
@@ -614,17 +689,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             }
           }
@@ -661,17 +748,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimModel"
+                  }
+                ]
               }
             }
           }
@@ -710,17 +809,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimsModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimsModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimsModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimsModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ClaimsModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ClaimsModel"
+                  }
+                ]
               }
             }
           }
@@ -767,17 +878,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateProfileViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateProfileViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateProfileViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateProfileViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateProfileViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UpdateProfileViewModel"
+                  }
+                ]
               }
             }
           }
@@ -824,17 +947,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRoleViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateRoleViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRoleViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateRoleViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateRoleViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateRoleViewModel"
+                  }
+                ]
               }
             }
           }
@@ -893,17 +1028,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyResetTokenViewModel"
+                  }
+                ]
               }
             }
           }
@@ -932,17 +1079,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VerifyConnectTokenViewModel"
+                  }
+                ]
               }
             }
           }
@@ -1021,17 +1180,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDTO"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDTO"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UserDTO"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                ]
               }
             }
           }

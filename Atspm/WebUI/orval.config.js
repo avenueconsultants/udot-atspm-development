@@ -28,69 +28,13 @@ const stripApiV1PrefixFromPaths = (paths) =>
     ])
   )
 
-// OData/Swashbuckle declares a large set of content-type variants per
-// response, including "application/octet-stream" as a generic fallback -
-// present on every collection endpoint here, not just genuine file/binary
-// ones. Orval treats octet-stream/pdf/zip as binary and sets
-// responseType: 'blob' on the whole operation when any is present, which
-// would make axios hand back a raw Blob instead of parsing the JSON these
-// endpoints actually return (config/identity have no real file-download
-// endpoints, so this is always the boilerplate case here). Drop just those
-// three from response content maps; every other declared content type
-// (the many application/json variants, xml, text/plain) is left alone.
-const BINARY_CONTENT_TYPES = new Set([
-  'application/octet-stream',
-  'application/pdf',
-  'application/zip',
-])
-
-const stripBoilerplateBinaryContentTypes = (paths) => {
-  for (const pathItem of Object.values(paths ?? {})) {
-    for (const operation of Object.values(pathItem ?? {})) {
-      if (!operation || typeof operation !== 'object' || !operation.responses) {
-        continue
-      }
-      for (const response of Object.values(operation.responses)) {
-        if (!response?.content) continue
-        for (const contentType of Object.keys(response.content)) {
-          if (BINARY_CONTENT_TYPES.has(contentType.split(';')[0].trim())) {
-            delete response.content[contentType]
-          }
-        }
-      }
-    }
-  }
-  return paths
-}
-
-// The route editor must send explicit nulls to clear distance navigation
-// properties. The server accepts null for these fields, but the generated
-// OpenAPI document currently omits that nullability metadata.
-const restoreNullableRouteDistances = (spec) => {
-  const routeLocationDto = spec.components?.schemas?.RouteLocationDto
-  const distanceProperties = [
-    'previousLocationDistance',
-    'nextLocationDistance',
-  ]
-
-  for (const propertyName of distanceProperties) {
-    const property = routeLocationDto?.properties?.[propertyName]
-    if (property) property.nullable = true
-  }
-
-  return spec
-}
-
-const sanitizeSpec = (inputSpec) => {
-  const spec = restoreNullableRouteDistances(inputSpec)
-
-  return {
-    ...spec,
-    paths: stripBoilerplateBinaryContentTypes(
-      stripApiV1PrefixFromPaths(spec.paths)
-    ),
-  }
-}
+// Anything else the spec used to need patching for (nullability on $ref
+// properties, OData's boilerplate octet-stream content type) is now fixed
+// in the APIs' own Swagger generation, so the spec is taken as-is.
+const sanitizeSpec = (spec) => ({
+  ...spec,
+  paths: stripApiV1PrefixFromPaths(spec.paths),
+})
 
 module.exports = {
   config: {

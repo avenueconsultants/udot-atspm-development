@@ -556,7 +556,7 @@ export const postDetectionType = (
 
       return configRequest<void>(
       {url: `/DetectionType`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectionType,
         params, signal
     },
@@ -798,7 +798,7 @@ export const putDetectionTypeFromKey = (
 
       return configRequest<void>(
       {url: `/DetectionType/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectionType,
         params, signal
     },
@@ -859,7 +859,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/DetectionType/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectionType,
         params, signal
     },

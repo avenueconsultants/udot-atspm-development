@@ -244,7 +244,7 @@ export const postMeasureOptionPreset = (
 
       return configRequest<void>(
       {url: `/MeasureOptionPreset`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: measureOptionPreset,
         params, signal
     },
@@ -486,7 +486,7 @@ export const putMeasureOptionPresetFromKey = (
 
       return configRequest<void>(
       {url: `/MeasureOptionPreset/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: measureOptionPreset,
         params, signal
     },
@@ -547,7 +547,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/MeasureOptionPreset/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: measureOptionPreset,
         params, signal
     },

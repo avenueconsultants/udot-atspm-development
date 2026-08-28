@@ -353,7 +353,7 @@ export const postArea = (
 
       return configRequest<void>(
       {url: `/Area`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: area,
         params, signal
     },
@@ -595,7 +595,7 @@ export const putAreaFromKey = (
 
       return configRequest<void>(
       {url: `/Area/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: area,
         params, signal
     },
@@ -656,7 +656,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Area/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: area,
         params, signal
     },

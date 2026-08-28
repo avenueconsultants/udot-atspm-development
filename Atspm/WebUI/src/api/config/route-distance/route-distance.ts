@@ -663,7 +663,7 @@ export const postRouteDistance = (
 
       return configRequest<void>(
       {url: `/RouteDistance`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: routeDistance,
         params, signal
     },
@@ -905,7 +905,7 @@ export const putRouteDistanceFromKey = (
 
       return configRequest<void>(
       {url: `/RouteDistance/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: routeDistance,
         params, signal
     },
@@ -966,7 +966,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/RouteDistance/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: routeDistance,
         params, signal
     },

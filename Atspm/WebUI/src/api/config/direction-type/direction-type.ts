@@ -758,7 +758,7 @@ export const postDirectionType = (
 
       return configRequest<void>(
       {url: `/DirectionType`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: directionType,
         params, signal
     },
@@ -1000,7 +1000,7 @@ export const putDirectionTypeFromKey = (
 
       return configRequest<void>(
       {url: `/DirectionType/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: directionType,
         params, signal
     },
@@ -1061,7 +1061,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/DirectionType/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: directionType,
         params, signal
     },

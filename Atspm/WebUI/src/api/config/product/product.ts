@@ -150,7 +150,7 @@ export const postProduct = (
 
       return configRequest<void>(
       {url: `/Product`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: product,
         params, signal
     },
@@ -392,7 +392,7 @@ export const putProductFromKey = (
 
       return configRequest<void>(
       {url: `/Product/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: product,
         params, signal
     },
@@ -453,7 +453,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Product/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: product,
         params, signal
     },

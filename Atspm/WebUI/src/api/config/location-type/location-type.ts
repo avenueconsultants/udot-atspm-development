@@ -353,7 +353,7 @@ export const postLocationType = (
 
       return configRequest<void>(
       {url: `/LocationType`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: locationType,
         params, signal
     },
@@ -595,7 +595,7 @@ export const putLocationTypeFromKey = (
 
       return configRequest<void>(
       {url: `/LocationType/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: locationType,
         params, signal
     },
@@ -656,7 +656,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/LocationType/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: locationType,
         params, signal
     },

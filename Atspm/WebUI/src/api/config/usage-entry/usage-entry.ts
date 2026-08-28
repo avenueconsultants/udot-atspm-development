@@ -150,7 +150,7 @@ export const postUsageEntry = (
 
       return configRequest<void>(
       {url: `/UsageEntry`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: usageEntry,
         params, signal
     },
@@ -392,7 +392,7 @@ export const putUsageEntryFromKey = (
 
       return configRequest<void>(
       {url: `/UsageEntry/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: usageEntry,
         params, signal
     },
@@ -453,7 +453,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/UsageEntry/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: usageEntry,
         params, signal
     },

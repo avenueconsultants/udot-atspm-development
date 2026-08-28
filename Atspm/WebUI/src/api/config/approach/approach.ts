@@ -269,7 +269,7 @@ export const upsertApproachApproach = (
 
       return configRequest<ApproachDto>(
       {url: `/UpsertApproach`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: approachDto,
         params, signal
     },
@@ -510,7 +510,7 @@ export const postApproach = (
 
       return configRequest<void>(
       {url: `/Approach`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: approach,
         params, signal
     },
@@ -752,7 +752,7 @@ export const putApproachFromKey = (
 
       return configRequest<void>(
       {url: `/Approach/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: approach,
         params, signal
     },
@@ -813,7 +813,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Approach/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: approach,
         params, signal
     },

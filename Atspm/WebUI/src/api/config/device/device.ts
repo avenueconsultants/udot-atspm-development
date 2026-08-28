@@ -346,7 +346,7 @@ export const postDevice = (
 
       return configRequest<void>(
       {url: `/Device`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: device,
         params, signal
     },
@@ -588,7 +588,7 @@ export const putDeviceFromKey = (
 
       return configRequest<void>(
       {url: `/Device/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: device,
         params, signal
     },
@@ -649,7 +649,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Device/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: device,
         params, signal
     },

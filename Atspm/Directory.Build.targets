@@ -10,21 +10,29 @@
     Opt in per project via GenerateSwaggerSpec=true and SwaggerSpecName=<name>
     (output filename becomes <name>-spec.json).
 
-    Requires the local dotnet tool manifest at Atspm/.config/dotnet-tools.json
-    (Swashbuckle.AspNetCore.Cli) to have been restored at least once
-    (`dotnet tool restore`). If the tool isn't present, or the export fails for
-    any reason (no DB needed, but e.g. a version mismatch), this only emits a
-    build warning - it never fails a normal build.
+    Requires the Swashbuckle CLI from the local tool manifest at
+    Atspm/.config/dotnet-tools.json to have been restored at least once
+    (`dotnet tool restore`). The CLI version is read from that manifest, so
+    bumping it there can't silently point this at a version that isn't
+    installed. A missing tool, or an export that fails (no DB is needed, but
+    e.g. a startup error), only emits a build warning - it never fails a
+    normal build - but it does mean the committed spec is stale until the
+    warning is dealt with.
   -->
   <PropertyGroup Condition="'$(GenerateSwaggerSpec)' == 'true'">
-    <SwaggerCliDll>$(NuGetPackageRoot)swashbuckle.aspnetcore.cli\7.1.0\tools\$(TargetFramework)\any\dotnet-swagger.dll</SwaggerCliDll>
+    <SwaggerToolManifest>$(MSBuildThisFileDirectory).config\dotnet-tools.json</SwaggerToolManifest>
+    <SwaggerCliVersion Condition="Exists('$(SwaggerToolManifest)')">$([System.Text.RegularExpressions.Regex]::Replace($([System.IO.File]::ReadAllText('$(SwaggerToolManifest)')), '(?s).*"swashbuckle\.aspnetcore\.cli"\s*:\s*\{\s*"version"\s*:\s*"([^"]+)".*', '$1'))</SwaggerCliVersion>
+    <SwaggerCliDll>$(NuGetPackageRoot)swashbuckle.aspnetcore.cli\$(SwaggerCliVersion)\tools\$(TargetFramework)\any\dotnet-swagger.dll</SwaggerCliDll>
     <SwaggerSpecOutputDir>$(MSBuildProjectDirectory)\</SwaggerSpecOutputDir>
   </PropertyGroup>
 
   <Target Name="ExportSwaggerSpec"
           AfterTargets="Build"
-          Condition="'$(GenerateSwaggerSpec)' == 'true' AND Exists('$(SwaggerCliDll)')">
-    <Exec Command="dotnet exec --depsfile &quot;$(TargetDir)$(TargetName).deps.json&quot; --runtimeconfig &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SwaggerCliDll)&quot; tofile --output &quot;$(SwaggerSpecOutputDir)$(SwaggerSpecName)-spec.json&quot; &quot;$(TargetPath)&quot; v1"
+          Condition="'$(GenerateSwaggerSpec)' == 'true'">
+    <Warning Condition="!Exists('$(SwaggerCliDll)')"
+             Text="OpenAPI export skipped for $(MSBuildProjectName): Swashbuckle CLI '$(SwaggerCliVersion)' not found at '$(SwaggerCliDll)'. Run 'dotnet tool restore' in $(MSBuildThisFileDirectory) so $(SwaggerSpecName)-spec.json stays current." />
+    <Exec Condition="Exists('$(SwaggerCliDll)')"
+          Command="dotnet exec --depsfile &quot;$(TargetDir)$(TargetName).deps.json&quot; --runtimeconfig &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SwaggerCliDll)&quot; tofile --output &quot;$(SwaggerSpecOutputDir)$(SwaggerSpecName)-spec.json&quot; &quot;$(TargetPath)&quot; v1"
           EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development;DatabaseConfiguration__ConfigContext__DBType=InMemory;DatabaseConfiguration__ConfigContext__Host=localhost;DatabaseConfiguration__ConfigContext__Database=swagger-export;DatabaseConfiguration__ConfigContext__RunMigrations=false;DatabaseConfiguration__AggregationContext__DBType=InMemory;DatabaseConfiguration__AggregationContext__Host=localhost;DatabaseConfiguration__AggregationContext__Database=swagger-export;DatabaseConfiguration__AggregationContext__RunMigrations=false;DatabaseConfiguration__EventLogContext__DBType=InMemory;DatabaseConfiguration__EventLogContext__Host=localhost;DatabaseConfiguration__EventLogContext__Database=swagger-export;DatabaseConfiguration__EventLogContext__RunMigrations=false;DatabaseConfiguration__IdentityContext__DBType=InMemory;DatabaseConfiguration__IdentityContext__Host=localhost;DatabaseConfiguration__IdentityContext__Database=swagger-export;DatabaseConfiguration__IdentityContext__RunMigrations=false"
           ContinueOnError="WarnAndContinue" />
   </Target>

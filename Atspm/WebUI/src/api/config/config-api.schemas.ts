@@ -5,23 +5,26 @@
  * Atspm Device and Location Configuration
  * OpenAPI spec version: 1.0
  */
-export type LocationVersionActions = typeof LocationVersionActions[keyof typeof LocationVersionActions];
+/**
+ * LocationVersionActions member names, as OData serializes them.
+ */
+export type LocationVersionActionsName = typeof LocationVersionActionsName[keyof typeof LocationVersionActionsName];
 
 
-export const LocationVersionActions = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_10: 10,
+export const LocationVersionActionsName = {
+  Unknown: 'Unknown',
+  New: 'New',
+  Edit: 'Edit',
+  Delete: 'Delete',
+  NewVersion: 'NewVersion',
+  Initial: 'Initial',
 } as const;
 
 export interface UserJurisdiction {
   /** @nullable */
   userId?: string | null;
   jurisdictionId?: number;
-  jurisdiction?: Jurisdiction;
+  jurisdiction?: Jurisdiction | null;
 }
 
 export interface Jurisdiction {
@@ -70,7 +73,7 @@ export interface UserRegion {
   /** @nullable */
   userId?: string | null;
   regionId?: number;
-  region?: Region;
+  region?: Region | null;
 }
 
 export interface Region {
@@ -95,7 +98,7 @@ export interface UserArea {
   /** @nullable */
   userId?: string | null;
   areaId?: number;
-  area?: Area;
+  area?: Area | null;
 }
 
 export interface Area {
@@ -116,42 +119,51 @@ export interface Area {
   locations?: Location[] | null;
 }
 
-export type DeviceStatus = typeof DeviceStatus[keyof typeof DeviceStatus];
+/**
+ * DeviceStatus member names, as OData serializes them.
+ */
+export type DeviceStatusName = typeof DeviceStatusName[keyof typeof DeviceStatusName];
 
 
-export const DeviceStatus = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+export const DeviceStatusName = {
+  Unknown: 'Unknown',
+  Decommissioned: 'Decommissioned',
+  Inactive: 'Inactive',
+  Active: 'Active',
+  Testing: 'Testing',
+  Staging: 'Staging',
 } as const;
 
-export type DeviceTypes = typeof DeviceTypes[keyof typeof DeviceTypes];
+/**
+ * DeviceTypes member names, as OData serializes them.
+ */
+export type DeviceTypesName = typeof DeviceTypesName[keyof typeof DeviceTypesName];
 
 
-export const DeviceTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+export const DeviceTypesName = {
+  Unknown: 'Unknown',
+  SignalController: 'SignalController',
+  RampController: 'RampController',
+  AICamera: 'AICamera',
+  FIRCamera: 'FIRCamera',
+  LidarSensor: 'LidarSensor',
+  SpeedSensor: 'SpeedSensor',
+  EdgeProcessor: 'EdgeProcessor',
 } as const;
 
-export type TransportProtocols = typeof TransportProtocols[keyof typeof TransportProtocols];
+/**
+ * TransportProtocols member names, as OData serializes them.
+ */
+export type TransportProtocolsName = typeof TransportProtocolsName[keyof typeof TransportProtocolsName];
 
 
-export const TransportProtocols = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+export const TransportProtocolsName = {
+  Unknown: 'Unknown',
+  Ftp: 'Ftp',
+  Sftp: 'Sftp',
+  Snmp: 'Snmp',
+  Http: 'Http',
+  Mqtt: 'Mqtt',
 } as const;
 
 export interface Product {
@@ -179,7 +191,7 @@ export interface DeviceConfiguration {
   description?: string | null;
   /** @nullable */
   notes?: string | null;
-  protocol?: TransportProtocols;
+  protocol?: TransportProtocolsName;
   port?: number;
   /** @nullable */
   path?: string | null;
@@ -196,7 +208,7 @@ export interface DeviceConfiguration {
   password?: string | null;
   /** @nullable */
   productId?: number | null;
-  product?: Product;
+  product?: Product | null;
   id?: number;
   /** @nullable */
   created?: string | null;
@@ -216,14 +228,14 @@ export interface Device {
   loggingEnabled?: boolean;
   /** @nullable */
   ipaddress?: string | null;
-  deviceStatus?: DeviceStatus;
-  deviceType?: DeviceTypes;
+  deviceStatus?: DeviceStatusName;
+  deviceType?: DeviceTypesName;
   /** @nullable */
   notes?: string | null;
   locationId?: number;
   /** @nullable */
   deviceConfigurationId?: number | null;
-  deviceConfiguration?: DeviceConfiguration;
+  deviceConfiguration?: DeviceConfiguration | null;
   id?: number;
   /** @nullable */
   created?: string | null;
@@ -233,7 +245,7 @@ export interface Device {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  location?: Location;
+  location?: Location | null;
 }
 
 export interface Location {
@@ -244,7 +256,7 @@ export interface Location {
   /** @nullable */
   secondaryName?: string | null;
   chartEnabled?: boolean;
-  versionAction?: LocationVersionActions;
+  versionAction?: LocationVersionActionsName;
   /** @nullable */
   note?: string | null;
   start?: string;
@@ -253,12 +265,12 @@ export interface Location {
   locationIdentifier?: string | null;
   /** @nullable */
   jurisdictionId?: number | null;
-  jurisdiction?: Jurisdiction;
+  jurisdiction?: Jurisdiction | null;
   locationTypeId?: number;
-  locationType?: LocationType;
+  locationType?: LocationType | null;
   /** @nullable */
   regionId?: number | null;
-  region?: Region;
+  region?: Region | null;
   /** @nullable */
   areas?: Area[] | null;
   /** @nullable */
@@ -276,19 +288,22 @@ export interface Location {
   approaches?: Approach[] | null;
 }
 
-export type DirectionTypes = typeof DirectionTypes[keyof typeof DirectionTypes];
+/**
+ * DirectionTypes member names, as OData serializes them.
+ */
+export type DirectionTypesName = typeof DirectionTypesName[keyof typeof DirectionTypesName];
 
 
-export const DirectionTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
+export const DirectionTypesName = {
+  NA: 'NA',
+  NB: 'NB',
+  SB: 'SB',
+  EB: 'EB',
+  WB: 'WB',
+  NE: 'NE',
+  NW: 'NW',
+  SE: 'SE',
+  SW: 'SW',
 } as const;
 
 export interface RouteDistance {
@@ -332,19 +347,19 @@ export interface RouteLocation {
   order?: number;
   primaryPhase?: number;
   opposingPhase?: number;
-  primaryDirectionId?: DirectionTypes;
-  opposingDirectionId?: DirectionTypes;
+  primaryDirectionId?: DirectionTypesName;
+  opposingDirectionId?: DirectionTypesName;
   isPrimaryOverlap?: boolean;
   isOpposingOverlap?: boolean;
   /** @nullable */
   previousLocationDistanceId?: number | null;
-  previousLocationDistance?: RouteDistance;
+  previousLocationDistance?: RouteDistance | null;
   /** @nullable */
   nextLocationDistanceId?: number | null;
   /** @nullable */
   locationIdentifier?: string | null;
   routeId?: number;
-  route?: Route;
+  route?: Route | null;
   id?: number;
   /** @nullable */
   created?: string | null;
@@ -354,9 +369,9 @@ export interface RouteLocation {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  primaryDirection?: DirectionType;
-  opposingDirection?: DirectionType;
-  nextLocationDistance?: RouteDistance;
+  primaryDirection?: DirectionType | null;
+  opposingDirection?: DirectionType | null;
+  nextLocationDistance?: RouteDistance | null;
 }
 
 export interface DirectionType {
@@ -367,7 +382,7 @@ export interface DirectionType {
   displayOrder?: number;
   /** @nullable */
   primaryDirections?: RouteLocation[] | null;
-  id?: DirectionTypes;
+  id?: DirectionTypesName;
   /** @nullable */
   created?: string | null;
   /** @nullable */
@@ -382,46 +397,55 @@ export interface DirectionType {
   approaches?: Approach[] | null;
 }
 
-export type MovementTypes = typeof MovementTypes[keyof typeof MovementTypes];
+/**
+ * MovementTypes member names, as OData serializes them.
+ */
+export type MovementTypesName = typeof MovementTypesName[keyof typeof MovementTypesName];
 
 
-export const MovementTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+export const MovementTypesName = {
+  NA: 'NA',
+  T: 'T',
+  R: 'R',
+  L: 'L',
+  TR: 'TR',
+  TL: 'TL',
+  NW: 'NW',
+  LTR: 'LTR',
 } as const;
 
-export type LaneTypes = typeof LaneTypes[keyof typeof LaneTypes];
+/**
+ * LaneTypes member names, as OData serializes them.
+ */
+export type LaneTypesName = typeof LaneTypesName[keyof typeof LaneTypesName];
 
 
-export const LaneTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+export const LaneTypesName = {
+  NA: 'NA',
+  V: 'V',
+  Bike: 'Bike',
+  Ped: 'Ped',
+  E: 'E',
+  LRT: 'LRT',
+  Bus: 'Bus',
+  HDV: 'HDV',
 } as const;
 
-export type DetectionHardwareTypes = typeof DetectionHardwareTypes[keyof typeof DetectionHardwareTypes];
+/**
+ * DetectionHardwareTypes member names, as OData serializes them.
+ */
+export type DetectionHardwareTypesName = typeof DetectionHardwareTypesName[keyof typeof DetectionHardwareTypesName];
 
 
-export const DetectionHardwareTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+export const DetectionHardwareTypesName = {
+  NA: 'NA',
+  WavetronixMatrix: 'WavetronixMatrix',
+  WavetronixAdvance: 'WavetronixAdvance',
+  InductiveLoops: 'InductiveLoops',
+  Sensys: 'Sensys',
+  Video: 'Video',
+  FLIRThermalCamera: 'FLIRThermalCamera',
+  LiDar: 'LiDar',
 } as const;
 
 export interface DetectorComment {
@@ -438,7 +462,7 @@ export interface DetectorComment {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  detector?: Detector;
+  detector?: Detector | null;
 }
 
 export interface MeasureComment {
@@ -475,7 +499,7 @@ export interface MeasureOption {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  measureType?: MeasureType;
+  measureType?: MeasureType | null;
 }
 
 export interface AtspmOptionsBase { [key: string]: unknown }
@@ -483,7 +507,7 @@ export interface AtspmOptionsBase { [key: string]: unknown }
 export interface MeasureOptionPreset {
   /** @nullable */
   name?: string | null;
-  option?: AtspmOptionsBase;
+  option?: AtspmOptionsBase | null;
   measureTypeId?: number;
   id?: number;
   /** @nullable */
@@ -494,7 +518,7 @@ export interface MeasureOptionPreset {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  measureType?: MeasureType;
+  measureType?: MeasureType | null;
 }
 
 export interface MeasureType {
@@ -524,23 +548,26 @@ export interface MeasureType {
   detectionTypes?: DetectionType[] | null;
 }
 
-export type DetectionTypes = typeof DetectionTypes[keyof typeof DetectionTypes];
+/**
+ * DetectionTypes member names, as OData serializes them.
+ */
+export type DetectionTypesName = typeof DetectionTypesName[keyof typeof DetectionTypesName];
 
 
-export const DetectionTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
-  NUMBER_12: 12,
+export const DetectionTypesName = {
+  NA: 'NA',
+  B: 'B',
+  AC: 'AC',
+  AS: 'AS',
+  LLC: 'LLC',
+  LLS: 'LLS',
+  SBP: 'SBP',
+  AP: 'AP',
+  P: 'P',
+  D: 'D',
+  IQ: 'IQ',
+  EQ: 'EQ',
+  PP: 'PP',
 } as const;
 
 export interface DetectionType {
@@ -551,7 +578,7 @@ export interface DetectionType {
   displayOrder?: number;
   /** @nullable */
   measureTypes?: MeasureType[] | null;
-  id?: DetectionTypes;
+  id?: DetectionTypesName;
   /** @nullable */
   created?: string | null;
   /** @nullable */
@@ -577,9 +604,9 @@ export interface Detector {
   dateDisabled?: string | null;
   /** @nullable */
   laneNumber?: number | null;
-  movementType?: MovementTypes;
-  laneType?: LaneTypes;
-  detectionHardware?: DetectionHardwareTypes;
+  movementType?: MovementTypesName;
+  laneType?: LaneTypesName;
+  detectionHardware?: DetectionHardwareTypesName;
   /** @nullable */
   decisionPoint?: number | null;
   /** @nullable */
@@ -599,7 +626,7 @@ export interface Detector {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  approach?: Approach;
+  approach?: Approach | null;
 }
 
 export interface Approach {
@@ -620,9 +647,9 @@ export interface Approach {
   /** @nullable */
   transitSignalPriorityNumber?: number | null;
   locationId?: number;
-  location?: Location;
-  directionTypeId?: DirectionTypes;
-  directionType?: DirectionType;
+  location?: Location | null;
+  directionTypeId?: DirectionTypesName;
+  directionType?: DirectionType | null;
   /** @nullable */
   detectors?: Detector[] | null;
   id?: number;
@@ -645,6 +672,82 @@ export interface ApproachDelayOptions {
   getPermissivePhase?: boolean;
   getVolume?: boolean;
 }
+
+export type DirectionTypes = typeof DirectionTypes[keyof typeof DirectionTypes];
+
+
+export const DirectionTypes = {
+  NA: 0,
+  NB: 1,
+  SB: 2,
+  EB: 3,
+  WB: 4,
+  NE: 5,
+  NW: 6,
+  SE: 7,
+  SW: 8,
+} as const;
+
+export type MovementTypes = typeof MovementTypes[keyof typeof MovementTypes];
+
+
+export const MovementTypes = {
+  NA: 0,
+  T: 1,
+  R: 2,
+  L: 3,
+  TR: 4,
+  TL: 5,
+  NW: 6,
+  LTR: 7,
+} as const;
+
+export type LaneTypes = typeof LaneTypes[keyof typeof LaneTypes];
+
+
+export const LaneTypes = {
+  NA: 0,
+  V: 1,
+  Bike: 2,
+  Ped: 3,
+  E: 4,
+  LRT: 5,
+  Bus: 6,
+  HDV: 7,
+} as const;
+
+export type DetectionHardwareTypes = typeof DetectionHardwareTypes[keyof typeof DetectionHardwareTypes];
+
+
+export const DetectionHardwareTypes = {
+  NA: 0,
+  WavetronixMatrix: 1,
+  WavetronixAdvance: 2,
+  InductiveLoops: 3,
+  Sensys: 4,
+  Video: 5,
+  FLIRThermalCamera: 6,
+  LiDar: 7,
+} as const;
+
+export type DetectionTypes = typeof DetectionTypes[keyof typeof DetectionTypes];
+
+
+export const DetectionTypes = {
+  NA: 0,
+  B: 1,
+  AC: 2,
+  AS: 3,
+  LLC: 4,
+  LLS: 5,
+  SBP: 6,
+  AP: 7,
+  P: 8,
+  D: 9,
+  IQ: 10,
+  EQ: 11,
+  PP: 12,
+} as const;
 
 export interface MeasureCommentsDto {
   /** @nullable */
@@ -812,6 +915,32 @@ export interface DeviceGroup {
   count?: number;
 }
 
+export type DeviceStatus = typeof DeviceStatus[keyof typeof DeviceStatus];
+
+
+export const DeviceStatus = {
+  Unknown: 0,
+  Decommissioned: 1,
+  Inactive: 2,
+  Active: 3,
+  Testing: 4,
+  Staging: 5,
+} as const;
+
+export type DeviceTypes = typeof DeviceTypes[keyof typeof DeviceTypes];
+
+
+export const DeviceTypes = {
+  Unknown: 0,
+  SignalController: 1,
+  RampController: 2,
+  AICamera: 3,
+  FIRCamera: 4,
+  LidarSensor: 5,
+  SpeedSensor: 6,
+  EdgeProcessor: 7,
+} as const;
+
 export interface DirectionTypeDto {
   /** @nullable */
   description?: string | null;
@@ -938,7 +1067,8 @@ export interface GitHubReleaseDto {
   createdAt?: string;
   /** The timestamp when the release was published. */
   publishedAt?: string;
-  author?: GitHubAuthorDto;
+  /** Information about the GitHub user who authored the release. */
+  author?: GitHubAuthorDto | null;
   /**
      * A collection of assets attached to the release.
      * @nullable
@@ -1102,6 +1232,18 @@ export interface LocationPhases {
   designatedPhases?: number[] | null;
 }
 
+export type LocationVersionActions = typeof LocationVersionActions[keyof typeof LocationVersionActions];
+
+
+export const LocationVersionActions = {
+  Unknown: 0,
+  New: 1,
+  Edit: 2,
+  Delete: 3,
+  NewVersion: 4,
+  Initial: 10,
+} as const;
+
 export interface LocationWithCoordPhases {
   /** @nullable */
   locationIdentifier?: string | null;
@@ -1144,7 +1286,7 @@ export interface MenuItem {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  parent?: MenuItem;
+  parent?: MenuItem | null;
   /** @nullable */
   children?: MenuItem[] | null;
 }
@@ -1291,7 +1433,7 @@ export interface RouteApproachDto {
   pedestrianDetectors?: string | null;
   locationId?: number;
   directionTypeId?: DirectionTypes;
-  directionType?: DirectionTypeDto;
+  directionType?: DirectionTypeDto | null;
   /** @nullable */
   detectors?: RouteDetectorDto[] | null;
 }
@@ -1455,6 +1597,18 @@ export interface TransitSignalPriorityOptions {
   dates?: string[] | null;
 }
 
+export type TransportProtocols = typeof TransportProtocols[keyof typeof TransportProtocols];
+
+
+export const TransportProtocols = {
+  Unknown: 0,
+  Ftp: 1,
+  Sftp: 2,
+  Snmp: 3,
+  Http: 4,
+  Mqtt: 5,
+} as const;
+
 export interface TurningMovementCountsOptions {
   /** @nullable */
   locationIdentifier?: string | null;
@@ -1535,26 +1689,41 @@ export type WatchDogComponentTypes = typeof WatchDogComponentTypes[keyof typeof 
 
 
 export const WatchDogComponentTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
+  Location: 0,
+  Approach: 1,
+  Detector: 2,
 } as const;
 
-export type WatchDogIssueTypes = typeof WatchDogIssueTypes[keyof typeof WatchDogIssueTypes];
+/**
+ * WatchDogComponentTypes member names, as OData serializes them.
+ */
+export type WatchDogComponentTypesName = typeof WatchDogComponentTypesName[keyof typeof WatchDogComponentTypesName];
 
 
-export const WatchDogIssueTypes = {
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
+export const WatchDogComponentTypesName = {
+  Location: 'Location',
+  Approach: 'Approach',
+  Detector: 'Detector',
+} as const;
+
+/**
+ * WatchDogIssueTypes member names, as OData serializes them.
+ */
+export type WatchDogIssueTypesName = typeof WatchDogIssueTypesName[keyof typeof WatchDogIssueTypesName];
+
+
+export const WatchDogIssueTypesName = {
+  RecordCount: 'RecordCount',
+  LowDetectorHits: 'LowDetectorHits',
+  StuckPed: 'StuckPed',
+  ForceOffThreshold: 'ForceOffThreshold',
+  MaxOutThreshold: 'MaxOutThreshold',
+  UnconfiguredApproach: 'UnconfiguredApproach',
+  UnconfiguredDetector: 'UnconfiguredDetector',
+  MissingMainlineData: 'MissingMainlineData',
+  StuckQueueDetection: 'StuckQueueDetection',
+  LowRampDetectorHits: 'LowRampDetectorHits',
+  RampMissedDetectorHits: 'RampMissedDetectorHits',
 } as const;
 
 export interface WatchDogIgnoreEvent {
@@ -1563,10 +1732,10 @@ export interface WatchDogIgnoreEvent {
   locationIdentifier?: string | null;
   start?: string;
   end?: string;
-  componentType?: WatchDogComponentTypes;
+  componentType?: WatchDogComponentTypesName | null;
   /** @nullable */
   componentId?: number | null;
-  issueType?: WatchDogIssueTypes;
+  issueType?: WatchDogIssueTypesName;
   /** @nullable */
   phase?: number | null;
   /** @nullable */
@@ -1580,8 +1749,25 @@ export interface WatchDogIgnoreEvent {
   createdBy?: string | null;
   /** @nullable */
   modifiedBy?: string | null;
-  location?: Location;
+  location?: Location | null;
 }
+
+export type WatchDogIssueTypes = typeof WatchDogIssueTypes[keyof typeof WatchDogIssueTypes];
+
+
+export const WatchDogIssueTypes = {
+  RecordCount: 1,
+  LowDetectorHits: 2,
+  StuckPed: 3,
+  ForceOffThreshold: 4,
+  MaxOutThreshold: 5,
+  UnconfiguredApproach: 6,
+  UnconfiguredDetector: 7,
+  MissingMainlineData: 8,
+  StuckQueueDetection: 9,
+  LowRampDetectorHits: 10,
+  RampMissedDetectorHits: 11,
+} as const;
 
 export interface YellowRedActivationsOptions {
   /** @nullable */

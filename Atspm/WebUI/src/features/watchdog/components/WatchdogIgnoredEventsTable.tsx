@@ -1,8 +1,8 @@
 import {
   useDeleteWatchDogIgnoreEventFromKey,
-  usePatchWatchDogIgnoreEventFromKey,
   useGetWatchDogIgnoreEvent,
-  WatchDogComponentTypes,
+  usePatchWatchDogIgnoreEventFromKey,
+  WatchDogComponentTypesName,
   WatchDogIgnoreEvent,
 } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
@@ -16,9 +16,9 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react'
 
 function componentLabel(e: WatchDogIgnoreEvent) {
   if (e.componentType == null) return 'Location'
-  if (e.componentType === WatchDogComponentTypes.NUMBER_0)
+  if (e.componentType === WatchDogComponentTypesName.Location)
     return `Location (${e.componentId ?? '—'})`
-  if (e.componentType === WatchDogComponentTypes.NUMBER_1)
+  if (e.componentType === WatchDogComponentTypesName.Approach)
     return `Approach (${e.componentId ?? '—'})`
   return `Detector (${e.componentId ?? '—'})`
 }

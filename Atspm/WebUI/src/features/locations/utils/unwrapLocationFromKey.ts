@@ -1,12 +1,13 @@
 import { Location } from '@/api/config'
 
 // ConfigApi's shared keyed GET action (ConfigControllerBase.Get(TKey, ...))
-// returns Ok(SingleResult.Create(result).Queryable) - a known OData anti-
-// pattern that makes the [EnableQuery] formatter serialize even this
-// single-entity endpoint as a { value: [...] } collection envelope.
-// axios.ts's central OData unwrap turns that into a bare array, so
-// getLocationFromKey/useGetLocationFromKey callers need this extra step to
-// get back to a single Location.
+// used to return Ok(SingleResult.Create(result).Queryable), which made the
+// [EnableQuery] formatter serialize even this single-entity endpoint as a
+// { value: [...] } collection envelope that axios.ts's central OData unwrap
+// then turned into a bare array. The API now returns the SingleResult
+// itself and serializes one entity, matching its spec. This shim stays only
+// until every deployed config API carries that fix; drop it (and its
+// callers' use of it) once they do.
 export function unwrapLocationFromKey(
   result: Location | Location[] | undefined
 ): Location | undefined {

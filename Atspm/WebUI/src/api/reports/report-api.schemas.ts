@@ -9,8 +9,8 @@ export type AggregationCalculationType = typeof AggregationCalculationType[keyof
 
 
 export const AggregationCalculationType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  Sum: 0,
+  Average: 1,
 } as const;
 
 export interface AggregationDataPoint {
@@ -24,72 +24,72 @@ export type AggregationType = typeof AggregationType[keyof typeof AggregationTyp
 
 
 export const AggregationType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
-  NUMBER_12: 12,
-  NUMBER_13: 13,
+  DetectorEventCount: 0,
+  Pcd: 1,
+  Speed: 2,
+  SplitFail: 3,
+  YellowRedActivation: 4,
+  PhaseCycle: 5,
+  PhaseLeftTurn: 6,
+  Ped: 7,
+  SplitMonitor: 8,
+  PhaseTermination: 9,
+  Preemption: 10,
+  Priority: 11,
+  SignalEventCount: 12,
+  signalPlan: 13,
 } as const;
 
 export type DetectionTypes = typeof DetectionTypes[keyof typeof DetectionTypes];
 
 
 export const DetectionTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
-  NUMBER_12: 12,
+  NA: 0,
+  B: 1,
+  AC: 2,
+  AS: 3,
+  LLC: 4,
+  LLS: 5,
+  SBP: 6,
+  AP: 7,
+  P: 8,
+  D: 9,
+  IQ: 10,
+  EQ: 11,
+  PP: 12,
 } as const;
 
 export type DayOfWeek = typeof DayOfWeek[keyof typeof DayOfWeek];
 
 
 export const DayOfWeek = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
+  Sunday: 0,
+  Monday: 1,
+  Tuesday: 2,
+  Wednesday: 3,
+  Thursday: 4,
+  Friday: 5,
+  Saturday: 6,
 } as const;
 
 export type TimePeriodOptions = typeof TimePeriodOptions[keyof typeof TimePeriodOptions];
 
 
 export const TimePeriodOptions = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
+  StartToEnd: 0,
+  TimePeriod: 1,
 } as const;
 
 export type BinSize = typeof BinSize[keyof typeof BinSize];
 
 
 export const BinSize = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+  FifteenMinute: 0,
+  ThirtyMinute: 1,
+  Hour: 2,
+  Day: 3,
+  Month: 4,
+  Year: 5,
 } as const;
 
 export interface TimeOptions {
@@ -113,23 +113,23 @@ export type XAxisType = typeof XAxisType[keyof typeof XAxisType];
 
 
 export const XAxisType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
+  Time: 0,
+  TimeOfDay: 1,
+  Direction: 2,
+  Approach: 3,
+  Signal: 4,
+  Detector: 5,
 } as const;
 
 export type SeriesType = typeof SeriesType[keyof typeof SeriesType];
 
 
 export const SeriesType = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
+  Signal: 0,
+  PhaseNumber: 1,
+  Direction: 2,
+  Route: 3,
+  Detector: 4,
 } as const;
 
 export interface FilterDetector {
@@ -172,9 +172,9 @@ export interface AggregationOptions {
   start?: string;
   end?: string;
   aggregationType?: AggregationType;
-  detectionType?: DetectionTypes;
+  detectionType?: DetectionTypes | null;
   dataType?: number;
-  timeOptions?: TimeOptions;
+  timeOptions?: TimeOptions | null;
   selectedAggregationType?: AggregationCalculationType;
   selectedXAxisType?: XAxisType;
   selectedSeries?: SeriesType;
@@ -369,7 +369,7 @@ export interface ApproachVolumeResult {
   primaryDFactors?: DataPointForDouble[] | null;
   /** @nullable */
   opposingDFactors?: DataPointForDouble[] | null;
-  summaryData?: SummaryData;
+  summaryData?: SummaryData | null;
 }
 
 export interface AreaDTO {
@@ -478,15 +478,15 @@ export type DirectionTypes = typeof DirectionTypes[keyof typeof DirectionTypes];
 
 
 export const DirectionTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
+  NA: 0,
+  NB: 1,
+  SB: 2,
+  EB: 3,
+  WB: 4,
+  NE: 5,
+  NW: 6,
+  SE: 7,
+  SW: 8,
 } as const;
 
 export interface GapDurationOptions {
@@ -604,14 +604,14 @@ export type LaneTypes = typeof LaneTypes[keyof typeof LaneTypes];
 
 
 export const LaneTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
+  NA: 0,
+  V: 1,
+  Bike: 2,
+  Ped: 3,
+  E: 4,
+  LRT: 5,
+  Bus: 6,
+  HDV: 7,
 } as const;
 
 export interface Lane {
@@ -1030,7 +1030,7 @@ export interface LinkPivotResult {
 export interface LinkPivotForTsd {
   /** @nullable */
   direction?: string | null;
-  data?: LinkPivotResult;
+  data?: LinkPivotResult | null;
 }
 
 export interface LinkPivotOptions {
@@ -1307,18 +1307,18 @@ export interface PedatLocationData {
   averageVolumeByMonthOfYear?: IndexedVolume[] | null;
   /** @nullable */
   rawData?: RawDataPoint[] | null;
-  statisticData?: StatisticsDataPoint;
+  statisticData?: StatisticsDataPoint | null;
 }
 
 export type PedestrianTimeUnit = typeof PedestrianTimeUnit[keyof typeof PedestrianTimeUnit];
 
 
 export const PedestrianTimeUnit = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
+  Hour: 0,
+  Day: 1,
+  Week: 2,
+  Month: 3,
+  Year: 4,
 } as const;
 
 export interface PedatLocationDataQuery {
@@ -1464,7 +1464,7 @@ export interface PreemptRequestAndServices {
 export interface PreemptDetailResult {
   /** @nullable */
   details?: PreemptDetail[] | null;
-  summary?: PreemptRequestAndServices;
+  summary?: PreemptRequestAndServices | null;
 }
 
 export interface PreemptPlan {
@@ -1606,7 +1606,7 @@ export interface PrioritySummaryResult {
   numberCheckouts?: number;
   numberEarlyGreens?: number;
   numberExtendedGreens?: number;
-  unassigned?: PrioritySummaryUnassignedEventsDto;
+  unassigned?: PrioritySummaryUnassignedEventsDto | null;
   /** @nullable */
   events?: IndianaEvent[] | null;
   /** @nullable */
@@ -1842,7 +1842,7 @@ export interface TimeSpaceDiagramAverageResult {
 export interface TimeSpaceDiagramAveragePhaseResult {
   /** @nullable */
   error?: string | null;
-  result?: TimeSpaceDiagramAverageResult;
+  result?: TimeSpaceDiagramAverageResult | null;
   readonly isSuccess?: boolean;
 }
 
@@ -1897,7 +1897,7 @@ export interface TimeSpaceDiagramResultForPhase {
   order?: number;
   /** @nullable */
   readonly cycleLength?: number | null;
-  tmcForPhase?: TmcForPhaseDto;
+  tmcForPhase?: TmcForPhaseDto | null;
   /** @nullable */
   cycleAllEvents?: CycleEventsDto[] | null;
   /** @nullable */
@@ -1928,7 +1928,7 @@ export interface TimeSpaceDiagramResultForPhase {
 export interface TimeSpaceDiagramPhaseResult {
   /** @nullable */
   error?: string | null;
-  result?: TimeSpaceDiagramResultForPhase;
+  result?: TimeSpaceDiagramResultForPhase | null;
   readonly isSuccess?: boolean;
 }
 
@@ -2048,7 +2048,7 @@ export interface TransitSignalPriorityPlan {
 }
 
 export interface TransitSignalPriorityResult {
-  locationPhases?: LocationPhases;
+  locationPhases?: LocationPhases | null;
   /** @nullable */
   transitSignalPlans?: TransitSignalPriorityPlan[] | null;
 }
@@ -2062,7 +2062,7 @@ export interface TurningMovementCountData {
   laneType?: string | null;
   /** @nullable */
   volumes?: DataPointForInt[] | null;
-  peakHourVolume?: DataPointForInt;
+  peakHourVolume?: DataPointForInt | null;
 }
 
 export interface TurningMovementCountsLanesResult {
@@ -2112,7 +2112,7 @@ export interface TurningMovementCountsResult {
   charts?: TurningMovementCountsLanesResult[] | null;
   /** @nullable */
   table?: TurningMovementCountData[] | null;
-  peakHour?: KeyValuePairOfDateTimeAndInt32;
+  peakHour?: KeyValuePairOfDateTimeAndInt32 | null;
   /** @nullable */
   peakHourFactor?: number | null;
 }
@@ -2195,9 +2195,9 @@ export type WatchDogComponentTypes = typeof WatchDogComponentTypes[keyof typeof 
 
 
 export const WatchDogComponentTypes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
+  Location: 0,
+  Approach: 1,
+  Detector: 2,
 } as const;
 
 export interface WatchDogIssueTypeCount {
@@ -2231,17 +2231,17 @@ export type WatchDogIssueTypes = typeof WatchDogIssueTypes[keyof typeof WatchDog
 
 
 export const WatchDogIssueTypes = {
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_8: 8,
-  NUMBER_9: 9,
-  NUMBER_10: 10,
-  NUMBER_11: 11,
+  RecordCount: 1,
+  LowDetectorHits: 2,
+  StuckPed: 3,
+  ForceOffThreshold: 4,
+  MaxOutThreshold: 5,
+  UnconfiguredApproach: 6,
+  UnconfiguredDetector: 7,
+  MissingMainlineData: 8,
+  StuckQueueDetection: 9,
+  LowRampDetectorHits: 10,
+  RampMissedDetectorHits: 11,
 } as const;
 
 export interface WatchDogFirmwareCount {

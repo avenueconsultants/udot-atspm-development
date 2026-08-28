@@ -52,6 +52,10 @@ builder.Host
             o.CustomSchemaIds(SchemaIdWithGenericSupport);
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
+            // Wraps $ref properties in allOf so their nullability survives (a bare $ref
+            // can't carry `nullable`).
+            o.UseAllOfToExtendReferenceSchemas();
+            o.DocumentEnumMemberNames();
         });
         s.AddConfiguredCors(builder.Configuration);
         s.AddHttpLogging(l =>

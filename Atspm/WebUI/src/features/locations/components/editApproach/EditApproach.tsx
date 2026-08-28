@@ -158,7 +158,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
     // Convert direction type from name -> numeric enum
     modifiedApproach.directionTypeId =
       findDirectionType(modifiedApproach.directionTypeId ?? 0)?.value ??
-      DirectionTypes.NUMBER_0
+      DirectionTypes.NA
 
     // Detectors
     modifiedApproach.detectors.forEach((det) => {

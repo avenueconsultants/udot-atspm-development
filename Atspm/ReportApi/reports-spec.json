@@ -61,17 +61,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AggregationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AggregationOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AggregationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AggregationOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AggregationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/AggregationOptions"
+                  }
+                ]
               }
             }
           }
@@ -159,17 +171,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachDelayOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachDelayOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachDelayOptions"
+                  }
+                ]
               }
             }
           }
@@ -257,17 +281,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachSpeedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachSpeedOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachSpeedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachSpeedOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachSpeedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachSpeedOptions"
+                  }
+                ]
               }
             }
           }
@@ -355,17 +391,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachVolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachVolumeOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachVolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachVolumeOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ApproachVolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ApproachVolumeOptions"
+                  }
+                ]
               }
             }
           }
@@ -453,17 +501,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ArrivalOnRedOptions"
+                  }
+                ]
               }
             }
           }
@@ -551,17 +611,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GreenTimeUtilizationOptions"
+                  }
+                ]
               }
             }
           }
@@ -649,17 +721,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapAnalysisOptions"
+                  }
+                ]
               }
             }
           }
@@ -744,17 +828,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GapDurationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GapDurationOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/GapDurationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GapDurationOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/GapDurationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GapDurationOptions"
+                  }
+                ]
               }
             }
           }
@@ -839,17 +935,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapReportOptions"
+                  }
+                ]
               }
             }
           }
@@ -934,17 +1042,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnGapDataCheckOptions"
+                  }
+                ]
               }
             }
           }
@@ -1026,17 +1146,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PeakHourOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PeakHourOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PeakHourOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PeakHourOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PeakHourOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PeakHourOptions"
+                  }
+                ]
               }
             }
           }
@@ -1118,17 +1250,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedActuationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedActuationOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedActuationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedActuationOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PedActuationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedActuationOptions"
+                  }
+                ]
               }
             }
           }
@@ -1210,17 +1354,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LeftTurnSplitFailOptions"
+                  }
+                ]
               }
             }
           }
@@ -1302,17 +1458,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/VolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VolumeOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/VolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VolumeOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/VolumeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VolumeOptions"
+                  }
+                ]
               }
             }
           }
@@ -1361,17 +1529,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotPcdOptions"
+                  }
+                ]
               }
             }
           }
@@ -1420,17 +1600,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             }
           }
@@ -1515,17 +1707,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/LinkPivotOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/LinkPivotOptions"
+                  }
+                ]
               }
             }
           }
@@ -1610,17 +1814,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedDelayOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedDelayOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PedDelayOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedDelayOptions"
+                  }
+                ]
               }
             }
           }
@@ -1708,17 +1924,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedatLocationDataQuery"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedatLocationDataQuery"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PedatLocationDataQuery"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedatLocationDataQuery"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PedatLocationDataQuery"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PedatLocationDataQuery"
+                  }
+                ]
               }
             }
           }
@@ -1803,17 +2031,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptDetailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptDetailOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptDetailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptDetailOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptDetailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptDetailOptions"
+                  }
+                ]
               }
             }
           }
@@ -1895,17 +2135,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceOptions"
+                  }
+                ]
               }
             }
           }
@@ -1987,17 +2239,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreemptServiceRequestOptions"
+                  }
+                ]
               }
             }
           }
@@ -2082,17 +2346,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PriorityDetailsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PriorityDetailsOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PriorityDetailsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PriorityDetailsOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PriorityDetailsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PriorityDetailsOptions"
+                  }
+                ]
               }
             }
           }
@@ -2177,17 +2453,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrioritySummaryOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PrioritySummaryOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PrioritySummaryOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PrioritySummaryOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PrioritySummaryOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PrioritySummaryOptions"
+                  }
+                ]
               }
             }
           }
@@ -2272,17 +2560,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurdueCoordinationDiagramOptions"
+                  }
+                ]
               }
             }
           }
@@ -2367,17 +2667,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PurduePhaseTerminationOptions"
+                  }
+                ]
               }
             }
           }
@@ -2459,17 +2771,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RampMeteringOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RampMeteringOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/RampMeteringOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RampMeteringOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/RampMeteringOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RampMeteringOptions"
+                  }
+                ]
               }
             }
           }
@@ -2554,17 +2878,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitFailOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitFailOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitFailOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitFailOptions"
+                  }
+                ]
               }
             }
           }
@@ -2652,17 +2988,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitMonitorOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitMonitorOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitMonitorOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitMonitorOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SplitMonitorOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SplitMonitorOptions"
+                  }
+                ]
               }
             }
           }
@@ -2714,17 +3062,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramSrmOptions"
+                  }
+                ]
               }
             }
           }
@@ -2812,17 +3172,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramOptions"
+                  }
+                ]
               }
             }
           }
@@ -2910,17 +3282,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimeSpaceDiagramAverageOptions"
+                  }
+                ]
               }
             }
           }
@@ -3008,17 +3392,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TimingAndActuationsOptions"
+                  }
+                ]
               }
             }
           }
@@ -3106,17 +3502,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TransitSignalPriorityOptions"
+                  }
+                ]
               }
             }
           }
@@ -3201,17 +3609,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TurningMovementCountsOptions"
+                  }
+                ]
               }
             }
           }
@@ -3296,17 +3716,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WaitTimeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WaitTimeOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/WaitTimeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WaitTimeOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/WaitTimeOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WaitTimeOptions"
+                  }
+                ]
               }
             }
           }
@@ -3411,17 +3843,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogOptions"
+                  }
+                ]
               }
             }
           }
@@ -3470,17 +3914,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WatchDogDashboardOptions"
+                  }
+                ]
               }
             }
           }
@@ -3565,17 +4021,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                  }
+                ]
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                  }
+                ]
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/YellowRedActivationsOptions"
+                  }
+                ]
               }
             }
           }
@@ -3626,7 +4094,15 @@
           1
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Sum",
+          "Average"
+        ],
+        "x-enumNames": [
+          "Sum",
+          "Average"
+        ]
       },
       "AggregationDataPoint": {
         "type": "object",
@@ -3665,26 +4141,52 @@
             "format": "date-time"
           },
           "aggregationType": {
-            "$ref": "#/components/schemas/AggregationType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AggregationType"
+              }
+            ]
           },
           "detectionType": {
-            "$ref": "#/components/schemas/DetectionTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DetectionTypes"
+              }
+            ],
+            "nullable": true
           },
           "dataType": {
             "type": "integer",
             "format": "int32"
           },
           "timeOptions": {
-            "$ref": "#/components/schemas/TimeOptions"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimeOptions"
+              }
+            ],
+            "nullable": true
           },
           "selectedAggregationType": {
-            "$ref": "#/components/schemas/AggregationCalculationType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AggregationCalculationType"
+              }
+            ]
           },
           "selectedXAxisType": {
-            "$ref": "#/components/schemas/XAxisType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/XAxisType"
+              }
+            ]
           },
           "selectedSeries": {
-            "$ref": "#/components/schemas/SeriesType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SeriesType"
+              }
+            ]
           },
           "locations": {
             "type": "array",
@@ -3745,7 +4247,39 @@
           13
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "DetectorEventCount",
+          "Pcd",
+          "Speed",
+          "SplitFail",
+          "YellowRedActivation",
+          "PhaseCycle",
+          "PhaseLeftTurn",
+          "Ped",
+          "SplitMonitor",
+          "PhaseTermination",
+          "Preemption",
+          "Priority",
+          "SignalEventCount",
+          "signalPlan"
+        ],
+        "x-enumNames": [
+          "DetectorEventCount",
+          "Pcd",
+          "Speed",
+          "SplitFail",
+          "YellowRedActivation",
+          "PhaseCycle",
+          "PhaseLeftTurn",
+          "Ped",
+          "SplitMonitor",
+          "PhaseTermination",
+          "Preemption",
+          "Priority",
+          "SignalEventCount",
+          "signalPlan"
+        ]
       },
       "ApproachDelayOptions": {
         "type": "object",
@@ -4096,7 +4630,12 @@
             "nullable": true
           },
           "summaryData": {
-            "$ref": "#/components/schemas/SummaryData"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SummaryData"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4279,7 +4818,23 @@
           5
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "FifteenMinute",
+          "ThirtyMinute",
+          "Hour",
+          "Day",
+          "Month",
+          "Year"
+        ],
+        "x-enumNames": [
+          "FifteenMinute",
+          "ThirtyMinute",
+          "Hour",
+          "Day",
+          "Month",
+          "Year"
+        ]
       },
       "CycleEventsDto": {
         "type": "object",
@@ -4378,7 +4933,25 @@
           6
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "x-enumNames": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ]
       },
       "DescriptionWithDataPoints": {
         "type": "object",
@@ -4414,7 +4987,37 @@
           12
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "NA",
+          "B",
+          "AC",
+          "AS",
+          "LLC",
+          "LLS",
+          "SBP",
+          "AP",
+          "P",
+          "D",
+          "IQ",
+          "EQ",
+          "PP"
+        ],
+        "x-enumNames": [
+          "NA",
+          "B",
+          "AC",
+          "AS",
+          "LLC",
+          "LLS",
+          "SBP",
+          "AP",
+          "P",
+          "D",
+          "IQ",
+          "EQ",
+          "PP"
+        ]
       },
       "DetectorEventBase": {
         "type": "object",
@@ -4462,7 +5065,29 @@
           8
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "NA",
+          "NB",
+          "SB",
+          "EB",
+          "WB",
+          "NE",
+          "NW",
+          "SE",
+          "SW"
+        ],
+        "x-enumNames": [
+          "NA",
+          "NB",
+          "SB",
+          "EB",
+          "WB",
+          "NE",
+          "NW",
+          "SE",
+          "SW"
+        ]
       },
       "FilterApproach": {
         "type": "object",
@@ -4803,7 +5428,11 @@
             "nullable": true
           },
           "laneType": {
-            "$ref": "#/components/schemas/LaneTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LaneTypes"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -4820,7 +5449,27 @@
           7
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "NA",
+          "V",
+          "Bike",
+          "Ped",
+          "E",
+          "LRT",
+          "Bus",
+          "HDV"
+        ],
+        "x-enumNames": [
+          "NA",
+          "V",
+          "Bike",
+          "Ped",
+          "E",
+          "LRT",
+          "Bus",
+          "HDV"
+        ]
       },
       "LeftTurnGapAnalysisOptions": {
         "type": "object",
@@ -5852,7 +6501,12 @@
             "nullable": true
           },
           "data": {
-            "$ref": "#/components/schemas/LinkPivotResult"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LinkPivotResult"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -6569,7 +7223,12 @@
             "nullable": true
           },
           "statisticData": {
-            "$ref": "#/components/schemas/StatisticsDataPoint"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/StatisticsDataPoint"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -6593,7 +7252,11 @@
             "format": "date-time"
           },
           "timeUnit": {
-            "$ref": "#/components/schemas/PedestrianTimeUnit"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PedestrianTimeUnit"
+              }
+            ]
           },
           "phase": {
             "type": "integer",
@@ -6612,7 +7275,21 @@
           4
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Hour",
+          "Day",
+          "Week",
+          "Month",
+          "Year"
+        ],
+        "x-enumNames": [
+          "Hour",
+          "Day",
+          "Week",
+          "Month",
+          "Year"
+        ]
       },
       "PerdueCoordinationPlanViewModel": {
         "type": "object",
@@ -7093,7 +7770,12 @@
             "nullable": true
           },
           "summary": {
-            "$ref": "#/components/schemas/PreemptRequestAndServices"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PreemptRequestAndServices"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7506,7 +8188,12 @@
             "format": "double"
           },
           "unassigned": {
-            "$ref": "#/components/schemas/PrioritySummaryUnassignedEventsDto"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PrioritySummaryUnassignedEventsDto"
+              }
+            ],
+            "nullable": true
           },
           "events": {
             "type": "array",
@@ -7882,7 +8569,21 @@
           4
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Signal",
+          "PhaseNumber",
+          "Direction",
+          "Route",
+          "Detector"
+        ],
+        "x-enumNames": [
+          "Signal",
+          "PhaseNumber",
+          "Direction",
+          "Route",
+          "Detector"
+        ]
       },
       "SpeedPlan": {
         "type": "object",
@@ -8195,7 +8896,11 @@
             "nullable": true
           },
           "headingDirection": {
-            "$ref": "#/components/schemas/DirectionTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DirectionTypes"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -8391,10 +9096,18 @@
             "nullable": true
           },
           "timeOption": {
-            "$ref": "#/components/schemas/TimePeriodOptions"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimePeriodOptions"
+              }
+            ]
           },
           "selectedBinSize": {
-            "$ref": "#/components/schemas/BinSize"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BinSize"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -8405,7 +9118,15 @@
           1
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "StartToEnd",
+          "TimePeriod"
+        ],
+        "x-enumNames": [
+          "StartToEnd",
+          "TimePeriod"
+        ]
       },
       "TimeSpaceDetectorEventDto": {
         "type": "object",
@@ -8488,7 +9209,12 @@
             "nullable": true
           },
           "result": {
-            "$ref": "#/components/schemas/TimeSpaceDiagramAverageResult"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimeSpaceDiagramAverageResult"
+              }
+            ],
+            "nullable": true
           },
           "isSuccess": {
             "type": "boolean",
@@ -8629,7 +9355,12 @@
             "nullable": true
           },
           "result": {
-            "$ref": "#/components/schemas/TimeSpaceDiagramResultForPhase"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TimeSpaceDiagramResultForPhase"
+              }
+            ],
+            "nullable": true
           },
           "isSuccess": {
             "type": "boolean",
@@ -8705,7 +9436,12 @@
             "readOnly": true
           },
           "tmcForPhase": {
-            "$ref": "#/components/schemas/TmcForPhaseDto"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TmcForPhaseDto"
+              }
+            ],
+            "nullable": true
           },
           "cycleAllEvents": {
             "type": "array",
@@ -9027,10 +9763,18 @@
             "type": "boolean"
           },
           "laneType": {
-            "$ref": "#/components/schemas/LaneTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LaneTypes"
+              }
+            ]
           },
           "directionType": {
-            "$ref": "#/components/schemas/DirectionTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DirectionTypes"
+              }
+            ]
           }
         },
         "additionalProperties": false
@@ -9208,7 +9952,12 @@
         "type": "object",
         "properties": {
           "locationPhases": {
-            "$ref": "#/components/schemas/LocationPhases"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationPhases"
+              }
+            ],
+            "nullable": true
           },
           "transitSignalPlans": {
             "type": "array",
@@ -9243,7 +9992,12 @@
             "nullable": true
           },
           "peakHourVolume": {
-            "$ref": "#/components/schemas/DataPointForInt"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataPointForInt"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9381,7 +10135,12 @@
             "nullable": true
           },
           "peakHour": {
-            "$ref": "#/components/schemas/KeyValuePairOfDateTimeAndInt32"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyValuePairOfDateTimeAndInt32"
+              }
+            ],
+            "nullable": true
           },
           "peakHourFactor": {
             "type": "number",
@@ -9611,7 +10370,17 @@
           2
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Location",
+          "Approach",
+          "Detector"
+        ],
+        "x-enumNames": [
+          "Location",
+          "Approach",
+          "Detector"
+        ]
       },
       "WatchDogControllerTypeGroup": {
         "type": "object",
@@ -9675,7 +10444,11 @@
         "type": "object",
         "properties": {
           "detectionType": {
-            "$ref": "#/components/schemas/DetectionTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DetectionTypes"
+              }
+            ]
           },
           "hardware": {
             "type": "array",
@@ -9754,7 +10527,11 @@
         "type": "object",
         "properties": {
           "issueType": {
-            "$ref": "#/components/schemas/WatchDogIssueTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WatchDogIssueTypes"
+              }
+            ]
           },
           "products": {
             "type": "array",
@@ -9785,7 +10562,33 @@
           11
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "RecordCount",
+          "LowDetectorHits",
+          "StuckPed",
+          "ForceOffThreshold",
+          "MaxOutThreshold",
+          "UnconfiguredApproach",
+          "UnconfiguredDetector",
+          "MissingMainlineData",
+          "StuckQueueDetection",
+          "LowRampDetectorHits",
+          "RampMissedDetectorHits"
+        ],
+        "x-enumNames": [
+          "RecordCount",
+          "LowDetectorHits",
+          "StuckPed",
+          "ForceOffThreshold",
+          "MaxOutThreshold",
+          "UnconfiguredApproach",
+          "UnconfiguredDetector",
+          "MissingMainlineData",
+          "StuckQueueDetection",
+          "LowRampDetectorHits",
+          "RampMissedDetectorHits"
+        ]
       },
       "WatchDogLogEventDTO": {
         "type": "object",
@@ -9807,14 +10610,22 @@
             "format": "date-time"
           },
           "componentType": {
-            "$ref": "#/components/schemas/WatchDogComponentTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WatchDogComponentTypes"
+              }
+            ]
           },
           "componentId": {
             "type": "integer",
             "format": "int32"
           },
           "issueType": {
-            "$ref": "#/components/schemas/WatchDogIssueTypes"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WatchDogIssueTypes"
+              }
+            ]
           },
           "details": {
             "type": "string",
@@ -9980,7 +10791,23 @@
           5
         ],
         "type": "integer",
-        "format": "int32"
+        "format": "int32",
+        "x-enum-varnames": [
+          "Time",
+          "TimeOfDay",
+          "Direction",
+          "Approach",
+          "Signal",
+          "Detector"
+        ],
+        "x-enumNames": [
+          "Time",
+          "TimeOfDay",
+          "Direction",
+          "Approach",
+          "Signal",
+          "Detector"
+        ]
       },
       "YellowRedActivationsOptions": {
         "type": "object",

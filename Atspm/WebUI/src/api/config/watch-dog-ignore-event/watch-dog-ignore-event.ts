@@ -150,7 +150,7 @@ export const postWatchDogIgnoreEvent = (
 
       return configRequest<void>(
       {url: `/WatchDogIgnoreEvent`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: watchDogIgnoreEvent,
         params, signal
     },
@@ -392,7 +392,7 @@ export const putWatchDogIgnoreEventFromKey = (
 
       return configRequest<void>(
       {url: `/WatchDogIgnoreEvent/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: watchDogIgnoreEvent,
         params, signal
     },
@@ -453,7 +453,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/WatchDogIgnoreEvent/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: watchDogIgnoreEvent,
         params, signal
     },

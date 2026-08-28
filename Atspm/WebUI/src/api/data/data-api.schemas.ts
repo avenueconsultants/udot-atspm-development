@@ -75,15 +75,15 @@ export type MemberTypes = typeof MemberTypes[keyof typeof MemberTypes];
 
 
 export const MemberTypes = {
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_4: 4,
-  NUMBER_8: 8,
-  NUMBER_16: 16,
-  NUMBER_32: 32,
-  NUMBER_64: 64,
-  NUMBER_128: 128,
-  NUMBER_191: 191,
+  Constructor: 1,
+  Event: 2,
+  Field: 4,
+  Method: 8,
+  Property: 16,
+  TypeInfo: 32,
+  Custom: 64,
+  NestedType: 128,
+  All: 191,
 } as const;
 
 export interface ModuleHandle {
@@ -91,7 +91,7 @@ export interface ModuleHandle {
 }
 
 export interface Module {
-  assembly?: Assembly;
+  readonly assembly?: Assembly | null;
   /** @nullable */
   readonly fullyQualifiedName?: string | null;
   /** @nullable */
@@ -100,7 +100,7 @@ export interface Module {
   readonly moduleVersionId?: string;
   /** @nullable */
   readonly scopeName?: string | null;
-  moduleHandle?: ModuleHandle;
+  readonly moduleHandle?: ModuleHandle;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly metadataToken?: number;
@@ -158,33 +158,33 @@ export type CallingConventions = typeof CallingConventions[keyof typeof CallingC
 
 
 export const CallingConventions = {
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_32: 32,
-  NUMBER_64: 64,
+  Standard: 1,
+  VarArgs: 2,
+  Any: 3,
+  HasThis: 32,
+  ExplicitThis: 64,
 } as const;
 
 export interface IntPtr { [key: string]: unknown }
 
 export interface RuntimeMethodHandle {
-  value?: IntPtr;
+  readonly value?: IntPtr;
 }
 
 export interface MethodBase {
-  memberType?: MemberTypes;
+  readonly memberType?: MemberTypes;
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  attributes?: MethodAttributes;
-  methodImplementationFlags?: MethodImplAttributes;
-  callingConvention?: CallingConventions;
+  readonly attributes?: MethodAttributes;
+  readonly methodImplementationFlags?: MethodImplAttributes;
+  readonly callingConvention?: CallingConventions;
   readonly isAbstract?: boolean;
   readonly isConstructor?: boolean;
   readonly isFinal?: boolean;
@@ -202,7 +202,7 @@ export interface MethodBase {
   readonly isGenericMethod?: boolean;
   readonly isGenericMethodDefinition?: boolean;
   readonly containsGenericParameters?: boolean;
-  methodHandle?: RuntimeMethodHandle;
+  readonly methodHandle?: RuntimeMethodHandle;
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
@@ -212,14 +212,14 @@ export type GenericParameterAttributes = typeof GenericParameterAttributes[keyof
 
 
 export const GenericParameterAttributes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_8: 8,
-  NUMBER_16: 16,
-  NUMBER_28: 28,
+  None: 0,
+  Covariant: 1,
+  Contravariant: 2,
+  VarianceMask: 3,
+  ReferenceTypeConstraint: 4,
+  NotNullableValueTypeConstraint: 8,
+  DefaultConstructorConstraint: 16,
+  SpecialConstraintMask: 28,
 } as const;
 
 export type TypeAttributes = typeof TypeAttributes[keyof typeof TypeAttributes];
@@ -258,29 +258,29 @@ export type LayoutKind = typeof LayoutKind[keyof typeof LayoutKind];
 
 
 export const LayoutKind = {
-  NUMBER_0: 0,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
+  Sequential: 0,
+  Explicit: 2,
+  Auto: 3,
 } as const;
 
 export interface StructLayoutAttribute {
   readonly typeId?: unknown | null;
-  value?: LayoutKind;
+  readonly value?: LayoutKind;
 }
 
 export interface ConstructorInfo {
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  attributes?: MethodAttributes;
-  methodImplementationFlags?: MethodImplAttributes;
-  callingConvention?: CallingConventions;
+  readonly attributes?: MethodAttributes;
+  readonly methodImplementationFlags?: MethodImplAttributes;
+  readonly callingConvention?: CallingConventions;
   readonly isAbstract?: boolean;
   readonly isConstructor?: boolean;
   readonly isFinal?: boolean;
@@ -298,15 +298,15 @@ export interface ConstructorInfo {
   readonly isGenericMethod?: boolean;
   readonly isGenericMethodDefinition?: boolean;
   readonly containsGenericParameters?: boolean;
-  methodHandle?: RuntimeMethodHandle;
+  readonly methodHandle?: RuntimeMethodHandle;
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
-  memberType?: MemberTypes;
+  readonly memberType?: MemberTypes;
 }
 
 export interface RuntimeTypeHandle {
-  value?: IntPtr;
+  readonly value?: IntPtr;
 }
 
 export interface Type {
@@ -317,20 +317,20 @@ export interface Type {
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
   readonly isInterface?: boolean;
-  memberType?: MemberTypes;
+  readonly memberType?: MemberTypes;
   /** @nullable */
   readonly namespace?: string | null;
   /** @nullable */
   readonly assemblyQualifiedName?: string | null;
   /** @nullable */
   readonly fullName?: string | null;
-  assembly?: Assembly;
-  module?: Module;
+  readonly assembly?: Assembly | null;
+  readonly module?: Module | null;
   readonly isNested?: boolean;
-  declaringType?: Type;
-  declaringMethod?: MethodBase;
-  reflectedType?: Type;
-  underlyingSystemType?: Type;
+  readonly declaringType?: Type | null;
+  readonly declaringMethod?: MethodBase | null;
+  readonly reflectedType?: Type | null;
+  readonly underlyingSystemType?: Type | null;
   readonly isTypeDefinition?: boolean;
   readonly isArray?: boolean;
   readonly isByRef?: boolean;
@@ -350,8 +350,8 @@ export interface Type {
   /** @nullable */
   readonly genericTypeArguments?: readonly Type[] | null;
   readonly genericParameterPosition?: number;
-  genericParameterAttributes?: GenericParameterAttributes;
-  attributes?: TypeAttributes;
+  readonly genericParameterAttributes?: GenericParameterAttributes;
+  readonly attributes?: TypeAttributes;
   readonly isAbstract?: boolean;
   readonly isImport?: boolean;
   readonly isSealed?: boolean;
@@ -381,11 +381,11 @@ export interface Type {
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
-  structLayoutAttribute?: StructLayoutAttribute;
-  typeInitializer?: ConstructorInfo;
-  typeHandle?: RuntimeTypeHandle;
+  readonly structLayoutAttribute?: StructLayoutAttribute | null;
+  readonly typeInitializer?: ConstructorInfo | null;
+  readonly typeHandle?: RuntimeTypeHandle;
   readonly guid?: string;
-  baseType?: Type;
+  readonly baseType?: Type | null;
   /** @deprecated */
   readonly isSerializable?: boolean;
   readonly containsGenericParameters?: boolean;
@@ -393,17 +393,17 @@ export interface Type {
 }
 
 export interface CustomAttributeTypedArgument {
-  argumentType?: Type;
+  argumentType?: Type | null;
   value?: unknown | null;
 }
 
 export interface MemberInfo {
-  memberType?: MemberTypes;
+  readonly memberType?: MemberTypes;
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
@@ -411,16 +411,16 @@ export interface MemberInfo {
 }
 
 export interface CustomAttributeNamedArgument {
-  memberInfo?: MemberInfo;
-  typedValue?: CustomAttributeTypedArgument;
+  memberInfo?: MemberInfo | null;
+  readonly typedValue?: CustomAttributeTypedArgument;
   /** @nullable */
   readonly memberName?: string | null;
   readonly isField?: boolean;
 }
 
 export interface CustomAttributeData {
-  attributeType?: Type;
-  constructor?: ConstructorInfo;
+  readonly attributeType?: Type | null;
+  readonly constructor?: ConstructorInfo | null;
   /** @nullable */
   readonly constructorArguments?: readonly CustomAttributeTypedArgument[] | null;
   /** @nullable */
@@ -440,25 +440,25 @@ export type ParameterAttributes = typeof ParameterAttributes[keyof typeof Parame
 
 
 export const ParameterAttributes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_4: 4,
-  NUMBER_8: 8,
-  NUMBER_16: 16,
-  NUMBER_4096: 4096,
-  NUMBER_8192: 8192,
-  NUMBER_16384: 16384,
-  NUMBER_32768: 32768,
-  NUMBER_61440: 61440,
+  None: 0,
+  In: 1,
+  Out: 2,
+  Lcid: 4,
+  Retval: 8,
+  Optional: 16,
+  HasDefault: 4096,
+  HasFieldMarshal: 8192,
+  Reserved3: 16384,
+  Reserved4: 32768,
+  ReservedMask: 61440,
 } as const;
 
 export interface ParameterInfo {
-  attributes?: ParameterAttributes;
-  member?: MemberInfo;
+  readonly attributes?: ParameterAttributes;
+  readonly member?: MemberInfo | null;
   /** @nullable */
   readonly name?: string | null;
-  parameterType?: Type;
+  readonly parameterType?: Type | null;
   readonly position?: number;
   readonly isIn?: boolean;
   readonly isLcid?: boolean;
@@ -478,16 +478,16 @@ export interface ICustomAttributeProvider { [key: string]: unknown }
 export interface MethodInfo {
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  attributes?: MethodAttributes;
-  methodImplementationFlags?: MethodImplAttributes;
-  callingConvention?: CallingConventions;
+  readonly attributes?: MethodAttributes;
+  readonly methodImplementationFlags?: MethodImplAttributes;
+  readonly callingConvention?: CallingConventions;
   readonly isAbstract?: boolean;
   readonly isConstructor?: boolean;
   readonly isFinal?: boolean;
@@ -505,78 +505,78 @@ export interface MethodInfo {
   readonly isGenericMethod?: boolean;
   readonly isGenericMethodDefinition?: boolean;
   readonly containsGenericParameters?: boolean;
-  methodHandle?: RuntimeMethodHandle;
+  readonly methodHandle?: RuntimeMethodHandle;
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
-  memberType?: MemberTypes;
-  returnParameter?: ParameterInfo;
-  returnType?: Type;
-  returnTypeCustomAttributes?: ICustomAttributeProvider;
+  readonly memberType?: MemberTypes;
+  readonly returnParameter?: ParameterInfo | null;
+  readonly returnType?: Type | null;
+  readonly returnTypeCustomAttributes?: ICustomAttributeProvider | null;
 }
 
 export interface EventInfo {
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  memberType?: MemberTypes;
-  attributes?: EventAttributes;
+  readonly memberType?: MemberTypes;
+  readonly attributes?: EventAttributes;
   readonly isSpecialName?: boolean;
-  addMethod?: MethodInfo;
-  removeMethod?: MethodInfo;
-  raiseMethod?: MethodInfo;
+  readonly addMethod?: MethodInfo | null;
+  readonly removeMethod?: MethodInfo | null;
+  readonly raiseMethod?: MethodInfo | null;
   readonly isMulticast?: boolean;
-  eventHandlerType?: Type;
+  readonly eventHandlerType?: Type | null;
 }
 
 export type FieldAttributes = typeof FieldAttributes[keyof typeof FieldAttributes];
 
 
 export const FieldAttributes = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-  NUMBER_6: 6,
-  NUMBER_7: 7,
-  NUMBER_16: 16,
-  NUMBER_32: 32,
-  NUMBER_64: 64,
-  NUMBER_128: 128,
-  NUMBER_256: 256,
-  NUMBER_512: 512,
-  NUMBER_1024: 1024,
-  NUMBER_4096: 4096,
-  NUMBER_8192: 8192,
-  NUMBER_32768: 32768,
-  NUMBER_38144: 38144,
+  PrivateScope: 0,
+  Private: 1,
+  FamANDAssem: 2,
+  Assembly: 3,
+  Family: 4,
+  FamORAssem: 5,
+  Public: 6,
+  FieldAccessMask: 7,
+  Static: 16,
+  InitOnly: 32,
+  Literal: 64,
+  NotSerialized: 128,
+  HasFieldRVA: 256,
+  SpecialName: 512,
+  RTSpecialName: 1024,
+  HasFieldMarshal: 4096,
+  PinvokeImpl: 8192,
+  HasDefault: 32768,
+  ReservedMask: 38144,
 } as const;
 
 export interface RuntimeFieldHandle {
-  value?: IntPtr;
+  readonly value?: IntPtr;
 }
 
 export interface FieldInfo {
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  memberType?: MemberTypes;
-  attributes?: FieldAttributes;
-  fieldType?: Type;
+  readonly memberType?: MemberTypes;
+  readonly attributes?: FieldAttributes;
+  readonly fieldType?: Type | null;
   readonly isInitOnly?: boolean;
   readonly isLiteral?: boolean;
   /** @deprecated */
@@ -593,41 +593,41 @@ export interface FieldInfo {
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
-  fieldHandle?: RuntimeFieldHandle;
+  readonly fieldHandle?: RuntimeFieldHandle;
 }
 
 export type PropertyAttributes = typeof PropertyAttributes[keyof typeof PropertyAttributes];
 
 
 export const PropertyAttributes = {
-  NUMBER_0: 0,
-  NUMBER_512: 512,
-  NUMBER_1024: 1024,
-  NUMBER_4096: 4096,
-  NUMBER_8192: 8192,
-  NUMBER_16384: 16384,
-  NUMBER_32768: 32768,
-  NUMBER_62464: 62464,
+  None: 0,
+  SpecialName: 512,
+  RTSpecialName: 1024,
+  HasDefault: 4096,
+  Reserved2: 8192,
+  Reserved3: 16384,
+  Reserved4: 32768,
+  ReservedMask: 62464,
 } as const;
 
 export interface PropertyInfo {
   /** @nullable */
   readonly name?: string | null;
-  declaringType?: Type;
-  reflectedType?: Type;
-  module?: Module;
+  readonly declaringType?: Type | null;
+  readonly reflectedType?: Type | null;
+  readonly module?: Module | null;
   /** @nullable */
   readonly customAttributes?: readonly CustomAttributeData[] | null;
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
-  memberType?: MemberTypes;
-  propertyType?: Type;
-  attributes?: PropertyAttributes;
+  readonly memberType?: MemberTypes;
+  readonly propertyType?: Type | null;
+  readonly attributes?: PropertyAttributes;
   readonly isSpecialName?: boolean;
   readonly canRead?: boolean;
   readonly canWrite?: boolean;
-  getMethod?: MethodInfo;
-  setMethod?: MethodInfo;
+  readonly getMethod?: MethodInfo | null;
+  readonly setMethod?: MethodInfo | null;
 }
 
 export interface TypeInfo {
@@ -638,20 +638,20 @@ export interface TypeInfo {
   readonly isCollectible?: boolean;
   readonly metadataToken?: number;
   readonly isInterface?: boolean;
-  memberType?: MemberTypes;
+  readonly memberType?: MemberTypes;
   /** @nullable */
   readonly namespace?: string | null;
   /** @nullable */
   readonly assemblyQualifiedName?: string | null;
   /** @nullable */
   readonly fullName?: string | null;
-  assembly?: Assembly;
-  module?: Module;
+  readonly assembly?: Assembly | null;
+  readonly module?: Module | null;
   readonly isNested?: boolean;
-  declaringType?: Type;
-  declaringMethod?: MethodBase;
-  reflectedType?: Type;
-  underlyingSystemType?: Type;
+  readonly declaringType?: Type | null;
+  readonly declaringMethod?: MethodBase | null;
+  readonly reflectedType?: Type | null;
+  readonly underlyingSystemType?: Type | null;
   readonly isTypeDefinition?: boolean;
   readonly isArray?: boolean;
   readonly isByRef?: boolean;
@@ -671,8 +671,8 @@ export interface TypeInfo {
   /** @nullable */
   readonly genericTypeArguments?: readonly Type[] | null;
   readonly genericParameterPosition?: number;
-  genericParameterAttributes?: GenericParameterAttributes;
-  attributes?: TypeAttributes;
+  readonly genericParameterAttributes?: GenericParameterAttributes;
+  readonly attributes?: TypeAttributes;
   readonly isAbstract?: boolean;
   readonly isImport?: boolean;
   readonly isSealed?: boolean;
@@ -702,11 +702,11 @@ export interface TypeInfo {
   readonly isSecurityCritical?: boolean;
   readonly isSecuritySafeCritical?: boolean;
   readonly isSecurityTransparent?: boolean;
-  structLayoutAttribute?: StructLayoutAttribute;
-  typeInitializer?: ConstructorInfo;
-  typeHandle?: RuntimeTypeHandle;
+  readonly structLayoutAttribute?: StructLayoutAttribute | null;
+  readonly typeInitializer?: ConstructorInfo | null;
+  readonly typeHandle?: RuntimeTypeHandle;
   readonly guid?: string;
-  baseType?: Type;
+  readonly baseType?: Type | null;
   /** @deprecated */
   readonly isSerializable?: boolean;
   readonly containsGenericParameters?: boolean;
@@ -735,9 +735,9 @@ export type SecurityRuleSet = typeof SecurityRuleSet[keyof typeof SecurityRuleSe
 
 
 export const SecurityRuleSet = {
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
+  None: 0,
+  Level1: 1,
+  Level2: 2,
 } as const;
 
 export interface Assembly {
@@ -750,7 +750,7 @@ export interface Assembly {
      * @nullable
      */
   readonly codeBase?: string | null;
-  entryPoint?: MethodInfo;
+  readonly entryPoint?: MethodInfo | null;
   /** @nullable */
   readonly fullName?: string | null;
   /** @nullable */
@@ -768,13 +768,13 @@ export interface Assembly {
      * @nullable
      */
   readonly escapedCodeBase?: string | null;
-  manifestModule?: Module;
+  readonly manifestModule?: Module | null;
   /** @nullable */
   readonly modules?: readonly Module[] | null;
   /** @deprecated */
   readonly globalAssemblyCache?: boolean;
   readonly hostContext?: number;
-  securityRuleSet?: SecurityRuleSet;
+  readonly securityRuleSet?: SecurityRuleSet;
 }
 
 export interface ILocationLayer {
@@ -787,7 +787,7 @@ export interface CompressedDataBase {
   end?: string;
   /** @nullable */
   locationIdentifier?: string | null;
-  dataType?: Type;
+  dataType?: Type | null;
   /** @nullable */
   data?: ILocationLayer[] | null;
 }
@@ -803,7 +803,7 @@ export interface CompressedEventLogBase {
   end?: string;
   /** @nullable */
   locationIdentifier?: string | null;
-  dataType?: Type;
+  dataType?: Type | null;
   /** @nullable */
   data?: EventLogModelBase[] | null;
   deviceId?: number;

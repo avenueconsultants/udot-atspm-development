@@ -201,18 +201,19 @@ export const detectionTypes = [
 ]
 
 export const aggregationTypeByName = {
-  'Detector Activation Count': GeneratedAggregationType.NUMBER_0,
-  'Approach PCD': GeneratedAggregationType.NUMBER_1,
-  'Approach Speed': GeneratedAggregationType.NUMBER_2,
-  'Approach Split Fail': GeneratedAggregationType.NUMBER_3,
-  'Approach Yellow Red Activations': GeneratedAggregationType.NUMBER_4,
-  'Approach Cycle': GeneratedAggregationType.NUMBER_5,
-  'Left Turn Gap': GeneratedAggregationType.NUMBER_6,
-  'Phase Pedestrian Delay': GeneratedAggregationType.NUMBER_7,
-  'Split Monitor': GeneratedAggregationType.NUMBER_8,
-  'Phase Termination': GeneratedAggregationType.NUMBER_9,
-  'Signal Preemption': GeneratedAggregationType.NUMBER_10,
-  'Signal Priority': GeneratedAggregationType.NUMBER_11,
-  'Signal Event Count': GeneratedAggregationType.NUMBER_12,
-  'Signal Plan': GeneratedAggregationType.NUMBER_13,
+  'Detector Activation Count': GeneratedAggregationType.DetectorEventCount,
+  'Approach PCD': GeneratedAggregationType.Pcd,
+  'Approach Speed': GeneratedAggregationType.Speed,
+  'Approach Split Fail': GeneratedAggregationType.SplitFail,
+  'Approach Yellow Red Activations':
+    GeneratedAggregationType.YellowRedActivation,
+  'Approach Cycle': GeneratedAggregationType.PhaseCycle,
+  'Left Turn Gap': GeneratedAggregationType.PhaseLeftTurn,
+  'Phase Pedestrian Delay': GeneratedAggregationType.Ped,
+  'Split Monitor': GeneratedAggregationType.SplitMonitor,
+  'Phase Termination': GeneratedAggregationType.PhaseTermination,
+  'Signal Preemption': GeneratedAggregationType.Preemption,
+  'Signal Priority': GeneratedAggregationType.Priority,
+  'Signal Event Count': GeneratedAggregationType.SignalEventCount,
+  'Signal Plan': GeneratedAggregationType.signalPlan,
 } as const

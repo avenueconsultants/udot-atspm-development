@@ -150,7 +150,7 @@ export const postDetectorComment = (
 
       return configRequest<void>(
       {url: `/DetectorComment`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectorComment,
         params, signal
     },
@@ -392,7 +392,7 @@ export const putDetectorCommentFromKey = (
 
       return configRequest<void>(
       {url: `/DetectorComment/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectorComment,
         params, signal
     },
@@ -453,7 +453,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/DetectorComment/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: detectorComment,
         params, signal
     },

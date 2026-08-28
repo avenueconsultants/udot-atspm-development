@@ -353,7 +353,7 @@ export const postRegion = (
 
       return configRequest<void>(
       {url: `/Region`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: region,
         params, signal
     },
@@ -595,7 +595,7 @@ export const putRegionFromKey = (
 
       return configRequest<void>(
       {url: `/Region/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: region,
         params, signal
     },
@@ -656,7 +656,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Region/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: region,
         params, signal
     },

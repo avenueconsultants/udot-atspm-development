@@ -1,6 +1,6 @@
 import {
   Location,
-  LocationVersionActions,
+  LocationVersionActionsName,
   useGetLocationLocationsForSearch,
   usePostLocation,
 } from '@/api/config'
@@ -80,7 +80,7 @@ const NewLocationModal = ({
       chartEnabled: false,
       regionId: 10,
       jurisdictionId: 1,
-      versionAction: LocationVersionActions.NUMBER_10,
+      versionAction: LocationVersionActionsName.Initial,
     }
 
     try {

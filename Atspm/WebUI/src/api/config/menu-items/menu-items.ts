@@ -150,7 +150,7 @@ export const postMenuItems = (
 
       return configRequest<void>(
       {url: `/MenuItems`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: menuItem,
         params, signal
     },
@@ -392,7 +392,7 @@ export const putMenuItemsFromKey = (
 
       return configRequest<void>(
       {url: `/MenuItems/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: menuItem,
         params, signal
     },
@@ -453,7 +453,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/MenuItems/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: menuItem,
         params, signal
     },

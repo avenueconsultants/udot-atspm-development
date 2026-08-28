@@ -272,7 +272,7 @@ export const upsertRouteRoute = (
 
       return configRequest<RouteDto>(
       {url: `/UpsertRoute`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: routeDto,
         params, signal
     },
@@ -516,7 +516,7 @@ export const postRoute = (
 
       return configRequest<void>(
       {url: `/Route`, method: 'POST',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: route,
         params, signal
     },
@@ -758,7 +758,7 @@ export const putRouteFromKey = (
 
       return configRequest<void>(
       {url: `/Route/${key}`, method: 'PUT',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: route,
         params, signal
     },
@@ -819,7 +819,7 @@ const {mutation: mutationOptions} = options ?
 
       return configRequest<void>(
       {url: `/Route/${key}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true', },
+      headers: {'Content-Type': 'application/json', },
       data: route,
         params, signal
     },
