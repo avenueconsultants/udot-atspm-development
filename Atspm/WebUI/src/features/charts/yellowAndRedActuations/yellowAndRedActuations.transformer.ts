@@ -207,7 +207,7 @@ function transformData(data: RawYellowAndRedActuationsData) {
   }
 
   const planSeries = createPlans(
-    plans as unknown as Parameters<typeof createPlans>[0],
+    plans,
     yAxis.length,
     planOptions,
     grid.top - 80,

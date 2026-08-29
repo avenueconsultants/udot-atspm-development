@@ -12,6 +12,7 @@ import AuditInfo from '@/components/AuditInfo'
 import { PageNames, useViewPage } from '@/features/identity/pagesCheck'
 import SelectLocation from '@/features/locations/components/selectLocation/SelectLocation'
 import RouteEditor from '@/features/routes/components/routeEditor'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { fetchRouteDistance } from '@/utils/fetchRouteDistance'
 import { removeAuditFields } from '@/utils/removeAuditFields'
@@ -358,11 +359,10 @@ const RouteAdmin = () => {
           setUpdatedRoute(savedRoute)
         },
         onError: (err) => {
-          const error = err as unknown
           addNotification({
             type: 'error',
             title: 'Error saving route',
-            message: error instanceof Error ? error.message : undefined,
+            message: getApiErrorMessage(err),
           })
         },
       }

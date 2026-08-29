@@ -55,11 +55,13 @@ export default defineConfig({
     },
   ],
   // Skipped when pointed at an already-running server - only start one for
-  // local runs.
+  // local runs. CI runs `npm run build` first and sets E2E_WEB_SERVER_COMMAND
+  // to `npm start`, because a cold `next dev` compile on a shared runner can
+  // outlast the assertion timeouts.
   webServer: isPrebuiltServer
     ? undefined
     : {
-        command: 'npm run dev',
+        command: process.env.E2E_WEB_SERVER_COMMAND ?? 'npm run dev',
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

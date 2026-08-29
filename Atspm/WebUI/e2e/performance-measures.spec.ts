@@ -16,6 +16,7 @@
 // #endregion
 import { expect, test, type Page, type Request } from '@playwright/test'
 import { mockAppShell } from './support/mockAppShell'
+import { stubApiHosts } from './support/stubApiHosts'
 
 // The one flow nothing else exercises end to end: pick a location and a
 // measure, run the chart, and get a rendered chart back. It covers the whole
@@ -58,27 +59,13 @@ const approachDelayResult = () => [
   },
 ]
 
-// Playwright matches the most recently registered handler first, so the
-// catch-all goes on before the specific routes. It keeps the page off the
-// live API hosts in .env for everything this test doesn't care about
-// (measure types, chart defaults, missing days), which would otherwise make
-// the run slow and dependent on a remote environment.
-//
-// The body is a bare array rather than an OData envelope on purpose. Only
-// the config API wraps collections, and axios unwraps that shape only when
-// "@odata.context" is present - so an envelope returned for a report-API
-// call would reach the component unwrapped and blow up on .map. A bare array
-// passes through both paths untouched and satisfies every list consumer.
+// The catch-all goes on before the specific routes (Playwright matches the
+// most recently registered handler first). It keeps the page off the live API
+// hosts for everything this test doesn't care about (measure types, chart
+// defaults, missing days), which would otherwise make the run slow and
+// dependent on a remote environment.
 const stubBackend = async (page: Page) => {
-  await page.route(
-    /https?:\/\/(config|report|identity|data|speed)-api/,
-    (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([]),
-      })
-  )
+  await stubApiHosts(page)
 
   await mockAppShell(page)
 

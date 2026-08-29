@@ -280,13 +280,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
     },
   }
 
-  const planSeries = createPlans(
-    plans as unknown as Parameters<typeof createPlans>[0],
-    yAxis.length,
-    undefined,
-    80,
-    1
-  )
+  const planSeries = createPlans(plans, yAxis.length, undefined, 80, 1)
 
   const displayProps = createDisplayProps({
     description: approachDescription,

@@ -2,7 +2,7 @@ import {
   Approach,
   DirectionTypes,
   RouteLocationDto,
-  useGetLocationApproachesFromKey,
+  useGetApproach,
 } from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
@@ -31,9 +31,12 @@ const DirectionSelect = ({
   updateType,
 }: DirectionSelectProps) => {
   const theme = useTheme()
-  const { data: approachesData } = useGetLocationApproachesFromKey(
-    link.locationId ?? 0,
-    undefined,
+  // The option labels come from each approach's direction description. The
+  // Location/{key}/approaches navigation action ignores query options, so
+  // its directionType is always null; the Approach entity set honours
+  // $filter and $expand.
+  const { data: approachesData } = useGetApproach(
+    { filter: `locationId eq ${link.locationId}`, expand: 'directionType' },
     { query: { enabled: link.locationId != null } }
   )
 

@@ -266,10 +266,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
     )
   })
 
-  const plansSeries = createPlans(
-    plans as unknown as Parameters<typeof createPlans>[0],
-    yAxis.length
-  )
+  const plansSeries = createPlans(plans, yAxis.length)
 
   const displayProps = createDisplayProps({
     description: `${direction}${movementType}`,

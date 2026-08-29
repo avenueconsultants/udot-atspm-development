@@ -15,14 +15,12 @@
 // limitations under the License.
 // #endregion
 import { ChartOptions, ChartType } from '@/features/charts/common/types'
-import { reportsAxios } from '@/lib/axios'
 
 // The generated report-data fetchers are stubbed so each chart type's route
 // through the dispatcher is observable. A duplicate or copy-pasted entry in
-// GeneratedChartFetchers (which shipped once already - see the fix for the
-// duplicate PrioritySummary key in TypeApiMap) shows up here as the wrong
-// stub being called, which is invisible to the type checker because every
-// fetcher shares the same call signature.
+// the fetcher record shows up here as the wrong stub being called, which is
+// invisible to the type checker because every fetcher shares the same call
+// signature.
 jest.mock('@/api/reports', () => {
   const names = [
     'getApproachDelayReportData',
@@ -33,6 +31,7 @@ jest.mock('@/api/reports', () => {
     'getLeftTurnGapAnalysisReportData',
     'getPedDelayReportData',
     'getPreemptDetailReportData',
+    'getPriorityDetailsReportData',
     'getPrioritySummaryReportData',
     'getPurdueCoordinationDiagramReportData',
     'getPurduePhaseTerminationReportData',
@@ -54,18 +53,15 @@ jest.mock('./transformData', () => ({
 }))
 
 import * as reportsApi from '@/api/reports'
-import { getCharts, TypeApiMap } from './getCharts'
+import { getCharts } from './getCharts'
 import { transformChartData } from './transformData'
 
 type FetcherName = keyof typeof reportsApi
 
 // The intended ChartType -> generated fetcher wiring, spelled out
-// independently of the map under test so a mistake in one doesn't silently
-// agree with the other.
-const EXPECTED_FETCHER: Record<
-  Exclude<ChartType, ChartType.PriorityDetails>,
-  FetcherName
-> = {
+// independently of the record under test so a mistake in one doesn't
+// silently agree with the other.
+const EXPECTED_FETCHER: Record<ChartType, FetcherName> = {
   [ChartType.ApproachDelay]: 'getApproachDelayReportData',
   [ChartType.ApproachSpeed]: 'getApproachSpeedReportData',
   [ChartType.ApproachVolume]: 'getApproachVolumeReportData',
@@ -76,6 +72,7 @@ const EXPECTED_FETCHER: Record<
   [ChartType.PurdueCoordinationDiagram]:
     'getPurdueCoordinationDiagramReportData',
   [ChartType.PreemptionDetails]: 'getPreemptDetailReportData',
+  [ChartType.PriorityDetails]: 'getPriorityDetailsReportData',
   [ChartType.PrioritySummary]: 'getPrioritySummaryReportData',
   [ChartType.PurduePhaseTermination]: 'getPurduePhaseTerminationReportData',
   [ChartType.PurdueSplitFailure]: 'getSplitFailReportData',
@@ -103,24 +100,6 @@ const baseOptions = (): ChartOptions =>
     end: new Date(2026, 3, 1, 9, 30, 0),
   }) as unknown as ChartOptions
 
-describe('TypeApiMap', () => {
-  it('has an entry for every chart type', () => {
-    const missing = Object.values(ChartType).filter((type) => !TypeApiMap[type])
-    expect(missing).toEqual([])
-  })
-
-  it('points every chart type at a distinct report-data URL', () => {
-    const urls = Object.values(TypeApiMap)
-    expect(new Set(urls).size).toBe(urls.length)
-  })
-
-  it('only maps report-data endpoints', () => {
-    for (const url of Object.values(TypeApiMap)) {
-      expect(url).toMatch(/^\/api\/v1\/\w+\/GetReportData$/)
-    }
-  })
-})
-
 describe('getCharts dispatch', () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -137,13 +116,19 @@ describe('getCharts dispatch', () => {
       expect(asMock(expectedName)).toHaveBeenCalledTimes(1)
 
       // No other fetcher may fire - this is what catches two chart types
-      // sharing one fetcher, or a key/value mismatch in the map.
+      // sharing one fetcher, or a key/value mismatch in the record.
       const otherCalls = allFetcherNames()
         .filter((name) => name !== expectedName)
         .filter((name) => asMock(name).mock.calls.length > 0)
       expect(otherCalls).toEqual([])
     }
   )
+
+  it('covers every chart type', () => {
+    expect(Object.keys(EXPECTED_FETCHER).sort()).toEqual(
+      Object.values(ChartType).sort()
+    )
+  })
 
   it('gives every chart type a fetcher of its own', () => {
     const used = Object.values(EXPECTED_FETCHER)
@@ -161,61 +146,6 @@ describe('getCharts dispatch', () => {
       type: ChartType.RampMetering,
       data: { calledBy: 'getRampMeteringReportData' },
     })
-  })
-})
-
-describe('getCharts legacy fallback', () => {
-  let post: jest.SpyInstance
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-    for (const name of allFetcherNames()) {
-      asMock(name).mockResolvedValue({ calledBy: name })
-    }
-    post = jest.spyOn(reportsAxios, 'post')
-  })
-
-  afterEach(() => post.mockRestore())
-
-  // PriorityDetails is the only chart type with no generated fetcher, so it
-  // is the only one that still reaches reportsAxios.post. Note that
-  // transformChartData has no case for it either (it throws 'Unknown chart
-  // type'), which is why this path is unreachable in the real app - the
-  // assertion documents the wiring rather than endorsing it.
-  it('falls back to the mapped URL only for PriorityDetails', async () => {
-    post.mockResolvedValue({ legacy: true })
-
-    await getCharts(ChartType.PriorityDetails, baseOptions())
-
-    expect(post).toHaveBeenCalledTimes(1)
-    expect(post.mock.calls[0][0]).toBe(TypeApiMap[ChartType.PriorityDetails])
-    expect(
-      allFetcherNames().filter((n) => asMock(n).mock.calls.length)
-    ).toEqual([])
-  })
-
-  // The response interceptor in src/lib/axios.ts already returns
-  // response.data (unwrapping OData's { value: [...] } envelope on the way),
-  // so both dispatch paths must hand transformChartData a bare payload. If
-  // that interceptor is ever dropped, this path starts passing a full
-  // AxiosResponse and every legacy chart breaks silently.
-  it('passes the axios payload through without re-unwrapping it', async () => {
-    post.mockResolvedValue({ legacy: true })
-
-    await getCharts(ChartType.PriorityDetails, baseOptions())
-
-    expect(transformChartData).toHaveBeenCalledWith({
-      type: ChartType.PriorityDetails,
-      data: { legacy: true },
-    })
-  })
-
-  it('never uses the fallback for a chart type that has a fetcher', async () => {
-    for (const type of Object.keys(EXPECTED_FETCHER) as ChartType[]) {
-      await getCharts(type, baseOptions())
-    }
-
-    expect(post).not.toHaveBeenCalled()
   })
 })
 

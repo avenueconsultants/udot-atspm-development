@@ -2,6 +2,7 @@ import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import NextImage from '@/components/NextImage'
 import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { buildApiUrl } from '@/lib/axios'
 import { getEnv } from '@/utils/getEnv'
 import { LoadingButton } from '@mui/lab'
@@ -72,7 +73,7 @@ export default function Signin() {
   useEffect(() => {
     setEmailError(null)
     if (queryDataError) {
-      setErrors((queryDataError as any)?.response?.data?.message)
+      setErrors(getApiErrorMessage(queryDataError, 'Invalid email or password'))
     }
   }, [queryDataError, email])
 

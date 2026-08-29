@@ -197,12 +197,7 @@ function transformData(data: RawPurduePhaseTerminationData) {
   )
 
   const planSeries: SeriesOption = {
-    ...createPlans(
-      plans as unknown as Parameters<typeof createPlans>[0],
-      yAxis.length,
-      undefined,
-      125
-    ),
+    ...createPlans(plans, yAxis.length, undefined, 125),
     tooltip: { trigger: 'none' },
   }
 

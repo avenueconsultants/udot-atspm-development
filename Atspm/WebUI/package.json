@@ -14,7 +14,10 @@
     "test:watch": "jest --watch",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "generate:api": "orval --config orval.config.js"
+    "generate:api": "orval --config orval.config.js",
+    "check:api": "orval --config orval.config.js && git diff --exit-code --stat -- src/api",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:ratchet": "node scripts/typecheck-ratchet.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -75,7 +78,6 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.3.0",
     "@next/bundle-analyzer": "^13.4.8",
     "@playwright/test": "^1.62.1",
     "@testing-library/dom": "^10.0.0",

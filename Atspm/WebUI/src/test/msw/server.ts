@@ -17,8 +17,8 @@
 import { setupServer } from 'msw/node'
 
 // Starts with no handlers registered. Each test (or describe block) adds the
-// handlers it needs via `server.use(...)`, typically the orval-generated
-// `get<Resource>MockHandler(...)` factories from `src/api/**/*.msw.ts`,
-// optionally overridden with fixed data instead of their default faker
-// output. Lifecycle (listen/resetHandlers/close) is wired in jest.setup.ts.
+// handlers it needs via `server.use(http.get(...))`, answering with the
+// fixtures in `src/test/fixtures` so responses have the shape the real APIs
+// produce (the OData envelope, string enums on entities, and so on).
+// Lifecycle (listen/resetHandlers/close) is wired in jest.setup.ts.
 export const server = setupServer()

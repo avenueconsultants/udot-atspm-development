@@ -221,12 +221,7 @@ function transformData(data: RawPedestrianDelayData) {
     pedPresses: (value: number | undefined) => `${value ?? 0} PP`,
   }
 
-  const plansSeries = createPlans(
-    plans as unknown as Parameters<typeof createPlans>[0],
-    yAxis.length,
-    planOptions,
-    135
-  )
+  const plansSeries = createPlans(plans, yAxis.length, planOptions, 135)
 
   const displayProps = createDisplayProps({
     height: '600px',

@@ -99,6 +99,15 @@ export interface BasePlan {
   backgroundColor?: string
 }
 
+// What createPlans actually needs from a plan. The generated report types
+// make these optional and nullable, which BasePlan - the hand-written shape
+// the chart-local plan types extend - does not.
+export interface PlanWindow {
+  start?: string | null
+  end?: string | null
+  planDescription?: string | null
+}
+
 export type PlanData = [string, 1, string]
 
 export type MarkAreaData = [

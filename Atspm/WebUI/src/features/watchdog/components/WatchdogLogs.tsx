@@ -13,6 +13,7 @@ import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponen
 import OptionalWatchDogFilters from '@/components/MapFilters/OptionalWatchDogFilters'
 import { StyledPaper } from '@/components/StyledPaper'
 import SelectDateTime from '@/components/selectTimeSpan/SelectTimeSpan'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { dateToTimestamp, toUTCDateStamp } from '@/utils/dateTime'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -44,7 +45,6 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { AxiosError } from 'axios'
 import {
   endOfDay,
   isAfter,
@@ -94,6 +94,23 @@ const enumMemberName = <T extends Record<string, number>>(
   (Object.keys(members) as (keyof T & string)[]).find(
     (name) => members[name] === value
   )
+
+/** The config-API ignore event that silences a watchdog log row. */
+export const toIgnoreEvent = (
+  row: transformWatchDogLog,
+  start: Date,
+  end: Date | null | undefined
+): WatchDogIgnoreEvent => ({
+  key: row.key != null ? String(row.key) : null,
+  locationId: row.locationId,
+  locationIdentifier: row.locationIdentifier,
+  issueType: enumMemberName(WatchDogIssueTypes, row.issueTypeId),
+  componentType: enumMemberName(WatchDogComponentTypes, row.componentType),
+  componentId: row.componentId,
+  phase: row.phase,
+  start: toUTCDateStamp(start),
+  end: end ? toUTCDateStamp(end) : undefined,
+})
 
 // Schema for filtering events (table of events)
 const watchdogLogsSchema = z.object({
@@ -355,24 +372,9 @@ const WatchDogLogs = () => {
           return { rowId, success: false, error: 'Event not found' }
 
         try {
-          const ignoreEvent: WatchDogIgnoreEvent = {
-            key: eventToIgnore.key != null ? String(eventToIgnore.key) : null,
-            locationId: eventToIgnore.locationId,
-            locationIdentifier: eventToIgnore.locationIdentifier,
-            issueType: enumMemberName(
-              WatchDogIssueTypes,
-              eventToIgnore.issueTypeId
-            ),
-            componentType: enumMemberName(
-              WatchDogComponentTypes,
-              eventToIgnore.componentType
-            ),
-            componentId: eventToIgnore.componentId,
-            phase: eventToIgnore.phase,
-            start: toUTCDateStamp(data.start),
-            end: data?.end ? toUTCDateStamp(data.end) : undefined,
-          }
-          await addWatchdogIgnoreEvents({ data: ignoreEvent })
+          await addWatchdogIgnoreEvents({
+            data: toIgnoreEvent(eventToIgnore, data.start, data.end),
+          })
           return { rowId, success: true }
         } catch (error) {
           return { rowId, success: false, error }
@@ -674,9 +676,7 @@ const WatchDogLogs = () => {
       </Box>
 
       {watchdogLogsError && (
-        <Alert severity="error">
-          {(watchdogLogsError as unknown as AxiosError).message}
-        </Alert>
+        <Alert severity="error">{getApiErrorMessage(watchdogLogsError)}</Alert>
       )}
 
       <Box sx={{ width: '100%' }}>

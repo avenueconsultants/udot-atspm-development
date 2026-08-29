@@ -20,6 +20,7 @@ import {
   MarkAreaData,
   PlanData,
   PlanOptions,
+  PlanWindow,
 } from '@/features/charts/common/types'
 import { Color } from '@/features/charts/utils'
 import { format } from 'date-fns'
@@ -103,8 +104,8 @@ function getMidpointTimestamp(start: string, end: string): string {
 // no plan data reached here as null and the bare `.length` read threw. The
 // per-plan start/end check below already tolerates incomplete entries; this
 // extends the same tolerance to the collection itself.
-export function createPlans<T extends BasePlan>(
-  plans: T[] | null | undefined,
+export function createPlans<T extends PlanWindow>(
+  plans: readonly T[] | null | undefined,
   planYAxisIndex: number,
   options?: PlanOptions<T>,
   yLineLength?: number,
@@ -116,13 +117,14 @@ export function createPlans<T extends BasePlan>(
   const planList = plans ?? []
 
   for (let i = 0; i < planList.length; i++) {
-    if (!planList[i].start || !planList[i].end) continue
+    const { start, end } = planList[i]
+    if (!start || !end) continue
 
     const plan = []
     const planColor = i % 2 === 0 ? Color.PlanA : Color.PlanB
 
-    const startTime = new Date(planList[i].start).toISOString()
-    const endTime = new Date(planList[i].end).toISOString()
+    const startTime = new Date(start).toISOString()
+    const endTime = new Date(end).toISOString()
 
     let planInfo = `{plan|${planList[i].planDescription ?? ''}}`
 

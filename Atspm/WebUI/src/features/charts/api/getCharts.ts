@@ -23,6 +23,7 @@ import {
   getLeftTurnGapAnalysisReportData,
   getPedDelayReportData,
   getPreemptDetailReportData,
+  getPriorityDetailsReportData,
   getPrioritySummaryReportData,
   getPurdueCoordinationDiagramReportData,
   getPurduePhaseTerminationReportData,
@@ -40,45 +41,10 @@ import {
   RawChartResponse,
 } from '@/features/charts/common/types'
 import { TransformedChartResponse } from '@/features/charts/types'
-import { reportsAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { useQuery } from '@tanstack/react-query'
 import { transformChartData } from './transformData'
-
-export const TypeApiMap: Record<ChartType, string> = {
-  [ChartType.ApproachDelay]: '/api/v1/ApproachDelay/GetReportData',
-  [ChartType.ApproachSpeed]: '/api/v1/ApproachSpeed/GetReportData',
-  [ChartType.ApproachVolume]: '/api/v1/ApproachVolume/GetReportData',
-  [ChartType.ArrivalsOnRed]: '/api/v1/ArrivalOnRed/GetReportData',
-  [ChartType.PurdueCoordinationDiagram]:
-    '/api/v1/PurdueCoordinationDiagram/GetReportData',
-  [ChartType.GreenTimeUtilization]:
-    '/api/v1/GreenTimeUtilization/GetReportData',
-  [ChartType.LeftTurnGapAnalysis]: '/api/v1/LeftTurnGapAnalysis/GetReportData',
-  [ChartType.PedestrianDelay]: '/api/v1/PedDelay/GetReportData',
-  [ChartType.PurduePhaseTermination]:
-    '/api/v1/PurduePhaseTermination/GetReportData',
-  [ChartType.PreemptionDetails]: '/api/v1/PreemptDetail/GetReportData',
-  [ChartType.PrioritySummary]: '/api/v1/PrioritySummary/GetReportData',
-  [ChartType.PurdueSplitFailure]: '/api/v1/SplitFail/GetReportData',
-  [ChartType.SplitMonitor]: '/api/v1/SplitMonitor/GetReportData',
-  [ChartType.TimingAndActuation]: '/api/v1/TimingAndActuation/GetReportData',
-  // PriorityDetails is never selectable as a top-level chart (no entry in
-  // SelectChart's abbreviationToChartType) - PrioritySummaryChart calls
-  // getPriorityDetailsReportData directly as a click-driven drill-down,
-  // bypassing this dispatcher entirely. This URL is also stale (singular
-  // "PriorityDetail" vs the real "/api/v1/PriorityDetails/getReportData"),
-  // which confirms it's unreachable here. Left only so TypeApiMap stays a
-  // total Record<ChartType, string>.
-  [ChartType.PriorityDetails]: '/api/v1/PriorityDetail/GetReportData',
-  [ChartType.TurningMovementCounts]:
-    '/api/v1/TurningMovementCounts/GetReportData',
-  [ChartType.WaitTime]: '/api/v1/WaitTime/GetReportData',
-  [ChartType.YellowAndRedActuations]:
-    '/api/v1/YellowRedActivations/GetReportData', // Todo: Fix spelling
-  [ChartType.RampMetering]: '/api/v1/RampMetering/GetReportData',
-}
 
 type StringBooleanMap = Record<string, boolean | string | Date>
 
@@ -102,14 +68,12 @@ const mapStringBooleansToBoolean = (obj: ChartOptions) => {
   }, {})
 }
 
-// Chart types whose generated report-data fetcher (src/api/reports) has been
-// verified to accept/return the same shape this dispatcher already sends/
-// expects, so they can call the generated client directly instead of the
-// hardcoded URL below. Chart types not listed here still go through the
-// legacy reportsAxios.post(TypeApiMap[type], ...) path until their options/
-// response shapes are reconciled.
-const GeneratedChartFetchers: Partial<
-  Record<ChartType, (options: StringBooleanMap) => Promise<unknown>>
+// The generated report-data fetcher for every chart type. A total record, so
+// a ChartType added without a fetcher is a compile error instead of a request
+// that silently goes nowhere.
+const chartFetchers: Record<
+  ChartType,
+  (options: StringBooleanMap) => Promise<unknown>
 > = {
   [ChartType.ApproachDelay]: getApproachDelayReportData,
   [ChartType.ApproachSpeed]: getApproachSpeedReportData,
@@ -120,6 +84,10 @@ const GeneratedChartFetchers: Partial<
   [ChartType.PedestrianDelay]: getPedDelayReportData,
   [ChartType.PurdueCoordinationDiagram]: getPurdueCoordinationDiagramReportData,
   [ChartType.PreemptionDetails]: getPreemptDetailReportData,
+  // Not selectable as a top-level chart: PrioritySummaryChart calls this
+  // fetcher itself as a click-driven drill-down. Wired here only so the
+  // record stays total.
+  [ChartType.PriorityDetails]: getPriorityDetailsReportData,
   [ChartType.PrioritySummary]: getPrioritySummaryReportData,
   [ChartType.PurduePhaseTermination]: getPurduePhaseTerminationReportData,
   [ChartType.PurdueSplitFailure]: getSplitFailReportData,
@@ -139,10 +107,7 @@ export const getCharts = async (
   transformedOptions.start = dateToTimestamp(transformedOptions.start as Date)
   transformedOptions.end = dateToTimestamp(transformedOptions.end as Date)
 
-  const generatedFetcher = GeneratedChartFetchers[type]
-  const response = generatedFetcher
-    ? await generatedFetcher(transformedOptions)
-    : await reportsAxios.post(TypeApiMap[type], transformedOptions)
+  const response = await chartFetchers[type](transformedOptions)
 
   return transformChartData({
     type,
