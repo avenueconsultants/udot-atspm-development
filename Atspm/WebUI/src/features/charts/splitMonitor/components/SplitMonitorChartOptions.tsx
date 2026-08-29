@@ -13,6 +13,19 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+// The report API's SplitMonitorOptions.percentileSplit is an int, so "None"
+// cannot travel as the word: it goes out as '0', which the service and the
+// transformer both treat as "no percentile". The select shows 'None' for a
+// stored '0' so a saved measure default round-trips.
+const NONE_LABEL = 'None'
+const NONE_VALUE = '0'
+const PERCENTILE_SPLIT_CHOICES = [NONE_LABEL, '50', '75', '85', '90', '95']
+
+const toPercentileLabel = (value: string | undefined) =>
+  value === NONE_VALUE ? NONE_LABEL : value
+const toPercentileValue = (label: string) =>
+  label === NONE_LABEL ? NONE_VALUE : label
+
 interface SplitMonitorChartOptionsProps {
   chartDefaults: SplitMonitorChartOptionsDefaults
   handleChartOptionsUpdate: (update: Default) => void
@@ -25,7 +38,7 @@ export const SplitMonitorChartOptions = ({
   isMeasureDefaultView = false,
 }: SplitMonitorChartOptionsProps) => {
   const [selectedPercentile, setSelectedPercentile] = useState(
-    chartDefaults?.percentileSplit?.value
+    toPercentileLabel(chartDefaults?.percentileSplit?.value)
   )
   const { setYAxisMaxStore } = useChartsStore()
 
@@ -42,7 +55,7 @@ export const SplitMonitorChartOptions = ({
     setSelectedPercentile(newPercentile)
 
     handleChartOptionsUpdate({
-      value: newPercentile,
+      value: toPercentileValue(newPercentile),
       option: chartDefaults.percentileSplit.option,
       id: chartDefaults.percentileSplit.id,
     })
@@ -94,7 +107,7 @@ export const SplitMonitorChartOptions = ({
               sx={{ width: '60px' }}
               inputProps={{ id: 'percentile-split-input' }}
             >
-              {['None', '50', '75', '85', '90', '95'].map((option) => (
+              {PERCENTILE_SPLIT_CHOICES.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>

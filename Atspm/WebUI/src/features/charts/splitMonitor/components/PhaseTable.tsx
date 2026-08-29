@@ -54,10 +54,13 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
     return planNumber === '254' ? 'Free' : `Plan ${planNumber}`
   }
 
-  const resolveForceOffsOrMaxOuts = (plan: SplitMonitorPlan) => {
+  // A free plan (254) has no force-offs; its phases max out instead, which
+  // is what the clipboard export already reports for it.
+  const resolveForceOffsOrMaxOuts = (plan: SplitMonitorPlan, key: string) => {
+    const isFree = plan.planNumber === '254'
     return (
-      <BorderedCell color={plan.planNumber === '254' ? 'red' : 'blue'}>
-        {formatNumber(plan.percentForceOffs)}
+      <BorderedCell key={key} color={isFree ? 'red' : 'blue'}>
+        {formatNumber(isFree ? plan.percentMaxOuts : plan.percentForceOffs)}
       </BorderedCell>
     )
   }
@@ -384,8 +387,11 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
                       <span style={{ color: 'blue' }}>Force Offs</span> or{' '}
                       <span style={{ color: '#b00000' }}>Max Outs</span> (%)
                     </BorderedCell>
-                    {phase.chart.displayProps.plans.map((plan) =>
-                      resolveForceOffsOrMaxOuts(plan)
+                    {phase.chart.displayProps.plans.map((plan, j) =>
+                      resolveForceOffsOrMaxOuts(
+                        plan,
+                        `percentForceOffs-${plan.planNumber}-${i}-${j}`
+                      )
                     )}
                   </TableRow>
                   <TableRow>
