@@ -15,32 +15,23 @@
 // limitations under the License.
 // #endregion
 import { getMeasureType } from '@/api/config'
-import { ChartType } from '@/features/charts/common/types'
+import { chartTypeForMeasure } from '@/features/charts/common/measureAbbreviations'
 import { ChartDefaults, Default } from '@/features/charts/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { useQuery } from '@tanstack/react-query'
 
-const normalizeString = (str: string) => str.replace(/\s+/g, '').toLowerCase()
-
-// MeasureType.name is nullable in the config API's contract; a measure
-// without one simply has no chart type.
-const determineChartType = (
-  chartName: string | null | undefined
-): ChartType | 'Unknown' => {
-  const normalizedChartName = normalizeString(chartName ?? '')
-
-  const chartTypeKey = Object.keys(ChartType).find(
-    (key) =>
-      normalizeString(ChartType[key as keyof typeof ChartType]) ===
-      normalizedChartName
-  )
-
-  if (chartTypeKey) {
-    return ChartType[chartTypeKey as keyof typeof ChartType] as ChartType
-  }
-
-  return 'Unknown'
+// Stored option values that the report API no longer accepts, mapped to
+// the value it does: Split Monitor's percentile once travelled as the word
+// "None", but the contract's field is an int, where 0 means no percentile.
+// Measure defaults saved before that change still hold the word.
+const LEGACY_OPTION_VALUES: Record<string, Record<string, string>> = {
+  percentileSplit: { None: '0' },
 }
+
+const normalizeOptionValue = ({ option, value }: Default) =>
+  typeof value === 'string'
+    ? (LEGACY_OPTION_VALUES[option]?.[value] ?? value)
+    : value
 
 export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
   const response = (await getMeasureType({
@@ -49,10 +40,15 @@ export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
 
   return response.map((chart: ChartDefaults) => ({
     ...chart,
-    chartType: determineChartType(chart.name),
+    // Keyed on the abbreviation, as the measure picker is: a seeded name
+    // need not spell the chart type ("Transit Signal Priority Summary").
+    chartType: chartTypeForMeasure(chart),
     measureOptions: (chart.measureOptions ?? []).reduce(
       (acc, current) => {
-        acc[current.option] = current
+        acc[current.option] = {
+          ...current,
+          value: normalizeOptionValue(current),
+        }
         return acc
       },
       {} as Record<string, Default>
