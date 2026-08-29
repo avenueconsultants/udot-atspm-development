@@ -138,9 +138,14 @@ as the template.
       `preemption-details.spec.ts`. The response is an object (summary +
       details), not an array; the summary becomes chart 0. No options and
       no seeded defaults, so the body is exactly location/start/end.
-- [ ] **A14. Priority Details / A15. Priority Summary** (M) — summary is a
+- [x] **A14. Priority Details / A15. Priority Summary** (M) — summary is a
       different chart family (`PrioritySummaryChart`); check the dispatcher
-      entry the migration added.
+      entry the migration added. `priority-summary.spec.ts`. Priority
+      Details has no measure of its own: it is only reachable by clicking a
+      request or service bar on the summary chart, which `e2e/support/
+    echarts.ts` does by finding the rendered mark in zrender's display
+      list. Note for A21: clicking a chart needs the chart scrolled into
+      view first, or the click lands below the viewport.
 - [ ] **A16. Wait Time** (S) — plans and phase series.
 - [ ] **A17. Yellow and Red Actuations** (S) — severe violation option.
 - [ ] **A18. Ramp Metering** (M) — ramp locations only (`hasRampDevice`),
@@ -354,3 +359,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A11 Pedestrian Delay: 3 tests (chart per phase + seeded defaults in the request, edited time buffer and recall threshold, a phase with null plans and series). No app bug found. Gate: 75/75 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A12 Purdue Split Failure: 3 tests (chart per approach incl. a permissive one + seeded defaults in the request, edited first seconds of red, an approach with every series null). No app bug found; the occupancy scatters are large series so the chart has two canvas layers (first()). Gate: 78/78 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A13 Preemption Details: 3 tests (summary chart + a chart per preempt number with the bare request body, details with a null summary, an empty window). No app bug found. Gate: 81/81 CI mode, types at 852. Spec in the commit carrying this line.
+- 2026-08-29 - A14/A15 Priority Summary: 3 tests (combined chart + one per TSP number with the default bin size in the request, a request-bar click drilling into PriorityDetails for that cycle's window and Back returning, a window with no cycles). Three app bugs found and fixed with unit tests: measure defaults were looked up by measure NAME, so Priority Summary ("Transit Signal Priority Summary") silently got none - the abbreviation map moved out of SelectChart into `common/measureAbbreviations.ts` and both callers now key on it; the options panel started from a hard-coded bin size of 15 instead of the measure default; and the drill-down window was built with toISOString, so the details request asked for a window shifted by the browser's UTC offset. New `e2e/support/echarts.ts` clicks a plotted mark by walking React's fiber to the chart instance (webpack's module cache exists only in the dev build) and reading zrender's display list. Gate: 84/84 CI mode, 377 unit tests, types at 849. Sits on the shared `measurePage.ts` spec scaffolding.
