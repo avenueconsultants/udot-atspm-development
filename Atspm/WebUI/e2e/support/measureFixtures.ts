@@ -125,3 +125,18 @@ export const purduePhaseTerminationMeasure = measureWithOptions({
     selectedConsecutiveCount: '1',
   },
 })
+
+export const approachVolumeMeasure = measureWithOptions({
+  id: 7,
+  name: 'Approach Volume',
+  abbreviation: 'AV',
+  options: {
+    binSize: '15',
+    showAdvanceDetection: 'TRUE',
+    showDirectionalSplits: 'TRUE',
+    showNbEbVolume: 'TRUE',
+    showSbWbVolume: 'TRUE',
+    showTMCDetection: 'TRUE',
+    showTotalVolume: 'FALSE',
+  },
+})

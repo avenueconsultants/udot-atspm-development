@@ -15,6 +15,7 @@
 // limitations under the License.
 // #endregion
 import type {
+  ApproachVolumeResult,
   DataPointForDouble,
   LinkPivotResult,
   PhaseTerminationResult,
@@ -382,3 +383,45 @@ export const purduePhaseTerminationResult = (
     ],
   }
 }
+
+// ApproachVolume/getReportData for location 1001, 08:00-09:00: one result
+// per direction pair, carrying both directions' volumes, their D factors
+// and the peak-hour summary the table under the chart renders.
+export const approachVolumeResult = (
+  start: string,
+  end: string,
+  pair: { primary: string; opposing: string; detectorType: string }
+): ApproachVolumeResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  primaryDirectionName: pair.primary,
+  opposingDirectionName: pair.opposing,
+  distanceFromStopBar: 0,
+  detectorType: pair.detectorType,
+  primaryDirectionVolumes: quarterHourPoints(start, [400, 480, 440, 360]),
+  opposingDirectionVolumes: quarterHourPoints(start, [320, 360, 340, 300]),
+  combinedDirectionVolumes: quarterHourPoints(start, [720, 840, 780, 660]),
+  primaryDFactors: quarterHourPoints(start, [0.56, 0.57, 0.56, 0.55]),
+  opposingDFactors: quarterHourPoints(start, [0.44, 0.43, 0.44, 0.45]),
+  summaryData: {
+    peakHour: '08:00 - 09:00',
+    kFactor: 0.092,
+    peakHourVolume: 3000,
+    peakHourFactor: 0.892,
+    totalVolume: 3000,
+    primaryPeakHour: '08:00 - 09:00',
+    primaryKFactor: 0.094,
+    primaryPeakHourVolume: 1680,
+    primaryPeakHourFactor: 0.875,
+    primaryTotalVolume: 1680,
+    primaryDFactor: 0.56,
+    opposingPeakHour: '08:00 - 09:00',
+    opposingKFactor: 0.091,
+    opposingPeakHourVolume: 1320,
+    opposingPeakHourFactor: 0.917,
+    opposingTotalVolume: 1320,
+    opposingDFactor: 0.44,
+  },
+})
