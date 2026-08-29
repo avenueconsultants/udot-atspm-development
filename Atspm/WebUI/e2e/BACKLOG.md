@@ -95,7 +95,7 @@ as the template.
       a string ('85') and a "None" default is stored as '0'.
 - [x] **A3. Timing and Actuation** (L) — the largest option panel (detector
       channel toggles, phase filters); toolbox legend; request carries every
-      toggle. . The option panel is currently
+      toggle. `timing-and-actuation.spec.ts`. The option panel is currently
       "No options available" (the code is commented out), so the spec
       asserts the seeded toggles travel as defaults; revisit if the panel
       comes back.
