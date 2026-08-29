@@ -77,6 +77,20 @@ const chartMonthFormat: Intl.DateTimeFormatOptions = {
 
 type ChartDateRangeGranularity = 'date' | 'month'
 
+// Report DTOs make every numeric field optional and nullable, so a value
+// that is simply absent for the window must not reach `toFixed`/
+// `toLocaleString`. Renders those as N/A instead.
+export function formatNullableNumber(
+  value: number | null | undefined,
+  decimals?: number
+) {
+  if (value == null) {
+    return 'N/A'
+  }
+
+  return decimals == null ? value.toLocaleString() : value.toFixed(decimals)
+}
+
 export function formatChartDateTimeRange(
   startDate: string,
   endDate: string,

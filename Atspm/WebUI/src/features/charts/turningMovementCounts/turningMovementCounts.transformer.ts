@@ -41,6 +41,7 @@ import {
 import {
   Color,
   formatChartDateTimeRange,
+  formatNullableNumber,
   SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
 import { addHours, format } from 'date-fns'
@@ -286,17 +287,6 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   }
 
   return chartOptions
-}
-
-function formatNullableNumber(
-  value: number | null | undefined,
-  decimals?: number
-) {
-  if (value == null) {
-    return 'N/A'
-  }
-
-  return decimals == null ? value.toLocaleString() : value.toFixed(decimals)
 }
 
 function formatTime(timestamp: string | Date) {

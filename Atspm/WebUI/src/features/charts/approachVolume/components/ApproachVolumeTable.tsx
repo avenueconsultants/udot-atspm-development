@@ -1,4 +1,5 @@
 import { ApproachVolumeSummaryData } from '@/features/charts/approachVolume/types'
+import { formatNullableNumber } from '@/features/charts/utils'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -58,20 +59,26 @@ export function ApproachVolumeTable({ data }: ApproachVolumeTableProps) {
                     sx={{ backgroundColor: theme.palette.background.default }}
                   >
                     <TableCell variant="head">Peak Hour</TableCell>
-                    <TableCell>{data.peakHour}</TableCell>
-                    <TableCell>{data.primaryPeakHour}</TableCell>
-                    <TableCell>{data.opposingPeakHour}</TableCell>
+                    <TableCell>{data.peakHour ?? 'N/A'}</TableCell>
+                    <TableCell>{data.primaryPeakHour ?? 'N/A'}</TableCell>
+                    <TableCell>{data.opposingPeakHour ?? 'N/A'}</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell variant="head">Peak Hour K Factor</TableCell>
                     <TableCell>
-                      {data.kFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(data.kFactor, defaultDecimalPoints)}
                     </TableCell>
                     <TableCell>
-                      {data.primaryKFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.primaryKFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                     <TableCell>
-                      {data.opposingKFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.opposingKFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                   </TableRow>
                   <TableRow
@@ -80,22 +87,28 @@ export function ApproachVolumeTable({ data }: ApproachVolumeTableProps) {
                     <TableCell variant="head">Peak Hour D Factor</TableCell>
                     <TableCell>-</TableCell>
                     <TableCell>
-                      {data.primaryDFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.primaryDFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                     <TableCell>
-                      {data.opposingDFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.opposingDFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell variant="head">Peak Hour Volume</TableCell>
                     <TableCell>
-                      {data.peakHourVolume.toLocaleString()}
+                      {formatNullableNumber(data.peakHourVolume)}
                     </TableCell>
                     <TableCell>
-                      {data.primaryPeakHourVolume.toLocaleString()}
+                      {formatNullableNumber(data.primaryPeakHourVolume)}
                     </TableCell>
                     <TableCell>
-                      {data.opposingPeakHourVolume.toLocaleString()}
+                      {formatNullableNumber(data.opposingPeakHourVolume)}
                     </TableCell>
                   </TableRow>
                   <TableRow
@@ -103,25 +116,34 @@ export function ApproachVolumeTable({ data }: ApproachVolumeTableProps) {
                   >
                     <TableCell variant="head">Peak Hour Factor</TableCell>
                     <TableCell>
-                      {data.peakHourFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.peakHourFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                     <TableCell>
-                      {data.primaryPeakHourFactor.toFixed(defaultDecimalPoints)}
+                      {formatNullableNumber(
+                        data.primaryPeakHourFactor,
+                        defaultDecimalPoints
+                      )}
                     </TableCell>
                     <TableCell>
-                      {data.opposingPeakHourFactor.toFixed(
+                      {formatNullableNumber(
+                        data.opposingPeakHourFactor,
                         defaultDecimalPoints
                       )}
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell variant="head">Total Volume</TableCell>
-                    <TableCell>{data.totalVolume.toLocaleString()}</TableCell>
                     <TableCell>
-                      {data.primaryTotalVolume.toLocaleString()}
+                      {formatNullableNumber(data.totalVolume)}
                     </TableCell>
                     <TableCell>
-                      {data.opposingTotalVolume.toLocaleString()}
+                      {formatNullableNumber(data.primaryTotalVolume)}
+                    </TableCell>
+                    <TableCell>
+                      {formatNullableNumber(data.opposingTotalVolume)}
                     </TableCell>
                   </TableRow>
                 </TableBody>
