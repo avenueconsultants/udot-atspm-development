@@ -77,3 +77,13 @@ export const searchLocationWithMeasures = (
   ...searchLocations[0],
   charts: measures.map((measure) => measure.id ?? 0),
 })
+
+export const splitMonitorMeasure = measureWithOptions({
+  id: 2,
+  name: 'Split Monitor',
+  abbreviation: 'SM',
+  options: {
+    percentileSplit: '85',
+    yAxisDefault: '100',
+  },
+})

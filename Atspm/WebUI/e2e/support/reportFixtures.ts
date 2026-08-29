@@ -18,6 +18,7 @@ import type {
   DataPointForDouble,
   LinkPivotResult,
   PurdueCoordinationDiagramResult,
+  SplitMonitorResult,
 } from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
@@ -164,3 +165,65 @@ export const purdueCoordinationDiagramResult = (
   greenSeries: quarterHourPoints(start, [56, 56, 56, 56]),
   detectorEvents: quarterHourPoints(start, [12, 48, 71, 30]),
 })
+
+// SplitMonitor/getReportData for location 1001, 08:00-09:00: one result per
+// phase, with a coordinated plan for the first half hour and a free (254)
+// plan for the second, the programmed split line and each termination
+// cause's points. The plan numbers matter to PhaseTable: 254 is headed
+// "Free" and its termination cell reports max-outs instead of force-offs.
+export const splitMonitorResult = (
+  start: string,
+  end: string,
+  phase: { number: number; description: string }
+): SplitMonitorResult => {
+  const halfHourIn = quarterHourPoints(start, [0, 0, 0])[2].timestamp
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    phaseNumber: phase.number,
+    percentileSplit: 85,
+    phaseDescription: `Phase ${phase.number} - ${phase.description}`,
+    plans: [
+      {
+        planNumber: '1',
+        planDescription: 'Plan 1',
+        start,
+        end: halfHourIn,
+        percentSkips: 4.25,
+        percentGapOuts: 61,
+        percentMaxOuts: 0,
+        percentForceOffs: 35,
+        averageSplit: 27.4,
+        percentileSplit: 31,
+        minTime: 7,
+        programmedSplit: 30,
+        percentileSplit85th: 31,
+        percentileSplit50th: 26.5,
+      },
+      {
+        planNumber: '254',
+        planDescription: 'Free',
+        start: halfHourIn,
+        end,
+        percentSkips: 10,
+        percentGapOuts: 80,
+        percentMaxOuts: 10,
+        percentForceOffs: 0,
+        averageSplit: 18,
+        percentileSplit: 24,
+        minTime: 7,
+        programmedSplit: 0,
+        percentileSplit85th: 24,
+        percentileSplit50th: 17,
+      },
+    ],
+    programmedSplits: quarterHourPoints(start, [30, 30, 0, 0]),
+    gapOuts: quarterHourPoints(start, [18, 22, 15, 12]),
+    maxOuts: quarterHourPoints(start, [30, 30, 30, 30]),
+    forceOffs: quarterHourPoints(start, [30, 29, 30, 30]),
+    unknowns: [],
+    peds: quarterHourPoints(start, [12, 14, 10, 11]),
+  }
+}
