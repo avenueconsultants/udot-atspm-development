@@ -146,7 +146,9 @@ as the template.
     echarts.ts` does by finding the rendered mark in zrender's display
       list. Note for A21: clicking a chart needs the chart scrolled into
       view first, or the click lands below the viewport.
-- [ ] **A16. Wait Time** (S) — plans and phase series.
+- [x] **A16. Wait Time** (S) — plans and phase series. `wait-time.spec.ts`.
+      One option, the bin size; the per-cycle waits come back split by how
+      the phase terminated.
 - [ ] **A17. Yellow and Red Actuations** (S) — severe violation option.
 - [ ] **A18. Ramp Metering** (M) — ramp locations only (`hasRampDevice`),
       different option panel.
@@ -341,6 +343,30 @@ PUT, nested OData, non-config APIs).
       every e2e fixture module against the generated types so a spec change
       fails at type-check time, not at e2e time (today only some modules do).
 
+## Open questions
+
+Collected here so a later session can pick them up; none of them block the
+next item, and the loop should keep going past them.
+
+- **D2, recorded report-API fixtures** — the item itself says to ask first,
+  because extending the in-process recording harness to the report API means
+  running backend projects. Worth doing before A16-A18 grow many more
+  hand-built fixtures, or not worth the backend dependency at all?
+- **A37, usage analytics** — does the OData `$count=true` survive the
+  envelope unwrap in `axios.ts`, and does the page actually need it? Settle
+  it in the spec.
+- **Seeded option names that the report contract does not read** — Arrivals
+  on Red seeds `usePermissivePhase` while `ArrivalOnRedOptions` carries
+  `getPermissivePhase`, so that default never reaches the API (recorded
+  under A8). Approach Volume seeds `showTotalVolume` and Pedestrian Delay,
+  Purdue Split Failure and Timing and Actuation seed several `show*` flags
+  that no control exposes. Are these dead options to drop from the seed, or
+  panel controls that were never built?
+- **Charts with no option panel** — Timing and Actuation's panel is
+  commented out in the component ("we'll add this back in later") and
+  Preemption Details has none at all. If the panels return, A3 and A13 need
+  their request assertions revisited.
+
 ## Cycle log
 
 Append one line per finished item: date, item, commit, notes.
@@ -360,3 +386,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A12 Purdue Split Failure: 3 tests (chart per approach incl. a permissive one + seeded defaults in the request, edited first seconds of red, an approach with every series null). No app bug found; the occupancy scatters are large series so the chart has two canvas layers (first()). Gate: 78/78 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A13 Preemption Details: 3 tests (summary chart + a chart per preempt number with the bare request body, details with a null summary, an empty window). No app bug found. Gate: 81/81 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A14/A15 Priority Summary: 3 tests (combined chart + one per TSP number with the default bin size in the request, a request-bar click drilling into PriorityDetails for that cycle's window and Back returning, a window with no cycles). Three app bugs found and fixed with unit tests: measure defaults were looked up by measure NAME, so Priority Summary ("Transit Signal Priority Summary") silently got none - the abbreviation map moved out of SelectChart into `common/measureAbbreviations.ts` and both callers now key on it; the options panel started from a hard-coded bin size of 15 instead of the measure default; and the drill-down window was built with toISOString, so the details request asked for a window shifted by the browser's UTC offset. New `e2e/support/echarts.ts` clicks a plotted mark by walking React's fiber to the chart instance (webpack's module cache exists only in the dev build) and reading zrender's display list. Gate: 84/84 CI mode, 377 unit tests, types at 849. Sits on the shared `measurePage.ts` spec scaffolding.
+- 2026-08-29 - A16 Wait Time: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with every series null, empty result). No app bug found; first item written straight onto the shared measurePage scaffolding. Gate: 88/88 CI mode, types at 849. Spec in the commit carrying this line.

@@ -32,6 +32,7 @@ import type {
   SplitMonitorResult,
   TimingAndActuationsForPhaseResult,
   TurningMovementCountsResult,
+  WaitTimeResult,
 } from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
@@ -794,3 +795,39 @@ export const priorityDetailsResult = (
     ],
     priorityAndPreemptionEvents: [],
   }))
+
+// WaitTime/getReportData for location 1001, 08:00-09:00: one result per
+// approach, the wait time of each cycle split by how the phase ended, the
+// running average over them, the plan strip with its own averages and the
+// programmed split line.
+export const waitTimeResult = (
+  start: string,
+  end: string,
+  approach: { id: number; description: string; phaseNumber: number }
+): WaitTimeResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  phaseNumber: approach.phaseNumber,
+  detectionTypes: 'Advanced Count',
+  plans: [
+    {
+      planNumber: '1',
+      planDescription: 'Plan 1',
+      start,
+      end,
+      averageWaitTime: 18.4,
+      maxWaitTime: 42,
+    },
+  ],
+  gapOuts: quarterHourPoints(start, [12, 15, 14, 11]),
+  maxOuts: quarterHourPoints(start, [38, 42, 40, 36]),
+  forceOffs: quarterHourPoints(start, [26, 30, 28, 24]),
+  unknowns: [],
+  average: quarterHourPoints(start, [18.4, 21, 19.7, 17.2]),
+  volumes: quarterHourPoints(start, [820, 910, 880, 760]),
+  planSplits: quarterHourPoints(start, [30, 30, 30, 30]),
+})

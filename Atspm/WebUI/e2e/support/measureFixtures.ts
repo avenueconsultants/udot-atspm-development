@@ -246,3 +246,12 @@ export const prioritySummaryMeasure = measureWithOptions({
     binSize: '15',
   },
 })
+
+export const waitTimeMeasure = measureWithOptions({
+  id: 32,
+  name: 'Wait Time',
+  abbreviation: 'WT',
+  options: {
+    binSize: '15',
+  },
+})
