@@ -28,6 +28,7 @@ import type {
   PriorityDetailsResult,
   PrioritySummaryResult,
   PurdueCoordinationDiagramResult,
+  RampMeteringResult,
   SplitFailsResult,
   SplitMonitorResult,
   TimingAndActuationsForPhaseResult,
@@ -882,3 +883,35 @@ export const yellowAndRedActuationsResult = (
   redClearanceEvents: quarterHourPoints(start, [1.1, 1.6, 1.3, 1.0]),
   detectorEvents: quarterHourPoints(start, [0.8, 2.6, 1.7, 1.2]),
 })
+
+// RampMetering/getReportData for location 1001, 08:00-09:00: one result
+// for the whole ramp - the mainline averages it meters against, the
+// metering rate per lane, and the queue detector events.
+export const rampMeteringResult = (
+  start: string,
+  end: string
+): RampMeteringResult => {
+  const marks = quarterHourTimestamps(start, 4)
+  const lane = (description: string, rates: number[]) => ({
+    description,
+    value: quarterHourPoints(start, rates),
+  })
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    mainlineAvgFlow: quarterHourPoints(start, [1450, 1620, 1580, 1390]),
+    mainlineAvgOcc: quarterHourPoints(start, [12.4, 18.2, 16.1, 11.8]),
+    mainlineAvgSpeed: quarterHourPoints(start, [62, 54, 57, 64]),
+    startUpWarning: [{ initialX: marks[0], finalX: marks[1] }],
+    shutdownWarning: [{ initialX: marks[3], finalX: end }],
+    lanesActiveRate: [lane('Lane 1', [600, 720, 680, 540])],
+    lanesBaseRate: [lane('Lane 1', [900, 900, 900, 900])],
+    lanesQueueOnAndOffEvents: marks.map((at, index) => ({
+      detectorOn: at,
+      detectorOff: at.replace(/:00$/, ':40'),
+      value: index + 1,
+    })),
+  }
+}

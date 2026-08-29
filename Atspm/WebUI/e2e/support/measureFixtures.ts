@@ -265,3 +265,22 @@ export const yellowAndRedActuationsMeasure = measureWithOptions({
     yAxisDefault: '20',
   },
 })
+
+// The seed carries no measure options for Ramp Metering, so this is the
+// shape the option panel actually meets in production.
+export const rampMeteringMeasure = measureWithOptions({
+  id: 37,
+  name: 'Ramp Metering',
+  abbreviation: 'RM',
+  options: {},
+})
+
+// The same measure as an installation that has added the option.
+export const rampMeteringMeasureWithCombineLanes = measureWithOptions({
+  id: 37,
+  name: 'Ramp Metering',
+  abbreviation: 'RM',
+  options: {
+    combineLanes: 'FALSE',
+  },
+})

@@ -152,8 +152,12 @@ as the template.
 - [x] **A17. Yellow and Red Actuations** (S) — severe violation option.
       `yellow-and-red-actuations.spec.ts`. The report path is
       `YellowRedActivations`, not the chart type's spelling.
-- [ ] **A18. Ramp Metering** (M) — ramp locations only (`hasRampDevice`),
-      different option panel.
+- [x] **A18. Ramp Metering** (M) — ramp locations only (`hasRampDevice`),
+      different option panel. `ramp-metering.spec.ts`. The result is one
+      object for the ramp, not a list per approach. Nothing in the app
+      actually reads `hasRampDevice` today - the measure is offered by the
+      same `charts` list as every other, so the spec does not assert a
+      ramp-only gate (see the open questions).
 - [ ] **A19. Measure availability by location** (S) — a location whose
       `charts` lacks a measure clears the selection ("Please select a
       measure"); measure list comes from `/MeasureType` `showOnWebsite`.
@@ -364,6 +368,11 @@ next item, and the loop should keep going past them.
   Purdue Split Failure and Timing and Actuation seed several `show*` flags
   that no control exposes. Are these dead options to drop from the seed, or
   panel controls that were never built?
+- **A18, `hasRampDevice`** — the backlog assumed Ramp Metering is offered
+  only for ramp locations, but `hasRampDevice` appears solely in the config
+  schema and a test fixture; no component reads it. Is the gate meant to
+  exist and was never wired, or is the measure legitimately offered by the
+  location's `charts` list like all the others?
 - **Charts with no option panel** — Timing and Actuation's panel is
   commented out in the component ("we'll add this back in later") and
   Preemption Details has none at all. If the panels return, A3 and A13 need
@@ -390,3 +399,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A14/A15 Priority Summary: 3 tests (combined chart + one per TSP number with the default bin size in the request, a request-bar click drilling into PriorityDetails for that cycle's window and Back returning, a window with no cycles). Three app bugs found and fixed with unit tests: measure defaults were looked up by measure NAME, so Priority Summary ("Transit Signal Priority Summary") silently got none - the abbreviation map moved out of SelectChart into `common/measureAbbreviations.ts` and both callers now key on it; the options panel started from a hard-coded bin size of 15 instead of the measure default; and the drill-down window was built with toISOString, so the details request asked for a window shifted by the browser's UTC offset. New `e2e/support/echarts.ts` clicks a plotted mark by walking React's fiber to the chart instance (webpack's module cache exists only in the dev build) and reading zrender's display list. Gate: 84/84 CI mode, 377 unit tests, types at 849. Sits on the shared `measurePage.ts` spec scaffolding.
 - 2026-08-29 - A16 Wait Time: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with every series null, empty result). No app bug found; first item written straight onto the shared measurePage scaffolding. Gate: 88/88 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A17 Yellow and Red Actuations: 4 tests (chart per approach incl. a permissive one + seeded severe threshold in the request, an edited threshold, an approach with null plans and events, empty result). No app bug found. Gate: 92/92 CI mode, types at 849. Spec in the commit carrying this line.
+- 2026-08-29 - A18 Ramp Metering: 3 tests (ramp chart + the unseeded option reported as missing, a seeded combineLanes offered and re-run with it ticked, a ramp with every series null). Two app bugs found and fixed with unit tests: the panel read `chartDefaults.combineLanes.value` unguarded although the seed carries no options for this measure at all, so opening it threw and the error boundary replaced the page; and its hidden label pointed at an id no input carried, leaving the checkbox unnamed. Gate: 95/95 CI mode, types at 849. App fix bd5bc53c; spec in the commit carrying this line.
