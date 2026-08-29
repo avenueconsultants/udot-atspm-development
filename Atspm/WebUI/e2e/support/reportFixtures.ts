@@ -15,6 +15,7 @@
 // limitations under the License.
 // #endregion
 import type {
+  ApproachSpeedResult,
   ApproachVolumeResult,
   DataPointForDouble,
   LinkPivotResult,
@@ -424,4 +425,29 @@ export const approachVolumeResult = (
     opposingTotalVolume: 1320,
     opposingDFactor: 0.44,
   },
+})
+
+// ApproachSpeed/getReportData for location 1001, 08:00-09:00: one result
+// per approach, with the plan strip and the average, 85th and 15th
+// percentile speed series against the posted speed.
+export const approachSpeedResult = (
+  start: string,
+  end: string,
+  approach: { id: number; description: string; phaseNumber: number }
+): ApproachSpeedResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  phaseNumber: approach.phaseNumber,
+  phaseDescription: `Phase ${approach.phaseNumber}`,
+  detectionType: 'Advanced Speed',
+  distanceFromStopBar: 340,
+  postedSpeed: 35,
+  plans: [{ planNumber: '1', planDescription: 'Plan 1', start, end }],
+  averageSpeeds: quarterHourPoints(start, [32, 34, 33, 31]),
+  eightyFifthSpeeds: quarterHourPoints(start, [40, 42, 41, 39]),
+  fifteenthSpeeds: quarterHourPoints(start, [24, 26, 25, 23]),
 })

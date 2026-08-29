@@ -140,3 +140,14 @@ export const approachVolumeMeasure = measureWithOptions({
     showTotalVolume: 'FALSE',
   },
 })
+
+// The abbreviation, not the name, is what SelectChart maps to a ChartType,
+// and Approach Speed's is 'Speed'.
+export const approachSpeedMeasure = measureWithOptions({
+  id: 10,
+  name: 'Approach Speed',
+  abbreviation: 'Speed',
+  options: {
+    binSize: '15',
+  },
+})

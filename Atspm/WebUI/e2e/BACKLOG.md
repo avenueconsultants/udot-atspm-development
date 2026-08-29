@@ -110,7 +110,11 @@ as the template.
 - [x] **A6. Approach Volume** (M) — table + chart (`ApproachVolumeTable`);
       direction pairing. `approach-volume.spec.ts`. Note for A20: the
       seeded `showTotalVolume` option is sent but no control exposes it.
-- [ ] **A7. Approach Speed** (S) — speed limit / bin options.
+- [x] **A7. Approach Speed** (S) — speed limit / bin options.
+      `approach-speed.spec.ts`. Only the bin size is an option; the posted
+      speed comes back on the result. Its abbreviation is `Speed`, and
+      `abbreviationToChartType` in `SelectChart.tsx` is what a measure has
+      to appear in before it can be selected at all.
 - [ ] **A8. Arrivals on Red** (S) — plans; percentage series.
 - [ ] **A9. Green Time Utilization** (S) — bin option.
 - [ ] **A10. Left Turn Gap Analysis** (M) — gap bands; option ranges.
@@ -326,3 +330,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 — A4 Turning Movement Counts: 5 tests (charts per movement + pivoted table with direction/bin totals and the peak-hour strip + default request, bin size and combine in the request, direction filter and combine re-pivot, CSV download contents, empty result). App fix: the combine checkbox had no accessible name. Gate: 53/53 CI mode, types at 852. App fix 18ff836c; spec in the commit carrying this line.
 - 2026-08-29 — A5 Purdue Phase Termination: 3 tests (single location chart + default consecutive count in the request, a typed count in the request, a window with null plans and phases). No app bug found. Review pulled a `quarterHourTimestamps` helper out of `quarterHourPoints` so fixtures needing only marks stop passing dummy zero values. Gate: 56/56 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A6 Approach Volume: 3 tests (chart + peak-hour table per direction pair with the seeded options in the request, picked bin size, a pair whose summaryData is null). App bug found and fixed: SummaryData is optional and nullable on the contract but the table called toFixed/toLocaleString on every field, so a null summary threw and the error boundary replaced the whole page; the local summary type now matches the contract and the cells format through formatNullableNumber, lifted from the Turning Movement Counts transformer into the shared chart utils. Fixture lesson: keep expected decimals off binary rounding boundaries (0.0935.toFixed(3) is '0.093'). Gate: 59/59 CI mode, types at 852. App fix 55cfa026; spec in the commit carrying this line.
+- 2026-08-29 - A7 Approach Speed: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with null plans and speed series, empty result). No app bug found. Gate: 63/63 CI mode, types at 852. Spec in the commit carrying this line.
