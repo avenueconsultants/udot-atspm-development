@@ -15,7 +15,7 @@
 // limitations under the License.
 // #endregion
 import type { Page, Request } from '@playwright/test'
-import type { MeasureType } from '../../src/api/config'
+import type { MeasureType, SearchLocation } from '../../src/api/config'
 import { odataCollection } from '../../src/test/fixtures/api'
 import { stubEndpoint, type ApiHosts } from './api'
 import { searchLocationWithMeasure } from './measureFixtures'
@@ -46,6 +46,10 @@ export const measurePageUrl = (
 interface MeasurePageStub {
   /** The one measure the page offers, with its seeded options. */
   measure: MeasureType
+  /** Everything the measure list returns; defaults to just `measure`. */
+  measures?: MeasureType[]
+  /** The location the search returns; defaults to one offering `measure`. */
+  location?: SearchLocation
   /** The report endpoint's pathname suffix, e.g. '/ApproachSpeed/getReportData'. */
   reportPath: string
   /** What the report endpoint answers. */
@@ -59,7 +63,7 @@ interface MeasurePageStub {
 // the hosts for any further endpoint a measure needs stubbed.
 export const stubMeasurePage = async (
   page: Page,
-  { measure, reportPath, report }: MeasurePageStub
+  { measure, measures, location, reportPath, report }: MeasurePageStub
 ): Promise<{ hosts: ApiHosts; reports: Request[] }> => {
   const hosts = await stubApiHosts(page)
   await mockAppShell(page)
@@ -68,13 +72,13 @@ export const stubMeasurePage = async (
     host: hosts.config,
     path: '/MeasureType',
     method: 'GET',
-    body: odataCollection('MeasureType', [measure]),
+    body: odataCollection('MeasureType', measures ?? [measure]),
   })
   await stubEndpoint(page, {
     host: hosts.config,
     path: '/Location/GetLocationsForSearch',
     body: odataCollection('SearchLocations', [
-      searchLocationWithMeasure(measure),
+      location ?? searchLocationWithMeasure(measure),
     ]),
   })
   const reports = await stubEndpoint(page, {

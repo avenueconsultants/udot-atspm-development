@@ -23,8 +23,9 @@ import { searchLocations } from '../../src/test/fixtures/config'
 // converted, numbers do not), so a spec can see exactly what the report
 // API receives.
 //
-// The chart-type lookup normalises `name` and compares it with the
-// ChartType value, so the name must spell the chart type with spaces.
+// The chart-type lookup keys on the abbreviation (see
+// `common/measureAbbreviations.ts`), so that is the field a measure has to
+// get right to be selectable at all.
 export const measureWithOptions = ({
   id,
   name,
@@ -70,13 +71,16 @@ export const purdueCoordinationDiagramMeasure = measureWithOptions({
   },
 })
 
+// The recorded search location, offering exactly the given measure ids.
+export const searchLocationWithCharts = (charts: number[]): SearchLocation => ({
+  ...searchLocations[0],
+  charts,
+})
+
 // The recorded search location, offering exactly the given measure.
 export const searchLocationWithMeasure = (
   measure: MeasureType
-): SearchLocation => ({
-  ...searchLocations[0],
-  charts: [measure.id ?? 0],
-})
+): SearchLocation => searchLocationWithCharts([measure.id ?? 0])
 
 export const splitMonitorMeasure = measureWithOptions({
   id: 2,

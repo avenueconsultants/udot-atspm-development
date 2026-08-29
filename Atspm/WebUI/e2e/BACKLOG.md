@@ -158,9 +158,13 @@ as the template.
       actually reads `hasRampDevice` today - the measure is offered by the
       same `charts` list as every other, so the spec does not assert a
       ramp-only gate (see the open questions).
-- [ ] **A19. Measure availability by location** (S) — a location whose
+- [x] **A19. Measure availability by location** (S) — a location whose
       `charts` lacks a measure clears the selection ("Please select a
       measure"); measure list comes from `/MeasureType` `showOnWebsite`.
+      `measure-availability.spec.ts`. `stubMeasurePage` grew optional
+      `measures` and `location` overrides so a spec can vary the list and
+      the location apart. Purdue Phase Termination is auto-selected
+      whenever the URL names no measure and the location offers it.
 - [ ] **A20. Measure defaults and presets** (M) — `/MeasureOption` defaults
       fill the option panel; `/MeasureType/{key}/MeasureOptionPresets`
       applies a preset; the request carries the preset values.
@@ -400,3 +404,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A16 Wait Time: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with every series null, empty result). No app bug found; first item written straight onto the shared measurePage scaffolding. Gate: 88/88 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A17 Yellow and Red Actuations: 4 tests (chart per approach incl. a permissive one + seeded severe threshold in the request, an edited threshold, an approach with null plans and events, empty result). No app bug found. Gate: 92/92 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A18 Ramp Metering: 3 tests (ramp chart + the unseeded option reported as missing, a seeded combineLanes offered and re-run with it ticked, a ramp with every series null). Two app bugs found and fixed with unit tests: the panel read `chartDefaults.combineLanes.value` unguarded although the seed carries no options for this measure at all, so opening it threw and the error boundary replaced the page; and its hidden label pointed at an id no input carried, leaving the checkbox unnamed. Gate: 95/95 CI mode, types at 849. App fix bd5bc53c; spec in the commit carrying this line.
+- 2026-08-29 - A19 Measure availability: 4 tests (the picker offers exactly the location's charts, a measure the location does not offer is cleared from the URL and Generate says "Please select a measure.", a showOnWebsite:false measure is withheld even when the location lists it, and Purdue Phase Termination is auto-selected when the URL names no measure). No app bug found. Gate: 99/99 CI mode, types at 849. Spec in the commit carrying this line.
