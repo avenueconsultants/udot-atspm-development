@@ -41,9 +41,9 @@ import {
 import {
   Color,
   formatChartDateTimeRange,
-  formatNullableNumber,
   SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
+import { formatNumber } from '@/utils/numberFormat'
 import { addHours, format } from 'date-fns'
 import { EChartsOption, SeriesOption } from 'echarts'
 import {
@@ -169,9 +169,12 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const info = createInfoString(
     ['Total Volume: ', `${(data.totalVolume ?? 0).toLocaleString()}`],
     ['Peak Hour: ', peakHour ?? 'N/A'],
-    ['Peak Hour Volume: ', formatNullableNumber(peakHourVolume)],
-    ['Peak Hour Factor: ', formatNullableNumber(peakHourFactor, 2)],
-    ['fLU: ', formatNullableNumber(laneUtilizationFactor, 2)]
+    [
+      'Peak Hour Volume: ',
+      formatNumber(peakHourVolume, 0, { empty: 'N/A', grouping: true }),
+    ],
+    ['Peak Hour Factor: ', formatNumber(peakHourFactor, 2, { empty: 'N/A' })],
+    ['fLU: ', formatNumber(laneUtilizationFactor, 2, { empty: 'N/A' })]
   )
 
   const titleHeader = `Turning Movement Counts\n${locationDescription} - ${direction} ${movementType} - ${laneType}`

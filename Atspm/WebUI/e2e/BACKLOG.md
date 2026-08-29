@@ -116,10 +116,11 @@ as the template.
       `abbreviationToChartType` in `SelectChart.tsx` is what a measure has
       to appear in before it can be selected at all.
 - [x] **A8. Arrivals on Red** (S) — plans; percentage series.
-      `arrivals-on-red.spec.ts`. Finding for the backend: the seeded
-      option is `usePermissivePhase` but `ArrivalOnRedOptions` reads
-      `getPermissivePhase`, so the default never reaches the report API
-      (the spec pins the name as sent so a rename on either side shows).
+      `arrivals-on-red.spec.ts`. The spec found the seed naming this
+      measure's option `usePermissivePhase` while `ArrivalOnRedOptions`
+      reads `getPermissivePhase`, so the default never reached the report
+      API; the seed has since been corrected and the spec pins the option
+      as sent, so a rename on either side shows up here.
 - [x] **A9. Green Time Utilization** (S) — bin option.
       `green-time-utilization.spec.ts`. Two bin sizes (x and y axis) in
       number fields, not the shared dropdown.
@@ -380,13 +381,19 @@ next item, and the loop should keep going past them.
 - **A37, usage analytics** — does the OData `$count=true` survive the
   envelope unwrap in `axios.ts`, and does the page actually need it? Settle
   it in the spec.
-- **Seeded option names that the report contract does not read** — Arrivals
-  on Red seeds `usePermissivePhase` while `ArrivalOnRedOptions` carries
-  `getPermissivePhase`, so that default never reaches the API (recorded
-  under A8). Approach Volume seeds `showTotalVolume` and Pedestrian Delay,
-  Purdue Split Failure and Timing and Actuation seed several `show*` flags
-  that no control exposes. Are these dead options to drop from the seed, or
-  panel controls that were never built?
+- **Seeded option names that the report contract does not read** — Approach
+  Volume seeds `showTotalVolume`, and Pedestrian Delay, Purdue Split
+  Failure and Timing and Actuation seed several `show*` flags that no
+  control exposes. Are these dead options to drop from the seed, or panel
+  controls that were never built? (The one instance that was a plain
+  mismatch, Arrivals on Red's `usePermissivePhase`, has been corrected in
+  the seed.)
+- **Jest worker contention on this machine** — `npx jest src` with the
+  default worker count starves the `userEvent` suites: ten of them time out
+  at 60-80 seconds each and report as failures. `npx jest src -w 2` runs the
+  same 678 tests green in a fraction of the time. Worth pinning the worker
+  count in the Jest config so a full local run is not misleading (related to
+  D4, which covers the same question for the e2e suite).
 - **A18, `hasRampDevice`** — the backlog assumed Ramp Metering is offered
   only for ramp locations, but `hasRampDevice` appears solely in the config
   schema and a test fixture; no component reads it. Is the gate meant to

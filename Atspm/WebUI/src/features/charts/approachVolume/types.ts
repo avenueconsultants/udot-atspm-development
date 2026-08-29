@@ -69,8 +69,8 @@ export interface ApproachVolumeSummaryData {
 }
 
 export interface RawApproachVolumeData extends BaseChartData {
-  primaryDirectionName: string
-  opposingDirectionName: string
+  primaryDirectionName: string | null
+  opposingDirectionName: string | null
   distanceFromStopBar: number
   detectorType: string
   primaryDirectionVolumes: DataPoint[]
