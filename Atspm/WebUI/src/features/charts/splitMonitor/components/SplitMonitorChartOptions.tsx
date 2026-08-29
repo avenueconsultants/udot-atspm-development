@@ -16,7 +16,9 @@ import { useEffect, useState } from 'react'
 // The report API's SplitMonitorOptions.percentileSplit is an int, so "None"
 // cannot travel as the word: it goes out as '0', which the service and the
 // transformer both treat as "no percentile". The select shows 'None' for a
-// stored '0' so a saved measure default round-trips.
+// stored '0' so a saved measure default round-trips. (A default saved as
+// the word before this mapping is corrected by getChartDefaults, so the
+// panel never sees it.)
 const NONE_LABEL = 'None'
 const NONE_VALUE = '0'
 const PERCENTILE_SPLIT_CHOICES = [NONE_LABEL, '50', '75', '85', '90', '95']

@@ -36,7 +36,7 @@ export interface SplitMonitorPlan extends BasePlan {
   percentMaxOuts: number | null
   percentForceOffs: number | null
   averageSplit: number
-  percentileSplit: number
+  percentileSplit: number | null
   minTime: number
   programmedSplit: number
   percentileSplit85th: number

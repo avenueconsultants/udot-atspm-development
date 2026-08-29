@@ -84,7 +84,41 @@ const allNull = (): RawSplitMonitorResponse =>
     ],
   }) as unknown as RawSplitMonitorResponse
 
+const planLabelsOf = (chart: EChartsOption) => {
+  const plans = seriesOf(chart).find(
+    (series) => series.type === 'scatter' && series.name === 'Plans'
+  )
+  return ((plans?.data ?? []) as [unknown, unknown, string][]).map(
+    ([, , label]) => label
+  )
+}
+
 describe('transformSplitMonitorData', () => {
+  it('omits the percentile line when none was requested', () => {
+    const response = populated()
+    const [result] = response.data
+    Object.assign(result, {
+      // "None" goes out and comes back as 0, the int's stand-in for null.
+      percentileSplit: 0,
+      plans: [{ ...(result.plans ?? [])[0], percentileSplit: 0 }],
+    })
+
+    const labels = planLabelsOf(firstChart(response))
+    expect(labels).toHaveLength(1)
+    expect(labels[0]).not.toMatch(/th %|\{info\|0\}/)
+  })
+
+  it('labels the percentile split when one was requested', () => {
+    const response = populated()
+    const [result] = response.data
+    Object.assign(result, {
+      percentileSplit: 85,
+      plans: [{ ...(result.plans ?? [])[0], percentileSplit: 30.4 }],
+    })
+
+    expect(planLabelsOf(firstChart(response))[0]).toContain('30s (85th %)')
+  })
+
   it('builds one chart per result', () => {
     const result = transformSplitMonitorData(populated())
 
