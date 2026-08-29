@@ -14,7 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import type { LinkPivotResult } from '../../src/api/reports/report-api.schemas'
+import type {
+  DataPointForDouble,
+  LinkPivotResult,
+  PurdueCoordinationDiagramResult,
+} from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
 // shape LinkPivot/getReportData and LinkPivot/getLinkPivotForTsd return it.
@@ -106,3 +110,57 @@ export const linkPivotResult = {
   totalDownstreamChartNegativeChange: 0,
   totalDownstreamChartRemaining: 34,
 } satisfies LinkPivotResult
+
+// One hour of 15-minute points between the given wall-clock times.
+const quarterHourPoints = (
+  start: string,
+  values: number[]
+): DataPointForDouble[] =>
+  values.map((value, index) => {
+    const timestamp = new Date(start)
+    timestamp.setMinutes(timestamp.getMinutes() + index * 15)
+    const pad = (n: number) => String(n).padStart(2, '0')
+    return {
+      timestamp:
+        `${timestamp.getFullYear()}-${pad(timestamp.getMonth() + 1)}-${pad(timestamp.getDate())}` +
+        `T${pad(timestamp.getHours())}:${pad(timestamp.getMinutes())}:00`,
+      value,
+    }
+  })
+
+// PurdueCoordinationDiagram/getReportData for location 1001, 08:00-09:00:
+// one result per coordinated phase, each with a plan strip, the
+// red/yellow/green cycle series and detector arrivals.
+export const purdueCoordinationDiagramResult = (
+  start: string,
+  end: string,
+  phase: { number: number; description: string; approachId: number }
+): PurdueCoordinationDiagramResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: phase.approachId,
+  approachDescription: phase.description,
+  phaseNumber: phase.number,
+  phaseDescription: `Phase ${phase.number}`,
+  totalOnGreenEvents: 620,
+  totalDetectorHits: 1000,
+  percentArrivalOnGreen: 62,
+  plans: [
+    {
+      planNumber: '1',
+      start,
+      end,
+      planDescription: 'Plan 1',
+      percentGreenTime: 45,
+      percentArrivalOnGreen: 62,
+      platoonRatio: 1.38,
+    },
+  ],
+  volumePerHour: quarterHourPoints(start, [820, 910, 880, 760]),
+  redSeries: quarterHourPoints(start, [0, 0, 0, 0]),
+  yellowSeries: quarterHourPoints(start, [52, 52, 52, 52]),
+  greenSeries: quarterHourPoints(start, [56, 56, 56, 56]),
+  detectorEvents: quarterHourPoints(start, [12, 48, 71, 30]),
+})
