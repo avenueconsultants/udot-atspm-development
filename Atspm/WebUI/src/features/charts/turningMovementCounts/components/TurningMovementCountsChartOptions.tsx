@@ -3,7 +3,13 @@ import { YAxisDefaultInput } from '@/features/charts/components/selectChart/YAxi
 import { TurningMovementCountsChartOptionsDefaults } from '@/features/charts/turningMovementCounts/types'
 import { Default } from '@/features/charts/types'
 import { useChartsStore } from '@/stores/charts'
-import { Alert, Box, Checkbox, SelectChangeEvent, Typography } from '@mui/material'
+import {
+  Alert,
+  Box,
+  Checkbox,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 
 interface TurningMovementCountsChartOptionsProps {
@@ -33,7 +39,8 @@ export const TurningMovementCountsChartOptions = ({
   }, [chartDefaults.yAxisDefault?.value, setYAxisMaxStore])
 
   useEffect(() => {
-    const defaultCombineThruRight = chartDefaults.combineThruRight?.value === 'TRUE'
+    const defaultCombineThruRight =
+      chartDefaults.combineThruRight?.value === 'TRUE'
     setCombineThruRight(defaultCombineThruRight)
   }, [chartDefaults.combineThruRight?.value])
 
@@ -80,6 +87,9 @@ export const TurningMovementCountsChartOptions = ({
     <Checkbox
       checked={combineThruRight}
       onChange={handleCombineThruRightChange}
+      // The visible label is a sibling Typography, not a <label>, so the
+      // input needs its own accessible name.
+      inputProps={{ 'aria-label': 'Combine Thru and Thru-Right' }}
     />
   )
 
