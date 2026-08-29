@@ -103,7 +103,10 @@ as the template.
       filters and totals; CSV toolbar. `turning-movement-counts.spec.ts`;
       the CSV is read back from Playwright's download path, so the
       file-download pattern for A36 exists.
-- [ ] **A5. Purdue Phase Termination** (M) — consecutive-count option; plan strips.
+- [x] **A5. Purdue Phase Termination** (M) — consecutive-count option; plan
+      strips. `purdue-phase-termination.spec.ts`. Unlike the other measures
+      this one returns a single result for the whole location, so there is
+      exactly one chart however many phases come back.
 - [ ] **A6. Approach Volume** (M) — table + chart (`ApproachVolumeTable`);
       direction pairing.
 - [ ] **A7. Approach Speed** (S) — speed limit / bin options.
@@ -320,3 +323,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 — A2 Split Monitor: 4 tests (charts per phase + phase table columns/values + default percentile in the request, picked percentile, "None" as 0, planless empty phase). Two app bugs found: "None" went out as the word to an int field (400 from the report API), and PhaseTable showed the force-off value in a free plan's max-outs cell (the export already used max-outs); both fixed with unit tests, plus missing React keys on those cells. Gate: 45/45 CI mode, 9 split-monitor unit tests, types at 852. App fix e4c4bda2; spec f131958d.
 - 2026-08-29 — A3 Timing and Actuation: 3 tests (title + strip per phase with every seeded toggle in the request, permissive-phase toggle + legend pop-over, empty result). App fix: the toolbox restored a re-shown permissive strip to a fixed 300px, clipping tall strips. Fixture lesson: CycleEventsDto is {start, value}, not a data point - a '' start throws Invalid time value in the transformer. Gate: 48/48 CI mode, types at 852. App fix 4f6199d7; spec in the commit carrying this line.
 - 2026-08-29 — A4 Turning Movement Counts: 5 tests (charts per movement + pivoted table with direction/bin totals and the peak-hour strip + default request, bin size and combine in the request, direction filter and combine re-pivot, CSV download contents, empty result). App fix: the combine checkbox had no accessible name. Gate: 53/53 CI mode, types at 852. App fix 18ff836c; spec in the commit carrying this line.
+- 2026-08-29 — A5 Purdue Phase Termination: 3 tests (single location chart + default consecutive count in the request, a typed count in the request, a window with null plans and phases). No app bug found. Review pulled a `quarterHourTimestamps` helper out of `quarterHourPoints` so fixtures needing only marks stop passing dummy zero values. Gate: 56/56 CI mode, types at 852. Spec in the commit carrying this line.

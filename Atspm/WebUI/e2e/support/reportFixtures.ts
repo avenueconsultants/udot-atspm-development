@@ -17,6 +17,7 @@
 import type {
   DataPointForDouble,
   LinkPivotResult,
+  PhaseTerminationResult,
   PurdueCoordinationDiagramResult,
   SplitMonitorResult,
   TimingAndActuationsForPhaseResult,
@@ -114,22 +115,28 @@ export const linkPivotResult = {
   totalDownstreamChartRemaining: 34,
 } satisfies LinkPivotResult
 
-// One hour of 15-minute points between the given wall-clock times.
+// The quarter-hour marks of the hour beginning at the given wall-clock
+// time, as the literals the API serves (no zone suffix).
+const quarterHourTimestamps = (start: string, count: number): string[] =>
+  Array.from({ length: count }, (_, index) => {
+    const timestamp = new Date(start)
+    timestamp.setMinutes(timestamp.getMinutes() + index * 15)
+    const pad = (n: number) => String(n).padStart(2, '0')
+    return (
+      `${timestamp.getFullYear()}-${pad(timestamp.getMonth() + 1)}-${pad(timestamp.getDate())}` +
+      `T${pad(timestamp.getHours())}:${pad(timestamp.getMinutes())}:00`
+    )
+  })
+
+// One hour of 15-minute points, one per given value.
 const quarterHourPoints = (
   start: string,
   values: number[]
 ): Required<DataPointForDouble>[] =>
-  values.map((value, index) => {
-    const timestamp = new Date(start)
-    timestamp.setMinutes(timestamp.getMinutes() + index * 15)
-    const pad = (n: number) => String(n).padStart(2, '0')
-    return {
-      timestamp:
-        `${timestamp.getFullYear()}-${pad(timestamp.getMonth() + 1)}-${pad(timestamp.getDate())}` +
-        `T${pad(timestamp.getHours())}:${pad(timestamp.getMinutes())}:00`,
-      value,
-    }
-  })
+  quarterHourTimestamps(start, values.length).map((timestamp, index) => ({
+    timestamp,
+    value: values[index] ?? 0,
+  }))
 
 // PurdueCoordinationDiagram/getReportData for location 1001, 08:00-09:00:
 // one result per coordinated phase, each with a plan strip, the
@@ -178,7 +185,7 @@ export const splitMonitorResult = (
   end: string,
   phase: { number: number; description: string }
 ): SplitMonitorResult => {
-  const halfHourIn = quarterHourPoints(start, [0, 0, 0])[2].timestamp
+  const halfHourIn = quarterHourTimestamps(start, 3)[2]
   return {
     start,
     end,
@@ -337,5 +344,41 @@ export const turningMovementCountsResult = (
     })),
     peakHour: { key: start, value: 840 },
     peakHourFactor: 0.92,
+  }
+}
+
+// PurduePhaseTermination/getReportData for location 1001, 08:00-09:00: one
+// result for the whole location, a plan strip and a phase row each with a
+// few terminations at quarter-hour marks.
+export const purduePhaseTerminationResult = (
+  start: string,
+  end: string
+): PhaseTerminationResult => {
+  const at = quarterHourTimestamps(start, 4)
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    consecutiveCount: 1,
+    plans: [{ planNumber: '1', planDescription: 'Plan 1', start, end }],
+    phases: [
+      {
+        phaseNumber: 2,
+        gapOuts: [at[0], at[2]],
+        maxOuts: [],
+        forceOffs: [at[1], at[3]],
+        pedWalkBegins: [at[1]],
+        unknownTerminations: [],
+      },
+      {
+        phaseNumber: 6,
+        gapOuts: [at[1]],
+        maxOuts: [at[3]],
+        forceOffs: [at[0], at[2]],
+        pedWalkBegins: [],
+        unknownTerminations: [at[2]],
+      },
+    ],
   }
 }

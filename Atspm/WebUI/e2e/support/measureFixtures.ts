@@ -116,3 +116,12 @@ export const turningMovementCountsMeasure = measureWithOptions({
     combineThruRight: 'FALSE',
   },
 })
+
+export const purduePhaseTerminationMeasure = measureWithOptions({
+  id: 1,
+  name: 'Purdue Phase Termination',
+  abbreviation: 'PPT',
+  options: {
+    selectedConsecutiveCount: '1',
+  },
+})
