@@ -19,7 +19,7 @@ import {
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 
-function getColorFromName(firstName: string, lastName: string): string {
+function getColorFromName(firstName = '', lastName = ''): string {
   const colors = [
     '#1e824c',
     '#007a7c',
@@ -129,8 +129,8 @@ export default function UserMenu() {
         >
           {isLoggedIn ? (
             <>
-              {userData?.firstName.charAt(0).toUpperCase()}
-              {userData?.lastName.charAt(0).toUpperCase()}
+              {userData?.firstName?.charAt(0).toUpperCase()}
+              {userData?.lastName?.charAt(0).toUpperCase()}
             </>
           ) : (
             <PersonOutlineOutlinedIcon />
