@@ -20,6 +20,7 @@ import type {
   PurdueCoordinationDiagramResult,
   SplitMonitorResult,
   TimingAndActuationsForPhaseResult,
+  TurningMovementCountsResult,
 } from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
@@ -276,5 +277,65 @@ export const timingAndActuationResult = (
     stopBarDetectors: [detector(`Stop Bar ${phase.number}`)],
     laneByLanesDetectors: [detector(`Lane ${phase.number}`)],
     phaseCustomEvents: null,
+  }
+}
+
+// TurningMovementCounts/getReportData for location 1001, 08:00-09:00: a
+// chart per direction+movement (northbound thru and right, southbound
+// thru), the table rows behind them and the peak hour. Each quarter hour's
+// bin total is the sum of the three movements: 200, 240, 220, 180 (840).
+export const turningMovementCountsResult = (
+  start: string,
+  end: string
+): TurningMovementCountsResult => {
+  const movements = [
+    {
+      direction: 'Northbound',
+      movementType: 'Thru',
+      counts: [100, 120, 110, 90],
+    },
+    {
+      direction: 'Northbound',
+      movementType: 'Right',
+      counts: [20, 30, 25, 15],
+    },
+    { direction: 'Southbound', movementType: 'Thru', counts: [80, 90, 85, 75] },
+  ]
+  const total = (counts: number[]) => counts.reduce((sum, n) => sum + n, 0)
+  return {
+    charts: movements.map(({ direction, movementType, counts }) => ({
+      locationIdentifier: '1001',
+      locationDescription: 'Main St & 400 S',
+      start,
+      end,
+      direction,
+      laneType: 'Vehicle',
+      movementType,
+      plans: [{ planNumber: '1', start, end, planDescription: 'Plan 1' }],
+      lanes: [
+        {
+          laneNumber: 1,
+          movementType,
+          volume: quarterHourPoints(start, counts),
+          laneType: 1,
+        },
+      ],
+      totalHourlyVolumes: quarterHourPoints(start, counts),
+      totalVolumes: quarterHourPoints(start, counts),
+      totalVolume: total(counts),
+      peakHour: '08:00 - 09:00',
+      peakHourVolume: total(counts),
+      peakHourFactor: 0.92,
+      laneUtilizationFactor: 1,
+    })),
+    table: movements.map(({ direction, movementType, counts }) => ({
+      direction,
+      movementType,
+      laneType: 'Vehicle',
+      volumes: quarterHourPoints(start, counts),
+      peakHourVolume: { timestamp: start, value: total(counts) },
+    })),
+    peakHour: { key: start, value: 840 },
+    peakHourFactor: 0.92,
   }
 }

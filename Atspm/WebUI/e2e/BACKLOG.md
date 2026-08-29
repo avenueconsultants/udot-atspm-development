@@ -99,8 +99,10 @@ as the template.
       "No options available" (the code is commented out), so the spec
       asserts the seeded toggles travel as defaults; revisit if the panel
       comes back.
-- [ ] **A4. Turning Movement Counts** (M) — renders a table, not a chart;
-      filters and totals; CSV toolbar.
+- [x] **A4. Turning Movement Counts** (M) — renders a table, not a chart;
+      filters and totals; CSV toolbar. `turning-movement-counts.spec.ts`;
+      the CSV is read back from Playwright's download path, so the
+      file-download pattern for A36 exists.
 - [ ] **A5. Purdue Phase Termination** (M) — consecutive-count option; plan strips.
 - [ ] **A6. Approach Volume** (M) — table + chart (`ApproachVolumeTable`);
       direction pairing.
@@ -317,3 +319,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-28 — A1 Purdue Coordination Diagram: 3 tests (charts per phase + defaults in the request, picked bin size, empty phase); new `measureFixtures.ts`, PCD result builder in `reportFixtures.ts`. A flaky first run exposed two app bugs, both fixed with a deterministic regression test in `performance-measures.spec.ts`: SelectChart cleared a deep-linked measure whenever the measure list arrived after the locations, and getChartDefaults crashed on a measure with a null name (nullable in the contract). Gate: 41/41 CI mode, 315 chart unit tests, types at 852. App fix 8d9d2259; spec in the commit carrying this line.
 - 2026-08-29 — A2 Split Monitor: 4 tests (charts per phase + phase table columns/values + default percentile in the request, picked percentile, "None" as 0, planless empty phase). Two app bugs found: "None" went out as the word to an int field (400 from the report API), and PhaseTable showed the force-off value in a free plan's max-outs cell (the export already used max-outs); both fixed with unit tests, plus missing React keys on those cells. Gate: 45/45 CI mode, 9 split-monitor unit tests, types at 852. App fix e4c4bda2; spec f131958d.
 - 2026-08-29 — A3 Timing and Actuation: 3 tests (title + strip per phase with every seeded toggle in the request, permissive-phase toggle + legend pop-over, empty result). App fix: the toolbox restored a re-shown permissive strip to a fixed 300px, clipping tall strips. Fixture lesson: CycleEventsDto is {start, value}, not a data point - a '' start throws Invalid time value in the transformer. Gate: 48/48 CI mode, types at 852. App fix 4f6199d7; spec in the commit carrying this line.
+- 2026-08-29 — A4 Turning Movement Counts: 5 tests (charts per movement + pivoted table with direction/bin totals and the peak-hour strip + default request, bin size and combine in the request, direction filter and combine re-pivot, CSV download contents, empty result). App fix: the combine checkbox had no accessible name. Gate: 53/53 CI mode, types at 852. App fix 18ff836c; spec in the commit carrying this line.

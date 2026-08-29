@@ -105,3 +105,14 @@ export const timingAndActuationMeasure = measureWithOptions({
     showStopBarPresence: 'TRUE',
   },
 })
+
+export const turningMovementCountsMeasure = measureWithOptions({
+  id: 5,
+  name: 'Turning Movement Counts',
+  abbreviation: 'TMC',
+  options: {
+    binSize: '15',
+    yAxisDefault: '300',
+    combineThruRight: 'FALSE',
+  },
+})
