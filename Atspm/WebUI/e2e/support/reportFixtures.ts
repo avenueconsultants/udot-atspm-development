@@ -19,6 +19,7 @@ import type {
   LinkPivotResult,
   PurdueCoordinationDiagramResult,
   SplitMonitorResult,
+  TimingAndActuationsForPhaseResult,
 } from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
@@ -116,7 +117,7 @@ export const linkPivotResult = {
 const quarterHourPoints = (
   start: string,
   values: number[]
-): DataPointForDouble[] =>
+): Required<DataPointForDouble>[] =>
   values.map((value, index) => {
     const timestamp = new Date(start)
     timestamp.setMinutes(timestamp.getMinutes() + index * 15)
@@ -225,5 +226,55 @@ export const splitMonitorResult = (
     forceOffs: quarterHourPoints(start, [30, 29, 30, 30]),
     unknowns: [],
     peds: quarterHourPoints(start, [12, 14, 10, 11]),
+  }
+}
+
+// TimingAndActuation/getReportData for location 1001, 08:00-09:00: one
+// result per phase, each a strip of detector channels (one row per named
+// detector, plus pedestrian intervals) over the cycle's colour bands.
+// phaseType is what the toolbox's "Show Permissive Phases" toggle keys on.
+export const timingAndActuationResult = (
+  start: string,
+  end: string,
+  phase: {
+    number: number
+    approachDescription: string
+    phaseType: 'Protected' | 'Permissive'
+  }
+): TimingAndActuationsForPhaseResult => {
+  // Cycle events are {start, value} with an event code, unlike data points.
+  const cycleEvents = (codes: number[]) =>
+    quarterHourPoints(start, codes).map(({ timestamp, value }) => ({
+      start: timestamp,
+      value,
+    }))
+  const cycle = cycleEvents([1, 8, 9, 1])
+  const pedestrianIntervals = cycleEvents([21, 22, 23, 21])
+  const detector = (name: string) => ({
+    name,
+    events: cycle.map(({ start: at }) => ({
+      detectorOn: at,
+      detectorOff: at.replace(/:00$/, ':05'),
+    })),
+  })
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    approachId: phase.number,
+    approachDescription: phase.approachDescription,
+    phaseNumber: phase.number,
+    isPhaseOverLap: false,
+    phaseNumberSort: `${phase.number}`,
+    phaseType: phase.phaseType,
+    pedestrianIntervals,
+    pedestrianEvents: [detector(`Ped Push Button ${phase.number}`)],
+    cycleAllEvents: cycle,
+    advanceCountDetectors: [detector(`Advance Count ${phase.number}`)],
+    advancePresenceDetectors: [],
+    stopBarDetectors: [detector(`Stop Bar ${phase.number}`)],
+    laneByLanesDetectors: [detector(`Lane ${phase.number}`)],
+    phaseCustomEvents: null,
   }
 }

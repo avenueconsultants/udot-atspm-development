@@ -87,3 +87,21 @@ export const splitMonitorMeasure = measureWithOptions({
     yAxisDefault: '100',
   },
 })
+
+// Seeded with the eight detector-channel toggles even though the current
+// option panel shows none of them: they still travel as measure defaults.
+export const timingAndActuationMeasure = measureWithOptions({
+  id: 17,
+  name: 'Timing And Actuation',
+  abbreviation: 'TAA',
+  options: {
+    extendStartStopSearch: '2',
+    showAdvancedCount: 'TRUE',
+    showAdvancedDilemmaZone: 'TRUE',
+    showAllLanesInfo: 'FALSE',
+    showLaneByLaneCount: 'TRUE',
+    showPedestrianActuation: 'TRUE',
+    showPedestrianIntervals: 'TRUE',
+    showStopBarPresence: 'TRUE',
+  },
+})
