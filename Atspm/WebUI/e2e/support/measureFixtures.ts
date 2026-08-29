@@ -164,3 +164,13 @@ export const arrivalsOnRedMeasure = measureWithOptions({
     binSize: '15',
   },
 })
+
+export const greenTimeUtilizationMeasure = measureWithOptions({
+  id: 36,
+  name: 'Green Time Utilization',
+  abbreviation: 'GTU',
+  options: {
+    xAxisBinSize: '15',
+    yAxisBinSize: '4',
+  },
+})

@@ -19,6 +19,7 @@ import type {
   ApproachVolumeResult,
   ArrivalOnRedResult,
   DataPointForDouble,
+  GreenTimeUtilizationResult,
   LinkPivotResult,
   PhaseTerminationResult,
   PurdueCoordinationDiagramResult,
@@ -485,4 +486,41 @@ export const arrivalsOnRedResult = (
   percentArrivalsOnRed: quarterHourPoints(start, [35, 42, 39, 36]),
   totalVehicles: quarterHourPoints(start, [820, 910, 880, 760]),
   arrivalsOnRed: quarterHourPoints(start, [287, 382, 343, 274]),
+})
+
+// GreenTimeUtilization/getReportData for location 1001, 08:00-09:00: one
+// result per approach, a heat map of bins (x = time bin, y = split bin)
+// under the average and programmed split lines, with a plan strip.
+export const greenTimeUtilizationResult = (
+  start: string,
+  end: string,
+  approach: { id: number; description: string; phaseNumber: number }
+): GreenTimeUtilizationResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  phaseNumber: approach.phaseNumber,
+  xAxisBinSize: 15,
+  yAxisBinSize: 4,
+  plans: [
+    {
+      planNumber: '1',
+      planDescription: 'Plan 1',
+      start,
+      end,
+    },
+  ],
+  bins: [
+    { x: 0, y: 5, value: 12 },
+    { x: 0, y: 6, value: 20 },
+    { x: 1, y: 5, value: 9 },
+    { x: 1, y: 7, value: 18 },
+    { x: 2, y: 6, value: 22 },
+    { x: 3, y: 5, value: 7 },
+  ],
+  averageSplits: quarterHourPoints(start, [22.5, 24, 25.5, 21]),
+  programmedSplits: quarterHourPoints(start, [30, 30, 30, 30]),
 })

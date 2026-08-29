@@ -120,7 +120,9 @@ as the template.
       option is `usePermissivePhase` but `ArrivalOnRedOptions` reads
       `getPermissivePhase`, so the default never reaches the report API
       (the spec pins the name as sent so a rename on either side shows).
-- [ ] **A9. Green Time Utilization** (S) — bin option.
+- [x] **A9. Green Time Utilization** (S) — bin option.
+      `green-time-utilization.spec.ts`. Two bin sizes (x and y axis) in
+      number fields, not the shared dropdown.
 - [ ] **A10. Left Turn Gap Analysis** (M) — gap bands; option ranges.
 - [ ] **A11. Pedestrian Delay** (S) — plans; delay series.
 - [ ] **A12. Purdue Split Failure** (M) — first-seconds-of-red option; occupancy series.
@@ -336,3 +338,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A6 Approach Volume: 3 tests (chart + peak-hour table per direction pair with the seeded options in the request, picked bin size, a pair whose summaryData is null). App bug found and fixed: SummaryData is optional and nullable on the contract but the table called toFixed/toLocaleString on every field, so a null summary threw and the error boundary replaced the whole page; the local summary type now matches the contract and the cells format through formatNullableNumber, lifted from the Turning Movement Counts transformer into the shared chart utils. Fixture lesson: keep expected decimals off binary rounding boundaries (0.0935.toFixed(3) is '0.093'). Gate: 59/59 CI mode, types at 852. App fix 55cfa026; spec in the commit carrying this line.
 - 2026-08-29 - A7 Approach Speed: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with null plans and speed series, empty result). No app bug found. Gate: 63/63 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A8 Arrivals on Red: 3 tests (chart per approach + seeded defaults in the request, picked bin size, an approach with null plans and series). No app bug; backend finding recorded on the item (seed/contract option-name mismatch). Gate: 66/66 CI mode, types at 852. Spec in the commit carrying this line.
+- 2026-08-29 - A9 Green Time Utilization: 3 tests (chart per approach + both default bin sizes in the request, typed bin sizes, an approach with null bins/splits/plans). No app bug found. Gate: 69/69 CI mode, types at 852. Spec in the commit carrying this line.
