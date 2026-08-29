@@ -21,13 +21,16 @@ import {
   DirectionTypesName,
 } from '../src/api/config/config-api.schemas'
 import { odataCollection } from '../src/test/fixtures/api'
-import {
-  approachNorthbound,
-  routeLocation1001,
-  searchLocations,
-} from '../src/test/fixtures/config'
+import { approachNorthbound } from '../src/test/fixtures/config'
 import { blockMapTiles, jsonResponse, stubEndpoint } from './support/api'
 import { mockAppShell } from './support/mockAppShell'
+import {
+  distance1001to1002,
+  link1001,
+  link1002,
+  routeSearchLocations,
+  routeView,
+} from './support/routeFixtures'
 import { signIn } from './support/session'
 import { stubApiHosts } from './support/stubApiHosts'
 
@@ -36,43 +39,6 @@ import { stubApiHosts } from './support/stubApiHosts'
 // so member names), and writes the whole route back through UpsertRoute. The
 // direction picker is where the two meet - it has to send the integer the
 // DTO expects, not the name it was shown.
-
-const distance1001to1002 = {
-  id: 1,
-  distance: 1200,
-  locationIdentifierA: '1001',
-  locationIdentifierB: '1002',
-}
-
-const link1001 = {
-  ...routeLocation1001,
-  order: 0,
-  nextLocationDistanceId: distance1001to1002.id,
-  nextLocationDistance: distance1001to1002,
-}
-
-const link1002 = {
-  ...routeLocation1001,
-  id: 11,
-  order: 1,
-  locationId: 2,
-  locationIdentifier: '1002',
-  secondaryName: '500 S',
-  latitude: 40.7575,
-  longitude: -111.8762,
-  previousLocationDistanceId: distance1001to1002.id,
-  previousLocationDistance: distance1001to1002,
-}
-
-const routeView = {
-  id: 5,
-  name: 'Main St corridor',
-  created: '2026-08-28T21:09:14.94Z',
-  modified: '2026-08-28T21:09:14.94Z',
-  createdBy: 'System',
-  modifiedBy: 'System',
-  routeLocations: [link1001, link1002],
-} satisfies RouteDto
 
 const directionType = (
   id: DirectionTypesName,
@@ -124,17 +90,7 @@ const stubBackend = async (page: Page, route: RouteDto = routeView) => {
   await stubEndpoint(page, {
     host: hosts.config,
     path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocations[0],
-      {
-        ...searchLocations[0],
-        id: 2,
-        locationIdentifier: '1002',
-        secondaryName: '500 S',
-        latitude: link1002.latitude,
-        longitude: link1002.longitude,
-      },
-    ]),
+    body: odataCollection('SearchLocations', routeSearchLocations),
   })
   await stubEndpoint(page, {
     host: hosts.config,
@@ -197,7 +153,7 @@ test('offers each link the directions of its own approaches', async ({
 
   await page.goto(`/admin/routes/${routeView.id}/edit`)
 
-  await expect(page.getByLabel('Route Name')).toHaveValue('Main St corridor')
+  await expect(page.getByLabel('Route Name')).toHaveValue(routeView.name)
   const primary = primaryDirectionOf(page, '1002')
   await expect(primary).toContainText('Northbound')
 
