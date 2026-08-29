@@ -165,9 +165,15 @@ as the template.
       `measures` and `location` overrides so a spec can vary the list and
       the location apart. Purdue Phase Termination is auto-selected
       whenever the URL names no measure and the location offers it.
-- [ ] **A20. Measure defaults and presets** (M) — `/MeasureOption` defaults
-      fill the option panel; `/MeasureType/{key}/MeasureOptionPresets`
-      applies a preset; the request carries the preset values.
+- [x] **A20. Measure defaults** (M) — `/MeasureOption` defaults fill the
+      option panel. `measure-defaults.spec.ts`: switching measure swaps the
+      whole panel and reverts an edited option to the new measure's
+      defaults, and a bin size wider than the window blocks the run.
+      **Presets are not part of this page.** Nothing under
+      `src/features/charts` calls `MeasureOptionPreset`; the only callers
+      are the Transit Signal Priority report page and `TspReport`, so the
+      preset half moves to A32 and the admin editing of `/MeasureOption`
+      stays with B7.
 - [ ] **A21. Chart toolbox** (M) — per-chart controls (zoom, y-axis default
       input, export) on a rendered chart; `IndividualChartControls`.
 - [ ] **A22. Multi-location runs** (M) — `MultipleLocationsSelect` (uses
@@ -203,7 +209,10 @@ as the template.
       message on an empty result.
 - [ ] **A32. Transit signal priority report** (M) —
       `TransitSignalPriority/getReportData`; latest-version locations;
-      measure presets.
+      measure presets. This is where the preset endpoints actually live:
+      the page reads `useGetMeasureTypeMeasureOptionPresetsFromKey` and
+      `TspReport` saves one with `postMeasureOptionPreset` (moved here
+      from A20).
 - [ ] **A33. Pedestrian activity report** (M) — `PedestrianAggregation`
       location data + map (`PedatMap`, Stadia tiles to block); daily volume
       by month transformer.
@@ -405,3 +414,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A17 Yellow and Red Actuations: 4 tests (chart per approach incl. a permissive one + seeded severe threshold in the request, an edited threshold, an approach with null plans and events, empty result). No app bug found. Gate: 92/92 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A18 Ramp Metering: 3 tests (ramp chart + the unseeded option reported as missing, a seeded combineLanes offered and re-run with it ticked, a ramp with every series null). Two app bugs found and fixed with unit tests: the panel read `chartDefaults.combineLanes.value` unguarded although the seed carries no options for this measure at all, so opening it threw and the error boundary replaced the page; and its hidden label pointed at an id no input carried, leaving the checkbox unnamed. Gate: 95/95 CI mode, types at 849. App fix bd5bc53c; spec in the commit carrying this line.
 - 2026-08-29 - A19 Measure availability: 4 tests (the picker offers exactly the location's charts, a measure the location does not offer is cleared from the URL and Generate says "Please select a measure.", a showOnWebsite:false measure is withheld even when the location lists it, and Purdue Phase Termination is auto-selected when the URL names no measure). No app bug found. Gate: 99/99 CI mode, types at 849. Spec in the commit carrying this line.
+- 2026-08-29 - A20 Measure defaults: 3 tests (switching measure swaps the panel and sends only the new measure's options, an edited bin size reverts to the seeded default when the measure changes and back, a bin size wider than the window shows both the picker warning and the generate-time alert and sends nothing). No app bug found. Scope corrected: measure presets belong to the TSP report, not this page, and the item's preset half was moved to A32. Gate: 102/102 CI mode, types at 849. Spec in the commit carrying this line.
