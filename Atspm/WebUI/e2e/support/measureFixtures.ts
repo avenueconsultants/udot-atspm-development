@@ -218,3 +218,11 @@ export const purdueSplitFailureMeasure = measureWithOptions({
     showPercentFailLines: 'FALSE',
   },
 })
+
+// Seeded without options; the option panel says so.
+export const preemptionDetailsMeasure = measureWithOptions({
+  id: 4,
+  name: 'Preemption Details',
+  abbreviation: 'PD',
+  options: {},
+})

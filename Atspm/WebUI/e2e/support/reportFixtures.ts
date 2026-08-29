@@ -24,6 +24,7 @@ import type {
   LinkPivotResult,
   PedDelayResult,
   PhaseTerminationResult,
+  PreemptDetailResult,
   PurdueCoordinationDiagramResult,
   SplitFailsResult,
   SplitMonitorResult,
@@ -652,5 +653,54 @@ export const purdueSplitFailureResult = (
     averageGor: quarterHourPoints(start, [60, 68, 64, 58]),
     averageRor: quarterHourPoints(start, [40, 52, 46, 38]),
     percentFails: quarterHourPoints(start, [0, 20, 0, 20]),
+  }
+}
+
+// PreemptDetail/getReportData for location 1001, 08:00-09:00: a summary
+// of request/service pairs per preempt number (its own chart, drawn first)
+// and a detail per preempt number, each a list of cycles with the input
+// on/off window and the timings within it.
+export const preemptionDetailsResult = (
+  start: string,
+  end: string
+): PreemptDetailResult => {
+  const marks = quarterHourTimestamps(start, 4)
+  const detail = (preemptionNumber: number, at: string[]) => ({
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    preemptionNumber,
+    cycles: at.map((inputOn) => ({
+      inputOn,
+      inputOff: inputOn.replace(/:00$/, ':50'),
+      gateDown: inputOn.replace(/:00$/, ':05'),
+      callMaxOut: 12,
+      delay: 5,
+      timeToService: 12,
+      dwellTime: 30,
+      trackClear: 8,
+    })),
+  })
+  return {
+    summary: {
+      start,
+      end,
+      locationIdentifier: '1001',
+      locationDescription: '1001 - Main St & 400 S',
+      requestAndServices: [
+        {
+          preemptionNumber: 1,
+          requests: [marks[0], marks[2]],
+          services: [marks[0], marks[2]].map((at) => at.replace(/:00$/, ':12')),
+        },
+        {
+          preemptionNumber: 2,
+          requests: [marks[1]],
+          services: [marks[1].replace(/:00$/, ':12')],
+        },
+      ],
+    },
+    details: [detail(1, [marks[0], marks[2]]), detail(2, [marks[1]])],
   }
 }

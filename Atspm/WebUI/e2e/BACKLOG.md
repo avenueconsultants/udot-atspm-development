@@ -132,9 +132,12 @@ as the template.
       in the panel and travel as seeded defaults (note for A20).
 - [x] **A12. Purdue Split Failure** (M) — first-seconds-of-red option;
       occupancy series. `purdue-split-failure.spec.ts`. The report path is
-      `SplitFail`; the three show* options travel as seeded defaults with
+      `SplitFail`; the three show\* options travel as seeded defaults with
       no control (note for A20).
-- [ ] **A13. Preemption Details** (S) — event pairs.
+- [x] **A13. Preemption Details** (S) — event pairs.
+      `preemption-details.spec.ts`. The response is an object (summary +
+      details), not an array; the summary becomes chart 0. No options and
+      no seeded defaults, so the body is exactly location/start/end.
 - [ ] **A14. Priority Details / A15. Priority Summary** (M) — summary is a
       different chart family (`PrioritySummaryChart`); check the dispatcher
       entry the migration added.
@@ -350,3 +353,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A10 Left Turn Gap Analysis: 3 tests (chart per approach + every seeded gap band and threshold in the request, edited bands/threshold/bin size in the request, an approach with null counts and trend). No app bug found. Gate: 72/72 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A11 Pedestrian Delay: 3 tests (chart per phase + seeded defaults in the request, edited time buffer and recall threshold, a phase with null plans and series). No app bug found. Gate: 75/75 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A12 Purdue Split Failure: 3 tests (chart per approach incl. a permissive one + seeded defaults in the request, edited first seconds of red, an approach with every series null). No app bug found; the occupancy scatters are large series so the chart has two canvas layers (first()). Gate: 78/78 CI mode, types at 852. Spec in the commit carrying this line.
+- 2026-08-29 - A13 Preemption Details: 3 tests (summary chart + a chart per preempt number with the bare request body, details with a null summary, an empty window). No app bug found. Gate: 81/81 CI mode, types at 852. Spec in the commit carrying this line.
