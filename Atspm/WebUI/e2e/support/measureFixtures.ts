@@ -206,3 +206,15 @@ export const pedestrianDelayMeasure = measureWithOptions({
     yAxisDefault: '180',
   },
 })
+
+export const purdueSplitFailureMeasure = measureWithOptions({
+  id: 12,
+  name: 'Purdue Split Failure',
+  abbreviation: 'SF',
+  options: {
+    firstSecondsOfRed: '5',
+    showAvgLines: 'TRUE',
+    showFailLines: 'TRUE',
+    showPercentFailLines: 'FALSE',
+  },
+})

@@ -25,6 +25,7 @@ import type {
   PedDelayResult,
   PhaseTerminationResult,
   PurdueCoordinationDiagramResult,
+  SplitFailsResult,
   SplitMonitorResult,
   TimingAndActuationsForPhaseResult,
   TurningMovementCountsResult,
@@ -606,3 +607,50 @@ export const pedestrianDelayResult = (
   startOfWalk: quarterHourPoints(start, [1, 1, 1, 1]),
   percentDelayByCycleLength: quarterHourPoints(start, [32, 42, 37, 30]),
 })
+
+// SplitFail/getReportData for location 1001, 08:00-09:00: one result per
+// approach, with per-plan fail counts, the green/red occupancy scatters
+// for gap-outs and force-offs, their averages, the percent-fail trend and
+// the fail markers.
+export const purdueSplitFailureResult = (
+  start: string,
+  end: string,
+  approach: {
+    id: number
+    description: string
+    phaseNumber: number
+    phaseType: 'Protected' | 'Permissive'
+  }
+): SplitFailsResult => {
+  const marks = quarterHourTimestamps(start, 4)
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    approachId: approach.id,
+    approachDescription: approach.description,
+    phaseNumber: approach.phaseNumber,
+    phaseType: approach.phaseType,
+    totalSplitFails: 3,
+    plans: [
+      {
+        planNumber: '1',
+        planDescription: 'Plan 1',
+        start,
+        end,
+        totalCycles: 30,
+        failsInPlan: 3,
+        percentFails: 10,
+      },
+    ],
+    failLines: [{ timestamp: marks[1] }, { timestamp: marks[3] }],
+    gapOutGreenOccupancies: quarterHourPoints(start, [42, 55, 48, 39]),
+    gapOutRedOccupancies: quarterHourPoints(start, [12, 18, 15, 10]),
+    forceOffGreenOccupancies: quarterHourPoints(start, [88, 91, 86, 84]),
+    forceOffRedOccupancies: quarterHourPoints(start, [82, 87, 80, 79]),
+    averageGor: quarterHourPoints(start, [60, 68, 64, 58]),
+    averageRor: quarterHourPoints(start, [40, 52, 46, 38]),
+    percentFails: quarterHourPoints(start, [0, 20, 0, 20]),
+  }
+}
