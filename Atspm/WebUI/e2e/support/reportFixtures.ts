@@ -22,6 +22,7 @@ import type {
   GreenTimeUtilizationResult,
   LeftTurnGapAnalysisResult,
   LinkPivotResult,
+  PedDelayResult,
   PhaseTerminationResult,
   PurdueCoordinationDiagramResult,
   SplitMonitorResult,
@@ -561,4 +562,47 @@ export const leftTurnGapAnalysisResult = (
   sumDuration3: 1366,
   percentTurnableSeries: quarterHourPoints(start, [61.5, 63, 62, 60.5]),
   trendLineGapThreshold: 7.4,
+})
+
+// PedDelay/getReportData for location 1001, 08:00-09:00: one result per
+// pedestrian phase, with a plan strip carrying per-plan statistics, the
+// delay per press, cycle lengths, start-of-walk markers and percent delay.
+export const pedestrianDelayResult = (
+  start: string,
+  end: string,
+  phase: { number: number; approachId: number; description: string }
+): PedDelayResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: phase.approachId,
+  approachDescription: phase.description,
+  phaseNumber: phase.number,
+  phaseDescription: `Phase ${phase.number}`,
+  pedPresses: 143,
+  cyclesWithPedRequests: 27,
+  timeBuffered: 15,
+  uniquePedestrianDetections: 31,
+  minDelay: 3.1,
+  maxDelay: 88.9,
+  averageDelay: 42.4,
+  plans: [
+    {
+      planNumber: '1',
+      planDescription: 'Plan 1',
+      start,
+      end,
+      pedRecallMessage: null,
+      cyclesWithPedRequests: 27,
+      uniquePedDetections: 31,
+      pedPresses: 143,
+      averageDelaySeconds: 42.4,
+      averageCycleLengthSeconds: 120,
+    },
+  ],
+  cycleLengths: quarterHourPoints(start, [120, 120, 120, 120]),
+  pedestrianDelay: quarterHourPoints(start, [38, 51, 44, 36]),
+  startOfWalk: quarterHourPoints(start, [1, 1, 1, 1]),
+  percentDelayByCycleLength: quarterHourPoints(start, [32, 42, 37, 30]),
 })

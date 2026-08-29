@@ -191,3 +191,18 @@ export const leftTurnGapAnalysisMeasure = measureWithOptions({
     trendLineGapThreshold: '7.4',
   },
 })
+
+export const pedestrianDelayMeasure = measureWithOptions({
+  id: 3,
+  name: 'Pedestrian Delay',
+  abbreviation: 'PedD',
+  options: {
+    pedRecallThreshold: '75',
+    showCycleLength: 'TRUE',
+    showPedBeginWalk: 'TRUE',
+    showPedRecall: 'FALSE',
+    showPercentDelay: 'TRUE',
+    timeBuffer: '15',
+    yAxisDefault: '180',
+  },
+})
