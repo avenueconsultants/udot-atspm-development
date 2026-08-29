@@ -23,6 +23,9 @@ import type { Page } from '@playwright/test'
 // don't throw app-wide, per src/lib/react-query.ts, and Layout now wraps its
 // chrome in an error boundary), but stubbing them still keeps these tests
 // off the live network so they stay fast and deterministic.
+//
+// The profile carries a name because a signed-in UserMenu (see
+// e2e/support/session.ts) draws the avatar initials from it.
 export const mockAppShell = async (page: Page) => {
   await page.route('**/MenuItems*', (route) =>
     route.fulfill({
@@ -35,7 +38,7 @@ export const mockAppShell = async (page: Page) => {
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({}),
+      body: JSON.stringify({ firstName: 'Test', lastName: 'User' }),
     })
   )
 }

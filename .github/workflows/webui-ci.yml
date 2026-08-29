@@ -2,6 +2,9 @@ name: WebUI CI
 
 on:
   pull_request:
+    # ready_for_review is added to the defaults so a draft that is marked
+    # ready gets the Playwright gate without needing another push.
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'Atspm/WebUI/**'
       - 'Atspm/ConfigApi/config-spec.json'
@@ -19,6 +22,8 @@ on:
       - 'Atspm/DataApi/data-spec.json'
       - 'Atspm/IdentityApi/identity-spec.json'
       - '.github/workflows/webui-ci.yml'
+  # Lets the Playwright suite be run on demand against any branch.
+  workflow_dispatch:
 
 defaults:
   run:
@@ -58,6 +63,10 @@ jobs:
   e2e:
     name: Playwright smoke suite
     runs-on: ubuntu-latest
+    # The suite is the pre-merge gate, not the inner loop: it runs for pull
+    # requests that are ready for review, for merges to main, and on demand.
+    # Draft PRs get only the fast checks above.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     steps:
       - uses: actions/checkout@v4
 

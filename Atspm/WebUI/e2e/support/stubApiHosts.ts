@@ -15,42 +15,29 @@
 // limitations under the License.
 // #endregion
 import type { Page } from '@playwright/test'
+import { jsonResponse, readApiHosts, type ApiHosts } from './api'
 
 // Answers every request bound for one of the API hosts with an empty JSON
 // array, so a spec never reaches the live network for calls it doesn't care
-// about. The hosts come from the app's own /api/get-env route rather than a
-// hostname pattern, so this holds for whatever URLs the local .env carries.
-// Register the routes a spec does care about after this one - Playwright
-// tries the most recently registered handler first.
+// about. Register the routes a spec does care about after this one -
+// Playwright tries the most recently registered handler first - and use the
+// returned hosts to pin them to the right origin.
 //
 // The body is a bare array on purpose: only the config API wraps collections
 // in an OData envelope, and axios unwraps that shape only when
 // "@odata.context" is present, so an envelope returned for a report-API call
 // would reach the component unwrapped and blow up on .map. A bare array
 // passes through both paths untouched and satisfies every list consumer.
-export const stubApiHosts = async (page: Page) => {
-  const env: Record<string, string | undefined> = await page.request
-    .get('/api/get-env')
-    .then((response) => response.json())
-
-  const hosts = [
-    'CONFIG_URL',
-    'REPORTS_URL',
-    'IDENTITY_URL',
-    'DATA_URL',
-    'SPEED_URL',
-  ]
-    .map((name) => env[name])
-    .filter((url): url is string => !!url)
-    .map((url) => new URL(url).origin)
+export const stubApiHosts = async (page: Page): Promise<ApiHosts> => {
+  const hosts = await readApiHosts(page)
+  const origins = Object.values(hosts).filter(
+    (origin): origin is string => !!origin
+  )
 
   await page.route(
-    (url) => hosts.includes(url.origin),
-    (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([]),
-      })
+    (url) => origins.includes(url.origin),
+    (route) => route.fulfill(jsonResponse([]))
   )
+
+  return hosts
 }

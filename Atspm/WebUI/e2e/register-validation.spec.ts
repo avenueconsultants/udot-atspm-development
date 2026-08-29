@@ -20,7 +20,7 @@ import { mockAppShell } from './support/mockAppShell'
 // All client-side validation - every field's validator now has to pass
 // before the registration mutation fires, so these never reach the identity
 // API and need no backend mocking beyond the shared app-shell stub.
-test('submitting the registration form empty shows every field\'s validation message', async ({
+test("submitting the registration form empty shows every field's validation message", async ({
   page,
 }) => {
   await mockAppShell(page)
