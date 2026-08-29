@@ -215,3 +215,35 @@ test('generating without a location asks for one and sends no request', async ({
   await expect(page.getByText('Please select a location.')).toBeVisible()
   expect(requests).toHaveLength(0)
 })
+
+// The URL is applied once, as soon as the locations arrive. If the measure
+// list is still on its way at that moment, nothing is "available" yet, and
+// SelectChart used to clear the deep-linked measure - permanently, since
+// the URL is never re-applied. Holding the measure list back reproduces the
+// ordering deterministically.
+test('a deep link keeps its measure when the measure list arrives after the locations', async ({
+  page,
+}) => {
+  await stubBackend(page)
+  await stubApproachDelay(page, approachDelayResult())
+  await page.route('**/MeasureType*', async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        '@odata.context': 'stub',
+        value: [
+          { id: MEASURE_TYPE_ID, abbreviation: 'AD', showOnWebsite: true },
+        ],
+      }),
+    })
+  })
+
+  await page.goto(chartUrl())
+
+  await expect(page.getByRole('combobox', { name: 'Measure' })).toHaveText(
+    'Approach Delay'
+  )
+  await expect(page.getByText('Please select a measure.')).toHaveCount(0)
+})

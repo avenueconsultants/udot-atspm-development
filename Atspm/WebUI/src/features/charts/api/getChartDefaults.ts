@@ -22,8 +22,12 @@ import { useQuery } from '@tanstack/react-query'
 
 const normalizeString = (str: string) => str.replace(/\s+/g, '').toLowerCase()
 
-const determineChartType = (chartName: string): ChartType | 'Unknown' => {
-  const normalizedChartName = normalizeString(chartName)
+// MeasureType.name is nullable in the config API's contract; a measure
+// without one simply has no chart type.
+const determineChartType = (
+  chartName: string | null | undefined
+): ChartType | 'Unknown' => {
+  const normalizedChartName = normalizeString(chartName ?? '')
 
   const chartTypeKey = Object.keys(ChartType).find(
     (key) =>

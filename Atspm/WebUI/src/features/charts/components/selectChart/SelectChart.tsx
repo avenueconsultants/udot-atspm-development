@@ -182,6 +182,11 @@ const SelectChart = ({
   }
 
   useEffect(() => {
+    // Until the measure list has arrived nothing is "available", and a
+    // chart type that came from the URL would be cleared for no reason -
+    // and never restored, because the URL is applied only once.
+    if (!measureTypesData) return
+
     if (location && !isChartTypeAvailable) {
       setChartType(null)
     } else if (
@@ -191,7 +196,14 @@ const SelectChart = ({
     ) {
       setChartType(ChartType.PurduePhaseTermination)
     }
-  }, [location, chartType, availableCharts, setChartType, isChartTypeAvailable])
+  }, [
+    location,
+    chartType,
+    availableCharts,
+    setChartType,
+    isChartTypeAvailable,
+    measureTypesData,
+  ])
 
   const handleChartOptionsUpdate = (update: {
     option: string
