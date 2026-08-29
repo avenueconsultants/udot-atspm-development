@@ -1,3 +1,4 @@
+import { useGetRoute } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useTimeSpaceCall } from '@/features/charts/api/getTools'
 import { ToolType } from '@/features/charts/common/types'
@@ -12,11 +13,10 @@ import {
   TimeSpaceAverageOptions,
   TimeSpaceOptions,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { useGetRoute } from '@/api/config'
+import { getApiErrorMessage } from '@/lib/apiError'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton, TabContext, TabList, TabPanel } from '@mui/lab'
 import { Alert, Box, Tab, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
@@ -188,7 +188,7 @@ const TimeSpaceDiagram = () => {
 
               {isError && (
                 <Alert severity="error" sx={{ marginLeft: 1 }}>
-                  {String((error as AxiosError).response?.data ?? 'Error')}
+                  {getApiErrorMessage(error)}
                 </Alert>
               )}
 

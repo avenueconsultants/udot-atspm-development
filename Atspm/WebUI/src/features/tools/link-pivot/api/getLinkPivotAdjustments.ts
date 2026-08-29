@@ -14,8 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { LinkPivotAdjustment, LinkPivotApproachLink, LinkPivotResult, getLinkPivotReportData } from '@/api/reports'
-import { mapStringBooleansToBoolean } from '@/features/charts/api/getTools'
+import {
+  LinkPivotAdjustment,
+  LinkPivotApproachLink,
+  LinkPivotResult,
+  getLinkPivotReportData,
+} from '@/api/reports'
+import {
+  mapStringBooleansToBoolean,
+  toRouteId,
+} from '@/features/charts/api/getTools'
 import { ToolOptions, ToolType } from '@/features/charts/common/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { useQuery } from '@tanstack/react-query'
@@ -128,11 +136,7 @@ export const getLinkPivotAdjustment = async (
   const transformedOptions = mapStringBooleansToBoolean(options)
   const result = await getLinkPivotReportData({
     ...transformedOptions,
-    routeId:
-      typeof transformedOptions.routeId === 'string' &&
-      transformedOptions.routeId !== ''
-        ? Number(transformedOptions.routeId)
-        : undefined,
+    routeId: toRouteId(transformedOptions.routeId),
   })
 
   return toRawLinkPivotData(result)
@@ -148,5 +152,8 @@ export const useLinkPivotAdjustment = ({
     enabled: false,
     queryKey: [ToolType.LinkPivot, toolOptions],
     queryFn: () => getLinkPivotAdjustment(toolType, toolOptions),
+    // The page shows the failure beside its Run Analysis button; the
+    // app-wide policy would rethrow to the _app.tsx boundary instead.
+    throwOnError: false,
   })
 }

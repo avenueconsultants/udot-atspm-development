@@ -20,7 +20,7 @@ import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { useQuery } from '@tanstack/react-query'
-import { mapStringBooleansToBoolean } from '../../api/getTools'
+import { mapStringBooleansToBoolean, toRouteId } from '../../api/getTools'
 import { ToolOptions, ToolType } from '../../common/types'
 
 type QueryFnType = typeof getLinkPivotForTsd
@@ -45,11 +45,7 @@ export const getLinkPivotForTsd = async (
 
   const results = await getLinkPivotLinkPivotForTSD({
     ...transformedOptions,
-    routeId:
-      typeof transformedOptions.routeId === 'string' &&
-      transformedOptions.routeId !== ''
-        ? Number(transformedOptions.routeId)
-        : undefined,
+    routeId: toRouteId(transformedOptions.routeId),
   })
 
   const withData: RawLinkPivotForTsdData[] = []
@@ -73,5 +69,7 @@ export const useLinkPivotForTsd = ({
     enabled: false,
     queryKey: ['tools', toolType, toolOptions],
     queryFn: () => getLinkPivotForTsd(toolType, toolOptions),
+    // An overlay that fails must not take the diagram down with it.
+    throwOnError: false,
   })
 }

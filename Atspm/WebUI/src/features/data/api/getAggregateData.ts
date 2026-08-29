@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { getAggregationReportData } from '@/api/reports'
+import { AggregationOptions, getAggregationReportData } from '@/api/reports'
 import { useNotificationStore } from '@/stores/notifications'
 import { useMutation } from '@tanstack/react-query'
 
@@ -22,7 +22,11 @@ export function usePostAggregateData() {
   const { addNotification } = useNotificationStore()
 
   return useMutation({
-    mutationFn: getAggregationReportData,
+    // Not the generated function itself: React Query calls mutationFn with
+    // (variables, context), and the generated signature's second parameter
+    // is the abort signal, so the context object would reach axios as one.
+    mutationFn: (options: AggregationOptions) =>
+      getAggregationReportData(options),
     onError: (error) => {
       addNotification({
         type: 'error',

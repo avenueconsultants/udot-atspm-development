@@ -53,6 +53,15 @@ type UseToolsOptions = BaseOptions & {
 
 type StringBooleanMap = Record<string, boolean | string | Date>
 
+// Route pickers hand the id over as a string (URL params, the time-space
+// autocomplete) or a number (MUI Select values). The generated options want
+// the number, and nothing at all when no route is chosen.
+export const toRouteId = (value: unknown): number | undefined => {
+  if (value === '' || value == null) return undefined
+  const routeId = Number(value)
+  return Number.isFinite(routeId) ? routeId : undefined
+}
+
 export const mapStringBooleansToBoolean = (obj: ToolOptions) => {
   return Object.entries(obj).reduce<StringBooleanMap>((acc, [key, value]) => {
     // Check if the value is exactly "true" or "false" (case-insensitive)
@@ -230,11 +239,7 @@ export const getTools = async (
 ): Promise<RawTimeSpaceDiagramResponse> => {
   const transformedOptions = mapStringBooleansToBoolean(options)
 
-  const routeId =
-    typeof transformedOptions.routeId === 'string' &&
-    transformedOptions.routeId !== ''
-      ? Number(transformedOptions.routeId)
-      : undefined
+  const routeId = toRouteId(transformedOptions.routeId)
 
   let response: TimeSpaceResponseData
 
@@ -279,5 +284,8 @@ export const useTimeSpaceCall = ({
     enabled: false,
     queryKey: ['tools', toolType, toolOptions],
     queryFn: () => getTools(toolType, toolOptions),
+    // The page shows the failure beside its Generate button; the app-wide
+    // policy would rethrow to the _app.tsx boundary and replace the page.
+    throwOnError: false,
   })
 }
