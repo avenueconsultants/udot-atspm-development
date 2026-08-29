@@ -151,3 +151,16 @@ export const approachSpeedMeasure = measureWithOptions({
     binSize: '15',
   },
 })
+
+// Seeded exactly as the backend does: `usePermissivePhase` is the seeded
+// option name, while the report contract's field is `getPermissivePhase`.
+export const arrivalsOnRedMeasure = measureWithOptions({
+  id: 9,
+  name: 'Arrivals On Red',
+  abbreviation: 'AoR',
+  options: {
+    usePermissivePhase: 'TRUE',
+    showPlanStatistics: 'TRUE',
+    binSize: '15',
+  },
+})

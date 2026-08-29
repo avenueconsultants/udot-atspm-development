@@ -17,6 +17,7 @@
 import type {
   ApproachSpeedResult,
   ApproachVolumeResult,
+  ArrivalOnRedResult,
   DataPointForDouble,
   LinkPivotResult,
   PhaseTerminationResult,
@@ -450,4 +451,38 @@ export const approachSpeedResult = (
   averageSpeeds: quarterHourPoints(start, [32, 34, 33, 31]),
   eightyFifthSpeeds: quarterHourPoints(start, [40, 42, 41, 39]),
   fifteenthSpeeds: quarterHourPoints(start, [24, 26, 25, 23]),
+})
+
+// ArrivalOnRed/getReportData for location 1001, 08:00-09:00: one result
+// per approach, with a plan strip and the percentage, total-vehicle and
+// arrivals-on-red series.
+export const arrivalsOnRedResult = (
+  start: string,
+  end: string,
+  approach: { id: number; description: string; phaseNumber: number }
+): ArrivalOnRedResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  phaseNumber: approach.phaseNumber,
+  phaseDescription: `Phase ${approach.phaseNumber}`,
+  totalDetectorHits: 1000,
+  totalArrivalOnRed: 380,
+  percentArrivalOnRed: 38,
+  plans: [
+    {
+      planNumber: '1',
+      planDescription: 'Plan 1',
+      start,
+      end,
+      percentArrivalOnRed: 38,
+      percentRedTime: 55,
+    },
+  ],
+  percentArrivalsOnRed: quarterHourPoints(start, [35, 42, 39, 36]),
+  totalVehicles: quarterHourPoints(start, [820, 910, 880, 760]),
+  arrivalsOnRed: quarterHourPoints(start, [287, 382, 343, 274]),
 })
