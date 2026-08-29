@@ -17,7 +17,7 @@
 export function formatBytes(bytes: number) {
   if (!Number.isFinite(bytes) || bytes <= 0) return '0 B'
   const k = 1024
-  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB']
   const i = Math.min(
     units.length - 1,
     Math.floor(Math.log(bytes) / Math.log(k))
@@ -30,9 +30,12 @@ export function formatBytes(bytes: number) {
 export function formatMs(ms: number) {
   if (!Number.isFinite(ms)) return ''
   if (ms < 1000) return `${ms} ms`
-  const s = ms / 1000
-  if (s < 60) return `${s.toFixed(2)} s`
-  const m = Math.floor(s / 60)
-  const r = s - m * 60
+  // Round to the displayed precision before choosing a unit, so a duration
+  // that would display as "60.00 s" is shown as a minute instead.
+  const hundredths = Math.round(ms / 10)
+  if (hundredths < 6000) return `${(hundredths / 100).toFixed(2)} s`
+  const tenths = Math.round(ms / 100)
+  const m = Math.floor(tenths / 600)
+  const r = (tenths - m * 600) / 10
   return `${m}m ${r.toFixed(1)}s`
 }

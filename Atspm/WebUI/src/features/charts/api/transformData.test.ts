@@ -163,12 +163,11 @@ describe('transformChartData', () => {
     expect(transformRampMeteringData).toHaveBeenCalledWith(response)
   })
 
-  // PriorityDetails is reachable through TypeApiMap but has no case here.
-  // PrioritySummaryChart calls getPriorityDetailsReportData directly as a
-  // drill-down instead of going through this dispatcher, so nothing should
-  // arrive with this type - if something ever does, it throws rather than
-  // silently rendering the wrong chart.
-  it('throws for PriorityDetails, which has no dispatcher case', () => {
+  // PriorityDetails is a click-driven drill-down that PrioritySummaryChart
+  // fetches and transforms itself; it is not a chart this dispatcher builds.
+  // If something ever arrives with this type, throwing beats silently
+  // rendering the wrong chart.
+  it('rejects PriorityDetails, which is a drill-down the summary chart renders itself', () => {
     expect(() =>
       transformChartData({
         type: ChartType.PriorityDetails,

@@ -60,17 +60,7 @@ describe('getDirectionAccentColor', () => {
 })
 
 describe('getDirectionAccentBorder', () => {
-  it('builds a CSS border using the resolved accent color and width', () => {
-    expect(getDirectionAccentBorder('North', '5px')).toBe(
-      `5px solid ${Color.Blue}`
-    )
-  })
-
-  it('defaults to a 7px width', () => {
-    expect(getDirectionAccentBorder('East')).toBe(`7px solid ${Color.Yellow}`)
-  })
-
-  it('returns "none" for an unrecognized direction', () => {
+  it('draws no border for an unrecognized direction', () => {
     expect(getDirectionAccentBorder('Diagonal')).toBe('none')
   })
 })

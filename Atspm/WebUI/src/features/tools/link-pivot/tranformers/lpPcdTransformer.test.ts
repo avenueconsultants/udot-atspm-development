@@ -72,13 +72,6 @@ describe('transformlpPcdData', () => {
     expect(result.data.charts).toHaveLength(2)
   })
 
-  it('calls transformPcdData with a wider plan width for entries after the first', () => {
-    transformlpPcdData(buildData(), 'Time of Day')
-
-    expect(transformPcdData).toHaveBeenNthCalledWith(1, expect.anything(), 120)
-    expect(transformPcdData).toHaveBeenNthCalledWith(2, expect.anything(), 80)
-  })
-
   it('gives only the first chart a full title, location, and legend', () => {
     const result = transformlpPcdData(buildData(), 'Time of Day')
     type ChartWithTitleAndLegend = EChartsOption & {

@@ -86,10 +86,22 @@ describe('transformRampMeteringData', () => {
   })
 
   it('carries mainline data points through to the charts', () => {
-    const rendered = JSON.stringify(transformRampMeteringData(populated()))
+    const seriesData = transformRampMeteringData(
+      populated()
+    ).data.charts.flatMap((entry) =>
+      (
+        (entry.chart as { series?: Array<{ data?: unknown }> }).series ?? []
+      ).map((series) => series.data)
+    )
 
-    expect(rendered).toContain('1800.00')
-    expect(rendered).toContain('55.00')
+    expect(seriesData).toContainEqual([
+      ['2026-04-01T08:00:00', '1800.00'],
+      ['2026-04-01T08:15:00', '1801.00'],
+    ])
+    expect(seriesData).toContainEqual([
+      ['2026-04-01T08:00:00', '55.00'],
+      ['2026-04-01T08:15:00', '56.00'],
+    ])
   })
 
   it('renders a result whose every optional field is null', () => {

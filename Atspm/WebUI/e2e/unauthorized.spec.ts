@@ -17,18 +17,6 @@
 import { expect, test } from '@playwright/test'
 import { mockAppShell } from './support/mockAppShell'
 
-test('the unauthorized page renders its message', async ({ page }) => {
-  await mockAppShell(page)
-  await page.goto('/unauthorized')
-
-  await expect(
-    page.getByRole('heading', { name: 'Unauthorized Access' })
-  ).toBeVisible()
-  await expect(
-    page.getByText('You do not have permission to access this page.')
-  ).toBeVisible()
-})
-
 test('visiting verify-user while logged out redirects to unauthorized', async ({
   page,
   context,

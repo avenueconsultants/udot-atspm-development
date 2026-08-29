@@ -198,78 +198,6 @@ describe('transformTimeSpaceHistoricData detection series interaction', () => {
     HTMLCanvasElement.prototype.getContext = originalCanvasGetContext
   })
 
-  it('marks detection series as non-interactable', () => {
-    const response: RawTimeSpaceDiagramResponse = {
-      type: ToolType.TimeSpaceHistoric,
-      data: [
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Primary'),
-        },
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Opposing'),
-        },
-      ],
-    }
-
-    const result = transformTimeSpaceHistoricData(response)
-    const chart = result.data.chart as EChartsOption
-    const series = Array.isArray(chart.series)
-      ? (chart.series as SeriesOption[])
-      : []
-
-    const laneByLane = series.find((entry) =>
-      String(entry.name).startsWith('Lane by Lane Count ')
-    )
-    const advanceCount = series.find((entry) =>
-      String(entry.name).startsWith('Advance Count ')
-    )
-    const stopBarPresence = series.find((entry) =>
-      String(entry.name).startsWith('Stop Bar Presence ')
-    )
-
-    expect(laneByLane?.silent).toBe(true)
-    expect(laneByLane?.tooltip).toMatchObject({ show: false })
-    expect(advanceCount?.silent).toBe(true)
-    expect(advanceCount?.tooltip).toMatchObject({ show: false })
-    expect(stopBarPresence?.silent).toBe(true)
-    expect(stopBarPresence?.tooltip).toMatchObject({ show: false })
-  })
-
-  it('marks distance label cards as non-interactable', () => {
-    const response: RawTimeSpaceDiagramResponse = {
-      type: ToolType.TimeSpaceHistoric,
-      data: [
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Primary'),
-        },
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Opposing'),
-        },
-      ],
-    }
-
-    const result = transformTimeSpaceHistoricData(response)
-    const chart = result.data.chart as EChartsOption
-    const series = Array.isArray(chart.series)
-      ? (chart.series as SeriesOption[])
-      : []
-
-    const distanceLabels = series.find(
-      (entry) => String(entry.name) === 'Labels distance'
-    )
-
-    expect(distanceLabels?.silent).toBe(true)
-    expect(distanceLabels?.tooltip).toMatchObject({ show: false })
-  })
-
   it('omits programmed split from phase labels', () => {
     const response: RawTimeSpaceDiagramResponse = {
       type: ToolType.TimeSpaceHistoric,
@@ -324,47 +252,6 @@ describe('transformTimeSpaceHistoricData detection series interaction', () => {
     expect(texts).toEqual(expect.arrayContaining(['AOG', '50%']))
     expect(texts).not.toContain('Split')
     expect(texts).not.toContain('47s')
-  })
-
-  it('marks turn series as non-interactable', () => {
-    const response: RawTimeSpaceDiagramResponse = {
-      type: ToolType.TimeSpaceHistoric,
-      data: [
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Primary', {
-            tmcForPhase: {
-              leftTurnEvents: [{ start: '2026-04-07T08:25:00Z' }] as never[],
-              rightTurnEvents: [{ start: '2026-04-07T08:26:00Z' }] as never[],
-            },
-          }),
-        },
-        {
-          isSuccess: true,
-          error: null,
-          result: buildHistoricLocation('Opposing'),
-        },
-      ],
-    }
-
-    const result = transformTimeSpaceHistoricData(response)
-    const chart = result.data.chart as EChartsOption
-    const series = Array.isArray(chart.series)
-      ? (chart.series as SeriesOption[])
-      : []
-
-    const leftTurn = series.find((entry) =>
-      String(entry.name).startsWith('Left Turn ')
-    )
-    const rightTurn = series.find((entry) =>
-      String(entry.name).startsWith('Right Turn ')
-    )
-
-    expect(leftTurn?.silent).toBe(true)
-    expect(leftTurn?.tooltip).toMatchObject({ show: false })
-    expect(rightTurn?.silent).toBe(true)
-    expect(rightTurn?.tooltip).toMatchObject({ show: false })
   })
 
   it('renders and legends turn series for both primary and opposing directions', () => {

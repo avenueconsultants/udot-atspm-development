@@ -88,10 +88,12 @@ describe('transformYellowAndRedActuationsData', () => {
   })
 
   it('carries actuation data points through to the series', () => {
-    const rendered = JSON.stringify(seriesOf(firstChart(populated())))
+    const seriesData = seriesOf(firstChart(populated())).map(
+      (series) => series.data
+    )
 
-    expect(rendered).toContain('1.75')
-    expect(rendered).toContain('2.25')
+    expect(seriesData).toContainEqual([['2026-04-01T08:00:00', '1.75']])
+    expect(seriesData).toContainEqual([['2026-04-01T08:00:00', '2.25']])
   })
 
   it('renders a result whose every optional field is null', () => {

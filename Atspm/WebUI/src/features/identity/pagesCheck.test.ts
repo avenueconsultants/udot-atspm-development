@@ -62,7 +62,7 @@ describe('useGetAdminPagesList', () => {
     expect(result.current.get(PageNames.FAQs)).toBe('/admin/faq')
   })
 
-  it('grants only the pages matching the user\'s specific claims', () => {
+  it("grants only the pages matching the user's specific claims", () => {
     setCookie('Role:View,User:View')
     const { result } = renderHook(() => useGetAdminPagesList())
 
@@ -87,7 +87,9 @@ describe('useViewPage', () => {
   let consoleError: jest.SpyInstance
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined)
   })
 
   afterEach(() => {
@@ -120,7 +122,9 @@ describe('useSideBarPermission', () => {
   let consoleError: jest.SpyInstance
 
   beforeEach(() => {
-    consoleError = jest.spyOn(console, 'error').mockImplementation(() => undefined)
+    consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined)
   })
 
   afterEach(() => {
@@ -129,17 +133,13 @@ describe('useSideBarPermission', () => {
 
   it('grants permission when the claim matches, case-insensitively', () => {
     setCookie('watchdog:view')
-    const { result } = renderHook(() =>
-      useSideBarPermission('Watchdog:View')
-    )
+    const { result } = renderHook(() => useSideBarPermission('Watchdog:View'))
     expect(result.current).toBe(true)
   })
 
   it('grants permission to admins regardless of the specific claim', () => {
     setCookie('Admin')
-    const { result } = renderHook(() =>
-      useSideBarPermission('Watchdog:View')
-    )
+    const { result } = renderHook(() => useSideBarPermission('Watchdog:View'))
     expect(result.current).toBe(true)
   })
 
@@ -170,12 +170,10 @@ describe('useUserHasClaim', () => {
     expect(result.current).toBe(true)
   })
 
-  it('is case-sensitive, unlike useGetAdminPagesList/useSideBarPermission', () => {
-    // Documents an inconsistency with the other two hooks above, which both
-    // lowercase before comparing.
+  it('matches claims case-insensitively, like the other permission hooks', () => {
     setCookie('user:view')
     const { result } = renderHook(() => useUserHasClaim('User:View'))
-    expect(result.current).toBe(false)
+    expect(result.current).toBe(true)
   })
 
   it('denies access when the claim is absent', () => {

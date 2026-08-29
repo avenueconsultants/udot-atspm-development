@@ -96,9 +96,9 @@ describe('transformSplitMonitorData', () => {
   })
 
   it('carries data point values through to the series', () => {
-    const rendered = JSON.stringify(seriesOf(firstChart(populated())))
-
-    expect(rendered).toContain('12.50')
+    expect(
+      seriesOf(firstChart(populated())).map((series) => series.data)
+    ).toContainEqual([['2026-04-01T08:00:00', '12.50']])
   })
 
   it('renders a result whose every optional field is null', () => {

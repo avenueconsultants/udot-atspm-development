@@ -17,24 +17,6 @@
 import { expect, test } from '@playwright/test'
 import { mockAppShell } from './support/mockAppShell'
 
-// A smoke test that only depends on the Next.js server itself (via the
-// internal /api/get-env route) - it deliberately avoids submitting the form,
-// since that calls the real identity API and there's no backend running in
-// this setup yet.
-test('login page renders the sign-in form', async ({ page }) => {
-  await mockAppShell(page)
-  await page.goto('/login')
-
-  await expect(
-    page.getByRole('heading', { name: 'Login' })
-  ).toBeVisible()
-  await expect(page.getByLabel('Email Address')).toBeVisible()
-  await expect(page.getByLabel('Password')).toBeVisible()
-  await expect(
-    page.getByRole('button', { name: 'Sign In', exact: true })
-  ).toBeVisible()
-})
-
 test('a successful sign-in stores the session cookies and redirects home', async ({
   page,
 }) => {
@@ -54,9 +36,7 @@ test('a successful sign-in stores the session cookies and redirects home', async
   await page.goto('/login')
   await page.getByLabel('Email Address').fill('user@example.com')
   await page.getByLabel('Password').fill('correct-password')
-  await page
-    .getByRole('button', { name: 'Sign In', exact: true })
-    .click()
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click()
 
   // The component sets cookies synchronously right before triggering
   // `window.location.href = '/'`, which itself redirects again to the
@@ -90,9 +70,7 @@ test('a failed sign-in shows an error and keeps the user on the login page', asy
   await page.goto('/login')
   await page.getByLabel('Email Address').fill('user@example.com')
   await page.getByLabel('Password').fill('wrong-password')
-  await page
-    .getByRole('button', { name: 'Sign In', exact: true })
-    .click()
+  await page.getByRole('button', { name: 'Sign In', exact: true }).click()
 
   await expect(page.getByText('Invalid email or password')).toBeVisible()
   expect(new URL(page.url()).pathname).toBe('/login')

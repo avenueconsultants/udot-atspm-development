@@ -17,27 +17,20 @@
 import { addSpaces } from './string'
 
 describe('addSpaces', () => {
-  it('inserts a space before a capital that follows a lowercase letter', () => {
-    expect(addSpaces('myVariableName')).toBe('myVariable Name')
+  it('puts a space before each capital that starts a word', () => {
+    expect(addSpaces('myVariableName')).toBe('my Variable Name')
+    expect(addSpaces('helloWorld')).toBe('hello World')
     expect(addSpaces('HelloWorld')).toBe('Hello World')
   })
 
-  it('does not insert a space before the very first capital letter in the string', () => {
-    // Quirk of the implementation: firstCapitalFound only starts being
-    // enforced *after* the first capital is seen, so a single leading
-    // capital-letter transition never gets a preceding space.
-    expect(addSpaces('helloWorld')).toBe('helloWorld')
-  })
-
-  it('keeps a run of consecutive capitals together with no internal spaces', () => {
+  it('keeps an acronym together and separates it from the word that follows', () => {
     expect(addSpaces('ALLCAPS')).toBe('ALLCAPS')
+    expect(addSpaces('ABCFoo')).toBe('ABC Foo')
+    expect(addSpaces('ReportApi')).toBe('Report Api')
   })
 
-  it('does not separate an acronym run from a following capitalized word', () => {
-    // Another consequence of the same rule: because the letter right after
-    // an acronym run is itself preceded by an uppercase letter, no space is
-    // inserted at the acronym/word boundary.
-    expect(addSpaces('ABCFoo')).toBe('ABCFoo')
+  it('separates a capital from a preceding digit', () => {
+    expect(addSpaces('speed85thPercentile')).toBe('speed85th Percentile')
   })
 
   it('leaves strings with no capitals unchanged', () => {

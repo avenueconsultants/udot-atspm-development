@@ -38,11 +38,9 @@ describe('formatBytes', () => {
     expect(formatBytes(150 * 1024 * 1024)).toBe('150 MB') // >= 100: 0 digits
   })
 
-  it('clamps to TB with no larger unit, so values beyond TB read as an inflated TB figure', () => {
-    // units stops at 'TB', so anything past that just divides by 1024^4
-    // instead of promoting to a PB-style unit - documenting the actual
-    // (not "correct") behavior here.
-    expect(formatBytes(1024 ** 6)).toBe('1048576 TB')
+  it('keeps promoting units past terabytes', () => {
+    expect(formatBytes(1024 ** 5)).toBe('1.00 PB')
+    expect(formatBytes(1024 ** 6)).toBe('1.00 EB')
   })
 })
 
@@ -57,12 +55,11 @@ describe('formatMs', () => {
 
   it('formats sub-minute durations in seconds with 2 decimals', () => {
     expect(formatMs(1500)).toBe('1.50 s')
+    expect(formatMs(59994)).toBe('59.99 s')
   })
 
-  it('displays as "60.00 s" just under the minute boundary due to toFixed rounding', () => {
-    // 59999ms / 1000 = 59.999s, which is < 60 and takes the seconds branch,
-    // but toFixed(2) rounds the display up to "60.00 s".
-    expect(formatMs(59999)).toBe('60.00 s')
+  it('shows a duration that rounds up to a minute as one', () => {
+    expect(formatMs(59999)).toBe('1m 0.0s')
   })
 
   it('formats minute-plus durations as "Xm Y.Zs"', () => {

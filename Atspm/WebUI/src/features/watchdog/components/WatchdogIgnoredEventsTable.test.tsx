@@ -1,79 +1,52 @@
+// #region license
+// Copyright 2026 Utah Departement of Transportation
+// for WebUI - WatchdogIgnoredEventsTable.test.tsx
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//http://www.apache.org/licenses/LICENSE-2.
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// #endregion
+import { CONFIG_API, odataCollection } from '@/test/fixtures/api'
+import { watchDogIgnoreEvents } from '@/test/fixtures/config'
+import { server } from '@/test/msw/server'
+import { renderWithProviders, screen } from '@/test/test-utils'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-
+import { HttpResponse, http } from 'msw'
 import WatchdogIgnoredEventsTable from './WatchdogIgnoredEventsTable'
 
-const adminTableMock = jest.fn(() => <div>Admin Table</div>)
-
-jest.mock('@/components/AdminTable/AdminTable', () => ({
-  __esModule: true,
-  default: (props: unknown) => adminTableMock(props),
-}))
-
-jest.mock('@/components/AdminTable/DeleteModal', () => ({
-  __esModule: true,
-  default: () => <div>Delete Modal</div>,
-}))
-
-jest.mock('@/api/config', () => ({
-  __esModule: true,
-  ...jest.requireActual('@/api/config'),
-  useGetWatchDogIgnoreEvent: () => ({
-    data: [
-      {
-        id: 1,
-        locationId: 100,
-        locationIdentifier: '001',
-        start: '2026-03-01T00:00:00',
-        end: '2026-03-31T00:00:00',
-        issueType: 'RecordCount',
-        componentType: 'Location',
-        componentId: 100,
-        phase: 2,
-        created: '2026-03-01T00:00:00',
-        modified: '2026-03-02T00:00:00',
-        createdBy: 'tester',
-        modifiedBy: 'tester',
-      },
-    ],
-    isLoading: false,
-    refetch: jest.fn(),
-  }),
-  usePatchWatchDogIgnoreEventFromKey: () => ({
-    mutateAsync: jest.fn(),
-  }),
-  useDeleteWatchDogIgnoreEventFromKey: () => ({
-    mutateAsync: jest.fn(),
-  }),
-}))
-
 jest.mock('@/stores/notifications', () => ({
-  __esModule: true,
-  useNotificationStore: () => ({
-    addNotification: jest.fn(),
-  }),
+  useNotificationStore: () => ({ addNotification: jest.fn() }),
 }))
 
 describe('WatchdogIgnoredEventsTable', () => {
-  beforeEach(() => {
-    adminTableMock.mockClear()
-  })
+  // Regression test: the labels used to be looked up by integer while the
+  // config API sends member names, so every row fell through to the raw name.
+  it('shows the ignored events with their issue and component labelled', async () => {
+    server.use(
+      http.get(`${CONFIG_API}/WatchDogIgnoreEvent`, () =>
+        HttpResponse.json(
+          odataCollection('WatchDogIgnoreEvent', watchDogIgnoreEvents)
+        )
+      )
+    )
 
-  it('passes an edit modal into AdminTable', () => {
-    render(
+    renderWithProviders(
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <WatchdogIgnoredEventsTable />
       </LocalizationProvider>
     )
 
-    expect(screen.getByText('Admin Table')).toBeInTheDocument()
-    expect(adminTableMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        marginTop: 0,
-        editModal: expect.any(Object),
-      })
-    )
+    expect(await screen.findByText('Record Count')).toBeInTheDocument()
+    expect(screen.getByText('Location (1)')).toBeInTheDocument()
+    expect(screen.getByText('1001')).toBeInTheDocument()
   })
 })

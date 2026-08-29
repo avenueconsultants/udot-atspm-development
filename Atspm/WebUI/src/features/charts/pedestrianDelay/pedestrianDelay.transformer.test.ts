@@ -98,13 +98,9 @@ describe('transformPedestrianDelayData', () => {
   })
 
   it('carries delay data points through to a series', () => {
-    const chart = firstChart(populated())
-    const withData = seriesOf(chart).filter(
-      (series) => Array.isArray(series.data) && series.data.length > 0
-    )
-
-    expect(withData.length).toBeGreaterThan(0)
-    expect(JSON.stringify(withData)).toContain('42.40')
+    expect(
+      seriesOf(firstChart(populated())).map((series) => series.data)
+    ).toContainEqual([['2026-04-01T08:00:00', '42.40']])
   })
 
   it('renders a result whose every optional field is null', () => {

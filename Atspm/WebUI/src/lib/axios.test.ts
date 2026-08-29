@@ -14,13 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import type { InternalAxiosRequestConfig } from 'axios'
 import {
   buildApiBaseUrl,
   buildApiUrl,
   configAxios,
   initializeAxiosInstances,
-  reportsAxios,
 } from './axios'
 
 // jest.setup.ts's setupFilesAfterEnv eagerly imports '@/lib/axios' (to call
@@ -83,80 +82,9 @@ describe('buildApiUrl', () => {
   })
 })
 
-// initializeAxiosInstances registers axios interceptors rather than
-// returning inspectable values, so these tests invoke the registered
-// handlers directly (axios exposes them via interceptors.*.handlers) instead
-// of making real network calls.
-describe('initializeAxiosInstances OData unwrapping', () => {
-  beforeEach(async () => {
-    await initializeAxiosInstances({
-      CONFIG_URL: 'http://localhost/config',
-      REPORTS_URL: 'http://localhost/reports',
-      IDENTITY_URL: 'http://localhost/identity',
-      DATA_URL: 'http://localhost/data',
-      SPEED_URL: 'http://localhost/speed',
-      MAP_DEFAULT_LATITUDE: undefined,
-      MAP_DEFAULT_LONGITUDE: undefined,
-      MAP_DEFAULT_ZOOM: undefined,
-      MAP_TILE_LAYER: undefined,
-      MAP_TILE_ATTRIBUTION: undefined,
-      POWERED_BY_IMAGE_URL: undefined,
-      SPEED_LIMIT_MAP_LAYER: undefined,
-    })
-  })
-
-  const runResponseInterceptor = (
-    instance: typeof configAxios,
-    data: unknown
-  ) => {
-    const handler = instance.interceptors.response.handlers?.[0]
-    if (!handler?.fulfilled) {
-      throw new Error('expected a registered response interceptor')
-    }
-    return handler.fulfilled({ data } as AxiosResponse)
-  }
-
-  it('unwraps a true OData collection envelope on the config API', () => {
-    const result = runResponseInterceptor(configAxios, {
-      '@odata.context': 'http://localhost/config/$metadata#Locations',
-      value: [{ id: 1 }, { id: 2 }],
-    })
-
-    expect(result).toEqual([{ id: 1 }, { id: 2 }])
-  })
-
-  it('does not unwrap a single-entity DTO that happens to have its own "value" field', () => {
-    const measureOption = { id: 1, value: 5 }
-    const result = runResponseInterceptor(configAxios, measureOption)
-
-    expect(result).toBe(measureOption)
-  })
-
-  it('does not unwrap when "value" is present but is not an array', () => {
-    const data = { '@odata.context': 'ctx', value: 'not-an-array' }
-    const result = runResponseInterceptor(configAxios, data)
-
-    expect(result).toBe(data)
-  })
-
-  it('does not unwrap a response that is already an array', () => {
-    const data = [{ id: 1 }]
-    const result = runResponseInterceptor(configAxios, data)
-
-    expect(result).toBe(data)
-  })
-
-  it('does not unwrap OData-shaped data on non-OData APIs like reports', () => {
-    const data = {
-      '@odata.context': 'ctx',
-      value: [{ id: 1 }],
-    }
-    const result = runResponseInterceptor(reportsAxios, data)
-
-    expect(result).toBe(data)
-  })
-})
-
+// The OData unwrapping the response interceptor does is covered end to end
+// in axios.responses.test.ts, through MSW; the request interceptor has no
+// network side, so it is driven directly here.
 describe('authRequestInterceptor', () => {
   beforeEach(async () => {
     clearTokenCookie()
