@@ -15,32 +15,24 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { purdueCoordinationDiagramMeasure } from './support/measureFixtures'
 import {
-  purdueCoordinationDiagramMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  binSizePicker,
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 import { purdueCoordinationDiagramResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // The Purdue Coordination Diagram is the first measure whose option panel
 // feeds the request: the bin size, volume and plan-statistics defaults come
 // from the measure's MeasureOptions, and the report returns one result per
 // coordinated phase, each becoming its own chart.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'PurdueCoordinationDiagram',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('PurdueCoordinationDiagram')
 
 const twoPhases = [
   purdueCoordinationDiagramResult(START, END, {
@@ -55,40 +47,12 @@ const twoPhases = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoPhases) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  // One stub answers both the measure list and the ?expand=measureOptions
-  // call the defaults come from.
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [purdueCoordinationDiagramMeasure]),
+const stubBackend = (page: Page, report: unknown = twoPhases) =>
+  stubMeasurePage(page, {
+    measure: purdueCoordinationDiagramMeasure,
+    reportPath: '/PurdueCoordinationDiagram/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([purdueCoordinationDiagramMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/PurdueCoordinationDiagram/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const binSizePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(5|15|60)$/ })
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders one chart per phase and posts the measure defaults', async ({
   page,

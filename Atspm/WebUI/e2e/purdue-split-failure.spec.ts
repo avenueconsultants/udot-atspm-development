@@ -15,32 +15,23 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { purdueSplitFailureMeasure } from './support/measureFixtures'
 import {
-  purdueSplitFailureMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { purdueSplitFailureResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Purdue Split Failure: one chart per approach (permissive phases too),
 // occupancy scatters and their averages, and a single typed option, the
 // first seconds of red. The report path is SplitFail while the chart type
 // is PurdueSplitFailure.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'PurdueSplitFailure',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('PurdueSplitFailure')
 
 const twoApproaches = [
   purdueSplitFailureResult(START, END, {
@@ -57,38 +48,15 @@ const twoApproaches = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoApproaches) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [purdueSplitFailureMeasure]),
+const stubBackend = (page: Page, report: unknown = twoApproaches) =>
+  stubMeasurePage(page, {
+    measure: purdueSplitFailureMeasure,
+    reportPath: '/SplitFail/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([purdueSplitFailureMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/SplitFail/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
 
 const firstSecondsOfRed = (page: Page) =>
   page.getByLabel('First Seconds of Red')
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders one chart per approach and posts the seeded defaults', async ({
   page,

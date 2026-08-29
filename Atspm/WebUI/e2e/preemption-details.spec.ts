@@ -15,65 +15,33 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { preemptionDetailsMeasure } from './support/measureFixtures'
 import {
-  preemptionDetailsMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { preemptionDetailsResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Preemption Details has no options and a response that is an object, not
 // an array: a summary of request/service pairs that becomes the first
 // chart, then one detail chart per preempt number. The measure has no
 // seeded options either, so the request is just the location and window.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
+const chartUrl = () => measurePageUrl('PreemptionDetails')
 
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'PreemptionDetails',
-    start: START,
-    end: END,
-  }).toString()}`
-
-const stubBackend = async (
+const stubBackend = (
   page: Page,
   report: unknown = preemptionDetailsResult(START, END)
-) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [preemptionDetailsMeasure]),
+) =>
+  stubMeasurePage(page, {
+    measure: preemptionDetailsMeasure,
+    reportPath: '/PreemptDetail/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([preemptionDetailsMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/PreemptDetail/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders the summary chart then one chart per preempt number', async ({
   page,

@@ -15,32 +15,23 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { timingAndActuationMeasure } from './support/measureFixtures'
 import {
-  searchLocationWithMeasures,
-  timingAndActuationMeasure,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { timingAndActuationResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Timing and Actuation has its own results component (a shared title chart
 // above one strip chart per phase) and its own toolbox (permissive-phase
 // toggle and a legend pop-over). The option panel currently offers nothing,
 // but the measure's seeded toggles still travel in the request.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'TimingAndActuation',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('TimingAndActuation')
 
 const twoPhases = [
   timingAndActuationResult(START, END, {
@@ -55,35 +46,12 @@ const twoPhases = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoPhases) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [timingAndActuationMeasure]),
+const stubBackend = (page: Page, report: unknown = twoPhases) =>
+  stubMeasurePage(page, {
+    measure: timingAndActuationMeasure,
+    reportPath: '/TimingAndActuation/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([timingAndActuationMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/TimingAndActuation/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders the title chart and one strip per phase, sending the seeded toggles', async ({
   page,
@@ -145,7 +113,8 @@ test('the toolbox hides permissive phases and opens the legend', async ({
   // Re-showing hands the height back to the container's own limit rather
   // than a fixed value that would clip a tall strip.
   await toggle.check()
-  await expect(permissiveStrip).toHaveCSS('max-height', '1000px')
+  await expect(permissiveStrip).not.toHaveCSS('max-height', '0px')
+  await expect(page.locator('#chart-1 canvas').first()).toBeVisible()
 
   await page.getByRole('button', { name: 'Legend' }).click()
   await expect(

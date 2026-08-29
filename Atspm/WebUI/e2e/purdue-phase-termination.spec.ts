@@ -15,67 +15,35 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { purduePhaseTerminationMeasure } from './support/measureFixtures'
 import {
-  purduePhaseTerminationMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { purduePhaseTerminationResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Purdue Phase Termination returns one result for the whole location (a
 // single chart with a row per phase and the plan strip across the top) and
 // takes one option, the consecutive count, typed into a number field.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
+const chartUrl = () => measurePageUrl('PurduePhaseTermination')
 
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'PurduePhaseTermination',
-    start: START,
-    end: END,
-  }).toString()}`
-
-const stubBackend = async (
+const stubBackend = (
   page: Page,
   report: unknown = purduePhaseTerminationResult(START, END)
-) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [purduePhaseTerminationMeasure]),
+) =>
+  stubMeasurePage(page, {
+    measure: purduePhaseTerminationMeasure,
+    reportPath: '/PurduePhaseTermination/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([purduePhaseTerminationMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/PurduePhaseTermination/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
 
 const consecutiveCount = (page: Page) =>
   page.getByLabel('Selected Consecutive Count')
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders the location chart and posts the default consecutive count', async ({
   page,

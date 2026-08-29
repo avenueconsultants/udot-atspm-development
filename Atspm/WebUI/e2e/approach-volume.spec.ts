@@ -15,31 +15,23 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { approachVolumeMeasure } from './support/measureFixtures'
 import {
-  approachVolumeMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  binSizePicker,
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 import { approachVolumeResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Approach Volume pairs opposing directions: one result per pair, each
 // rendering a chart with the peak-hour summary table beneath it. The
 // summary is nullable on the contract, which the last test pins down.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'ApproachVolume',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('ApproachVolume')
 
 const twoPairs = [
   approachVolumeResult(START, END, {
@@ -54,38 +46,12 @@ const twoPairs = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoPairs) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [approachVolumeMeasure]),
+const stubBackend = (page: Page, report: unknown = twoPairs) =>
+  stubMeasurePage(page, {
+    measure: approachVolumeMeasure,
+    reportPath: '/ApproachVolume/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([approachVolumeMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/ApproachVolume/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const binSizePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(5|15|60)$/ })
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 const peakHourTables = (page: Page) =>
   page.getByRole('table').filter({ hasText: 'Peak Hour K Factor' })

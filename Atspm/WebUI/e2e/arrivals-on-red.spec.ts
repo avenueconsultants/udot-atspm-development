@@ -15,31 +15,23 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { arrivalsOnRedMeasure } from './support/measureFixtures'
 import {
-  arrivalsOnRedMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  binSizePicker,
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 import { arrivalsOnRedResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Arrivals on Red: one chart per approach, a plan strip with per-plan
 // statistics, and a bin size option. The report path is ArrivalOnRed
 // (singular) while the chart type is ArrivalsOnRed.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'ArrivalsOnRed',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('ArrivalsOnRed')
 
 const twoApproaches = [
   arrivalsOnRedResult(START, END, {
@@ -54,38 +46,12 @@ const twoApproaches = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoApproaches) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [arrivalsOnRedMeasure]),
+const stubBackend = (page: Page, report: unknown = twoApproaches) =>
+  stubMeasurePage(page, {
+    measure: arrivalsOnRedMeasure,
+    reportPath: '/ArrivalOnRed/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([arrivalsOnRedMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/ArrivalOnRed/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const binSizePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(5|15|60)$/ })
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders one chart per approach and posts the seeded defaults', async ({
   page,
@@ -108,11 +74,8 @@ test('renders one chart per approach and posts the seeded defaults', async ({
     start: START,
     end: END,
     showPlanStatistics: true,
-    // The seed's name, which the contract (getPermissivePhase) does not
-    // read; pinned here so a rename on either side shows up.
-    usePermissivePhase: true,
+    getPermissivePhase: true,
   })
-  expect(options).not.toHaveProperty('getPermissivePhase')
   expect(Number(options.binSize)).toBe(15)
 })
 

@@ -25,6 +25,8 @@ import type {
   PedDelayResult,
   PhaseTerminationResult,
   PreemptDetailResult,
+  PriorityDetailsResult,
+  PrioritySummaryResult,
   PurdueCoordinationDiagramResult,
   SplitFailsResult,
   SplitMonitorResult,
@@ -123,28 +125,33 @@ export const linkPivotResult = {
   totalDownstreamChartRemaining: 34,
 } satisfies LinkPivotResult
 
+// A Date as the wall-clock literal the APIs speak (no zone suffix), in
+// the runner's zone - the same conversion the app applies before sending.
+export const wallClockLiteral = (date: Date): string => {
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return (
+    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
+    `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  )
+}
+
 // The quarter-hour marks of the hour beginning at the given wall-clock
-// time, as the literals the API serves (no zone suffix).
+// time, as the literals the API serves.
 const quarterHourTimestamps = (start: string, count: number): string[] =>
   Array.from({ length: count }, (_, index) => {
     const timestamp = new Date(start)
     timestamp.setMinutes(timestamp.getMinutes() + index * 15)
-    const pad = (n: number) => String(n).padStart(2, '0')
-    return (
-      `${timestamp.getFullYear()}-${pad(timestamp.getMonth() + 1)}-${pad(timestamp.getDate())}` +
-      `T${pad(timestamp.getHours())}:${pad(timestamp.getMinutes())}:00`
-    )
+    return wallClockLiteral(timestamp)
   })
 
 // One hour of 15-minute points, one per given value.
 const quarterHourPoints = (
   start: string,
   values: number[]
-): Required<DataPointForDouble>[] =>
-  quarterHourTimestamps(start, values.length).map((timestamp, index) => ({
-    timestamp,
-    value: values[index] ?? 0,
-  }))
+): Required<DataPointForDouble>[] => {
+  const timestamps = quarterHourTimestamps(start, values.length)
+  return values.map((value, index) => ({ timestamp: timestamps[index], value }))
+}
 
 // PurdueCoordinationDiagram/getReportData for location 1001, 08:00-09:00:
 // one result per coordinated phase, each with a plan strip, the
@@ -704,3 +711,86 @@ export const preemptionDetailsResult = (
     details: [detail(1, [marks[0], marks[2]]), detail(2, [marks[1]])],
   }
 }
+
+// PrioritySummary/getReportData for location 1001, 08:00-09:00: a single
+// result for the location with one TSP cycle per quarter hour, alternating
+// between TSP 1 and TSP 2, each serviced twelve seconds after check-in,
+// plus one unassigned early and extend green.
+export const prioritySummaryResult = (
+  start: string,
+  end: string
+): PrioritySummaryResult => {
+  const marks = quarterHourTimestamps(start, 4)
+  const secondsIn = (at: string, seconds: number) =>
+    at.replace(/:00$/, `:${String(seconds).padStart(2, '0')}`)
+  return {
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    averageDuration: '00:00:45',
+    numberCheckins: 4,
+    numberCheckouts: 4,
+    numberEarlyGreens: 2,
+    numberExtendedGreens: 2,
+    unassigned: {
+      earlyGreen: [{ timestamp: secondsIn(marks[1], 30), value: 1 }],
+      extendGreen: [{ timestamp: secondsIn(marks[3], 30), value: 1 }],
+    },
+    events: [],
+    cycles: marks.map((checkIn, index) => ({
+      locationIdentifier: '1001',
+      tspNumber: (index % 2) + 1,
+      checkIn,
+      checkOut: secondsIn(checkIn, 45),
+      serviceStart: secondsIn(checkIn, 12),
+      serviceEnd: secondsIn(checkIn, 40),
+      earlyGreen: index % 2 === 0 ? [secondsIn(checkIn, 15)] : [],
+      extendGreen: index % 2 === 1 ? [secondsIn(checkIn, 35)] : [],
+      preemptForceOff: [],
+      tspEarlyForceOff: [],
+      requestEndOffsetSec: 45,
+      serviceStartOffsetSec: 12,
+      serviceEndOffsetSec: 40,
+    })),
+  }
+}
+
+// PriorityDetails/getReportData for one TSP cycle at location 1001: the
+// drill-down the summary chart requests when a request or service bar is
+// clicked. One row per phase, with the cycle events the phase saw.
+export const priorityDetailsResult = (
+  start: string,
+  end: string
+): PriorityDetailsResult[] =>
+  [2, 6].map((phaseNumber) => ({
+    start,
+    end,
+    locationIdentifier: '1001',
+    locationDescription: '1001 - Main St & 400 S',
+    approachId: phaseNumber === 2 ? 1 : 2,
+    approachDescription: phaseNumber === 2 ? 'NB Main St' : 'SB Main St',
+    phaseNumber,
+    transitSignalPriorityNumber: 1,
+    isPhaseOverLap: false,
+    phaseNumberSort: `${phaseNumber}`,
+    phaseType: 'Protected',
+    numberCheckins: 1,
+    numberCheckouts: 1,
+    numberEarlyGreens: phaseNumber === 2 ? 1 : 0,
+    numberExtendedGreens: 0,
+    tspEvents: [
+      {
+        locationIdentifier: '1001',
+        timestamp: start,
+        eventCode: 112,
+        eventParam: 1,
+      },
+    ],
+    cycleEvents: [
+      { start, value: 1 },
+      { start: start.replace(/:00$/, ':30'), value: 8 },
+      { start: start.replace(/:00$/, ':34'), value: 9 },
+    ],
+    priorityAndPreemptionEvents: [],
+  }))

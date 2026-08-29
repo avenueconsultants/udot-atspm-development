@@ -14,9 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { expect, test, type Page, type Request } from '@playwright/test'
-import { mockAppShell } from './support/mockAppShell'
-import { stubApiHosts } from './support/stubApiHosts'
+import { expect, test, type Page } from '@playwright/test'
+import { stubEndpoint } from './support/api'
+import { approachDelayMeasure } from './support/measureFixtures'
+import {
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 
 // The one flow nothing else exercises end to end: pick a location and a
 // measure, run the chart, and get a rendered chart back. It covers the whole
@@ -28,21 +36,8 @@ import { stubApiHosts } from './support/stubApiHosts'
 // array, so the same endpoint can produce a populated chart or a genuinely
 // empty result just by changing the fixture.
 
-const LOCATION_IDENTIFIER = '1001'
-const MEASURE_TYPE_ID = 1
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = (params: Record<string, string> = {}) => {
-  const search = new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'ApproachDelay',
-    start: START,
-    end: END,
-    ...params,
-  })
-  return `/performance-measures?${search.toString()}`
-}
+const chartUrl = (params: Record<string, string> = {}) =>
+  measurePageUrl('ApproachDelay', params)
 
 const approachDelayResult = () => [
   {
@@ -59,83 +54,34 @@ const approachDelayResult = () => [
   },
 ]
 
-// The catch-all goes on before the specific routes (Playwright matches the
-// most recently registered handler first). It keeps the page off the live API
-// hosts for everything this test doesn't care about (measure types, chart
-// defaults, missing days), which would otherwise make the run slow and
-// dependent on a remote environment.
-const stubBackend = async (page: Page) => {
-  await stubApiHosts(page)
+const REPORT_PATH = '/ApproachDelay/getReportData'
 
-  await mockAppShell(page)
-
-  // SelectChart only keeps a measure selected if it is actually available
-  // for the location: the location's `charts` must contain a MeasureType id
-  // that is flagged showOnWebsite and whose abbreviation maps to the chart.
-  // 'AD' is Approach Delay. Without this the page clears chartType back to
-  // null and the run reports "Please select a measure."
-  await page.route('**/MeasureType', (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        '@odata.context': 'stub',
-        value: [
-          { id: MEASURE_TYPE_ID, abbreviation: 'AD', showOnWebsite: true },
-        ],
-      }),
-    })
-  )
-
-  await page.route('**/Location/GetLocationsForSearch*', (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        '@odata.context': 'stub',
-        value: [
-          {
-            id: 5,
-            locationIdentifier: LOCATION_IDENTIFIER,
-            primaryName: 'Main St',
-            secondaryName: '400 S',
-            latitude: 40.758701,
-            longitude: -111.876183,
-            locationTypeId: 1,
-            charts: [MEASURE_TYPE_ID],
-          },
-        ],
-      }),
-    })
-  )
-}
-
-/** Captures every report-data POST so a test can assert what was sent. */
-const stubApproachDelay = async (
+// Stubs the page with the report answering as given; a failing report is
+// re-stubbed on top so the error path can be driven from the same helper.
+const stubBackend = async (
   page: Page,
-  body: unknown,
+  report: unknown = approachDelayResult(),
   status = 200
-): Promise<Request[]> => {
-  const requests: Request[] = []
-  await page.route('**/ApproachDelay/getReportData', (route) => {
-    requests.push(route.request())
-    return route.fulfill({
-      status,
-      contentType: 'application/json',
-      body: JSON.stringify(body),
-    })
+) => {
+  const { hosts, reports } = await stubMeasurePage(page, {
+    measure: approachDelayMeasure,
+    reportPath: REPORT_PATH,
+    report,
   })
-  return requests
+  if (status === 200) return reports
+  return stubEndpoint(page, {
+    host: hosts.reports,
+    path: REPORT_PATH,
+    method: 'POST',
+    status,
+    body: report,
+  })
 }
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('running a measure renders a chart from the report response', async ({
   page,
 }) => {
-  await stubBackend(page)
-  const requests = await stubApproachDelay(page, approachDelayResult())
+  const requests = await stubBackend(page)
 
   await page.goto(chartUrl())
   await generateCharts(page)
@@ -153,8 +99,7 @@ test('running a measure renders a chart from the report response', async ({
 test('the report request carries the selected location and window', async ({
   page,
 }) => {
-  await stubBackend(page)
-  const requests = await stubApproachDelay(page, approachDelayResult())
+  const requests = await stubBackend(page)
 
   await page.goto(chartUrl())
   await generateCharts(page)
@@ -172,8 +117,7 @@ test('the report request carries the selected location and window', async ({
 test('an empty report result reports no data instead of an empty chart', async ({
   page,
 }) => {
-  await stubBackend(page)
-  await stubApproachDelay(page, [])
+  await stubBackend(page, [])
 
   await page.goto(chartUrl())
   await generateCharts(page)
@@ -189,8 +133,7 @@ test('an empty report result reports no data instead of an empty chart', async (
 test('a failing report request shows the error beside the button and keeps the page', async ({
   page,
 }) => {
-  await stubBackend(page)
-  await stubApproachDelay(page, { message: 'report api unavailable' }, 500)
+  await stubBackend(page, { message: 'report api unavailable' }, 500)
 
   await page.goto(chartUrl())
   await generateCharts(page)
@@ -206,8 +149,7 @@ test('a failing report request shows the error beside the button and keeps the p
 test('generating without a location asks for one and sends no request', async ({
   page,
 }) => {
-  await stubBackend(page)
-  const requests = await stubApproachDelay(page, approachDelayResult())
+  const requests = await stubBackend(page)
 
   await page.goto('/performance-measures')
   await generateCharts(page)
@@ -219,25 +161,16 @@ test('generating without a location asks for one and sends no request', async ({
 // The URL is applied once, as soon as the locations arrive. If the measure
 // list is still on its way at that moment, nothing is "available" yet, and
 // SelectChart used to clear the deep-linked measure - permanently, since
-// the URL is never re-applied. Holding the measure list back reproduces the
-// ordering deterministically.
+// the URL is never re-applied. Holding the measure list back until the
+// locations have been served reproduces the ordering deterministically.
 test('a deep link keeps its measure when the measure list arrives after the locations', async ({
   page,
 }) => {
   await stubBackend(page)
-  await stubApproachDelay(page, approachDelayResult())
+  const locationsServed = page.waitForResponse('**/GetLocationsForSearch*')
   await page.route('**/MeasureType*', async (route) => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        '@odata.context': 'stub',
-        value: [
-          { id: MEASURE_TYPE_ID, abbreviation: 'AD', showOnWebsite: true },
-        ],
-      }),
-    })
+    await locationsServed
+    await route.fallback()
   })
 
   await page.goto(chartUrl())

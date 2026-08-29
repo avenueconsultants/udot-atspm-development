@@ -15,32 +15,23 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { pedestrianDelayMeasure } from './support/measureFixtures'
 import {
-  pedestrianDelayMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { pedestrianDelayResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Pedestrian Delay: one chart per pedestrian phase with a plan strip of
 // per-plan statistics. The panel edits the time buffer and ped recall
 // threshold; the four show* toggles have no control and travel as the
 // seeded defaults.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'PedestrianDelay',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('PedestrianDelay')
 
 const twoPhases = [
   pedestrianDelayResult(START, END, {
@@ -55,39 +46,16 @@ const twoPhases = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoPhases) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [pedestrianDelayMeasure]),
+const stubBackend = (page: Page, report: unknown = twoPhases) =>
+  stubMeasurePage(page, {
+    measure: pedestrianDelayMeasure,
+    reportPath: '/PedDelay/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([pedestrianDelayMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/PedDelay/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
 
 const timeBuffer = (page: Page) => page.getByLabel('Time Buffer')
 const pedRecallThreshold = (page: Page) =>
   page.getByLabel('Ped Recall Threshold')
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders one chart per phase and posts the seeded defaults', async ({
   page,

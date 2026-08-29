@@ -15,32 +15,24 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { leftTurnGapAnalysisMeasure } from './support/measureFixtures'
 import {
-  leftTurnGapAnalysisMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  binSizePicker,
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 import { leftTurnGapAnalysisResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Left Turn Gap Analysis has the widest option panel so far: a bin size,
 // three closed gap bands, one open-ended band and a trend-line threshold,
 // every one of which lands in the request body. The gap fields share the
 // hidden labels "Gap Start"/"Gap End", so they are addressed by id.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'LeftTurnGapAnalysis',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('LeftTurnGapAnalysis')
 
 const twoApproaches = [
   leftTurnGapAnalysisResult(START, END, {
@@ -55,40 +47,14 @@ const twoApproaches = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoApproaches) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [leftTurnGapAnalysisMeasure]),
+const stubBackend = (page: Page, report: unknown = twoApproaches) =>
+  stubMeasurePage(page, {
+    measure: leftTurnGapAnalysisMeasure,
+    reportPath: '/LeftTurnGapAnalysis/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([leftTurnGapAnalysisMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/LeftTurnGapAnalysis/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const binSizePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(5|15|60)$/ })
 
 const gapField = (page: Page, name: string) => page.locator(`#${name}`)
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 const numeric = (options: Record<string, unknown>, keys: string[]) =>
   Object.fromEntries(keys.map((key) => [key, Number(options[key])]))

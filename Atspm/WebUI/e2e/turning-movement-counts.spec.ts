@@ -16,15 +16,17 @@
 // #endregion
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { turningMovementCountsMeasure } from './support/measureFixtures'
 import {
-  searchLocationWithMeasures,
-  turningMovementCountsMeasure,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  binSizePicker,
+  END,
+  generateCharts,
+  LOCATION_IDENTIFIER,
+  measurePageUrl,
+  START,
+  stubMeasurePage,
+} from './support/measurePage'
 import { turningMovementCountsResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Turning Movement Counts is the measure that renders a table as well as a
 // chart per movement: the report's table rows are pivoted by direction and
@@ -32,53 +34,17 @@ import { stubApiHosts } from './support/stubApiHosts'
 // filters that re-pivot the same rows. Times in the table are the wall
 // clock of the fixture's literals, so they are stable across zones.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
+const chartUrl = () => measurePageUrl('TurningMovementCounts')
 
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'TurningMovementCounts',
-    start: START,
-    end: END,
-  }).toString()}`
-
-const stubBackend = async (
+const stubBackend = (
   page: Page,
   report: unknown = turningMovementCountsResult(START, END)
-) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [turningMovementCountsMeasure]),
+) =>
+  stubMeasurePage(page, {
+    measure: turningMovementCountsMeasure,
+    reportPath: '/TurningMovementCounts/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([turningMovementCountsMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/TurningMovementCounts/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
-
-const binSizePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(5|15|60)$/ })
 
 // Both tables end in a Bin Total column; the pivot table comes first in
 // the DOM and the peak-hour table is the one captioned Peak Hour.

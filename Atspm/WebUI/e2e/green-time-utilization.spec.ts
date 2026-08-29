@@ -15,31 +15,22 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { greenTimeUtilizationMeasure } from './support/measureFixtures'
 import {
-  greenTimeUtilizationMeasure,
-  searchLocationWithMeasures,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { greenTimeUtilizationResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Green Time Utilization takes two bin sizes, one per axis, typed into
 // number fields rather than picked from the shared bin-size dropdown, and
 // renders a heat map per approach.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'GreenTimeUtilization',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('GreenTimeUtilization')
 
 const twoApproaches = [
   greenTimeUtilizationResult(START, END, {
@@ -54,38 +45,15 @@ const twoApproaches = [
   }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoApproaches) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [greenTimeUtilizationMeasure]),
+const stubBackend = (page: Page, report: unknown = twoApproaches) =>
+  stubMeasurePage(page, {
+    measure: greenTimeUtilizationMeasure,
+    reportPath: '/GreenTimeUtilization/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([greenTimeUtilizationMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/GreenTimeUtilization/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
 
 const xAxisBinSize = (page: Page) => page.getByLabel('X-Axis Bin Size')
 const yAxisBinSize = (page: Page) => page.getByLabel('Y-Axis Bin Size')
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 test('renders one chart per approach and posts both default bin sizes', async ({
   page,

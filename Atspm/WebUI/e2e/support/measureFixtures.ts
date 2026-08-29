@@ -70,12 +70,12 @@ export const purdueCoordinationDiagramMeasure = measureWithOptions({
   },
 })
 
-// The recorded search location, offering exactly the given measures.
-export const searchLocationWithMeasures = (
-  measures: MeasureType[]
+// The recorded search location, offering exactly the given measure.
+export const searchLocationWithMeasure = (
+  measure: MeasureType
 ): SearchLocation => ({
   ...searchLocations[0],
-  charts: measures.map((measure) => measure.id ?? 0),
+  charts: [measure.id ?? 0],
 })
 
 export const splitMonitorMeasure = measureWithOptions({
@@ -141,6 +141,16 @@ export const approachVolumeMeasure = measureWithOptions({
   },
 })
 
+export const approachDelayMeasure = measureWithOptions({
+  id: 8,
+  name: 'Approach Delay',
+  abbreviation: 'AD',
+  options: {
+    getVolume: 'TRUE',
+    getPermissivePhase: 'TRUE',
+  },
+})
+
 // The abbreviation, not the name, is what SelectChart maps to a ChartType,
 // and Approach Speed's is 'Speed'.
 export const approachSpeedMeasure = measureWithOptions({
@@ -152,14 +162,15 @@ export const approachSpeedMeasure = measureWithOptions({
   },
 })
 
-// Seeded exactly as the backend does: `usePermissivePhase` is the seeded
-// option name, while the report contract's field is `getPermissivePhase`.
+// The seeded option names are the report contract's field names
+// (ArrivalOnRedOptions.getPermissivePhase), which is what lets the seeded
+// defaults reach the request unchanged.
 export const arrivalsOnRedMeasure = measureWithOptions({
   id: 9,
   name: 'Arrivals On Red',
   abbreviation: 'AoR',
   options: {
-    usePermissivePhase: 'TRUE',
+    getPermissivePhase: 'TRUE',
     showPlanStatistics: 'TRUE',
     binSize: '15',
   },
@@ -225,4 +236,13 @@ export const preemptionDetailsMeasure = measureWithOptions({
   name: 'Preemption Details',
   abbreviation: 'PD',
   options: {},
+})
+
+export const prioritySummaryMeasure = measureWithOptions({
+  id: 39,
+  name: 'Transit Signal Priority Summary',
+  abbreviation: 'TSPS',
+  options: {
+    binSize: '15',
+  },
 })

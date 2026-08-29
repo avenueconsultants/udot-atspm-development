@@ -15,70 +15,38 @@
 // limitations under the License.
 // #endregion
 import { expect, test, type Page } from '@playwright/test'
-import { odataCollection } from '../src/test/fixtures/api'
-import { stubEndpoint } from './support/api'
+import { splitMonitorMeasure } from './support/measureFixtures'
 import {
-  searchLocationWithMeasures,
-  splitMonitorMeasure,
-} from './support/measureFixtures'
-import { mockAppShell } from './support/mockAppShell'
+  END,
+  LOCATION_IDENTIFIER,
+  START,
+  generateCharts,
+  measurePageUrl,
+  stubMeasurePage,
+} from './support/measurePage'
 import { splitMonitorResult } from './support/reportFixtures'
-import { stubApiHosts } from './support/stubApiHosts'
 
 // Split Monitor is the first measure that renders a table under its charts:
 // PhaseTable lines every phase's plans up side by side, with plan 254
 // headed "Free". The one option that feeds the request, the percentile
 // split, is an int on the report API, so "None" has to leave as 0.
 
-const LOCATION_IDENTIFIER = '1001'
-const START = '2026-04-01T08:00:00'
-const END = '2026-04-01T09:00:00'
-
-const chartUrl = () =>
-  `/performance-measures?${new URLSearchParams({
-    location: LOCATION_IDENTIFIER,
-    chartType: 'SplitMonitor',
-    start: START,
-    end: END,
-  }).toString()}`
+const chartUrl = () => measurePageUrl('SplitMonitor')
 
 const twoPhases = [
   splitMonitorResult(START, END, { number: 2, description: 'Northbound' }),
   splitMonitorResult(START, END, { number: 6, description: 'Southbound' }),
 ]
 
-const stubBackend = async (page: Page, report: unknown = twoPhases) => {
-  const hosts = await stubApiHosts(page)
-  await mockAppShell(page)
-
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/MeasureType',
-    method: 'GET',
-    body: odataCollection('MeasureType', [splitMonitorMeasure]),
+const stubBackend = (page: Page, report: unknown = twoPhases) =>
+  stubMeasurePage(page, {
+    measure: splitMonitorMeasure,
+    reportPath: '/SplitMonitor/getReportData',
+    report,
   })
-  await stubEndpoint(page, {
-    host: hosts.config,
-    path: '/Location/GetLocationsForSearch',
-    body: odataCollection('SearchLocations', [
-      searchLocationWithMeasures([splitMonitorMeasure]),
-    ]),
-  })
-  const reports = await stubEndpoint(page, {
-    host: hosts.reports,
-    path: '/SplitMonitor/getReportData',
-    method: 'POST',
-    body: report,
-  })
-
-  return { hosts, reports }
-}
 
 const percentilePicker = (page: Page) =>
   page.getByRole('combobox').filter({ hasText: /^(None|50|75|85|90|95)$/ })
-
-const generateCharts = (page: Page) =>
-  page.getByRole('button', { name: 'Generate Charts' }).click()
 
 const phaseTable = (page: Page) =>
   page.getByRole('table').filter({ has: page.getByText('Programmed Split') })
