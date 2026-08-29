@@ -174,3 +174,20 @@ export const greenTimeUtilizationMeasure = measureWithOptions({
     yAxisBinSize: '4',
   },
 })
+
+export const leftTurnGapAnalysisMeasure = measureWithOptions({
+  id: 31,
+  name: 'Left Turn Gap Analysis',
+  abbreviation: 'LTGA',
+  options: {
+    binSize: '15',
+    gap1Min: '1',
+    gap1Max: '3.3',
+    gap2Min: '3.3',
+    gap2Max: '3.7',
+    gap3Min: '3.7',
+    gap3Max: '7.4',
+    gap4Min: '7.4',
+    trendLineGapThreshold: '7.4',
+  },
+})

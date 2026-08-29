@@ -123,7 +123,10 @@ as the template.
 - [x] **A9. Green Time Utilization** (S) — bin option.
       `green-time-utilization.spec.ts`. Two bin sizes (x and y axis) in
       number fields, not the shared dropdown.
-- [ ] **A10. Left Turn Gap Analysis** (M) — gap bands; option ranges.
+- [x] **A10. Left Turn Gap Analysis** (M) — gap bands; option ranges.
+      `left-turn-gap-analysis.spec.ts`. Note for D5: the gap fields share
+      the hidden labels "Gap Start"/"Gap End" across all four bands, so
+      the spec addresses them by id (`#gap2Max`).
 - [ ] **A11. Pedestrian Delay** (S) — plans; delay series.
 - [ ] **A12. Purdue Split Failure** (M) — first-seconds-of-red option; occupancy series.
 - [ ] **A13. Preemption Details** (S) — event pairs.
@@ -339,3 +342,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A7 Approach Speed: 4 tests (chart per approach + default bin size in the request, picked bin size, an approach with null plans and speed series, empty result). No app bug found. Gate: 63/63 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A8 Arrivals on Red: 3 tests (chart per approach + seeded defaults in the request, picked bin size, an approach with null plans and series). No app bug; backend finding recorded on the item (seed/contract option-name mismatch). Gate: 66/66 CI mode, types at 852. Spec in the commit carrying this line.
 - 2026-08-29 - A9 Green Time Utilization: 3 tests (chart per approach + both default bin sizes in the request, typed bin sizes, an approach with null bins/splits/plans). No app bug found. Gate: 69/69 CI mode, types at 852. Spec in the commit carrying this line.
+- 2026-08-29 - A10 Left Turn Gap Analysis: 3 tests (chart per approach + every seeded gap band and threshold in the request, edited bands/threshold/bin size in the request, an approach with null counts and trend). No app bug found. Gate: 72/72 CI mode, types at 852. Spec in the commit carrying this line.

@@ -20,6 +20,7 @@ import type {
   ArrivalOnRedResult,
   DataPointForDouble,
   GreenTimeUtilizationResult,
+  LeftTurnGapAnalysisResult,
   LinkPivotResult,
   PhaseTerminationResult,
   PurdueCoordinationDiagramResult,
@@ -523,4 +524,41 @@ export const greenTimeUtilizationResult = (
   ],
   averageSplits: quarterHourPoints(start, [22.5, 24, 25.5, 21]),
   programmedSplits: quarterHourPoints(start, [30, 30, 30, 30]),
+})
+
+// LeftTurnGapAnalysis/getReportData for location 1001, 08:00-09:00: one
+// result per left-turn approach, the four gap bands the request asked for
+// (the fourth open-ended) with a count series each, and the percent
+// turnable trend.
+export const leftTurnGapAnalysisResult = (
+  start: string,
+  end: string,
+  approach: { id: number; description: string; phaseNumber: number }
+): LeftTurnGapAnalysisResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  phaseNumber: approach.phaseNumber,
+  phaseDescription: `Phase ${approach.phaseNumber}`,
+  detectionTypeDescription: 'Lane By Lane Count',
+  gap1Min: 1,
+  gap1Max: 3.3,
+  gap1Count: quarterHourPoints(start, [120, 140, 130, 110]),
+  gap2Min: 3.3,
+  gap2Max: 3.7,
+  gap2Count: quarterHourPoints(start, [40, 44, 42, 38]),
+  gap3Min: 3.7,
+  gap3Max: 7.4,
+  gap3Count: quarterHourPoints(start, [60, 66, 63, 57]),
+  gap4Min: 7.4,
+  gap4Max: null,
+  gap4Count: quarterHourPoints(start, [20, 22, 21, 19]),
+  sumDuration1: 258,
+  sumDuration2: 574,
+  sumDuration3: 1366,
+  percentTurnableSeries: quarterHourPoints(start, [61.5, 63, 62, 60.5]),
+  trendLineGapThreshold: 7.4,
 })
