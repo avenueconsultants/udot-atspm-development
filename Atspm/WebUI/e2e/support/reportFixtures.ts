@@ -33,6 +33,7 @@ import type {
   TimingAndActuationsForPhaseResult,
   TurningMovementCountsResult,
   WaitTimeResult,
+  YellowRedActivationsResult,
 } from '../../src/api/reports/report-api.schemas'
 
 // A link pivot analysis of the routeFixtures corridor (1001 -> 1002), in the
@@ -830,4 +831,54 @@ export const waitTimeResult = (
   average: quarterHourPoints(start, [18.4, 21, 19.7, 17.2]),
   volumes: quarterHourPoints(start, [820, 910, 880, 760]),
   planSplits: quarterHourPoints(start, [30, 30, 30, 30]),
+})
+
+// YellowRedActivations/getReportData for location 1001, 08:00-09:00: one
+// result per approach, the detector hits placed against the yellow, red
+// and red-clearance boundaries of each cycle, with a plan strip counting
+// the violations and how many passed the severe threshold.
+export const yellowAndRedActuationsResult = (
+  start: string,
+  end: string,
+  approach: {
+    id: number
+    description: string
+    phaseNumber: number
+    isPermissivePhase?: boolean
+  }
+): YellowRedActivationsResult => ({
+  start,
+  end,
+  locationIdentifier: '1001',
+  locationDescription: '1001 - Main St & 400 S',
+  approachId: approach.id,
+  approachDescription: approach.description,
+  direction: approach.description.startsWith('NB')
+    ? 'Northbound'
+    : 'Southbound',
+  movementType: 'Thru',
+  protectedPhaseNumber: approach.phaseNumber,
+  permissivePhaseNumber: null,
+  isPermissivePhase: approach.isPermissivePhase ?? false,
+  phaseType: approach.isPermissivePhase ? 'Permissive' : 'Protected',
+  totalViolations: 9,
+  severeViolations: 2,
+  yellowLightOccurences: 120,
+  plans: [
+    {
+      planNumber: '1',
+      planDescription: 'Plan 1',
+      start,
+      end,
+      totalViolations: 9,
+      severeViolations: 2,
+      percentViolations: 7.5,
+      percentSevereViolations: 1.7,
+      averageTimeViolations: 1.8,
+    },
+  ],
+  yellowEvents: quarterHourPoints(start, [0.4, 1.2, 0.9, 0.6]),
+  redEvents: quarterHourPoints(start, [2.1, 3.4, 2.8, 1.9]),
+  redClearanceEvents: quarterHourPoints(start, [1.1, 1.6, 1.3, 1.0]),
+  detectorEvents: quarterHourPoints(start, [0.8, 2.6, 1.7, 1.2]),
 })

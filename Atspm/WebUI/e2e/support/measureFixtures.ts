@@ -255,3 +255,13 @@ export const waitTimeMeasure = measureWithOptions({
     binSize: '15',
   },
 })
+
+export const yellowAndRedActuationsMeasure = measureWithOptions({
+  id: 11,
+  name: 'Yellow and Red Actuations',
+  abbreviation: 'YRA',
+  options: {
+    severeLevelSeconds: '5',
+    yAxisDefault: '20',
+  },
+})
