@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Default } from '../../types'
 import { RampMeteringChartOptionsDefaults } from '../types'
 
-interface GreenTimeUtilizationChartOptionsProps {
+interface RampMeteringChartOptionsProps {
   chartDefaults: RampMeteringChartOptionsDefaults
   handleChartOptionsUpdate: (update: Default) => void
   isMeasureDefaultView?: boolean
@@ -12,9 +12,12 @@ interface GreenTimeUtilizationChartOptionsProps {
 export const RampMeteringChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-}: GreenTimeUtilizationChartOptionsProps) => {
+}: RampMeteringChartOptionsProps) => {
+  // Ramp Metering seeds no measure options at all, so this default is
+  // routinely absent - reading through it crashed the page before the
+  // alert below could report it missing.
   const [combineLanes, setCombineLanes] = useState(
-    chartDefaults.combineLanes.value
+    chartDefaults.combineLanes?.value
   )
 
   const handleChange = (
@@ -26,8 +29,8 @@ export const RampMeteringChartOptions = ({
     setCombineLanes(val)
 
     handleChartOptionsUpdate({
-      id: chartDefaults.combineLanes.id,
-      option: chartDefaults.combineLanes.option,
+      id: chartDefaults.combineLanes?.id ?? -1,
+      option: chartDefaults.combineLanes?.option ?? 'combineLanes',
       value: val,
     })
   }
@@ -65,6 +68,9 @@ export const RampMeteringChartOptions = ({
               <Checkbox
                 checked={combineLanes === 'TRUE' ? true : false}
                 onChange={handleChange}
+                // The hidden label points here by id, so it has to land on
+                // the input itself rather than the wrapper.
+                inputProps={{ id: 'combine-lanes' }}
               />
             </FormControl>
           </Box>
