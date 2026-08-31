@@ -183,12 +183,30 @@ as the template.
       Termination chart has none. Export is echarts' own toolbox inside
       the canvas, so it is not reachable by role - left for A36's download
       work to cover alongside the data export.
-- [ ] **A22. Multi-location runs** (M) — `MultipleLocationsSelect` (uses
-      `unwrapLocationFromKey`): several locations queued; one request per
-      location; results in order; one failing location leaves the others.
-- [ ] **A23. Time-space 50th percentile tab** (M) — `TimeSpaceDiagramAverage/getReportData`;
-      start/end time validation ("Select start and end time ranges");
-      sequence and coordination selector.
+- [ ] **A22. Multi-location runs** (M) — **premise wrong, folded into A32
+      and A33.** The performance-measures page holds a single `location` and
+      renders `SelectLocation`; nothing there queues several locations.
+      `MultipleLocationsSelect` is used in exactly two places, the transit
+      signal priority report (A32) and `ActiveTransportationOptions` on the
+      pedestrian activity report (A33), so "several locations queued, one
+      request per location, one failure leaves the others" belongs to those
+      two items. Cover `getLocationWithApproaches` (the `Promise.all` over
+      `/Location/{key}?expand=approaches`, unwrapped by
+      `unwrapLocationFromKey`) there.
+- [x] **A23. Time-space 50th percentile tab** (M) —
+      `TimeSpaceDiagramAverage/getReportData`; start/end time validation
+      ("Select start and end time ranges"); sequence and coordination
+      selector. `time-space-average.spec.ts`, on the shared corridor in
+      `routeFixtures.ts`. Two app bugs, both fixed with unit tests: a cleared
+      time picker hands back null and `formatTime` threw on it during render,
+      so the page died in the error boundary and the validation message it
+      already carried was unreachable; and the effect that seeds a newly
+      picked route rebuilt the sequence and coordinated-phase lists from
+      scratch, wiping the ones a shared link had just applied — the page
+      writes both into the URL itself, so a shared 50th percentile link ran
+      different options than the run that produced it. The two selects had no
+      accessible name at all (see D5), so both now carry one keyed by
+      location identifier.
 - [ ] **A24. Time-space SRM upload** (L) — gzip+base64 file upload to
       `TimeSpaceDiagram/getSrmData`; overlays merged; clear restores.
 - [ ] **A25. Time-space GPX upload** (L) — GPX entries, animation handler,
@@ -202,7 +220,14 @@ as the template.
       cumulative math in `LinkPivotAdjustmentTable`).
 - [ ] **A28. Link pivot options → request** (S) — days of week, cycle
       length, starting point, bias, bias direction each change the body.
-- [ ] **A29. Aggregate charts options → request** (M) — every metric group
+      Check the cleared-time-picker path while here: A23 fixed that crash for
+      the time-space average handler only, and `SelectDateTime` still hands
+      null to this page's `changeStartTime(date: Date)` (the parameter is
+      bivariant, so it type-checks), where `toUTCDateWithTimeStamp(null)` is
+      the same shape of bug.
+- [ ] **A29. Aggregate charts options → request** (M) — same cleared-time
+      caveat as A28: `aggregateDataHandler` reads `startTime.getHours()` on a
+      value the picker can null out. Every metric group
       maps to its `AggregationType`; data type index; x-axis / y-axis /
       chart type / bin size / sum-vs-average; a `dataPoints` series per
       location renders one chart each; individually added location via the
@@ -429,3 +454,5 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A19 Measure availability: 4 tests (the picker offers exactly the location's charts, a measure the location does not offer is cleared from the URL and Generate says "Please select a measure.", a showOnWebsite:false measure is withheld even when the location lists it, and Purdue Phase Termination is auto-selected when the URL names no measure). No app bug found. Gate: 99/99 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A20 Measure defaults: 3 tests (switching measure swaps the panel and sends only the new measure's options, an edited bin size reverts to the seeded default when the measure changes and back, a bin size wider than the window shows both the picker warning and the generate-time alert and sends nothing). No app bug found. Scope corrected: measure presets belong to the TSP report, not this page, and the item's preset half was moved to A32. Gate: 102/102 CI mode, types at 849. Spec in the commit carrying this line.
 - 2026-08-29 - A21 Chart toolbox: 5 tests (the zoom and bin-step toggles, bin step lines withheld from a measure that does not support them, no toolbox at all for a lone chart without that support, the chart dropdown listing each chart and collapsing the one it is asked to hide, and View Config swapping the charts for the location configuration and back). App fix: every control in the dropdown answered to the name "more" because an aria-label overrode the visible text on both buttons, the per-chart button falsely claimed aria-haspopup, and the visibility toggle had no name - all three fixed with a unit test, which is what made the spec writable with role and name locators. Gate: 107/107 CI mode, types at 849. App fix a555f4fe; spec in the commit carrying this line.
+- 2026-08-30 - A22 Multi-location runs: not written. The item assumed the performance-measures page queues several locations; it holds one `location` and renders `SelectLocation`. `MultipleLocationsSelect` lives only on the TSP report (A32) and the pedestrian activity report (A33), so the item was rescoped onto those two rather than left blocked on a decision.
+- 2026-08-30 - A23 Time-space 50th percentile: 7 tests (URL route and window run the tool with the whole request body pinned and no link pivot tab, a shared link running the sequence it carries rather than the route defaults, per-location sequence and coordinated-phase presets, hand-typed rings plus a deselected day, a cleared time of day blocking the run, no route, and a failing request). Two app bugs found and fixed with unit tests: `formatTime` threw on the null a cleared MUI time picker returns, so the page hit the error boundary and its own "Select start and end time ranges" guard could never fire (`SelectDateTime` had been laundering the null through an `as Date` cast); and the route-seeding effect rebuilt the sequence and coordinated-phase lists whenever the route id changed, overwriting the ones a shared link had just applied, so a shared 50th percentile link silently ran the presets. Both regressions were re-checked against the unfixed code before the fixes went in. Also named the two selects in the sequence/coordination table, which had no accessible name at all. Gate: 114/114 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
