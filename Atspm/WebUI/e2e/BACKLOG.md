@@ -207,10 +207,27 @@ as the template.
       different options than the run that produced it. The two selects had no
       accessible name at all (see D5), so both now carry one keyed by
       location identifier.
-- [ ] **A24. Time-space SRM upload** (L) — gzip+base64 file upload to
+- [x] **A24. Time-space SRM upload** (L) — gzip+base64 file upload to
       `TimeSpaceDiagram/getSrmData`; overlays merged; clear restores.
+      `time-space-srm.spec.ts`. The historic fixtures and backend stub moved
+      out of `time-space.spec.ts` into `e2e/support/timeSpace.ts` on the way,
+      because A25 and A26 start from the same generated diagram. The upload
+      accordion lives in the chart's own sidebar behind the Uploads tab and
+      the legend behind the Legend tab, so a spec that wants both has to
+      switch; both upload accordions render as regions carrying the same
+      control names and the same "No file selected" placeholder, so scope to
+      `getByRole('region').filter({ hasText: 'Select CSV' })`. The spec drives
+      the real file input, so `gzipAndBase64` runs in the browser and the
+      payload is gunzipped back in the assertion. App fix: the accordion
+      reported `error.message`, so a failing request showed axios' "Request
+      failed with status code 500" instead of what the report API said; it now
+      goes through `getApiErrorMessage` like the Generate button above it.
 - [ ] **A25. Time-space GPX upload** (L) — GPX entries, animation handler,
-      ignored locations toggle recomputes distances.
+      ignored locations toggle recomputes distances. Build on
+      `e2e/support/timeSpace.ts`. Also settle here that the GPX accordion is
+      offered by both tools while the SRM one is historic-only: A24 left that
+      cross-check out rather than move the 50th percentile fixtures, so this
+      item should lift them into the same support module and assert it.
 - [ ] **A26. Time-space cycle dragging** (L) — drag a cycle band, offsets
       update, double-click resets (`timeSpace.handler`); assert the offset
       badge text.
@@ -456,3 +473,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-29 - A21 Chart toolbox: 5 tests (the zoom and bin-step toggles, bin step lines withheld from a measure that does not support them, no toolbox at all for a lone chart without that support, the chart dropdown listing each chart and collapsing the one it is asked to hide, and View Config swapping the charts for the location configuration and back). App fix: every control in the dropdown answered to the name "more" because an aria-label overrode the visible text on both buttons, the per-chart button falsely claimed aria-haspopup, and the visibility toggle had no name - all three fixed with a unit test, which is what made the spec writable with role and name locators. Gate: 107/107 CI mode, types at 849. App fix a555f4fe; spec in the commit carrying this line.
 - 2026-08-30 - A22 Multi-location runs: not written. The item assumed the performance-measures page queues several locations; it holds one `location` and renders `SelectLocation`. `MultipleLocationsSelect` lives only on the TSP report (A32) and the pedestrian activity report (A33), so the item was rescoped onto those two rather than left blocked on a decision.
 - 2026-08-30 - A23 Time-space 50th percentile: 7 tests (URL route and window run the tool with the whole request body pinned and no link pivot tab, a shared link running the sequence it carries rather than the route defaults, per-location sequence and coordinated-phase presets, hand-typed rings plus a deselected day, a cleared time of day blocking the run, no route, and a failing request). Two app bugs found and fixed with unit tests: `formatTime` threw on the null a cleared MUI time picker returns, so the page hit the error boundary and its own "Select start and end time ranges" guard could never fire (`SelectDateTime` had been laundering the null through an `as Date` cast); and the route-seeding effect rebuilt the sequence and coordinated-phase lists whenever the route id changed, overwriting the ones a shared link had just applied, so a shared 50th percentile link silently ran the presets. Both regressions were re-checked against the unfixed code before the fixes went in. Also named the two selects in the sequence/coordination table, which had no accessible name at all. Gate: 114/114 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
+- 2026-08-30 - A24 Time-space SRM upload: 4 tests (a chosen CSV posted gzipped and base64'd with the window, the overlay merged onto the already-generated chart without re-running the diagram, Clear restoring it locally with no second request, a failing request reported in the accordion, and Apply/Clear disabled until a file is chosen). App fix: the SRM catch block reported `error.message`, so the accordion showed axios' "Request failed with status code 500" rather than the report API's message - it now goes through the shared `getApiErrorMessage`, which is already unit-tested for exactly that body shape; the regression was re-checked against the unfixed code. Refactor: the historic phase-result fixtures, the backend stub and the URL builder moved from `time-space.spec.ts` into `e2e/support/timeSpace.ts` so A25 and A26 start from the same run. Lesson for A25/A26: the sidebar shows one panel at a time (Legend / Uploads / Styles), and the two upload accordions share control names and placeholder text, so scope to the region. Gate: 118/118 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
