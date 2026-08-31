@@ -26,7 +26,12 @@ or a fresh session picks up exactly where the last one stopped.
    mode, then `npm run build` and the full suite in CI mode
    (`CI=true E2E_WEB_SERVER_COMMAND="npm start" npx playwright test`), then
    `npm run typecheck:ratchet` (lower the baseline with `--update` if the
-   count fell), `npx eslint e2e <touched files>`, `npx prettier --check e2e`.
+   count fell), `npx eslint e2e <touched files>`,
+   `npx prettier --check --end-of-line auto e2e <touched files>`. The
+   `--end-of-line auto` matters on a Windows checkout: `core.autocrlf` is
+   true, so every file arrives with CRLF while prettier defaults to LF, and a
+   bare `--check` reports every file in the repo as unformatted. Only
+   `e2e/BACKLOG.md` genuinely fails today.
 5. **Review** the full diff and fix what it turns up (vacuous assertions,
    timezone- or locale-dependent values, duplicated helpers, comments that
    overclaim, app paths the change made reachable). Re-run the gate for
@@ -222,12 +227,19 @@ as the template.
       reported `error.message`, so a failing request showed axios' "Request
       failed with status code 500" instead of what the report API said; it now
       goes through `getApiErrorMessage` like the Generate button above it.
-- [ ] **A25. Time-space GPX upload** (L) — GPX entries, animation handler,
-      ignored locations toggle recomputes distances. Build on
-      `e2e/support/timeSpace.ts`. Also settle here that the GPX accordion is
-      offered by both tools while the SRM one is historic-only: A24 left that
-      cross-check out rather than move the 50th percentile fixtures, so this
-      item should lift them into the same support module and assert it.
+- [x] **A25. Time-space GPX upload** (L) — GPX entries, animation handler,
+      ignored locations toggle recomputes distances. `time-space-gpx.spec.ts`.
+      The 50th percentile fixtures moved into `e2e/support/timeSpace.ts`
+      alongside the historic ones, so the cross-check A24 deferred is covered:
+      the GPX accordion is offered by both tools, the SRM one only by historic.
+      GPX never leaves the browser - the file is parsed in the page and turned
+      into a series against the chart's own y axis - so the spec asserts the
+      panel and the legend and pins that nothing is posted. Two app fixes: the
+      seeded GPX row was never marked primary, so "Primary track" and the
+      no-delete guard were dead code; and `parseGpxFile` returned an empty list
+      for a file that would not parse, making the row's error path unreachable.
+      Distance recomputation behind the ignore toggle is left to
+      `recomputeTimeSpaceData`'s own unit tests; the spec covers the toggle.
 - [ ] **A26. Time-space cycle dragging** (L) — drag a cycle band, offsets
       update, double-click resets (`timeSpace.handler`); assert the offset
       badge text.
@@ -474,3 +486,4 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-30 - A22 Multi-location runs: not written. The item assumed the performance-measures page queues several locations; it holds one `location` and renders `SelectLocation`. `MultipleLocationsSelect` lives only on the TSP report (A32) and the pedestrian activity report (A33), so the item was rescoped onto those two rather than left blocked on a decision.
 - 2026-08-30 - A23 Time-space 50th percentile: 7 tests (URL route and window run the tool with the whole request body pinned and no link pivot tab, a shared link running the sequence it carries rather than the route defaults, per-location sequence and coordinated-phase presets, hand-typed rings plus a deselected day, a cleared time of day blocking the run, no route, and a failing request). Two app bugs found and fixed with unit tests: `formatTime` threw on the null a cleared MUI time picker returns, so the page hit the error boundary and its own "Select start and end time ranges" guard could never fire (`SelectDateTime` had been laundering the null through an `as Date` cast); and the route-seeding effect rebuilt the sequence and coordinated-phase lists whenever the route id changed, overwriting the ones a shared link had just applied, so a shared 50th percentile link silently ran the presets. Both regressions were re-checked against the unfixed code before the fixes went in. Also named the two selects in the sequence/coordination table, which had no accessible name at all. Gate: 114/114 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
 - 2026-08-30 - A24 Time-space SRM upload: 4 tests (a chosen CSV posted gzipped and base64'd with the window, the overlay merged onto the already-generated chart without re-running the diagram, Clear restoring it locally with no second request, a failing request reported in the accordion, and Apply/Clear disabled until a file is chosen). App fix: the SRM catch block reported `error.message`, so the accordion showed axios' "Request failed with status code 500" rather than the report API's message - it now goes through the shared `getApiErrorMessage`, which is already unit-tested for exactly that body shape; the regression was re-checked against the unfixed code. Refactor: the historic phase-result fixtures, the backend stub and the URL builder moved from `time-space.spec.ts` into `e2e/support/timeSpace.ts` so A25 and A26 start from the same run. Lesson for A25/A26: the sidebar shows one panel at a time (Legend / Uploads / Styles), and the two upload accordions share control names and placeholder text, so scope to the region. Gate: 118/118 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
+- 2026-08-30 - A25 Time-space GPX upload: 7 tests (a parsed track reaching the chart with no request made, the start/end selects offering the corridor in route order and defaulting to its ends, a file that will not parse reported on its row, a well-formed GPX with no track points reported differently, the seeded row being the primary one that cannot be removed while added rows can, the ignore-location toggle flipping and redrawing, and the 50th percentile tool offering GPX but not SRM). Two app bugs found and fixed, both re-checked against the unfixed code: neither caller of `createEmptyTimeSpaceEntry` passed `primary`, so `GpxUploadOptions.primary` was never true anywhere and the "Primary track" label plus the `canDelete` guard were dead; and `parseGpxFile` returned `[]` rather than throwing when DOMParser produced a `<parsererror>` document or the file carried no timed track points, so selecting a non-GPX file was silently accepted and drew nothing. The parser now rejects with a message saying which way the file was unusable and the row shows it; six new unit tests cover the parser, which had none. Refactor: the average fixtures joined the historic ones in `e2e/support/timeSpace.ts` and `time-space-average.spec.ts` moved onto them. Gate note: `prettier --check` needs `--end-of-line auto` on this Windows checkout - see step 4. Gate: 125/125 CI mode, 687 unit tests, types at 849. App fix and spec in the commits carrying this line.

@@ -18,6 +18,8 @@ import type { Page, Request } from '@playwright/test'
 import type { RouteDto } from '../../src/api/config'
 import type {
   LinkPivotForTsd,
+  TimeSpaceDiagramAveragePhaseResult,
+  TimeSpaceDiagramAverageResult,
   TimeSpaceDiagramPhaseResult,
   TimeSpaceDiagramResultForPhase,
 } from '../../src/api/reports/report-api.schemas'
@@ -189,3 +191,140 @@ export const historicUrl = (params: Record<string, string> = {}) =>
 
 export const generateCharts = (page: Page) =>
   page.getByRole('button', { name: 'Generate Charts' }).click()
+
+// --- 50th percentile ------------------------------------------------------
+//
+// The same corridor run through the average tool: a month of weekdays with a
+// time-of-day window. The dates are formatted with UTC getters and the times
+// with local ones (src/utils/searchParams.ts), and both round-trip through
+// the URL, so nothing here depends on the runner's zone.
+
+export const AVERAGE_START_DATE = '2026-03-01'
+export const AVERAGE_END_DATE = '2026-03-31'
+export const AVERAGE_START_TIME = '16:00:00'
+export const AVERAGE_END_TIME = '16:20:00'
+export const AVERAGE_WEEKDAYS = [1, 2, 3, 4, 5]
+
+export const DEFAULT_SEQUENCE = [
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+]
+export const DEFAULT_COORDINATED_PHASES = [2, 6]
+
+export const averageResult = (
+  locationIdentifier: string,
+  phaseType: 'Primary' | 'Opposing',
+  order: number,
+  distanceToNextLocation: number,
+  distanceToPreviousLocation: number
+): TimeSpaceDiagramAverageResult => ({
+  // The average tool reports one representative cycle, so its window is the
+  // time-of-day period rather than the whole date range.
+  start: '2026-03-02T16:00:00',
+  end: '2026-03-02T16:20:00',
+  locationIdentifier,
+  locationDescription: `${locationIdentifier} - Main St`,
+  approachId: order,
+  approachDescription: phaseType === 'Primary' ? 'Northbound' : 'Southbound',
+  coordinatedPhases: true,
+  phaseNumber: phaseType === 'Primary' ? 2 : 6,
+  speed: 35,
+  offset: 12,
+  programmedSplit: 45,
+  phaseType,
+  cycleLength: 90,
+  direction: phaseType === 'Primary' ? 'Northbound' : 'Southbound',
+  distanceToNextLocation,
+  distanceToPreviousLocation,
+  order,
+  cycleAllEvents: [
+    { start: '2026-03-02T16:00:00', value: 1 },
+    { start: '2026-03-02T16:00:30', value: 8 },
+    { start: '2026-03-02T16:01:00', value: 11 },
+  ],
+  greenTimeEvents: [
+    { initialX: '2026-03-02T16:00:05', isDetectorOn: true },
+    { initialX: '2026-03-02T16:00:25', isDetectorOn: false },
+  ],
+})
+
+export const averagePhaseResults = [
+  {
+    isSuccess: true,
+    error: null,
+    result: averageResult('1001', 'Primary', 1, 1200, 0),
+  },
+  {
+    isSuccess: true,
+    error: null,
+    result: averageResult('1002', 'Primary', 2, 0, 1200),
+  },
+  {
+    isSuccess: true,
+    error: null,
+    result: averageResult('1002', 'Opposing', 3, 1200, 0),
+  },
+  {
+    isSuccess: true,
+    error: null,
+    result: averageResult('1001', 'Opposing', 4, 0, 1200),
+  },
+] satisfies TimeSpaceDiagramAveragePhaseResult[]
+
+interface TimeSpaceAverageStub {
+  /** What the average endpoint answers; defaults to all four phases. */
+  report?: TimeSpaceDiagramAveragePhaseResult[]
+}
+
+// The average tool's equivalent of stubTimeSpaceHistoric. The historic
+// endpoint is stubbed too and handed back, because a request there would mean
+// the wrong tool ran.
+export const stubTimeSpaceAverage = async (
+  page: Page,
+  { report = averagePhaseResults }: TimeSpaceAverageStub = {}
+): Promise<{ hosts: ApiHosts; averages: Request[]; historics: Request[] }> => {
+  const hosts = await stubApiHosts(page)
+  await mockAppShell(page)
+
+  await stubEndpoint(page, {
+    host: hosts.config,
+    path: '/Route',
+    method: 'GET',
+    body: odataCollection('Route', routeEntities),
+  })
+  await stubEndpoint(page, {
+    host: hosts.config,
+    path: `/GetRouteView/${ROUTE_ID}`,
+    body: routeViewWithDetail,
+  })
+  const averages = await stubEndpoint(page, {
+    host: hosts.reports,
+    path: '/TimeSpaceDiagramAverage/getReportData',
+    method: 'POST',
+    body: report,
+  })
+  const historics = await stubEndpoint(page, {
+    host: hosts.reports,
+    path: '/TimeSpaceDiagram/getReportData',
+    method: 'POST',
+    body: [],
+  })
+
+  return { hosts, averages, historics }
+}
+
+// Everything the average handler reads back off the URL, so a run reproduces
+// a shared link rather than the defaults.
+export const averageUrl = (params: Record<string, string> = {}) => {
+  const search = new URLSearchParams({
+    toolType: 'TimeSpaceAverage',
+    routeId: String(ROUTE_ID),
+    startDate: AVERAGE_START_DATE,
+    endDate: AVERAGE_END_DATE,
+    startTime: AVERAGE_START_TIME,
+    endTime: AVERAGE_END_TIME,
+    ...params,
+  })
+  AVERAGE_WEEKDAYS.forEach((day) => search.append('daysOfWeek', String(day)))
+  return `/time-space-diagrams?${search.toString()}`
+}
