@@ -10,6 +10,7 @@ import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/Lin
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
 import { getLinkPivotPcdTimeWindowFromTimeSpaceOptions } from '@/features/tools/link-pivot/linkPivotPcdTimeWindow'
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
+import { getApiErrorMessage } from '@/lib/apiError'
 import {
   Alert,
   Box,
@@ -113,9 +114,10 @@ export default function TimeSpaceResultsContainer({
       }))
       setHasAppliedSrm(true)
     } catch (error) {
-      setSrmError(
-        error instanceof Error ? error.message : 'Unable to apply SRM'
-      )
+      // Through the shared reader, so the accordion shows what the report API
+      // said rather than axios' "Request failed with status code 500" - the
+      // Generate button above it already reports errors this way.
+      setSrmError(getApiErrorMessage(error))
     }
   }
 
