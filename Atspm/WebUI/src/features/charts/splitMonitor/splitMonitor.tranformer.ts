@@ -76,9 +76,9 @@ function transformData(data: RawSplitMonitorData) {
   const forceOffs = data.forceOffs ?? []
   const unknowns = data.unknowns ?? []
   const peds = data.peds ?? []
-  // The requested percentile comes back as an int, where 0 is "None" (the
-  // report API cannot carry null); either way there is no percentile line.
-  const percentileSplit = data.percentileSplit || null
+  // The percentile the report was asked for, echoed back to label the
+  // per-plan value below. Nullable on the contract like every other field.
+  const percentileSplit = data.percentileSplit
 
   const titleHeader = `Split Monitor\n${data.locationDescription} - ${data.phaseDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
@@ -230,7 +230,9 @@ function transformData(data: RawSplitMonitorData) {
 
   const planOptions: PlanOptions<SplitMonitorPlan> = {
     percentileSplit: (value) =>
-      `${Math.round(value ?? 0)}s (${percentileSplit}th %)`,
+      percentileSplit
+        ? `${Math.round(value)}s (${percentileSplit}th %)`
+        : `${Math.round(value)}s`,
     averageSplit: (value) => `${Math.round(value)}s Avg. Split`,
     percentGapOuts: (value) => `${Math.round(value)}% Gap Outs`,
     percentMaxOuts: (value) => value && `${Math.round(value)}% Max Outs`,
@@ -239,11 +241,6 @@ function transformData(data: RawSplitMonitorData) {
   }
 
   plans.forEach((plan) => {
-    // createPlans prints a line for every non-null value, so the percentile
-    // is nulled out when none was requested rather than formatted as 0.
-    if (!percentileSplit) {
-      plan.percentileSplit = null
-    }
     if (plan.percentMaxOuts === 0) {
       plan.percentMaxOuts = null
     }

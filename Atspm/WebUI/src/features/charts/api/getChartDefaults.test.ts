@@ -62,21 +62,28 @@ describe('getChartDefaults', () => {
     expect(chart.measureOptions.yAxisDefault.value).toBe('100')
   })
 
-  it('maps a percentile split stored as the word "None" to 0', async () => {
-    const chart = await defaultsFor([
-      { id: 1, option: 'percentileSplit', value: 'None' },
-    ])
+  // The panel offered "None" until the report API's int field made it
+  // unsendable; both the word and the 0 it was briefly sent as fall back
+  // to the seeded percentile, so a stored default still names a choice
+  // the panel offers.
+  it.each(['None', '0'])(
+    'maps a percentile split stored as %p to the seeded 85th',
+    async (stored) => {
+      const chart = await defaultsFor([
+        { id: 1, option: 'percentileSplit', value: stored },
+      ])
 
-    expect(chart.measureOptions.percentileSplit.value).toBe('0')
-  })
+      expect(chart.measureOptions.percentileSplit.value).toBe('85')
+    }
+  )
 
   it('leaves every other value alone', async () => {
     const chart = await defaultsFor([
-      { id: 1, option: 'percentileSplit', value: '0' },
+      { id: 1, option: 'percentileSplit', value: '50' },
       { id: 2, option: 'binSize', value: 'None' },
     ])
 
-    expect(chart.measureOptions.percentileSplit.value).toBe('0')
+    expect(chart.measureOptions.percentileSplit.value).toBe('50')
     expect(chart.measureOptions.binSize.value).toBe('None')
   })
 })

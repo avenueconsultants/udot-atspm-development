@@ -34,8 +34,8 @@ const chartDefaults = {
   yAxisDefault: { id: 116, value: '100', option: 'yAxisDefault' },
 }
 
-// SplitMonitorOptions.percentileSplit is an int on the report API, so the
-// "None" choice has to leave the panel as a number.
+// Every choice the panel offers is a percentile the report API's int
+// field can carry; "None" was retired because it could not be sent.
 describe('SplitMonitorChartOptions', () => {
   it('sends a picked percentile through as its value', async () => {
     const user = userEvent.setup()
@@ -59,36 +59,24 @@ describe('SplitMonitorChartOptions', () => {
     })
   })
 
-  it('sends "None" as 0 and shows a stored 0 as None', async () => {
+  it('offers percentiles only', async () => {
     const user = userEvent.setup()
-    const handleChartOptionsUpdate = jest.fn()
 
-    const { unmount } = render(
+    render(
       <SplitMonitorChartOptions
         chartDefaults={chartDefaults}
-        handleChartOptionsUpdate={handleChartOptionsUpdate}
+        handleChartOptionsUpdate={jest.fn()}
       />
     )
 
     await user.click(screen.getByRole('combobox'))
-    await user.click(screen.getByRole('option', { name: 'None' }))
 
-    expect(handleChartOptionsUpdate).toHaveBeenCalledWith({
-      id: 58,
-      option: 'percentileSplit',
-      value: '0',
-    })
-    unmount()
-
-    render(
-      <SplitMonitorChartOptions
-        chartDefaults={{
-          ...chartDefaults,
-          percentileSplit: { ...chartDefaults.percentileSplit, value: '0' },
-        }}
-        handleChartOptionsUpdate={jest.fn()}
-      />
-    )
-    expect(screen.getByRole('combobox')).toHaveTextContent('None')
+    expect(screen.getAllByRole('option').map((o) => o.textContent)).toEqual([
+      '50',
+      '75',
+      '85',
+      '90',
+      '95',
+    ])
   })
 })

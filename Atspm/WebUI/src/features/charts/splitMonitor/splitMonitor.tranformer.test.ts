@@ -94,21 +94,20 @@ const planLabelsOf = (chart: EChartsOption) => {
 }
 
 describe('transformSplitMonitorData', () => {
-  it('omits the percentile line when none was requested', () => {
+  it('labels the percentile split without a percentile the report omitted', () => {
     const response = populated()
     const [result] = response.data
     Object.assign(result, {
-      // "None" goes out and comes back as 0, the int's stand-in for null.
-      percentileSplit: 0,
-      plans: [{ ...(result.plans ?? [])[0], percentileSplit: 0 }],
+      percentileSplit: null,
+      plans: [{ ...(result.plans ?? [])[0], percentileSplit: 30.4 }],
     })
 
-    const labels = planLabelsOf(firstChart(response))
-    expect(labels).toHaveLength(1)
-    expect(labels[0]).not.toMatch(/th %|\{info\|0\}/)
+    const [label] = planLabelsOf(firstChart(response))
+    expect(label).toContain('30s')
+    expect(label).not.toMatch(/th %/)
   })
 
-  it('labels the percentile split when one was requested', () => {
+  it('labels the percentile split with the percentile requested', () => {
     const response = populated()
     const [result] = response.data
     Object.assign(result, {

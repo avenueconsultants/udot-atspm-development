@@ -20,12 +20,13 @@ import { ChartDefaults, Default } from '@/features/charts/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { useQuery } from '@tanstack/react-query'
 
-// Stored option values that the report API no longer accepts, mapped to
-// the value it does: Split Monitor's percentile once travelled as the word
-// "None", but the contract's field is an int, where 0 means no percentile.
-// Measure defaults saved before that change still hold the word.
+// Stored option values the panels no longer offer, mapped to one they do.
+// Split Monitor's percentile once offered "None", which the report API's
+// int field could not carry; the option is gone and defaults saved while
+// it existed (as the word, or as the 0 it was briefly sent as) fall back
+// to the seeded 85th.
 const LEGACY_OPTION_VALUES: Record<string, Record<string, string>> = {
-  percentileSplit: { None: '0' },
+  percentileSplit: { None: '85', '0': '85' },
 }
 
 const normalizeOptionValue = ({ option, value }: Default) =>

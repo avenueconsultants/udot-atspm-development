@@ -28,8 +28,8 @@ import { splitMonitorResult } from './support/reportFixtures'
 
 // Split Monitor is the first measure that renders a table under its charts:
 // PhaseTable lines every phase's plans up side by side, with plan 254
-// headed "Free". The one option that feeds the request, the percentile
-// split, is an int on the report API, so "None" has to leave as 0.
+// headed "Free". The one option that feeds the request is the percentile
+// split.
 
 const chartUrl = () => measurePageUrl('SplitMonitor')
 
@@ -46,7 +46,7 @@ const stubBackend = (page: Page, report: unknown = twoPhases) =>
   })
 
 const percentilePicker = (page: Page) =>
-  page.getByRole('combobox').filter({ hasText: /^(None|50|75|85|90|95)$/ })
+  page.getByRole('combobox').filter({ hasText: /^(50|75|85|90|95)$/ })
 
 const phaseTable = (page: Page) =>
   page.getByRole('table').filter({ has: page.getByText('Programmed Split') })
@@ -141,20 +141,21 @@ test('a percentile picked in the panel goes out in the request', async ({
   expect(Number(reports[0].postDataJSON().percentileSplit)).toBe(50)
 })
 
-test('"None" goes out as a zero percentile, not the word', async ({ page }) => {
-  const { reports } = await stubBackend(page)
+// Every percentile the panel offers is one the report API's int field can
+// carry; "None" was retired because it could not be sent.
+test('the percentile picker offers percentiles only', async ({ page }) => {
+  await stubBackend(page)
 
   await page.goto(chartUrl())
   await percentilePicker(page).click()
-  await page.getByRole('option', { name: 'None' }).click()
-  await expect(percentilePicker(page)).toHaveText('None')
 
-  await generateCharts(page)
-
-  await expect(page.locator('#chart-0 canvas')).toBeVisible()
-  expect(reports).toHaveLength(1)
-  // Not Number(): null would also read as 0.
-  expect(String(reports[0].postDataJSON().percentileSplit)).toBe('0')
+  await expect(page.getByRole('listbox').getByRole('option')).toHaveText([
+    '50',
+    '75',
+    '85',
+    '90',
+    '95',
+  ])
 })
 
 test('a phase with no plans or events renders an empty chart and a planless table', async ({
