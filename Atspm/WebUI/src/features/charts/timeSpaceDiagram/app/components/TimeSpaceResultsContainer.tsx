@@ -73,7 +73,7 @@ export default function TimeSpaceResultsContainer({
   const locations = getPrimaryTimeSpaceLocations(baseTimeSpaceData)
 
   const [gpxEntries, setGpxEntries] = useState([
-    createEmptyTimeSpaceEntry(locations),
+    createEmptyTimeSpaceEntry(locations, true),
   ])
   const [ignoredLocations, setIgnoredLocation] = useState<string[]>([])
   const [distanceSpacingMode, setDistanceSpacingMode] =
@@ -141,7 +141,7 @@ export default function TimeSpaceResultsContainer({
     setBaseTimeSpaceData(nextBaseData)
     setIgnoredLocation([])
     setDistanceSpacingMode('distance')
-    setGpxEntries([createEmptyTimeSpaceEntry(nextLocations)])
+    setGpxEntries([createEmptyTimeSpaceEntry(nextLocations, true)])
     setSrmError(null)
     setHasAppliedSrm(false)
   }, [timeSpaceData])

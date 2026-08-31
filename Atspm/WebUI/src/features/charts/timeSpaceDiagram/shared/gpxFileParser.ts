@@ -19,9 +19,21 @@ export type GpxPoint = {
   distance: number
 }
 
+/**
+ * Rejects rather than resolving empty, so the row that called it can tell the
+ * user why nothing was drawn. DOMParser never throws: handed something that
+ * is not XML it returns a document whose root is <parsererror>, and handed
+ * XML that is not GPX it returns a perfectly good document with no track
+ * points in it. Both used to come back as an empty list, which the caller
+ * could not tell from a successful parse.
+ */
 export const parseGpxFile = async (file: File): Promise<GpxPoint[]> => {
   const text = await file.text()
   const xml = new DOMParser().parseFromString(text, 'application/xml')
+
+  if (xml.getElementsByTagName('parsererror').length > 0) {
+    throw new Error('Invalid GPX file')
+  }
 
   const trkpts = Array.from(xml.getElementsByTagName('trkpt'))
 
@@ -31,7 +43,11 @@ export const parseGpxFile = async (file: File): Promise<GpxPoint[]> => {
 
   const startTime = trkpts[0]?.getElementsByTagName('time')[0]?.textContent
 
-  if (!startTime) return []
+  // A track point without a time cannot be placed on the x axis, so a file
+  // whose first point has none carries nothing this chart can use.
+  if (!startTime) {
+    throw new Error('No track points found in this GPX file')
+  }
 
   const points: GpxPoint[] = []
   for (const pt of trkpts) {

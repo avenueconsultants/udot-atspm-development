@@ -124,11 +124,15 @@ export const GpxUploadRow = ({
                     parsedData: parsed,
                     error: null,
                   })
-                } catch {
+                } catch (error) {
                   onChange({
                     file: undefined,
                     parsedData: undefined,
-                    error: 'Invalid GPX file',
+                    // The parser says which way the file was unusable.
+                    error:
+                      error instanceof Error
+                        ? error.message
+                        : 'Invalid GPX file',
                   })
                 }
               }}
