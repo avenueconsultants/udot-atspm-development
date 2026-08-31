@@ -14,13 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  BaseChartData,
-  BaseChartOptions,
-  BasePlan,
-  ChartType,
-  DataPoint,
-} from '@/features/charts/common/types'
+import { PedDelayPlan, PedDelayResult } from '@/api/reports'
+import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
 
 export interface PedestrianDelayChartOptions extends BaseChartOptions {
   showPedRecall: boolean
@@ -41,33 +36,9 @@ export interface PedestrianDelayChartOptionsDefaults {
   yAxisDefault: { id: number; value: string; option: string }
 }
 
-export interface pedestrianDelayPlan extends BasePlan {
-  pedRecallMessage: string
-  cyclesWithPedRequests: number
-  uniquePedDetections: number
-  averageDelaySeconds: number
-  averageCycleLengthSeconds: number
-  pedPresses: number
-}
+export type pedestrianDelayPlan = PedDelayPlan
 
-export interface RawPedestrianDelayData extends BaseChartData {
-  approachId: number
-  approachDescription: string
-  phaseNumber: number
-  phaseDescription: string
-  pedPresses: number
-  cyclesWithPedRequests: number
-  timeBuffered: number
-  uniquePedestrianDetections: number
-  minDelay: number
-  maxDelay: number
-  averageDelay: number
-  plans: pedestrianDelayPlan[]
-  cycleLengths: DataPoint[]
-  pedestrianDelay: DataPoint[]
-  startOfWalk: DataPoint[]
-  percentDelayByCycleLength: DataPoint[]
-}
+export type RawPedestrianDelayData = PedDelayResult
 
 export interface RawPedestrianDelayResponse {
   type: ChartType.PedestrianDelay

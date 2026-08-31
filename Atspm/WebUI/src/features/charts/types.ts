@@ -17,7 +17,7 @@
 import { EChartsOption } from 'echarts'
 import { ApproachVolumeSummaryData } from './approachVolume/types'
 import { ChartType, ToolType } from './common/types'
-import type { RawTurningMovementCountTableRow } from './turningMovementCounts/types'
+import type { NormalizedTurningMovementCountTableRow } from './turningMovementCounts/types'
 
 export interface ExtendedEChartsOption extends EChartsOption {
   displayProp?: {
@@ -86,7 +86,7 @@ export interface TransformedTurningMovementCountsResponse {
   data: {
     displayProps?: TurningMovementCountsTableDisplayProps
     labels: Labels
-    table: RawTurningMovementCountTableRow[]
+    table: NormalizedTurningMovementCountTableRow[]
     charts: StandardChart[]
     peakHour?: {
       peakHourFactor: number | null
@@ -101,13 +101,6 @@ export interface TransformedTimingAndActuationResponse {
     title: EChartsOption
     charts: StandardChart[]
     legends: EChartsOption[]
-  }
-}
-
-export interface TransformedRampMeteringResponse {
-  type: ChartType
-  data: {
-    charts: StandardChart[]
   }
 }
 
@@ -134,12 +127,4 @@ export type Default = {
   id: number
   option: string
   value: string | number | boolean | number[]
-}
-export interface MeasureType {
-  id: number
-  name: string
-  abbreviation: string
-  showOnWebsite: boolean
-  showOnAggregationSite: boolean
-  displayOrder: number
 }

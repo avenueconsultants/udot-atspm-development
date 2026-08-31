@@ -1,5 +1,5 @@
+import { Region } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { Region } from '@/features/regions/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'

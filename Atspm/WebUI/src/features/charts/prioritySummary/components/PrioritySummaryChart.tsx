@@ -138,10 +138,16 @@ export default function PrioritySummaryDetailsChart({
         height: '100%',
         ...style,
       }}
-      role="presentation"
-      aria-hidden="true"
     >
-      <div id={id} ref={chartRef} style={{ width: '100%', height: '100%' }} />
+      {/* The canvas is decoration to assistive tech; the Back button that
+          follows it is not, so only the chart node is hidden. */}
+      <div
+        id={id}
+        ref={chartRef}
+        role="presentation"
+        aria-hidden="true"
+        style={{ width: '100%', height: '100%' }}
+      />
 
       {isDrilled && (
         <Button

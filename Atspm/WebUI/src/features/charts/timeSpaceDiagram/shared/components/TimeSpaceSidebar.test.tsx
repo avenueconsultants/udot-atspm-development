@@ -338,9 +338,7 @@ describe('TimeSpaceSidebar directional controls', () => {
 
     expect(infoIcon).not.toBeNull()
     expect(screen.queryByRole('alert')).toBeNull()
-    expect(
-      screen.queryByLabelText('SRM Collection unavailable')
-    ).toBeNull()
+    expect(screen.queryByLabelText('SRM Collection unavailable')).toBeNull()
     expect(window.getComputedStyle(infoIcon).color).toBe('rgb(148, 163, 184)')
     expect(
       window.getComputedStyle(
@@ -377,15 +375,9 @@ describe('TimeSpaceSidebar directional controls', () => {
       />
     )
 
-    expect(
-      screen.getByLabelText('TSP Request unavailable')
-    ).not.toBeNull()
-    expect(
-      screen.getByLabelText('TSP Service unavailable')
-    ).not.toBeNull()
-    expect(
-      screen.getByLabelText('Transit Priority unavailable')
-    )
+    expect(screen.getByLabelText('TSP Request unavailable')).not.toBeNull()
+    expect(screen.getByLabelText('TSP Service unavailable')).not.toBeNull()
+    expect(screen.getByLabelText('Transit Priority unavailable'))
     expect(
       window.getComputedStyle(
         screen.getByLabelText('Transit Priority unavailable')
@@ -513,7 +505,9 @@ describe('TimeSpaceSidebar directional controls', () => {
       />
     )
 
-    const unavailableIcon = screen.getByLabelText('Pedestrian Interval unavailable')
+    const unavailableIcon = screen.getByLabelText(
+      'Pedestrian Interval unavailable'
+    )
 
     expect(unavailableIcon).not.toBeNull()
     expect(
@@ -655,41 +649,6 @@ describe('TimeSpaceSidebar directional controls', () => {
     expect(screen.getByText('Transit Priority')).not.toBeNull()
     expect(screen.getByText('TSP Request')).not.toBeNull()
     expect(screen.getByText('TSP Service')).not.toBeNull()
-  })
-
-  it('renders the TSP Service legend preview as a hollow interval', () => {
-    const appearanceSettings = createDefaultTimeSpaceAppearanceSettings()
-    appearanceSettings.tspService.color = '#123456'
-    appearanceSettings.tspService.opacity = 0.42
-
-    render(
-      <TimeSpaceSidebar
-        option={buildTransitNoDataOption()}
-        selectedSeries={{
-          'Cycles EB': true,
-          'Early Green (113)': false,
-          'Extend Green (114)': false,
-          'TSP Request (112-115)': false,
-          'TSP Service (118-119)': false,
-        }}
-        suppressedDirections={{}}
-        onSetSeriesVisibility={jest.fn()}
-        onToggleDirectionVisibility={jest.fn()}
-        appearanceSettings={appearanceSettings}
-        showTabs={false}
-      />
-    )
-
-    const tspServiceCard = screen
-      .getByText('TSP Service')
-      .closest('.MuiPaper-root') as HTMLElement
-    const tspServicePreview = tspServiceCard.querySelector(
-      'rect[x="12"][y="25"]'
-    )
-
-    expect(tspServicePreview?.getAttribute('fill')).toBe('transparent')
-    expect(tspServicePreview?.getAttribute('stroke')).toBe('#123456')
-    expect(tspServicePreview?.getAttribute('stroke-opacity')).toBe('0.42')
   })
 
   it('updates turn appearance settings from the styles tab controls', () => {

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { Phase } from '@/api/reports'
 import {
   createDataZoom,
   createDisplayProps,
@@ -31,7 +32,6 @@ import {
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
 import {
-  Phase,
   RawPurduePhaseTerminationData,
   RawPurduePhaseTerminationResponse,
 } from '@/features/charts/purduePhaseTermination/types'
@@ -59,30 +59,34 @@ export default function transformPurduePhaseTerminationData(
   }
 }
 function transformData(data: RawPurduePhaseTerminationData) {
-  const { phases, plans } = data
+  const phases = data.phases ?? []
+  const plans = data.plans ?? []
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
 
   const info = createInfoString([
-    `Currently showing Force-Offs, Max-Outs and Gap-Outs with a consecutive occurence of ${data.consecutiveCount} or more. Pedestrian events are never filtered.`,
+    `Currently showing Force-Offs, Max-Outs and Gap-Outs with a consecutive occurence of ${data.consecutiveCount ?? 0} or more. Pedestrian events are never filtered.`,
     '',
   ])
 
-  const titleHeader = `Phase Termination\n${data.locationDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Phase Termination\n${locationDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
     title: 'Purdue Phase Termination',
-    location: data.locationDescription,
+    location: locationDescription,
     dateRange,
     info,
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
   const yAxis = createYAxis(true, {
     name: 'Phase Number',
     type: 'category',
     boundaryGap: true,
     splitLine: { show: true },
-    data: phases.map((phase) => phase.phaseNumber),
+    data: phases.map((phase) => phase.phaseNumber ?? 0),
   })
 
   const grid = createGrid({
@@ -120,18 +124,21 @@ function transformData(data: RawPurduePhaseTerminationData) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.PurduePhaseTermination
   )
 
-  const combinedGapOuts = combineArrays(data, 'gapOuts')
-  const combinedForceOffs = combineArrays(data, 'forceOffs')
-  const combinedMaxOuts = combineArrays(data, 'maxOuts')
-  const combinedPedWalkBegins = combineArrays(data, 'pedWalkBegins')
-  const combinedUnknownTerminations = combineArrays(data, 'unknownTerminations')
+  const combinedGapOuts = combineArrays(phases, 'gapOuts')
+  const combinedForceOffs = combineArrays(phases, 'forceOffs')
+  const combinedMaxOuts = combineArrays(phases, 'maxOuts')
+  const combinedPedWalkBegins = combineArrays(phases, 'pedWalkBegins')
+  const combinedUnknownTerminations = combineArrays(
+    phases,
+    'unknownTerminations'
+  )
 
   const symbolSize = 4
 
@@ -216,16 +223,15 @@ function transformData(data: RawPurduePhaseTerminationData) {
 }
 
 function combineArrays<T extends keyof Phase>(
-  locationData: { phases: Phase[] },
+  phases: Phase[],
   prop: T
 ): [string, number][] {
   const combinedItems: [string, number][] = []
 
-  for (let i = locationData.phases.length - 1; i >= 0; i--) {
-    const phase = locationData.phases[i]
-    const items = phase[prop] as string[]
+  for (let i = phases.length - 1; i >= 0; i--) {
+    const items = phases[i][prop] as string[] | null | undefined
 
-    for (const item of items) {
+    for (const item of items ?? []) {
       combinedItems.push([item, i])
     }
   }

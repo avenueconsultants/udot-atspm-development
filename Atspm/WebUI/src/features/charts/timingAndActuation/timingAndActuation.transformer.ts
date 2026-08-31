@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { CycleEventsDto, DetectorEventDto } from '@/api/reports'
 import {
   createDataZoom,
   createDisplayProps,
@@ -31,12 +32,32 @@ import {
 } from '@/features/charts/utils'
 import { EChartsOption, SeriesOption, ToolboxComponentOption } from 'echarts'
 import {
-  AdvancedDetectors,
   BasicDetectors,
   Cycle,
   RawTimingAndActuationData,
   RawTimingAndActuationResponse,
 } from './types'
+
+function toCycles(
+  events: CycleEventsDto[] | null | undefined
+): Cycle[] {
+  return (events ?? []).map((e) => ({
+    start: e.start ?? '',
+    value: e.value ?? 0,
+  }))
+}
+
+function toBasicDetectors(
+  detectors: DetectorEventDto[] | null | undefined
+): BasicDetectors[] {
+  return (detectors ?? []).map((d) => ({
+    name: d.name ?? '',
+    events: (d.events ?? []).map((e) => ({
+      detectorOn: e.detectorOn ?? '',
+      detectorOff: e.detectorOff ?? '',
+    })),
+  }))
+}
 
 export default function transformTimingAndActuationData(
   response: RawTimingAndActuationResponse
@@ -65,20 +86,25 @@ export default function transformTimingAndActuationData(
 }
 
 function transformData(data: RawTimingAndActuationData) {
-  const {
-    pedestrianIntervals,
-    pedestrianEvents,
-    cycleAllEvents,
-    advanceCountDetectors,
-    advancePresenceDetectors,
-    stopBarDetectors,
-    laneByLanesDetectors,
-    end,
-  } = data
+  const pedestrianIntervals = toCycles(data.pedestrianIntervals)
+  const pedestrianEvents = toBasicDetectors(data.pedestrianEvents)
+  const cycleAllEvents =
+    data.cycleAllEvents != null ? toCycles(data.cycleAllEvents) : null
+  const advanceCountDetectors = toBasicDetectors(data.advanceCountDetectors)
+  const advancePresenceDetectors = toBasicDetectors(
+    data.advancePresenceDetectors
+  )
+  const stopBarDetectors = toBasicDetectors(data.stopBarDetectors)
+  const laneByLanesDetectors = toBasicDetectors(data.laneByLanesDetectors)
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
+  const approachDescription = data.approachDescription ?? ''
+  const phaseType = data.phaseType ?? ''
 
-  const title = { text: data.approachDescription }
+  const title = { text: approachDescription }
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
 
   const yAxis = createYAxis(false, {
     type: 'category',
@@ -95,7 +121,14 @@ function transformData(data: RawTimingAndActuationData) {
         color: 'black',
       },
     },
-    data: extractDetectorsNames(data),
+    data: extractDetectorsNames({
+      pedestrianIntervals,
+      pedestrianEvents,
+      stopBarDetectors,
+      laneByLanesDetectors,
+      advanceCountDetectors,
+      advancePresenceDetectors,
+    }),
   })
 
   const grid = {
@@ -119,7 +152,7 @@ function transformData(data: RawTimingAndActuationData) {
   const toolbox: ToolboxComponentOption = {
     feature: {
       mySaveAsImage: {
-        name: `Timing_and_Actuation_${data.locationDescription}`,
+        name: `Timing_and_Actuation_${locationDescription}`,
         show: true,
         icon: 'M4.7,22.9L29.3,45.5L54.7,23.4M4.6,43.6L4.6,58L53.8,58L53.8,43.6M29.2,45.1L29.2,0',
         onclick: () => {
@@ -211,11 +244,11 @@ function transformData(data: RawTimingAndActuationData) {
   }
 
   const displayProps = createDisplayProps({
-    description: data.approachDescription,
-    approachDescription: data.approachDescription,
+    description: approachDescription,
+    approachDescription: approachDescription,
     amountOfChannels,
     detectorEvents: ['Detector Events'],
-    phaseType: data.phaseType,
+    phaseType: phaseType,
     numberOfLocations: 0,
   })
 
@@ -281,14 +314,21 @@ export function generateCycles(
   return Array.from(seriesMap.values())
 }
 
-function extractDetectorsNames(data: RawTimingAndActuationData): string[] {
+function extractDetectorsNames(data: {
+  pedestrianIntervals: Cycle[]
+  pedestrianEvents: BasicDetectors[]
+  stopBarDetectors: BasicDetectors[]
+  laneByLanesDetectors: BasicDetectors[]
+  advanceCountDetectors: BasicDetectors[]
+  advancePresenceDetectors: BasicDetectors[]
+}): string[] {
   const names: string[] = []
 
-  data.advanceCountDetectors.forEach((item: AdvancedDetectors) => {
+  data.advanceCountDetectors.forEach((item: BasicDetectors) => {
     names.push(item.name)
   })
 
-  data.advancePresenceDetectors.forEach((item: AdvancedDetectors) => {
+  data.advancePresenceDetectors.forEach((item: BasicDetectors) => {
     names.push(item.name)
   })
 
@@ -554,13 +594,17 @@ function getAllEventDetails() {
   )
 }
 
-function createTitleOnlyChart(data: RawTimingAndActuationData) {
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+// Called with response.data[0], which is undefined whenever the report API
+// returns no phase results for the window - a normal answer, not an error.
+// Every field is read defensively so the shared title chart still renders
+// above an empty chart list instead of throwing out of the transformer.
+function createTitleOnlyChart(data: RawTimingAndActuationData | undefined) {
+  const dateRange = formatChartDateTimeRange(data?.start ?? '', data?.end ?? '')
 
   return {
     title: createTitle({
       title: 'Timing and Actuation',
-      location: data.locationDescription,
+      location: data?.locationDescription ?? '',
       dateRange,
     }),
   }

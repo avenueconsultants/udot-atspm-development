@@ -33,8 +33,6 @@ export const parseGpxFile = async (file: File): Promise<GpxPoint[]> => {
 
   if (!startTime) return []
 
-  const startMs = new Date(startTime).getTime()
-
   const points: GpxPoint[] = []
   for (const pt of trkpts) {
     const lat = Number(pt.getAttribute('lat'))

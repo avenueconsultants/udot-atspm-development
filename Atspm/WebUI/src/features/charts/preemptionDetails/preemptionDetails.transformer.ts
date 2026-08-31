@@ -46,16 +46,16 @@ import {
 export default function transformPreemptionDetailsData(
   response: RawPreemptionDetailsResponse
 ): TransformedPreemptDetailsResponse {
-  const summary = transformSummaryData(response.data.summary)
-
-  const charts = response.data.details.map((data) => {
+  const charts = (response.data.details ?? []).map((data) => {
     const chartOptions = transformDetailsData(data)
 
     return {
       chart: chartOptions,
     }
   })
-  charts.unshift({ chart: summary })
+  if (response.data.summary) {
+    charts.unshift({ chart: transformSummaryData(response.data.summary) })
+  }
   return {
     type: ChartType.PreemptionDetails,
     data: {
@@ -65,17 +65,19 @@ export default function transformPreemptionDetailsData(
 }
 
 function transformDetailsData(data: LocationDetail) {
-  const { cycles } = data
+  const cycles = data.cycles ?? []
+  const start = data.start ?? ''
+  const end = data.end ?? ''
 
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
     title: ['Preemption Details', `Preempt Number ${data.preemptionNumber}`],
-    location: data.locationDescription,
+    location: data.locationDescription ?? '',
     dateRange,
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
 
   const yAxis = createYAxis(true, { name: 'Seconds Since Request' })
 
@@ -91,10 +93,10 @@ function transformDetailsData(data: LocationDetail) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName('titleHeader', data.start, data.end),
+      title: formatExportFileName('titleHeader', start, end),
       dateRange,
     },
-    data.locationIdentifer,
+    data.locationIdentifier ?? '',
     ChartType.PreemptionDetails
   )
 
@@ -211,7 +213,7 @@ interface ChartDataEntry {
 
 type PremptStuf = ChartDataEntry[]
 
-function getSeries(key: keyof Cycle, cycles: Cycle[]): PremptStuf {
+function getSeries(key: keyof Cycle, cycles: readonly Cycle[]): PremptStuf {
   return cycles.map((cycle) => {
     let value: number
 
@@ -219,36 +221,40 @@ function getSeries(key: keyof Cycle, cycles: Cycle[]): PremptStuf {
 
     if (typeof cycle[key] === 'string' && Date.parse(cycle[key] as string)) {
       value =
-        (Date.parse(cycle[key] as string) - Date.parse(cycle.inputOn)) / 1000
+        (Date.parse(cycle[key] as string) - Date.parse(cycle.inputOn ?? '')) /
+        1000
     } else if (typeof cycle[key] === 'number') {
       value = cycle[key] as number
     } else {
       value = 0
     }
 
-    return [cycle.inputOn, value]
+    return [cycle.inputOn ?? '', value]
   })
 }
 
 function transformSummaryData(data: PreemptServiceSummary) {
-  const { requestAndServices } = data
+  const requestAndServices = data.requestAndServices ?? []
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
 
-  const titleHeader = `Preemption Service and Request\n${data.locationDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Preemption Service and Request\n${locationDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
     title: 'Preemption Service and Request Summary',
-    location: data.locationDescription,
+    location: locationDescription,
     dateRange,
   })
 
   const xAxis: XAXisComponentOption = {
     type: 'time',
-    min: data.start,
+    min: start,
     nameLocation: 'middle',
     name: 'Time',
     nameGap: 30,
-    max: data.end,
+    max: end,
     splitNumber: 10,
     minorTick: {
       show: true,
@@ -279,10 +285,10 @@ function transformSummaryData(data: PreemptServiceSummary) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifer,
+    data.locationIdentifier ?? '',
     ChartType.PreemptionDetails
   )
   const tooltip = createTooltip({ trigger: 'item' })
@@ -292,11 +298,11 @@ function transformSummaryData(data: PreemptServiceSummary) {
   const requestArr: PremptStuf = []
   const servicetArr: PremptStuf = []
   requestAndServices.forEach((entry) => {
-    const preemptionNumber = entry.preemptionNumber.toString()
-    entry.requests.forEach((request) =>
+    const preemptionNumber = (entry.preemptionNumber ?? 0).toString()
+    ;(entry.requests ?? []).forEach((request) =>
       requestArr.push([request, preemptionNumber])
     )
-    entry.services.forEach((service) =>
+    ;(entry.services ?? []).forEach((service) =>
       servicetArr.push([service, preemptionNumber])
     )
   })

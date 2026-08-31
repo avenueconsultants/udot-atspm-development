@@ -28,6 +28,7 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType, PlanOptions } from '@/features/charts/common/types'
@@ -64,40 +65,42 @@ export default function transformPedestrianDelayData(
 }
 
 function transformData(data: RawPedestrianDelayData) {
-  const {
-    plans,
-    cycleLengths,
-    pedestrianDelay,
-    startOfWalk,
-    percentDelayByCycleLength,
-  } = data
+  const plans = data.plans ?? []
+  const cycleLengths = toDataPoints(data.cycleLengths)
+  const pedestrianDelay = toDataPoints(data.pedestrianDelay)
+  const startOfWalk = toDataPoints(data.startOfWalk)
+  const percentDelayByCycleLength = toDataPoints(data.percentDelayByCycleLength)
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
+  const phaseDescription = data.phaseDescription ?? ''
 
   const info = createInfoString(
-    ['Ped Presses (PP): ', data.pedPresses.toLocaleString()],
+    ['Ped Presses (PP): ', (data.pedPresses ?? 0).toLocaleString()],
     [
       'Cycles with Ped Requests (CPR): ',
-      data.cyclesWithPedRequests.toLocaleString(),
+      (data.cyclesWithPedRequests ?? 0).toLocaleString(),
     ],
     [
-      `Time-Buffered ${data.timeBuffered}s Presses (TBP): `,
-      data.uniquePedestrianDetections.toLocaleString(),
+      `Time-Buffered ${data.timeBuffered ?? 0}s Presses (TBP): `,
+      (data.uniquePedestrianDetections ?? 0).toLocaleString(),
     ],
-    ['Avg Delay (AD): ', `${Math.round(data.averageDelay)}s`],
-    ['Min Delay: ', `${Math.round(data.minDelay)}s`],
-    ['Max Delay: ', `${Math.round(data.maxDelay)}s`]
+    ['Avg Delay (AD): ', `${Math.round(data.averageDelay ?? 0)}s`],
+    ['Min Delay: ', `${Math.round(data.minDelay ?? 0)}s`],
+    ['Max Delay: ', `${Math.round(data.maxDelay ?? 0)}s`]
   )
 
-  const titleHeader = `Pedestrian Delay\n${data.locationDescription} - ${data.phaseDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Pedestrian Delay\n${locationDescription} - ${phaseDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
-    title: ['Pedestrian Delay', data.phaseDescription],
-    location: data.locationDescription,
+    title: ['Pedestrian Delay', phaseDescription],
+    location: locationDescription,
     dateRange,
     info,
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
   const yAxis = createYAxis(
     true,
     { name: 'Delay per Request (seconds)', min: 0 },
@@ -147,10 +150,10 @@ function transformData(data: RawPedestrianDelayData) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.PedestrianDelay
   )
 
@@ -208,20 +211,21 @@ function transformData(data: RawPedestrianDelayData) {
     return Math.ceil(x / 5) * 5
   }
   const planOptions: PlanOptions<pedestrianDelayPlan> = {
-    pedRecallMessage: (value: string) => value,
-    cyclesWithPedRequests: (value: number) => `${value} CPR`,
-    uniquePedDetections: (value: number) => `${value} TBP`,
-    averageDelaySeconds: (value: number) => `${Math.round(value)} AD`,
-    averageCycleLengthSeconds: (value: number) =>
-      `Avg CL: ${round(Number.parseInt(value.toFixed(2)))}s`,
-    pedPresses: (value: number) => `${value} PP`,
+    pedRecallMessage: (value: string | null | undefined) => value ?? '',
+    cyclesWithPedRequests: (value: number | undefined) => `${value ?? 0} CPR`,
+    uniquePedDetections: (value: number | undefined) => `${value ?? 0} TBP`,
+    averageDelaySeconds: (value: number | undefined) =>
+      `${Math.round(value ?? 0)} AD`,
+    averageCycleLengthSeconds: (value: number | undefined) =>
+      `Avg CL: ${round(Number.parseInt((value ?? 0).toFixed(2)))}s`,
+    pedPresses: (value: number | undefined) => `${value ?? 0} PP`,
   }
 
   const plansSeries = createPlans(plans, yAxis.length, planOptions, 135)
 
   const displayProps = createDisplayProps({
     height: '600px',
-    description: data.phaseDescription,
+    description: phaseDescription,
   })
 
   const chartOptions: EChartsOption = {

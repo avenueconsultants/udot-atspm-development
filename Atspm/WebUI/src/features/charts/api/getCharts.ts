@@ -15,44 +15,36 @@
 // limitations under the License.
 // #endregion
 import {
+  getApproachDelayReportData,
+  getApproachSpeedReportData,
+  getApproachVolumeReportData,
+  getArrivalOnRedReportData,
+  getGreenTimeUtilizationReportData,
+  getLeftTurnGapAnalysisReportData,
+  getPedDelayReportData,
+  getPreemptDetailReportData,
+  getPriorityDetailsReportData,
+  getPrioritySummaryReportData,
+  getPurdueCoordinationDiagramReportData,
+  getPurduePhaseTerminationReportData,
+  getRampMeteringReportData,
+  getSplitFailReportData,
+  getSplitMonitorReportData,
+  getTimingAndActuationReportData,
+  getTurningMovementCountsReportData,
+  getWaitTimeReportData,
+  getYellowRedActivationsReportData,
+} from '@/api/reports'
+import {
   ChartOptions,
   ChartType,
   RawChartResponse,
 } from '@/features/charts/common/types'
 import { TransformedChartResponse } from '@/features/charts/types'
-import { reportsAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { transformChartData } from './transformData'
-
-export const TypeApiMap: Record<ChartType, string> = {
-  [ChartType.ApproachDelay]: '/api/v1/ApproachDelay/GetReportData',
-  [ChartType.ApproachSpeed]: '/api/v1/ApproachSpeed/GetReportData',
-  [ChartType.ApproachVolume]: '/api/v1/ApproachVolume/GetReportData',
-  [ChartType.ArrivalsOnRed]: '/api/v1/ArrivalOnRed/GetReportData',
-  [ChartType.PurdueCoordinationDiagram]:
-    '/api/v1/PurdueCoordinationDiagram/GetReportData',
-  [ChartType.GreenTimeUtilization]:
-    '/api/v1/GreenTimeUtilization/GetReportData',
-  [ChartType.LeftTurnGapAnalysis]: '/api/v1/LeftTurnGapAnalysis/GetReportData',
-  [ChartType.PedestrianDelay]: '/api/v1/PedDelay/GetReportData',
-  [ChartType.PurduePhaseTermination]:
-    '/api/v1/PurduePhaseTermination/GetReportData',
-  [ChartType.PreemptionDetails]: '/api/v1/PreemptDetail/GetReportData',
-    [ChartType.PrioritySummary]: '/api/v1/PrioritySummary/GetReportData',
-  [ChartType.PurdueSplitFailure]: '/api/v1/SplitFail/GetReportData',
-  [ChartType.SplitMonitor]: '/api/v1/SplitMonitor/GetReportData',
-  [ChartType.TimingAndActuation]: '/api/v1/TimingAndActuation/GetReportData',
-  [ChartType.PrioritySummary]: '/api/v1/PrioritySummary/GetReportData',
-  [ChartType.PriorityDetails]: '/api/v1/PriorityDetail/GetReportData',
-  [ChartType.TurningMovementCounts]:
-    '/api/v1/TurningMovementCounts/GetReportData',
-  [ChartType.WaitTime]: '/api/v1/WaitTime/GetReportData',
-  [ChartType.YellowAndRedActuations]:
-    '/api/v1/YellowRedActivations/GetReportData', // Todo: Fix spelling
-    [ChartType.RampMetering]: '/api/v1/RampMetering/GetReportData',
-}
 
 type StringBooleanMap = Record<string, boolean | string | Date>
 
@@ -76,16 +68,47 @@ const mapStringBooleansToBoolean = (obj: ChartOptions) => {
   }, {})
 }
 
+// The generated report-data fetcher for every chart type. A total record, so
+// a ChartType added without a fetcher is a compile error instead of a request
+// that silently goes nowhere.
+const chartFetchers: Record<
+  ChartType,
+  (options: StringBooleanMap) => Promise<unknown>
+> = {
+  [ChartType.ApproachDelay]: getApproachDelayReportData,
+  [ChartType.ApproachSpeed]: getApproachSpeedReportData,
+  [ChartType.ApproachVolume]: getApproachVolumeReportData,
+  [ChartType.ArrivalsOnRed]: getArrivalOnRedReportData,
+  [ChartType.GreenTimeUtilization]: getGreenTimeUtilizationReportData,
+  [ChartType.LeftTurnGapAnalysis]: getLeftTurnGapAnalysisReportData,
+  [ChartType.PedestrianDelay]: getPedDelayReportData,
+  [ChartType.PurdueCoordinationDiagram]: getPurdueCoordinationDiagramReportData,
+  [ChartType.PreemptionDetails]: getPreemptDetailReportData,
+  // Not selectable as a top-level chart: PrioritySummaryChart calls this
+  // fetcher itself as a click-driven drill-down. Wired here only so the
+  // record stays total.
+  [ChartType.PriorityDetails]: getPriorityDetailsReportData,
+  [ChartType.PrioritySummary]: getPrioritySummaryReportData,
+  [ChartType.PurduePhaseTermination]: getPurduePhaseTerminationReportData,
+  [ChartType.PurdueSplitFailure]: getSplitFailReportData,
+  [ChartType.RampMetering]: getRampMeteringReportData,
+  [ChartType.SplitMonitor]: getSplitMonitorReportData,
+  [ChartType.TimingAndActuation]: getTimingAndActuationReportData,
+  [ChartType.TurningMovementCounts]: getTurningMovementCountsReportData,
+  [ChartType.WaitTime]: getWaitTimeReportData,
+  [ChartType.YellowAndRedActuations]: getYellowRedActivationsReportData,
+}
+
 export const getCharts = async (
   type: ChartType,
   options: ChartOptions
 ): Promise<TransformedChartResponse> => {
-  const endpoint = TypeApiMap[type]
   const transformedOptions = mapStringBooleansToBoolean(options)
   transformedOptions.start = dateToTimestamp(transformedOptions.start as Date)
   transformedOptions.end = dateToTimestamp(transformedOptions.end as Date)
 
-  const response = await reportsAxios.post(endpoint, transformedOptions)
+  const response = await chartFetchers[type](transformedOptions)
+
   return transformChartData({
     type,
     data: response,
@@ -113,5 +136,9 @@ export const useCharts = ({
     enabled: false,
     queryKey: ['charts', chartType, chartOptions],
     queryFn: () => getCharts(chartType, chartOptions),
+    // A failed report belongs in ChartsContainer's inline alert, next to the
+    // button that triggered it. The app-wide policy would instead rethrow to
+    // the _app.tsx boundary and replace the page - selections included.
+    throwOnError: false,
   })
 }

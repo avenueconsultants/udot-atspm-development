@@ -1,6 +1,6 @@
+import { RouteDto, RouteLocationDto } from '@/api/config'
 import DirectionSelect from '@/features/routes/components/routeEditor/DirectionsSelect'
 import DistanceInput from '@/features/routes/components/routeEditor/DistanceInput'
-import { Route, RouteLocation } from '@/features/routes/types'
 import { Draggable } from '@hello-pangea/dnd'
 import DeleteIcon from '@mui/icons-material/Delete'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
@@ -15,11 +15,11 @@ import {
 } from '@mui/material'
 
 interface RouteRowProps {
-  link: RouteLocation
+  link: RouteLocationDto
   index: number
-  route: Route
+  route: RouteDto
   hasErrors: boolean
-  handleDirectionUpdate: (updatedLink: RouteLocation) => void
+  handleDirectionUpdate: (updatedLink: RouteLocationDto) => void
   handleDistanceChange: (locationIdentifier: string, distance: number) => void
   onDeleteLinkClick: (linkId: string) => void
 }
@@ -36,7 +36,7 @@ const RouteRow = ({
   const theme = useTheme()
 
   return (
-    <Draggable draggableId={link.locationIdentifier} index={index}>
+    <Draggable draggableId={link.locationIdentifier ?? ''} index={index}>
       {(provided, snapshot) => (
         <TableRow
           ref={provided.innerRef}
@@ -79,7 +79,7 @@ const RouteRow = ({
             <DistanceInput
               hasErrors={hasErrors}
               link={link}
-              nextLink={route.routeLocations[index + 1]}
+              nextLink={route.routeLocations?.[index + 1]}
               handleDistanceChange={handleDistanceChange}
             />
           </TableCell>
@@ -88,7 +88,7 @@ const RouteRow = ({
               <IconButton
                 color="error"
                 aria-label="delete"
-                onClick={() => onDeleteLinkClick(link.locationIdentifier)}
+                onClick={() => onDeleteLinkClick(link.locationIdentifier ?? '')}
               >
                 <DeleteIcon />
               </IconButton>

@@ -14,6 +14,8 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<Version>5.3.1</Version>
+		<GenerateSwaggerSpec>true</GenerateSwaggerSpec>
+		<SwaggerSpecName>identity</SwaggerSpecName>
 	</PropertyGroup>
 
 	<ItemGroup>

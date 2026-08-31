@@ -1,6 +1,5 @@
+import { MenuItem as GeneratedMenuItem, useGetMenuItems } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { useGetMenuItems } from '@/features/menuItems/api/getMenuItems'
-import { MenuItems } from '@/features/menuItems/types/linkDto'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   FormControl,
@@ -16,8 +15,8 @@ import { z } from 'zod'
 
 interface ModalProps {
   isOpen: boolean
-  data?: MenuItems
-  onSave: (menuItem: MenuItems) => void
+  data?: GeneratedMenuItem
+  onSave: (menuItem: GeneratedMenuItem) => void
   onClose: () => void
 }
 
@@ -57,10 +56,16 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
   useEffect(() => {
     if (data) {
       Object.entries(data).forEach(([key, value]) => {
-        setValue(
-          key as keyof MenuItemFormData,
-          key === 'displayOrder' ? Number(value) : value
-        )
+        if (key === 'displayOrder') {
+          setValue(key, Number(value))
+        } else if (key === 'parentId') {
+          // The Select's "None (top level)" option is keyed on 0, but the
+          // API represents top-level items with parentId: null - normalize
+          // so MUI doesn't warn about a null value on a controlled Select.
+          setValue(key, (value as number | null) ?? 0)
+        } else {
+          setValue(key as keyof MenuItemFormData, value)
+        }
       })
     } else {
       setValue('id', 0)
@@ -75,7 +80,7 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
 
   const onSubmit = async (formData: MenuItemFormData) => {
     try {
-      const sanitizedMenuItem: MenuItems = {
+      const sanitizedMenuItem: GeneratedMenuItem = {
         ...formData,
         displayOrder: parseInt(formData.displayOrder.toString(), 10),
       }
@@ -88,14 +93,16 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
 
   const topLevelMenuItems = useMemo(
     () =>
-      menuItemsData?.value.filter((item: MenuItems) => item.parentId === null),
+      menuItemsData?.filter(
+        (item: GeneratedMenuItem) => item.parentId === null
+      ),
     [menuItemsData]
   )
 
   const parentItem = useMemo(
     () =>
-      menuItemsData?.value.find(
-        (item: MenuItems) => item.id === watch('parentId')
+      menuItemsData?.find(
+        (item: GeneratedMenuItem) => item.id === watch('parentId')
       ),
     [menuItemsData, watch]
   )
@@ -104,8 +111,8 @@ const MenuItemsModal = ({ isOpen, onClose, data, onSave }: ModalProps) => {
     link: string | null | undefined,
     id: number | null
   ) => {
-    const children = menuItemsData?.value.filter(
-      (item: MenuItems) => item.parentId === id
+    const children = menuItemsData?.filter(
+      (item: GeneratedMenuItem) => item.parentId === id
     )
     return !(children && children.length > 0 && link)
   }

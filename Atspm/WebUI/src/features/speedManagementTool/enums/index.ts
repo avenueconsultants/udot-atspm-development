@@ -14,7 +14,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-export * from './analysisPeriod'
 export * from './dataSource'
 export * from './routeRenderOption'
 export * from './timeOptions'

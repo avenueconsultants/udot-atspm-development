@@ -75,7 +75,9 @@ export function generateLaneByLaneCountEventLines(
         color,
         opacity: 0.7,
       },
-      data: location.laneByLaneCountDetectors.flatMap((events) => {
+      data: location.laneByLaneCountDetectors
+        .filter((events) => events.detectorOn != null)
+        .flatMap((events) => {
         const distanceToNext = isPrimary
           ? location.distanceToNextLocation
           : -location.distanceToNextLocation
@@ -85,7 +87,7 @@ export function generateLaneByLaneCountEventLines(
           distanceScale,
           displayDistanceOffset
         )
-        const initialX = events.detectorOn
+        const initialX = events.detectorOn as string
         const finalX = getArrivalTime(
           location.calculatedDistanceToNext,
           location.speed,
@@ -146,11 +148,13 @@ export function generateAdvanceCountEventLines(
         color,
         opacity,
       },
-      data: location.advanceCountDetectors.flatMap((events) => {
+      data: location.advanceCountDetectors
+        .filter((events) => events.detectorOn != null)
+        .flatMap((events) => {
         const finalX = getArrivalTime(
           events.distanceToStopBar,
           location.speed,
-          events.detectorOn
+          events.detectorOn as string
         )
 
         const initialX = getArrivalTime(
@@ -329,10 +333,12 @@ function getStopBarPresenceDataPoints(
   currDistance: number
 ) {
   if (location.stopBarPresenceDetectors.length) {
-    return location.stopBarPresenceDetectors.flatMap((events) => [
-      [events.detectorOn, currDistance],
-      [events.detectorOff, currDistance],
-    ])
+    return location.stopBarPresenceDetectors
+      .filter((events) => events.detectorOn != null && events.detectorOff != null)
+      .flatMap((events) => [
+        [events.detectorOn, currDistance],
+        [events.detectorOff, currDistance],
+      ])
   }
 
   return []

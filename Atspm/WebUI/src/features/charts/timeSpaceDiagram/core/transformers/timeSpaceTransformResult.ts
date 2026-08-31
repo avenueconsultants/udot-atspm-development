@@ -18,12 +18,12 @@ import { ToolType } from '@/features/charts/common/types'
 import type { TransformedTimeSpaceResponse } from '@/features/charts/types'
 import type { EChartsOption } from 'echarts'
 import type {
+  NormalizedTimeSpacePhaseResult,
   TimeSpaceBaseData,
-  TimeSpaceDiagramPhaseResult,
 } from '../../shared/types'
 
 export function unwrapTimeSpaceTransformResults<T extends TimeSpaceBaseData>(
-  wrappedData: TimeSpaceDiagramPhaseResult<T>[]
+  wrappedData: NormalizedTimeSpacePhaseResult<T>[]
 ) {
   const errorMessages = wrappedData
     .filter((item) => !item.isSuccess && item.error)

@@ -105,7 +105,7 @@ const SegmentAdminPage = () => {
   const { mutateAsync: editMutation } =
     usePutApiV1SegmentUpdateSegmentSegmentId()
 
-  const { mutateAsync: getNearByEntities, isLoading: entitiesAreLoading } =
+  const { mutateAsync: getNearByEntities, isPending: entitiesAreLoading } =
     usePostApiV1EntityGetEntitiesWithinRange()
 
   const { mutateAsync: createSegment } = usePostApiV1SegmentAddSegment()
@@ -113,7 +113,7 @@ const SegmentAdminPage = () => {
   const { mutateAsync: attachEntities } =
     usePostApiV1SegmentSegmentIdEntitiesReplace()
 
-  const { mutateAsync: deleteEntities, isLoading: deleteIsLoading } =
+  const { mutateAsync: deleteEntities, isPending: deleteIsLoading } =
     useDeleteApiV1SegmentDeleteSegmentSegmentId()
 
   const { data: fetchedSegments } = useTransformedSegments()

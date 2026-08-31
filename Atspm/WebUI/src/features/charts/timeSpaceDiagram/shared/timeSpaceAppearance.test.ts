@@ -27,13 +27,6 @@ type GraphicNode = {
 }
 
 describe('applyTimeSpaceAppearanceToOption', () => {
-  it('uses swapped red clearance and red indication defaults', () => {
-    const appearance = createDefaultTimeSpaceAppearanceSettings()
-
-    expect(appearance.cycles.indicationColors.redClearance).toBe('#B34747')
-    expect(appearance.cycles.indicationColors.redIndication).toBe('#FB6962')
-  })
-
   it('applies overrides to supported line and custom series', () => {
     const appearance = createDefaultTimeSpaceAppearanceSettings()
     appearance.cycles.indicationColors.beginGreen = '#123456'

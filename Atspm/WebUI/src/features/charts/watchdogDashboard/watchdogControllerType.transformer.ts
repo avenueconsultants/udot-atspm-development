@@ -193,9 +193,11 @@ function transformData(
       0
     )
 
+    // Both denominators are sums over the data, so they are 0 on a dashboard
+    // with nothing flagged yet - a normal state, not an error. Dividing
+    // anyway wrote a literal "NaN%" into the sunburst node labels.
     const controllerPercentage = (
-      (controllerIssueCount / totalIssueCount) *
-      100
+      totalIssueCount > 0 ? (controllerIssueCount / totalIssueCount) * 100 : 0
     ).toFixed(1)
 
     return {
@@ -228,8 +230,9 @@ function transformData(
             )
             .map((issue) => {
               const issuePercentage = (
-                (issue.counts / controllerIssueCount) *
-                100
+                controllerIssueCount > 0
+                  ? (issue.counts / controllerIssueCount) * 100
+                  : 0
               ).toFixed(1)
               return {
                 name: `${issue.name}\n${issuePercentage}%`,

@@ -72,7 +72,13 @@ builder.Host
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
+            // Wraps $ref properties in allOf so their nullability survives (a bare $ref
+            // can't carry `nullable`), and so schema filters see them per property.
+            o.UseAllOfToExtendReferenceSchemas();
+            o.DocumentEnumMemberNames();
+            o.SchemaFilter<ODataEnumMemberNameSchemaFilter>();
             o.DocumentFilter<GenerateMeasureOptionSchemas>();
+            o.DocumentFilter<ODataJsonContentTypesDocumentFilter>();
         }, v =>
         v.AddOData(o => o.AddRouteComponents("api/v{version:apiVersion}"))
         .AddODataApiExplorer(o =>

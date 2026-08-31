@@ -14,28 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { DetectorEventDto, IndianaEvent } from '@/api/reports'
+import type {
+  DetectorEventDto,
+  IndianaEvent,
+  LocationWithCoordPhases,
+  LocationWithSequence,
+} from '@/api/reports'
 import { BaseChartData, ToolType } from '@/features/charts/common/types'
 import {
   Cycle,
   PedestrianInterval,
 } from '@/features/charts/timingAndActuation/types'
 import { GpxPoint } from './gpxFileParser'
-import type { SrmEntityTrack } from './srmFileParser'
 
 export const TIME_SPACE_GPX_TRACKS_LEGEND_NAME = 'GPX Tracks'
-
-// export interface TimeSpaceDetectorEvent {
-//   initialX: string
-//   finalX: string
-//   isDetectorOn?: boolean | null
-// }
-
-export interface TimeSpaceEvent {
-  initialX: string
-  finalX: string
-  isDetectorOn?: boolean | null
-}
 
 export interface TimeSpaceDetectorEvent {
   initialX: string
@@ -44,18 +36,8 @@ export interface TimeSpaceDetectorEvent {
 
 export interface TimeSpaceDetectorEventWithDistanceDTO {
   distanceToStopBar: number
-  detectorOn: Date
-  detectorOff: Date
-}
-
-export interface LocationWithSequence {
-  locationIdentifier: string
-  sequence: number[][]
-}
-
-export interface LocationWithCoordPhases {
-  locationIdentifier: string
-  coordinatedPhases: number[]
+  detectorOn: string | null
+  detectorOff: string | null
 }
 
 export interface TimeSpaceAverageOptions {
@@ -124,7 +106,7 @@ export interface RawTimeSpaceHistoricData extends TimeSpaceBaseData {
   cycleAllEvents: Cycle[] | null
   pedestrianIntervals: PedestrianInterval[] | []
   percentArrivalOnGreen: number | null
-  tmcForPhase: TmcForPhaseDto
+  tmcForPhase: NormalizedTmcForPhase
 
   order: number
   cycleLength: number | null
@@ -161,22 +143,17 @@ export interface TimeSpaceSrmPhaseOverlay {
   srmEntityTracks: SrmHistoricEntityTrack[]
 }
 
-export interface TmcForPhaseDto {
-  leftTurnEvents: TmcEventDto[]
-  rightTurnEvents: TmcEventDto[]
+export interface NormalizedTmcForPhase {
+  leftTurnEvents: NormalizedTmcEvent[]
+  rightTurnEvents: NormalizedTmcEvent[]
 }
 
-export interface TmcEventDto {
+export interface NormalizedTmcEvent {
   start: string
   value: number
-  isRightTurnEvent: boolean
-  isLeftTurnEvent: boolean
-  laneType: string
-  directionTypes: string
 }
 
-// Wrapper type that matches C# TimeSpaceDiagramPhaseResult
-export interface TimeSpaceDiagramPhaseResult<T extends TimeSpaceBaseData> {
+export interface NormalizedTimeSpacePhaseResult<T extends TimeSpaceBaseData> {
   error: string | null
   result: T | null
   isSuccess: boolean
@@ -184,8 +161,8 @@ export interface TimeSpaceDiagramPhaseResult<T extends TimeSpaceBaseData> {
 
 // API response contains wrapped results
 export type TimeSpaceResponseData =
-  | TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[]
-  | TimeSpaceDiagramPhaseResult<RawTimeSpaceAverageData>[]
+  | NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[]
+  | NormalizedTimeSpacePhaseResult<RawTimeSpaceAverageData>[]
 
 // Unwrapped data for processing
 export type TimeSpaceUnwrappedData =
@@ -211,7 +188,6 @@ export interface GpxUploadOptions {
   id: string
   file?: File
   parsedData?: GpxPoint[]
-  parsedEntityData?: SrmEntityTrack[]
   startLocation: string
   endLocation: string
   primary?: boolean

@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { DataPointForDetectorEvent, DataPointForDouble } from '@/api/reports'
 import { EChartsOption, SeriesOption } from 'echarts'
 import {
   createDataZoom,
@@ -27,10 +28,10 @@ import {
   createXAxis,
   createYAxis,
   formatDataPointForStepView,
+  toDataPoints,
   transformSeriesData,
 } from '../common/transformers'
 import { ChartType, MarkAreaData } from '../common/types'
-import { TimeSpaceDetectorEvent } from '../timeSpaceDiagram/types'
 import { TransformedChartResponse } from '../types'
 import {
   Color,
@@ -39,10 +40,47 @@ import {
   triangleSvgSymbol,
 } from '../utils'
 import {
+  NormalizedDescriptionWithDataPoints,
   QueueDetectorEvent,
   RampMeteringData,
   RawRampMeteringResponse,
+  TimeSpaceDetectorEvent,
 } from './types'
+
+function toDescriptionWithDataPoints(
+  lanes:
+    | { description?: string | null; value?: DataPointForDouble[] | null }[]
+    | null
+    | undefined
+): NormalizedDescriptionWithDataPoints[] {
+  return (lanes ?? []).map((lane) => ({
+    description: lane.description ?? '',
+    value: toDataPoints(lane.value),
+  }))
+}
+
+function toTimeSpaceEvents(
+  events:
+    | { initialX?: string; finalX?: string; isDetectorOn?: boolean | null }[]
+    | null
+    | undefined
+): TimeSpaceDetectorEvent[] {
+  return (events ?? []).map((e) => ({
+    initialX: e.initialX ?? '',
+    finalX: e.finalX ?? '',
+    isDetectorOn: e.isDetectorOn ?? false,
+  }))
+}
+
+function toQueueDetectorEvents(
+  events: DataPointForDetectorEvent[] | null | undefined
+): QueueDetectorEvent[] {
+  return (events ?? []).map((e) => ({
+    detectorOn: e.detectorOn ?? null,
+    detectorOff: e.detectorOff ?? null,
+    value: e.value ?? 0,
+  }))
+}
 
 export default function transformRampMeteringData(
   response: RawRampMeteringResponse
@@ -63,20 +101,24 @@ export default function transformRampMeteringData(
 }
 
 function transformData(data: RampMeteringData): EChartsOption[] {
-  const {
-    mainlineAvgFlow,
-    mainlineAvgOcc,
-    mainlineAvgSpeed,
-    lanesActiveRate,
-    lanesBaseRate,
-    lanesQueueOnAndOffEvents,
-  } = data
+  const mainlineAvgFlow = toDataPoints(data.mainlineAvgFlow)
+  const mainlineAvgOcc = toDataPoints(data.mainlineAvgOcc)
+  const mainlineAvgSpeed = toDataPoints(data.mainlineAvgSpeed)
+  const lanesActiveRate = toDescriptionWithDataPoints(data.lanesActiveRate)
+  const lanesBaseRate = toDescriptionWithDataPoints(data.lanesBaseRate)
+  const lanesQueueOnAndOffEvents = toQueueDetectorEvents(
+    data.lanesQueueOnAndOffEvents
+  )
+  const startUpWarning = toTimeSpaceEvents(data.startUpWarning)
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
 
-  const titleHeader1 = `Ramp Rate vs. Mainline Occupancy (Active Rate vs Mainline Avg Occupancy)\n${data.locationDescription}`
-  const titleHeader2 = `Queue Override\n${data.locationDescription}`
-  const titleHeader3 = `Ramp Rate vs. Mainline Volume - (Active Rate vs Mainline Avg Flow)\n${data.locationDescription}`
-  const titleHeader4 = `Ramp Rate vs. Mainline Speed  (Active Rate vs Mainline Avg Speed)\n${data.locationDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader1 = `Ramp Rate vs. Mainline Occupancy (Active Rate vs Mainline Avg Occupancy)\n${locationDescription}`
+  const titleHeader2 = `Queue Override\n${locationDescription}`
+  const titleHeader3 = `Ramp Rate vs. Mainline Volume - (Active Rate vs Mainline Avg Flow)\n${locationDescription}`
+  const titleHeader4 = `Ramp Rate vs. Mainline Speed  (Active Rate vs Mainline Avg Speed)\n${locationDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title1 = createTitle({
     title: titleHeader1,
@@ -138,7 +180,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
     { name: 'Meter Rate (vph)' }
   )
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
   const grid = createGrid({
     top: 150,
     left: 65,
@@ -237,7 +279,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
 
   const toolbox = createToolbox(
     { title: titleHeader1, dateRange },
-    data.locationIdentifier
+    data.locationIdentifier ?? ''
   )
 
   const tooltip = createTooltip()
@@ -252,7 +294,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   lanesActiveRate.forEach((lane, index) => {
-    const activeRateData = formatDataPointForStepView(lane.value, data.end)
+    const activeRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesActiveRate.length === 1
         ? 'Active Rate'
@@ -279,14 +321,14 @@ function transformData(data: RampMeteringData): EChartsOption[] {
     )
   })
 
-  seriesOne.push(createStartupArea(data.startUpWarning, data.start, data.end))
+  seriesOne.push(createStartupArea(startUpWarning, start, end))
 
   const seriesTwo: SeriesOption[] = []
 
   seriesTwo.push(...generateQueueSeriesData(lanesQueueOnAndOffEvents))
 
   lanesActiveRate.forEach((lane, index) => {
-    const activeRateData = formatDataPointForStepView(lane.value, data.end)
+    const activeRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesActiveRate.length === 1
         ? 'Active Rate'
@@ -314,7 +356,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   lanesBaseRate.forEach((lane, index) => {
-    const baseRateData = formatDataPointForStepView(lane.value, data.end)
+    const baseRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesBaseRate.length === 1
         ? 'Base Rate'
@@ -341,12 +383,12 @@ function transformData(data: RampMeteringData): EChartsOption[] {
     )
   })
 
-  seriesTwo.push(createStartupArea(data.startUpWarning, data.start, data.end))
+  seriesTwo.push(createStartupArea(startUpWarning, start, end))
 
   const seriesThree: SeriesOption[] = []
 
   lanesActiveRate.forEach((lane, index) => {
-    const activeRateData = formatDataPointForStepView(lane.value, data.end)
+    const activeRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesActiveRate.length === 1
         ? 'Active Rate'
@@ -374,7 +416,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   lanesBaseRate.forEach((lane, index) => {
-    const baseRateData = formatDataPointForStepView(lane.value, data.end)
+    const baseRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesBaseRate.length === 1
         ? 'Base Rate'
@@ -410,12 +452,12 @@ function transformData(data: RampMeteringData): EChartsOption[] {
     })
   )
 
-  seriesThree.push(createStartupArea(data.startUpWarning, data.start, data.end))
+  seriesThree.push(createStartupArea(startUpWarning, start, end))
 
   const seriesFour: SeriesOption[] = []
 
   lanesActiveRate.forEach((lane, index) => {
-    const activeRateData = formatDataPointForStepView(lane.value, data.end)
+    const activeRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesActiveRate.length === 1
         ? 'Active Rate'
@@ -443,7 +485,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
   })
 
   lanesBaseRate.forEach((lane, index) => {
-    const baseRateData = formatDataPointForStepView(lane.value, data.end)
+    const baseRateData = formatDataPointForStepView(lane.value, end)
     const description =
       lanesBaseRate.length === 1
         ? 'Base Rate'
@@ -479,7 +521,7 @@ function transformData(data: RampMeteringData): EChartsOption[] {
     })
   )
 
-  seriesFour.push(createStartupArea(data.startUpWarning, data.start, data.end))
+  seriesFour.push(createStartupArea(startUpWarning, start, end))
 
   const chartOptions: EChartsOption[] = [
     {

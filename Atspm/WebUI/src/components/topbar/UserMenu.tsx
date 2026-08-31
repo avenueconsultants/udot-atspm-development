@@ -3,8 +3,9 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 
 import Link from 'next/link'
 
-import { useUserInfo } from '@/features/identity/api/getUserInfo'
+import { useGetProfileProfile } from '@/api/identity/atspmAuthenticationApi'
 import Login from '@/features/identity/components/signin'
+import { ProfileData } from '@/features/identity/types/profile'
 import { useSidebarStore } from '@/stores/sidebar'
 import {
   Avatar,
@@ -18,7 +19,7 @@ import {
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 
-function getColorFromName(firstName: string, lastName: string): string {
+function getColorFromName(firstName = '', lastName = ''): string {
   const colors = [
     '#1e824c',
     '#007a7c',
@@ -66,7 +67,10 @@ function getColorFromName(firstName: string, lastName: string): string {
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { data: userData, refetch } = useUserInfo({})
+  // Deliberately ungated - see the matching comment on Topbar's
+  // useGetMenuItems call. A logged-out 401 no longer crashes the page;
+  // src/lib/react-query.ts stops auth errors from throwing app-wide.
+  const { data: userData, refetch } = useGetProfileProfile<ProfileData>()
   const { closeSideBar } = useSidebarStore()
 
   useEffect(() => {
@@ -125,8 +129,8 @@ export default function UserMenu() {
         >
           {isLoggedIn ? (
             <>
-              {userData?.firstName.charAt(0).toUpperCase()}
-              {userData?.lastName.charAt(0).toUpperCase()}
+              {userData?.firstName?.charAt(0).toUpperCase()}
+              {userData?.lastName?.charAt(0).toUpperCase()}
             </>
           ) : (
             <PersonOutlineOutlinedIcon />

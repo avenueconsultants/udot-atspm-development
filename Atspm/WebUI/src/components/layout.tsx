@@ -2,10 +2,25 @@ import Sidebar from '@/components/sidebar/Sidebar'
 import Toast from '@/components/toast'
 import { Box, useTheme } from '@mui/material'
 import React from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import Topbar from './topbar'
 
 interface LayoutProps {
   children: React.ReactNode
+}
+
+// The chrome renders outside the page-level ErrorBoundary in _app.tsx (that
+// one wraps only <Component />), so before this an error thrown while
+// rendering Topbar or Sidebar had nowhere to land and blanked the entire
+// app - the page content included. Losing a nav bar is recoverable; losing
+// the whole page isn't, so each chrome piece degrades to nothing on its own
+// rather than taking down its sibling or the page.
+const renderNothing = () => null
+
+function ChromeErrorBoundary({ children }: { children: React.ReactNode }) {
+  return (
+    <ErrorBoundary FallbackComponent={renderNothing}>{children}</ErrorBoundary>
+  )
 }
 
 export default function Layout({ children }: LayoutProps) {
@@ -20,7 +35,9 @@ export default function Layout({ children }: LayoutProps) {
           backgroundColor: theme.palette.background.default,
         }}
       >
-        <Topbar />
+        <ChromeErrorBoundary>
+          <Topbar />
+        </ChromeErrorBoundary>
         <Box
           sx={{
             minHeight: `calc(100vh - 73px)`,
@@ -37,7 +54,9 @@ export default function Layout({ children }: LayoutProps) {
         >
           {children}
         </Box>
-        <Sidebar />
+        <ChromeErrorBoundary>
+          <Sidebar />
+        </ChromeErrorBoundary>
         <Toast />
       </Box>
     </Box>

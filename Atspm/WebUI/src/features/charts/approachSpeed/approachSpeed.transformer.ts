@@ -42,11 +42,11 @@ import { EChartsOption, TooltipComponentOption } from 'echarts'
 import {
   ApproachSpeedPlan,
   RawApproachSpeedData,
-  RawApproachSpeedReponse,
+  RawApproachSpeedResponse,
 } from './types'
 
 export default function transformApproachDelayData(
-  response: RawApproachSpeedReponse
+  response: RawApproachSpeedResponse
 ): TransformedChartResponse {
   const charts = response.data.map((data) => {
     const chartOptions = transformData(data)
@@ -64,15 +64,26 @@ export default function transformApproachDelayData(
 }
 
 function transformData(data: RawApproachSpeedData) {
-  const { averageSpeeds, eightyFifthSpeeds, fifteenthSpeeds, plans } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const averageSpeeds = data.averageSpeeds ?? []
+  const eightyFifthSpeeds = data.eightyFifthSpeeds ?? []
+  const fifteenthSpeeds = data.fifteenthSpeeds ?? []
+  const plans = data.plans ?? []
 
   const infoA = createInfoString(
-    ['Detection Type: ', data.detectionType],
+    ['Detection Type: ', data.detectionType ?? ''],
     ['Speed Accuracy: ', '± 2 mph\n']
   )
 
   const infoB = createInfoString(
-    ['Detector Distance from Stop Bar: ', `${data.distanceFromStopBar} ft`],
+    [
+      'Detector Distance from Stop Bar: ',
+      `${data.distanceFromStopBar ?? 0} ft`,
+    ],
     [
       'Includes records over 5 mph that occur between 15s after start of green to start of yellow',
       '',

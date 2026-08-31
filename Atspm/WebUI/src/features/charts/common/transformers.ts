@@ -20,6 +20,7 @@ import {
   MarkAreaData,
   PlanData,
   PlanOptions,
+  PlanWindow,
 } from '@/features/charts/common/types'
 import { Color } from '@/features/charts/utils'
 import { format } from 'date-fns'
@@ -41,18 +42,39 @@ export type ChartSeriesOption = SeriesOption & {
   binStepLineToggle?: boolean
 }
 
+// Accepts the raw nullable collections straight off the generated report
+// types. Several transformers destructure their series out of `data` and
+// hand them here without going through toDataPoints first, so a report with
+// no data for the window arrived as null and the bare `for...of` threw
+// "dataPoints is not iterable" - taking the chart down instead of drawing it
+// empty. Individual points are defaulted the same way toDataPoints does.
 export function transformSeriesData(
-  dataPoints: DataPoint[]
+  dataPoints:
+    | ReadonlyArray<{ timestamp?: string | null; value?: number | null }>
+    | null
+    | undefined
 ): (string | number)[][] {
   const series: (string | number)[][] = []
-  for (const dataPoint of dataPoints) {
+  for (const dataPoint of dataPoints ?? []) {
     const values: (string | number)[] = [
-      dataPoint.timestamp,
-      dataPoint.value.toFixed(2),
+      dataPoint?.timestamp ?? '',
+      (dataPoint?.value ?? 0).toFixed(2),
     ]
     series.push(values)
   }
   return series
+}
+
+export function toDataPoints(
+  points:
+    | ReadonlyArray<{ timestamp?: string | null; value?: number | null }>
+    | null
+    | undefined
+): DataPoint[] {
+  return (points ?? []).map((point) => ({
+    timestamp: point.timestamp ?? '',
+    value: point.value ?? 0,
+  }))
 }
 
 export function createSeries(...seriesInputs: ChartSeriesOption[]) {
@@ -77,8 +99,13 @@ function getMidpointTimestamp(start: string, end: string): string {
   return new Date((startTime + endTime) / 2).toISOString()
 }
 
-export function createPlans<T extends BasePlan>(
-  plans: T[],
+// `plans` is nullable on every generated report type, and several
+// transformers pass it through without defaulting it first, so a window with
+// no plan data reached here as null and the bare `.length` read threw. The
+// per-plan start/end check below already tolerates incomplete entries; this
+// extends the same tolerance to the collection itself.
+export function createPlans<T extends PlanWindow>(
+  plans: readonly T[] | null | undefined,
   planYAxisIndex: number,
   options?: PlanOptions<T>,
   yLineLength?: number,
@@ -87,19 +114,23 @@ export function createPlans<T extends BasePlan>(
 ): SeriesOption {
   const markAreaData: MarkAreaData[] = []
   const planData: PlanData[] = []
+  const planList = plans ?? []
 
-  for (let i = 0; i < plans.length; i++) {
+  for (let i = 0; i < planList.length; i++) {
+    const { start, end } = planList[i]
+    if (!start || !end) continue
+
     const plan = []
     const planColor = i % 2 === 0 ? Color.PlanA : Color.PlanB
 
-    const startTime = new Date(plans[i].start).toISOString()
-    const endTime = new Date(plans[i].end).toISOString()
+    const startTime = new Date(start).toISOString()
+    const endTime = new Date(end).toISOString()
 
-    let planInfo = `{plan|${plans[i].planDescription}}`
+    let planInfo = `{plan|${planList[i].planDescription ?? ''}}`
 
     for (const option in options) {
       const key = option as keyof Omit<T, keyof BasePlan>
-      const value = plans[i][key]
+      const value = planList[i][key]
 
       if (value == null) continue
 
@@ -143,7 +174,7 @@ export function createPlans<T extends BasePlan>(
     labelLayout: {
       y: yLineLength ? yLineLength : 130,
       moveOverlap: 'shiftX',
-      hideOverlap: plans.length > 10,
+      hideOverlap: planList.length > 10,
       draggable: true,
     },
     labelLine: {
@@ -392,12 +423,25 @@ export function formatExportFileName(
     .filter((s) => s.length > 0)
     .join('_')
 
+  // Every field on the generated report types is nullable, so callers reach
+  // here with `data.start ?? ''` whenever the API omits a range. date-fns
+  // throws RangeError on an unparseable date, which took down the entire
+  // chart render rather than just degrading the export filename. Guard the
+  // same way formatChartDateTimeRange already does and fall back to the
+  // bare title.
+  const start = new Date(startDate)
+  const end = new Date(endDate)
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return cleanedTitle
+  }
+
   return (
     cleanedTitle +
     '_' +
-    format(startDate, 'yyyy-MM-dd_HH-mm') +
+    format(start, 'yyyy-MM-dd_HH-mm') +
     '_to_' +
-    format(endDate, 'yyyy-MM-dd_HH-mm')
+    format(end, 'yyyy-MM-dd_HH-mm')
   )
 }
 
@@ -712,12 +756,6 @@ export function formatDataPointForStepView(
   }
 
   return pairs
-}
-
-export interface ChildObject {
-  type: string
-  shape: { [key: string]: any } // Define shape properties as needed
-  style: { [key: string]: any } // Define style properties as needed
 }
 
 export function createPolyLines(

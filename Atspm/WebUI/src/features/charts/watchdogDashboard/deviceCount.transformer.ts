@@ -14,15 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { DeviceCount } from '@/features/watchdog/types'
+import { DeviceGroup } from '@/api/config'
 import { EChartsOption } from 'echarts'
 
-const transformDeviceCountData = (data: DeviceCount[]): EChartsOption => {
-  const total = data.reduce((sum, item) => sum + item.count, 0)
+const transformDeviceCountData = (data: DeviceGroup[]): EChartsOption => {
+  const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0)
 
   const seriesData = data.map((item) => ({
-    value: item.count,
-    name: `${item.manufacturer}: \n${item.model} - ${item.firmware}`,
+    value: item.count ?? 0,
+    name: `${item.manufacturer ?? 'Unknown'}: \n${item.model ?? 'Unknown'} - ${item.firmware ?? 'Unknown'}`,
   }))
 
   return {
@@ -63,7 +63,11 @@ const transformDeviceCountData = (data: DeviceCount[]): EChartsOption => {
         label: {
           show: true,
           formatter: (params: any) => {
-            const percent = ((params.value / total) * 100).toFixed(1)
+            // total is 0 before anything has reported in, which is a
+            // normal empty-dashboard state - dividing by it put a
+            // literal "NaN%" in the slice label.
+            const percent =
+              total > 0 ? ((params.value / total) * 100).toFixed(1) : '0.0'
             return `${params.name}\n${params.value} (${percent}%)`
           },
           position: 'inside',

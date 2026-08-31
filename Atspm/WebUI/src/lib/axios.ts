@@ -56,7 +56,9 @@ export const initializeAxiosInstances = async (envVariables?: EnvVariables) => {
   const env = envVariables ?? (await getEnv())
 
   if (env.CONFIG_URL) {
-    configAxios = createAxiosInstance(buildApiBaseUrl(env.CONFIG_URL, true))
+    configAxios = createAxiosInstance(buildApiBaseUrl(env.CONFIG_URL, true), {
+      unwrapOData: true,
+    })
   }
   if (env.REPORTS_URL) {
     reportsAxios = createAxiosInstance(buildApiBaseUrl(env.REPORTS_URL))
@@ -72,18 +74,44 @@ export const initializeAxiosInstances = async (envVariables?: EnvVariables) => {
   }
 }
 
-function createAxiosInstance(baseURL: string) {
+function createAxiosInstance(
+  baseURL: string,
+  options: { unwrapOData?: boolean } = {}
+) {
   const instance = axios.create({ baseURL })
 
   instance.interceptors.request.use(authRequestInterceptor)
   instance.interceptors.response.use(
     (response) => {
-      return response.data
+      return options.unwrapOData
+        ? unwrapODataValue(response.data)
+        : response.data
     },
     (error) => Promise.reject(error)
   )
 
   return instance
+}
+
+// OData's [EnableQuery] formatter wraps collection responses as
+// { "@odata.context": "...", "value": [...] }. Unwrap it here so every
+// consumer of the config API (the only OData-backed surface) can treat
+// responses as plain data. Requiring `value` to be an array - true for
+// every OData collection envelope - keeps this from misfiring on a
+// single-entity response whose DTO happens to have its own `value` field
+// (e.g. MeasureOption).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function unwrapODataValue(data: unknown): any {
+  if (
+    data !== null &&
+    typeof data === 'object' &&
+    !Array.isArray(data) &&
+    Array.isArray((data as { value?: unknown }).value) &&
+    Object.prototype.hasOwnProperty.call(data, '@odata.context')
+  ) {
+    return (data as { value: unknown }).value
+  }
+  return data
 }
 
 // Request interceptor to add the Authorization header
@@ -113,30 +141,4 @@ export const dataRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
 
 export const speedRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
   return speedAxios.request<unknown, T>(config)
-}
-
-function stripZFromDates(data: any): void {
-  if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-      if (typeof data[i] === 'object' && data[i] !== null) {
-        stripZFromDates(data[i])
-      } else if (typeof data[i] === 'string' && isIsoTimestamp(data[i])) {
-        data[i] = data[i].replace(/Z$/, '')
-      }
-    }
-  } else if (data && typeof data === 'object') {
-    for (const key of Object.keys(data)) {
-      const value = data[key]
-      if (value !== null && typeof value === 'object') {
-        stripZFromDates(value)
-      } else if (typeof value === 'string' && isIsoTimestamp(value)) {
-        data[key] = value.replace(/Z$/, '')
-      }
-    }
-  }
-}
-
-function isIsoTimestamp(str: string): boolean {
-  // matches e.g. 2025-02-18T23:59:59, optionally followed by .digits, and optional Z
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z?$/.test(str)
 }

@@ -20,7 +20,11 @@ interface ChartListProps {
   isDisabled: boolean
 }
 
-function IndividualChartControls({ charts, chartRefs, isDisabled }: ChartListProps) {
+function IndividualChartControls({
+  charts,
+  chartRefs,
+  isDisabled,
+}: ChartListProps) {
   const theme = useTheme()
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -70,11 +74,10 @@ function IndividualChartControls({ charts, chartRefs, isDisabled }: ChartListPro
   return (
     <>
       <Button
-        aria-label="more"
         aria-haspopup="true"
+        aria-expanded={dropdownOpen}
         onClick={handleDropdownToggle}
         disabled={isDisabled}
-
         endIcon={dropdownOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
         sx={{
           mx: '2px',
@@ -110,7 +113,12 @@ function IndividualChartControls({ charts, chartRefs, isDisabled }: ChartListPro
                 key={index}
                 sx={{ display: 'flex', justifyContent: 'space-between' }}
               >
-                <IconButton onClick={() => toggleChartVisibility(index)}>
+                <IconButton
+                  aria-label={`${
+                    chartsVisibility[index] ? 'Hide' : 'Show'
+                  } ${getChartDescription(chartWrapper)}`}
+                  onClick={() => toggleChartVisibility(index)}
+                >
                   {chartsVisibility[index] ? (
                     <VisibilityOutlinedIcon fontSize="small" />
                   ) : (
@@ -118,8 +126,6 @@ function IndividualChartControls({ charts, chartRefs, isDisabled }: ChartListPro
                   )}
                 </IconButton>
                 <Button
-                  aria-label="more"
-                  aria-haspopup="true"
                   onClick={() => scrollToChart(index)}
                   sx={{
                     mx: '2px',

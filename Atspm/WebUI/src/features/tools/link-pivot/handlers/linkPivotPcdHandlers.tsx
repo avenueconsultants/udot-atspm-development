@@ -3,7 +3,7 @@ import { toUTCDateStamp, toUTCDateWithTimeStamp } from '@/utils/dateTime'
 import { addDays } from 'date-fns'
 import { useState } from 'react'
 import { LinkPivotPcdTimeWindow } from '../linkPivotPcdTimeWindow'
-import { LinkPivotComponentDto, LinkPivotPcdOptions } from '../types'
+import { LinkPivotComponentDto, LinkPivotPcdFormOptions } from '../types'
 
 export interface LinkPivotPcdHandler extends DateTimeProps, TimeOnlyProps {
   locationIdentifier: string
@@ -14,7 +14,7 @@ export interface LinkPivotPcdHandler extends DateTimeProps, TimeOnlyProps {
 }
 
 interface LPPcdContainerPresenterProps {
-  handleToolOptions: (options: Partial<LinkPivotPcdOptions>) => void
+  handleToolOptions: (options: Partial<LinkPivotPcdFormOptions>) => void
   pcdDto: LinkPivotComponentDto
   pcdTimeWindow: LinkPivotPcdTimeWindow
 }

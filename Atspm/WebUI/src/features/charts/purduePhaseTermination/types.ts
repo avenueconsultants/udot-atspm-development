@@ -14,12 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  BaseChartData,
-  BaseChartOptions,
-  BasePlan,
-  ChartType,
-} from '@/features/charts/common/types'
+import { PhaseTerminationResult } from '@/api/reports'
+import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
 
 export interface PurduePhaseTerminationChartOptions extends BaseChartOptions {
   selectedConsecutiveCount: number
@@ -29,22 +25,7 @@ export interface PurduePhaseTerminationChartOptionsDefaults {
   selectedConsecutiveCount: { id: number; value: string; option: string }
 }
 
-export interface Phase {
-  phaseNumber: number
-  gapOuts: string[]
-  maxOuts: string[]
-  forceOffs: string[]
-  pedWalkBegins: string[]
-  unknownTerminations: string[]
-}
-
-export type PurduePhaseTerminationPlan = BasePlan
-
-export interface RawPurduePhaseTerminationData extends BaseChartData {
-  consecutiveCount: number
-  plans: PurduePhaseTerminationPlan[]
-  phases: Phase[]
-}
+export type RawPurduePhaseTerminationData = PhaseTerminationResult
 
 export interface RawPurduePhaseTerminationResponse {
   type: ChartType.PurduePhaseTermination

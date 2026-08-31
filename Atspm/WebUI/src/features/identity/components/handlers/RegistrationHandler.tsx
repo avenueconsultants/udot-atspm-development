@@ -1,6 +1,6 @@
+import { useAccountRegister } from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import { FormEvent, useEffect, useState } from 'react'
-import { useCreateUser } from '../../api/createUser'
 import IdentityDto from '../../types/identityDto'
 import { EmailAndPasswordHandler, ResponseHandler } from './baseHandler'
 
@@ -34,26 +34,20 @@ export const useRegistrationHandler = (): RegistrationHandler => {
   const [data, setData] = useState<IdentityDto>()
 
   const {
-    refetch,
-    data: queryData,
+    mutate: register,
+    data: mutationData,
     error,
     status,
-  } = useCreateUser({
-    email,
-    password,
-    firstName,
-    lastName,
-    agency,
-  })
+  } = useAccountRegister()
 
   useEffect(() => {
     if (status === 'error' && error) {
       setData((error as any).response.data as IdentityDto)
     }
-    if (queryData) {
-      setData(queryData as IdentityDto)
+    if (mutationData) {
+      setData(mutationData as IdentityDto)
     }
-  }, [error, queryData, status])
+  }, [error, mutationData, status])
 
   useEffect(() => {
     if (status === 'success' && data !== undefined) {
@@ -116,15 +110,15 @@ export const useRegistrationHandler = (): RegistrationHandler => {
   }
 
   const lastNameCheck = () => {
-    if (!firstName) {
+    if (!lastName) {
       return 'Name is Required'
     }
     return null
   }
 
   const agencyCheck = () => {
-    if (!firstName) {
-      return 'Name is Required'
+    if (!agency) {
+      return 'Agency is Required'
     }
     return null
   }
@@ -133,11 +127,23 @@ export const useRegistrationHandler = (): RegistrationHandler => {
     event.preventDefault()
     setSubmitted(true)
 
-    const passwordError = passwordCheck()
-    if (passwordError) {
+    // Every field's validator has to gate submission, not just the
+    // password's: these all render an inline error once `submitted` is true,
+    // but previously only passwordCheck() could actually stop the request,
+    // so a strong password was enough to send a blank name/agency or a
+    // malformed email straight to the identity API.
+    const hasError = [
+      passwordCheck(),
+      emailCheck(),
+      firstNameCheck(),
+      lastNameCheck(),
+      agencyCheck(),
+    ].some((error) => error !== null)
+
+    if (hasError) {
       return
     }
-    refetch()
+    register({ data: { email, password, firstName, lastName, agency } })
   }
 
   const component: RegistrationHandler = {

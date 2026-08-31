@@ -69,7 +69,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         /// <param name="route"></param>
         /// <returns></returns>
         [HttpPost("api/v1/UpsertRoute")]
-        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(typeof(RouteDto), Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         public IActionResult UpsertRoute([FromBody] RouteDto route)
         {
@@ -96,7 +96,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         /// <param name="includeLocationDetail"></param>
         /// <returns></returns>
         [HttpGet("api/v1/GetRouteView/{id}")]
-        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(typeof(RouteDto), Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         public IActionResult GetRouteView(int id, bool includeLocationDetail)
         {

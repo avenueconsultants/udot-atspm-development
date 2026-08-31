@@ -1,9 +1,11 @@
-import { useGetAreas } from '@/features/areas/api/areaApi'
-import { useGetJurisdiction } from '@/features/jurisdictions/api/jurisdictionApi'
-import { useLatestVersionOfAllLocations } from '@/features/locations/api'
+import {
+  SearchLocation as Location,
+  useGetArea,
+  useGetJurisdiction,
+  useGetLocationLocationsForSearch,
+  useGetRegion,
+} from '@/api/config'
 import SelectLocationNoMap from '@/features/locations/components/selectLocation/SelectLocationNoMap'
-import { Location } from '@/features/locations/types/Location'
-import { useGetRegion } from '@/features/region/api/regionApi'
 import { IssueTypeSelect } from '@/features/watchdog/components/issueTypeSelect'
 import { Autocomplete, Box, TextField } from '@mui/material'
 import { SyntheticEvent, useState } from 'react'
@@ -27,34 +29,38 @@ const OptionalWatchDogFilters = ({
 }: OptionalWatchDogFiltersProps) => {
   const [location, setLocation] = useState<Location | null>(null)
 
-  const { data: areasData } = useGetAreas()
-  const { data: regionsData } = useGetRegion()
-  const { data: jurisdictionsData } = useGetJurisdiction()
-  const { data: locationsData } = useLatestVersionOfAllLocations()
+  const { data: areas = [] } = useGetArea()
+  const { data: regions = [] } = useGetRegion()
+  const { data: jurisdictions = [] } = useGetJurisdiction()
+  const { data: locations = [] } = useGetLocationLocationsForSearch()
 
-  const areas = areasData?.value || []
-  const regions = regionsData?.value || []
-  const jurisdictions = jurisdictionsData?.value || []
-  const locations = locationsData?.value || []
-
-  const handleAreaChange = (_: SyntheticEvent, val: string | null) => {
+  const handleAreaChange = (
+    _: SyntheticEvent,
+    val: string | null | undefined
+  ) => {
     const area = areas.find((a) => a.name === val)
-    setAreaId(area ? area.id : null)
+    setAreaId(area?.id ?? null)
   }
 
-  const handleRegionChange = (_: SyntheticEvent, val: string | null) => {
+  const handleRegionChange = (
+    _: SyntheticEvent,
+    val: string | null | undefined
+  ) => {
     const region = regions.find((r) => r.description === val)
-    setRegionId(region ? region.id : null)
+    setRegionId(region?.id ?? null)
   }
 
-  const handleJurisdictionChange = (_: SyntheticEvent, val: string | null) => {
+  const handleJurisdictionChange = (
+    _: SyntheticEvent,
+    val: string | null | undefined
+  ) => {
     const jurisdiction = jurisdictions.find((j) => j.name === val)
-    setJurisdictionId(jurisdiction ? jurisdiction.id : null)
+    setJurisdictionId(jurisdiction?.id ?? null)
   }
 
   const handleLocationChange = (location: Location | null) => {
     setLocation(location)
-    setLocationIdentifier(location ? location.locationIdentifier : null)
+    setLocationIdentifier(location?.locationIdentifier ?? null)
   }
 
   return (

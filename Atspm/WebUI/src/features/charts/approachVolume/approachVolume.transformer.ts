@@ -95,13 +95,18 @@ function transformData(data: RawApproachVolumeData) {
     '',
   ])
 
-  const titleHeader = `Approach Volume\n${data.locationDescription} - ${data.primaryDirectionName}/${data.opposingDirectionName}`
+  // Both direction names are nullable on the contract; a missing one is
+  // labelled the way the service labels an unknown direction.
+  const primaryDirectionName = data.primaryDirectionName ?? 'Unknown'
+  const opposingDirectionName = data.opposingDirectionName ?? 'Unknown'
+
+  const titleHeader = `Approach Volume\n${data.locationDescription} - ${primaryDirectionName}/${opposingDirectionName}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 
   const title = createTitle({
     title: [
       'Approach Volume',
-      `${data.primaryDirectionName}/${data.opposingDirectionName}`,
+      `${primaryDirectionName}/${opposingDirectionName}`,
     ],
     location: `${data.locationDescription}`,
     dateRange,
@@ -135,15 +140,15 @@ function transformData(data: RawApproachVolumeData) {
   const legend = createLegend({
     top: grid.top,
     data: [
-      { name: data.primaryDirectionName, icon: SolidLineSeriesSymbol },
-      { name: data.opposingDirectionName, icon: SolidLineSeriesSymbol },
+      { name: primaryDirectionName, icon: SolidLineSeriesSymbol },
+      { name: opposingDirectionName, icon: SolidLineSeriesSymbol },
       { name: combinedValueText, icon: SolidLineSeriesSymbol },
       {
-        name: `${data.primaryDirectionName} ${dFactorText}`,
+        name: `${primaryDirectionName} ${dFactorText}`,
         icon: DashedLineSeriesSymbol,
       },
       {
-        name: `${data.opposingDirectionName} ${dFactorText}`,
+        name: `${opposingDirectionName} ${dFactorText}`,
         icon: DashedLineSeriesSymbol,
       },
     ],
@@ -164,7 +169,7 @@ function transformData(data: RawApproachVolumeData) {
 
   const series = createSeries(
     {
-      name: data.primaryDirectionName,
+      name: primaryDirectionName,
       data: transformSeriesData(primaryDirectionVolumes),
       type: 'line',
       binStepLineToggle: true,
@@ -175,7 +180,7 @@ function transformData(data: RawApproachVolumeData) {
       },
     },
     {
-      name: data.opposingDirectionName,
+      name: opposingDirectionName,
       data: transformSeriesData(opposingDirectionVolumes),
       type: 'line',
       binStepLineToggle: true,
@@ -197,7 +202,7 @@ function transformData(data: RawApproachVolumeData) {
       },
     },
     {
-      name: `${data.primaryDirectionName} ${dFactorText}`,
+      name: `${primaryDirectionName} ${dFactorText}`,
       data: transformSeriesData(primaryDFactors),
       type: 'line',
       binStepLineToggle: true,
@@ -208,7 +213,7 @@ function transformData(data: RawApproachVolumeData) {
       },
     },
     {
-      name: `${data.opposingDirectionName} ${dFactorText}`,
+      name: `${opposingDirectionName} ${dFactorText}`,
       data: transformSeriesData(opposingDFactors),
       type: 'line',
       binStepLineToggle: true,
@@ -222,8 +227,8 @@ function transformData(data: RawApproachVolumeData) {
 
   const displayProps = createDisplayProps({
     height: 550,
-    description: `${directionAbbreviations[data.primaryDirectionName]}/${
-      directionAbbreviations[data.opposingDirectionName]
+    description: `${directionAbbreviations[primaryDirectionName]}/${
+      directionAbbreviations[opposingDirectionName]
     } - ${data.detectorType}`,
   })
 

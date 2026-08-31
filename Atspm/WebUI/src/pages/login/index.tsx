@@ -1,5 +1,5 @@
+import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useLogin } from '@/features/identity/api/getLogin'
 import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
 import { buildApiUrl } from '@/lib/axios'
@@ -27,17 +27,17 @@ function Login() {
   const [passwordError, setPasswordError] = useState<string | null>(null)
 
   const {
-    refetch,
-    data: queryData,
-    isLoading,
+    mutate: login,
+    data: mutationData,
+    isPending: isLoading,
     error: queryDataError,
-  } = useLogin({ email, password })
+  } = useAccountLogin()
 
   useEffect(() => {
-    if (queryData) {
-      setData(queryData as IdentityDto)
+    if (mutationData) {
+      setData(mutationData as IdentityDto)
     }
-  }, [data, queryData])
+  }, [data, mutationData])
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -67,7 +67,7 @@ function Login() {
     }
 
     if (isValid) {
-      refetch()
+      login({ data: { email, password, rememberMe: false } })
     }
   }
 

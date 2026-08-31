@@ -1,9 +1,9 @@
 import {
-  Location,
-  Route,
-  RouteDistance,
-  RouteLocation,
-  useGetLocationLatestVersionOfAllLocations,
+  SearchLocation as Location,
+  RouteDistanceDto,
+  RouteDto,
+  RouteLocationDto,
+  useGetLocationLocationsForSearch,
   useGetRouteDistance,
   useGetRouteRouteViewFromId,
   useUpsertRouteRoute,
@@ -11,9 +11,8 @@ import {
 import AuditInfo from '@/components/AuditInfo'
 import { PageNames, useViewPage } from '@/features/identity/pagesCheck'
 import SelectLocation from '@/features/locations/components/selectLocation/SelectLocation'
-import { useGetRoutes } from '@/features/routes/api'
 import RouteEditor from '@/features/routes/components/routeEditor'
-import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { fetchRouteDistance } from '@/utils/fetchRouteDistance'
 import { removeAuditFields } from '@/utils/removeAuditFields'
@@ -30,35 +29,30 @@ const RouteAdmin = () => {
   const { id } = router.query
   const { addNotification } = useNotificationStore()
 
-  const { data: locationsData } = useGetLocationLatestVersionOfAllLocations()
-  const { data: routes } = useGetRoutes()
-  const { data: route } = useGetRouteRouteViewFromId(id as unknown as number)
+  const { data: locations } = useGetLocationLocationsForSearch()
+  const routeId = typeof id === 'string' ? Number(id) : NaN
+  const { data: route } = useGetRouteRouteViewFromId(routeId, undefined, {
+    query: { enabled: typeof id === 'string' && id !== '' },
+  })
   const { data: routeDistancesData } = useGetRouteDistance()
   const { mutate: updateRoute } = useUpsertRouteRoute()
-  const { data: directionTypes } = useConfigEnums(ConfigEnum.DirectionTypes)
 
   const [location, setLocation] = useState<Location | null>(null)
   const [routePolyline, setRoutePolyline] = useState<number[][]>([])
-  const [updatedRoute, setUpdatedRoute] = useState<Route>()
+  const [updatedRoute, setUpdatedRoute] = useState<RouteDto>()
   const [hasLoaded, setHasLoaded] = useState(false)
   const [hasErrors, setHasErrors] = useState(false)
-  const [routeDistances, setRouteDistances] = useState<RouteDistance[]>([])
-
-  const routeInfo = routes?.value.find((r) => r.id.toString() === id)
-
-  const locations = locationsData?.value
+  const [routeDistances, setRouteDistances] = useState<RouteDistanceDto[]>([])
 
   useEffect(() => {
     if (routeDistancesData) {
-      const distances = routeDistancesData.value.map((rd) =>
-        removeAuditFields(rd)
-      )
+      const distances = routeDistancesData.map((rd) => removeAuditFields(rd))
       setRouteDistances(distances)
     }
   }, [routeDistancesData])
 
   const fetchRouteDistanceAndUpdatePolyline = useCallback(
-    async (routeLocations: RouteLocation[]) => {
+    async (routeLocations: RouteLocationDto[]) => {
       if (routeLocations.length < 2) {
         setRoutePolyline([])
         return
@@ -85,8 +79,8 @@ const RouteAdmin = () => {
       return
     }
 
-    const sortedLocations = [...route.routeLocations].sort(
-      (a, b) => a.order - b.order
+    const sortedLocations = [...(route.routeLocations ?? [])].sort(
+      (a, b) => (a.order ?? 0) - (b.order ?? 0)
     )
     setUpdatedRoute({ ...route, routeLocations: sortedLocations })
     setHasLoaded(true)
@@ -107,10 +101,12 @@ const RouteAdmin = () => {
     return null
   }
 
+  const routeLocations = updatedRoute.routeLocations ?? []
+
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return
 
-    const items = Array.from(updatedRoute.routeLocations)
+    const items = Array.from(routeLocations)
     const [moved] = items.splice(result.source.index, 1)
     items.splice(result.destination.index, 0, moved)
 
@@ -136,15 +132,15 @@ const RouteAdmin = () => {
       if (prev) {
         const d = findRouteDistance(
           prev,
-          curr.locationIdentifier,
+          curr.locationIdentifier ?? '',
           routeDistances
         )
         curr.previousLocationDistance = d
-        curr.previousLocationDistanceId = d?.id
+        curr.previousLocationDistanceId = d?.id ?? null
         prev.nextLocationDistance = d
-        prev.nextLocationDistanceId = d?.id
+        prev.nextLocationDistanceId = d?.id ?? null
       } else {
-        curr.previousLocationDistance = null // first element: no previous
+        curr.previousLocationDistance = null
         curr.previousLocationDistanceId = null
       }
 
@@ -152,13 +148,13 @@ const RouteAdmin = () => {
       if (next) {
         const d = findRouteDistance(
           curr,
-          next.locationIdentifier,
+          next.locationIdentifier ?? '',
           routeDistances
         )
         curr.nextLocationDistance = d
-        curr.nextLocationDistanceId = d?.id
+        curr.nextLocationDistanceId = d?.id ?? null
         next.previousLocationDistance = d
-        next.previousLocationDistanceId = d?.id
+        next.previousLocationDistanceId = d?.id ?? null
       } else {
         curr.nextLocationDistance = null
         curr.nextLocationDistanceId = null
@@ -180,33 +176,33 @@ const RouteAdmin = () => {
 
   const onAddRoute = () => {
     if (!location || !updatedRoute) return
-    const exists = updatedRoute.routeLocations.some(
+    const exists = routeLocations.some(
       (link) => link.locationIdentifier === location.locationIdentifier
     )
     if (exists) return
 
-    const newLink: RouteLocation = {
-      routeId: updatedRoute.id,
+    const newLink: RouteLocationDto = {
+      routeId: updatedRoute.id ?? undefined,
       locationId: location.id,
       locationIdentifier: location.locationIdentifier,
       primaryName: location.primaryName,
       secondaryName: location.secondaryName,
       latitude: location.latitude,
       longitude: location.longitude,
-      order: updatedRoute.routeLocations.length,
-      primaryPhase: null,
-      opposingPhase: null,
-      primaryDirectionId: null,
-      opposingDirectionId: null,
+      order: routeLocations.length,
+      primaryPhase: undefined,
+      opposingPhase: undefined,
+      primaryDirectionId: undefined,
+      opposingDirectionId: undefined,
       primaryDirectionDescription: null,
       opposingDirectionDescription: null,
-      isPrimaryOverlap: null,
-      isOpposingOverlap: null,
+      isPrimaryOverlap: undefined,
+      isOpposingOverlap: undefined,
       nextLocationDistance: null,
       nextLocationDistanceId: null,
     }
 
-    const newList = [...updatedRoute.routeLocations, newLink]
+    const newList = [...routeLocations, newLink]
     setUpdatedRoute((prev) => ({
       ...prev!,
       routeLocations: newList,
@@ -222,23 +218,24 @@ const RouteAdmin = () => {
   ) => {
     setUpdatedRoute((prevRoute) => {
       if (!prevRoute) return prevRoute
+      const prevLocations = prevRoute.routeLocations ?? []
 
       // Find the index of the link:
-      const idx = prevRoute.routeLocations.findIndex(
+      const idx = prevLocations.findIndex(
         (rl) => rl.locationIdentifier === locationIdentifier
       )
       if (idx === -1) return prevRoute
 
-      const thisLink = prevRoute.routeLocations[idx]
-      const nextLink = prevRoute.routeLocations[idx + 1]
+      const thisLink = prevLocations[idx]
+      const nextLink = prevLocations[idx + 1]
       if (!nextLink) return prevRoute
 
       const existingDist = findRouteDistance(
         thisLink,
-        nextLink.locationIdentifier,
+        nextLink.locationIdentifier ?? '',
         routeDistances
       )
-      const newDistObj = existingDist
+      const newDistObj: RouteDistanceDto = existingDist
         ? existingDist.distance === distance
           ? existingDist
           : { ...existingDist, distance }
@@ -261,7 +258,7 @@ const RouteAdmin = () => {
         })
       }
 
-      const newLocations = prevRoute.routeLocations.map((rl, i) =>
+      const newLocations = prevLocations.map((rl, i) =>
         i === idx
           ? {
               ...rl,
@@ -277,10 +274,10 @@ const RouteAdmin = () => {
     })
   }
 
-  const handleDirectionChange = (updatedLink: RouteLocation) => {
+  const handleDirectionChange = (updatedLink: RouteLocationDto) => {
     setUpdatedRoute((prev) => ({
       ...prev,
-      routeLocations: prev!.routeLocations.map((rl) =>
+      routeLocations: (prev?.routeLocations ?? []).map((rl) =>
         rl.locationIdentifier === updatedLink.locationIdentifier
           ? updatedLink
           : rl
@@ -288,32 +285,32 @@ const RouteAdmin = () => {
     }))
   }
 
-  const handleDeleteLink = (link: RouteLocation) => {
+  const handleDeleteLink = (link: RouteLocationDto) => {
     if (!updatedRoute) return
-    const idx = updatedRoute.routeLocations.findIndex(
+    const idx = routeLocations.findIndex(
       (rl) => rl.locationIdentifier === link.locationIdentifier
     )
     if (idx === -1) return
 
-    // Update the previous link’s distance (if any) to skip over the deleted one:
+    // Update the previous link's distance (if any) to skip over the deleted one:
     if (idx > 0) {
-      const prevLink = updatedRoute.routeLocations[idx - 1]
-      const nextAfterDeleted = updatedRoute.routeLocations[idx + 1]
+      const prevLink = routeLocations[idx - 1]
+      const nextAfterDeleted = routeLocations[idx + 1]
       prevLink.nextLocationDistance = nextAfterDeleted
         ? findRouteDistance(
             prevLink,
-            nextAfterDeleted.locationIdentifier,
+            nextAfterDeleted.locationIdentifier ?? '',
             routeDistances
           )
         : null
     }
 
-    let filtered = updatedRoute.routeLocations.filter(
+    let filtered = routeLocations.filter(
       (rl) => rl.locationIdentifier !== link.locationIdentifier
     )
     // Decrement order on everything after the deleted index:
     filtered = filtered.map((rl, i) =>
-      i >= idx ? { ...rl, order: rl.order - 1 } : rl
+      i >= idx ? { ...rl, order: (rl.order ?? 0) - 1 } : rl
     )
 
     fetchRouteDistanceAndUpdatePolyline(filtered)
@@ -333,10 +330,11 @@ const RouteAdmin = () => {
   const handleSaveRoute = async () => {
     if (!updatedRoute || !updatedRoute.id) return
 
-    const hasErrorsLocal = updatedRoute.routeLocations.some((rl, i) => {
-      const notLast = i !== updatedRoute.routeLocations.length - 1
+    const hasErrorsLocal = routeLocations.some((rl, i) => {
+      const notLast = i !== routeLocations.length - 1
       const missingDist = notLast && !rl.nextLocationDistance
-      const missingDir = !rl.primaryDirectionId || !rl.opposingDirectionId
+      const missingDir =
+        rl.primaryDirectionId == null || rl.opposingDirectionId == null
       return missingDist || missingDir
     })
 
@@ -346,18 +344,8 @@ const RouteAdmin = () => {
     }
     setHasErrors(false)
 
-    const cloned: Route = JSON.parse(JSON.stringify(updatedRoute))
-    cloned.routeLocations.forEach((rl) => {
-      rl.primaryDirectionId =
-        directionTypes?.find((dt) => dt.name === rl.primaryDirectionId)
-          ?.value || null
-      rl.opposingDirectionId =
-        directionTypes?.find((dt) => dt.name === rl.opposingDirectionId)
-          ?.value || null
-    })
-
     updateRoute(
-      { key: cloned.id, data: cloned },
+      { data: updatedRoute },
       {
         onSuccess: (savedRoute) => {
           addNotification({
@@ -365,14 +353,16 @@ const RouteAdmin = () => {
             title: 'Route saved successfully',
           })
           if (!savedRoute.routeLocations) return
-          savedRoute.routeLocations.sort((a, b) => a.order - b.order)
+          savedRoute.routeLocations.sort(
+            (a, b) => (a.order ?? 0) - (b.order ?? 0)
+          )
           setUpdatedRoute(savedRoute)
         },
         onError: (err) => {
           addNotification({
             type: 'error',
             title: 'Error saving route',
-            message: err.message,
+            message: getApiErrorMessage(err),
           })
         },
       }
@@ -408,7 +398,7 @@ const RouteAdmin = () => {
             onChange={handleEditRouteName}
             sx={{ fontSize: '30px', minWidth: '250px' }}
           />
-          <AuditInfo obj={routeInfo} />
+          <AuditInfo obj={route} />
         </Box>
       </Box>
       <Box sx={{ display: 'flex' }}>
@@ -446,15 +436,13 @@ const RouteAdmin = () => {
 export default memo(RouteAdmin)
 
 function findRouteDistance(
-  routeLocation: RouteLocation,
+  routeLocation: RouteLocationDto,
   nextLocationIdentifier: string,
-  routeDistances: RouteDistance[]
-) {
-  return (
-    routeDistances.find(
-      (rd) =>
-        routeLocation.locationIdentifier === rd.locationIdentifierA &&
-        nextLocationIdentifier === rd.locationIdentifierB
-    ) || null
+  routeDistances: RouteDistanceDto[]
+): RouteDistanceDto | undefined {
+  return routeDistances.find(
+    (rd) =>
+      routeLocation.locationIdentifier === rd.locationIdentifierA &&
+      nextLocationIdentifier === rd.locationIdentifierB
   )
 }

@@ -1,17 +1,19 @@
+import {
+  useGetWatchDogIgnoreEvent,
+  usePostWatchDogIgnoreEvent,
+  WatchDogIgnoreEvent,
+} from '@/api/config'
+import {
+  useGetWatchdogIssueTypes,
+  useGetWatchdogReportData,
+  WatchDogComponentTypes,
+  WatchDogIssueTypes,
+} from '@/api/reports'
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
 import OptionalWatchDogFilters from '@/components/MapFilters/OptionalWatchDogFilters'
 import { StyledPaper } from '@/components/StyledPaper'
 import SelectDateTime from '@/components/selectTimeSpan/SelectTimeSpan'
-import { Area } from '@/features/areas/types'
-import {
-  LogEventsData,
-  useGetIssueTypes,
-  useGetWatchdogLogs,
-} from '@/features/watchdog/api/getWatchdogLogs'
-import {
-  useCreateWatchdogIgnoreEvents,
-  useGetWatchdogIgnoreEvents,
-} from '@/features/watchdog/api/watchdogIgnoreEvents'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { dateToTimestamp, toUTCDateStamp } from '@/utils/dateTime'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,6 +35,7 @@ import {
 } from '@mui/material'
 import {
   DataGrid,
+  gridClasses,
   GridColDef,
   GridRenderCellParams,
   GridToolbarColumnsButton,
@@ -40,10 +43,8 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
   GridToolbarFilterButton,
-  gridClasses,
 } from '@mui/x-data-grid'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { AxiosError } from 'axios'
 import {
   endOfDay,
   isAfter,
@@ -64,33 +65,52 @@ interface transformWatchDogLog {
   regionDescription: string
   jurisdictionName: string
   areas: string
-  issueType: number
-  phase: string | null
+  issueType: number | string
+  issueTypeId?: number
+  phase: number | null
   details: string
   componentType: number
   componentId: number
-  start: Date
-  end: Date
   ignored: boolean
 }
 
-interface WatchdogIgnoreEvent {
-  id?: number
-  locationId?: number
-  locationIdentifier?: string | null
-  start?: string
-  end?: string | null
-  componentType?: number | string | null
-  componentId?: number | null
-  issueType?: number | string
-  phase?: number | string | null
-  key?: string | number | null
+interface WatchDogIssueTypeDTO {
+  id: number
+  name: string
 }
 
 const normalizeWatchdogValue = (value: number | string | null | undefined) =>
   String(value ?? '')
     .replace(/[^a-zA-Z0-9]/g, '')
     .toLowerCase()
+
+// The report API sends its enums as integers while the config API (OData)
+// sends and expects member names. Both generated consts describe the same C#
+// enums, so the keys of one are the values of the other.
+const enumMemberName = <T extends Record<string, number>>(
+  members: T,
+  value: number | undefined
+) =>
+  (Object.keys(members) as (keyof T & string)[]).find(
+    (name) => members[name] === value
+  )
+
+/** The config-API ignore event that silences a watchdog log row. */
+export const toIgnoreEvent = (
+  row: transformWatchDogLog,
+  start: Date,
+  end: Date | null | undefined
+): WatchDogIgnoreEvent => ({
+  key: row.key != null ? String(row.key) : null,
+  locationId: row.locationId,
+  locationIdentifier: row.locationIdentifier,
+  issueType: enumMemberName(WatchDogIssueTypes, row.issueTypeId),
+  componentType: enumMemberName(WatchDogComponentTypes, row.componentType),
+  componentId: row.componentId,
+  phase: row.phase,
+  start: toUTCDateStamp(start),
+  end: end ? toUTCDateStamp(end) : undefined,
+})
 
 // Schema for filtering events (table of events)
 const watchdogLogsSchema = z.object({
@@ -117,20 +137,20 @@ const ignoreEventSchema = z.object({
 const WatchDogLogs = () => {
   const { addNotification } = useNotificationStore()
 
-  const { data: issueTypesData } = useGetIssueTypes()
+  const { data: issueTypesData } =
+    useGetWatchdogIssueTypes<WatchDogIssueTypeDTO[]>()
   const {
     data: watchdogIgnoreEventsData,
     refetch: refetchWatchdogIgnoreEvents,
-  } = useGetWatchdogIgnoreEvents()
+  } = useGetWatchDogIgnoreEvent()
   const {
     data: watchdogLogsData,
-    isLoading: isWatchdogLogsLoading,
+    isPending: isWatchdogLogsLoading,
     error: watchdogLogsError,
     mutateAsync: fetchWatchdogLogs,
     isSuccess: isWatchdogLogsSuccess,
-  } = useGetWatchdogLogs()
-  const { mutateAsync: addWatchdogIgnoreEvents } =
-    useCreateWatchdogIgnoreEvents()
+  } = useGetWatchdogReportData()
+  const { mutateAsync: addWatchdogIgnoreEvents } = usePostWatchDogIgnoreEvent()
 
   const {
     handleSubmit: handleFilterSubmit,
@@ -184,30 +204,32 @@ const WatchDogLogs = () => {
 
   const issueTypes = useMemo(() => {
     if (!issueTypesData) return null
-    return issueTypesData.reduce(
+    return issueTypesData.reduce<Record<number, string>>(
       (acc, issueType) => ({ ...acc, [issueType.id]: issueType.name }),
       {}
     )
   }, [issueTypesData])
 
   const ignoreEvents = useMemo(
-    () =>
-      ((watchdogIgnoreEventsData as { value?: WatchdogIgnoreEvent[] })?.value ??
-        []) as WatchdogIgnoreEvent[],
+    () => watchdogIgnoreEventsData ?? [],
     [watchdogIgnoreEventsData]
   )
 
   const isEventIgnored = useCallback(
     (logEvent: {
-      locationId: number
-      locationIdentifier: string | null
-      componentType: number
-      componentId: number
-      issueType: number
-      phase: string | null
+      locationId?: number
+      locationIdentifier?: string | null
+      componentType?: number
+      componentId?: number
+      issueType?: number
+      phase?: number | null
+      key?: string | number | null
     }) => {
       const now = new Date()
-      const issueTypeName = issueTypes?.[logEvent.issueType]
+      const issueTypeName =
+        logEvent.issueType != null
+          ? issueTypes?.[logEvent.issueType]
+          : undefined
       const componentTypeName =
         logEvent.componentType === 0
           ? 'Location'
@@ -271,7 +293,6 @@ const WatchDogLogs = () => {
           matchesPhase &&
           matchesKey
 
-
         if (!matchesEvent) return false
         if (isBefore(now, ignoreStart)) return false
         if (ignoreEnd && isAfter(now, ignoreEnd)) return false
@@ -283,20 +304,35 @@ const WatchDogLogs = () => {
   )
 
   useMemo(() => {
-    const logEvents = (watchdogLogsData as unknown as LogEventsData)?.logEvents
+    const logEvents = watchdogLogsData?.logEvents
     if (logEvents) {
-      const rows = logEvents.map((logEvent) => ({
-        ...logEvent,
-        areas: logEvent.areas.map((area: Area) => area.name).join(', '),
-        issueType: issueTypes?.[logEvent.issueType] ?? logEvent.issueType,
+      const rows: transformWatchDogLog[] = logEvents.map((logEvent) => ({
+        id: logEvent.id ?? 0,
+        key: logEvent.key,
+        locationId: logEvent.locationId ?? 0,
+        locationIdentifier: logEvent.locationIdentifier ?? null,
+        timestamp: logEvent.timestamp ?? '',
+        regionDescription: logEvent.regionDescription ?? '',
+        jurisdictionName: logEvent.jurisdictionName ?? '',
+        areas: (logEvent.areas ?? []).map((area) => area.name).join(', '),
+        issueType:
+          (logEvent.issueType != null
+            ? issueTypes?.[logEvent.issueType]
+            : undefined) ??
+          logEvent.issueType ??
+          0,
+        issueTypeId: logEvent.issueType ?? 0,
+        phase: logEvent.phase ?? null,
+        details: logEvent.details ?? '',
+        componentType: logEvent.componentType ?? 0,
+        componentId: logEvent.componentId ?? 0,
         ignored: isEventIgnored(logEvent),
       }))
       setProcessedRows(rows)
     }
   }, [watchdogLogsData, issueTypes, isEventIgnored])
 
-  const returnedLogEvents =
-    (watchdogLogsData as unknown as LogEventsData)?.logEvents ?? []
+  const returnedLogEvents = watchdogLogsData?.logEvents ?? []
   const showNoLogsMessage =
     isWatchdogLogsSuccess &&
     !isWatchdogLogsLoading &&
@@ -314,13 +350,15 @@ const WatchDogLogs = () => {
 
   const handleFetchData = handleFilterSubmit(() => {
     fetchWatchdogLogs({
-      start: dateToTimestamp(startDateTime),
-      end: dateToTimestamp(endDateTime),
-      areaId,
-      regionId,
-      jurisdictionId,
-      issueType: selectedIssueType,
-      locationIdentifier,
+      data: {
+        start: dateToTimestamp(startDateTime),
+        end: dateToTimestamp(endDateTime),
+        areaId,
+        regionId,
+        jurisdictionId,
+        issueType: selectedIssueType,
+        locationIdentifier,
+      },
     })
   })
 
@@ -335,15 +373,7 @@ const WatchDogLogs = () => {
 
         try {
           await addWatchdogIgnoreEvents({
-            key: eventToIgnore.key,
-            locationId: eventToIgnore.locationId,
-            locationIdentifier: eventToIgnore.locationIdentifier,
-            issueType: eventToIgnore.issueType?.toString(),
-            componentType: eventToIgnore.componentType?.toString(),
-            componentId: eventToIgnore.componentId,
-            phase: eventToIgnore.phase,
-            start: toUTCDateStamp(data.start),
-            end: data?.end ? toUTCDateStamp(data.end) : null,
+            data: toIgnoreEvent(eventToIgnore, data.start, data.end),
           })
           return { rowId, success: true }
         } catch (error) {
@@ -646,9 +676,7 @@ const WatchDogLogs = () => {
       </Box>
 
       {watchdogLogsError && (
-        <Alert severity="error">
-          {(watchdogLogsError as AxiosError).message}
-        </Alert>
+        <Alert severity="error">{getApiErrorMessage(watchdogLogsError)}</Alert>
       )}
 
       <Box sx={{ width: '100%' }}>

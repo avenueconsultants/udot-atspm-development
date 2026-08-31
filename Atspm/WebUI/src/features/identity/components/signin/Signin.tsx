@@ -1,7 +1,8 @@
+import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import NextImage from '@/components/NextImage'
-import { useLogin } from '@/features/identity/api/getLogin'
 import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { buildApiUrl } from '@/lib/axios'
 import { getEnv } from '@/utils/getEnv'
 import { LoadingButton } from '@mui/lab'
@@ -23,18 +24,18 @@ export default function Signin() {
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const {
-    refetch,
-    data: queryData,
+    mutate: login,
+    data: mutationData,
     status,
-    isLoading,
+    isPending: isLoading,
     error: queryDataError,
-  } = useLogin({ email, password })
+  } = useAccountLogin()
 
   useEffect(() => {
-    if (queryData) {
-      setData(queryData as IdentityDto)
+    if (mutationData) {
+      setData(mutationData as IdentityDto)
     }
-  }, [data, queryData])
+  }, [data, mutationData])
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -65,14 +66,14 @@ export default function Signin() {
     }
 
     if (isValid) {
-      refetch()
+      login({ data: { email, password, rememberMe: false } })
     }
   }
 
   useEffect(() => {
     setEmailError(null)
     if (queryDataError) {
-      setErrors(queryDataError.response.data.message)
+      setErrors(getApiErrorMessage(queryDataError, 'Invalid email or password'))
     }
   }, [queryDataError, email])
 

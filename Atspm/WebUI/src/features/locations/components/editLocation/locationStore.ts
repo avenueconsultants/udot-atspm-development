@@ -18,6 +18,7 @@ import {
   Approach,
   deleteApproachFromKey,
   deleteDetectorFromKey,
+  DetectionType,
   Detector,
   Location,
 } from '@/api/config'
@@ -38,10 +39,12 @@ export interface ConfigApproach
   protectedPhaseNumber: number | null
 }
 
-export interface ConfigDetector extends Omit<Detector, 'id' | 'approachId'> {
+export interface ConfigDetector
+  extends Omit<Detector, 'id' | 'approachId' | 'detectionTypes'> {
   id: number
   approachId?: number
   isNew?: boolean
+  detectionTypes: DetectionType[]
 }
 
 interface LocationSlice {

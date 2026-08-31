@@ -14,8 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-export enum TimeOptions {
-  Hour,
-  Week,
-  Month,
+// Mirrors the backend's TimeOptionsEnum (src/api/speedManagement/aTSPMSpeedManagementApi.schemas.ts) -
+// keep the members in sync with that generated string union.
+export enum SpeedTimePeriod {
+  Day = 'Day',
+  Week = 'Week',
+  Month = 'Month',
 }

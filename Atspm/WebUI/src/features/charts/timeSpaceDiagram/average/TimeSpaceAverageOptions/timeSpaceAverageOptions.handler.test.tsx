@@ -1,5 +1,5 @@
+import type { Route, RouteLocation } from '@/api/config'
 import { ToolType } from '@/features/charts/common/types'
-import type { Route, RouteLocation } from '@/features/routes/types'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { useAverageOptionsHandler } from './timeSpaceAverageOptions.handler'
 
@@ -8,20 +8,8 @@ function buildRouteLocation(
   order: number
 ): RouteLocation {
   return {
-    approaches: [],
     locationIdentifier,
     order,
-    primaryPhase: '2',
-    opposingPhase: '6',
-    primaryDirectionId: '1',
-    opposingDirectionId: '2',
-    primaryDirectionDescription: 'Northbound',
-    opposingDirectionDescription: 'Southbound',
-    isPrimaryOverlap: false,
-    isOpposingOverlap: false,
-    previousLocationDistanceId: null,
-    nextLocationDistanceId: null,
-    routeId: 4122,
   }
 }
 
@@ -95,9 +83,7 @@ describe('useAverageOptionsHandler', () => {
     const params = result.current.toSearchParams()
 
     expect(params.get('toolType')).toBe(String(ToolType.TimeSpaceAverage))
-    expect(JSON.parse(params.get('sequence') ?? '[]')).toEqual(
-      options.sequence
-    )
+    expect(JSON.parse(params.get('sequence') ?? '[]')).toEqual(options.sequence)
     expect(JSON.parse(params.get('coordinatedPhases') ?? '[]')).toEqual(
       options.coordinatedPhases
     )

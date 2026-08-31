@@ -157,7 +157,7 @@ namespace Identity.Controllers
 
         [HttpPost("update")]
         [AuthorizePermission(AtspmAuthorization.Permissions.UsersEdit)]
-        public async Task<IActionResult> AssignRole(UserDTO model)
+        public async Task<IActionResult> Update(UserDTO model)
         {
             if (model == null || !ModelState.IsValid)
             {

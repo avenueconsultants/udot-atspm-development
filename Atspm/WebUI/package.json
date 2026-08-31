@@ -11,7 +11,13 @@
     "prepare": "cd ../.. && husky install ATSPM/WebUI/.husky",
     "analyze": "cross-env ANALYZE=true next build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "generate:api": "orval --config orval.config.js",
+    "check:api": "orval --config orval.config.js && git diff --exit-code --stat -- src/api",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:ratchet": "node scripts/typecheck-ratchet.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -26,7 +32,8 @@
     "@mui/material": "^5.13.6",
     "@mui/x-data-grid": "^7.27.3",
     "@mui/x-date-pickers": "^6.19.2",
-    "@tanstack/react-query-devtools": "^4.29.17",
+    "@tanstack/react-query": "^5.102.2",
+    "@tanstack/react-query-devtools": "^5.102.2",
     "@turf/helpers": "^7.2.0",
     "@turf/line-offset": "^7.2.0",
     "@turf/turf": "^7.2.0",
@@ -62,7 +69,6 @@
     "react-leaflet": "^4.2.1",
     "react-leaflet-cluster": "^2.1.0",
     "react-number-format": "^5.3.1",
-    "react-query": "^3.39.3",
     "react-to-print": "^3.0.5",
     "sanitize-html": "^2.14.0",
     "sharp": "^0.33.1",
@@ -72,8 +78,8 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.3.0",
     "@next/bundle-analyzer": "^13.4.8",
+    "@playwright/test": "^1.62.1",
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.5",
@@ -104,8 +110,11 @@
     "jest-environment-jsdom": "^30.3.0",
     "lint-staged": "^13.2.3",
     "msw": "^2.4.9",
+    "orval": "8.24.0",
+    "playwright": "^1.62.1",
     "prettier-plugin-organize-imports": "^3.2.2",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "undici": "^8.10.0"
   },
   "overrides": {
     "glob": "10.5.0",
@@ -122,6 +131,7 @@
     ],
     "ignorePatterns": [
       "next.config.js",
+      "jest.polyfills.js",
       "src/mocks/data/*"
     ],
     "rules": {
@@ -145,7 +155,7 @@
             {
               "patterns": [
                 "next/*",
-                "react-query",
+                "@tanstack/react-query",
                 "axios",
                 "@/lib/axios",
                 "@/features/routes/*",
@@ -170,7 +180,7 @@
             {
               "patterns": [
                 "next/*",
-                "react-query",
+                "@tanstack/react-query",
                 "axios",
                 "@/lib/axios",
                 "@/features/routes/*",

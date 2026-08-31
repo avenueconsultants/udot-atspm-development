@@ -34,7 +34,7 @@ export interface ApproachDelayChartOptionsDefaults {
   getVolume: { id: number; value: string; option: string }
 }
 
-export interface ApproachDelayPlan extends BasePlan {
+export interface NormalizedApproachDelayPlan extends BasePlan {
   averageDelay: number
   totalDelay: number
   planDescription: string
@@ -45,13 +45,13 @@ export interface RawApproachDelayData extends BaseChartData {
   phaseDescription: string
   averageDelayPerVehicle: number
   totalDelay: number
-  plans: ApproachDelayPlan[]
+  plans: NormalizedApproachDelayPlan[]
   approachDelayDataPoints: DataPoint[]
   approachDelayPerVehicleDataPoints: DataPoint[]
   approachId: number
 }
 
-export interface RawApproachDelayReponse {
+export interface RawApproachDelayResponse {
   type: ChartType.ApproachDelay
   data: RawApproachDelayData[]
 }

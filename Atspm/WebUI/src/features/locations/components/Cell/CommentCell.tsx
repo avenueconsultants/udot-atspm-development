@@ -1,9 +1,9 @@
 import {
-  useCreateDetectorComment,
-  useDeleteDetectorComment,
-  useGetDetectorComments,
-  useUpdateDetectorComment,
-} from '@/features/locations/api/detector'
+  useDeleteDetectorCommentFromKey,
+  useGetDetectorComment,
+  usePatchDetectorCommentFromKey,
+  usePostDetectorComment,
+} from '@/api/config'
 import { useCellNavigation } from '@/features/locations/components/Cell/CellNavigation'
 import DeleteConfirmationModal from '@/features/locations/components/editDetector/DeleteCommentConfirmationModal'
 import { ConfigDetector } from '@/features/locations/components/editLocation/locationStore'
@@ -61,20 +61,23 @@ const CommentCell = ({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [editCommentId, setEditCommentId] = useState<string | null>(null)
+  const [editCommentId, setEditCommentId] = useState<number | null>(null)
   const [commentText, setCommentText] = useState('')
 
-  const { refetch, data: commentsData } = useGetDetectorComments(detector.id)
-  const { mutate: addComment } = useCreateDetectorComment()
-  const { mutate: deleteComment } = useDeleteDetectorComment()
-  const { mutate: updateComment } = useUpdateDetectorComment()
+  const { refetch, data: commentsData } = useGetDetectorComment({
+    filter: `detectorId eq ${detector.id}`,
+  })
+  const { mutate: addComment } = usePostDetectorComment()
+  const { mutate: deleteComment } = useDeleteDetectorCommentFromKey()
+  const { mutate: updateComment } = usePatchDetectorCommentFromKey()
 
   const comments =
-    commentsData?.value
-      .filter((c) => c.detectorId === detector.id)
+    commentsData
+      ?.slice()
       .sort(
         (a, b) =>
-          new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
+          new Date(b.timeStamp ?? 0).getTime() -
+          new Date(a.timeStamp ?? 0).getTime()
       ) || []
 
   useEffect(() => {
@@ -118,7 +121,7 @@ const CommentCell = ({
     setAnchorEl(null)
   }
 
-  const handleOpenModal = (id: string | null = null, text = '') => {
+  const handleOpenModal = (id: number | null = null, text = '') => {
     cellRef.current?.blur()
     setEditCommentId(id)
     setCommentText(text)
@@ -131,26 +134,28 @@ const CommentCell = ({
   }
 
   const handleSaveComment = () => {
-    if (editCommentId) {
+    if (editCommentId !== null) {
       updateComment(
-        { id: editCommentId, data: { comment: commentText } },
-        { onSuccess: refetch }
+        { key: editCommentId, data: { comment: commentText } },
+        { onSuccess: () => refetch() }
       )
     } else {
       addComment(
         {
-          comment: commentText,
-          detectorId: detector.id,
-          timeStamp: new Date().toISOString(),
+          data: {
+            comment: commentText,
+            detectorId: detector.id,
+            timeStamp: new Date().toISOString(),
+          },
         },
-        { onSuccess: refetch }
+        { onSuccess: () => refetch() }
       )
     }
     setCommentText('')
     handleCloseModal()
   }
 
-  const handleOpenDeleteModal = (id: string) => {
+  const handleOpenDeleteModal = (id: number | null) => {
     setEditCommentId(id)
     setDeleteModalOpen(true)
   }
@@ -161,8 +166,11 @@ const CommentCell = ({
   }
 
   const handleConfirmDelete = () => {
-    if (editCommentId) {
-      deleteComment(editCommentId, { onSuccess: refetch })
+    if (editCommentId !== null) {
+      deleteComment(
+        { key: editCommentId },
+        { onSuccess: () => refetch() }
+      )
     }
     handleCloseDeleteModal()
   }
@@ -246,18 +254,20 @@ const CommentCell = ({
                 <ListItem key={c.id} divider alignItems="flex-start">
                   <ListItemText
                     primary={c.comment}
-                    secondary={new Date(c.timeStamp).toLocaleString()}
+                    secondary={new Date(c.timeStamp ?? 0).toLocaleString()}
                   />
                   <Box>
                     <IconButton
                       size="small"
-                      onClick={() => handleOpenModal(c.id, c.comment)}
+                      onClick={() =>
+                        handleOpenModal(c.id ?? null, c.comment ?? '')
+                      }
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       size="small"
-                      onClick={() => handleOpenDeleteModal(c.id)}
+                      onClick={() => handleOpenDeleteModal(c.id ?? null)}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -291,7 +301,7 @@ const CommentCell = ({
           }}
         >
           <Typography variant="h6" gutterBottom>
-            {editCommentId ? 'Edit Comment' : 'Add Comment'}
+            {editCommentId !== null ? 'Edit Comment' : 'Add Comment'}
           </Typography>
           <TextField
             autoFocus

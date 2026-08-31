@@ -19,31 +19,6 @@ interface Geometry {
   coordinates: [number, number][]
 }
 
-export interface HistoricalDataOptions {
-  routeId: number
-  startDate: string
-  endDate: string
-  daysOfWeek: string
-  startTime: string
-  endTime: string
-}
-
-export interface HistoricalDataResponse {
-  routeId: number
-  historicalRouteData: SourceData[]
-}
-
-interface SourceData {
-  sourceId: number
-  monthlyAverages: MonthlyAverage[]
-}
-
-interface MonthlyAverage {
-  month: number
-  year: number
-  averageSpeed: number
-}
-
 interface Properties {
   createdDate: string
   binStartTime: string

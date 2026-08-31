@@ -22,10 +22,10 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import type {
+  NormalizedTimeSpacePhaseResult,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceDistanceSpacingMode,
-  TimeSpaceDiagramPhaseResult,
   TimeSpaceHistoricOptions,
   TimeSpaceOptions,
 } from '../../shared/types'
@@ -66,7 +66,7 @@ export default function TimeSpaceResultsContainer({
 
   const [srmError, setSrmError] = useState<string | null>(null)
   const [hasAppliedSrm, setHasAppliedSrm] = useState(false)
-  const { mutateAsync: fetchSrmData, isLoading: isApplyingSrm } =
+  const { mutateAsync: fetchSrmData, isPending: isApplyingSrm } =
     useTimeSpaceSrmData()
 
   const locations = getPrimaryTimeSpaceLocations(baseTimeSpaceData)
@@ -107,7 +107,7 @@ export default function TimeSpaceResultsContainer({
       setBaseTimeSpaceData((prev) => ({
         type: prev.type,
         data: mergeSrmOverlaysIntoWrappedData(
-          prev.data as TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[],
+          prev.data as NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[],
           overlays
         ) as RawTimeSpaceDiagramResponse['data'],
       }))
@@ -125,7 +125,7 @@ export default function TimeSpaceResultsContainer({
     setBaseTimeSpaceData((prev) => ({
       type: prev.type,
       data: mergeSrmOverlaysIntoWrappedData(
-        prev.data as TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[],
+        prev.data as NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[],
         []
       ) as RawTimeSpaceDiagramResponse['data'],
     }))
@@ -301,9 +301,8 @@ export default function TimeSpaceResultsContainer({
               <LinkPivotAdjustmentTable
                 data={pivot.data.adjustments}
                 cycleLength={
-                  baseTimeSpaceData.data.find(
-                    (entry) => entry.result
-                  )?.result?.cycleLength ?? null
+                  baseTimeSpaceData.data.find((entry) => entry.result)?.result
+                    ?.cycleLength ?? null
                 }
               />
             </Paper>

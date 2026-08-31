@@ -28,6 +28,7 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
@@ -39,9 +40,10 @@ import {
 } from '@/features/charts/types'
 import {
   Color,
-  SolidLineSeriesSymbol,
   formatChartDateTimeRange,
+  SolidLineSeriesSymbol,
 } from '@/features/charts/utils'
+import { formatNumber } from '@/utils/numberFormat'
 import { addHours, format } from 'date-fns'
 import { EChartsOption, SeriesOption } from 'echarts'
 import {
@@ -50,30 +52,48 @@ import {
   normalizeTurningMovementDirection,
 } from './directions'
 import {
+  NormalizedTurningMovementCountTableRow,
   RawTurningMovementCountsData,
   RawTurningMovementCountsResponse,
+  RawTurningMovementCountTableRow,
 } from './types'
+
+function normalizeTableRow(
+  row: RawTurningMovementCountTableRow
+): NormalizedTurningMovementCountTableRow {
+  return {
+    direction: row.direction ?? '',
+    movementType: row.movementType ?? '',
+    laneType: row.laneType ?? '',
+    volumes: toDataPoints(row.volumes),
+    peakHourVolume: row.peakHourVolume
+      ? { value: row.peakHourVolume.value ?? 0 }
+      : null,
+  }
+}
 
 export default function transformTurningMovementCountsData(
   response: RawTurningMovementCountsResponse
 ): TransformedChartResponse {
-  const charts = response.data.charts
+  const charts = (response.data.charts ?? [])
     .slice()
     .sort((a, b) => {
       const directionDiff = compareTurningMovementDirections(
-        a.direction,
-        b.direction
+        a.direction ?? '',
+        b.direction ?? ''
       )
       if (directionDiff !== 0) return directionDiff
 
-      return compareMovementTypes(a.movementType, b.movementType)
+      return compareMovementTypes(a.movementType ?? '', b.movementType ?? '')
     })
     .map((data) => ({
       chart: transformData(data),
     }))
 
+  const table = (response.data.table ?? []).map(normalizeTableRow)
+
   const directions = getAvailableTurningMovementDirections(
-    response.data.table.map((row) => row.direction)
+    table.map((row) => row.direction)
   )
   const preferred = [
     'Left',
@@ -84,32 +104,30 @@ export default function transformTurningMovementCountsData(
     'Right',
   ]
 
-  const movementTypes = buildMovementTypeMap(
-    response.data.table,
-    preferred,
-    directions
-  )
+  const movementTypes = buildMovementTypeMap(table, preferred, directions)
   const labels = buildLabels(directions, movementTypes)
 
-  const peakRow = buildPeakHourRow(
-    response.data.table,
-    response.data.peakHour,
-    directions,
-    movementTypes
-  )
-  const displayProps = createTableDisplayProps(response.data.charts)
+  const peakHour = response.data.peakHour?.key
+    ? {
+        key: response.data.peakHour.key,
+        value: response.data.peakHour.value ?? 0,
+      }
+    : null
+
+  const peakRow = buildPeakHourRow(table, peakHour, directions, movementTypes)
+  const displayProps = createTableDisplayProps(response.data.charts ?? [])
 
   return {
     type: ChartType.TurningMovementCounts,
     data: {
       displayProps,
       labels,
-      table: response.data.table,
+      table,
       charts,
       peakHour:
-        response.data.peakHour && peakRow
+        peakHour && peakRow
           ? {
-              peakHourFactor: response.data.peakHourFactor,
+              peakHourFactor: response.data.peakHourFactor ?? null,
               peakHourData: [peakRow],
             }
           : null,
@@ -126,46 +144,53 @@ function createTableDisplayProps(charts: RawTurningMovementCountsData[]) {
 
   return createDisplayProps({
     exportFileName: formatExportFileName(
-      `Turning Movement Counts ${firstChart.locationDescription}`,
-      firstChart.start,
-      firstChart.end
+      `Turning Movement Counts ${firstChart.locationDescription ?? ''}`,
+      firstChart.start ?? '',
+      firstChart.end ?? ''
     ),
   })
 }
 
 function transformData(data: RawTurningMovementCountsData): EChartsOption {
-  const {
-    lanes,
-    plans,
-    peakHour,
-    peakHourFactor,
-    peakHourVolume,
-    laneUtilizationFactor,
-  } = data
-  const totalHourlyVolumes = data.totalHourlyVolumes ?? []
+  const lanes = data.lanes ?? []
+  const plans = data.plans ?? []
+  const peakHour = data.peakHour
+  const peakHourFactor = data.peakHourFactor
+  const peakHourVolume = data.peakHourVolume
+  const laneUtilizationFactor = data.laneUtilizationFactor
+  const totalHourlyVolumes = toDataPoints(data.totalHourlyVolumes)
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
+  const direction = data.direction ?? ''
+  const movementType = data.movementType ?? ''
+  const laneType = data.laneType ?? ''
 
   const info = createInfoString(
-    ['Total Volume: ', `${data.totalVolume.toLocaleString()}`],
+    ['Total Volume: ', `${(data.totalVolume ?? 0).toLocaleString()}`],
     ['Peak Hour: ', peakHour ?? 'N/A'],
-    ['Peak Hour Volume: ', formatNullableNumber(peakHourVolume)],
-    ['Peak Hour Factor: ', formatNullableNumber(peakHourFactor, 2)],
-    ['fLU: ', formatNullableNumber(laneUtilizationFactor, 2)]
+    [
+      'Peak Hour Volume: ',
+      formatNumber(peakHourVolume, 0, { empty: 'N/A', grouping: true }),
+    ],
+    ['Peak Hour Factor: ', formatNumber(peakHourFactor, 2, { empty: 'N/A' })],
+    ['fLU: ', formatNumber(laneUtilizationFactor, 2, { empty: 'N/A' })]
   )
 
-  const titleHeader = `Turning Movement Counts\n${data.locationDescription} - ${data.direction} ${data.movementType} - ${data.laneType}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Turning Movement Counts\n${locationDescription} - ${direction} ${movementType} - ${laneType}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
     title: [
       'Turning Movement Counts',
-      `${data.direction} ${data.movementType} - ${data.laneType}`,
+      `${direction} ${movementType} - ${laneType}`,
     ],
-    location: data.locationDescription,
+    location: locationDescription,
     dateRange,
     info,
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
   const yAxis = createYAxis(true, { name: 'Volume Per Hour' })
 
   const grid = createGrid({
@@ -202,10 +227,10 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.TurningMovementCounts
   )
 
@@ -234,7 +259,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
     series.push(
       ...createSeries({
         name: `Lane ${lane.laneNumber}`,
-        data: transformSeriesData(lane.volume),
+        data: transformSeriesData(toDataPoints(lane.volume)),
         type: 'line',
         binStepLineToggle: true,
         color: colorValues[i % colorValues.length],
@@ -248,7 +273,7 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   const plansSeries = createPlans(plans, yAxis.length)
 
   const displayProps = createDisplayProps({
-    description: `${data.direction}${data.movementType}`,
+    description: `${direction}${movementType}`,
   })
 
   const chartOptions: EChartsOption = {
@@ -265,14 +290,6 @@ function transformData(data: RawTurningMovementCountsData): EChartsOption {
   }
 
   return chartOptions
-}
-
-function formatNullableNumber(value: number | null | undefined, decimals?: number) {
-  if (value == null) {
-    return 'N/A'
-  }
-
-  return decimals == null ? value.toLocaleString() : value.toFixed(decimals)
 }
 
 function formatTime(timestamp: string | Date) {
@@ -301,7 +318,7 @@ function compareMovementTypes(a: string, b: string) {
 }
 
 function buildMovementTypeMap(
-  table: RawTurningMovementCountsResponse['data']['table'],
+  table: NormalizedTurningMovementCountTableRow[],
   preferredOrder: string[],
   directions: string[]
 ) {
@@ -343,7 +360,7 @@ function buildLabels(
 }
 
 function buildPeakHourRow(
-  rawTable: RawTurningMovementCountsResponse['data']['table'],
+  rawTable: NormalizedTurningMovementCountTableRow[],
   peakHour: { key: string; value: number } | null,
   directions: string[],
   movementTypes: Record<string, string[]>

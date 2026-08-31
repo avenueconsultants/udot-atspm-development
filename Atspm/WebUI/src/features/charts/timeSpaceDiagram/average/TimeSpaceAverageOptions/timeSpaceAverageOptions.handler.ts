@@ -18,7 +18,7 @@ import { LocationWithCoordPhases, LocationWithSequence } from '@/api/config'
 import { ToolType } from '@/features/charts/common/types'
 import type { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/shared/options/timeSpaceBaseHandler'
 import { TimeSpaceAverageOptions } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { Route, RouteLocation } from '@/features/routes/types'
+import { Route, RouteLocation } from '@/api/config'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
 import {
   formatTime,
@@ -120,7 +120,7 @@ export const useAverageOptionsHandler = ({
     const route = routes.find((r) => r.id === Number.parseInt(routeId))
     if (!route) return
 
-    setRouteLocationsForSelectedRoute(route.routeLocations)
+    setRouteLocationsForSelectedRoute(route.routeLocations ?? [])
 
     const locationToSequence: LocationWithSequence[] = []
     const locationWithCoordPhases: LocationWithCoordPhases[] = []
