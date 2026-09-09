@@ -1,9 +1,20 @@
 import { Box } from '@mui/material'
 import type { ReactNode } from 'react'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import type { TimeOfDayAnalysisModel } from '../transformers'
-import type { TimeOfDaySidebarTab } from './chart/TimeOfDayChartHeader'
-import TimeOfDayChartHeader from './chart/TimeOfDayChartHeader'
+import type {
+  TimeOfDayAnalysisModel,
+  TimeOfDayChartLayerId,
+} from '../transformers'
+import { withScheduleDifferenceVisibility } from '../transformers'
+import type {
+  TimeOfDayDetailTab,
+  TimeOfDaySidebarTab,
+} from './chart/TimeOfDayChartHeader'
+import TimeOfDayChartHeader, {
+  getTimeOfDayDefaultDetailTab,
+  getTimeOfDayDetailTabForKey,
+} from './chart/TimeOfDayChartHeader'
+import type { TimeOfDayScheduleView } from './chart/TimeOfDayEChart'
 import TimeOfDayEChart from './chart/TimeOfDayEChart'
 import type { TimeOfDayAnalysisMode } from './chart/TimeOfDayLayersPanel'
 import TimeOfDayLayersPanel, {
@@ -12,11 +23,19 @@ import TimeOfDayLayersPanel, {
   getSidebarLayers,
 } from './chart/TimeOfDayLayersPanel'
 
-const sidebarWidths: Record<TimeOfDaySidebarTab, number> = {
+const sidebarWidths = {
   layers: 360,
   details: 700,
 }
 const workspacePaneHeight = 820
+
+const scheduleLayerIdByView: Record<
+  TimeOfDayScheduleView,
+  TimeOfDayChartLayerId
+> = {
+  proposed: 'proposed-schedule',
+  existing: 'existing-schedule',
+}
 
 const sidebarTransition = (theme: {
   transitions: {
@@ -59,7 +78,7 @@ interface TimeOfDayChartWorkspaceProps {
   model: TimeOfDayAnalysisModel
   summary: ReactNode
   renderDetails: (props: {
-    activeMode: TimeOfDayAnalysisMode
+    detailTab: TimeOfDayDetailTab
     selectedSeries: Record<string, boolean>
     selectedDetailKey?: string
     onSelectDetail: (detailKey: string) => void
@@ -96,16 +115,17 @@ export default function TimeOfDayChartWorkspace({
         seriesNames.forEach((seriesName) => {
           next[seriesName] = visible
         })
-        return next
+
+        return withScheduleDifferenceVisibility(model.layers, next, seriesNames)
       })
     },
-    []
+    [model.layers]
   )
 
   const toggleScheduleView = useCallback(
-    () => {
+    (view: TimeOfDayScheduleView) => {
       const scheduleLayer = model.layers.find(
-        (layer) => layer.id === 'schedules'
+        (layer) => layer.id === scheduleLayerIdByView[view]
       )
       if (!scheduleLayer?.available) return
 
@@ -118,7 +138,11 @@ export default function TimeOfDayChartWorkspace({
           next[seriesName] = !allVisible
         })
 
-        return next
+        return withScheduleDifferenceVisibility(
+          model.layers,
+          next,
+          scheduleLayer.seriesNames
+        )
       })
     },
     [model.layers]
@@ -129,6 +153,9 @@ export default function TimeOfDayChartWorkspace({
       if (mode === activeMode) return
 
       setActiveMode(mode)
+      setSidebarTab((tab) =>
+        tab === 'layers' ? tab : getTimeOfDayDefaultDetailTab(mode)
+      )
       setSelectedSeries((currentSelection) =>
         getAnalysisModeSeriesSelection(model.layers, [mode], currentSelection)
       )
@@ -151,13 +178,13 @@ export default function TimeOfDayChartWorkspace({
       }
       setSelectedDetailKey(detailKey)
       setHasOpenedDetails(true)
-      setSidebarTab('details')
+      setSidebarTab(getTimeOfDayDetailTabForKey(detailKey))
     },
     [changeAnalysisMode, model.detailTargets, model.layers, setSeriesVisibility]
   )
 
   const changeSidebarTab = useCallback((tab: TimeOfDaySidebarTab) => {
-    if (tab === 'details') setHasOpenedDetails(true)
+    if (tab !== 'layers') setHasOpenedDetails(true)
     setSidebarTab(tab)
   }, [])
 
@@ -168,21 +195,26 @@ export default function TimeOfDayChartWorkspace({
     () => getSidebarLayers(model.layers, [activeMode]),
     [activeMode, model.layers]
   )
-  const sidebarWidth = sidebarWidths[sidebarTab]
+  const sidebarWidth =
+    sidebarTab === 'layers' ? sidebarWidths.layers : sidebarWidths.details
+  const detailTab =
+    sidebarTab === 'layers'
+      ? getTimeOfDayDefaultDetailTab(activeMode)
+      : sidebarTab
   const selectedDetail = selectedDetailKey
     ? model.detailTargets[selectedDetailKey]
     : undefined
   const details = useMemo(
     () =>
       renderDetails({
-        activeMode,
+        detailTab,
         selectedSeries,
         selectedDetailKey,
         onSelectDetail: selectDetail,
         onSetSeriesVisibility: setSeriesVisibility,
       }),
     [
-      activeMode,
+      detailTab,
       renderDetails,
       selectDetail,
       selectedDetailKey,
@@ -285,7 +317,7 @@ export default function TimeOfDayChartWorkspace({
               />
             </Box>
             {hasOpenedDetails && (
-              <SidebarDetails active={sidebarTab === 'details'}>
+              <SidebarDetails active={sidebarTab !== 'layers'}>
                 {details}
               </SidebarDetails>
             )}

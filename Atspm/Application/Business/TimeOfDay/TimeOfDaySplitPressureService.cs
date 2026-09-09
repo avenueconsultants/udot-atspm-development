@@ -295,8 +295,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var result = new List<TimeOfDayPeakEventDto>();
             foreach (var period in Periods())
             {
-                AddProfilePeak(result, "Primary peak", "Primary", period.Name, primaryProfile, period.Start, period.End);
-                AddProfilePeak(result, "Cross-street peak", "CrossStreet", period.Name, crossProfile, period.Start, period.End);
+                AddProfilePeak(result, $"{period.Name} primary peak", "Primary", period.Name, primaryProfile, period.Start, period.End);
+                AddProfilePeak(result, $"{period.Name} cross-street peak", "CrossStreet", period.Name, crossProfile, period.Start, period.End);
 
                 var sharePeak = share
                     .Where(s => s.Minutes >= period.Start && s.Minutes < period.End && s.CrossTrafficPercent.HasValue)
@@ -308,7 +308,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 {
                     result.Add(new TimeOfDayPeakEventDto
                     {
-                        Label = "Cross-traffic percent peak",
+                        Label = $"{period.Name} cross-traffic percent peak",
                         Series = "CrossTrafficPercent",
                         Period = period.Name,
                         TimeOfDay = sharePeak.TimeOfDay,

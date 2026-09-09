@@ -17,7 +17,7 @@ export const compactReportTableHeadSx = {
   },
 } as const
 
-export const compactReportTableRowSx = {
+export const groupedReportTableRowSx = {
   '& .MuiTableCell-body': {
     fontSize: '0.9rem',
     borderRight: '1px solid #e0e0e0',
@@ -27,7 +27,20 @@ export const compactReportTableRowSx = {
   '& .MuiTableCell-body:last-of-type': {
     borderRight: 0,
   },
+} as const
+
+export const compactReportTableRowSx = {
+  ...groupedReportTableRowSx,
   '&:nth-of-type(odd)': { backgroundColor: '#f4f4f4' },
+} as const
+
+export const groupedReportTableRowBackgrounds = ['#ffffff', '#f4f4f4'] as const
+
+export const groupedReportTableGroupStartSx = {
+  '& .MuiTableCell-body': {
+    borderTop: '2px solid',
+    borderTopColor: 'grey.400',
+  },
 } as const
 
 export const numericReportTableCellSx = {

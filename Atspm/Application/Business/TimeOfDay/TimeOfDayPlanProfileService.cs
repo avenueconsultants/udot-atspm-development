@@ -99,7 +99,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
             peaks.Add(new TimeOfDayPeakEventDto
             {
-                Label = $"{period} location peak",
+                Label = $"{period} peak",
                 Series = "Location",
                 Period = period,
                 LocationIdentifier = location.LocationIdentifier,

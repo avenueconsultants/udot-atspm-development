@@ -456,7 +456,7 @@ export default function TimeOfDayPage() {
   }
 
   return (
-    <ResponsivePageLayout title="Time Of Day" useFullWidth>
+    <ResponsivePageLayout title="Time-of-Day Plan Analysis" useFullWidth>
       <Stack spacing={2}>
         <TimeOfDayOptions
           options={formState}

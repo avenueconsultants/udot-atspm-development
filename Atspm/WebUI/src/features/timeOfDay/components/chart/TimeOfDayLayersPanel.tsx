@@ -21,7 +21,7 @@ interface TimeOfDayLayersPanelProps {
 const layerGroupOrder: TimeOfDayChartLayerGroup[] = [
   'Schedules',
   'Corridor Demand',
-  'Split Pressure',
+  'Movement Demand',
   'Locations',
 ]
 
@@ -30,7 +30,7 @@ export const getLayerAnalysisMode = (
 ): TimeOfDayAnalysisMode | undefined => {
   if (layer.group === 'Schedules') return undefined
   if (layer.group === 'Corridor Demand') return 'recommendation'
-  if (layer.group === 'Split Pressure') return 'pressure'
+  if (layer.group === 'Movement Demand') return 'pressure'
 
   return layer.id === 'signal-peaks' ? 'recommendation' : 'pressure'
 }
@@ -108,6 +108,9 @@ function DashedLinePreview({
   )
 }
 
+const hatchBackgroundImage = (color: string) =>
+  `repeating-linear-gradient(135deg, transparent 0 4px, ${color} 4px 6px)`
+
 function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
   const previewColors = [layer.color, ...(layer.additionalColors ?? [])]
   const commonLineSx = {
@@ -145,6 +148,17 @@ function LayerPreview({ layer }: { layer: TimeOfDayChartLayer }) {
             height: 24,
             bgcolor: layer.color,
             opacity: 0.18,
+          }}
+        />
+      ) : layer.preview === 'hatch' ? (
+        <Box
+          sx={{
+            width: 34,
+            height: 24,
+            border: '1px dashed',
+            borderColor: layer.color,
+            bgcolor: 'grey.100',
+            backgroundImage: hatchBackgroundImage(layer.color),
           }}
         />
       ) : layer.preview === 'star' ? (
@@ -253,11 +267,7 @@ function LegendItemPreview({
         bgcolor: preview === 'hatch' ? 'grey.100' : color,
         opacity: preview === 'hatch' ? 1 : 0.35,
         backgroundImage:
-          preview === 'hatch'
-            ? 'repeating-linear-gradient(135deg, transparent 0 4px, ' +
-              color +
-              ' 4px 6px)'
-            : 'none',
+          preview === 'hatch' ? hatchBackgroundImage(color) : 'none',
       }}
     />
   )

@@ -217,7 +217,7 @@ export default function TimeOfDayCorridorOptions({
                     component="ol"
                     ref={dropProvided.innerRef}
                     {...dropProvided.droppableProps}
-                    aria-label="Selected time of day locations"
+                    aria-label="Selected time-of-day locations"
                     sx={{
                       m: 0,
                       p: 0,

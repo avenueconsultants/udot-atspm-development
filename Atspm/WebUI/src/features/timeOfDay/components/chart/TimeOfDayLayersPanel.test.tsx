@@ -83,73 +83,128 @@ describe('TimeOfDayLayersPanel directional profiles', () => {
   })
 })
 
+const proposedSeriesNames = ['Proposed plan windows', 'Proposed schedule rail']
+const existingSeriesNames = ['Existing plan windows', 'Existing schedule rail']
+const differenceSeriesNames = ['Plan difference windows']
 const scheduleSeriesNames = [
-  'Proposed plan windows',
-  'Proposed schedule rail',
-  'Existing plan windows',
-  'Existing schedule rail',
-  'Plan difference windows',
+  ...proposedSeriesNames,
+  ...existingSeriesNames,
+  ...differenceSeriesNames,
 ]
 
-const schedulesLayer: TimeOfDayChartLayer = {
-  id: 'schedules',
-  group: 'Schedules',
-  label: 'Schedules',
-  description:
-    'Proposed and existing timing-plan windows. Expand for the color and hatch key.',
-  preview: 'schedule',
-  color: '#ef6c00',
-  additionalColors: ['#2e7d32', '#1565c0'],
-  seriesNames: scheduleSeriesNames,
-  legendItems: [
-    { label: 'AM peak plan', color: '#ef6c00', preview: 'area' },
-    { label: 'Midday plan', color: '#2e7d32', preview: 'area' },
-    { label: 'PM peak plan', color: '#1565c0', preview: 'area' },
-    { label: 'FREE operation', color: '#607d8b', preview: 'area' },
-    {
-      label: 'Proposed and existing schedules differ',
-      color: '#f59e0b',
-      preview: 'hatch',
-    },
-  ],
-  available: true,
-}
+const planColorLegendItems = [
+  { label: 'AM peak plan', color: '#ef6c00', preview: 'area' as const },
+  { label: 'Midday plan', color: '#2e7d32', preview: 'area' as const },
+  { label: 'PM peak plan', color: '#1565c0', preview: 'area' as const },
+  { label: 'FREE operation', color: '#607d8b', preview: 'area' as const },
+]
+
+const scheduleLayers: TimeOfDayChartLayer[] = [
+  {
+    id: 'proposed-schedule',
+    group: 'Schedules',
+    label: 'Proposed',
+    description:
+      'Recommended timing-plan windows and rail. Expand for the color key.',
+    preview: 'schedule',
+    color: '#ef6c00',
+    additionalColors: ['#2e7d32', '#1565c0'],
+    seriesNames: proposedSeriesNames,
+    legendItems: planColorLegendItems,
+    available: true,
+  },
+  {
+    id: 'existing-schedule',
+    group: 'Schedules',
+    label: 'Existing',
+    description:
+      'Current timing-plan windows and rail. Expand for the color key.',
+    preview: 'schedule',
+    color: '#ef6c00',
+    additionalColors: ['#2e7d32', '#1565c0'],
+    seriesNames: existingSeriesNames,
+    legendItems: planColorLegendItems,
+    available: true,
+  },
+  {
+    id: 'schedule-differences',
+    group: 'Schedules',
+    label: 'Schedule differences',
+    description: 'Hatching over the windows where the two schedules differ.',
+    preview: 'hatch',
+    color: '#f59e0b',
+    seriesNames: differenceSeriesNames,
+    legendItems: [
+      {
+        label: 'Proposed and existing schedules differ',
+        color: '#f59e0b',
+        preview: 'hatch',
+      },
+    ],
+    available: true,
+  },
+]
+
+const renderScheduleLayers = (onSetSeriesVisibility: jest.Mock) =>
+  render(
+    <TimeOfDayLayersPanel
+      layers={scheduleLayers}
+      selectedSeries={Object.fromEntries(
+        scheduleSeriesNames.map((seriesName) => [seriesName, true])
+      )}
+      onSetSeriesVisibility={onSetSeriesVisibility}
+    />
+  )
 
 describe('TimeOfDayLayersPanel schedules', () => {
   test('explains schedule colors and hatching without per-item toggles', () => {
     const onSetSeriesVisibility = jest.fn()
 
-    render(
-      <TimeOfDayLayersPanel
-        layers={[schedulesLayer]}
-        selectedSeries={Object.fromEntries(
-          scheduleSeriesNames.map((seriesName) => [seriesName, true])
-        )}
-        onSetSeriesVisibility={onSetSeriesVisibility}
-      />
-    )
-
-    const parentCheckbox = screen.getByRole('checkbox', {
-      name: 'Toggle Schedules',
-    })
-    expect(parentCheckbox).toHaveProperty('checked', true)
+    renderScheduleLayers(onSetSeriesVisibility)
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Show Schedules details' })
+      screen.getByRole('button', { name: 'Show Proposed details' })
     )
-
-    schedulesLayer.legendItems?.forEach(({ label }) => {
+    planColorLegendItems.forEach(({ label }) => {
       expect(screen.getByText(label)).toBeTruthy()
       expect(
         screen.queryByRole('checkbox', { name: `Toggle ${label}` })
       ).toBeNull()
     })
 
-    expect(screen.getAllByRole('checkbox')).toHaveLength(1)
-    fireEvent.click(parentCheckbox)
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Show Schedule differences details' })
+    )
+    expect(
+      screen.getByText('Proposed and existing schedules differ')
+    ).toBeTruthy()
+  })
+
+  test('turns the proposed and existing schedules off one at a time', () => {
+    const onSetSeriesVisibility = jest.fn()
+
+    renderScheduleLayers(onSetSeriesVisibility)
+
+    const proposedCheckbox = screen.getByRole('checkbox', {
+      name: 'Toggle Proposed',
+    })
+    const existingCheckbox = screen.getByRole('checkbox', {
+      name: 'Toggle Existing',
+    })
+    expect(proposedCheckbox).toHaveProperty('checked', true)
+    expect(existingCheckbox).toHaveProperty('checked', true)
+
+    fireEvent.click(existingCheckbox)
     expect(onSetSeriesVisibility).toHaveBeenLastCalledWith(
-      scheduleSeriesNames,
+      existingSeriesNames,
       false
     )
+
+    fireEvent.click(proposedCheckbox)
+    expect(onSetSeriesVisibility).toHaveBeenLastCalledWith(
+      proposedSeriesNames,
+      false
+    )
+    expect(onSetSeriesVisibility).toHaveBeenCalledTimes(2)
   })
 })

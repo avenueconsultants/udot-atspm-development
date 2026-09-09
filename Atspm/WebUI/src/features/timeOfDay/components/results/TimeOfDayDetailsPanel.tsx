@@ -1,14 +1,12 @@
 import type { TimeOfDayResult } from '@/api/reports'
-import { Box, Button, ButtonGroup, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Stack } from '@mui/material'
 import type { TimeOfDayLocationNumberMap } from '../../transformers'
 import {
   getCrossTrafficLocations,
   getLocationPeakEvents,
   getMovementPressures,
 } from '../../transformers'
-import { timeOfDayToggleGroupSx } from '../chart/TimeOfDayChartHeader'
-import type { TimeOfDayAnalysisMode } from '../chart/TimeOfDayLayersPanel'
+import type { TimeOfDayDetailTab } from '../chart/TimeOfDayChartHeader'
 import {
   CrossTrafficLocationList,
   MovementPressureList,
@@ -16,11 +14,11 @@ import {
 } from './TimeOfDayDetailTables'
 
 const periods = ['AM', 'Midday', 'PM']
-type TimeOfDayPressureDetailsView = 'cross-traffic' | 'movement-pressure'
+const detailRegionSx = { px: 1.5, pt: 1.75, pb: 2 }
 
 export default function TimeOfDayDetailsPanel({
   result,
-  activeMode,
+  detailTab,
   selectedSeries,
   locationNumberMap,
   selectedDetailKey,
@@ -28,69 +26,22 @@ export default function TimeOfDayDetailsPanel({
   onSetSeriesVisibility,
 }: {
   result: TimeOfDayResult
-  activeMode: TimeOfDayAnalysisMode
+  detailTab: TimeOfDayDetailTab
   selectedSeries: Record<string, boolean>
   locationNumberMap: TimeOfDayLocationNumberMap
   selectedDetailKey?: string
   onSelectDetail: (detailKey: string) => void
   onSetSeriesVisibility: (seriesNames: string[], visible: boolean) => void
 }) {
-  const [pressureView, setPressureView] =
-    useState<TimeOfDayPressureDetailsView>('cross-traffic')
-
-  useEffect(() => {
-    if (selectedDetailKey?.startsWith('crosstraffic:')) {
-      setPressureView('cross-traffic')
-    } else if (selectedDetailKey?.startsWith('movementpressure:')) {
-      setPressureView('movement-pressure')
-    }
-  }, [selectedDetailKey])
-
   return (
     <Stack spacing={2}>
-      {activeMode === 'pressure' && (
-        <Box
-          component="nav"
-          aria-label="Pressure detail views"
-          sx={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            bgcolor: 'common.white',
-            px: 1.25,
-            py: 0.75,
-          }}
+      {detailTab === 'signal-peaks' && (
+        <Stack
+          spacing={2.5}
+          role="region"
+          aria-label="Peaks"
+          sx={detailRegionSx}
         >
-          <ButtonGroup
-            size="small"
-            variant="outlined"
-            aria-label="Time-of-day detail views"
-            sx={timeOfDayToggleGroupSx}
-          >
-            <Button
-              className={
-                pressureView === 'cross-traffic' ? 'is-active' : undefined
-              }
-              onClick={() => setPressureView('cross-traffic')}
-              aria-pressed={pressureView === 'cross-traffic'}
-            >
-              Cross Traffic
-            </Button>
-            <Button
-              className={
-                pressureView === 'movement-pressure' ? 'is-active' : undefined
-              }
-              onClick={() => setPressureView('movement-pressure')}
-              aria-pressed={pressureView === 'movement-pressure'}
-            >
-              Movement Pressure
-            </Button>
-          </ButtonGroup>
-        </Box>
-      )}
-
-      {activeMode === 'recommendation' && (
-        <Stack spacing={2} role="region" aria-label="Peaks" sx={{ p: 1.25 }}>
           <PeakList
             title="AM Signal Peaks"
             peaks={getLocationPeakEvents(result.planProfile?.peaks, 'AM')}
@@ -114,12 +65,12 @@ export default function TimeOfDayDetailsPanel({
         </Stack>
       )}
 
-      {activeMode === 'pressure' && pressureView === 'cross-traffic' && (
+      {detailTab === 'cross-traffic' && (
         <Stack
-          spacing={2}
+          spacing={2.5}
           role="region"
           aria-label="Cross Traffic"
-          sx={{ px: 1.25, pb: 1.25 }}
+          sx={detailRegionSx}
         >
           {periods.map((period) => (
             <CrossTrafficLocationList
@@ -147,17 +98,17 @@ export default function TimeOfDayDetailsPanel({
         </Stack>
       )}
 
-      {activeMode === 'pressure' && pressureView === 'movement-pressure' && (
+      {detailTab === 'movement-demand' && (
         <Stack
-          spacing={2}
+          spacing={2.5}
           role="region"
-          aria-label="Movement Pressure"
-          sx={{ px: 1.25, pb: 1.25 }}
+          aria-label="Movement Demand"
+          sx={detailRegionSx}
         >
           {['AM', 'PM'].map((period) => (
             <MovementPressureList
               key={period}
-              title={`${period} Movement Pressure`}
+              title={`${period} Movement Demand`}
               period={period}
               movements={getMovementPressures(
                 result.splitPressure?.movementPressures,
@@ -166,12 +117,12 @@ export default function TimeOfDayDetailsPanel({
               )}
               locationNumberMap={locationNumberMap}
               seriesVisible={Boolean(
-                selectedSeries[`${period} Movement Pressure`]
+                selectedSeries[`${period} Movement Demand`]
               )}
               selectedDetailKey={selectedDetailKey}
               onSelectDetail={onSelectDetail}
               onSetSeriesVisibility={(visible) =>
-                onSetSeriesVisibility([`${period} Movement Pressure`], visible)
+                onSetSeriesVisibility([`${period} Movement Demand`], visible)
               }
             />
           ))}

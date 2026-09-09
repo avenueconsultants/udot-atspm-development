@@ -93,7 +93,7 @@ export default function Sidebar() {
             />
             <NavItem
               icon={<AccessTimeOutlinedIcon />}
-              text={'Time Of Day'}
+              text={'Time-of-Day'}
               url={'/time-of-day'}
             />
             <NavItem

@@ -248,55 +248,52 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(within(warnings).queryByText('Incomplete date coverage')).toBeNull()
   })
 
-  test('switches analysis modes while controlling schedules all-or-none', () => {
+  test('switches analysis modes while toggling each schedule row on its own', () => {
     render(<TimeOfDayResults result={result} />)
 
-    const recommendedToggle = screen.getByRole('button', {
-      name: 'Recommended',
+    const peaksToggle = screen.getByRole('button', {
+      name: 'Peaks',
     })
-    const pressureToggle = screen.getByRole('button', { name: 'Pressure' })
-    const schedulesToggle = screen.getByRole('checkbox', {
-      name: 'Toggle Schedules',
+    const movementDemandToggle = screen.getByRole('button', {
+      name: 'Movement Demand & Cross Traffic',
     })
-    const scheduleSeriesNames = [
-      'Proposed plan windows',
-      'Proposed schedule rail',
+    const proposedToggle = screen.getByRole('checkbox', {
+      name: 'Toggle Proposed',
+    }) as HTMLInputElement
+    const existingToggle = screen.getByRole('checkbox', {
+      name: 'Toggle Existing',
+    }) as HTMLInputElement
+    const differencesToggle = screen.getByRole('checkbox', {
+      name: 'Toggle Schedule differences',
+    }) as HTMLInputElement
+    const existingSeriesNames = [
       'Existing plan windows',
       'Existing schedule rail',
-      'Plan difference windows',
     ]
 
-    expect(recommendedToggle.getAttribute('aria-pressed')).toBe('true')
-    expect(pressureToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
-    expect(
-      screen.queryByRole('checkbox', { name: 'Toggle Proposed schedule' })
-    ).toBeNull()
-    expect(
-      screen.queryByRole('checkbox', { name: 'Toggle Existing schedule' })
-    ).toBeNull()
+    expect(peaksToggle.getAttribute('aria-pressed')).toBe('true')
+    expect(movementDemandToggle.getAttribute('aria-pressed')).toBe('false')
+    expect(proposedToggle.checked).toBe(true)
+    expect(existingToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(true)
 
     fireEvent.click(
-      screen.getByRole('button', { name: 'Show Schedules details' })
+      screen.getByRole('button', { name: 'Show Proposed details' })
     )
-    ;[
-      'AM peak plan',
-      'Midday plan',
-      'PM peak plan',
-      'FREE operation',
-      'Proposed and existing schedules differ',
-    ].forEach((label) => {
-      expect(screen.getByText(label)).toBeTruthy()
-      expect(
-        screen.queryByRole('checkbox', { name: `Toggle ${label}` })
-      ).toBeNull()
-    })
+    ;['AM peak plan', 'Midday plan', 'PM peak plan', 'FREE operation'].forEach(
+      (label) => {
+        expect(screen.getByText(label)).toBeTruthy()
+        expect(
+          screen.queryByRole('checkbox', { name: `Toggle ${label}` })
+        ).toBeNull()
+      }
+    )
 
     expect(
       screen.getByRole('checkbox', { name: 'Toggle Median raw volume' })
     ).toHaveProperty('checked', true)
     expect(
-      screen.queryByRole('checkbox', { name: 'Toggle Movement pressure' })
+      screen.queryByRole('checkbox', { name: 'Toggle Movement demand' })
     ).toBeNull()
 
     mockChart.dispatchAction.mockClear()
@@ -352,44 +349,50 @@ describe('TimeOfDayResults unified workspace', () => {
         value: 'Existing',
       })
     })
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
-    ;[
-      'Proposed plan windows',
-      'Existing plan windows',
-      'Plan difference windows',
-    ].forEach((name) => {
+    expect(existingToggle.checked).toBe(false)
+    expect(proposedToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(false)
+    ;['Existing plan windows', 'Plan difference windows'].forEach((name) => {
       expect(mockChart.dispatchAction).toHaveBeenCalledWith({
         type: 'legendUnSelect',
         name,
       })
     })
-    ;['Proposed schedule rail', 'Existing schedule rail'].forEach((name) => {
-      expect(mockChart.dispatchAction).toHaveBeenCalledWith({
-        type: 'legendSelect',
-        name,
-      })
+    expect(mockChart.dispatchAction).not.toHaveBeenCalledWith({
+      type: 'legendUnSelect',
+      name: 'Proposed plan windows',
     })
 
+    mockChart.dispatchAction.mockClear()
     act(() => {
       mockChartHandlers.get('click')?.({
         componentType: 'yAxis',
-        value: 'Proposed',
+        value: 'Existing',
       })
     })
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
-    scheduleSeriesNames.forEach((name) => {
+    expect(existingToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(true)
+    ;[...existingSeriesNames, 'Plan difference windows'].forEach((name) => {
       expect(mockChart.dispatchAction).toHaveBeenCalledWith({
         type: 'legendSelect',
         name,
       })
     })
 
-    fireEvent.click(pressureToggle)
-    expect(pressureToggle.getAttribute('aria-pressed')).toBe('true')
-    expect(recommendedToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
+    fireEvent.click(differencesToggle)
+    expect(differencesToggle.checked).toBe(false)
+    expect(proposedToggle.checked).toBe(true)
+    expect(existingToggle.checked).toBe(true)
+    fireEvent.click(differencesToggle)
+    expect(differencesToggle.checked).toBe(true)
+
+    fireEvent.click(movementDemandToggle)
+    expect(movementDemandToggle.getAttribute('aria-pressed')).toBe('true')
+    expect(peaksToggle.getAttribute('aria-pressed')).toBe('false')
+    expect(proposedToggle.checked).toBe(true)
+    expect(existingToggle.checked).toBe(true)
     expect(
-      screen.getByRole('checkbox', { name: 'Toggle Movement pressure' })
+      screen.getByRole('checkbox', { name: 'Toggle Movement demand' })
     ).toHaveProperty('checked', false)
     expect(
       screen.getByRole('checkbox', { name: 'Toggle Cross-traffic percent' })
@@ -400,14 +403,16 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     )
 
-    fireEvent.click(recommendedToggle)
-    expect(recommendedToggle.getAttribute('aria-pressed')).toBe('true')
-    expect(pressureToggle.getAttribute('aria-pressed')).toBe('false')
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
+    fireEvent.click(peaksToggle)
+    expect(peaksToggle.getAttribute('aria-pressed')).toBe('true')
+    expect(movementDemandToggle.getAttribute('aria-pressed')).toBe('false')
+    expect(proposedToggle.checked).toBe(true)
     expect(initECharts).toHaveBeenCalledTimes(1)
 
-    fireEvent.click(schedulesToggle)
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
+    fireEvent.click(proposedToggle)
+    expect(proposedToggle.checked).toBe(false)
+    expect(existingToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(false)
     const mutedProposedRail = mockChart.setOption.mock.calls
       .flatMap(([update]) => update?.series ?? [])
       .reverse()
@@ -425,13 +430,16 @@ describe('TimeOfDayResults unified workspace', () => {
         seriesName: 'Proposed schedule rail',
       })
     })
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(true)
+    expect(proposedToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(true)
     act(() => {
       mockChartHandlers.get('click')?.({
         seriesName: 'Existing schedule rail',
       })
     })
-    expect((schedulesToggle as HTMLInputElement).checked).toBe(false)
+    expect(existingToggle.checked).toBe(false)
+    expect(proposedToggle.checked).toBe(true)
+    expect(differencesToggle.checked).toBe(false)
 
     expect(mockChart.dispose).not.toHaveBeenCalled()
     expect(
@@ -439,6 +447,43 @@ describe('TimeOfDayResults unified workspace', () => {
         ([, settings]) => settings?.notMerge === true
       )
     ).toHaveLength(0)
+  })
+
+  test('swaps the sidebar detail tabs with the analysis mode', () => {
+    render(<TimeOfDayResults result={result} />)
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Signal Peaks' }))
+    expect(
+      screen
+        .getByRole('tab', { name: 'Signal Peaks' })
+        .getAttribute('aria-selected')
+    ).toBe('true')
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Movement Demand & Cross Traffic' })
+    )
+    expect(screen.queryByRole('tab', { name: 'Signal Peaks' })).toBeNull()
+    expect(
+      screen
+        .getByRole('tab', { name: 'Cross Traffic' })
+        .getAttribute('aria-selected')
+    ).toBe('true')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Peaks' }))
+    expect(screen.queryByRole('tab', { name: 'Cross Traffic' })).toBeNull()
+    expect(
+      screen
+        .getByRole('tab', { name: 'Signal Peaks' })
+        .getAttribute('aria-selected')
+    ).toBe('true')
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Legend' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Movement Demand & Cross Traffic' })
+    )
+    expect(
+      screen.getByRole('tab', { name: 'Legend' }).getAttribute('aria-selected')
+    ).toBe('true')
   })
 
   test('opens Details and highlights a marker selected from the chart', () => {
@@ -454,13 +499,12 @@ describe('TimeOfDayResults unified workspace', () => {
     })
 
     expect(
-      screen.getByRole('tab', { name: 'Details' }).getAttribute('aria-selected')
+      screen
+        .getByRole('tab', { name: 'Signal Peaks' })
+        .getAttribute('aria-selected')
     ).toBe('true')
-    expect(screen.queryByRole('button', { name: 'Peaks' })).toBeNull()
-    expect(screen.queryByRole('button', { name: 'Cross Traffic' })).toBeNull()
-    expect(
-      screen.queryByRole('button', { name: 'Movement Pressure' })
-    ).toBeNull()
+    expect(screen.queryByRole('tab', { name: 'Cross Traffic' })).toBeNull()
+    expect(screen.queryByRole('tab', { name: 'Movement Demand' })).toBeNull()
     const amSignalPeaksToggle = screen.getByRole('checkbox', {
       name: 'Toggle AM Signal Peaks',
     })
@@ -511,20 +555,14 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     })
 
-    const crossTrafficButton = screen.getByRole('button', {
-      name: 'Cross Traffic',
+    const crossTrafficTab = screen.getByRole('tab', { name: 'Cross Traffic' })
+    const movementDemandTab = screen.getByRole('tab', {
+      name: 'Movement Demand',
     })
-    const movementPressureButton = screen.getByRole('button', {
-      name: 'Movement Pressure',
-    })
-    expect(
-      window.getComputedStyle(
-        screen.getByRole('navigation', { name: 'Pressure detail views' })
-      ).position
-    ).toBe('sticky')
-    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('true')
-    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('false')
-    expect(screen.queryByRole('button', { name: 'Peaks' })).toBeNull()
+    expect(screen.queryByRole('tab', { name: 'Signal Peaks' })).toBeNull()
+    expect(crossTrafficTab.getAttribute('aria-selected')).toBe('true')
+    expect(movementDemandTab.getAttribute('aria-selected')).toBe('false')
+    expect(screen.queryByRole('region', { name: 'Peaks' })).toBeNull()
     expect(
       (
         screen.getByRole('checkbox', {
@@ -541,7 +579,7 @@ describe('TimeOfDayResults unified workspace', () => {
     })
     expect(
       screen.queryByRole('table', {
-        name: 'AM Movement Pressure movement pressure',
+        name: 'AM Movement Demand movement demand',
       })
     ).toBeNull()
     const selectedCrossTrafficRow = within(crossTrafficTable)
@@ -549,14 +587,17 @@ describe('TimeOfDayResults unified workspace', () => {
       .find((row) => row.getAttribute('aria-selected') === 'true')
     expect(selectedCrossTrafficRow).toBeTruthy()
 
+    const analysisModes = screen.getByRole('group', {
+      name: 'Time-of-day analysis modes',
+    })
     expect(
-      screen
-        .getByRole('button', { name: 'Recommended' })
+      within(analysisModes)
+        .getByRole('button', { name: 'Peaks' })
         .getAttribute('aria-pressed')
     ).toBe('false')
     expect(
-      screen
-        .getByRole('button', { name: 'Pressure' })
+      within(analysisModes)
+        .getByRole('button', { name: 'Movement Demand & Cross Traffic' })
         .getAttribute('aria-pressed')
     ).toBe('true')
     expect(mockChart.dispatchAction).toHaveBeenCalledWith(
@@ -566,22 +607,22 @@ describe('TimeOfDayResults unified workspace', () => {
       })
     )
 
-    fireEvent.click(movementPressureButton)
-    expect(movementPressureButton.getAttribute('aria-pressed')).toBe('true')
-    expect(crossTrafficButton.getAttribute('aria-pressed')).toBe('false')
-    const amMovementPressureToggle = screen.getByRole('checkbox', {
-      name: 'Toggle AM Movement Pressure',
+    fireEvent.click(movementDemandTab)
+    expect(movementDemandTab.getAttribute('aria-selected')).toBe('true')
+    expect(crossTrafficTab.getAttribute('aria-selected')).toBe('false')
+    const amMovementDemandToggle = screen.getByRole('checkbox', {
+      name: 'Toggle AM Movement Demand',
     })
-    expect((amMovementPressureToggle as HTMLInputElement).checked).toBe(false)
-    fireEvent.click(amMovementPressureToggle)
-    expect((amMovementPressureToggle as HTMLInputElement).checked).toBe(true)
+    expect((amMovementDemandToggle as HTMLInputElement).checked).toBe(false)
+    fireEvent.click(amMovementDemandToggle)
+    expect((amMovementDemandToggle as HTMLInputElement).checked).toBe(true)
     expect(mockChart.dispatchAction).toHaveBeenCalledWith({
       type: 'legendSelect',
-      name: 'AM Movement Pressure',
+      name: 'AM Movement Demand',
     })
     expect(
       screen.getByRole('table', {
-        name: 'AM Movement Pressure movement pressure',
+        name: 'AM Movement Demand movement demand',
       })
     ).toBeTruthy()
     expect(

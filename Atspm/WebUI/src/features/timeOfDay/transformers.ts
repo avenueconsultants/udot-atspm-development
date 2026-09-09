@@ -71,6 +71,7 @@ export type TimeOfDayNumberedPeakEvent = TimeOfDayPeakEventDto & {
   badgeColor: string
   markerSymbol?: 'circle' | 'rect'
   detailKey?: string
+  movementLabel?: string
 }
 
 export type TimeOfDayLocationNumberMap = Record<string, number>
@@ -80,11 +81,13 @@ export type TimeOfDayChartPreset = 'recommendation' | 'pressure' | 'combined'
 export type TimeOfDayChartLayerGroup =
   | 'Schedules'
   | 'Corridor Demand'
-  | 'Split Pressure'
+  | 'Movement Demand'
   | 'Locations'
 
 export type TimeOfDayChartLayerId =
-  | 'schedules'
+  | 'proposed-schedule'
+  | 'existing-schedule'
+  | 'schedule-differences'
   | 'raw-volume'
   | 'smoothed-volume'
   | 'directional-profiles'
@@ -104,6 +107,7 @@ export type TimeOfDayChartLayerId =
 export type TimeOfDayChartLayerPreview =
   | 'schedule'
   | 'area'
+  | 'hatch'
   | 'solid-line'
   | 'dashed-line'
   | 'circle'
@@ -540,6 +544,27 @@ export const getTimeOfDayPlanBackgroundColor = (
   return chartColors.defaultPlanBackground
 }
 
+/**
+ * Plan windows are painted opaque so overlapping proposed and existing bands
+ * read the same as a single band; the hatching marks where they differ.
+ */
+const flattenColorOnWhite = (color: string, weight: number) => {
+  const hex = color.replace('#', '')
+  if (!/^[0-9a-f]{6}$/i.test(hex)) return color
+
+  const [red, green, blue] = [0, 2, 4].map((offset) =>
+    Math.round(
+      255 + (Number.parseInt(hex.slice(offset, offset + 2), 16) - 255) * weight
+    )
+  )
+
+  return `rgb(${red}, ${green}, ${blue})`
+}
+
+// Matches the tone two stacked 14% bands used to produce, which is what the
+// chart showed whenever both schedules were on.
+const planWindowColorWeight = 0.26
+
 const buildPlanMarkAreas = (
   plans: Plan[] | null | undefined,
   label: string,
@@ -590,8 +615,10 @@ const buildPlanMarkAreas = (
         name: `${label} ${planNumber}`.trim(),
         xAxis: interval.start,
         itemStyle: {
-          color,
-          opacity: isFreePlan ? 0 : 0.14,
+          color: isFreePlan
+            ? color
+            : flattenColorOnWhite(color, planWindowColorWeight),
+          opacity: isFreePlan ? 0 : 1,
         },
       },
       { xAxis: interval.end },
@@ -663,6 +690,129 @@ const getTooltipValues = (params: unknown) => {
   const value = (params as TimeOfDayTooltipParams | undefined)?.value
   return Array.isArray(value) ? value : []
 }
+
+export const formatTimeOfDayLocationLabel = (
+  identifier?: string | null,
+  description?: string | null
+) => {
+  if (identifier && description) {
+    return description.includes(identifier)
+      ? description
+      : `${identifier} - ${description}`
+  }
+
+  return description ?? identifier ?? undefined
+}
+
+interface TimeOfDayAxisTooltipParam {
+  axisValue?: unknown
+  color?: unknown
+  data?: unknown
+  marker?: string
+  seriesName?: string
+  value?: unknown
+}
+
+const starTooltipMarker = (color: unknown) =>
+  `<span style="display:inline-block;margin-right:5px;font-size:13px;line-height:1;color:${
+    typeof color === 'string' ? escapeTooltipHtml(color) : 'currentColor'
+  }">★</span>`
+
+const getAxisTooltipPointValue = (param: TimeOfDayAxisTooltipParam) =>
+  Array.isArray(param.value) ? param.value[1] : param.value
+
+const getAxisTooltipPointName = (param: TimeOfDayAxisTooltipParam) => {
+  const data = param.data
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return undefined
+
+  const name = (data as { tooltipName?: unknown }).tooltipName
+
+  return typeof name === 'string' && name.trim() ? name.trim() : undefined
+}
+
+const getAxisTooltipPointLabel = (param: TimeOfDayAxisTooltipParam) => {
+  const label = Array.isArray(param.value) ? param.value[2] : undefined
+
+  return typeof label === 'string' && label.trim() ? label.trim() : undefined
+}
+
+const formatAxisTooltipValue = (value: unknown, isPercent: boolean) => {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return String(value ?? '-')
+  }
+
+  return isPercent ? `${formatNumber(value, 1)}%` : formatNumber(value)
+}
+
+const buildAxisTooltipFormatter =
+  (percentSeriesNames: Set<string>, starSeriesNames: Set<string>) =>
+  (params: unknown) => {
+    const entries = (Array.isArray(params) ? params : [params]).filter(
+      (entry): entry is TimeOfDayAxisTooltipParam => Boolean(entry)
+    )
+    if (!entries.length) return ''
+
+    const axisValue = Number(entries[0].axisValue)
+    const header = Number.isFinite(axisValue)
+      ? minutesToTimeLabel(axisValue)
+      : ''
+    const rows = entries.map((entry) => {
+      const seriesName = entry.seriesName ?? ''
+      const pointLabel = getAxisTooltipPointLabel(entry)
+      const name =
+        getAxisTooltipPointName(entry) ??
+        (pointLabel && pointLabel !== seriesName
+          ? `${seriesName} – ${pointLabel}`
+          : seriesName)
+      const value = formatAxisTooltipValue(
+        getAxisTooltipPointValue(entry),
+        percentSeriesNames.has(seriesName)
+      )
+
+      const marker = starSeriesNames.has(seriesName)
+        ? starTooltipMarker(entry.color)
+        : (entry.marker ?? '')
+
+      return `<div style="display:flex;align-items:center;justify-content:space-between;gap:16px"><span>${marker}${escapeTooltipHtml(
+        name
+      )}</span><strong>${escapeTooltipHtml(value)}</strong></div>`
+    })
+
+    return [
+      header
+        ? `<div style="margin-bottom:4px">${escapeTooltipHtml(header)}</div>`
+        : '',
+      ...rows,
+    ].join('')
+  }
+
+const getStarSeriesNames = (series: SeriesOption[]) =>
+  new Set(
+    series
+      .filter(
+        (seriesOption) =>
+          (seriesOption as SeriesOption & { symbol?: unknown }).symbol ===
+          StarSeriesSymbol
+      )
+      .map((seriesOption) =>
+        typeof seriesOption.name === 'string' ? seriesOption.name : ''
+      )
+      .filter(Boolean)
+  )
+
+const getPercentSeriesNames = (series: SeriesOption[]) =>
+  new Set(
+    series
+      .filter(
+        (seriesOption) =>
+          (seriesOption as SeriesOption & { yAxisIndex?: number })
+            .yAxisIndex === 1
+      )
+      .map((seriesOption) =>
+        typeof seriesOption.name === 'string' ? seriesOption.name : ''
+      )
+      .filter(Boolean)
+  )
 
 const getPlanDisplayLabel = (plan: unknown) => {
   const planName = String(plan ?? '-')
@@ -873,7 +1023,17 @@ const getPlanMarkAreas = (result: TimeOfDayResult) => [
   ...getPlanDifferenceMarkAreas(result),
 ]
 
-const scheduleContextZ = 1
+// Plan windows and the difference hatching sit under the grid lines, which in
+// turn sit under the data series, so nothing paints over the profile lines.
+// The hatching sits above the windows themselves, which are opaque.
+const scheduleContextZ = -2
+const scheduleDifferenceZ = -1
+
+// Grid lines are translucent slate so they tint whatever sits beneath them,
+// the white plot or a plan window, instead of drawing pale lines over color.
+const gridLineColor = 'rgba(71, 85, 105, 0.18)'
+const minorGridLineColor = 'rgba(71, 85, 105, 0.09)'
+const valueGridLineColor = 'rgba(71, 85, 105, 0.15)'
 
 const buildScheduleContextSeries = (
   result: TimeOfDayResult
@@ -954,7 +1114,7 @@ const buildScheduleContextSeries = (
               formatter: formatScheduleDifferenceTooltip,
             },
             animation: false,
-            z: scheduleContextZ,
+            z: scheduleDifferenceZ,
           } as SeriesOption,
         ]
       : []),
@@ -979,11 +1139,18 @@ const buildPeakScatterSeries = (
       const value = [
         peak.minutes ?? 0,
         peak.value ?? 0,
-        peak.label ?? peak.locationIdentifier ?? peak.period ?? name,
+        formatTimeOfDayLocationLabel(
+          peak.locationIdentifier,
+          peak.locationDescription
+        ) ?? '',
       ]
       const pointColor = resolveColor?.(peak)
 
-      return pointColor ? { value, itemStyle: { color: pointColor } } : value
+      return {
+        value,
+        tooltipName: peak.label?.trim() || undefined,
+        ...(pointColor ? { itemStyle: { color: pointColor } } : {}),
+      }
     }) ?? [],
   symbol: StarSeriesSymbol,
   symbolSize,
@@ -997,6 +1164,29 @@ const buildPeakScatterSeries = (
       typeof value === 'number' ? numberFormatter.format(value) : String(value),
   },
 })
+
+const getNumberedPeakTooltipLabel = (peak: TimeOfDayNumberedPeakEvent) =>
+  [
+    formatTimeOfDayLocationLabel(
+      peak.locationIdentifier,
+      peak.locationDescription
+    ),
+    peak.movementLabel?.trim(),
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
+const getNumberedPeakTooltipName = (peak: TimeOfDayNumberedPeakEvent) => {
+  const locationLabel = formatTimeOfDayLocationLabel(
+    peak.locationIdentifier,
+    peak.locationDescription
+  )
+  const peakLabel = peak.label?.trim()
+
+  return peakLabel && locationLabel
+    ? `${peakLabel} - ${locationLabel}`
+    : undefined
+}
 
 const buildNumberedSignalPeakSeries = (
   peaks: TimeOfDayNumberedPeakEvent[],
@@ -1013,10 +1203,11 @@ const buildNumberedSignalPeakSeries = (
     value: [
       peak.minutes ?? 0,
       peak.value ?? 0,
-      peak.label ?? peak.locationIdentifier ?? peak.period ?? name,
+      getNumberedPeakTooltipLabel(peak),
     ],
     symbol: peak.markerSymbol ?? 'circle',
     detailKey: peak.detailKey,
+    tooltipName: getNumberedPeakTooltipName(peak),
     itemStyle: {
       color: peak.badgeColor,
       opacity: 0.82,
@@ -1173,7 +1364,7 @@ const buildBaseOption = ({
     splitLine: {
       show: true,
       lineStyle: {
-        color: '#d6dee6',
+        color: gridLineColor,
       },
     },
     minorTick: {
@@ -1183,7 +1374,7 @@ const buildBaseOption = ({
     minorSplitLine: {
       show: true,
       lineStyle: {
-        color: '#edf1f5',
+        color: minorGridLineColor,
       },
     },
   }
@@ -1225,10 +1416,10 @@ const buildBaseOption = ({
     }),
     tooltip: {
       trigger: 'axis',
-      valueFormatter: (value) =>
-        typeof value === 'number'
-          ? numberFormatter.format(value)
-          : String(value),
+      formatter: buildAxisTooltipFormatter(
+        getPercentSeriesNames(series),
+        getStarSeriesNames(series)
+      ),
     },
     xAxis: hasScheduleRails
       ? [
@@ -1536,7 +1727,7 @@ export const buildPlanProfileOption = (
     nameGap: 60,
     max: sharedVolumeAxisMax,
     splitLine: {
-      lineStyle: { color: '#e3e8ee' },
+      lineStyle: { color: valueGridLineColor },
     },
   })
 
@@ -1725,7 +1916,7 @@ export const buildSplitPressureOption = (
       nameGap: 60,
       max: sharedVolumeAxisMax,
       splitLine: {
-        lineStyle: { color: '#e3e8ee' },
+        lineStyle: { color: valueGridLineColor },
       },
     },
     {
@@ -1772,7 +1963,7 @@ export const buildSplitPressureOption = (
 
   return buildBaseOption({
     result,
-    title: 'Corridor Split Pressure',
+    title: 'Corridor Movement Demand',
     dateRange: titleDateRange,
     info: titleInfo,
     series,
@@ -1818,21 +2009,13 @@ export const buildSplitPressureOption = (
         'circle',
         chartColors.pmSignalPeak
       ),
-      createLegendItem(
-        'AM Movement Pressure',
-        'rect',
-        chartColors.amSignalPeak
-      ),
-      createLegendItem(
-        'PM Movement Pressure',
-        'rect',
-        chartColors.pmSignalPeak
-      ),
+      createLegendItem('AM Movement Demand', 'rect', chartColors.amSignalPeak),
+      createLegendItem('PM Movement Demand', 'rect', chartColors.pmSignalPeak),
     ],
     legendConfig: {
       selected: {
-        'AM Movement Pressure': false,
-        'PM Movement Pressure': false,
+        'AM Movement Demand': false,
+        'PM Movement Demand': false,
       },
     },
     yAxis,
@@ -2212,7 +2395,10 @@ const buildSplitPressureLocationPeakEvents = (
   const seen = new Set<string>()
 
   const addPeak = (
-    peak: TimeOfDayPeakEventDto & { detailKey?: string },
+    peak: TimeOfDayPeakEventDto & {
+      detailKey?: string
+      movementLabel?: string
+    },
     markerSymbol: 'circle' | 'rect' = 'circle'
   ) => {
     const badgeNumber = getLocationNumber(
@@ -2230,6 +2416,7 @@ const buildSplitPressureLocationPeakEvents = (
     const key = [
       normalizeToken(peak.period),
       normalizeToken(peak.locationIdentifier),
+      normalizeToken(peak.movementLabel),
       peak.minutes,
       peak.value,
     ].join('|')
@@ -2274,6 +2461,8 @@ const buildSplitPressureLocationPeakEvents = (
       addPeak(
         {
           period,
+          movementLabel:
+            movement.movementLabel ?? movement.movement ?? undefined,
           locationIdentifier: movement.locationIdentifier ?? undefined,
           timeOfDay: movement.peakTime ?? undefined,
           minutes:
@@ -2324,7 +2513,7 @@ const buildSplitPressureLocationPeakSeries = (
         ? [
             buildNumberedSignalPeakSeries(
               movementPressurePeaks,
-              `${period} Movement Pressure`,
+              `${period} Movement Demand`,
               getTimeOfDayPeriodBadgeColor(period)
             ),
           ]
@@ -2388,6 +2577,47 @@ const getPresetLayerId = (
   }
 
   return layerId
+}
+
+const scheduleRowLayerIds: TimeOfDayChartLayerId[] = [
+  'proposed-schedule',
+  'existing-schedule',
+]
+
+/**
+ * The difference hatching only means something while both schedules are drawn,
+ * so it follows them: visible when both rows are, hidden as soon as one is off.
+ */
+export const withScheduleDifferenceVisibility = (
+  layers: TimeOfDayChartLayer[],
+  selection: Record<string, boolean>,
+  changedSeriesNames: string[]
+) => {
+  const scheduleRows = layers.filter((layer) =>
+    scheduleRowLayerIds.includes(layer.id)
+  )
+  const changed = new Set(changedSeriesNames)
+  const changedASchedule = scheduleRows.some((layer) =>
+    layer.seriesNames.some((seriesName) => changed.has(seriesName))
+  )
+  const differenceLayer = layers.find(
+    (layer) => layer.id === 'schedule-differences'
+  )
+  if (!changedASchedule || !differenceLayer?.available) return selection
+
+  const bothRowsVisible =
+    scheduleRows.length === scheduleRowLayerIds.length &&
+    scheduleRows.every(
+      (layer) =>
+        layer.available &&
+        layer.seriesNames.every((seriesName) => selection[seriesName] === true)
+    )
+  const next = { ...selection }
+  differenceLayer.seriesNames.forEach((seriesName) => {
+    next[seriesName] = bothRowsVisible
+  })
+
+  return next
 }
 
 export const getTimeOfDayPresetSeriesSelection = (
@@ -2561,14 +2791,19 @@ export const buildTimeOfDayAnalysisModel = (
     result.recommendation?.recommendedSchedule
   )
   const hasScheduleDifferences = getPlanDifferenceOverlayData(result).length > 0
+  const proposedScheduleSeriesNames = proposedEntries.length
+    ? ['Proposed plan windows', 'Proposed schedule rail']
+    : []
+  const existingScheduleSeriesNames = existingEntries.length
+    ? ['Existing plan windows', 'Existing schedule rail']
+    : []
+  const scheduleDifferenceSeriesNames = hasScheduleDifferences
+    ? ['Plan difference windows']
+    : []
   const scheduleSeriesNames = [
-    ...(proposedEntries.length
-      ? ['Proposed plan windows', 'Proposed schedule rail']
-      : []),
-    ...(existingEntries.length
-      ? ['Existing plan windows', 'Existing schedule rail']
-      : []),
-    ...(hasScheduleDifferences ? ['Plan difference windows'] : []),
+    ...proposedScheduleSeriesNames,
+    ...existingScheduleSeriesNames,
+    ...scheduleDifferenceSeriesNames,
   ]
   const allSeriesNames = [
     ...new Set([
@@ -2583,7 +2818,7 @@ export const buildTimeOfDayAnalysisModel = (
       name: 'Volume (vph)',
       nameGap: 60,
       max: sharedVolumeAxisMax,
-      splitLine: { lineStyle: { color: '#e3e8ee' } },
+      splitLine: { lineStyle: { color: valueGridLineColor } },
     },
     {
       name: 'Cross Traffic (%)',
@@ -2654,50 +2889,73 @@ export const buildTimeOfDayAnalysisModel = (
         seriesHasData(seriesByName.get(seriesName))
       ),
   })
+  const planColorLegendItems = [
+    {
+      label: 'AM peak plan',
+      color: chartColors.amPlanBackground,
+      preview: 'area' as const,
+    },
+    {
+      label: 'Midday plan',
+      color: chartColors.middayPlanBackground,
+      preview: 'area' as const,
+    },
+    {
+      label: 'PM peak plan',
+      color: chartColors.pmPlanBackground,
+      preview: 'area' as const,
+    },
+    {
+      label: 'FREE operation',
+      color: freeSchedulePlanColor,
+      preview: 'area' as const,
+    },
+  ]
   const layers: TimeOfDayChartLayer[] = [
     createLayer({
-      id: 'schedules',
+      id: 'proposed-schedule',
       group: 'Schedules',
-      label: 'Schedules',
+      label: 'Proposed',
       description:
-        'Proposed and existing timing-plan windows. Expand for the color and hatch key.',
+        'Recommended timing-plan windows and rail. Expand for the color key.',
       preview: 'schedule',
       color: chartColors.amPlanBackground,
       additionalColors: [
         chartColors.middayPlanBackground,
         chartColors.pmPlanBackground,
       ],
-      seriesNames: scheduleSeriesNames,
+      seriesNames: proposedScheduleSeriesNames,
+      legendItems: planColorLegendItems,
+    }),
+    createLayer({
+      id: 'existing-schedule',
+      group: 'Schedules',
+      label: 'Existing',
+      description:
+        'Current timing-plan windows and rail. Expand for the color key.',
+      preview: 'schedule',
+      color: chartColors.amPlanBackground,
+      additionalColors: [
+        chartColors.middayPlanBackground,
+        chartColors.pmPlanBackground,
+      ],
+      seriesNames: existingScheduleSeriesNames,
+      legendItems: planColorLegendItems,
+    }),
+    createLayer({
+      id: 'schedule-differences',
+      group: 'Schedules',
+      label: 'Schedule differences',
+      description: 'Hatching over the windows where the two schedules differ.',
+      preview: 'hatch',
+      color: '#f59e0b',
+      seriesNames: scheduleDifferenceSeriesNames,
       legendItems: [
         {
-          label: 'AM peak plan',
-          color: chartColors.amPlanBackground,
-          preview: 'area',
+          label: 'Proposed and existing schedules differ',
+          color: '#f59e0b',
+          preview: 'hatch' as const,
         },
-        {
-          label: 'Midday plan',
-          color: chartColors.middayPlanBackground,
-          preview: 'area',
-        },
-        {
-          label: 'PM peak plan',
-          color: chartColors.pmPlanBackground,
-          preview: 'area',
-        },
-        {
-          label: 'FREE operation',
-          color: freeSchedulePlanColor,
-          preview: 'area',
-        },
-        ...(hasScheduleDifferences
-          ? [
-              {
-                label: 'Proposed and existing schedules differ',
-                color: '#f59e0b',
-                preview: 'hatch' as const,
-              },
-            ]
-          : []),
       ],
     }),
     createLayer({
@@ -2756,7 +3014,7 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'primary-volume',
-      group: 'Split Pressure',
+      group: 'Movement Demand',
       label: 'Primary traffic',
       description: 'Representative primary-street volume profile.',
       preview: 'solid-line',
@@ -2765,7 +3023,7 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'cross-volume',
-      group: 'Split Pressure',
+      group: 'Movement Demand',
       label: 'Cross traffic',
       description: 'Representative cross-street volume profile.',
       preview: 'solid-line',
@@ -2774,7 +3032,7 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'cross-percent',
-      group: 'Split Pressure',
+      group: 'Movement Demand',
       label: 'Cross-traffic percent',
       description: 'Cross traffic as a percentage of total corridor demand.',
       preview: 'dashed-line',
@@ -2783,7 +3041,7 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'split-review-threshold',
-      group: 'Split Pressure',
+      group: 'Movement Demand',
       label: splitReviewName,
       description: 'Cross-traffic split-review percentage threshold.',
       preview: 'dashed-line',
@@ -2792,7 +3050,7 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'shoulder-review-threshold',
-      group: 'Split Pressure',
+      group: 'Movement Demand',
       label: shoulderReviewName,
       description: 'Cross-traffic shoulder-review percentage threshold.',
       preview: 'dashed-line',
@@ -2801,9 +3059,9 @@ export const buildTimeOfDayAnalysisModel = (
     }),
     createLayer({
       id: 'pressure-peaks',
-      group: 'Split Pressure',
-      label: 'Pressure peaks',
-      description: 'AM, midday, and PM pressure peak markers.',
+      group: 'Movement Demand',
+      label: 'Movement demand peaks',
+      description: 'AM, midday, and PM movement demand peak markers.',
       preview: 'star',
       color: chartColors.amPeak,
       additionalColors: [chartColors.middaySignalPeak, chartColors.pmPeak],
@@ -2841,13 +3099,13 @@ export const buildTimeOfDayAnalysisModel = (
     createLayer({
       id: 'movement-pressure',
       group: 'Locations',
-      label: 'Movement pressure',
-      description: 'Numbered movement-pressure locations, shown as squares.',
+      label: 'Movement demand',
+      description: 'Numbered movement-demand locations, shown as squares.',
       preview: 'square',
       color: chartColors.amSignalPeak,
       additionalColors: [chartColors.pmSignalPeak],
       previewLabel: '1',
-      seriesNames: ['AM Movement Pressure', 'PM Movement Pressure'],
+      seriesNames: ['AM Movement Demand', 'PM Movement Demand'],
     }),
   ]
   const defaultSelectedSeries = getTimeOfDayPresetSeriesSelection(
