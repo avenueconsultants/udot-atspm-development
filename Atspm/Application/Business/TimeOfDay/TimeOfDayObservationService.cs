@@ -82,6 +82,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var dateWindows = BuildDateWindows(selectedDates);
             var observations = indianaEvents
                 .Where(e => e.EventCode == (short)IndianaEnumerations.VehicleDetectorOn)
+                .Distinct()
                 .SelectMany(e => detectorsByChannel.TryGetValue(e.EventParam, out var detector)
                     ? new[]
                     {

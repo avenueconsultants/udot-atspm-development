@@ -186,12 +186,32 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
             Assert.Contains("no usable volume profile", result.SummaryText);
         }
 
+        [Fact]
+        public void BuildRecommendation_ReturnsUnavailableWhenExplicitPrimaryDirectionIsMissing()
+        {
+            var result = CreateService().BuildRecommendation(
+                new TimeOfDayOptions
+                {
+                    AmPrimaryDirections = new List<string> { "Northbound" }
+                },
+                BuildProfile(_ => 500),
+                new List<TimeOfDayProfileDto>
+                {
+                    BuildProfile(_ => 500, "Eastbound")
+                },
+                TestDate);
+
+            Assert.Empty(result.RecommendedSchedule);
+            Assert.Equal("tod-v2", result.AlgorithmVersion);
+            Assert.Contains("AM: Northbound", result.SummaryText);
+        }
+
         private static TimeOfDayRecommendationService CreateService()
         {
             return new TimeOfDayRecommendationService(new TimeOfDayProfileService());
         }
 
-        private static TimeOfDayProfileDto BuildProfile(Func<int, double> volumeByMinute)
+        private static TimeOfDayProfileDto BuildProfile(Func<int, double> volumeByMinute, string direction = "")
         {
             var points = Enumerable.Range(0, 96)
                 .Select(i =>
@@ -210,7 +230,8 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
 
             return new TimeOfDayProfileDto
             {
-                Label = "Corridor",
+                Label = string.IsNullOrWhiteSpace(direction) ? "Corridor" : direction,
+                Direction = direction,
                 Points = points
             };
         }

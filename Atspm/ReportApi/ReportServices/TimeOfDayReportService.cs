@@ -17,12 +17,16 @@
 
 using Utah.Udot.Atspm.Business.TimeOfDay;
 using Utah.Udot.Atspm.Data.Enums;
+using Utah.Udot.Atspm.Data.Models.EventLogModels;
 
 namespace Utah.Udot.Atspm.ReportApi.ReportServices
 {
     public class TimeOfDayReportService : ReportServiceBase<TimeOfDayOptions, TimeOfDayResult>
     {
         private const int PlanLookbackDays = 7;
+        private const int DetectorPaddingHours = 1;
+
+        private record LoadWindow(DateTime Start, DateTime End);
 
         private readonly ILocationRepository locationRepository;
         private readonly IIndianaEventLogRepository eventLogRepository;
@@ -167,13 +171,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                 LocationDescription = BuildLocationDescription(location)
             };
 
-            foreach (var selectedDate in selectedDates)
+            if (options.DataSource == TimeOfDayDataSource.Aggregated)
             {
-                var start = selectedDate.ToDateTime(TimeOnly.MinValue);
-                var end = start.AddDays(1);
-
-                if (options.DataSource == TimeOfDayDataSource.Aggregated)
+                foreach (var selectedDate in selectedDates)
                 {
+                    var start = selectedDate.ToDateTime(TimeOnly.MinValue);
+                    var end = start.AddDays(1);
+
                     data.DetectorEventCountAggregations.AddRange(
                         detectorEventCountAggregationRepository.GetAggregationsBetweenDates(location.LocationIdentifier, start, end));
                     data.SignalTimingPlans.AddRange(
@@ -183,17 +187,13 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                                 && (p.End == DateTime.MinValue || p.End > start))
                             .ToList());
                 }
-                else
-                {
-                    var controllerEventLogs = eventLogRepository.GetEventsBetweenDates(location.LocationIdentifier, start.AddHours(-1), end.AddHours(1)).ToList();
-                    data.IndianaEvents.AddRange(controllerEventLogs
-                        .Where(e => e.EventCode == (short)IndianaEnumerations.VehicleDetectorOn));
-                    data.IndianaPlanEvents.AddRange(controllerEventLogs
-                        .Where(e => e.EventCode == (short)IndianaEnumerations.CoordPatternChange));
-                }
+            }
+            else
+            {
+                LoadIndianaEvents(location.LocationIdentifier, selectedDates, data);
             }
 
-            if (options.DataSource == TimeOfDayDataSource.Aggregated && data.SignalTimingPlans.Count > 0)
+            if (data.SignalTimingPlans.Count > 0)
             {
                 var distinctPlans = data.SignalTimingPlans
                     .DistinctBy(p => new { p.LocationIdentifier, p.PlanNumber, p.Start })
@@ -204,6 +204,88 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
 
             return data;
+        }
+
+        private void LoadIndianaEvents(
+            string locationIdentifier,
+            IReadOnlyList<DateOnly> selectedDates,
+            TimeOfDayLocationReportData data)
+        {
+            var detectorWindows = selectedDates
+                .Select(selectedDate =>
+                {
+                    var start = selectedDate.ToDateTime(TimeOnly.MinValue);
+                    return new LoadWindow(
+                        start.AddHours(-DetectorPaddingHours),
+                        start.AddDays(1).AddHours(DetectorPaddingHours));
+                })
+                .ToList();
+            var planWindows = selectedDates
+                .Select(selectedDate =>
+                {
+                    var start = selectedDate.ToDateTime(TimeOnly.MinValue);
+                    return new LoadWindow(start.AddDays(-PlanLookbackDays), start.AddDays(1));
+                })
+                .ToList();
+            var queryWindows = MergeWindows(detectorWindows.Concat(planWindows));
+
+            foreach (var queryWindow in queryWindows)
+            {
+                var controllerEventLogs = eventLogRepository
+                    .GetEventsBetweenDates(locationIdentifier, queryWindow.Start, queryWindow.End);
+
+                data.IndianaEvents.AddRange(controllerEventLogs
+                    .Where(e => e.EventCode == (short)IndianaEnumerations.VehicleDetectorOn)
+                    .Where(e => IsWithinAnyWindow(e.Timestamp, detectorWindows)));
+                data.IndianaPlanEvents.AddRange(controllerEventLogs
+                    .Where(e => e.EventCode == (short)IndianaEnumerations.CoordPatternChange)
+                    .Where(e => IsWithinAnyWindow(e.Timestamp, planWindows)));
+            }
+
+            ReplaceWithDistinctChronologicalEvents(data.IndianaEvents);
+            ReplaceWithDistinctChronologicalEvents(data.IndianaPlanEvents);
+        }
+
+        private static List<LoadWindow> MergeWindows(IEnumerable<LoadWindow> windows)
+        {
+            var orderedWindows = windows
+                .Where(window => window.End > window.Start)
+                .OrderBy(window => window.Start)
+                .ThenBy(window => window.End)
+                .ToList();
+            var mergedWindows = new List<LoadWindow>();
+
+            foreach (var window in orderedWindows)
+            {
+                if (mergedWindows.Count == 0 || window.Start > mergedWindows[^1].End)
+                {
+                    mergedWindows.Add(window);
+                    continue;
+                }
+
+                var current = mergedWindows[^1];
+                mergedWindows[^1] = new LoadWindow(current.Start, current.End > window.End ? current.End : window.End);
+            }
+
+            return mergedWindows;
+        }
+
+        private static bool IsWithinAnyWindow(DateTime timestamp, IReadOnlyList<LoadWindow> windows)
+        {
+            return windows.Any(window => timestamp >= window.Start && timestamp < window.End);
+        }
+
+        private static void ReplaceWithDistinctChronologicalEvents(List<IndianaEvent> events)
+        {
+            var distinctEvents = events
+                .Distinct()
+                .OrderBy(e => e.Timestamp)
+                .ThenBy(e => e.EventCode)
+                .ThenBy(e => e.EventParam)
+                .ToList();
+
+            events.Clear();
+            events.AddRange(distinctEvents);
         }
 
         private static string BuildLocationDescription(Location location)

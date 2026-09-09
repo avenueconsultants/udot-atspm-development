@@ -1539,6 +1539,8 @@ export interface TimeOfDayLocationResult {
   /** @nullable */
   locationDescription?: string | null
   daysWithData?: number
+  datesWithData?: string[] | null
+  missingDates?: string[] | null
   coverageFallbackUsed?: boolean
   profile?: TimeOfDayProfileDto
   movementProfiles?: TimeOfDayProfileDto[] | null
@@ -2115,6 +2117,8 @@ export interface TimeOfDayLocationResult {
   /** @nullable */
   locationDescription?: string | null
   daysWithData?: number
+  datesWithData?: string[] | null
+  missingDates?: string[] | null
   coverageFallbackUsed?: boolean
   profile?: TimeOfDayProfileDto
   /** @nullable */
