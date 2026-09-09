@@ -91,6 +91,11 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var usableLocationData = locationData
                 .Where(d => d.Observations.Count > 0)
                 .ToList();
+            var locationResults = BuildLocationResults(
+                options,
+                locationData,
+                selectedDates,
+                warnings);
 
             if (usableLocationData.Count == 0)
             {
@@ -107,6 +112,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     BinSizeMinutes = options.BinSizeMinutes,
                     DataSource = options.DataSource.ToString(),
                     PlanComparison = planScheduleResult.Comparison,
+                    Locations = locationResults,
                     Warnings = warnings,
                     Notes = "No volume profile could be built from the selected data source."
                 };
@@ -137,11 +143,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         .Where(o => string.Equals(o.Direction, direction, StringComparison.OrdinalIgnoreCase))))
                 .Where(p => p.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
                 .ToList();
-            var locationResults = BuildLocationResults(
-                options,
-                usableLocationData,
-                selectedDates,
-                warnings);
+            AddPrimaryDirectionWarnings(options, directionalProfiles, warnings);
             var recommendation = recommendationService.BuildRecommendation(
                 options,
                 corridorProfile,
@@ -265,9 +267,27 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         selectedDates,
                         options.BinSizeMinutes))
                     .ToList();
-                var daysWithData = data.Observations.Select(o => o.LocalDate).Distinct().Count();
+                var datesWithData = data.Observations
+                    .Select(o => o.LocalDate)
+                    .Distinct()
+                    .OrderBy(date => date)
+                    .ToList();
+                var missingDates = selectedDates
+                    .Where(date => !datesWithData.Contains(date))
+                    .OrderBy(date => date)
+                    .ToList();
+                var daysWithData = datesWithData.Count;
 
-                if (daysWithData < selectedDates.Count)
+                if (daysWithData == 0)
+                {
+                    warnings.Add(new TimeOfDayWarningDto
+                    {
+                        Code = "NoLocationVolumeData",
+                        LocationIdentifier = data.Location.LocationIdentifier,
+                        Message = $"Location {data.Location.LocationIdentifier} has no usable volume data for the selected dates."
+                    });
+                }
+                else if (missingDates.Count > 0)
                 {
                     warnings.Add(new TimeOfDayWarningDto
                     {
@@ -282,12 +302,18 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     LocationIdentifier = data.Location.LocationIdentifier,
                     LocationDescription = data.LocationDescription,
                     DaysWithData = daysWithData,
+                    DatesWithData = datesWithData,
+                    MissingDates = missingDates,
                     CoverageFallbackUsed = false,
                     Profile = profile,
                     MovementProfiles = movementProfiles,
-                    Summary = BuildLocationSummary(options, data.Location, data.Observations, profile),
+                    Summary = BuildLocationSummary(options, data.Location, data.Observations, profile, missingDates),
                     CurrentPlanSchedule = data.CurrentPlanSchedule,
-                    DataQualityFlag = daysWithData == selectedDates.Count ? "Complete" : "Partial"
+                    DataQualityFlag = daysWithData == 0
+                        ? "NoData"
+                        : missingDates.Count == 0
+                            ? "Complete"
+                            : "Partial"
                 });
             }
 
@@ -341,7 +367,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             TimeOfDayOptions options,
             Location location,
             IReadOnlyList<TimeOfDayVolumeObservation> observations,
-            TimeOfDayProfileDto profile)
+            TimeOfDayProfileDto profile,
+            IReadOnlyList<DateOnly> missingDates)
         {
             var capacity = CalculateCapacity(options, location);
             var peakRaw = profile.Points.Select(p => p.AverageVolume).DefaultIfEmpty(0).Max();
@@ -366,10 +393,68 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 PeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(peakSmoothed / capacity * 100) : null,
                 AmPeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(amPeak / capacity * 100) : null,
                 PmPeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(pmPeak / capacity * 100) : null,
-                AmDirectionExceptionMessage = BuildDirectionExceptionMessage(options.AmPrimaryDirections, observations, "AM"),
-                PmDirectionExceptionMessage = BuildDirectionExceptionMessage(options.PmPrimaryDirections, observations, "PM"),
-                Notes = observations.Count == 0 ? "No usable volume observations." : string.Empty
+                AmDirectionExceptionMessage = BuildDirectionExceptionMessage(
+                    options.AmPrimaryDirections.Count > 0 ? options.AmPrimaryDirections : options.AllDayPrimaryDirections,
+                    observations,
+                    "AM"),
+                PmDirectionExceptionMessage = BuildDirectionExceptionMessage(
+                    options.PmPrimaryDirections.Count > 0 ? options.PmPrimaryDirections : options.AllDayPrimaryDirections,
+                    observations,
+                    "PM"),
+                Notes = observations.Count == 0
+                    ? "No usable volume observations for the selected dates."
+                    : missingDates.Count > 0
+                        ? $"Missing volume observations for: {string.Join(", ", missingDates.Select(date => date.ToString("yyyy-MM-dd")))}."
+                        : string.Empty
             };
+        }
+
+        private static void AddPrimaryDirectionWarnings(
+            TimeOfDayOptions options,
+            IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
+            List<TimeOfDayWarningDto> warnings)
+        {
+            var amDirections = options.AmPrimaryDirections.Count > 0
+                ? options.AmPrimaryDirections
+                : options.AllDayPrimaryDirections;
+            var pmDirections = options.PmPrimaryDirections.Count > 0
+                ? options.PmPrimaryDirections
+                : options.AllDayPrimaryDirections;
+
+            AddPrimaryDirectionWarning("AM", amDirections, directionalProfiles, warnings);
+            AddPrimaryDirectionWarning("PM", pmDirections, directionalProfiles, warnings);
+            AddPrimaryDirectionWarning("Split-pressure", options.AllDayPrimaryDirections, directionalProfiles, warnings);
+        }
+
+        private static void AddPrimaryDirectionWarning(
+            string period,
+            IReadOnlyList<string> requestedDirections,
+            IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
+            List<TimeOfDayWarningDto> warnings)
+        {
+            var availableDirections = directionalProfiles
+                .Where(profile => profile.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
+                .Select(profile => TimeOfDayDirectionHelper.NormalizeDirection(profile.Direction))
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            var missingDirections = requestedDirections
+                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Where(direction => !availableDirections.Contains(direction, StringComparer.OrdinalIgnoreCase))
+                .ToList();
+
+            if (missingDirections.Count == 0)
+            {
+                return;
+            }
+
+            warnings.Add(new TimeOfDayWarningDto
+            {
+                Code = "PrimaryDirectionDataUnavailable",
+                Message = $"{period} primary direction data is unavailable for {string.Join(", ", missingDirections)}."
+            });
         }
 
         private static string BuildDirectionExceptionMessage(

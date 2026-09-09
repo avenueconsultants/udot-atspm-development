@@ -199,7 +199,7 @@ export default function TimeOfDayLocationData({
                   </TableCell>
                   <TableCell>{location.dataQualityFlag ?? '-'}</TableCell>
                   <TableCell sx={{ minWidth: 180 }}>
-                    {location.summary?.notes ?? '-'}
+                    {location.summary?.notes?.trim() || '-'}
                   </TableCell>
                 </TableRow>
               ))}
