@@ -115,29 +115,6 @@ export const toUTCDateStamp = (date: Date | string): string => {
   return `${year}-${month}-${day}`
 }
 
-export const toDateStamp = (date: Date | string): string => {
-  // If it's already a YYYY-MM-DD date stamp, return as-is.
-  if (typeof date === 'string') {
-    const s = date.trim()
-
-    // Accept "YYYY-MM-DD" exactly (or with a time part we want to ignore)
-    const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/)
-    if (m) return `${m[1]}-${m[2]}-${m[3]}`
-
-    // Fallback: parse other strings, but format using local date parts
-    date = new Date(s)
-  }
-
-  if (Number.isNaN(date.getTime())) {
-    throw new Error(`toDateStamp: invalid date input`)
-  }
-
-  const year = date.getFullYear()
-  const month = pad2(date.getMonth() + 1)
-  const day = pad2(date.getDate())
-  return `${year}-${month}-${day}`
-}
-
 export const toUTCDateWithTimeStamp = (dateWithTime: Date): string => {
   const options: Intl.DateTimeFormatOptions = {
     hour12: false,
@@ -188,36 +165,6 @@ const parseUtcValueToMs = (value: Date | string): number | null => {
   return parseUtcTimestampToMs(value)
 }
 
-export const formatUtcDateOnly = (
-  value: Date | string | null | undefined
-): string => {
-  if (!value) return ''
-
-  const ms = parseUtcValueToMs(value)
-  if (ms == null) return ''
-
-  const date = new Date(ms)
-  return `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-${pad2(
-    date.getUTCDate()
-  )}`
-}
-
-export const formatUtcDateTime = (
-  value: Date | string | null | undefined
-): string => {
-  if (!value) return ''
-
-  const ms = parseUtcValueToMs(value)
-  if (ms == null) return ''
-
-  const date = new Date(ms)
-  return `${date.getUTCFullYear()}-${pad2(date.getUTCMonth() + 1)}-${pad2(
-    date.getUTCDate()
-  )} ${pad2(date.getUTCHours())}:${pad2(date.getUTCMinutes())}:${pad2(
-    date.getUTCSeconds()
-  )} UTC`
-}
-
 const localTimeZoneName = (date: Date): string => {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZoneName: 'short',
@@ -259,10 +206,6 @@ export const formatInstantAsLocalDateTime = (
 const toODataUtcLiteral = (date: Date): string =>
   date.toISOString().replace(/\.\d{3}Z$/, 'Z')
 
-export const toUtcODataDateTimeLiteral = (value: Date | string): string => {
-  return `${toWallClockDateTimeLiteral(value)}Z`
-}
-
 export const localDateTimeToUtcODataLiteral = (
   value: Date | string
 ): string => {
@@ -275,37 +218,6 @@ export const localDateTimeToUtcODataLiteral = (
 
   const fallbackMs = parseUtcValueToMs(value)
   return fallbackMs == null ? '' : toODataUtcLiteral(new Date(fallbackMs))
-}
-
-export const parseUtcDateToMidnightMs = (value: string): number | null => {
-  if (!value) return null
-
-  const raw = value.trim()
-  if (!raw) return null
-
-  const ymd = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/.exec(raw)
-  if (ymd) {
-    const year = Number(ymd[1])
-    const month = Number(ymd[2])
-    const day = Number(ymd[3])
-    if (Number.isFinite(year) && Number.isFinite(month) && Number.isFinite(day)) {
-      return Date.UTC(year, month - 1, day, 0, 0, 0, 0)
-    }
-  }
-
-  const ms = Date.parse(value)
-  if (!Number.isFinite(ms)) return null
-
-  const parsed = new Date(ms)
-  return Date.UTC(
-    parsed.getFullYear(),
-    parsed.getMonth(),
-    parsed.getDate(),
-    0,
-    0,
-    0,
-    0
-  )
 }
 
 export const parseTimeParts = (
@@ -349,29 +261,4 @@ export const parseTimeParts = (
     seconds,
     milliseconds: Math.floor(fractionalMs),
   }
-}
-
-export const toUtcTimestampMs = (
-  timestampValue: string,
-  dateValue: string,
-  timeValue: string
-): number | null => {
-  const fromTimestamp = parseUtcTimestampToMs(timestampValue)
-  if (fromTimestamp != null) return fromTimestamp
-
-  if (!dateValue) return null
-
-  const utcDateMs = parseUtcDateToMidnightMs(dateValue)
-  if (utcDateMs == null) return null
-
-  const parsedTime = parseTimeParts(timeValue)
-  if (!parsedTime) return null
-
-  return (
-    utcDateMs +
-    parsedTime.hours * 60 * 60 * 1000 +
-    parsedTime.minutes * 60 * 1000 +
-    parsedTime.seconds * 1000 +
-    parsedTime.milliseconds
-  )
 }

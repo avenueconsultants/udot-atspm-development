@@ -45,9 +45,9 @@ namespace Utah.Udot.ATSPM.ConfigApi.DTO
         public bool IsPrimaryOverlap { get; set; }
         public bool IsOpposingOverlap { get; set; }
         public int? PreviousLocationDistanceId { get; set; }
-        public RouteDistanceDto PreviousLocationDistance { get; set; }
+        public RouteDistanceDto? PreviousLocationDistance { get; set; }
         public int? NextLocationDistanceId { get; set; }
-        public RouteDistanceDto NextLocationDistance { get; set; }
+        public RouteDistanceDto? NextLocationDistance { get; set; }
         public string LocationIdentifier { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }

@@ -1,6 +1,9 @@
+import {
+  useGetProfileProfile,
+  useGetProfileUpdateProfile,
+} from '@/api/identity/atspmAuthenticationApi'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useEditUserInfo } from '@/features/identity/api/editUserInfo'
-import { useUserInfo } from '@/features/identity/api/getUserInfo'
+import { ProfileData } from '@/features/identity/types/profile'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Box,
@@ -28,8 +31,8 @@ type FormData = z.infer<typeof schema>
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
 
-  const { data: profile } = useUserInfo({ config: { enabled: true } })
-  const { mutate: saveUser } = useEditUserInfo()
+  const { data: profile } = useGetProfileProfile<ProfileData>()
+  const { mutate: saveUser } = useGetProfileUpdateProfile()
 
   const initial = useRef<FormData | null>(null)
 
@@ -63,7 +66,7 @@ const ProfilePage = () => {
   }, [profile, reset])
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    saveUser({ ...data, roles: profile?.roles })
+    saveUser({ data })
     setIsEditing(false)
   }
 

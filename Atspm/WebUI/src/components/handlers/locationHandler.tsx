@@ -1,4 +1,4 @@
-import { Location } from '@/features/locations/types'
+import { SearchLocation as Location } from '@/api/config'
 import { useState } from 'react'
 
 export interface LocationHandler {

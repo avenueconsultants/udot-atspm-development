@@ -41,13 +41,13 @@ import {
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
 import {
-  ApproachDelayPlan,
+  NormalizedApproachDelayPlan,
   RawApproachDelayData,
-  RawApproachDelayReponse,
+  RawApproachDelayResponse,
 } from './types'
 
 export default function transformApproachDelayData(
-  response: RawApproachDelayReponse
+  response: RawApproachDelayResponse
 ): TransformedChartResponse {
   const charts = response.data.map((data) => {
     const chartOptions = transformData(data)
@@ -65,8 +65,14 @@ export default function transformApproachDelayData(
 }
 
 function transformData(data: RawApproachDelayData) {
-  const { approachDelayPerVehicleDataPoints, approachDelayDataPoints, plans } =
-    data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const approachDelayPerVehicleDataPoints = data.approachDelayPerVehicleDataPoints ?? []
+  const approachDelayDataPoints = data.approachDelayDataPoints ?? []
+  const plans = data.plans ?? []
 
   const info = createInfoString(
     [
@@ -80,7 +86,7 @@ function transformData(data: RawApproachDelayData) {
   const dateRange = formatChartDateTimeRange(data.start, data.end)
   const title = createTitle({
     title: ['Approach Delay', data.phaseDescription],
-    location: `${data.locationDescription}`,
+    location: data.locationDescription ?? '',
     dateRange,
     info,
   })
@@ -148,7 +154,7 @@ function transformData(data: RawApproachDelayData) {
     }
   )
 
-  const planOptions: PlanOptions<ApproachDelayPlan> = {
+  const planOptions: PlanOptions<NormalizedApproachDelayPlan> = {
     averageDelay: (value: number) => `AD: ${value}s`,
     totalDelay: (value: number) => {
       const num = Number((value / 3600).toFixed(1))

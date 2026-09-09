@@ -1,6 +1,6 @@
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton } from '@mui/lab'
-import { Alert, Box, Button, Paper, useTheme } from '@mui/material'
+import { Alert, Box, Button, Paper } from '@mui/material'
 import { AggClassificationOptions } from '../../common/AggClassificationOptions'
 import AnalysisPeriodOptions from '../../common/AnalysisPeriodOptions'
 import DateTimeOptions from '../../common/DateTimeOptions'
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export const MonthlyReportOptionsComponent = (props: Props) => {
-  const theme = useTheme()
   const { handler } = props
 
   return (

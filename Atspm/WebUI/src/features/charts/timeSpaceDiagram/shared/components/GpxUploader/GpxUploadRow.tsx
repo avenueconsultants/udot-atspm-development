@@ -46,7 +46,9 @@ export const GpxUploadRow = ({
         borderColor: UPLOAD_PANEL_BORDER_COLOR,
         borderRadius: 2,
         p: 1,
-        backgroundColor: entry.primary ? UPLOAD_PANEL_SUBTLE_BG : UPLOAD_PANEL_MUTED_BG,
+        backgroundColor: entry.primary
+          ? UPLOAD_PANEL_SUBTLE_BG
+          : UPLOAD_PANEL_MUTED_BG,
       }}
     >
       <Stack spacing={1}>
@@ -120,15 +122,17 @@ export const GpxUploadRow = ({
                   onChange({
                     file,
                     parsedData: parsed,
-                    parsedEntityData: undefined,
                     error: null,
                   })
-                } catch {
+                } catch (error) {
                   onChange({
                     file: undefined,
                     parsedData: undefined,
-                    parsedEntityData: undefined,
-                    error: 'Invalid GPX file',
+                    // The parser says which way the file was unusable.
+                    error:
+                      error instanceof Error
+                        ? error.message
+                        : 'Invalid GPX file',
                   })
                 }
               }}
@@ -138,7 +142,11 @@ export const GpxUploadRow = ({
           <Box sx={UPLOAD_FILE_BOX_SX}>
             <Typography
               variant="caption"
-              sx={{ display: 'block', color: 'text.secondary', lineHeight: 1.2 }}
+              sx={{
+                display: 'block',
+                color: 'text.secondary',
+                lineHeight: 1.2,
+              }}
             >
               Selected file
             </Typography>

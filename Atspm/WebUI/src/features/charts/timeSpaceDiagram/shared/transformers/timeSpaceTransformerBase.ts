@@ -19,11 +19,11 @@ import {
   getTimeLikeMs,
   TIME_SPACE_CYCLE_SEGMENT_HEIGHT_PX,
 } from '@/features/charts/timeSpaceDiagram/core/math/timeSpaceLayout'
+import type { TimeSpaceDisplayDistanceOffset } from '@/features/charts/timeSpaceDiagram/core/types/timeSpaceCore.types'
 import type {
   TimeSpaceDetectorEvent,
   TimeSpaceUnwrappedData,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
-import type { TimeSpaceDisplayDistanceOffset } from '@/features/charts/timeSpaceDiagram/core/types/timeSpaceCore.types'
 import { Cycle } from '@/features/charts/timingAndActuation/types'
 import { dateToTimestamp } from '@/utils/dateTime'
 import type {
@@ -86,8 +86,7 @@ export const CYCLE_INDICATIONS: readonly CycleIndication[] = [
     color: '#0CC078',
   },
   {
-    name:
-      'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
+    name: 'Phase Min Complete (3)\nOverlap Begin Trailing Green (Extension) (62)',
     codes: [3, 62],
     color: '#79DE79',
   },
@@ -692,21 +691,6 @@ function buildGreenBandPolygon(
           fill: isPrimary ? '#4f9bac' : '#202d30',
         },
   }
-}
-
-export function getEffectiveDistanceToNext(
-  data: TimeSpaceUnwrappedData,
-  index: number,
-  isPrimary?: boolean
-): number {
-  let totalDistance = data[index].calculatedDistanceToNext
-
-  const nextIndex = index + 1
-  if (nextIndex < data.length) {
-    totalDistance += data[nextIndex].calculatedDistanceToNext
-  }
-
-  return isPrimary ? totalDistance : -totalDistance
 }
 
 function getGreenEventsDataPoints(

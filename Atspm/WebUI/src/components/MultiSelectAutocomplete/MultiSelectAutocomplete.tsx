@@ -19,7 +19,7 @@ interface MultiSelectAutocompleteProps<T> {
   exclude?: boolean
 }
 
-const CustomPaper = memo(function CustomPaper<T>(props: any) {
+const CustomPaper = memo(function CustomPaper(props: any) {
   const { children, onSelectAll, onDeselectAll, ...other } = props
   const stop = useCallback((e: React.MouseEvent) => {
     e.preventDefault()

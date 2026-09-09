@@ -384,7 +384,7 @@ export const getImpactHostpot = (
   routeSpeeds: SpeedManagementRoute[]
 ): ImpactHotspotForReportMap[] => {
   const impactSegments: ImpactHotspotForReportMap[] = impacts.map((impact) => {
-    const segmentIds = impact.segmentIds as string[]
+    const segmentIds = (impact.segmentIds as string[] | null) ?? []
     const coordinates = getHotspotSegments(
       segmentIds.filter((id) =>
         routeSpeeds.find((r) => r.properties.route_id === id)

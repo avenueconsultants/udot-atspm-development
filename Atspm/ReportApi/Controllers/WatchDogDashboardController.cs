@@ -36,7 +36,7 @@ namespace Utah.Udot.ATSPM.ReportApi.Controllers
         //[Produces("application/json", "application/xml")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<WatchDogIssueTypeGroup> GetDashboardGroup([FromBody] WatchDogDashboardOptions options)
+        public ActionResult<WatchDogDashboardGroup> GetDashboardGroup([FromBody] WatchDogDashboardOptions options)
         {
             try
             {

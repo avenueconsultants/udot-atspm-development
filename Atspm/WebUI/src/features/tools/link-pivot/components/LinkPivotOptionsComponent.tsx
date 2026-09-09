@@ -1,8 +1,8 @@
+import { useGetRouteRouteViewFromId } from '@/api/config'
 import { RouteSelect } from '@/components/RouteSelect/RouteSelect'
 import { StyledPaper } from '@/components/StyledPaper'
 import SelectDateTime from '@/components/selectTimeSpan'
 import { MultiSelectCheckbox } from '@/features/aggregateData/components/chartOptions/MultiSelectCheckbox'
-import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
 import RouteTable from '@/features/tools/link-pivot/components/RouteTable'
 import {
   Box,
@@ -12,7 +12,6 @@ import {
   Select,
   TextField,
 } from '@mui/material'
-import { useEffect } from 'react'
 import { LinkPivotHandler, StreamType } from '../handlers/linkPivotHandlers'
 
 interface Props {
@@ -32,32 +31,30 @@ const daysOfWeekList: string[] = [
 export const LinkPivotOptionsComponent = (props: Props) => {
   const { handler } = props
 
-  const { data: routeData, refetch } = useGetRouteWithExpandedLocations({
-    routeId: handler.routeId,
-    includeLocationDetail: true,
-  })
+  const routeIdNumber = handler.routeId ? Number(handler.routeId) : undefined
+  const { data: routeData } = useGetRouteRouteViewFromId(
+    routeIdNumber ?? 0,
+    { includeLocationDetail: true },
+    { query: { enabled: !!routeIdNumber } }
+  )
 
   const routeValuesToCheck =
     routeData?.routeLocations
-      .map((location) => {
-        const approach = location.approaches.find((approach) => {
+      ?.map((location) => {
+        const approach = location.approaches?.find((approach) => {
           return approach.protectedPhaseNumber === location.primaryPhase
         })
 
         return {
           locationIdentifier: `${location.locationIdentifier} - ${location.primaryName} & ${location.secondaryName}`,
-          primaryName: location.primaryName,
-          secondaryName: location.secondaryName,
+          primaryName: location.primaryName ?? '',
+          secondaryName: location.secondaryName ?? '',
           approachId: approach?.description,
-          order: approach?.order || 0,
+          order: location.order ?? 0,
         }
       })
       // sort so 1 comes before 2, etc.
       .sort((a, b) => a.order - b.order) || []
-
-  useEffect(() => {
-    if (handler.routeId) refetch()
-  }, [handler.routeId, refetch])
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>

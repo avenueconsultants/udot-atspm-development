@@ -13,7 +13,6 @@ interface WaitTimeChartOptionsProps {
 export const WaitTimeChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: WaitTimeChartOptionsProps) => {
   const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 

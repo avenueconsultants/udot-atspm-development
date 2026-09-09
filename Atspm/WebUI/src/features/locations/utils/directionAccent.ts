@@ -79,19 +79,3 @@ export function getDirectionAccentBorder(
   const color = getDirectionAccentColor(directionLabel)
   return color === UNKNOWN_DIRECTION_ACCENT ? 'none' : `${width} solid ${color}`
 }
-
-export function getDirectionAccentForegroundColor(
-  directionLabel?: string | null
-) {
-  const color = getDirectionAccentColor(directionLabel)
-
-  switch (color) {
-    case Color.Blue:
-    case Color.BrightRed:
-      return Color.White
-    case Color.Yellow:
-    case Color.Orange:
-    default:
-      return Color.Black
-  }
-}

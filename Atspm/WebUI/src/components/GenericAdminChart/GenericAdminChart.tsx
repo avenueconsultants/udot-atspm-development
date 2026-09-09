@@ -1,6 +1,6 @@
-import { Location } from '@/features/locations/types'
-import RoleModal from '@/features/roles/components/RoleModal'
+import type { Device, SearchLocation } from '@/api/config'
 import UserModal from '@/features/identity/components/users/UserModal'
+import RoleModal from '@/features/roles/components/RoleModal'
 import AddIcon from '@mui/icons-material/Add'
 import CancelIcon from '@mui/icons-material/Close'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
@@ -30,7 +30,6 @@ import {
   GridRowModel,
   GridRowModes,
   GridRowModesModel,
-  GridRowsProp,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarExport,
@@ -73,18 +72,11 @@ interface GenericChartProps {
   onCreate(data: any): void
   customModal?: React.ReactNode
   protectedItems?: string[]
-  locations?: Location[]
+  locations?: (SearchLocation & Pick<Device, 'deviceConfigurationId'>)[]
   hasEditPrivileges: boolean
   hasDeletePrivileges: boolean
 }
-interface EditToolbarProps {
-  baseRowType: string
-  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void
-  setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
-  ) => void
-}
-function EditToolbar(props: EditToolbarProps) {
+function EditToolbar() {
   return (
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
@@ -295,7 +287,7 @@ function GenericAdminChart({
     switch (pageName) {
       case 'Areas':
         return (
-          locations?.filter((location) => location.areas.includes(id)) || []
+          locations?.filter((location) => location.areas?.includes(id)) || []
         )
       case 'Regions':
         return locations?.filter((location) => location.regionId === id) || []
@@ -353,7 +345,6 @@ function GenericAdminChart({
           processRowUpdate={processRowUpdate}
           autoHeight
           slots={{ toolbar: EditToolbar }}
-          slotProps={{ toolbar: { baseRowType, setRows, setRowModesModel } }}
           pageSizeOptions={[{ value: 100, label: '100' }]}
           sx={{
             [`& .${gridClasses.cell}`]: {

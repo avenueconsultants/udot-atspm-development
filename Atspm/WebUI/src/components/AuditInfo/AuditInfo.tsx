@@ -22,8 +22,8 @@ export default function AuditBadge({
   }
   dense?: boolean
 }) {
-  const hasCreated = !!fmt(obj?.created) || !!obj?.createdBy
-  const hasModified = !!fmt(obj?.modified) || !!obj?.modifiedBy
+  const hasCreated = !!obj?.created || !!obj?.createdBy
+  const hasModified = !!obj?.modified || !!obj?.modifiedBy
   const nothing = !hasCreated && !hasModified
 
   const label = nothing

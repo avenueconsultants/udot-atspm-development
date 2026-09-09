@@ -14,17 +14,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+
+// configAxios and identityAxios (src/lib/axios.ts) already bake `/api/v1` into
+// their base URL, so paths generated from the (accurate) spec - which include
+// `/api/v1` themselves - would otherwise double up. Strip that leading segment
+// here rather than changing the shared axios base URLs, since ~90 hand-written
+// call sites elsewhere still assume the baked-in prefix.
+const stripApiV1PrefixFromPaths = (paths) =>
+  Object.fromEntries(
+    Object.entries(paths ?? {}).map(([path, pathItem]) => [
+      path.replace(/^\/api\/v1(?=\/|$)/, ''),
+      pathItem,
+    ])
+  )
+
+// Anything else the spec used to need patching for (nullability on $ref
+// properties, OData's boilerplate octet-stream content type) is now fixed
+// in the APIs' own Swagger generation, so the spec is taken as-is.
+const sanitizeSpec = (spec) => ({
+  ...spec,
+  paths: stripApiV1PrefixFromPaths(spec.paths),
+})
+
 module.exports = {
   config: {
     input: {
-      target: './api-specs/config-spec.json',
+      target: '../ConfigApi/config-spec.json',
+      override: {
+        transformer: sanitizeSpec,
+      },
     },
     output: {
       workspace: './src/api/config',
       target: './config-api.ts',
       client: 'react-query',
-      mock: true,
-      templates: './orval-templates',
+      httpClient: 'axios',
       mode: 'tags-split',
       override: {
         mutator: {
@@ -34,62 +58,79 @@ module.exports = {
       },
     },
   },
-  // reports: {
-  //   input: {
-  //     target: './api-specs/reports-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/reports',
-  //     target: './report-api.ts',
-  //     client: 'react-query',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'reportsRequest',
-  //       },
-  //     },
-  //   },
-  // },
-  // data: {
-  //   input: {
-  //     target: './api-specs/reports-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/reports',
-  //     target: './report-api.ts',
-  //     client: 'react-query',
-  //     httpClient: 'axios',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'reportsRequest',
-  //       },
-  //     },
-  //   },
-  // },
-  // data: {
-  //   input: {
-  //     target: './api-specs/data-spec.json',
-  //   },
-  //   output: {
-  //     workspace: './src/api/data',
-  //     target: './data-api.ts',
-  //     client: 'react-query',
-  //     mock: true,
-  //     templates: './orval-templates',
-  //     mode: 'tags-split',
-  //     override: {
-  //       mutator: {
-  //         path: '../../lib/axios.ts',
-  //         name: 'dataRequest',
-  //       },
-  //     },
-  //   },
-  // },
+  reports: {
+    input: {
+      target: '../ReportApi/reports-spec.json',
+    },
+    output: {
+      workspace: './src/api/reports',
+      target: './report-api.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'tags-split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'reportsRequest',
+        },
+      },
+    },
+  },
+  data: {
+    input: {
+      target: '../DataApi/data-spec.json',
+    },
+    output: {
+      workspace: './src/api/data',
+      target: './data-api.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'tags-split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'dataRequest',
+        },
+      },
+    },
+  },
+  identity: {
+    input: {
+      target: '../IdentityApi/identity-spec.json',
+      override: {
+        transformer: sanitizeSpec,
+      },
+    },
+    output: {
+      workspace: './src/api/identity',
+      target: './atspmAuthenticationApi.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'identityRequest',
+        },
+      },
+    },
+  },
+  speedManagement: {
+    input: {
+      target: './api-specs/speed-spec.json',
+    },
+    output: {
+      workspace: './src/api/speedManagement',
+      target: './aTSPMSpeedManagementApi.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'split',
+      override: {
+        mutator: {
+          path: '../../lib/axios.ts',
+          name: 'speedRequest',
+        },
+      },
+    },
+  },
 }

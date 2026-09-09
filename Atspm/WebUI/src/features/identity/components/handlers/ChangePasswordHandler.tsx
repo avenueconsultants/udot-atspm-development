@@ -1,11 +1,18 @@
+import {
+  useDeleteTokenVerifyResetToken,
+  useGetAccountChangePassword,
+} from '@/api/identity/atspmAuthenticationApi'
 import { setSecureCookie } from '@/features/identity/utils'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
-import { useChangePassword } from '../../api/changePassword'
-import { VerifyToken, useVerifyResetToken } from '../../api/verifyResetToken'
 import { ResponseDto } from '../../types/responseDto'
 import { PasswordHandler, ResponseHandler } from './baseHandler'
+
+interface VerifyToken {
+  token: string
+  message: string
+}
 
 export interface ChangePasswordHandler
   extends PasswordHandler,
@@ -41,17 +48,13 @@ export const useChangePasswordHandler = ({
   const [data, setData] = useState<ResponseDto>()
 
   const {
-    refetch,
+    mutate: changePassword,
     data: changePasswordData,
     status,
-  } = useChangePassword({
-    resetToken,
-    newPassword: password,
-    confirmPassword,
-  })
+  } = useGetAccountChangePassword()
 
   useEffect(() => {
-    if (status !== 'loading' && status === 'success') {
+    if (status === 'success') {
       setResponseSuccess(true)
     }
 
@@ -62,7 +65,7 @@ export const useChangePasswordHandler = ({
 
   useEffect(() => {
     if (changePasswordData) {
-      setData(changePasswordData)
+      setData(changePasswordData as ResponseDto)
     }
   }, [changePasswordData])
 
@@ -104,7 +107,9 @@ export const useChangePasswordHandler = ({
       return
     }
     setSubmitted(true)
-    refetch()
+    changePassword({
+      data: { resetToken, newPassword: password, confirmPassword },
+    })
   }
 
   const component: ChangePasswordHandler = {
@@ -149,19 +154,17 @@ export const useVerifyTokenHandler = (): VerifyTokenHandler => {
   const [data, setData] = useState<VerifyToken>()
 
   const {
+    mutate: verifyResetToken,
     data: verifyResetTokenData,
-    refetch,
     status,
-  } = useVerifyResetToken({
-    token: resetToken,
-    username,
-  })
+  } = useDeleteTokenVerifyResetToken()
 
   useEffect(() => {
     if (verifyResetTokenData) {
-      setData(verifyResetTokenData)
+      const data = verifyResetTokenData as unknown as VerifyToken
+      setData(data)
       setIsValidToken(true)
-      setSecureCookie('token', verifyResetTokenData.token)
+      setSecureCookie('token', data.token)
     }
   }, [verifyResetTokenData])
 
@@ -186,9 +189,9 @@ export const useVerifyTokenHandler = (): VerifyTokenHandler => {
 
   useEffect(() => {
     if (resetToken && username && isLoadingValidity) {
-      refetch()
+      verifyResetToken({ data: { token: resetToken, username } })
     }
-  }, [isLoadingValidity, refetch, resetToken, username])
+  }, [isLoadingValidity, verifyResetToken, resetToken, username])
 
   useEffect(() => {
     if (status === 'success') {

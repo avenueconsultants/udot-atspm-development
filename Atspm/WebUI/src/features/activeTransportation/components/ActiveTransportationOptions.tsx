@@ -29,7 +29,6 @@ interface ActiveTransportationOptionsProps {
   setPhase: (phase: number | '') => void
   onLocationDelete: (location: Location) => void
   onReorderLocations: (dropResult: DropResult) => void
-  onUpdateLocation: (updatedLocation: Location) => void
 }
 
 export const ActiveTransportationOptions = ({
@@ -44,7 +43,6 @@ export const ActiveTransportationOptions = ({
   setEndDate,
   setPhase,
   onLocationDelete,
-  onUpdateLocation,
 }: ActiveTransportationOptionsProps) => {
   return (
     <Box>
@@ -63,7 +61,6 @@ export const ActiveTransportationOptions = ({
               locations={locations}
               onLocationDelete={onLocationDelete}
               onDeleteAllLocations={() => setLocations([])}
-              onUpdateLocation={onUpdateLocation}
               phase={phase}
               setPhase={setPhase}
             />

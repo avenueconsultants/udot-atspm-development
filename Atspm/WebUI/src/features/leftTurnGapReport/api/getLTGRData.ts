@@ -17,7 +17,7 @@
 import { reportsAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 import { ApiResponse } from '@/types'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export interface LeftTurnGapReportParams {
   locationIdentifier: string

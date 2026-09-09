@@ -18,11 +18,11 @@ import { ToolType } from '@/features/charts/common/types'
 import { nanoid } from 'nanoid'
 import type {
   GpxUploadOptions,
+  NormalizedTimeSpacePhaseResult,
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceBaseData,
-  TimeSpaceDiagramPhaseResult,
   TimeSpaceSrmPhaseOverlay,
 } from '../../shared/types'
 
@@ -112,16 +112,14 @@ export function recomputeWrappedTimeSpaceData(
   ignoredLocations: string[]
 ): RawTimeSpaceDiagramResponse['data'] {
   type WrappedResult =
-    | TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>
-    | TimeSpaceDiagramPhaseResult<RawTimeSpaceAverageData>
+    | NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>
+    | NormalizedTimeSpacePhaseResult<RawTimeSpaceAverageData>
   type WrappedResultWithData = WrappedResult & {
     result: RawTimeSpaceHistoricData | RawTimeSpaceAverageData
   }
 
   const unwrappedData = wrappedData
-    .filter(
-      (item): item is WrappedResultWithData => !!item.result
-    )
+    .filter((item): item is WrappedResultWithData => !!item.result)
     .map((item) => item.result)
 
   const recomputed = recomputeTimeSpaceData(unwrappedData, ignoredLocations)
@@ -153,9 +151,9 @@ export function supportsLinkPivotForTimeSpace(
 }
 
 export function mergeSrmOverlaysIntoWrappedData(
-  wrappedData: TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[],
+  wrappedData: NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[],
   overlays: TimeSpaceSrmPhaseOverlay[]
-): TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[] {
+): NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[] {
   const overlayMap = new Map(
     overlays.map((overlay) => [
       `${overlay.locationIdentifier}|${overlay.phaseType}|${overlay.order}`,
@@ -210,10 +208,6 @@ export function getPrimaryTimeSpaceLocations(
   timeSpaceData: RawTimeSpaceDiagramResponse
 ) {
   return timeSpaceData.data
-    .filter(
-      (phase) =>
-        !!phase.result &&
-        phase.result.phaseType === 'Primary'
-    )
+    .filter((phase) => !!phase.result && phase.result.phaseType === 'Primary')
     .map((phase) => phase.result.locationIdentifier)
 }

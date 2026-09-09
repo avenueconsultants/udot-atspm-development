@@ -39,7 +39,9 @@ export default function TimingAndActuationChartsToolbox({
       if (
         chartData.data.charts[i].chart.displayProps.phaseType === 'Permissive'
       ) {
-        ref.current.style.maxHeight = isVisible ? '300px' : '0px'
+        // Clearing the inline value hands the height back to the strip's
+        // own max-height; a fixed 300px clipped strips with many channels.
+        ref.current.style.maxHeight = isVisible ? '' : '0px'
       }
     })
   }

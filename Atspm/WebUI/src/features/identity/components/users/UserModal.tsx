@@ -1,9 +1,12 @@
+import {
+  useGetArea,
+  useGetJurisdiction,
+  useGetRegion,
+} from '@/api/config'
+import { useGetRolesRoles } from '@/api/identity/atspmAuthenticationApi'
 import ATSPMDialog from '@/components/ATSPMDialog/ATSPMDialog'
 import CustomSelect from '@/components/customSelect/CustomSelect'
-import { useGetAreas } from '@/features/areas/api/areaApi'
-import { useGetRoles } from '@/features/identity/api/getRoles'
-import { useGetJurisdiction } from '@/features/jurisdictions/api/jurisdictionApi'
-import { useGetRegion } from '@/features/region/api/regionApi'
+import { Role } from '@/features/identity/types/roles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -68,8 +71,8 @@ const normalizeNumberArray = (value: unknown): number[] => {
 }
 
 const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
-  const { data: roles, isLoading } = useGetRoles()
-  const { data: areasData, isLoading: areasLoading } = useGetAreas()
+  const { data: roles, isLoading } = useGetRolesRoles<Role[]>()
+  const { data: areasData, isLoading: areasLoading } = useGetArea()
   const { data: jurisdictionsData, isLoading: jurisdictionsLoading } =
     useGetJurisdiction()
   const { data: regionsData, isLoading: regionsLoading } = useGetRegion()
@@ -249,7 +252,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Regions"
             name="regionIds"
             value={field.value}
-            data={regionsData?.value}
+            data={regionsData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))
@@ -270,7 +273,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Jurisdictions"
             name="jurisdictionIds"
             value={field.value}
-            data={jurisdictionsData?.value}
+            data={jurisdictionsData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))
@@ -291,7 +294,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Areas"
             name="areaIds"
             value={field.value}
-            data={areasData?.value}
+            data={areasData}
             onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== Number(id)))

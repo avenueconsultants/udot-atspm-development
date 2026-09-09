@@ -14,38 +14,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { BaseChartData, ChartType, DataPoint } from '../common/types'
-import { TimeSpaceDetectorEvent } from '../timeSpaceDiagram/types'
-import { DetectorEvent } from '../timingAndActuation/types'
+import { RampMeteringResult } from '@/api/reports'
+import { ChartType, DataPoint } from '../common/types'
 
 export interface RampMeteringChartOptionsDefaults {
   combineLanes: { id: number; value: string; option: string }
 }
 
-export interface DescriptionWithDataPoints {
+export interface NormalizedDescriptionWithDataPoints {
   description: string
   value: DataPoint[]
 }
 
-export interface DescriptionWithDetectorEvents {
-  description: string
-  value: DetectorEvent[]
+export interface TimeSpaceDetectorEvent {
+  initialX: string
+  finalX: string
+  isDetectorOn: boolean
 }
 
-export interface QueueDetectorEvent extends DetectorEvent {
+export interface QueueDetectorEvent {
+  detectorOn: string | null
+  detectorOff: string | null
   value: number
 }
 
-export interface RampMeteringData extends BaseChartData {
-  mainlineAvgFlow: DataPoint[]
-  mainlineAvgOcc: DataPoint[]
-  mainlineAvgSpeed: DataPoint[]
-  lanesActiveRate: DescriptionWithDataPoints[]
-  lanesBaseRate: DescriptionWithDataPoints[]
-  startUpWarning: TimeSpaceDetectorEvent[]
-  shutdownWarning: TimeSpaceDetectorEvent[]
-  lanesQueueOnAndOffEvents: QueueDetectorEvent[]
-}
+export type RampMeteringData = RampMeteringResult
 
 export interface RawRampMeteringResponse {
   type: ChartType.RampMetering

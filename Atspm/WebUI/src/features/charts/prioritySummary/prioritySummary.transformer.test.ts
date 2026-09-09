@@ -82,21 +82,11 @@ describe('transformPrioritySummaryData', () => {
       return series?.find((entry) => entry.name === name)
     }
 
-    const combinedEarlyGreen = getSeries(
-      0,
-      'Unassociated Early Green (113)'
-    )
-    const combinedExtendGreen = getSeries(
-      0,
-      'Unassociated Extend Green (114)'
-    )
+    const combinedEarlyGreen = getSeries(0, 'Unassociated Early Green (113)')
+    const combinedExtendGreen = getSeries(0, 'Unassociated Extend Green (114)')
 
-    expect(combinedEarlyGreen?.data).toEqual([
-      ['2026-04-07T08:03:00Z', 0, 2],
-    ])
-    expect(combinedExtendGreen?.data).toEqual([
-      ['2026-04-07T08:04:00Z', 0, 3],
-    ])
+    expect(combinedEarlyGreen?.data).toEqual([['2026-04-07T08:03:00Z', 0, 2]])
+    expect(combinedExtendGreen?.data).toEqual([['2026-04-07T08:04:00Z', 0, 3]])
     expect(combinedEarlyGreen?.z).toBe(100000)
     expect(combinedExtendGreen?.z).toBe(100000)
     expect(combinedEarlyGreen?.zlevel).toBe(1)
@@ -121,6 +111,47 @@ describe('transformPrioritySummaryData', () => {
     expect(getSeries(3, 'Unassociated Early Green (113)')).toBeUndefined()
     expect(getSeries(3, 'Unassociated Extend Green (114)')?.data).toEqual([
       ['2026-04-07T08:04:00Z', 0, 3],
+    ])
+  })
+
+  // The request and service bars carry the window the drill-down fetches
+  // for that cycle. The click handler sends it as a wall-clock literal, so
+  // it has to be built as one: an ISO string would be re-read at its UTC
+  // clock face and shift the window by the browser's offset.
+  it('gives each bar a wall-clock drill-down window around its cycle', () => {
+    const response: PrioritySummaryResult = {
+      start: '2026-04-07T08:00:00',
+      end: '2026-04-07T09:00:00',
+      locationIdentifier: '1001',
+      locationDescription: 'Main St',
+      averageDuration: '00:00:30',
+      cycles: [
+        {
+          locationIdentifier: '1001',
+          tspNumber: 1,
+          checkIn: '2026-04-07T08:10:00',
+          checkOut: '2026-04-07T08:10:45',
+          requestEndOffsetSec: 45,
+          serviceStartOffsetSec: 12,
+          serviceEndOffsetSec: 40,
+        },
+      ],
+    }
+
+    const series = transformPrioritySummaryData(response).data.charts[0].chart
+      .series as { name?: string; data?: unknown[][] }[]
+    const request = series.find((s) => s.name === 'TSP Request (112→115)')
+    const service = series.find((s) => s.name === 'TSP Service (118→119)')
+
+    expect(request?.data?.[0]?.slice(4)).toEqual([
+      '1001',
+      '2026-04-07T08:07:55',
+      '2026-04-07T08:12:50',
+    ])
+    expect(service?.data?.[0]?.slice(7)).toEqual([
+      '1001',
+      '2026-04-07T08:08:00',
+      '2026-04-07T08:12:45',
     ])
   })
 })

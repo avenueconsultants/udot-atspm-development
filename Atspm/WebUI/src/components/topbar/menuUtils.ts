@@ -14,36 +14,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { MenuItems } from '@/features/links/types/linkDto'
+import { MenuItem } from '@/api/config'
 
+// The backend returns a flat list (each item references its parent via
+// parentId); this builds the nested tree the topbar renders from it. Not a
+// DTO mirror, so it isn't replaced by the generated MenuItem type - it adds
+// the client-only `children` field on top of it.
+export interface MenuItemNode extends MenuItem {
+  id: number
+  name: string
+  children: MenuItemNode[]
+}
 
-export const transformMenuItems = (menuItemsData: MenuItems[]): MenuItems[] => {
+export const transformMenuItems = (
+  menuItemsData: MenuItem[]
+): MenuItemNode[] => {
   if (!menuItemsData) {
     return []
   }
 
-  const menuItemsMap: { [id: number]: MenuItems } = {}
+  const items = menuItemsData.filter(
+    (item): item is MenuItem & { id: number; name: string } =>
+      item.id != null && item.name != null
+  )
 
-  menuItemsData.forEach((item) => {
+  const menuItemsMap: { [id: number]: MenuItemNode } = {}
+
+  items.forEach((item) => {
     menuItemsMap[item.id] = {
+      ...item,
       id: item.id,
       name: item.name,
       icon: item.icon ? item.icon : null,
-      link: item.link,
-      parentId: item.parentId,
-      displayOrder: item.displayOrder,
-      document: item.document,
       children: [],
     }
   })
 
-  menuItemsData.forEach((item) => {
+  items.forEach((item) => {
     if (item.parentId) {
-      menuItemsMap[item.parentId].children.push(menuItemsMap[item.id])
+      menuItemsMap[item.parentId]?.children.push(menuItemsMap[item.id])
     }
   })
 
-  return menuItemsData
+  return items
     .filter((item) => item.parentId === null)
     .map((item) => menuItemsMap[item.id])
 }

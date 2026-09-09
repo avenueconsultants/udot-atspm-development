@@ -1,4 +1,4 @@
-import { RouteLocation } from '@/api/config'
+import { RouteLocationDto } from '@/api/config'
 import { useNotificationStore } from '@/stores/notifications'
 import { fetchRouteDistance } from '@/utils/fetchRouteDistance'
 import RefreshIcon from '@mui/icons-material/Refresh'
@@ -15,8 +15,8 @@ import { useState } from 'react'
 
 interface DistanceDisplayInputProps {
   hasErrors: boolean
-  link: RouteLocation
-  nextLink: RouteLocation
+  link: RouteLocationDto
+  nextLink?: RouteLocationDto
   handleDistanceChange: (locationIdentifier: string, distance: number) => void
 }
 
@@ -32,7 +32,7 @@ const DistanceInput = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const numeric = Number(event.target.value)
-    handleDistanceChange(link.locationIdentifier, numeric)
+    handleDistanceChange(link.locationIdentifier ?? '', numeric)
   }
 
   const handleRecalculateClick = async () => {
@@ -45,7 +45,7 @@ const DistanceInput = ({
       const response = await fetchRouteDistance([link, nextLink])
       if (response) {
         const distance = Math.round(response.distance)
-        handleDistanceChange(link.locationIdentifier, distance)
+        handleDistanceChange(link.locationIdentifier ?? '', distance)
       } else {
         addNotification({
           type: 'error',

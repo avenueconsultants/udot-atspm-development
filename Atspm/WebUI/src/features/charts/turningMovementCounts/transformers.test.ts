@@ -76,21 +76,21 @@ describe('transformTurningMovementCountsData', () => {
             direction: 'Northbound',
             movementType: 'Right',
             laneType: 'Vehicle',
-            volume: [],
+            volumes: [],
             peakHourVolume: { value: 30 },
           },
           {
             direction: 'Northbound',
             movementType: 'Thru + Thru-Right',
             laneType: 'Vehicle',
-            volume: [],
+            volumes: [],
             peakHourVolume: { value: 20 },
           },
           {
             direction: 'Northbound',
             movementType: 'Thru',
             laneType: 'Vehicle',
-            volume: [],
+            volumes: [],
             peakHourVolume: { value: 10 },
           },
         ],
@@ -147,8 +147,8 @@ describe('transformTurningMovementCountsData', () => {
             direction: 'Northbound',
             movementType: 'Thru',
             laneType: 'Vehicle',
-            volume: [],
-            peakHourVolume: null,
+            volumes: [],
+            peakHourVolume: undefined,
           },
         ],
         peakHourFactor: null,
@@ -168,5 +168,28 @@ describe('transformTurningMovementCountsData', () => {
     expect(infoText).toContain('Peak Hour Volume:  {values|N/A}')
     expect(infoText).toContain('Peak Hour Factor:  {values|N/A}')
     expect(infoText).toContain('fLU:  {values|N/A}')
+  })
+
+  // The table's CSV download names the file `${exportFileName}.csv`, so the
+  // no-results branch has to yield a usable stem rather than the string
+  // "undefined" - and formatExportFileName degrades to the bare title when
+  // there is no date range to append.
+  it('falls back to a bare filename when there are no results', () => {
+    const response: RawTurningMovementCountsResponse = {
+      type: ChartType.TurningMovementCounts,
+      data: {
+        charts: [],
+        peakHourFactor: null,
+        peakHour: null,
+      },
+    } as unknown as RawTurningMovementCountsResponse
+
+    const result = transformTurningMovementCountsData(
+      response
+    ) as TransformedTurningMovementCountsResponse
+
+    expect(result.data.displayProps?.exportFileName).toBe(
+      'Turning_Movement_Counts'
+    )
   })
 })

@@ -14,13 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  BaseChartData,
-  BaseChartOptions,
-  ChartType,
-  DataPoint,
-} from '@/features/charts/common/types'
-import { Plan } from '../turningMovementCounts/types'
+import { GreenTimeUtilizationResult } from '@/api/reports'
+import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
 
 export interface GreenTimeUtilizationChartOptions extends BaseChartOptions {
   xAxisBinSize: number
@@ -32,33 +27,9 @@ export interface GreenTimeUtilizationChartOptionsDefaults {
   yAxisBinSize: { id: number; value: string; option: string }
 }
 
-interface Layer {
-  dataValue: number
-  lowerEnd: number
-}
+export type Bin = { x: number; y: number; value: number }
 
-export interface Stack {
-  layers: Layer[]
-  timestamp: string
-}
-
-export interface Bin {
-  x: number
-  y: number
-  value: number
-}
-
-export interface RawGreenTimeUtilizationData extends BaseChartData {
-  approachId: number
-  approachDescription: string
-  bins: Bin[]
-  averageSplits: DataPoint[]
-  programmedSplits: DataPoint[]
-  phaseNumber: number
-  yAxisBinSize: number
-  xAxisBinSize: number
-  plans: Plan[]
-}
+export type RawGreenTimeUtilizationData = GreenTimeUtilizationResult
 
 export interface RawGreenTimeUtilizationResponse {
   type: ChartType.GreenTimeUtilization

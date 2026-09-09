@@ -25,33 +25,10 @@ import {
   createTooltip,
   createYAxis,
 } from '@/features/charts/common/transformers'
+import { createSpeedManagementTitle } from '@/features/charts/speedManagementTool/createSpeedManagementTitle'
 import { ExtendedEChartsOption } from '@/features/charts/types'
 import { Color, formatChartDateTimeRange } from '@/features/charts/utils'
 import { SM_ChartType } from '@/features/speedManagementTool/api/getSMCharts'
-import { createSpeedManagementTitle } from '@/features/charts/speedManagementTool/createSpeedManagementTitle'
-
-type DailySpeedViolationDto = {
-  date: string
-  dailyFlow: number
-  dailyViolationsCount: number
-  dailyExtremeViolationsCount: number
-  dailyPercentViolations: number
-  dailyPercentExtremeViolations: number
-}
-
-type SpeedViolationSegment = {
-  segmentId: string
-  segmentName: string
-  totalFlow: number
-  totalViolationsCount: number
-  totalExtremeViolationsCount: number
-  percentViolations: number
-  percentExtremeViolations: number
-  speedLimit: number
-  dailySpeedViolationsDto: DailySpeedViolationDto[]
-}
-
-export type SpeedViolationsResponse = SpeedViolationSegment[]
 
 export default function transformSpeedViolationsData(
   response: SpeedViolationsDto[]

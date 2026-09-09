@@ -1,6 +1,6 @@
 // #region license
 // Copyright 2026 Utah Departement of Transportation
-// for WebUI - utils.test.ts
+// for WebUI - ReportApiInsightsCard/utils.test.ts
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
 // limitations under the License.
 // #endregion
 import type { UsageEntry } from '@/api/config'
-import { formatInstantAsLocalDate } from '@/utils/dateTime'
-import {
-  buildByTime,
-  formatUsageLocalDateRange,
-} from './utils'
+import { buildByTime, formatUsageLocalDateRange } from './utils'
+
+// Computed independently of the dateTime helpers the card uses, so a
+// regression there cannot move the expected value along with the actual one.
+const pad2 = (n: number) => String(n).padStart(2, '0')
+const localDateStamp = (date: Date) =>
+  `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`
 
 describe('ReportApiInsightsCard usage time helpers', () => {
   it('groups usage rows by local day', () => {
@@ -32,6 +34,7 @@ describe('ReportApiInsightsCard usage time helpers', () => {
         success: true,
       },
       {
+        // The same instant, written with a different offset.
         id: 2,
         apiName: 'ReportApi',
         timestamp: '2026-05-20T20:30:00-06:00',
@@ -41,19 +44,18 @@ describe('ReportApiInsightsCard usage time helpers', () => {
 
     expect(
       buildByTime(rows, { groupBy: 'day', metric: 'ReportsGenerated' })
-    ).toEqual([{ name: formatInstantAsLocalDate(instant), count: 2 }])
+    ).toEqual([{ name: localDateStamp(new Date(instant)), count: 2 }])
   })
 
-  it('formats usage date ranges with local display semantics', () => {
+  // The bounds the filters produce carry no offset; the helpers read those
+  // as UTC and display them as local dates.
+  it('formats timezone-less usage bounds as local dates', () => {
     expect(
-      formatUsageLocalDateRange(
-        '2026-05-01T00:00:00',
-        '2026-05-21T00:00:00'
-      )
+      formatUsageLocalDateRange('2026-05-01T00:00:00', '2026-05-21T00:00:00')
     ).toBe(
-      `${formatInstantAsLocalDate(
-        '2026-05-01T00:00:00'
-      )} - ${formatInstantAsLocalDate('2026-05-21T00:00:00')}`
+      `${localDateStamp(new Date('2026-05-01T00:00:00Z'))} - ${localDateStamp(
+        new Date('2026-05-21T00:00:00Z')
+      )}`
     )
   })
 })

@@ -13,7 +13,6 @@ interface ApproachVolumeChartOptionsProps {
 export const ApproachVolumeChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: ApproachVolumeChartOptionsProps) => {
   const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 

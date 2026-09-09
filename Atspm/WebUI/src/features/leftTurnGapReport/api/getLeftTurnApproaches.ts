@@ -14,21 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { ApiResponse } from '@/types'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 
-import { configAxios } from '@/lib/axios'
+import { getApproach } from '@/api/config'
 
-export const getLeftTurnApproaches = async (
-  locationId: string
-): Promise<any> => {
-  const result: ApiResponse<any> = await configAxios.get(
-    `Approach?$filter=locationId eq ${locationId} and detectors/any(i:i/movementType eq 'L')&$select=id, description`
-  )
-  const leftTurnApproaches = result.value
-  return leftTurnApproaches
+export const getLeftTurnApproaches = async (locationId: string) => {
+  return getApproach({
+    filter: `locationId eq ${locationId} and detectors/any(i:i/movementType eq 'L')`,
+    select: 'id, description',
+  })
 }
 
 type QueryFnType = typeof getLeftTurnApproaches

@@ -14,17 +14,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { WatchDogIssueTypeGroup } from '@/api/reports'
 import { EChartsOption } from 'echarts'
 import { Color, lightenColor } from '../utils'
 
-interface RawWatchdogData {
-  issueType: number
-  products: {
-    manufacturer: string
-    model: string
-    firmware: string
-    counts: number
-  }[]
+// The runtime shape here is nested (products[].model[].firmware[].counts),
+// matching WatchDogIssueTypeGroup - the flat {manufacturer, model, firmware,
+// counts} version this type used to declare didn't match what the code
+// below actually reads off `response`.
+type RawWatchdogData = WatchDogIssueTypeGroup & {
   name: string
 }
 
@@ -136,13 +134,16 @@ function transformData(
   const totalIssueCount = filteredData.reduce(
     (sum, item) =>
       sum +
-      item.products.reduce(
+      (item.products ?? []).reduce(
         (productSum, product) =>
           productSum +
-          product.model.reduce(
+          (product.model ?? []).reduce(
             (modelSum, model) =>
               modelSum +
-              model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
+              (model.firmware ?? []).reduce(
+                (fwSum, fw) => fwSum + (fw.counts ?? 0),
+                0
+              ),
             0
           ),
         0
@@ -154,21 +155,27 @@ function transformData(
     const originalIndex = data.findIndex(
       (originalItem) => originalItem.name === item.name
     )
-    const issueTypeCount = item.products.reduce(
+    const issueTypeCount = (item.products ?? []).reduce(
       (sum, product) =>
         sum +
-        product.model.reduce(
+        (product.model ?? []).reduce(
           (modelSum, model) =>
             modelSum +
-            model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
+            (model.firmware ?? []).reduce(
+              (fwSum, fw) => fwSum + (fw.counts ?? 0),
+              0
+            ),
           0
         ),
       0
     )
 
+    // Both denominators here are sums over the data, so they are 0 on a
+    // dashboard where nothing has been flagged yet - a normal state, not an
+    // error. Dividing anyway wrote a literal "NaN%" into the sunburst node
+    // labels.
     const issueTypePercentage = (
-      (issueTypeCount / totalIssueCount) *
-      100
+      totalIssueCount > 0 ? (issueTypeCount / totalIssueCount) * 100 : 0
     ).toFixed(1)
 
     return {
@@ -176,13 +183,7 @@ function transformData(
       itemStyle: {
         color: issueTypeColors[originalIndex % issueTypeColors.length],
       },
-      children: item.products.map((product) => {
-        const productCount = product.model.reduce(
-          (sum, model) =>
-            sum + model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
-          0
-        )
-
+      children: (item.products ?? []).map((product) => {
         return {
           name: `${product.name}`,
           itemStyle: {
@@ -191,12 +192,7 @@ function transformData(
               15
             ),
           },
-          children: product.model.map((model) => {
-            const modelCount = model.firmware.reduce(
-              (sum, fw) => sum + fw.counts,
-              0
-            )
-
+          children: (product.model ?? []).map((model) => {
             return {
               name: `${model.name}`,
               itemStyle: {
@@ -205,14 +201,15 @@ function transformData(
                   30
                 ),
               },
-              children: model.firmware.map((fw) => {
+              children: (model.firmware ?? []).map((fw) => {
                 const fwPercentage = (
-                  (fw.counts / issueTypeCount) *
-                  100
+                  issueTypeCount > 0
+                    ? ((fw.counts ?? 0) / issueTypeCount) * 100
+                    : 0
                 ).toFixed(1)
                 return {
                   name: `${fw.name}\n${fwPercentage}%`,
-                  value: fw.counts,
+                  value: fw.counts ?? 0,
                   itemStyle: {
                     color: lightenColor(
                       issueTypeColors[originalIndex % issueTypeColors.length],

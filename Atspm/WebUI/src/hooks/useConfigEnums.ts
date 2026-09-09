@@ -14,8 +14,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { useGetRequest } from '@/hooks/useGetRequest'
-import { configAxios } from '@/lib/axios'
+import {
+  DetectionHardwareTypes,
+  DetectionTypes,
+  DeviceStatus,
+  DeviceTypes,
+  DirectionTypes,
+  LaneTypes,
+  LocationVersionActions,
+  MovementTypes,
+  TransportProtocols,
+  WatchDogIssueTypes,
+} from '@/api/config'
 
 export enum ConfigEnum {
   LocationVersionActions = 'LocationVersionActions',
@@ -30,62 +40,45 @@ export enum ConfigEnum {
   WatchDogIssueTypes = 'WatchDogIssueTypes',
 }
 
-type EnumMember = {
+export type EnumMember = {
   name: string
   value: number
 }
 
-type EnumType = {
-  name: string
-  members: EnumMember[]
-}
+// The config API serializes these enums by member name and accepts either the
+// name or the number on the way in. The generated consts carry both (the names
+// come from the spec's x-enum-varnames), so there is nothing to fetch - this
+// used to download and parse the OData $metadata document for every consumer.
+const membersOf = (members: Record<string, number>): EnumMember[] =>
+  Object.entries(members).map(([name, value]) => ({ name, value }))
 
-const parseEnumsFromXml = (
-  xmlData: string,
-  enumName: ConfigEnum
-): EnumType | undefined => {
-  const parser = new DOMParser()
-  const xmlDoc = parser.parseFromString(xmlData, 'application/xml')
-  const enumTypes = xmlDoc.getElementsByTagName('EnumType')
-
-  const enums = Array.from(enumTypes).map((enumType) => {
-    const name = enumType.getAttribute('Name') as string
-    const members = Array.from(enumType.getElementsByTagName('Member')).map(
-      (member) => ({
-        name: member.getAttribute('Name'),
-        value: parseInt(member.getAttribute('Value')),
-      })
-    )
-
-    return { name, members }
-  })
-
-  return enums.find((e) => e.name === ConfigEnum[enumName])
+const CONFIG_ENUM_MEMBERS: Record<ConfigEnum, EnumMember[]> = {
+  [ConfigEnum.LocationVersionActions]: membersOf(LocationVersionActions),
+  [ConfigEnum.DeviceStatus]: membersOf(DeviceStatus),
+  [ConfigEnum.DeviceTypes]: membersOf(DeviceTypes),
+  [ConfigEnum.TransportProtocols]: membersOf(TransportProtocols),
+  [ConfigEnum.DirectionTypes]: membersOf(DirectionTypes),
+  [ConfigEnum.MovementTypes]: membersOf(MovementTypes),
+  [ConfigEnum.LaneTypes]: membersOf(LaneTypes),
+  [ConfigEnum.DetectionHardwareTypes]: membersOf(DetectionHardwareTypes),
+  [ConfigEnum.DetectionTypes]: membersOf(DetectionTypes),
+  [ConfigEnum.WatchDogIssueTypes]: membersOf(WatchDogIssueTypes),
 }
 
 export function useConfigEnums(enumName: ConfigEnum) {
-  const { data, ...rest } = useGetRequest<EnumType>({
-    route: '/$metadata',
-    configAxios,
-    config: {
-      select: (xmlData: string) => parseEnumsFromXml(xmlData, enumName),
-    },
-  })
+  const data = CONFIG_ENUM_MEMBERS[enumName]
 
   const findEnumByNameOrAbbreviation = (
     nameOrAbbreviation: string | number
-  ): EnumMember | undefined => {
-    if (!data) return undefined
-    return data.members.find(
+  ): EnumMember | undefined =>
+    data.find(
       (member) =>
         member.name === nameOrAbbreviation ||
         member.value === nameOrAbbreviation
     )
-  }
 
   return {
-    data: data?.members,
+    data,
     findEnumByNameOrAbbreviation,
-    ...rest,
   }
 }

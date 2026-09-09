@@ -19,4 +19,3 @@ export interface Role {
   role: string
   claims: string[]
 }
-export type RolesResponse = Role[]

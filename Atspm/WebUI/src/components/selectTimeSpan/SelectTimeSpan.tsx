@@ -42,10 +42,12 @@ export interface SelectDateTimeProps {
   calendarLocation?: 'bottom' | 'right'
   startDateOnly?: boolean
   timePeriod?: boolean
-  startTimePeriod?: Date
-  endTimePeriod?: Date
-  changeStartTimePeriod?(date: Date): void
-  changeEndTimePeriod?(date: Date): void
+  // The time pickers can be cleared, which hands back null rather than a
+  // Date; callers that care about the difference have to be told about it.
+  startTimePeriod?: Date | null
+  endTimePeriod?: Date | null
+  changeStartTimePeriod?(date: Date | null): void
+  changeEndTimePeriod?(date: Date | null): void
   markDays?: Date[]
   dayAvailability?: CalendarDayAvailability[]
   onMonthChange?(date: Date): void
@@ -220,14 +222,14 @@ export default function SelectDateTime({
                   ampm={false}
                   closeOnSelect
                   value={startTimePeriod}
-                  onChange={(value) => changeStartTimePeriod?.(value as Date)}
+                  onChange={(value) => changeStartTimePeriod?.(value)}
                 />
                 <TimePicker
                   label="End Time"
                   ampm={false}
                   closeOnSelect
                   value={endTimePeriod}
-                  onChange={(value) => changeEndTimePeriod?.(value as Date)}
+                  onChange={(value) => changeEndTimePeriod?.(value)}
                 />
               </Box>
             </>

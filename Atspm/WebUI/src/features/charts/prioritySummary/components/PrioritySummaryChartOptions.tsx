@@ -4,7 +4,7 @@ import { Alert, SelectChangeEvent } from '@mui/material'
 import { useState } from 'react'
 
 interface PrioritySummaryChartOptionsProps {
-  chartDefaults: any
+  chartDefaults: { binSize: Default }
   handleChartOptionsUpdate: (update: Default) => void
   isMeasureDefaultView?: boolean
 }
@@ -13,7 +13,7 @@ export const PrioritySummaryChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
 }: PrioritySummaryChartOptionsProps) => {
-  const [binSize, setBinSize] = useState(15)
+  const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 
   const handleBinSizeChange = (event: SelectChangeEvent<string>) => {
     const newBinSize = event.target.value
@@ -36,7 +36,7 @@ export const PrioritySummaryChartOptions = ({
         <BinSizeDropdown
           value={binSize}
           handleChange={handleBinSizeChange}
-          id="approach-volume"
+          id="priority-summary"
         />
       )}
     </>

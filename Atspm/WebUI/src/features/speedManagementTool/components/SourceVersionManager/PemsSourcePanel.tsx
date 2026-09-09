@@ -17,7 +17,7 @@ type Form = z.infer<typeof schema>
 
 export default function PemsSourcePanel() {
   const { addNotification } = useNotificationStore()
-  const { mutate: processGeojson, isLoading } =
+  const { mutate: processGeojson, isPending: isLoading } =
     usePostApiV1EntityFileGeojsonFetchFile()
 
   const { register, control, handleSubmit, reset } = useForm<Form>({

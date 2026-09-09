@@ -1,10 +1,10 @@
-import { Location } from '@/api/config'
+import { SearchLocation as Location, useGetMeasureType } from '@/api/config'
 import { useChartDefaults } from '@/features/charts/api/getChartDefaults'
-import { useGetMeasureTypes } from '@/features/charts/api/getMeasureTypes'
 import { ApproachDelayChartOptions } from '@/features/charts/approachDelay/components/ApproachDelayChartOptions'
 import { ApproachSpeedChartOptions } from '@/features/charts/approachSpeed/components/ApproachSpeedChartOptions'
 import { ApproachVolumeChartOptions } from '@/features/charts/approachVolume/components/ApproachVolumeChartOptions'
 import { ArrivalsOnRedChartOptions } from '@/features/charts/arrivalsOnRed/components/ArrivalsOnRedChartOptions'
+import { abbreviationToChartType } from '@/features/charts/common/measureAbbreviations'
 import { ChartOptions, ChartType } from '@/features/charts/common/types'
 import { GreenTimeUtilizationChartOptions } from '@/features/charts/greenTimeUtilization/components/GreenTimeUtilizationChartOptions'
 import { LeftTurnGapAnalysisChartOptions } from '@/features/charts/leftTurnGapAnalysis/components/LeftTurnGapAnalysisChartOptions'
@@ -54,27 +54,6 @@ export const chartComponents = {
   RampMetering: RampMeteringChartOptions,
 } as const
 
-const abbreviationToChartType = {
-  AD: ChartType.ApproachDelay,
-  AV: ChartType.ApproachVolume,
-  AoR: ChartType.ArrivalsOnRed,
-  Speed: ChartType.ApproachSpeed,
-  GTU: ChartType.GreenTimeUtilization,
-  LTGA: ChartType.LeftTurnGapAnalysis,
-  PedD: ChartType.PedestrianDelay,
-  PCD: ChartType.PurdueCoordinationDiagram,
-  TSPS: ChartType.PrioritySummary,
-  PD: ChartType.PreemptionDetails,
-  PPT: ChartType.PurduePhaseTermination,
-  SF: ChartType.PurdueSplitFailure,
-  SM: ChartType.SplitMonitor,
-  TAA: ChartType.TimingAndActuation,
-  TMC: ChartType.TurningMovementCounts,
-  WT: ChartType.WaitTime,
-  YRA: ChartType.YellowAndRedActuations,
-  RM: ChartType.RampMetering,
-}
-
 interface SelectChartProps {
   chartType: ChartType | null
   setChartType: (chart: ChartType | null) => void
@@ -91,11 +70,12 @@ const SelectChart = ({
   location,
 }: SelectChartProps) => {
   const { data: chartDefaultsData, isLoading } = useChartDefaults()
-  const { data: measureTypesData } = useGetMeasureTypes()
+  const { data: measureTypesData, isPending: measureTypesPending } =
+    useGetMeasureType()
 
   const chartDefaultsRaw =
     chartDefaultsData &&
-    chartDefaultsData.value.find((chart) => chart.chartType === chartType)
+    chartDefaultsData.find((chart) => chart.chartType === chartType)
       ?.measureOptions
 
   const chartDefaultsForUi: Default[] | undefined = useMemo(() => {
@@ -137,13 +117,14 @@ const SelectChart = ({
   const availableCharts = useMemo(() => {
     if (!measureTypesData || !location) return {}
 
-    const unsortedCharts = measureTypesData.value.reduce(
+    const unsortedCharts = measureTypesData.reduce(
       (acc, measureType) => {
         if (
           location?.charts?.includes(measureType.id) &&
           measureType.showOnWebsite
         ) {
-          const chartType = abbreviationToChartType[measureType.abbreviation]
+          const chartType =
+            abbreviationToChartType[measureType.abbreviation ?? '']
           if (chartType) {
             acc[chartType] = chartComponents[chartType]
           }
@@ -183,6 +164,13 @@ const SelectChart = ({
   }
 
   useEffect(() => {
+    // Until the measure list has arrived nothing is "available", and a
+    // chart type that came from the URL would be cleared for no reason -
+    // and never restored, because the URL is applied only once. A list
+    // that failed to load is a different matter: nothing is offered, so
+    // the chart type is cleared as it would be for an empty list.
+    if (measureTypesPending) return
+
     if (location && !isChartTypeAvailable) {
       setChartType(null)
     } else if (
@@ -192,7 +180,14 @@ const SelectChart = ({
     ) {
       setChartType(ChartType.PurduePhaseTermination)
     }
-  }, [location, chartType, availableCharts, setChartType, isChartTypeAvailable])
+  }, [
+    location,
+    chartType,
+    availableCharts,
+    setChartType,
+    isChartTypeAvailable,
+    measureTypesPending,
+  ])
 
   const handleChartOptionsUpdate = (update: {
     option: string

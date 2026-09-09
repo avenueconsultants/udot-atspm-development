@@ -28,14 +28,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const activeTransportationSchema = z.object({
-  locations: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      approaches: z.array(z.any()),
-      locationIdentifier: z.string(),
-    })
-  ),
+  locations: z.array(z.custom<Location>()),
   timeUnit: z.number(),
   startDate: z.date(),
   endDate: z.date(),
@@ -93,14 +86,14 @@ async function resolveLocationsByIdentifier(
     expand: 'approaches',
   })
 
-  const found = resp?.value ?? []
+  const found = resp ?? []
 
   const byIdentifier = new Map(found.map((l) => [l.locationIdentifier, l]))
   return ids.map((id) => byIdentifier.get(id)).filter(Boolean) as Location[]
 }
 
 const ActiveTransportation = () => {
-  const { mutateAsync: fetchPedestrianData, isLoading } =
+  const { mutateAsync: fetchPedestrianData, isPending: isLoading } =
     useGetPedestrianAggregationLocationData()
 
   const defaultStart = useMemo(() => startOfDay(subYears(new Date(), 1)), [])
@@ -148,8 +141,8 @@ const ActiveTransportation = () => {
         const hydrated = await resolveLocationsByIdentifier(qs.locations)
         const ordered = hydrated.sort(
           (a, b) =>
-            qs.locations.indexOf(a.locationIdentifier) -
-            qs.locations.indexOf(b.locationIdentifier)
+            qs.locations.indexOf(a.locationIdentifier ?? '') -
+            qs.locations.indexOf(b.locationIdentifier ?? '')
         )
         if (ordered.length > 0) setValue('locations', ordered)
       })()
@@ -213,22 +206,6 @@ const ActiveTransportation = () => {
     setValue('locations', newLocations)
   }
 
-  const handleUpdateLocation = (updatedLocation: Location) => {
-    const updatedLocations = locations.map((loc) =>
-      loc.id === updatedLocation.id ? updatedLocation : loc
-    )
-    setValue('locations', updatedLocations)
-
-    if (errorState.type === 'MISSING_PHASES') {
-      const newIDs = new Set(errorState.locationIDs)
-      if (newIDs.size === 0) {
-        setErrorState({ type: 'NONE' })
-      } else {
-        setErrorState({ type: 'MISSING_PHASES', locationIDs: newIDs })
-      }
-    }
-  }
-
   const handleGenerateReport = async () => {
     const formData = form.getValues()
     if (formData.locations.length === 0) {
@@ -238,7 +215,7 @@ const ActiveTransportation = () => {
     setErrorState({ type: 'NONE' })
 
     await setQs({
-      locations: formData.locations.map((l) => l.locationIdentifier),
+      locations: formData.locations.map((l) => l.locationIdentifier ?? ''),
       timeUnit: formData.timeUnit,
       start: formData.startDate,
       end: formData.endDate,
@@ -248,7 +225,7 @@ const ActiveTransportation = () => {
     const charts = await fetchPedestrianData({
       data: {
         locationIdentifiers: formData.locations.map(
-          (l) => l.locationIdentifier
+          (l) => l.locationIdentifier ?? ''
         ),
         startDate: dateToTimestamp(formData.startDate),
         endDate: dateToTimestamp(formData.endDate),
@@ -325,7 +302,6 @@ const ActiveTransportation = () => {
         setPhase={(phase) => setValue('phase', phase)}
         onLocationDelete={handleLocationDelete}
         onReorderLocations={handleReorderLocations}
-        onUpdateLocation={handleUpdateLocation}
       />
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>

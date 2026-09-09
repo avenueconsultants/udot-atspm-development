@@ -1,72 +1,88 @@
+import {
+  SearchLocation as Location,
+  Region,
+  useDeleteRegionFromKey,
+  useGetLocationLocationsForSearch,
+  useGetRegion,
+  usePatchRegionFromKey,
+  usePostRegion,
+} from '@/api/config'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useRegion } from '@/features/generic/api/getData'
 import {
   PageNames,
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import { useLatestVersionOfAllLocations } from '@/features/locations/api'
-import {
-  useCreateRegion,
-  useDeleteRegion,
-  useEditRegion,
-} from '@/features/region/api/regionApi'
 import RegionEditorModal from '@/features/regions/components/RegionEditorModal'
-import { formatInstantAsLocalDate, formatInstantAsLocalDateTime } from '@/utils/dateTime'
+import { useNotificationStore } from '@/stores/notifications'
+import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 
 const RegionsAdmin = () => {
   const pageAccess = useViewPage(PageNames.Region)
+  const { addNotification } = useNotificationStore()
   const hasLocationsEditClaim = useUserHasClaim('LocationConfiguration:Edit')
   const hasLocationsDeleteClaim = useUserHasClaim(
     'LocationConfiguration:Delete'
   )
 
-  const { mutateAsync: createMutation } = useCreateRegion()
-  const { mutateAsync: deleteMutation } = useDeleteRegion()
-  const { mutateAsync: editMutation } = useEditRegion()
+  const { mutateAsync: createMutation } = usePostRegion()
+  const { mutateAsync: deleteMutation } = useDeleteRegionFromKey()
+  const { mutateAsync: editMutation } = usePatchRegionFromKey()
 
-  const { data: locationsData } = useLatestVersionOfAllLocations()
-  const locations = locationsData?.value
+  const { data: locations } = useGetLocationLocationsForSearch()
 
-  const { data: regionData, isLoading, refetch: refetchRegions } = useRegion()
-
-  const regions = regionData?.value
+  const { data: regions, isLoading, refetch: refetchRegions } = useGetRegion()
 
   if (pageAccess.isLoading) {
     return null
   }
-  const HandleCreateRegion = async (regionData) => {
+  const HandleCreateRegion = async (regionData: Region) => {
     const { id, description } = regionData
     try {
-      await createMutation({ id, description })
+      await createMutation({ data: { id, description } })
+      addNotification({ title: 'Region created successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error creating region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
-  const HandleDeleteRegion = async (id: number) => {
+  const HandleDeleteRegion = async (id: string | number) => {
     try {
-      await deleteMutation(id)
+      await deleteMutation({ key: Number(id) })
+      addNotification({ title: 'Region deleted successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error deleting region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
-  const HandleEditRegion = async (regionData) => {
+  const HandleEditRegion = async (regionData: Region) => {
     const { id, description } = regionData
     try {
       await editMutation({
         data: { id, description },
-        id,
+        key: Number(id),
       })
+      addNotification({ title: 'Region updated successfully.', type: 'success' })
       refetchRegions()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error updating region: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
@@ -78,12 +94,12 @@ const RegionsAdmin = () => {
     regionId: number,
     objects: Location[]
   ): { id: number; name: string }[] => {
-    const associatedLocations = objects.filter((object) => {
-      return object.regionId === regionId
-    })
+    const associatedLocations = objects.filter(
+      (object) => object.regionId === regionId && object.id != null
+    )
 
     return associatedLocations.map((location) => ({
-      id: location.id,
+      id: location.id as number,
       name: `${location.primaryName} & ${location.secondaryName}`,
     }))
   }

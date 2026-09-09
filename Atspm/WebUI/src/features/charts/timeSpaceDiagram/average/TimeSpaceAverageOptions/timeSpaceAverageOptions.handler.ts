@@ -14,12 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { LocationWithCoordPhases, LocationWithSequence } from '@/api/config'
+import {
+  LocationWithCoordPhases,
+  LocationWithSequence,
+  Route,
+  RouteLocation,
+} from '@/api/config'
 import { ToolType } from '@/features/charts/common/types'
 import type { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/shared/options/timeSpaceBaseHandler'
 import { TimeSpaceAverageOptions } from '@/features/charts/timeSpaceDiagram/shared/types'
-import { Route, RouteLocation } from '@/features/routes/types'
-import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
+import { DateTimeProps, NullableTimeOnlyProps } from '@/types/TimeProps'
 import {
   formatTime,
   formatUtcDateToYYYYMMDD,
@@ -44,7 +48,7 @@ const COORD_PARAM = 'coordinatedPhases'
 export interface TSAverageHandler
   extends TSBaseHandler,
     DateTimeProps,
-    TimeOnlyProps {
+    NullableTimeOnlyProps {
   selectedDays: number[]
   updateDaysOfWeek(daysOfWeek: number[]): void
 
@@ -93,8 +97,10 @@ export const useAverageOptionsHandler = ({
 
   const [startDate, setStartDate] = useState<Date>(defaultStartDate)
   const [endDate, setEndDate] = useState<Date>(defaultEndDate)
-  const [startTime, setStartTime] = useState<Date>(defaultStartTime)
-  const [endTime, setEndTime] = useState<Date>(defaultEndTime)
+  // Null once the picker is cleared: the run is blocked until both ends are
+  // set again, so the empty state has to survive in state.
+  const [startTime, setStartTime] = useState<Date | null>(defaultStartTime)
+  const [endTime, setEndTime] = useState<Date | null>(defaultEndTime)
 
   const [routeLocationsForSelectedRoute, setRouteLocationsForSelectedRoute] =
     useState<RouteLocation[]>([])
@@ -120,24 +126,37 @@ export const useAverageOptionsHandler = ({
     const route = routes.find((r) => r.id === Number.parseInt(routeId))
     if (!route) return
 
-    setRouteLocationsForSelectedRoute(route.routeLocations)
+    const routeLocations = route.routeLocations ?? []
 
-    const locationToSequence: LocationWithSequence[] = []
-    const locationWithCoordPhases: LocationWithCoordPhases[] = []
+    setRouteLocationsForSelectedRoute(routeLocations)
 
-    route.routeLocations?.forEach((rl) => {
-      locationToSequence.push({
-        locationIdentifier: rl.locationIdentifier,
-        sequence: defaultSequence,
-      })
-      locationWithCoordPhases.push({
-        locationIdentifier: rl.locationIdentifier,
-        coordinatedPhases: [...defaultCoordinatedPhases],
-      })
-    })
-
-    setRouteLocationWithSequence(locationToSequence)
-    setRouteLocationWithCoordPhases(locationWithCoordPhases)
+    // One entry per location on the route, in route order. A location that
+    // already carries a sequence keeps it - this effect also runs right after
+    // a shared link has been applied, and rebuilding from scratch there would
+    // silently run the defaults instead of the options in the URL. Locations
+    // that left the route drop out.
+    setRouteLocationWithSequence((prev) =>
+      routeLocations.map(
+        (rl) =>
+          prev.find(
+            (item) => item.locationIdentifier === rl.locationIdentifier
+          ) ?? {
+            locationIdentifier: rl.locationIdentifier,
+            sequence: defaultSequence.map((ring) => [...ring]),
+          }
+      )
+    )
+    setRouteLocationWithCoordPhases((prev) =>
+      routeLocations.map(
+        (rl) =>
+          prev.find(
+            (item) => item.locationIdentifier === rl.locationIdentifier
+          ) ?? {
+            locationIdentifier: rl.locationIdentifier,
+            coordinatedPhases: [...defaultCoordinatedPhases],
+          }
+      )
+    )
   }, [routeId, routes])
 
   const applyFromOptions = (options: Partial<TimeSpaceAverageOptions>) => {
@@ -259,11 +278,11 @@ export const useAverageOptionsHandler = ({
     changeStartDate: (d: Date) => setStartDate(d),
     changeEndDate: (d: Date) => setEndDate(d),
 
-    // TimeOnlyProps
+    // NullableTimeOnlyProps
     startTime,
     endTime,
-    changeStartTime: (d: Date) => setStartTime(d),
-    changeEndTime: (d: Date) => setEndTime(d),
+    changeStartTime: (d: Date | null) => setStartTime(d),
+    changeEndTime: (d: Date | null) => setEndTime(d),
 
     // base setters
     setRouteId: (id: string) => setRouteId(id),

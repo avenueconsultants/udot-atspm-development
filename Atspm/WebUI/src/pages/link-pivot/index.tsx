@@ -1,3 +1,4 @@
+import { getApiErrorMessage } from '@/lib/apiError'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { ToolType } from '@/features/charts/common/types'
 import { useLinkPivotAdjustment } from '@/features/tools/link-pivot/api/getLinkPivotAdjustments'
@@ -12,7 +13,6 @@ import {
 import { toUTCDateWithTimeStamp } from '@/utils/dateTime'
 import { LoadingButton } from '@mui/lab'
 import { Alert, Box, Paper, Typography } from '@mui/material'
-import { AxiosError } from 'axios'
 import { useEffect, useState } from 'react'
 
 const getDefaultChartOptions = (): LinkPivotAdjustmentOptions => {
@@ -94,9 +94,7 @@ const LinkPivot = () => {
         </LoadingButton>
         {isError && (
           <Alert severity="error" sx={{ marginLeft: 1 }}>
-            {error instanceof AxiosError
-              ? error.response?.data
-              : (error as Error).message}
+            {getApiErrorMessage(error)}
           </Alert>
         )}
         {alert && (

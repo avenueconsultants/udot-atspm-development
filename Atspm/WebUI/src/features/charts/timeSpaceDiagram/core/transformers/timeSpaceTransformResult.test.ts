@@ -1,6 +1,6 @@
 import type {
+  NormalizedTimeSpacePhaseResult,
   TimeSpaceBaseData,
-  TimeSpaceDiagramPhaseResult,
 } from '../../shared/types'
 import { unwrapTimeSpaceTransformResults } from './timeSpaceTransformResult'
 
@@ -28,7 +28,7 @@ describe('unwrapTimeSpaceTransformResults', () => {
   it('keeps failed rows that include result metadata', () => {
     const failedWithMetadata = buildBaseData('5112')
     const successful = buildBaseData('5113')
-    const wrappedData: TimeSpaceDiagramPhaseResult<TimeSpaceBaseData>[] = [
+    const wrappedData: NormalizedTimeSpacePhaseResult<TimeSpaceBaseData>[] = [
       {
         error: 'No controller event logs found',
         isSuccess: false,

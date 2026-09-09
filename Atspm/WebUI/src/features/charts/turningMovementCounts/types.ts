@@ -15,9 +15,12 @@
 // limitations under the License.
 // #endregion
 import {
-  BaseChartData,
+  KeyValuePairOfDateTimeInt32,
+  TurningMovementCountData,
+  TurningMovementCountsLanesResult,
+} from '@/api/reports'
+import {
   BaseChartOptions,
-  BasePlan,
   ChartType,
   DataPoint,
 } from '@/features/charts/common/types'
@@ -33,43 +36,24 @@ export interface TurningMovementCountsChartOptionsDefaults {
   combineThruRight?: { id: number; value: string; option: string }
 }
 
-export type Plan = BasePlan
+export type RawTurningMovementCountsData = TurningMovementCountsLanesResult
 
-interface Lane {
-  laneNumber: number
-  movementType: string
-  volume: DataPoint[]
-  laneType: number
-}
-
-export interface RawTurningMovementCountsData extends BaseChartData {
-  direction: string
-  laneType: string
-  movementType: string
-  plans: Plan[]
-  lanes: Lane[]
-  totalHourlyVolumes?: DataPoint[]
-  totalVolume: number
-  peakHour: string | null
-  peakHourVolume: number | null
-  peakHourFactor: number | null
-  laneUtilizationFactor: number | null
-}
+export type RawTurningMovementCountTableRow = TurningMovementCountData
 
 export interface RawTurningMovementCountsResponse {
   type: ChartType.TurningMovementCounts
   data: {
     charts: RawTurningMovementCountsData[]
     table: RawTurningMovementCountTableRow[]
-    peakHourFactor: number | null
-    peakHour: { key: string; value: number } | null
+    peakHourFactor: number | null | undefined
+    peakHour: KeyValuePairOfDateTimeInt32 | null | undefined
   }
 }
 
-export interface RawTurningMovementCountTableRow {
+export interface NormalizedTurningMovementCountTableRow {
   direction: string
   movementType: string
   laneType: string
-  volume: { value: number; timestamp: string }[]
-  peakHourVolume?: { value: number } | null
+  volumes: DataPoint[]
+  peakHourVolume: { value: number } | null
 }

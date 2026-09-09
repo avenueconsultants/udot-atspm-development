@@ -12,7 +12,6 @@ interface GreenTimeUtilizationChartOptionsProps {
 export const GreenTimeUtilizationChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: GreenTimeUtilizationChartOptionsProps) => {
   const [xAxisBinSize, setxAxisBinSize] = useState(
     chartDefaults.xAxisBinSize?.value
@@ -60,70 +59,70 @@ export const GreenTimeUtilizationChartOptions = ({
 
   return (
     <>
-          {yAxisBinSize === undefined ? (
-          <Alert severity="error" sx={{ mt: 1 }}>
-            Y-Axis Bin Size default value not found.
-          </Alert>
-        ) : (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '0.25rem',
-        }}
-      >
-        <Typography>Y-Axis Bin Size</Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <label htmlFor="y-axis-bin-size" style={visuallyHidden}>
-            Y-Axis Bin Size
-          </label>
-          <FormControl sx={{ width: '60px' }}>
-            <TextField
-              id="y-axis-bin-size"
-              type="number"
-              value={yAxisBinSize}
-              onChange={handleYAxisBinSizeChange}
-              variant="standard"
-            />
-          </FormControl>
-          <Typography variant="caption" sx={{ marginLeft: '0.5rem' }}>
-            sec
-          </Typography>
-        </Box>
-      </Box>
-        )}
-      {xAxisBinSize === undefined ? (
-          <Alert severity="error" sx={{ mt: 1 }}>
-            X-Axis Bin Size default value not found.
-          </Alert>
-        ) : (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: '0.25rem',
-        }}
-      >
-        <Typography>X-Axis Bin Size</Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FormControl sx={{ width: '60px' }}>
-            <label htmlFor="x-axis-bin-size" style={visuallyHidden}>
-              X-Axis Bin Size
+      {yAxisBinSize === undefined ? (
+        <Alert severity="error" sx={{ mt: 1 }}>
+          Y-Axis Bin Size default value not found.
+        </Alert>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '0.25rem',
+          }}
+        >
+          <Typography>Y-Axis Bin Size</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <label htmlFor="y-axis-bin-size" style={visuallyHidden}>
+              Y-Axis Bin Size
             </label>
-            <TextField
-              id="x-axis-bin-size"
-              type="number"
-              value={xAxisBinSize}
-              onChange={handleXAxisBinSizeChange}
-              variant="standard"
-            />
-          </FormControl>
-          <Typography variant="caption" sx={{ marginLeft: '0.5rem' }}>
-            min
-          </Typography>
+            <FormControl sx={{ width: '60px' }}>
+              <TextField
+                id="y-axis-bin-size"
+                type="number"
+                value={yAxisBinSize}
+                onChange={handleYAxisBinSizeChange}
+                variant="standard"
+              />
+            </FormControl>
+            <Typography variant="caption" sx={{ marginLeft: '0.5rem' }}>
+              sec
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-        )}
+      )}
+      {xAxisBinSize === undefined ? (
+        <Alert severity="error" sx={{ mt: 1 }}>
+          X-Axis Bin Size default value not found.
+        </Alert>
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '0.25rem',
+          }}
+        >
+          <Typography>X-Axis Bin Size</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormControl sx={{ width: '60px' }}>
+              <label htmlFor="x-axis-bin-size" style={visuallyHidden}>
+                X-Axis Bin Size
+              </label>
+              <TextField
+                id="x-axis-bin-size"
+                type="number"
+                value={xAxisBinSize}
+                onChange={handleXAxisBinSizeChange}
+                variant="standard"
+              />
+            </FormControl>
+            <Typography variant="caption" sx={{ marginLeft: '0.5rem' }}>
+              min
+            </Typography>
+          </Box>
+        </Box>
+      )}
     </>
   )
 }

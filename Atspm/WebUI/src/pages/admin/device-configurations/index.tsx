@@ -33,14 +33,14 @@ const DevicesAdmin = () => {
   const { mutateAsync: editMutation } = usePutDeviceConfigurationFromKey()
 
   const { data: allDevicesData } = useGetDevice()
-  const devices = allDevicesData?.value
+  const devices = allDevicesData
 
   const {
     data: deviceConfigurationData,
     isLoading,
     refetch: refetchDeviceConfiguration,
   } = useGetDeviceConfiguration()
-  const deviceConfigurations = deviceConfigurationData?.value
+  const deviceConfigurations = deviceConfigurationData
 
   const { data: productData } = useGetProduct()
 
@@ -94,9 +94,9 @@ const DevicesAdmin = () => {
     }
   }
 
-  const HandleDeleteDevice = async (id: number) => {
+  const HandleDeleteDevice = async (id: string | number) => {
     try {
-      await deleteMutation({ key: id })
+      await deleteMutation({ key: Number(id) })
       refetchDeviceConfiguration()
       addNotification({
         type: 'success',
@@ -112,7 +112,7 @@ const DevicesAdmin = () => {
   }
 
   const getProductDetails = (productId: number) => {
-    const product = productData?.value.find((p) => p.id === productId)
+    const product = productData?.find((p) => p.id === productId)
     return product ? `${product.model}` : ''
   }
 

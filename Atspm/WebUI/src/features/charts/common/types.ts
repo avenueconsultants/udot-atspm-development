@@ -18,11 +18,11 @@ import { PrioritySummaryResult } from '@/api/reports'
 import { PrioritySummaryOptions } from '@/api/reports/report-api.schemas'
 import {
   ApproachDelayChartOptions,
-  RawApproachDelayReponse,
+  RawApproachDelayResponse,
 } from '@/features/charts/approachDelay/types'
 import {
   ApproachSpeedChartOptions,
-  RawApproachSpeedReponse,
+  RawApproachSpeedResponse,
 } from '@/features/charts/approachSpeed/types'
 import {
   ApproachVolumeChartOptions,
@@ -81,15 +81,9 @@ import {
   RawYellowAndRedActuationsResponse,
   YellowAndRedActuationsChartOptions,
 } from '@/features/charts/yellowAndRedActuations/types'
-import {
-  LinkPivotOptions,
-  RawLinkPivotPcdResponse,
-} from '@/features/tools/link-pivot/types'
+import { LinkPivotFormOptions } from '@/features/tools/link-pivot/types'
 import { RawRampMeteringResponse } from '../rampMetering/types'
-import {
-  RawTimeSpaceDiagramResponse,
-  TimeSpaceOptions,
-} from '../timeSpaceDiagram/shared/types'
+import { TimeSpaceOptions } from '../timeSpaceDiagram/shared/types'
 
 export interface BaseChartOptions {
   locationIdentifier: string
@@ -103,6 +97,15 @@ export interface BasePlan {
   start: string
   end: string
   backgroundColor?: string
+}
+
+// What createPlans actually needs from a plan. The generated report types
+// make these optional and nullable, which BasePlan - the hand-written shape
+// the chart-local plan types extend - does not.
+export interface PlanWindow {
+  start?: string | null
+  end?: string | null
+  planDescription?: string | null
 }
 
 export type PlanData = [string, 1, string]
@@ -136,8 +139,8 @@ export interface DataPoint {
 }
 
 export type RawChartResponse =
-  | RawApproachDelayReponse
-  | RawApproachSpeedReponse
+  | RawApproachDelayResponse
+  | RawApproachSpeedResponse
   | RawApproachVolumeResponse
   | RawArrivalsOnRedResponse
   | RawGreenTimeUtilizationResponse
@@ -154,10 +157,6 @@ export type RawChartResponse =
   | RawWaitTimeResponse
   | RawYellowAndRedActuationsResponse
   | RawRampMeteringResponse
-
-export type RawToolResponse =
-  | RawTimeSpaceDiagramResponse
-  | RawLinkPivotPcdResponse
 
 export type ChartOptions =
   | BaseChartOptions
@@ -179,27 +178,7 @@ export type ChartOptions =
   | WaitTimeChartOptions
   | YellowAndRedActuationsChartOptions
 
-export type ToolOptions = TimeSpaceOptions | LinkPivotOptions
-
-export type ChartOptionType =
-  | 'ApproachDelay'
-  | 'ApproachSpeed'
-  | 'ApproachVolume'
-  | 'ArrivalsOnRed'
-  | 'GreenTimeUtilization'
-  | 'LeftTurnGapAnalysis'
-  | 'PedestrianDelay'
-  | 'PreemptionDetails'
-  | 'PrioritySummary'
-  | 'PurdueCoordinationDiagram'
-  | 'PurduePhaseTermination'
-  | 'PurdueSplitFailure'
-  | 'SplitMonitor'
-  | 'TimingAndActuation'
-  | 'TurningMovementCounts'
-  | 'WaitTime'
-  | 'YellowAndRedActuations'
-  | 'RampMetering'
+export type ToolOptions = TimeSpaceOptions | LinkPivotFormOptions
 
 export enum ChartType {
   ApproachDelay = 'ApproachDelay',

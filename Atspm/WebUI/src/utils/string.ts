@@ -14,37 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+
+/**
+ * Turns a camelCase or PascalCase identifier into words: a space goes before
+ * each capital that starts a word, while a run of capitals (an acronym) stays
+ * together. "totalRedTime" -> "total Red Time", "ABCFoo" -> "ABC Foo".
+ */
 export function addSpaces(s: string): string {
   if (!s) return s
 
-  const result: string[] = []
-  let firstCapitalFound = false
-
-  for (const ch of s.toString()) {
-    if (ch === ch.toUpperCase() && ch !== ch.toLowerCase()) {
-      if (firstCapitalFound) {
-        // Subsequent capital letters
-        const prevChar = result[result.length - 1]
-        // If previous character is uppercase, append without space
-        // Otherwise, insert a space before the capital
-        if (
-          prevChar === prevChar.toUpperCase() &&
-          prevChar !== prevChar.toLowerCase()
-        ) {
-          result.push(ch)
-        } else {
-          result.push(' ' + ch)
-        }
-      } else {
-        // First capital letter: just append
-        result.push(ch)
-        firstCapitalFound = true
-      }
-    } else {
-      // Non-capital characters are appended directly
-      result.push(ch)
-    }
-  }
-
-  return result.join('')
+  return String(s)
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
 }

@@ -14,16 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { DetectionTypeCount } from '@/features/watchdog/types'
+import { DetectionTypeGroup } from '@/api/config'
 import { EChartsOption } from 'echarts'
 
 const transformDetectionTypeCountData = (
-  data: DetectionTypeCount[]
+  data: DetectionTypeGroup[]
 ): EChartsOption => {
-  const total = data.reduce((sum, item) => sum + item.count, 0)
+  const total = data.reduce((sum, item) => sum + (item.count ?? 0), 0)
   const seriesData = data.map((item) => ({
-    value: item.count,
-    name: item.id,
+    value: item.count ?? 0,
+    name: item.id ?? 'Unknown',
   }))
 
   return {
@@ -65,7 +65,11 @@ const transformDetectionTypeCountData = (
         label: {
           show: true,
           formatter: (params: any) => {
-            const percent = ((params.value / total) * 100).toFixed(1)
+            // total is 0 before anything has reported in, which is a
+            // normal empty-dashboard state - dividing by it put a
+            // literal "NaN%" in the slice label.
+            const percent =
+              total > 0 ? ((params.value / total) * 100).toFixed(1) : '0.0'
             return `${params.name}\n${params.value} (${percent}%)`
           },
           position: 'inside',

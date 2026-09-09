@@ -64,12 +64,23 @@ export default function transformArrivalsOnRedData(
 }
 
 function transformData(data: RawArrivalsOnRedData) {
-  const { percentArrivalsOnRed, totalVehicles, arrivalsOnRed, plans } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const percentArrivalsOnRed = data.percentArrivalsOnRed ?? []
+  const totalVehicles = data.totalVehicles ?? []
+  const arrivalsOnRed = data.arrivalsOnRed ?? []
+  const plans = data.plans ?? []
 
   const info = createInfoString(
-    ['Total Detector Hits: ', data.totalDetectorHits.toLocaleString()],
-    [`% Arrivals on Red (AoR): `, `${data.percentArrivalOnRed.toFixed(2)}%`],
-    ['Total Arrivals on Red: ', data.totalArrivalOnRed.toLocaleString()]
+    ['Total Detector Hits: ', (data.totalDetectorHits ?? 0).toLocaleString()],
+    [
+      `% Arrivals on Red (AoR): `,
+      `${(data.percentArrivalOnRed ?? 0).toFixed(2)}%`,
+    ],
+    ['Total Arrivals on Red: ', (data.totalArrivalOnRed ?? 0).toLocaleString()]
   )
 
   const titleHeader = `Arrivals on Red\n${data.locationDescription} - ${data.phaseDescription}`

@@ -1,13 +1,13 @@
 import {
-  useDeleteApiV1RolesRoleName,
-  useGetApiV1Roles,
-  usePostApiV1Roles,
+  useDeleteRolesRoleFromRoleName,
+  useGetClaimsAddClaimsToRoleFromRoleName,
+  useGetRolesCreateRole,
+  useGetRolesRoles,
 } from '@/api/identity/atspmAuthenticationApi'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useFlags } from '@/feature-flags/FeatureFlagContext'
-import { useAddRoleClaims } from '@/features/identity/api/addRoleClaims'
 import {
   PageNames,
   useUserHasClaim,
@@ -25,11 +25,15 @@ const RolesAdmin = () => {
   const hasRolesDeleteClaim = useUserHasClaim('Role:Delete')
   const { addNotification } = useNotificationStore()
 
-  const { data: roles, isLoading, refetch: refetchRoles } = useGetApiV1Roles()
+  const {
+    data: roles,
+    isLoading,
+    refetch: refetchRoles,
+  } = useGetRolesRoles<Role[]>()
 
-  const { mutateAsync: createMutation } = usePostApiV1Roles()
-  const { mutateAsync: deleteMutation } = useDeleteApiV1RolesRoleName()
-  const { mutateAsync: editMutation } = useAddRoleClaims()
+  const { mutateAsync: createMutation } = useGetRolesCreateRole()
+  const { mutateAsync: deleteMutation } = useDeleteRolesRoleFromRoleName()
+  const { mutateAsync: editMutation } = useGetClaimsAddClaimsToRoleFromRoleName()
 
   const builtInRoles = [
     {
@@ -102,7 +106,8 @@ const RolesAdmin = () => {
     protectedRoles.push('SpeedConfigurationAdmin')
   }
 
-  const HandleDeleteRole = async (roleName: string) => {
+  const HandleDeleteRole = async (roleNameKey: string | number) => {
+    const roleName = String(roleNameKey)
     if (protectedRoles.includes(roleName)) {
       return
     }
@@ -123,7 +128,7 @@ const RolesAdmin = () => {
     try {
       await editMutation({
         roleName: roleData.roleName,
-        claims: roleData.claims,
+        data: { claims: roleData.claims },
       })
       refetchRoles()
       addNotification({
@@ -149,7 +154,7 @@ const RolesAdmin = () => {
       if (roleData.claims.length > 0) {
         await editMutation({
           roleName: roleData.roleName,
-          claims: roleData.claims,
+          data: { claims: roleData.claims },
         })
       }
       refetchRoles()

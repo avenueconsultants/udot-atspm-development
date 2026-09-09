@@ -10,6 +10,7 @@ import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/Lin
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
 import { getLinkPivotPcdTimeWindowFromTimeSpaceOptions } from '@/features/tools/link-pivot/linkPivotPcdTimeWindow'
 import { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
+import { getApiErrorMessage } from '@/lib/apiError'
 import {
   Alert,
   Box,
@@ -22,10 +23,10 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import type {
+  NormalizedTimeSpacePhaseResult,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceDistanceSpacingMode,
-  TimeSpaceDiagramPhaseResult,
   TimeSpaceHistoricOptions,
   TimeSpaceOptions,
 } from '../../shared/types'
@@ -66,13 +67,13 @@ export default function TimeSpaceResultsContainer({
 
   const [srmError, setSrmError] = useState<string | null>(null)
   const [hasAppliedSrm, setHasAppliedSrm] = useState(false)
-  const { mutateAsync: fetchSrmData, isLoading: isApplyingSrm } =
+  const { mutateAsync: fetchSrmData, isPending: isApplyingSrm } =
     useTimeSpaceSrmData()
 
   const locations = getPrimaryTimeSpaceLocations(baseTimeSpaceData)
 
   const [gpxEntries, setGpxEntries] = useState([
-    createEmptyTimeSpaceEntry(locations),
+    createEmptyTimeSpaceEntry(locations, true),
   ])
   const [ignoredLocations, setIgnoredLocation] = useState<string[]>([])
   const [distanceSpacingMode, setDistanceSpacingMode] =
@@ -107,15 +108,16 @@ export default function TimeSpaceResultsContainer({
       setBaseTimeSpaceData((prev) => ({
         type: prev.type,
         data: mergeSrmOverlaysIntoWrappedData(
-          prev.data as TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[],
+          prev.data as NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[],
           overlays
         ) as RawTimeSpaceDiagramResponse['data'],
       }))
       setHasAppliedSrm(true)
     } catch (error) {
-      setSrmError(
-        error instanceof Error ? error.message : 'Unable to apply SRM'
-      )
+      // Through the shared reader, so the accordion shows what the report API
+      // said rather than axios' "Request failed with status code 500" - the
+      // Generate button above it already reports errors this way.
+      setSrmError(getApiErrorMessage(error))
     }
   }
 
@@ -125,7 +127,7 @@ export default function TimeSpaceResultsContainer({
     setBaseTimeSpaceData((prev) => ({
       type: prev.type,
       data: mergeSrmOverlaysIntoWrappedData(
-        prev.data as TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[],
+        prev.data as NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[],
         []
       ) as RawTimeSpaceDiagramResponse['data'],
     }))
@@ -139,7 +141,7 @@ export default function TimeSpaceResultsContainer({
     setBaseTimeSpaceData(nextBaseData)
     setIgnoredLocation([])
     setDistanceSpacingMode('distance')
-    setGpxEntries([createEmptyTimeSpaceEntry(nextLocations)])
+    setGpxEntries([createEmptyTimeSpaceEntry(nextLocations, true)])
     setSrmError(null)
     setHasAppliedSrm(false)
   }, [timeSpaceData])
@@ -301,9 +303,8 @@ export default function TimeSpaceResultsContainer({
               <LinkPivotAdjustmentTable
                 data={pivot.data.adjustments}
                 cycleLength={
-                  baseTimeSpaceData.data.find(
-                    (entry) => entry.result
-                  )?.result?.cycleLength ?? null
+                  baseTimeSpaceData.data.find((entry) => entry.result)?.result
+                    ?.cycleLength ?? null
                 }
               />
             </Paper>

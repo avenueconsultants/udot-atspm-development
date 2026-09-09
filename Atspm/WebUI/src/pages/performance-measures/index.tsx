@@ -1,13 +1,12 @@
 'use client'
 
-import { Location } from '@/api/config'
+import { SearchLocation as Location, useGetLocationLocationsForSearch } from '@/api/config'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { StyledPaper } from '@/components/StyledPaper'
 import SelectDateTime from '@/components/selectTimeSpan'
 import { ChartOptions, ChartType } from '@/features/charts/common/types'
 import ChartsContainer from '@/features/charts/components/chartsContainer'
 import SelectChart from '@/features/charts/components/selectChart'
-import { useLatestVersionOfAllLocations } from '@/features/locations/api'
 import LocationsConfigContainer from '@/features/locations/components/locationConfigContainer'
 import SelectLocation from '@/features/locations/components/selectLocation'
 import useMissingDays from '@/hooks/useMissingDays'
@@ -31,7 +30,7 @@ const PerformanceMeasures = () => {
   const theme = useTheme()
   const isMobileView = useMediaQuery(theme.breakpoints.down('md'))
   const searchParams = useSearchParams()
-  const { data: locationsData } = useLatestVersionOfAllLocations()
+  const { data: locationsData } = useGetLocationLocationsForSearch()
 
   const [currentTab, setCurrentTab] = useState('1')
   const [location, setLocation] = useState<Location | null>(null)
@@ -52,13 +51,13 @@ const PerformanceMeasures = () => {
     if (appliedUrlRef.current) return
 
     const locationParam = searchParams.get('location')
-    if (locationParam && !locationsData?.value?.length) return
+    if (locationParam && !locationsData?.length) return
 
     const chartTypeParam = searchParams.get('chartType')
     if (chartTypeParam) setChartType(chartTypeParam as ChartType)
 
     if (locationParam) {
-      const matchedLocation = locationsData?.value?.find(
+      const matchedLocation = locationsData?.find(
         (loc) => loc.locationIdentifier === locationParam
       )
       if (matchedLocation) setLocation(matchedLocation)

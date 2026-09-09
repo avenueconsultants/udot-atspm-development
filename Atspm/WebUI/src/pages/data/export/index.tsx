@@ -6,12 +6,15 @@ import {
 import OptionsWrapper from '@/components/OptionsWrapper'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import SelectDateTime from '@/components/selectTimeSpan'
-import { ResponseFormat } from '@/features/data/api/getEventLogs'
 import {
   DataTypeOption,
   DataTypeSelector,
 } from '@/features/data/components/dataTypeSelector'
-import { downloadData, generateFilename } from '@/features/data/utils'
+import {
+  downloadData,
+  generateFilename,
+  ResponseFormat,
+} from '@/features/data/utils'
 import SelectLocation from '@/features/locations/components/selectLocation'
 import useMissingDays from '@/hooks/useMissingDays'
 import Authorization from '@/lib/Authorization'

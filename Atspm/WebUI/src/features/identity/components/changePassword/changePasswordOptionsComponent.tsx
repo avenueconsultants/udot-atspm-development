@@ -15,7 +15,6 @@ interface props {
 }
 
 export const ChangePasswordOptionsComponent = ({ handler }: props) => {
-  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 

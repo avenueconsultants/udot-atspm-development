@@ -3,11 +3,7 @@ import { useChartDefaults, useUpdateChartDefaults } from '@/features/charts/api'
 import { ChartType, chartTypeToString } from '@/features/charts/common/types'
 import { chartComponents } from '@/features/charts/components/selectChart'
 import { Default } from '@/features/charts/types'
-import {
-  PageNames,
-  useUserHasClaim,
-  useViewPage,
-} from '@/features/identity/pagesCheck'
+import { PageNames, useViewPage } from '@/features/identity/pagesCheck'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Accordion,
@@ -21,15 +17,12 @@ import {
 const MeasureDefaults = () => {
   const pageAccess = useViewPage(PageNames.MeasureDefaults)
 
-  const { data: chartDefaultsData, isLoading } = useChartDefaults()
+  const { data: chartDefaults, isLoading } = useChartDefaults()
   const { mutate } = useUpdateChartDefaults()
-  const hasEditClaim = useUserHasClaim('GeneralConfiguration:Edit')
 
   if (pageAccess.isLoading) {
     return
   }
-
-  const chartDefaults = chartDefaultsData?.value
 
   const getChartDefaults = (chartType: string) => {
     return chartDefaults?.find((chart) => chart.chartType === chartType)

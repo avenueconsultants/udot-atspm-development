@@ -1,0 +1,105 @@
+name: WebUI CI
+
+on:
+  pull_request:
+    # ready_for_review is added to the defaults so a draft that is marked
+    # ready gets the Playwright gate without needing another push.
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'Atspm/WebUI/**'
+      - 'Atspm/ConfigApi/config-spec.json'
+      - 'Atspm/ReportApi/reports-spec.json'
+      - 'Atspm/DataApi/data-spec.json'
+      - 'Atspm/IdentityApi/identity-spec.json'
+      - '.github/workflows/webui-ci.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'Atspm/WebUI/**'
+      - 'Atspm/ConfigApi/config-spec.json'
+      - 'Atspm/ReportApi/reports-spec.json'
+      - 'Atspm/DataApi/data-spec.json'
+      - 'Atspm/IdentityApi/identity-spec.json'
+      - '.github/workflows/webui-ci.yml'
+  # Lets the Playwright suite be run on demand against any branch.
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: Atspm/WebUI
+
+jobs:
+  checks:
+    name: Generated client, types, unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Atspm/WebUI/package-lock.json
+
+      - run: npm ci
+
+      # The committed src/api must be exactly what orval produces from the
+      # committed specs - anything else means someone changed a spec (or
+      # orval.config.js) without regenerating, and the app is running on a
+      # client that no longer matches its contract.
+      - name: Generated client matches the committed specs
+        run: npm run check:api
+
+      # next build ignores type errors, so this is the only thing that stops
+      # the count from growing. It fails when it rises above
+      # typecheck-baseline.json.
+      - name: Type errors do not exceed the baseline
+        run: npm run typecheck:ratchet
+
+      - name: Unit tests
+        run: npm test -- --ci
+
+  e2e:
+    name: Playwright smoke suite
+    runs-on: ubuntu-latest
+    # The suite is the pre-merge gate, not the inner loop: it runs for pull
+    # requests that are ready for review, for merges to main, and on demand.
+    # Draft PRs get only the fast checks above.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: Atspm/WebUI/package-lock.json
+
+      - run: npm ci
+
+      # The specs stub every API host they need, so placeholder URLs are all
+      # the dev server has to know about.
+      - name: Use the example environment
+        run: cp .env.example .env
+
+      - run: npx playwright install --with-deps chromium
+
+      # A production build is served rather than `next dev`: dev-mode
+      # compiles each route on first request, which on a shared runner can
+      # outlast the per-assertion timeouts.
+      - name: Build the app for the e2e server
+        run: npm run build
+
+      - name: End-to-end tests
+        run: npm run e2e
+        env:
+          CI: true
+          E2E_WEB_SERVER_COMMAND: npm start
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: Atspm/WebUI/playwright-report
+          retention-days: 7

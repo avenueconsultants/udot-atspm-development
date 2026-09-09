@@ -80,7 +80,7 @@ namespace Utah.Udot.Atspm.Data.Configuration
                 new MeasureOption() { Id = 92, Option = "severeLevelSeconds", Value = "5", MeasureTypeId = 11 },
                 new MeasureOption() { Id = 102, Option = "getVolume", Value = "TRUE", MeasureTypeId = 8 },
                 new MeasureOption() { Id = 103, Option = "getPermissivePhase", Value = "TRUE", MeasureTypeId = 8 },
-                new MeasureOption() { Id = 104, Option = "usePermissivePhase", Value = "TRUE", MeasureTypeId = 9 },
+                new MeasureOption() { Id = 104, Option = "getPermissivePhase", Value = "TRUE", MeasureTypeId = 9 },
                 new MeasureOption() { Id = 105, Option = "showPlanStatistics", Value = "TRUE", MeasureTypeId = 9 },
                 new MeasureOption() { Id = 106, Option = "binSize", Value = "15", MeasureTypeId = 9 },
                 new MeasureOption() { Id = 107, Option = "showArrivalsOnGreen", Value = "TRUE", MeasureTypeId = 6 },

@@ -31,7 +31,7 @@ const RoutesAdmin = () => {
   const { mutateAsync: deleteRoute } = useDeleteRouteFromKey()
 
   const { data: routeData, isLoading, refetch: refetchRoutes } = useGetRoute()
-  const routes = routeData?.value
+  const routes = routeData
 
   if (pageAccess.isLoading) {
     return

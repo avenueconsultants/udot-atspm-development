@@ -14,6 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { AggregationType as GeneratedAggregationType } from '@/api/reports'
+
 export const MetricTypeOptionsList = [
   {
     id: 'Detector Activation Count',
@@ -198,19 +200,20 @@ export const detectionTypes = [
   { id: 5, label: 'Advanced presence' },
 ]
 
-export enum AggregationType {
-  'Detector Activation Count' = 0,
-  'Approach PCD' = 1,
-  'Approach Speed' = 2,
-  'Approach Split Fail' = 3,
-  'Approach Yellow Red Activations' = 4,
-  'Approach Cycle' = 5,
-  'Left Turn Gap' = 6,
-  'Phase Pedestrian Delay' = 7,
-  'Split Monitor' = 8,
-  'Phase Termination' = 9,
-  'Signal Preemption' = 10,
-  'Signal Priority' = 11,
-  'Signal Event Count' = 12,
-  'Signal Plan' = 13,
-}
+export const aggregationTypeByName = {
+  'Detector Activation Count': GeneratedAggregationType.DetectorEventCount,
+  'Approach PCD': GeneratedAggregationType.Pcd,
+  'Approach Speed': GeneratedAggregationType.Speed,
+  'Approach Split Fail': GeneratedAggregationType.SplitFail,
+  'Approach Yellow Red Activations':
+    GeneratedAggregationType.YellowRedActivation,
+  'Approach Cycle': GeneratedAggregationType.PhaseCycle,
+  'Left Turn Gap': GeneratedAggregationType.PhaseLeftTurn,
+  'Phase Pedestrian Delay': GeneratedAggregationType.Ped,
+  'Split Monitor': GeneratedAggregationType.SplitMonitor,
+  'Phase Termination': GeneratedAggregationType.PhaseTermination,
+  'Signal Preemption': GeneratedAggregationType.Preemption,
+  'Signal Priority': GeneratedAggregationType.Priority,
+  'Signal Event Count': GeneratedAggregationType.SignalEventCount,
+  'Signal Plan': GeneratedAggregationType.signalPlan,
+} as const

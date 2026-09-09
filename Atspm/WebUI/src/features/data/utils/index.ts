@@ -15,9 +15,10 @@
 // limitations under the License.
 // #endregion
 import { CompressedDataBase } from '@/api/data/data-api.schemas'
-import { ResponseFormat } from '@/features/data/api/getEventLogs'
 import { DataTypeOption } from '@/features/data/components/dataTypeSelector'
 import { dateToTimestamp } from '@/utils/dateTime'
+
+export type ResponseFormat = 'json' | 'xml' | 'csv'
 
 export const formatData = (data: CompressedDataBase[], type: string) => {
   if (type === 'application/json') {

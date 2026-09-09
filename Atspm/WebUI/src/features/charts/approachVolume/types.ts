@@ -43,31 +43,34 @@ export interface ApproachVolumeChartOptionsDefaults {
   showAdvanceDetection: { id: number; value: string; option: string }
 }
 
+// The report's SummaryData is entirely optional and nullable, and the
+// whole summary can be null for a window with no peak hour, so every field
+// here is as weak as the contract - the table formats the gaps.
 export interface ApproachVolumeSummaryData {
-  primaryDirectionName: string
-  opposingDirectionName: string
-  peakHour: string
-  kFactor: number
-  peakHourVolume: number
-  peakHourFactor: number
-  totalVolume: number
-  primaryPeakHour: string
-  primaryKFactor: number
-  primaryPeakHourVolume: number
-  primaryPeakHourFactor: number
-  primaryTotalVolume: number
-  primaryDFactor: number
-  opposingPeakHour: string
-  opposingKFactor: number
-  opposingPeakHourVolume: number
-  opposingPeakHourFactor: number
-  opposingTotalVolume: number
-  opposingDFactor: number
+  primaryDirectionName?: string | null
+  opposingDirectionName?: string | null
+  peakHour?: string | null
+  kFactor?: number | null
+  peakHourVolume?: number | null
+  peakHourFactor?: number | null
+  totalVolume?: number | null
+  primaryPeakHour?: string | null
+  primaryKFactor?: number | null
+  primaryPeakHourVolume?: number | null
+  primaryPeakHourFactor?: number | null
+  primaryTotalVolume?: number | null
+  primaryDFactor?: number | null
+  opposingPeakHour?: string | null
+  opposingKFactor?: number | null
+  opposingPeakHourVolume?: number | null
+  opposingPeakHourFactor?: number | null
+  opposingTotalVolume?: number | null
+  opposingDFactor?: number | null
 }
 
 export interface RawApproachVolumeData extends BaseChartData {
-  primaryDirectionName: string
-  opposingDirectionName: string
+  primaryDirectionName: string | null
+  opposingDirectionName: string | null
   distanceFromStopBar: number
   detectorType: string
   primaryDirectionVolumes: DataPoint[]

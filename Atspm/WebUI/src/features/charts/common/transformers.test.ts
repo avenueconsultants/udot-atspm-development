@@ -14,7 +14,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { createDataZoom } from './transformers'
+import {
+  createDataZoom,
+  formatExportFileName,
+  toDataPoints,
+} from './transformers'
+
+describe('toDataPoints', () => {
+  it('normalizes missing collections and values', () => {
+    expect(toDataPoints(undefined)).toEqual([])
+    expect(
+      toDataPoints([
+        { timestamp: '2026-08-24T12:00:00Z', value: 3.5 },
+        { timestamp: null, value: null },
+      ])
+    ).toEqual([
+      { timestamp: '2026-08-24T12:00:00Z', value: 3.5 },
+      { timestamp: '', value: 0 },
+    ])
+  })
+})
 
 describe('createDataZoom', () => {
   it('disables data shadows for horizontal sliders by default', () => {
@@ -53,5 +72,33 @@ describe('createDataZoom', () => {
       orient: 'vertical',
       right: 220,
     })
+  })
+})
+
+describe('formatExportFileName', () => {
+  it('builds a title and range slug from valid dates', () => {
+    expect(
+      formatExportFileName(
+        'Left Turn Gap Analysis - 1001 Main St',
+        '2026-04-01T08:00:00',
+        '2026-04-01T09:30:00'
+      )
+    ).toBe(
+      'Left_Turn_Gap_Analysis_1001_Main_St_2026-04-01_08-00_to_2026-04-01_09-30'
+    )
+  })
+
+  // Callers pass `data.start ?? ''` because every field on the generated
+  // report types is nullable. date-fns/format throws RangeError on an
+  // unparseable value, and because this runs while building chart options
+  // that took down the whole chart, not just its export filename.
+  it.each([
+    ['both dates missing', '', ''],
+    ['start missing', '', '2026-04-01T09:30:00'],
+    ['end missing', '2026-04-01T08:00:00', ''],
+    ['unparseable dates', 'not-a-date', 'also-not-a-date'],
+  ])('degrades to the bare title when %s', (_label, start, end) => {
+    expect(() => formatExportFileName('Wait Time', start, end)).not.toThrow()
+    expect(formatExportFileName('Wait Time', start, end)).toBe('Wait_Time')
   })
 })

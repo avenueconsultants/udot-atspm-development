@@ -20,7 +20,7 @@ import {
 } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { reportsRequest } from '@/lib/axios'
 import { dateToTimestamp } from '@/utils/dateTime'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 export const getTimeSpaceSrmData = async (
   options: TimeSpaceSrmOptions
@@ -41,5 +41,5 @@ export const getTimeSpaceSrmData = async (
 }
 
 export const useTimeSpaceSrmData = () => {
-  return useMutation(getTimeSpaceSrmData)
+  return useMutation({ mutationFn: getTimeSpaceSrmData })
 }

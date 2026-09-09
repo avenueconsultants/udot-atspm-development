@@ -15,13 +15,19 @@
 // limitations under the License.
 // #endregion
 import {
-  mapStringBooleansToBoolean,
-  toolTypeApiMap,
-} from '@/features/charts/api/getTools'
+  LinkPivotPcdResult,
+  PurdueCoordinationDiagramResult,
+  getLinkPivotPcdData,
+} from '@/api/reports'
+import { mapStringBooleansToBoolean } from '@/features/charts/api/getTools'
+import { toDataPoints } from '@/features/charts/common/transformers'
 import { ToolOptions, ToolType } from '@/features/charts/common/types'
-import { reportsAxios } from '@/lib/axios'
+import {
+  RawPurdueCoordinationDiagramData,
+  purdueCoordinationDiagramPlan,
+} from '@/features/charts/purdueCoordinationDiagram/types'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { RawLinkPivotPcdData, RawLinkPivotPcdResponse } from '../types'
 
 type QueryFnType = typeof getLinkPivotPcdCharts
@@ -35,19 +41,63 @@ type UseToolsOptions = BaseOptions & {
   toolOptions: ToolOptions
 }
 
+function toPcdData(
+  r: PurdueCoordinationDiagramResult
+): RawPurdueCoordinationDiagramData {
+  return {
+    locationIdentifier: r.locationIdentifier ?? '',
+    locationDescription: r.locationDescription ?? '',
+    start: r.start ?? '',
+    end: r.end ?? '',
+    approachId: r.approachId ?? 0,
+    approachDescription: r.approachDescription ?? '',
+    phaseNumber: r.phaseNumber ?? 0,
+    phaseDescription: r.phaseDescription ?? '',
+    totalOnGreenEvents: r.totalOnGreenEvents ?? 0,
+    totalDetectorHits: r.totalDetectorHits ?? 0,
+    percentArrivalOnGreen: r.percentArrivalOnGreen ?? 0,
+    plans: (r.plans ?? []).map(
+      (p): purdueCoordinationDiagramPlan => ({
+        planNumber: p.planNumber ?? '',
+        start: p.start ?? '',
+        end: p.end ?? '',
+        planDescription: p.planDescription ?? '',
+        percentGreenTime: p.percentGreenTime ?? 0,
+        percentArrivalOnGreen: p.percentArrivalOnGreen ?? 0,
+        platoonRatio: p.platoonRatio ?? 0,
+      })
+    ),
+    volumePerHour: toDataPoints(r.volumePerHour),
+    redSeries: toDataPoints(r.redSeries),
+    yellowSeries: toDataPoints(r.yellowSeries),
+    greenSeries: toDataPoints(r.greenSeries),
+    detectorEvents: toDataPoints(r.detectorEvents),
+  }
+}
+
+function toRawLinkPivotPcdData(
+  result: LinkPivotPcdResult
+): RawLinkPivotPcdData {
+  return {
+    existingTotalAOG: result.existingTotalAOG ?? 0,
+    existingTotalPAOG: result.existingTotalPAOG ?? 0,
+    existingVolume: result.existingVolume ?? 0,
+    pcdExisting: (result.pcdExisting ?? []).map(toPcdData),
+    predictedTotalAOG: result.predictedTotalAOG ?? 0,
+    predictedTotalPAOG: result.predictedTotalPAOG ?? 0,
+    predictedVolume: result.predictedVolume ?? 0,
+    pcdPredicted: (result.pcdPredicted ?? []).map(toPcdData),
+  }
+}
+
 export const getLinkPivotPcdCharts = async (
   type: ToolType.LpPcd,
   options: ToolOptions
 ): Promise<RawLinkPivotPcdResponse> => {
-  const endpoint = toolTypeApiMap[type]
-
   const transformedOptions = mapStringBooleansToBoolean(options)
-  const response: RawLinkPivotPcdData = await reportsAxios.post(
-    endpoint,
-    transformedOptions
-  )
+  const result = await getLinkPivotPcdData(transformedOptions)
 
-  return { type, data: response }
+  return { type, data: toRawLinkPivotPcdData(result) }
 }
 
 export const useLinkPivotPcdCharts = ({

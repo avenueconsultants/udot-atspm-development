@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
 
