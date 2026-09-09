@@ -71,7 +71,7 @@ const LocationMap = ({
 
   useEffect(() => {
     setMapInfo({
-      tile_layer: env.MAP_TILE_LAYER ?? undefined,
+      tile_layer: env.MAP_TILE_LAYER?.trim() || undefined,
       attribution: env.MAP_TILE_ATTRIBUTION ?? undefined,
       initialLat: parseFloat(env.MAP_DEFAULT_LATITUDE ?? '0'),
       initialLong: parseFloat(env.MAP_DEFAULT_LONGITUDE ?? '0'),
@@ -175,6 +175,22 @@ const LocationMap = ({
     return <Skeleton variant="rectangular" height={mapHeight ?? 400} />
   }
 
+  if (!googleSession && !mapInfo.tile_layer) {
+    return (
+      <Box
+        sx={{
+          alignItems: 'center',
+          display: 'flex',
+          justifyContent: 'center',
+          minHeight: mapHeight || 400,
+          width: '100%',
+        }}
+      >
+        Map tiles are not configured.
+      </Box>
+    )
+  }
+
   return (
     <MapContainer
       center={center || [mapInfo.initialLat, mapInfo.initialLong]}
@@ -235,15 +251,13 @@ const LocationMap = ({
 
       {googleSession ? (
         <TileLayer
-          attribution={
-            mapInfo.attribution
-          }
+          attribution={mapInfo.attribution}
           url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
           crossOrigin
         />
-      ) : (
+      ) : mapInfo.tile_layer ? (
         <TileLayer attribution={mapInfo.attribution} url={mapInfo.tile_layer} />
-      )}
+      ) : null}
       <Markers locations={filteredLocations} setLocation={setLocation} />
       {route && route.length > 0 && (
         <Polyline

@@ -17,9 +17,9 @@ import {
   differenceInMinutes,
   endOfMonth,
   endOfWeek,
+  set,
   startOfMonth,
   startOfToday,
-  startOfTomorrow,
   startOfWeek,
 } from 'date-fns'
 import { useSearchParams } from 'next/navigation'
@@ -44,7 +44,9 @@ const PerformanceMeasures = () => {
   const [chartType, setChartType] = useState<ChartType | null>(null)
   const [chartOptions, setChartOptions] = useState<Partial<ChartOptions>>()
   const [startDateTime, setStartDateTime] = useState(startOfToday())
-  const [endDateTime, setEndDateTime] = useState(startOfTomorrow())
+  const [endDateTime, setEndDateTime] = useState(() =>
+    set(startOfToday(), { hours: 23, minutes: 59 })
+  )
 
   const appliedUrlRef = useRef(false)
   useEffect(() => {
@@ -189,6 +191,7 @@ const PerformanceMeasures = () => {
               }}
             >
               <SelectDateTime
+                singleDay
                 startDateTime={startDateTime}
                 endDateTime={endDateTime}
                 changeStartDate={handleStartDateTimeChange}

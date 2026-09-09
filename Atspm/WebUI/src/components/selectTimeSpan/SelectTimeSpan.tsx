@@ -4,6 +4,11 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Skeleton,
   Tooltip,
   Typography,
@@ -11,13 +16,22 @@ import {
 import {
   DateCalendar,
   DateOrTimeView,
+  DatePicker,
   DateTimePicker,
   PickersDay,
   PickersDayProps,
   TimePicker,
 } from '@mui/x-date-pickers'
-import { add, isSameDay, startOfToday, startOfYesterday } from 'date-fns'
-import { useEffect, useState } from 'react'
+import {
+  add,
+  isSameDay,
+  isValid,
+  set,
+  startOfToday,
+  startOfYesterday,
+} from 'date-fns'
+import { useEffect, useId, useState } from 'react'
+import { loopingTimeViewRenderers } from './LoopingTimeView'
 
 export interface CalendarDayLocationAvailability {
   locationIdentifier: string
@@ -41,6 +55,7 @@ export interface SelectDateTimeProps {
   noCalendar?: boolean
   calendarLocation?: 'bottom' | 'right'
   startDateOnly?: boolean
+  singleDay?: boolean
   timePeriod?: boolean
   startTimePeriod?: Date
   endTimePeriod?: Date
@@ -66,6 +81,7 @@ export default function SelectDateTime({
   startTimePeriod,
   endTimePeriod,
   startDateOnly,
+  singleDay = false,
   changeStartTimePeriod,
   changeEndTimePeriod,
   markDays = [],
@@ -76,6 +92,42 @@ export default function SelectDateTime({
 }: SelectDateTimeProps) {
   const [showWarning, setShowWarning] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)
+
+  const [timeRange, setTimeRange] = useState<'allDay' | 'custom'>('allDay')
+  const timeRangeLabelId = useId()
+
+  useEffect(() => {
+    if (!singleDay || !startDateTime || !endDateTime) return
+    const allDay =
+      startDateTime.getHours() === 0 &&
+      startDateTime.getMinutes() === 0 &&
+      endDateTime.getHours() === 23 &&
+      endDateTime.getMinutes() === 59 &&
+      isSameDay(startDateTime, endDateTime)
+    setTimeRange(allDay ? 'allDay' : 'custom')
+  }, [singleDay, startDateTime, endDateTime])
+
+  const changeSingleDay = (date: Date | null) => {
+    if (!date || !isValid(date)) return
+    const allDay = timeRange === 'allDay'
+    changeStartDate(
+      set(date, {
+        hours: allDay ? 0 : (startDateTime?.getHours() ?? 0),
+        minutes: allDay ? 0 : (startDateTime?.getMinutes() ?? 0),
+        seconds: 0,
+        milliseconds: 0,
+      })
+    )
+    changeEndDate(
+      set(date, {
+        hours: allDay ? 23 : (endDateTime?.getHours() ?? 23),
+        minutes: allDay ? 59 : (endDateTime?.getMinutes() ?? 59),
+        seconds: 0,
+        milliseconds: 0,
+      })
+    )
+    onChange?.(date)
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -89,6 +141,10 @@ export default function SelectDateTime({
   }, [warning])
 
   const handleCalendarChange = (newDate: Date | null) => {
+    if (singleDay) {
+      changeSingleDay(newDate)
+      return
+    }
     onChange?.(newDate as Date)
     if (!newDate) return
 
@@ -109,8 +165,16 @@ export default function SelectDateTime({
   }
 
   const handleResetDate = () => {
-    const newStart = startOfYesterday()
+    const newStart = singleDay ? startOfToday() : startOfYesterday()
     const newEnd = startOfToday()
+
+    if (singleDay) {
+      setTimeRange('allDay')
+      changeStartDate(newStart)
+      changeEndDate(set(newEnd, { hours: 23, minutes: 59 }))
+      onChange?.(newStart)
+      return
+    }
 
     changeStartDate(newStart)
     changeEndDate(newEnd)
@@ -185,18 +249,124 @@ export default function SelectDateTime({
               : { display: 'flex', flexDirection: 'column' }
           }
         >
-          <DateTimePicker
-            sx={{ width: '100%' }}
-            value={startDateTime}
-            onChange={(date) => date && changeStartDate(date)}
-            views={views}
-            label="Start"
-            format={dateFormat}
-            ampm={false}
-            disableFuture
-            minutesStep={1}
-          />
-          {!startDateOnly && (
+          {singleDay ? (
+            <>
+              <DatePicker
+                label="Date"
+                value={startDateTime}
+                onChange={changeSingleDay}
+                format="MMM dd, yyyy"
+                disableFuture
+                sx={{ width: '100%' }}
+              />
+              <FormControl sx={{ mt: 2 }}>
+                <FormLabel id={timeRangeLabelId} sx={{ fontSize: 13 }}>
+                  Time range
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby={timeRangeLabelId}
+                  value={timeRange}
+                  onChange={(_, value) => {
+                    setTimeRange(value as 'allDay' | 'custom')
+                    if (startDateTime) {
+                      changeStartDate(
+                        set(startDateTime, {
+                          hours: value === 'allDay' ? 0 : 12,
+                          minutes: 0,
+                          seconds: 0,
+                          milliseconds: 0,
+                        })
+                      )
+                      changeEndDate(
+                        set(startDateTime, {
+                          hours: value === 'allDay' ? 23 : 14,
+                          minutes: value === 'allDay' ? 59 : 0,
+                          seconds: 0,
+                          milliseconds: 0,
+                        })
+                      )
+                    }
+                  }}
+                >
+                  <FormControlLabel
+                    value="allDay"
+                    control={<Radio size="small" />}
+                    label="All day"
+                  />
+                  <FormControlLabel
+                    value="custom"
+                    control={<Radio size="small" />}
+                    label="Custom"
+                  />
+                </RadioGroup>
+              </FormControl>
+              {timeRange === 'custom' && (
+                <Box sx={{ display: 'flex', gap: 1.5, mt: 1 }}>
+                  <TimePicker
+                    label="Start time"
+                    ampm={false}
+                    format="HH:mm"
+                    viewRenderers={loopingTimeViewRenderers}
+                    value={startDateTime}
+                    onChange={(date) => {
+                      if (!date || !isValid(date) || !startDateTime) return
+                      changeStartDate(
+                        set(startDateTime, {
+                          hours: date.getHours(),
+                          minutes: date.getMinutes(),
+                          seconds: 0,
+                          milliseconds: 0,
+                        })
+                      )
+                    }}
+                    slotProps={{
+                      textField: { size: 'small' },
+                      actionBar: { actions: ['accept'] },
+                    }}
+                    sx={{ flex: 1, minWidth: 0 }}
+                  />
+                  <TimePicker
+                    label="End time"
+                    ampm={false}
+                    format="HH:mm"
+                    viewRenderers={loopingTimeViewRenderers}
+                    value={endDateTime}
+                    minTime={startDateTime ?? undefined}
+                    onChange={(date) => {
+                      if (!date || !isValid(date) || !startDateTime) return
+                      changeEndDate(
+                        set(startDateTime, {
+                          hours: date.getHours(),
+                          minutes: date.getMinutes(),
+                          seconds: 0,
+                          milliseconds: 0,
+                        })
+                      )
+                    }}
+                    slotProps={{
+                      textField: { size: 'small' },
+                      actionBar: { actions: ['accept'] },
+                    }}
+                    sx={{ flex: 1, minWidth: 0 }}
+                  />
+                </Box>
+              )}
+            </>
+          ) : (
+            <DateTimePicker
+              sx={{ width: '100%' }}
+              value={startDateTime}
+              onChange={(date) => date && changeStartDate(date)}
+              views={views}
+              label="Start"
+              format={dateFormat}
+              ampm={false}
+              disableFuture
+              minutesStep={1}
+            />
+          )}
+          {!singleDay && !startDateOnly && (
             <DateTimePicker
               sx={{ width: '100%', mt: calendarLocation === 'right' ? 0 : 3 }}
               value={endDateTime}
@@ -233,7 +403,7 @@ export default function SelectDateTime({
             </>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            {!startDateOnly && (
+            {!singleDay && !startDateOnly && (
               <Button onClick={handleSameDay}>Same Day</Button>
             )}
             <Button onClick={handleResetDate}>Reset</Button>
