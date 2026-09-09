@@ -147,6 +147,23 @@ namespace ReportApiTests
             Assert.Empty(result.Observations);
         }
 
+        [Fact]
+        public void BuildIndianaEventObservations_DeduplicatesIdenticalEvents()
+        {
+            var selectedDate = new DateOnly(2026, 3, 18);
+            var location = LocationWithDetector(7, DirectionTypes.NB, MovementTypes.T);
+            var detectorEvent = IndianaEvent(82, 7, new DateTime(2026, 3, 18, 23, 30, 0));
+
+            var result = observationService.BuildIndianaEventObservations(
+                location,
+                "Location",
+                new List<DateOnly> { selectedDate },
+                15,
+                new List<IndianaEvent> { detectorEvent, IndianaEvent(82, 7, detectorEvent.Timestamp) });
+
+            Assert.Single(result.Observations);
+        }
+
         private static TimeOfDayVolumeObservation Observation(DateOnly date, int minutes)
         {
             return new TimeOfDayVolumeObservation(
