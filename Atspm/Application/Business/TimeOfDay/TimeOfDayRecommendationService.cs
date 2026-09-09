@@ -31,7 +31,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
     public class TimeOfDayRecommendationService : ITimeOfDayRecommendationService
     {
-        private const string AlgorithmVersion = "tod-v1";
+        private const string AlgorithmVersion = "tod-v2";
         private const string ThresholdConfigurationName = "Configured thresholds";
 
         private readonly ITimeOfDayProfileService profileService;
@@ -57,13 +57,33 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 };
             }
 
+            var amRequestedDirections = options.AmPrimaryDirections.Count > 0
+                ? options.AmPrimaryDirections
+                : options.AllDayPrimaryDirections;
+            var pmRequestedDirections = options.PmPrimaryDirections.Count > 0
+                ? options.PmPrimaryDirections
+                : options.AllDayPrimaryDirections;
+            var unavailableDirectionMessages = new List<string>();
+            AddUnavailableDirectionMessage("AM", amRequestedDirections, directionalProfiles, unavailableDirectionMessages);
+            AddUnavailableDirectionMessage("PM", pmRequestedDirections, directionalProfiles, unavailableDirectionMessages);
+
+            if (unavailableDirectionMessages.Count > 0)
+            {
+                return new TimeOfDayRecommendationDto
+                {
+                    AlgorithmVersion = AlgorithmVersion,
+                    ThresholdConfigurationName = ThresholdConfigurationName,
+                    SummaryText = $"Recommended schedule unavailable because primary direction data is unavailable for {string.Join("; ", unavailableDirectionMessages)}."
+                };
+            }
+
             var amProfile = SelectProfile(
-                options.AmPrimaryDirections.Count > 0 ? options.AmPrimaryDirections : options.AllDayPrimaryDirections,
+                amRequestedDirections,
                 directionalProfiles,
                 corridorProfile,
                 "AM primary");
             var pmProfile = SelectProfile(
-                options.PmPrimaryDirections.Count > 0 ? options.PmPrimaryDirections : options.AllDayPrimaryDirections,
+                pmRequestedDirections,
                 directionalProfiles,
                 corridorProfile,
                 "PM primary");
@@ -73,8 +93,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var freeFallback = ParseTimeOrDefault(options.FreeFallbackTime, 23 * 60 + 30);
             var binSize = InferBinSize(corridorProfile);
 
-            var amPeak = FindPeak(amProfile, 5 * 60, 10 * 60) ?? FindPeak(corridorProfile, 5 * 60, 10 * 60);
-            var pmPeak = FindPeak(pmProfile, 14 * 60, 19 * 60) ?? FindPeak(corridorProfile, 14 * 60, 19 * 60);
+            var amPeak = FindPeak(amProfile, 5 * 60, 10 * 60);
+            var pmPeak = FindPeak(pmProfile, 14 * 60, 19 * 60);
             var dailyPeak = corridorProfile.Points.Max(p => p.SmoothedVolume);
             var baseline = Percentile(corridorProfile.Points.Select(p => p.SmoothedVolume).ToList(), 0.15);
             var amPeakValue = amPeak != null
@@ -305,8 +325,33 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .ToList();
 
             return matches.Count == 0
-                ? fallback
+                ? new TimeOfDayProfileDto { Label = label }
                 : profileService.SumProfiles(label, matches);
+        }
+
+        private static void AddUnavailableDirectionMessage(
+            string period,
+            IReadOnlyList<string> requestedDirections,
+            IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
+            List<string> messages)
+        {
+            var availableDirections = directionalProfiles
+                .Where(profile => profile.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
+                .Select(profile => TimeOfDayDirectionHelper.NormalizeDirection(profile.Direction))
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+            var missingDirections = requestedDirections
+                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Where(direction => !availableDirections.Contains(direction, StringComparer.OrdinalIgnoreCase))
+                .ToList();
+
+            if (missingDirections.Count > 0)
+            {
+                messages.Add($"{period}: {string.Join(", ", missingDirections)}");
+            }
         }
 
         private static TimeOfDayProfilePointDto FindPeak(TimeOfDayProfileDto profile, int startMinutes, int endMinutes)

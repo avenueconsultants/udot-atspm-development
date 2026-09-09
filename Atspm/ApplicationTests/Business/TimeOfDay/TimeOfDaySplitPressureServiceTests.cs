@@ -160,6 +160,29 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
             Assert.Equal(100, crossOnly.CrossTrafficPercent);
         }
 
+        [Fact]
+        public void BuildSplitPressure_SuppressesResultsWhenExplicitPrimaryDirectionIsMissing()
+        {
+            var result = CreateService().BuildSplitPressure(
+                new TimeOfDayOptions
+                {
+                    AllDayPrimaryDirections = new List<string> { "Eastbound" }
+                },
+                new List<TimeOfDayProfileDto>
+                {
+                    BuildProfile("Northbound", "Northbound", 480, 500)
+                },
+                new List<TimeOfDayLocationAnalysisData>(),
+                new List<DateOnly> { TestDate },
+                15);
+
+            Assert.Empty(result.CrossTrafficShare);
+            Assert.Empty(result.MovementPressures);
+            Assert.Null(result.PeakCrossTrafficPercent);
+            Assert.Empty(result.ReviewText);
+            Assert.Contains("Eastbound", result.SummaryText);
+        }
+
         private static TimeOfDaySplitPressureService CreateService()
         {
             return new TimeOfDaySplitPressureService(new TimeOfDayProfileService());

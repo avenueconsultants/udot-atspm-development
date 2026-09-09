@@ -32,6 +32,10 @@ export default function TimeOfDaySchedules({
     model.commonSchedule.length > 0 ||
     model.exceptions.length > 0 ||
     model.unavailableLocations.length > 0
+  const unavailableRecommendationReason =
+    model.proposedSchedule.length === 0
+      ? result.recommendation?.summaryText?.trim()
+      : undefined
 
   return (
     <Paper sx={{ p: 0, bgcolor: 'common.white' }}>
@@ -85,6 +89,12 @@ export default function TimeOfDaySchedules({
             />
           </Box>
         </Box>
+
+        {unavailableRecommendationReason && (
+          <Alert severity="warning" sx={{ mx: { xs: 2, sm: 3 }, mt: 2 }}>
+            {unavailableRecommendationReason}
+          </Alert>
+        )}
 
         {!hasScheduleData ? (
           <Alert severity="warning" sx={{ mx: { xs: 2, sm: 3 }, mb: 3 }}>

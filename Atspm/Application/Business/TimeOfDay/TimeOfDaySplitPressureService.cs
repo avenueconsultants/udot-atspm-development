@@ -48,6 +48,18 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         {
             var primaryDirections = ResolvePrimaryDirections(options, directionalProfiles);
             var crossDirections = ResolveCrossDirections(primaryDirections, directionalProfiles);
+            var missingExplicitPrimaryDirections = FindMissingExplicitPrimaryDirections(options, directionalProfiles, locationData);
+
+            if (missingExplicitPrimaryDirections.Count > 0)
+            {
+                return new TimeOfDaySplitPressureDto
+                {
+                    PrimaryDirections = primaryDirections,
+                    CrossDirections = crossDirections,
+                    ThresholdPercentByName = BuildThresholds(options),
+                    SummaryText = $"Split-pressure analysis unavailable because primary direction data is unavailable for {string.Join(", ", missingExplicitPrimaryDirections)}."
+                };
+            }
 
             var primaryProfile = BuildRepresentativeDirectionProfile(
                 "Primary street",
@@ -91,11 +103,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 PrimaryProfile = primaryProfile,
                 CrossStreetProfile = crossProfile,
                 CrossTrafficShare = share,
-                ThresholdPercentByName = new Dictionary<string, double>
-                {
-                    ["SplitReview"] = options.SplitReviewThresholdPercent,
-                    ["ShoulderReview"] = options.ShoulderReviewThresholdPercent
-                },
+                ThresholdPercentByName = BuildThresholds(options),
                 PeriodPeaks = periodPeaks,
                 CrossTrafficLocations = crossTrafficLocations,
                 MovementPressures = movementPressures,
@@ -112,6 +120,38 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     peakShare?.TimeOfDay,
                     options.SplitReviewThresholdPercent,
                     options.ShoulderReviewThresholdPercent)
+            };
+        }
+
+        private static List<string> FindMissingExplicitPrimaryDirections(
+            TimeOfDayOptions options,
+            IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
+            IReadOnlyList<TimeOfDayLocationAnalysisData> locationData)
+        {
+            var availableDirections = directionalProfiles
+                .Where(profile => profile.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
+                .Select(profile => TimeOfDayDirectionHelper.NormalizeDirection(profile.Direction))
+                .Concat(locationData
+                    .SelectMany(location => location.Observations)
+                    .Select(observation => TimeOfDayDirectionHelper.NormalizeDirection(observation.Direction)))
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            return options.AllDayPrimaryDirections
+                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
+                .Where(direction => !string.IsNullOrWhiteSpace(direction))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Where(direction => !availableDirections.Contains(direction, StringComparer.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        private static Dictionary<string, double> BuildThresholds(TimeOfDayOptions options)
+        {
+            return new Dictionary<string, double>
+            {
+                ["SplitReview"] = options.SplitReviewThresholdPercent,
+                ["ShoulderReview"] = options.ShoulderReviewThresholdPercent
             };
         }
 
