@@ -55,4 +55,47 @@ describe('TimeOfDayLocationData', () => {
     expect(within(table).queryByText('Existing TOD Plans')).toBeNull()
     expect(within(table).queryByText(/Plan 1/)).toBeNull()
   })
+
+  test('renders no-data rows and uses a dash for an empty note', () => {
+    render(
+      <TimeOfDayLocationData
+        result={
+          {
+            locations: [
+              {
+                locationIdentifier: '7190',
+                locationDescription: 'Main St & Center St',
+                daysWithData: 1,
+                dataQualityFlag: 'Complete',
+                summary: { notes: '' },
+              },
+              {
+                locationIdentifier: '7191',
+                locationDescription: 'Main St & First St',
+                daysWithData: 0,
+                datesWithData: [],
+                missingDates: ['2026-04-15'],
+                dataQualityFlag: 'NoData',
+                summary: {
+                  notes: 'No usable volume observations for the selected dates.',
+                },
+              },
+            ],
+          } as TimeOfDayResult
+        }
+      />
+    )
+
+    const table = screen.getByRole('table', {
+      name: 'time of day location supporting data',
+    })
+    expect(within(table).getByText('7191 - Main St & First St')).toBeTruthy()
+    expect(within(table).getByText('NoData')).toBeTruthy()
+    expect(
+      within(table).getByText(
+        'No usable volume observations for the selected dates.'
+      )
+    ).toBeTruthy()
+    expect(within(table).getAllByText('-').length).toBeGreaterThan(0)
+  })
 })

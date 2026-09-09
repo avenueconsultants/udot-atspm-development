@@ -7828,6 +7828,22 @@
             "type": "integer",
             "format": "int32"
           },
+          "datesWithData": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "nullable": true
+          },
+          "missingDates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "nullable": true
+          },
           "coverageFallbackUsed": {
             "type": "boolean"
           },

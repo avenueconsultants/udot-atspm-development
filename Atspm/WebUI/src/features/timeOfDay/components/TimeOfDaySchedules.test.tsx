@@ -196,6 +196,27 @@ describe('TimeOfDaySchedules', () => {
     expect(screen.queryByText(/Schedule data is unavailable for/)).toBeNull()
   })
 
+  test('shows why a recommendation is unavailable while retaining current schedules', () => {
+    const reason =
+      'Recommended schedule unavailable because primary direction data is unavailable for AM: Northbound.'
+    render(
+      <TimeOfDaySchedules
+        result={{
+          ...result,
+          recommendation: {
+            recommendedSchedule: [],
+            summaryText: reason,
+          },
+        }}
+      />
+    )
+
+    expect(screen.getByRole('alert').textContent).toContain(reason)
+    expect(
+      screen.getByRole('region', { name: 'Common schedule — 3 locations' })
+    ).toBeTruthy()
+  })
+
   test('places Schedules before Location Data in the results tabs', () => {
     render(<TimeOfDayResults result={result} />)
 

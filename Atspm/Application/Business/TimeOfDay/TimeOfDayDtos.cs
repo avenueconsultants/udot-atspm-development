@@ -142,6 +142,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         public string LocationIdentifier { get; set; } = string.Empty;
         public string LocationDescription { get; set; } = string.Empty;
         public int DaysWithData { get; set; }
+        public List<DateOnly> DatesWithData { get; set; } = new();
+        public List<DateOnly> MissingDates { get; set; } = new();
         public bool CoverageFallbackUsed { get; set; }
         public TimeOfDayProfileDto Profile { get; set; } = new();
         public List<TimeOfDayProfileDto> MovementProfiles { get; set; } = new();
