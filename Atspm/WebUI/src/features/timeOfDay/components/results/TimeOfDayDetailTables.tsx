@@ -257,7 +257,7 @@ export function CrossTrafficLocationList({
                 <TableCell>Location</TableCell>
                 <TableCell>Peak</TableCell>
                 <TableCell align="right">VPH</TableCell>
-                <TableCell align="right">Share</TableCell>
+                <TableCell align="right">Cross Traffic %</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
