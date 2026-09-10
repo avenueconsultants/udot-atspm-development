@@ -21,6 +21,7 @@ import type {
 } from '../../transformers'
 import {
   formatNumber,
+  formatTimeOfDayLocationLabel,
   getLocationNumber,
   getTimeOfDayCrossTrafficDetailKey,
   getTimeOfDayMovementPressureDetailKey,
@@ -32,21 +33,11 @@ import {
   compactReportTableContainerSx,
   compactReportTableHeadSx,
   compactReportTableRowSx,
+  groupedReportTableGroupStartSx,
+  groupedReportTableRowBackgrounds,
+  groupedReportTableRowSx,
   numericReportTableCellSx,
 } from './timeOfDayReportTableStyles'
-
-const formatLocationLabel = (
-  identifier?: string | null,
-  description?: string | null
-) => {
-  if (identifier && description) {
-    return description.includes(identifier)
-      ? description
-      : `${identifier} - ${description}`
-  }
-
-  return description ?? identifier ?? '-'
-}
 
 function SignalPeakBadge({
   badgeNumber,
@@ -98,8 +89,10 @@ function DetailSectionHeader({
       sx={{
         alignItems: 'center',
         display: 'flex',
+        gap: 1,
         justifyContent: 'space-between',
-        mb: 1,
+        mb: 1.25,
+        px: 0.25,
       }}
     >
       <Typography variant="subtitle2">{title}</Typography>
@@ -194,10 +187,10 @@ export function PeakList({
                       />
                     </TableCell>
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {formatLocationLabel(
+                      {formatTimeOfDayLocationLabel(
                         peak.locationIdentifier,
                         peak.locationDescription
-                      )}
+                      ) ?? '-'}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {peak.timeOfDay ?? '-'}
@@ -264,7 +257,7 @@ export function CrossTrafficLocationList({
                 <TableCell>Location</TableCell>
                 <TableCell>Peak</TableCell>
                 <TableCell align="right">VPH</TableCell>
-                <TableCell align="right">Share</TableCell>
+                <TableCell align="right">Cross Traffic %</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -296,10 +289,10 @@ export function CrossTrafficLocationList({
                       ) : null}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {formatLocationLabel(
+                      {formatTimeOfDayLocationLabel(
                         location.locationIdentifier,
                         location.locationDescription
-                      )}
+                      ) ?? '-'}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {location.peakTime ?? '-'}
@@ -323,6 +316,36 @@ export function CrossTrafficLocationList({
     </Box>
   )
 }
+
+const groupMovementsByLocation = (
+  movements: TimeOfDayMovementPressureDto[]
+): Array<{
+  locationIdentifier?: string | null
+  movements: TimeOfDayMovementPressureDto[]
+}> =>
+  movements.reduce<
+    Array<{
+      locationIdentifier?: string | null
+      movements: TimeOfDayMovementPressureDto[]
+    }>
+  >((groups, movement) => {
+    const currentGroup = groups[groups.length - 1]
+    if (
+      currentGroup &&
+      currentGroup.locationIdentifier === movement.locationIdentifier
+    ) {
+      currentGroup.movements.push(movement)
+
+      return groups
+    }
+
+    groups.push({
+      locationIdentifier: movement.locationIdentifier,
+      movements: [movement],
+    })
+
+    return groups
+  }, [])
 
 export function MovementPressureList({
   title,
@@ -363,7 +386,7 @@ export function MovementPressureList({
         >
           <Table
             size="small"
-            aria-label={`${title} movement pressure`}
+            aria-label={`${title} movement demand`}
             sx={{ minWidth: 520 }}
           >
             <TableHead sx={compactReportTableHeadSx}>
@@ -376,48 +399,69 @@ export function MovementPressureList({
               </TableRow>
             </TableHead>
             <TableBody>
-              {movements.map((movement, index) => {
-                const detailKey = getTimeOfDayMovementPressureDetailKey(
-                  movement,
-                  period
-                )
+              {groupMovementsByLocation(movements).map((group, groupIndex) => {
                 const locationNumber = getLocationNumber(
                   locationNumberMap,
-                  movement.locationIdentifier
+                  group.locationIdentifier
                 )
 
-                return (
-                  <TableRow
-                    key={`${title}-${movement.locationIdentifier}-${movement.movement}-${index}`}
-                    hover
-                    selected={selectedDetailKey === detailKey}
-                    aria-selected={selectedDetailKey === detailKey}
-                    onClick={() => onSelectDetail(detailKey)}
-                    sx={{ ...compactReportTableRowSx, cursor: 'pointer' }}
-                  >
-                    <TableCell>
-                      {locationNumber ? (
-                        <SignalPeakBadge
-                          badgeNumber={locationNumber}
-                          color={getTimeOfDayPeriodBadgeColor(period)}
-                          shape="square"
-                        />
-                      ) : null}
-                    </TableCell>
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {movement.locationIdentifier ?? '-'}
-                    </TableCell>
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {movement.movementLabel ?? movement.movement ?? '-'}
-                    </TableCell>
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {movement.peakTime ?? '-'}
-                    </TableCell>
-                    <TableCell align="right" sx={numericReportTableCellSx}>
-                      {formatNumber(movement.volume)}
-                    </TableCell>
-                  </TableRow>
-                )
+                return group.movements.map((movement, movementIndex) => {
+                  const detailKey = getTimeOfDayMovementPressureDetailKey(
+                    movement,
+                    period
+                  )
+                  const startsGroup = movementIndex === 0
+
+                  return (
+                    <TableRow
+                      key={`${title}-${groupIndex}-${movementIndex}`}
+                      hover
+                      selected={selectedDetailKey === detailKey}
+                      aria-selected={selectedDetailKey === detailKey}
+                      onClick={() => onSelectDetail(detailKey)}
+                      sx={[
+                        groupedReportTableRowSx,
+                        {
+                          cursor: 'pointer',
+                          backgroundColor:
+                            groupedReportTableRowBackgrounds[groupIndex % 2],
+                        },
+                        startsGroup &&
+                          groupIndex > 0 &&
+                          groupedReportTableGroupStartSx,
+                      ]}
+                    >
+                      {startsGroup && (
+                        <>
+                          <TableCell rowSpan={group.movements.length}>
+                            {locationNumber ? (
+                              <SignalPeakBadge
+                                badgeNumber={locationNumber}
+                                color={getTimeOfDayPeriodBadgeColor(period)}
+                                shape="square"
+                              />
+                            ) : null}
+                          </TableCell>
+                          <TableCell
+                            rowSpan={group.movements.length}
+                            sx={{ whiteSpace: 'nowrap', fontWeight: 600 }}
+                          >
+                            {group.locationIdentifier ?? '-'}
+                          </TableCell>
+                        </>
+                      )}
+                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                        {movement.movementLabel ?? movement.movement ?? '-'}
+                      </TableCell>
+                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                        {movement.peakTime ?? '-'}
+                      </TableCell>
+                      <TableCell align="right" sx={numericReportTableCellSx}>
+                        {formatNumber(movement.volume)}
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
               })}
             </TableBody>
           </Table>

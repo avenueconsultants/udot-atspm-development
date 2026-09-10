@@ -57,6 +57,55 @@ namespace Utah.Udot.ATSPM.ApplicationTests.Business.TimeOfDay
             Assert.Equal(300, result.PrimaryPeakVolume);
             Assert.Equal(80, result.CrossStreetPeakVolume);
             Assert.Equal(21.05, sharePoint.CrossTrafficPercent);
+
+            var locationShares = result.CrossTrafficLocations.Where(row => row.Period == "AM").ToList();
+            Assert.Equal(28.57, locationShares.Single(row => row.LocationIdentifier == "1001").PercentOfCrossTraffic);
+            Assert.Equal(21.05, locationShares.Single(row => row.LocationIdentifier == "1002").PercentOfCrossTraffic);
+            Assert.Equal(11.76, locationShares.Single(row => row.LocationIdentifier == "1003").PercentOfCrossTraffic);
+            Assert.All(locationShares, row => Assert.InRange(row.PercentOfCrossTraffic!.Value, 0, 100));
+        }
+
+        [Theory]
+        [InlineData(125, 125, 50)]
+        [InlineData(0, 125, 100)]
+        public void BuildSplitPressure_UsesLocationTotalAtCrossTrafficPeak(
+            double primaryCount,
+            double crossCount,
+            double expectedPercent)
+        {
+            var location = BuildLocation("1001", primaryCount, crossCount);
+            // A larger primary peak in another bin must not affect this share.
+            location.Observations.Add(BuildObservation("1001", "Eastbound", 1000) with { Minutes = 495 });
+
+            var result = CreateService().BuildSplitPressure(
+                new TimeOfDayOptions { AllDayPrimaryDirections = new List<string> { "Eastbound" } },
+                BuildDirectionalProfiles(),
+                new List<TimeOfDayLocationAnalysisData> { location },
+                new List<DateOnly> { TestDate },
+                15);
+
+            var row = Assert.Single(result.CrossTrafficLocations.Where(row => row.Period == "AM"));
+            Assert.Equal(480, row.Minutes);
+            Assert.Equal(500, row.TotalVehiclesPerHour);
+            Assert.Equal(expectedPercent, row.PercentOfCrossTraffic);
+        }
+
+        [Fact]
+        public void BuildSplitPressure_UsesCommonDateBasisForLocationShare()
+        {
+            var location = BuildLocation("1001", 125, 125);
+            // Primary traffic has another day of data; cross traffic does not.
+            location.Observations.Add(BuildObservation("1001", "Eastbound", 250) with { LocalDate = TestDate.AddDays(1) });
+
+            var result = CreateService().BuildSplitPressure(
+                new TimeOfDayOptions { AllDayPrimaryDirections = new List<string> { "Eastbound" } },
+                BuildDirectionalProfiles(),
+                new List<TimeOfDayLocationAnalysisData> { location },
+                new List<DateOnly> { TestDate, TestDate.AddDays(1) },
+                15);
+
+            var row = Assert.Single(result.CrossTrafficLocations.Where(row => row.Period == "AM"));
+            Assert.Equal(25, row.PercentOfCrossTraffic);
         }
 
         [Fact]

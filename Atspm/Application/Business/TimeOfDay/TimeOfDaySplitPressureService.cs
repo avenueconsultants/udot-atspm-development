@@ -87,10 +87,10 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var crossPeak = crossProfile.Points.OrderByDescending(p => p.AverageVolume).ThenBy(p => p.Minutes).FirstOrDefault();
             var crossTrafficLocations = BuildCrossTrafficLocations(
                 locationData,
+                primaryDirections,
                 crossDirections,
                 selectedDates,
-                binSizeMinutes,
-                share);
+                binSizeMinutes);
             var movementPressures = BuildMovementPressures(
                 locationData,
                 selectedDates,
@@ -335,8 +335,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             var result = new List<TimeOfDayPeakEventDto>();
             foreach (var period in Periods())
             {
-                AddProfilePeak(result, "Primary peak", "Primary", period.Name, primaryProfile, period.Start, period.End);
-                AddProfilePeak(result, "Cross-street peak", "CrossStreet", period.Name, crossProfile, period.Start, period.End);
+                AddProfilePeak(result, $"{period.Name} primary peak", "Primary", period.Name, primaryProfile, period.Start, period.End);
+                AddProfilePeak(result, $"{period.Name} cross-street peak", "CrossStreet", period.Name, crossProfile, period.Start, period.End);
 
                 var sharePeak = share
                     .Where(s => s.Minutes >= period.Start && s.Minutes < period.End && s.CrossTrafficPercent.HasValue)
@@ -348,7 +348,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 {
                     result.Add(new TimeOfDayPeakEventDto
                     {
-                        Label = "Cross-traffic percent peak",
+                        Label = $"{period.Name} cross-traffic percent peak",
                         Series = "CrossTrafficPercent",
                         Period = period.Name,
                         TimeOfDay = sharePeak.TimeOfDay,
@@ -396,10 +396,10 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
         private List<TimeOfDayCrossTrafficLocationDto> BuildCrossTrafficLocations(
             IReadOnlyList<TimeOfDayLocationAnalysisData> locationData,
+            IReadOnlyList<string> primaryDirections,
             IReadOnlyList<string> crossDirections,
             IReadOnlyList<DateOnly> selectedDates,
-            int binSizeMinutes,
-            IReadOnlyList<TimeOfDayCrossTrafficSharePointDto> corridorShare)
+            int binSizeMinutes)
         {
             var result = new List<TimeOfDayCrossTrafficLocationDto>();
 
@@ -428,9 +428,19 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         continue;
                     }
 
-                    var corridorCrossVolume = corridorShare
-                        .FirstOrDefault(s => s.Minutes == peak.Minutes)
-                        ?.CrossStreetVolume ?? 0;
+                    var observationsAtPeak = location.Observations
+                        .Where(o => o.Minutes == peak.Minutes && selectedDates.Contains(o.LocalDate))
+                        .ToList();
+                    var crossCount = observationsAtPeak
+                        .Where(o => crossDirections.Contains(o.Direction, StringComparer.OrdinalIgnoreCase))
+                        .Sum(o => o.Count);
+                    var totalCount = observationsAtPeak
+                        .Where(o => primaryDirections.Contains(o.Direction, StringComparer.OrdinalIgnoreCase)
+                            || crossDirections.Contains(o.Direction, StringComparer.OrdinalIgnoreCase))
+                        .Sum(o => o.Count);
+
+                    // Use the same dates and bin for both counts. A common daily-average
+                    // and hourly-rate conversion cancels out of this location's share.
 
                     result.Add(new TimeOfDayCrossTrafficLocationDto
                     {
@@ -440,8 +450,8 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                         PeakTime = peak.TimeOfDay,
                         Minutes = peak.Minutes,
                         TotalVehiclesPerHour = peak.AverageVolume,
-                        PercentOfCrossTraffic = corridorCrossVolume > 0
-                            ? TimeOfDayProfileService.Round(peak.AverageVolume / corridorCrossVolume * 100)
+                        PercentOfCrossTraffic = totalCount > 0
+                            ? TimeOfDayProfileService.Round(crossCount / totalCount * 100)
                             : null
                     });
                 }

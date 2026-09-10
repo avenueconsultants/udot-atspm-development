@@ -9,7 +9,7 @@ import {
 } from '../transformers'
 import TimeOfDayChartWorkspace from './TimeOfDayChartWorkspace'
 import TimeOfDaySchedules from './TimeOfDaySchedules'
-import type { TimeOfDayAnalysisMode } from './chart/TimeOfDayLayersPanel'
+import type { TimeOfDayDetailTab } from './chart/TimeOfDayChartHeader'
 import TimeOfDayDetailsPanel from './results/TimeOfDayDetailsPanel'
 import TimeOfDayLocationData from './results/TimeOfDayLocationData'
 import TimeOfDaySummary from './results/TimeOfDaySummary'
@@ -38,13 +38,13 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     )
   const renderDetails = useCallback(
     ({
-      activeMode,
+      detailTab,
       selectedSeries,
       selectedDetailKey,
       onSelectDetail,
       onSetSeriesVisibility,
     }: {
-      activeMode: TimeOfDayAnalysisMode
+      detailTab: TimeOfDayDetailTab
       selectedSeries: Record<string, boolean>
       selectedDetailKey?: string
       onSelectDetail: (detailKey: string) => void
@@ -52,7 +52,7 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     }) => (
       <TimeOfDayDetailsPanel
         result={result}
-        activeMode={activeMode}
+        detailTab={detailTab}
         selectedSeries={selectedSeries}
         locationNumberMap={splitPressureLocationNumberMap}
         selectedDetailKey={selectedDetailKey}

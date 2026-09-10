@@ -2,7 +2,45 @@ import { Box, Button, ButtonGroup, Tab, Tabs, Typography } from '@mui/material'
 import type { TimeOfDayAnalysisModel } from '../../transformers'
 import type { TimeOfDayAnalysisMode } from './TimeOfDayLayersPanel'
 
-export type TimeOfDaySidebarTab = 'layers' | 'details'
+export type TimeOfDayDetailTab =
+  | 'signal-peaks'
+  | 'cross-traffic'
+  | 'movement-demand'
+export type TimeOfDaySidebarTab = 'layers' | TimeOfDayDetailTab
+
+const detailTabsByMode: Record<
+  TimeOfDayAnalysisMode,
+  Array<{ value: TimeOfDayDetailTab; label: string }>
+> = {
+  recommendation: [{ value: 'signal-peaks', label: 'Signal Peaks' }],
+  pressure: [
+    { value: 'cross-traffic', label: 'Cross Traffic' },
+    { value: 'movement-demand', label: 'Movement Demand' },
+  ],
+}
+
+export const getTimeOfDayDetailTabs = (mode: TimeOfDayAnalysisMode) =>
+  detailTabsByMode[mode]
+
+export const getTimeOfDayDefaultDetailTab = (
+  mode: TimeOfDayAnalysisMode
+): TimeOfDayDetailTab => detailTabsByMode[mode][0].value
+
+export const getTimeOfDayDetailTabForKey = (
+  detailKey: string
+): TimeOfDayDetailTab => {
+  if (detailKey.startsWith('crosstraffic:')) return 'cross-traffic'
+  if (detailKey.startsWith('movementpressure:')) return 'movement-demand'
+
+  return 'signal-peaks'
+}
+
+const sidebarTabSx = {
+  minHeight: 40,
+  minWidth: 0,
+  px: 1.25,
+  textTransform: 'none',
+}
 
 interface TimeOfDayChartHeaderProps {
   model: TimeOfDayAnalysisModel
@@ -13,29 +51,39 @@ interface TimeOfDayChartHeaderProps {
   onChangeAnalysisMode: (mode: TimeOfDayAnalysisMode) => void
 }
 
-export const timeOfDayToggleGroupSx = {
+const analysisModeToggleGroupSx = {
+  height: '100%',
   '& .MuiButton-root': {
-    height: 30,
-    minHeight: 30,
-    px: 1.25,
+    height: '100%',
+    minHeight: 34,
+    minWidth: { xs: 112, sm: 140 },
+    px: 1.5,
     py: 0,
     borderColor: '#CBD5E1',
+    borderRadius: 0,
+    borderTop: 0,
+    borderBottom: 0,
     color: '#475569',
     fontSize: '0.75rem',
     lineHeight: 1,
     textTransform: 'none',
+    whiteSpace: 'nowrap',
     '&:hover': {
       borderColor: '#94A3B8',
       backgroundColor: 'rgba(15, 23, 42, 0.05)',
     },
   },
+  '& .MuiButton-root:last-of-type': {
+    borderRight: 0,
+  },
   '& .MuiButton-root.is-active': {
-    borderColor: '#334155',
-    backgroundColor: '#334155',
-    color: '#FFFFFF',
+    borderColor: '#9EC5E8',
+    backgroundColor: '#E3F0FB',
+    color: '#09549C',
+    fontWeight: 600,
     '&:hover': {
-      borderColor: '#334155',
-      backgroundColor: '#1F2937',
+      borderColor: '#7FB2DF',
+      backgroundColor: '#D2E6F7',
     },
   },
 }
@@ -109,21 +157,18 @@ export default function TimeOfDayChartHeader({
       </Box>
       <Box
         sx={{
-          alignSelf: 'center',
+          alignSelf: 'stretch',
           justifySelf: { xs: 'start', md: 'end' },
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'stretch',
           justifyContent: 'flex-end',
-          flexWrap: 'wrap',
-          gap: 0.75,
-          mr: 1.5,
         }}
       >
         <ButtonGroup
           size="small"
           variant="outlined"
           aria-label="Time-of-day analysis modes"
-          sx={timeOfDayToggleGroupSx}
+          sx={analysisModeToggleGroupSx}
         >
           <Button
             className={
@@ -132,14 +177,14 @@ export default function TimeOfDayChartHeader({
             onClick={() => onChangeAnalysisMode('recommendation')}
             aria-pressed={activeMode === 'recommendation'}
           >
-            Recommended
+            Peaks
           </Button>
           <Button
             className={activeMode === 'pressure' ? 'is-active' : undefined}
             onClick={() => onChangeAnalysisMode('pressure')}
             aria-pressed={activeMode === 'pressure'}
           >
-            Pressure
+            Movement Demand &amp; Cross Traffic
           </Button>
         </ButtonGroup>
       </Box>
@@ -171,18 +216,19 @@ export default function TimeOfDayChartHeader({
             onChangeSidebarTab(value)
           }
           aria-label="Time-of-day chart sidebar"
+          variant="scrollable"
+          scrollButtons={false}
           sx={{ px: 1.5, minHeight: 40 }}
         >
-          <Tab
-            value="layers"
-            label="Legend"
-            sx={{ minHeight: 40, textTransform: 'none' }}
-          />
-          <Tab
-            value="details"
-            label="Details"
-            sx={{ minHeight: 40, textTransform: 'none' }}
-          />
+          <Tab value="layers" label="Legend" sx={sidebarTabSx} />
+          {getTimeOfDayDetailTabs(activeMode).map((tab) => (
+            <Tab
+              key={tab.value}
+              value={tab.value}
+              label={tab.label}
+              sx={sidebarTabSx}
+            />
+          ))}
         </Tabs>
       </Box>
     </Box>
