@@ -1552,12 +1552,32 @@ const getSignalPeakBadgeColor = (peak: TimeOfDayPeakEventDto) => {
 
 const getNumberedSignalPeakEvents = (
   peaks: TimeOfDayPeakEventDto[] | null | undefined
-): TimeOfDayNumberedPeakEvent[] =>
-  getSignalPeakEvents(peaks).map((peak, index) => ({
-    ...peak,
-    badgeNumber: index + 1,
-    badgeColor: getSignalPeakBadgeColor(peak),
-  }))
+): TimeOfDayNumberedPeakEvent[] => {
+  const locationNumbers = new Map<string, number>()
+  let nextBadgeNumber = 1
+
+  return getSignalPeakEvents(peaks).map((peak) => {
+    const locationKey = normalizeToken(peak.locationIdentifier)
+    let badgeNumber = locationKey
+      ? locationNumbers.get(locationKey)
+      : undefined
+
+    if (badgeNumber === undefined) {
+      badgeNumber = nextBadgeNumber
+      nextBadgeNumber += 1
+
+      if (locationKey) {
+        locationNumbers.set(locationKey, badgeNumber)
+      }
+    }
+
+    return {
+      ...peak,
+      badgeNumber,
+      badgeColor: getSignalPeakBadgeColor(peak),
+    }
+  })
+}
 
 const createLegendItem = (name: string, icon: string, color: string) => ({
   name,
