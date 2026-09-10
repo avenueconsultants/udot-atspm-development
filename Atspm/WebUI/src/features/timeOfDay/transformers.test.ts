@@ -6,6 +6,7 @@ import {
   buildScheduleRows,
   buildSplitPressureOption,
   buildTimeOfDayAnalysisModel,
+  getLocationPeakEvents,
   getMovementPressures,
   getTimeOfDayPresetSeriesSelection,
 } from './transformers'
@@ -1273,5 +1274,59 @@ describe('time-of-day chart titles', () => {
       'Proposed plan windows': false,
       'Plan difference windows': true,
     })
+  })
+})
+
+describe('time-of-day signal peak numbering', () => {
+  test('uses the same sequential badge number for each location in AM and PM', () => {
+    const peaks = [
+      {
+        period: 'AM',
+        series: 'Location',
+        locationIdentifier: '7522',
+        minutes: 420,
+        value: 2295,
+      },
+      {
+        period: 'PM',
+        series: 'Location',
+        locationIdentifier: '7522',
+        minutes: 975,
+        value: 2808,
+      },
+      {
+        period: 'AM',
+        series: 'Location',
+        locationIdentifier: '7521',
+        minutes: 465,
+        value: 2480,
+      },
+      {
+        period: 'PM',
+        series: 'Location',
+        locationIdentifier: '7521',
+        minutes: 1035,
+        value: 2735,
+      },
+    ]
+
+    expect(
+      getLocationPeakEvents(peaks, 'AM').map((peak) => [
+        peak.locationIdentifier,
+        peak.badgeNumber,
+      ])
+    ).toEqual([
+      ['7522', 1],
+      ['7521', 2],
+    ])
+    expect(
+      getLocationPeakEvents(peaks, 'PM').map((peak) => [
+        peak.locationIdentifier,
+        peak.badgeNumber,
+      ])
+    ).toEqual([
+      ['7522', 1],
+      ['7521', 2],
+    ])
   })
 })
