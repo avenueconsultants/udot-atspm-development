@@ -52,7 +52,7 @@ storage, workflow, or measures changes** (doc 12).
 
 1. Source changes on `feature/lidar-integration` implementing S1–S10.
 2. EF migrations (×5 providers) — the discriminator, and any `ConfigContext` change
-   (`Detector.BlueCityZoneId`, `DeviceConfiguration.Password` widen).
+   (`Detector.LidarZoneId`, `DeviceConfiguration.Password` widen).
 3. `appsettings` / `docker-compose` additions (LiDAR `EventLogImporterConfiguration`
    `EarliestAcceptableDate`) and a scheduled `log --device-type LidarSensor` job.
 4. `DeviceConfiguration` template + operator onboarding doc.
@@ -115,23 +115,36 @@ storage, workflow, or measures changes** (doc 12).
 | Analytics API is beta (`2.11.0-beta.1`) — schema may shift | Decoder / client breakage | Decoder tolerant of extra/missing optional fields; fixtures from a real box; version pinned in docs |
 | Secret handling (plaintext in `DeviceConfiguration`) | Credential exposure | Matches current controller-credential handling; flagged as a cross-cutting improvement, not lidar-only |
 
-## 9. Effort (relative sizing)
+## 9. Effort (relative sizing — Phase 1 only)
 
-| WP | Size |
-| --- | --- |
-| WP1 Data model + migrations | M |
-| WP2 Edge REST client | L |
-| WP3 Decoder | S |
-| WP4 Hosted service + config | M |
-| WP5 Provisioning | S |
-| WP6 Auto-config channel match | L |
-| WP7 Archive-merge check | S–M |
-| WP8 Observability | S–M |
-| WP9 Tests | M (spread across WPs) |
-| WP10 Rollout | M (mostly ops) |
+`S ≈ 0.5–1 day` · `M ≈ 2–4 days` · `L ≈ 5–8 days`, for one engineer already familiar with
+the codebase; each WP's range already includes its own unit/component testing (WP9 is not
+additive). **WP0 is UDOT/Ouster-side prerequisite work, not development effort, and is
+excluded from the totals below.**
 
-S ≈ ½–1 day · M ≈ 2–4 days · L ≈ 5–8 days for one engineer familiar with the codebase;
-firm these up against team velocity, not as commitments.
+| WP | Work | Size | Days (low–high) |
+| --- | --- | --- | --- |
+| WP1 | Data model + migrations (`LidarZoneEvent`, ×5 EF migrations, repository) | M | 2–4 |
+| WP2 | `OusterBlueCityEdgeDownloaderClient` (auth, windowing, pagination, TLS) | L | 5–8 |
+| WP3 | `OusterBlueCityObjectEventsDecoder` | S | 0.5–1 |
+| WP4 | Scheduling + configuration (no hosted service — a config/deploy task, not new code) | S–M | 1–2 |
+| WP5 | Provisioning (`Product`, `DeviceConfiguration` template, operator doc) | S | 0.5–1 |
+| WP6 | Auto-config channel match (`lidar-autoconfig`, zone-name parser) | L | 5–8 |
+| WP7 | Archive-merge verification (+ fix, if `Timeline` doesn't snap) | S–M | 0.5–2 |
+| WP8 | Observability ("N days behind" alert, logging) | S–M | 0.5–2 |
+| WP10 | Rollout (pilot, fleet onboarding, runbook — partly ops, not pure dev) | M | 2–4 |
+| **Total** | | | **≈ 18–32 developer-days** |
+
+**≈ 18–32 developer-days ≈ 4–6.5 weeks for one full-time engineer.** WP2 and WP6 are the
+two largest items and are largely independent of each other, so a second engineer running
+WP6 in parallel with WP2/WP3 could compress the calendar time (not the total effort) to
+roughly **3–4 weeks**. Add the team's standard PM/code-review/QA overhead on top — not
+included above.
+
+**This does not include Phase 2 (new measures).** See
+[`11-measures-plan.md`](11-measures-plan.md) §"Effort" for that estimate — it is deliberately
+a separate line item since it depends on Phase 1 being in production first and its scope
+(which measures, how many) is still open (doc 05 Q7).
 
 ## 10. Environments & rollout
 

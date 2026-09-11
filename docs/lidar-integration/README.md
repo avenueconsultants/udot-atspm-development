@@ -13,6 +13,13 @@ H1 archive-merge check, H2/M1/M4…) are folded into docs 02–09. Build sequenc
 [`11-measures-plan.md`](11-measures-plan.md). Residual [`05`](05-open-questions.md) items are
 UDOT/Ouster prerequisites (doc 08 WP0) or implementer checks — not design blockers.
 
+**Effort headline (for costing):** Phase 1 — ingestion + auto-config (docs 08/09, WP1–WP10)
+≈ **18–32 developer-days** (one engineer; ≈ 3–4 weeks with two working WP2/WP6 in parallel).
+Phase 2 — new measures ([`11`](11-measures-plan.md), MP1–MP7, rougher sizing) ≈
+**23–37 developer-days**, and is separable — MP1+MP2 alone (≈ 6–10 days) stands up the first
+LiDAR measure end-to-end. Both exclude WP0 (UDOT/Ouster prerequisites — not development) and
+standard PM/review/QA overhead.
+
 ## Documents
 
 | Doc | Purpose |

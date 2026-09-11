@@ -67,15 +67,25 @@ run on LiDAR-as-detector vs. native LiDAR measures.
 
 ## Recommended sequencing (Phase 2+)
 
-| WP | Work | Depends on |
-| --- | --- | --- |
-| MP1 | `LidarZoneEventLogEFRepository` read API + a zone→`Detector` resolver service (parse name / use `BlueCityZoneId`) | Phase 1 (S1, WP6) |
-| MP2 | **Direct measure #1: Volume by movement & class** — analysis pipeline + `MeasureType` + ReportApi endpoint + WebUI chart. Proves path A end-to-end. | MP1 |
-| MP3 | **Direct measure #2: Speed / 85th-percentile** | MP1 |
-| MP4 | **Pedestrian & bicycle volume** (crosswalk zones) | MP1 |
-| MP5 | `LidarZoneAggregation` model + `LidarAggregationWorkflow` + repo + ×5 migrations; re-point MP2–MP4 dashboards at the aggregate | MP2–MP4 |
-| MP6 | **Path C (opt-in): `LidarZoneEvent → IndianaEvent` transform** for count zones; validate LiDAR-fed Approach Volume / PCD / TMC against a controller-detector baseline | Phase 1, MP1 |
-| MP7 | Queue-length & occupancy measures (needs the `zone_queue_length` endpoint too — a Phase-1-deferred ingestion item) | MP5, edge `zone_queue_length` ingestion |
+Sizing uses the same scale as doc 09 §9 (`S ≈ 0.5–1 d`, `M ≈ 2–4 d`, `L ≈ 5–8 d`, one
+engineer). These are **rougher** than the Phase-1 numbers — no report/UI code exists yet to
+calibrate against — treat as order-of-magnitude until MP2 is actually built.
+
+| MP | Work | Depends on | Size | Days |
+| --- | --- | --- | --- | --- |
+| MP1 | `LidarZoneEventLogEFRepository` read API + a zone→`Detector` resolver service (parse name / use `LidarZoneId`) | Phase 1 (S1, WP6) | S | 1–2 |
+| MP2 | **Direct measure #1: Volume by movement & class** — analysis pipeline + `MeasureType` + ReportApi endpoint + WebUI chart. Proves path A end-to-end; every measure after this is cheaper. | MP1 | L | 5–8 |
+| MP3 | **Direct measure #2: Speed / 85th-percentile** | MP1, MP2 | M | 2–3 |
+| MP4 | **Pedestrian & bicycle volume** (crosswalk zones) | MP1, MP2 | M | 2–3 |
+| MP5 | `LidarZoneAggregation` model + `LidarAggregationWorkflow` + repo + ×5 migrations; re-point MP2–MP4 dashboards at the aggregate | MP2–MP4 | L | 5–8 |
+| MP6 | **Path C (opt-in): `LidarZoneEvent → IndianaEvent` transform** for count zones; validate LiDAR-fed Approach Volume / PCD / TMC against a controller-detector baseline | Phase 1, MP1 | M | 3–5 |
+| MP7 | Queue-length & occupancy measures (needs the `zone_queue_length` endpoint too — a Phase-1-deferred ingestion item) | MP5, edge `zone_queue_length` ingestion | L | 5–8 |
+| **Total (MP1–MP7)** | | | | **≈ 23–37 developer-days** |
+
+**MP2 is the pivot point.** MP1 + MP2 (≈ 6–10 days) proves the whole path end-to-end —
+reasonable as a standalone first Phase-2 milestone before committing to the rest. MP3/MP4
+are cheap once MP2 exists (same pattern, different filter/chart). MP5–MP7 are each
+independently deferrable.
 
 ## Design constraints carried from the review (doc 10)
 

@@ -10,7 +10,7 @@ Everything here follows the decisions in [`05-open-questions.md`](05-open-questi
 ## Dependency graph
 
 ```
-WP1 Data model ─┬─▶ WP3 Decoder ─┬─▶ WP4 Hosted service + config ─▶ WP9 Tests ─▶ WP10 Pilot → fleet
+WP1 Data model ─┬─▶ WP3 Decoder ─┬─▶ WP4 Scheduling + config ─▶ WP9 Tests ─▶ WP10 Pilot → fleet
 WP2 Edge client ┘               │
 WP2 Edge client ────────────────┴─▶ WP6 Auto-config (channel match)
 WP7 Archive-merge check runs alongside WP3/WP4
@@ -51,7 +51,7 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
 - `LidarZoneEventLogEFRepository : EventLogEFRepositoryBase<LidarZoneEvent>` (mirrors
   `IndianaEventLogEFRepository`; gives `GetEventsBetweenDates` for free) + `IEventLogRepository`
   DI registration line, so `dataapi` / measures can read the rows.
-- Optional: nullable `long? BlueCityZoneId` (or a `DeviceProperties` convention) on
+- Optional: nullable `long? LidarZoneId` (or a `DeviceProperties` convention) on
   `Detector` for the zone→detector join used by WP6 and future reporting — a `ConfigContext`
   change ⇒ ×5 migrations.
 - If Keycloak secrets can exceed 50 chars for the fleet (review M1): widen
@@ -188,7 +188,7 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
   1. pull `GET /snmp/zone_mappings` (+ `/config`) via the WP2 client;
   2. for each parsed `(type, channel)`: match an existing `Detector` at the `Device`'s
      `Location` by `DetectorChannel` → stage `DetectionHardware = LiDar`,
-     `LatencyCorrection = 0`, set `BlueCityZoneId`; unmatched → stage a new `Detector` on
+     `LatencyCorrection = 0`, set `LidarZoneId`; unmatched → stage a new `Detector` on
      the `Approach` for the direction (mapping tables in doc 06);
   3. emit a **draft** as a new `"LiDAR"` `Location` version (not auto-applied), each field
      tagged with its source (`matched-channel` / `new` / `needs-review`);
