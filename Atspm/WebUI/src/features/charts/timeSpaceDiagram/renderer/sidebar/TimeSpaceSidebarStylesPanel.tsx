@@ -1,8 +1,8 @@
 import {
   getDirectionRoleDisplayLabel,
   getStylableItems,
-  type SidebarItem,
   type SidebarDirectionRole,
+  type SidebarItem,
 } from '@/features/charts/timeSpaceDiagram/renderer/sidebar/timeSpaceSidebarModel'
 import {
   TIME_SPACE_DEFAULT_APPEARANCE_SETTINGS,
@@ -259,8 +259,8 @@ function CycleAppearancePreview({
   colors: TimeSpaceAppearanceSettings['cycles']['indicationColors']
 }) {
   const segments = [
-    { color: colors.beginGreen, flex: 14 },
     { color: colors.trailingGreen, flex: 10 },
+    { color: colors.beginGreen, flex: 14 },
     { color: colors.yellowClearance, flex: 8 },
     { color: colors.redClearance, flex: 10 },
     { color: colors.redIndication, flex: 22 },
@@ -352,7 +352,9 @@ export default function TimeSpaceSidebarStylesPanel({
   const stylableItems = getStylableItems(items)
   const styleAppearance =
     appearanceSettings ?? TIME_SPACE_DEFAULT_APPEARANCE_SETTINGS
-  const hasLeftTurnStyle = stylableItems.some((item) => item.key === 'left-turn')
+  const hasLeftTurnStyle = stylableItems.some(
+    (item) => item.key === 'left-turn'
+  )
   const hasRightTurnStyle = stylableItems.some(
     (item) => item.key === 'right-turn'
   )
@@ -433,7 +435,7 @@ export default function TimeSpaceSidebarStylesPanel({
                   }}
                 >
                   <ColorInputControl
-                    label="Begin green"
+                    label="Early green"
                     value={cycleColors.beginGreen}
                     ariaLabel="Cycles begin green color"
                     onChange={(value) =>
@@ -450,9 +452,9 @@ export default function TimeSpaceSidebarStylesPanel({
                     }
                   />
                   <ColorInputControl
-                    label="Trailing green"
+                    label="Green phase"
                     value={cycleColors.trailingGreen}
-                    ariaLabel="Cycles trailing green color"
+                    ariaLabel="Cycles early green color"
                     onChange={(value) =>
                       updateAppearance((current) => ({
                         ...current,
@@ -461,6 +463,23 @@ export default function TimeSpaceSidebarStylesPanel({
                           indicationColors: {
                             ...current.cycles.indicationColors,
                             trailingGreen: value,
+                          },
+                        },
+                      }))
+                    }
+                  />
+                  <ColorInputControl
+                    label="Programmed split green"
+                    value={cycleColors.beginGreen}
+                    ariaLabel="Cycles programmed split green color"
+                    onChange={(value) =>
+                      updateAppearance((current) => ({
+                        ...current,
+                        cycles: {
+                          ...current.cycles,
+                          indicationColors: {
+                            ...current.cycles.indicationColors,
+                            beginGreen: value,
                           },
                         },
                       }))

@@ -1,4 +1,7 @@
+import '@/components/LeafletMap/leafletGlobalSetup'
+
 import Markers from '@/components/LocationMap/Markers'
+import SmoothWheelZoom from '@/components/LeafletMap/SmoothWheelZoom'
 import MapFilters from '@/components/MapFilters'
 import { Location } from '@/features/locations/types'
 import { useEnv } from '@/hooks/useEnv'
@@ -16,7 +19,7 @@ import 'esri-leaflet-renderers'
 import L, { Map as LeafletMap } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { MapContainer, Polyline, TileLayer } from 'react-leaflet'
+import { MapContainer, Polyline, TileLayer, useMap } from 'react-leaflet'
 
 interface Filters {
   areaId?: number | null
@@ -37,6 +40,45 @@ interface LocationMapProps {
   mapHeight?: number | string
   filters: Filters
   updateFilters: (filters: Partial<Filters>) => void
+  highlightedLocationId?: number
+}
+
+const DismissPopupOnInteraction = () => {
+  const map = useMap()
+
+  useEffect(() => {
+    const closeOpenPopup = () => {
+      map.closePopup()
+    }
+
+    const mapContainer = map.getContainer()
+
+    const handleWheel = () => {
+      closeOpenPopup()
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (event.button !== 0) return
+
+      const target = event.target
+      if (target instanceof Element && target.closest('.leaflet-popup')) return
+
+      closeOpenPopup()
+    }
+
+    mapContainer.addEventListener('wheel', handleWheel, {
+      capture: true,
+      passive: true,
+    })
+    document.addEventListener('pointerdown', handlePointerDown, true)
+
+    return () => {
+      mapContainer.removeEventListener('wheel', handleWheel, true)
+      document.removeEventListener('pointerdown', handlePointerDown, true)
+    }
+  }, [map])
+
+  return null
 }
 
 const LocationMap = ({
@@ -50,6 +92,7 @@ const LocationMap = ({
   mapHeight,
   filters,
   updateFilters,
+  highlightedLocationId,
 }: LocationMapProps) => {
   const theme = useTheme()
   const env = useEnv()
@@ -84,8 +127,8 @@ const LocationMap = ({
       try {
         const r = await fetch('/api/google/tiles/session', { method: 'POST' })
         if (!r.ok) return
-        const data = (await r.json()) as { session: string }
-        setGoogleSession(data.session)
+        const data = (await r.json()) as { session?: string | null }
+        setGoogleSession(data.session ?? null)
       } catch {}
     }
     run()
@@ -179,7 +222,8 @@ const LocationMap = ({
     <MapContainer
       center={center || [mapInfo.initialLat, mapInfo.initialLong]}
       zoom={zoom ?? mapInfo.zoomLevel ?? 6}
-      scrollWheelZoom={true}
+      scrollWheelZoom={false}
+      zoomSnap={0.1}
       style={{
         height: mapHeight || 'calc(100% - 80px)',
         minHeight: mapHeight || '400px',
@@ -187,6 +231,8 @@ const LocationMap = ({
       }}
       ref={setMapRef}
     >
+      <SmoothWheelZoom />
+      <DismissPopupOnInteraction />
       <ClickAwayListener onClickAway={handleClosePopper}>
         <Box>
           <ButtonGroup
@@ -235,17 +281,18 @@ const LocationMap = ({
 
       {googleSession ? (
         <TileLayer
-          attribution={
-            mapInfo.attribution /* or hardcode Google attribution string */
-          }
+          attribution={mapInfo.attribution}
           url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
           crossOrigin
         />
       ) : (
-        // optional: keep your old layer as fallback or show skeleton
         <TileLayer attribution={mapInfo.attribution} url={mapInfo.tile_layer} />
       )}
-      <Markers locations={filteredLocations} setLocation={setLocation} />
+      <Markers
+        locations={filteredLocations}
+        setLocation={setLocation}
+        highlightedLocationId={highlightedLocationId}
+      />
       {route && route.length > 0 && (
         <Polyline
           positions={route.map((coord) => [coord[0], coord[1]])}
