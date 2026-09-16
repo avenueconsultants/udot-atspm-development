@@ -136,6 +136,18 @@ function EditApproach({ approach }: ApproachAdminProps) {
       }
     })
 
+    const rawMph = String(approach.mph ?? '').trim()
+    const mph = rawMph === '' ? null : Number(rawMph)
+    if (
+      mph !== null &&
+      (!Number.isInteger(mph) || mph < -2147483648 || mph > 2147483647)
+    ) {
+      newErrors[`${approach.id}-mph`] = {
+        error: 'Approach speed must be a valid whole number',
+        id: String(approach.id),
+      }
+    }
+
     // if any errors, stop here and render them
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -152,6 +164,7 @@ function EditApproach({ approach }: ApproachAdminProps) {
     modifiedApproach.protectedPhaseNumber = protectedPhaseNumber
     modifiedApproach.permissivePhaseNumber = permissivePhaseNumber
     modifiedApproach.pedestrianPhaseNumber = pedestrianPhaseNumber
+    modifiedApproach.mph = mph
     modifiedApproach.transitSignalPriorityNumber =
       approach.transitSignalPriorityNumber === ''
         ? null
