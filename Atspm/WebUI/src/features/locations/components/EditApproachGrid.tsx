@@ -204,6 +204,7 @@ function EditApproachGrid({ approach }: EditApproachGridProps) {
               colCount={colCount}
               value={approach.mph}
               onUpdate={(v) => handleUpdate('mph', v)}
+              error={errors?.[`${approach.id}-mph`]}
             />
 
             <BooleanCell
