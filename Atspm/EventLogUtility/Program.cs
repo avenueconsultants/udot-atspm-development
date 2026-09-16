@@ -29,11 +29,11 @@ using Utah.Udot.Atspm.Infrastructure.Extensions;
 
 //gitactions: IIII
 
-if (OperatingSystem.IsWindows())
-{
-    if (!EventLog.SourceExists("Atspm"))
-        EventLog.CreateEventSource(AppDomain.CurrentDomain.FriendlyName, "Atspm");
-}
+//if (OperatingSystem.IsWindows())
+//{
+//    if (!EventLog.SourceExists("Atspm"))
+//        EventLog.CreateEventSource(AppDomain.CurrentDomain.FriendlyName, "Atspm");
+//}
 
 var rootCmd = new EventLogCommands();
 var cmdBuilder = new CommandLineBuilder(rootCmd);
