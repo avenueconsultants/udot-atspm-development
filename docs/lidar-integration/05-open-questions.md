@@ -21,6 +21,7 @@ H1/H2/M-series), or a deferred later-phase question.
 | X6 | **Box clock discipline (NTP?)** vs ATSPM host skew. | `EndLagMinutes` default. | `EndLagMinutes = 2`; observe `created_at` − `timestamp` in the pilot. |
 | X7 | **TLS** — box cert is self-signed. Install each box's CA on the ATSPM host, per-device pinned thumbprint, or allow-untrusted flag? | `OusterBlueCityEdgeDownloaderClient` handler config. | `ConnectionProperties["AllowUntrustedCertificate"]` / `["PinnedCertThumbprint"]`. |
 | X8 | **Hostname vs IP** — are boxes addressable by DNS, or IP only? | Possible small `DownloaderClientBase` change. | Support `ConnectionProperties["BaseUrl"]` (hostname ok). |
+| X13 | **Perception/LidarHub API auth + schema** (doc 13) — documented by Ouster but not yet pulled from a live box (VPN was down when checked, 2026-09-16). Does `GET /lidar-hub/api/v1/world` carry usable intersection coordinates? Does `GET /perception/api/v1/point_zones` carry real zone geometry? What auth does either require? | Would strengthen Q11 (box→`Location`) and doc 06 auto-config, but is **not required** for the Phase-1 spec as written. | Treat as unverified; do not build against it yet (doc 13). Re-run the doc 07-style live-box check next time VPN access is available. |
 
 ## Decided (by the project / by best-judgement)
 
@@ -40,7 +41,7 @@ H1/H2/M-series), or a deferred later-phase question.
 | B1 | Event time base | **Naive intersection-local**, not UTC (review). Request `object_events` with `timezone` = box `config.timezone`; store local with offset stripped | 2026-09-10 |
 | Q9 | Auto-config in Phase 1? | **Yes** — the channel-match *draft* generator (WP6). Full generate/merge/reconcile + scheduled re-sync is a fast-follow | 2026-09-10 |
 | Q10 | Phase-number source | Channel match to the existing ATSPM `Detector`/`Approach`; no phase guessing | 2026-09-10 |
-| Q11 | Box → `Location` | Intersection id is **not** exposed by the analytics API (`/about`, `/config` checked). `LocationIdentifier` is operator-entered on the `Device`. Reading it from the Detect core API is a possible fast-follow. | 2026-09-10 |
+| Q11 | Box → `Location` | Intersection id is **not** exposed by the analytics API (`/about`, `/config` checked). `LocationIdentifier` is operator-entered on the `Device`. `GET /lidar-hub/api/v1/world` (doc 13) may be a stronger fast-follow path if it carries usable coordinates — **unverified**, see X13. | 2026-09-10 |
 | X2 | Keycloak realm / token URL | realm `detect`; `https://<box>/auth/realms/detect/protocol/openid-connect/token`; `client_credentials` | 2026-09-10 |
 | X2a | API client + role | `analytics-client` (confidential, client-credentials) exists; no special service-account role needed | 2026-09-10 |
 | X2b | Analytics Server running? | Yes — earlier 500s were a role-less GUI-user token | 2026-09-10 |

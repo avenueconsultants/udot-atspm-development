@@ -36,6 +36,7 @@ standard PM/review/QA overhead.
 | [`10-architecture-review.md`](10-architecture-review.md) | Code-level fit / compatibility / security review against `main` — ranked findings + required doc corrections |
 | [`11-measures-plan.md`](11-measures-plan.md) | Plan for building new ATSPM measures/reports on `LidarZoneEvent` data (Phase 2+) |
 | [`12-multi-vendor-architecture.md`](12-multi-vendor-architecture.md) | How a second LiDAR vendor gets added without touching storage/workflow/measures — the plug-in contract, canonical event model, classification normalization |
+| [`13-perception-lidarhub-api.md`](13-perception-lidarhub-api.md) | The native Ouster Detect Perception & LidarHub APIs (below BlueCity) — full endpoint list, what they could add (box→`Location` GPS, real zone geometry), a hard do-not-call list. **Not yet verified against a live box; not part of the Phase-1 spec.** |
 
 ## Scope
 
@@ -78,6 +79,7 @@ records, stored at full resolution.
 | 2026-09-10 | **Code-level architecture/compat/security review** ([`10`](10-architecture-review.md)). Design fits ATSPM's extension points; no rework. Corrections folded in: **B1** event time base is naive intersection-local (not UTC) — request `timezone` = box `config.timezone`, store local; **H1** verify `Timeline` hour-snap or add one (archive de-dup); **H2** set `EarliestAcceptableDate` for the backfill; **M1** `DeviceConfiguration.Password` is `HasMaxLength(50)` — may need widening; **M4** `HostedServiceBase` has no timer → no `LidarEventLogHostedService`; schedule `log --device-type LidarSensor` instead; **P1** new client/decoder auto-register in DI. Security: pin/CA the box TLS, confirm ConfigApi doesn't expose `Password`, restrict outbound host ranges, no secrets in logs. |
 | 2026-09-10 | **New-measures plan** ([`11`](11-measures-plan.md)) — LiDAR as a measure source: direct-from-events, new LiDAR aggregations, and an opt-in `LidarZoneEvent → IndianaEvent` path into existing detector measures. Phase 2+ (MP1–MP7). |
 | 2026-09-11 | **Multi-vendor requirement** — the collector must support additional LiDAR vendors without major development. Addressed in [`12-multi-vendor-architecture.md`](12-multi-vendor-architecture.md): `LidarZoneEvent` is ATSPM's canonical, vendor-neutral model (with a normalized `Classification` + raw `VendorClassification`); each vendor is one `IDownloaderClient` + one `IEventLogDecoder` (both auto-register) + a `Product`/`DeviceConfiguration` template — no storage/workflow/measures change per vendor. Renamed the Phase-1 components to make the vendor boundary explicit: `TransportProtocols.EdgeRest → OusterBlueCityEdge`, `EdgeRestDownloaderClient → OusterBlueCityEdgeDownloaderClient`, `BlueCityObjectEventsDecoder → OusterBlueCityObjectEventsDecoder` (applied across docs 01, 02, 04, 05, 06, 07, 08, 09, 10). |
+| 2026-09-16 | **Incorporated the Ouster Detect Perception/LidarHub API reference** (<https://docs.ouster.com/ouster-detect/perception_api/perception-api.html>) — documented in [`13-perception-lidarhub-api.md`](13-perception-lidarhub-api.md). This is a *separate, lower-level* box-native API family (below BlueCity's Analytics Server), with a much larger destructive-control surface (reset, sensor/calibration/zone overwrite, password change). **Not verified against a live box** (VPN unavailable) and **not part of the Phase-1 spec** — flagged as a fast-follow research item: `GET /lidar-hub/api/v1/world` may resolve Q11 (box→`Location`), `GET /perception/api/v1/point_zones` may strengthen doc 06 auto-config geometry. Added security finding S9 (doc 10): if ever used, GET-only, never the write endpoints. |
 
 ## Reference
 
@@ -86,4 +88,7 @@ records, stored at full resolution.
 - **UDOT *"Ouster LiDAR Setup Guidance"* v1.10, 2026-01-11** (owner: Mark Taylor) — zone
   naming convention, intersection naming, ATSPM setup procedure. Not in repo.
 - Upstream field definitions: <https://docs.ouster.com/ouster-detect/connecting_to_output/connecting-to-output.html>
+- **Ouster Detect Perception & LidarHub API reference:**
+  <https://docs.ouster.com/ouster-detect/perception_api/perception-api.html> — see
+  [`13-perception-lidarhub-api.md`](13-perception-lidarhub-api.md).
 - ATSPM as-is architecture: [`01-architecture-overview.md`](01-architecture-overview.md) § "ATSPM today"

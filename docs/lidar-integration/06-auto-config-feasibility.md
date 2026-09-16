@@ -113,3 +113,10 @@ mechanism.
 - **Fast-follow:** full generate/merge/reconcile with scheduled re-sync; reading the
   intersection id from the Detect core API.
 - **Confirm during build:** the `TYPE → DetectionTypes` mapping with UDOT (doc 05 Q12).
+- **Possible future enrichment, unverified:** the native Perception API's
+  `GET /perception/api/v1/point_zones` (see [`13`](13-perception-lidarhub-api.md)) may carry
+  real zone geometry rather than the name-encoded approximation this doc relies on. If its
+  schema checks out, use it as a **cross-check** against the name parser's output (flag
+  disagreements as "needs review"), not as a replacement — the channel-match join still
+  comes from the zone name/`/snmp/zone_mappings`, which is what actually ties to ATSPM's
+  existing `Detector` channels.

@@ -8,9 +8,10 @@ Each BlueCity edge box sits at one intersection and is modeled as **one `Device`
 **Which `Location`:** UDOT names each BlueCity site
 `IntersectionID_Major St / Minor St_City` (e.g. `5000_Riverdale Rd (SR-26) / 700 W_Riverdale`)
 per the *Ouster LiDAR Setup Guidance* §"Intersection Naming Convention". The leading
-`IntersectionID` is the UDOT signal id = the ATSPM `LocationIdentifier`. If the site name is
-readable via the API (not in `/about` or `/config` — check site-settings; doc 05 Q11), the
-box→`Location` link can be derived; otherwise it's one operator entry on the `Device`.
+`IntersectionID` is the UDOT signal id = the ATSPM `LocationIdentifier`. Not in the Analytics
+Server's `/about` or `/config`; the native `GET /lidar-hub/api/v1/world` (geo-coordinates —
+doc 13) is an unverified possible source. Until either is confirmed, it's one operator entry
+on the `Device`.
 
 ### `Device` row
 

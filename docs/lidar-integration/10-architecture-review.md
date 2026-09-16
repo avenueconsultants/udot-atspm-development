@@ -170,6 +170,7 @@ updated (X8).
 | S6 | **Resource / DoS** | ~110k rows/day/box; a 7-day first-run ≈ ~800k rows in one invocation. Bound `MaxWindowMinutes`, `PageSize`, and devices-per-invocation; reuse existing batch sizes. |
 | S7 | **Deserialization** | `TypeNameHandling.Arrays` + `CompressedSerializationBinder` only resolves short names within one namespace/assembly, and the `Data` column is ATSPM-written, not user-supplied. `LidarZoneEvent` is a primitive POCO — **no new gadget surface**. Do not add a broader `TypeNameHandling` anywhere for LiDAR. |
 | S8 | **AuthZ for auto-config** | `lidar-autoconfig` mutates `ConfigContext` (new `Location` version). Gate it behind the same admin authorization as other config writes; the draft-then-apply flow keeps a human in the loop. |
+| S9 | **Perception/LidarHub API surface** (doc 13) — the same box also exposes `/perception/api/v1/` and `/lidar-hub/api/v1/`, with `PUT/POST/DELETE` operations that reset the pipeline, wipe sensor/calibration config, overwrite zone definitions, change the box login password, and trigger OTA checks | **Out of scope for Phase 1 entirely** — the client built in WP2 only ever targets `/analytics/api/v1/`. If a fast-follow later reads `/world` or `/point_zones` (doc 13), it must be **GET-only**, with the same host-range/no-redirect controls as S1, and the write endpoints must never be called by ATSPM under any circumstance. Worth a network-layer control too (firewall ATSPM's egress to the box down to the paths it actually needs) if UDOT's network policy supports it. |
 
 ---
 
