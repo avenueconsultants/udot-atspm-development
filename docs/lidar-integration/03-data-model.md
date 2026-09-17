@@ -121,17 +121,140 @@ at read/aggregation time via config (doc 04).
 
 ## Storage
 
-Reuses the compressed-hourly mechanism unchanged in shape:
+Reuses the compressed-hourly **table and row shape** unchanged, but `LidarZoneEvent`'s
+`Data` payload uses a **different wire format** than the rest of the fleet — this is a
+deliberate deviation, called out here because it touches shared infrastructure.
 
 - New `EventLogContext` member:
   `public virtual DbSet<CompressedEventLogs<LidarZoneEvent>> LidarZoneEvents { get; set; }`
 - The discriminator is auto-registered by
   `AddCompressedTableDiscriminators(typeof(EventLogModelBase), typeof(CompressedEventLogs<>))`
   in `OnModelCreating`; the discriminator value is the `LidarZoneEvent` `Type`
-  (`CompressionTypeConverter` stores namespace-qualified name).
+  (`CompressionTypeConverter` stores namespace-qualified name — **unaffected** by the change
+  below; it only converts the `DataType` discriminator string column, not the `Data` payload).
 - Rows land in the existing `CompressedEvents` table (TPH), PK
   `(LocationIdentifier, DeviceId, DataType, Start, End)`, one row per
-  `(location, device, LidarZoneEvent, hour)`. `Data` is the GZip-compressed serialized list.
+  `(location, device, LidarZoneEvent, hour)`.
+
+### `Data` payload format: Protobuf, via the shared compression envelope
+
+**Verified by spike, 2026-09-17 ([`17-preflight-findings.md`](17-preflight-findings.md) §2–3) —
+this section is rewritten around confirmed findings, not the design proposed earlier today.**
+The per-closed-type `HasConversion` override (this doc's original "preferred path") **fails**:
+`Entity<CompressedEventLogs<T>>().Property(e => e.Data).HasConversion(...)` throws
+`InvalidOperationException` at model-build time ("The property 'Data' cannot be added...
+because it is declared on the CLR type 'CompressedEventLogs\<IndianaEvent\>'"). Targeting the
+inherited property directly by its real type (`IEnumerable<EventLogModelBase>`) *does* work,
+but reconfigures the converter **for the entire hierarchy** — there is no way to scope a
+converter to one closed generic type here. X14 is answered: **no per-type override exists.**
+
+**As-is today, confirmed against real code (not just the review — see doc 15):** one shared
+converter — `CompressedListConverter<EventLogModelBase>` — is registered **once**, at the
+base-entity level (`CompressedEventLogBase.Data`), used by *every* `EventLogModelBase`
+subclass via TPH. There is no per-derived-type hook. This is no longer a hypothesis: it's what
+branch `codex/blueband-lidar-event-import` actually did when it needed a second compression
+format. That branch:
+
+- Renamed the shared converter `CompressedListConverter<T>` →
+  `EventLogCompressedListConverter<T>`, still registered once for the whole hierarchy.
+- Added `Atspm/Data/Utility/EventLogCompression.cs` — a **versioned envelope**:
+  `ATSPMCMP` magic (8 bytes) + version byte + codec byte + declared uncompressed length
+  (`ulong`) + SHA-256 hash (32 bytes) of the uncompressed payload, then the compressed bytes.
+  `Decode()` auto-detects legacy raw GZip (magic bytes `0x1f 0x8b`) vs. the new envelope, so
+  old rows keep reading correctly with no migration.
+- Defined codec `BrotliCodec = 1` (`EncodeBrotli`) but **kept writing legacy raw GZip(JSON)
+  in that release** — the new codec is dual-read-only until every reader is proven to support
+  the envelope; flipping the *default write path* is an explicit, separate, later decision.
+  The payload format itself (Newtonsoft JSON) did **not** change — only the compression codec
+  and the envelope wrapping it.
+
+**Decision (2026-09-17, revised after inspecting that branch, then confirmed by spike —
+doc 17): extend this same envelope with a new `ProtobufCodec` value**, rather than proposing
+a competing per-type converter (the original draft of this section — a per-`LidarZoneEvent`
+`HasConversion` override — is now proven not to work, not just unproven: doc 17 §2 shows it
+throws `InvalidOperationException`). `codex/blueband-lidar-event-import` is a real,
+**unmerged** feature branch (main is at `f630f98d`, that commit isn't reachable from it, doc
+17 §1) — it's evidence the shared-envelope pattern was already chosen for a different codec,
+not "shipped, proven-in-production code." Recommended library: **protobuf-net** (POCO +
+`[ProtoContract]`/`[ProtoMember(n)]` attributes, no `.proto` codegen). This reverses review
+finding P3's "keep `LidarZoneEvent` attribute-free" guidance — that assumed the Newtonsoft
+path.
+
+**Confirmed design (2026-09-17, spike-verified — doc 17 §2–3): a dispatcher inside the one
+shared converter, not a second converter.** Since there is no per-type override (above) and
+`typeof(T)` is always `EventLogModelBase` at the property level — the generic parameter
+cannot distinguish which concrete event type a given row holds — the shared
+`EventLogCompressedListConverter<EventLogModelBase>` itself must become codec-aware:
+
+1. **Write side:** the converter receives `IEnumerable<EventLogModelBase>` — a homogeneous
+   list *by convention* (`ArchiveDataEvents.cs:57–86` always builds one concrete type per
+   call) but **not enforced by the type system** (spike confirmed: assigning a `SpeedEvent`
+   through the base `CompressedEventLogBase.Data` property compiles and runs; only reading it
+   back as the wrong closed type throws `InvalidCastException`). The dispatcher must inspect
+   the list's actual runtime element type (e.g. `list.FirstOrDefault()?.GetType()`) to decide
+   which codec to use, and must explicitly **validate homogeneity** — reject or fail loudly on
+   a mixed-type list, empty-list edge case handled explicitly (no element to inspect → fall
+   back to the current/default codec).
+2. **Read side:** protobuf-net needs to know the target concrete type to deserialize into, and
+   (per point 1) has no `$type`-per-element mechanism the way Newtonsoft's
+   `TypeNameHandling.Arrays` does. The envelope (`EventLogCompression.cs`) must therefore carry
+   a **type identifier alongside the codec byte** — e.g. a short type-name field (mirroring
+   what `CompressionTypeConverter` already does for the `DataType` discriminator column) — so
+   `Decode()` knows which protobuf contract to deserialize into before returning the list.
+3. **Protobuf contract must be flat and explicit — not just "attribute the concrete class."**
+   Spike finding, load-bearing: annotating only `LidarZoneEvent`'s own fields with
+   `[ProtoMember]` while relying on inheriting `[ProtoContract]` from `EventLogModelBase`
+   **silently drops the inherited `Timestamp` field** (deserializes to `DateTime.MinValue`,
+   no exception). The fix is a single flat contract that explicitly declares **every** field
+   that needs to round-trip, including `LocationIdentifier` and `Timestamp` inherited from
+   `EventLogModelBase`, as `LidarZoneEvent`'s own numbered `[ProtoMember]`s — do not rely on
+   attribute inheritance across the `EventLogModelBase` boundary. This is a silent-data-loss
+   risk if skipped, not just a build error, so it needs an explicit round-trip test asserting
+   `Timestamp`/`LocationIdentifier` survive, not just the LiDAR-specific fields.
+4. Concrete (non-polymorphic) protobuf contracts **can** be built without `[ProtoInclude]` —
+   confirmed by spike — so the original `[ProtoInclude]`-on-`EventLogModelBase` concern (doc
+   10 P7) is avoidable as long as the dispatcher (point 1–2) handles type resolution outside
+   protobuf-net's own polymorphism mechanism.
+
+**New deliverable, not previously scoped:** extend `EventLogCompression.cs`'s envelope format
+with a type-identifier field (in addition to the existing magic/version/codec/length/hash),
+and extend `EventLogCompressedListConverter<T>` with the write-time type-dispatch + validation
+described above. This is **shared-infrastructure work benefiting every event type**, not a
+LiDAR-only change — size it accordingly in WP1, and test round-trips for `IndianaEvent`/
+`SpeedEvent`/`BluebandLidarEvent` alongside `LidarZoneEvent` to prove no regression.
+
+New converter class: `EventLogCompressedProtobufListConverter` (dispatcher lives here, or in
+`EventLogCompression` itself) doing `ProtoBuf.Serializer.Serialize(...)` for the resolved
+concrete type → wrapped in the extended envelope — and a matching `ValueComparer` (the
+existing `AbstractListComparer<T>` should still work; it compares the materialized
+`IEnumerable<T>`, not the bytes).
+
+**New dependency:** `protobuf-net` — spike validated against **3.2.56**, but that was the
+spike's pinned version, not a locked production decision; confirm the version when WP1 adds
+the real `Atspm/Data.csproj` reference. (`Google.Protobuf` appears only transitively via an
+unrelated Google client library; not reused here.)
+
+**Consequence for the multi-vendor design (doc 12):** the dispatcher approach above actually
+**strengthens** doc 12's "zero storage change per vendor" promise versus the earlier
+per-type-converter draft — a new vendor whose decoder maps into the canonical `LidarZoneEvent`
+gets protobuf storage automatically (the dispatcher resolves by runtime type, already handling
+`LidarZoneEvent`), no new registration needed. It does **not** extend to BlueBand (doc 15),
+which is a different `EventLogModelBase` subclass entirely — BlueBand would need its own flat
+protobuf contract (with the same "explicit inherited fields" rule from point 3 above) added to
+the dispatcher if it also moves off JSON. Since the dispatcher is now genuinely shared
+infrastructure, adding a type to it is a small, explicit, reviewable change (one contract +
+one dispatcher-table entry) — not an automatic side effect the way JSON's `TypeNameHandling`
+was.
+
+**Coordination requirement:** this design must be built on top of (rebase/merge onto, or
+cherry-pick from) `codex/blueband-lidar-event-import`'s `EventLogCompression.cs` /
+`EventLogCompressedListConverter.cs`, not a second parallel implementation. **Confirmed still
+unmerged as of 2026-09-17** (doc 17 §1): `origin/main` is at `f630f98d`, BlueBand's commit
+(`1b4f5ba8`) is not reachable from it. Recommended sequence (doc 17): commit current docs →
+merge current `origin/main` into `feature/lidar-integration` → merge
+`origin/codex/blueband-lidar-event-import` in (not a cherry-pick of just the converter files,
+which would separate the envelope from its own compatibility tests) → resolve/test the shared
+ingestion/compression code together. See doc 15 §"Coordination required."
 
 ### Migrations
 

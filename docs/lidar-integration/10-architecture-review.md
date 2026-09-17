@@ -146,12 +146,44 @@ updated (X8).
   short name ≤ 32 chars**. Required independently by (a) `AddCompressedTableDiscriminators`
   (scans `EventLogModelBase` subclasses in that assembly) and (b)
   `CompressedSerializationBinder` / `CompressionTypeConverter`, which both resolve
-  `"{EventLogModelBase.Namespace}.{ShortName}"`. Already stated in doc 03; reinforced.
+  `"{EventLogModelBase.Namespace}.{ShortName}"`. Already stated in doc 03; reinforced. **This
+  requirement is unchanged by the protobuf storage decision below** — it governs the
+  `DataType` discriminator column, not the `Data` payload converter.
+  ~~Earlier guidance here said "keep the model attribute-free."~~ **Superseded (2026-09-17,
+  doc 03):** `LidarZoneEvent` now stores its `Data` payload as GZip(Protobuf) instead of
+  GZip(JSON), so the model **needs** `[ProtoContract]` / numbered `[ProtoMember]` attributes
+  (protobuf-net). The Newtonsoft binder (a) above is unaffected either way — it's a
+  string-only converter for `DataType`.
 - **P4 — `Upsert` de-dupes by `HashSet`** — so a correct `Equals`/`GetHashCode` on
-  `LidarZoneEvent` (spec'd in doc 03) yields idempotent merges, subject to H1.
+  `LidarZoneEvent` (spec'd in doc 03) yields idempotent merges, subject to H1. Unaffected by
+  the payload format change — dedupe happens on the materialized `IEnumerable<T>` before
+  serialization either way.
 - **P5 — .NET 8** across all projects; provider-agnostic. Event fields live **inside** the
-  GZip-compressed `byte[]` `Data` blob, so `long`/`float`/`string`/`DateTime` fields raise
-  **no per-provider column concerns** — only the ×5 discriminator migration matters.
+  compressed `byte[]` `Data` blob, so `long`/`float`/`string`/`DateTime` fields raise
+  **no per-provider column concerns** — only the ×5 discriminator migration matters. This
+  holds regardless of GZip(JSON) vs GZip(Protobuf) — the column is `byte[]` either way.
+- **P7 (2026-09-17, spike-confirmed — [`17-preflight-findings.md`](17-preflight-findings.md)
+  §2–3) — Protobuf storage is a shared-infrastructure change, and the per-type escape hatch
+  this document originally proposed does not exist.**
+  `Entity<CompressedEventLogs<T>>().Property(e => e.Data).HasConversion(...)` **throws
+  `InvalidOperationException`** at model-build time — the property is owned by the TPH base
+  type, not the closed generic (X14, doc 05, now resolved rather than open). Targeting the
+  inherited property directly instead reconfigures the converter for the **entire hierarchy**,
+  and `typeof(T)` can't distinguish event types inside that shared converter either, since its
+  declared type is always `IEnumerable<EventLogModelBase>`. **Confirmed design instead:** a
+  write-time runtime-type dispatcher inside the one shared converter (inspect the list's
+  actual element type, validate homogeneity explicitly — spike confirmed the type system does
+  **not** enforce it; assigning a `SpeedEvent` through the base `Data` property compiles and
+  only fails as an `InvalidCastException` on read) plus a type-identifier field added to the
+  compression envelope so reads know which contract to deserialize into. **Separately
+  confirmed:** concrete (non-polymorphic) protobuf-net contracts genuinely avoid the
+  `[ProtoInclude]` burden — but only if built as a **flat, explicit** contract; a naive "just
+  attribute the subclass" approach **silently drops the inherited `Timestamp` field**
+  (deserializes to `DateTime.MinValue`, no exception) — a correctness risk more severe than
+  the polymorphism question, since it fails silently rather than at build time. See doc 03
+  §"`Data` payload format" (rewritten around these findings) and doc 05 (X14, Q13). **This
+  remains the single highest design-risk item in the spec** — everything else in this
+  document still holds unchanged.
 - **P6 — `AggregationWorkflow`** decompresses archived events and fans them to sub-workflows;
   a LiDAR aggregation is a new sub-workflow wired in (or a sibling workflow). See
   [`11-measures-plan.md`](11-measures-plan.md).
@@ -163,12 +195,12 @@ updated (X8).
 | # | Area | Assessment / action |
 | --- | --- | --- |
 | S1 | **SSRF** — ATSPM makes outbound HTTPS to operator-set `Ipaddress` / `ConnectionProperties["BaseUrl"]` / `["TokenUrl"]` | Same trust model as the existing FTP/SFTP/HTTP downloaders (operator supplies the host). Keep `configapi` writes admin-gated (JWT). **Add config validation** restricting `BaseUrl`/`TokenUrl` hosts to UDOT private ranges; **don't follow cross-host redirects** in the client. |
-| S2 | **Credential exposure** — `client_secret` in `DeviceConfiguration.Password` (plaintext / DB-native), and `Password` is in the ConfigApi OData EDM (`DeviceConfigurationOdataConfiguration`) | **Verify** the ConfigApi `DeviceConfiguration` projection does not return `Password` to non-admins or in list/`$select=*` responses; restrict or `[IgnoreDataMember]` it on read DTOs. Rotate the shared `analytics-client` secret. Medium-term: device-credential secret store (cross-cutting, not lidar-only). |
+| S2 | **Credential exposure** — `client_secret` in `DeviceConfiguration.Password` (plaintext / DB-native), and `Password` is in the ConfigApi OData EDM (`DeviceConfigurationOdataConfiguration`) | **Confirmed by spike, 2026-09-17 (doc 17 §5) — no longer a "verify," it's a known gap.** `Password` is in the OData EDM (`Atspm/ConfigApi/Configuration/DeviceConfigurationOdataConfiguration.cs:49`) and readable by any `Device:View`-authorized caller — not just admins (e.g. `LocationConfigurationAdmin` has `Device:View` without device-edit, `AtspmAuthorization.cs:225–233`); `ConfigControllerBase` returns repository entities without redaction. **`ConnectionProperties` is equally exposed** (no `[IgnoreDataMember]`, `DeviceConfiguration.cs:54,95`) — so relocating a secret there (doc 04's BlueCity plan, mirroring BlueBand) does **not** fix this. Required before go-live (doc 08 WP5): a credential-free read DTO/EDM projection covering both fields, with a write path that preserves omitted secrets on update. Rotate the shared `analytics-client` secret regardless. Medium-term: device-credential secret store (cross-cutting, not lidar-only). |
 | S3 | **Secrets in logs** | New client must never log the bearer token or `client_secret` — including on 4xx/5xx response-body dumps. Explicit acceptance check in WP2/WP9. |
 | S4 | **TLS to a self-signed box** | `AllowUntrustedCertificate` disables validation → MITM exposure on the ATSPM↔box path. Prefer **`PinnedCertThumbprint`** or installing the box CA on the ATSPM host. Treat allow-untrusted as an explicit, per-device opt-in, never the global default. |
 | S5 | **Data sensitivity** | `object_events` carry per-track UUIDs (not plates), speeds, class — low PII. Handle like existing detector data for access/retention. |
 | S6 | **Resource / DoS** | ~110k rows/day/box; a 7-day first-run ≈ ~800k rows in one invocation. Bound `MaxWindowMinutes`, `PageSize`, and devices-per-invocation; reuse existing batch sizes. |
-| S7 | **Deserialization** | `TypeNameHandling.Arrays` + `CompressedSerializationBinder` only resolves short names within one namespace/assembly, and the `Data` column is ATSPM-written, not user-supplied. `LidarZoneEvent` is a primitive POCO — **no new gadget surface**. Do not add a broader `TypeNameHandling` anywhere for LiDAR. |
+| S7 | **Deserialization** | For every event type still on the shared path: `TypeNameHandling.Arrays` + `CompressedSerializationBinder` only resolves short names within one namespace/assembly, and the `Data` column is ATSPM-written, not user-supplied — no new gadget surface there, and don't broaden `TypeNameHandling` anywhere. **`LidarZoneEvent` specifically now uses protobuf-net, not Newtonsoft** (doc 03) — protobuf-net's own deserializer takes over for this one type; it has no `$type`/polymorphic-array gadget surface at all (no `TypeNameHandling` equivalent), which is a net *reduction* in attack surface for this payload, but confirm the protobuf-net version pinned is current (deserialization libraries are a recurring CVE source generally). |
 | S8 | **AuthZ for auto-config** | `lidar-autoconfig` mutates `ConfigContext` (new `Location` version). Gate it behind the same admin authorization as other config writes; the draft-then-apply flow keeps a human in the loop. |
 | S9 | **Perception/LidarHub API surface** (doc 13) — the same box also exposes `/perception/api/v1/` and `/lidar-hub/api/v1/`, with `PUT/POST/DELETE` operations that reset the pipeline, wipe sensor/calibration config, overwrite zone definitions, change the box login password, and trigger OTA checks | **Out of scope for Phase 1 entirely** — the client built in WP2 only ever targets `/analytics/api/v1/`. If a fast-follow later reads `/world` or `/point_zones` (doc 13), it must be **GET-only**, with the same host-range/no-redirect controls as S1, and the write endpoints must never be called by ATSPM under any circumstance. Worth a network-layer control too (firewall ATSPM's egress to the box down to the paths it actually needs) if UDOT's network policy supports it. |
 

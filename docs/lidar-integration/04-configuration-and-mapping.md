@@ -118,7 +118,7 @@ is the join key to the `Detector` that **already exists** in ATSPM for that sign
 
 | Case | Action |
 | --- | --- |
-| A `Detector` with `DetectorChannel == <channel>` exists at this `Location` | Set `DetectionHardware = LiDar`, `LatencyCorrection = 0`; record the BlueCity `zone_id` on it (new nullable field or `DeviceProperties`). Approach + **phase are inherited unchanged**. |
+| A `Detector` with `DetectorChannel == <channel>` exists at this `Location` | Set `DetectionHardware = LiDar`, `LatencyCorrection = 0`; record the BlueCity `zone_id` in `Detector.LidarZoneId` (a **required** `ConfigContext` field, doc 08 WP1 — not optional). Approach + **phase are inherited unchanged**. |
 | No matching channel (new detection: passive ped, count-only) | Create a `Detector` on the `Approach` for `<APPROACH>`/`<DIRECTION>`: `DetectionHardware = LiDar`, `MovementType` from `<DIRECTION>`, `LaneNumber` from `<LANE>`, `DetectionTypes` from `<TYPE>`, `DetectorChannel = <channel>`. |
 | One zone, multiple `TYPE`+`CHANNEL` pairs (`…-COYR-1723`) | Repeat per pair — **one `zone_id` → several `Detector`s / channels**. |
 | Name doesn't parse, or `-Q-` / crosswalk zone with no channel | Create `Detector` **disabled**, flag "needs review". |

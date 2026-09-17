@@ -6,7 +6,15 @@ doc 11) the measures/reporting layer. Only vendor-specific glue should differ.
 
 This doc renames a few Phase-1 components to make the vendor boundary explicit, and defines
 the plug-in contract a second vendor implements. Ouster BlueCity remains the only vendor
-actually built in Phase 1; this is the shape that keeps it from being a one-off.
+actually built in Phase 1 **of this design track**; this is the shape that keeps it from
+being a one-off.
+
+**Update (2026-09-17): a second vendor already exists, on a separate branch, ahead of this
+design.** `codex/blueband-lidar-event-import` implements BlueBand LiDAR ingestion — see
+[`15-blueband-integration.md`](15-blueband-integration.md) for the full record. It validates
+parts of this doc's contract and revises others (a second transport pattern, and a real
+example of "fundamentally different in kind" data justifying its own event model rather than
+mapping into `LidarZoneEvent` — both folded in below).
 
 ## Where "universal" already comes for free
 
@@ -92,16 +100,30 @@ Adding vendor N+1, once BlueCity (N=1) is built, is:
 
 | # | Deliverable | Touches shared code? |
 | --- | --- | --- |
-| 1 | `TransportProtocols.<Vendor>Edge` enum value | No — additive enum member |
-| 2 | `<Vendor>DownloaderClient : DownloaderClientBase` — that vendor's auth (whatever scheme), windowing, and pagination, writing a temp file of records | No — auto-registered by interface |
-| 3 | `<Vendor>ObjectEventsDecoder : EventLogDecoderBase<LidarZoneEvent>` — that vendor's payload → `LidarZoneEvent`, including its classification-mapping table | No — auto-registered by interface |
-| 4 | A `Product` row + `DeviceConfiguration` template for the vendor (protocol, decoder name, connection properties) | No — existing config surface |
-| 5 | *(optional)* A zone-naming parser for that vendor's auto-config (doc 06) if it has an equivalent zone/channel concept | No — see below |
+| 1 | Transport: **pattern A or B** (see below) | No, for either pattern |
+| 2 | Decoder mapping into `LidarZoneEvent` (or a new model, if genuinely different in kind — see BlueBand below) | No — auto-registered by interface |
+| 3 | A `Product` row + `DeviceConfiguration` template for the vendor (protocol, decoder name, connection properties) | No — existing config surface |
+| 4 | *(optional)* A zone-naming parser for that vendor's auto-config (doc 06) if it has an equivalent zone/channel concept | No — see below |
 
 Nothing in `EventLogContext`, `ArchiveEventLogsWorkflow`, `AggregationWorkflow`, or (once
 built) the `reportapi`/`webui` measure layer changes. A LiDAR measure built against
 `LidarZoneEvent`/`Classification` automatically covers every vendor whose decoder populates
-that model — this is the concrete "no major development" guarantee.
+that model — this is the concrete "no major development" guarantee, for vendors that fit the
+canonical model (see "What genuinely cannot be generalized" below for when they don't).
+
+### Transport — two patterns, pick per vendor
+
+Confirmed by real code, not just design (doc 15):
+
+| | **Pattern A — dedicated client** | **Pattern B — generic-downloader subclass** |
+| --- | --- | --- |
+| When | Vendor auth/pagination doesn't fit the generic HTTP/FTP/SFTP downloaders (OAuth token exchange, cursor-based pagination, custom windowing) | Vendor is plain HTTP(S) + a static credential (bearer token, API key header) — the generic downloader almost fits |
+| Deliverable | New `TransportProtocols.<Vendor>Edge` enum value + `<Vendor>DownloaderClient : DownloaderClientBase`, matched by `Device.DeviceConfiguration.Protocol` | Reuse the existing `Http` protocol; a `<Vendor>Downloader : DeviceDownloader` subclass that overrides `CanExecute` with a vendor-specific predicate (device type + protocol + decoder name), and overrides connection-property/credential hooks for auth |
+| Real example | Ouster BlueCity (planned, doc 02/08) — Keycloak `client_credentials` token exchange, `next_page` cursor pagination | BlueBand (built, doc 15) — static bearer token via `ConnectionProperties["Authorization"]` or `DeviceConfiguration.Password` fallback, single GET |
+| Disjointness | N/A — separate enum value, no collision possible | The base `DeviceDownloader.CanExecute` must explicitly exclude the specialized predicate (BlueBand's precedent: `!BluebandLidarDownloader.IsBluebandDevice(value) && …`) so generic and specialized downloaders never double-claim a device |
+
+Don't default to Pattern A when B suffices — it's less new code and doesn't need a new enum
+value.
 
 ## Auto-config (doc 06) across vendors
 
@@ -143,6 +165,12 @@ dependency of ingestion.
   fields. Prefer **additive, nullable** fields over a second model — keeps measures (doc 11)
   vendor-agnostic. If a vendor's data model is fundamentally different in kind (not just
   field coverage), that is a signal for a genuinely new canonical model, not a forced fit.
+  **This actually happened** — BlueBand's SPM+ events (`detector`/`phase`/`ring`-based) are a
+  different kind of record from BlueCity's zone/object events, so it got its own
+  `BluebandLidarEvent : EventLogModelBase` model (doc 15) rather than a forced fit into
+  `LidarZoneEvent`. Storage/workflow/archiving still didn't change — both models are just
+  `EventLogModelBase` subclasses, auto-discovered the same way — only the *measures* layer
+  (doc 11) would need to treat the two as separate sources rather than one canonical stream.
 
 ## Net effect
 
