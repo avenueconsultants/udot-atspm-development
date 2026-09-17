@@ -151,7 +151,7 @@ updated (X8).
   `DataType` discriminator column, not the `Data` payload converter.
   ~~Earlier guidance here said "keep the model attribute-free."~~ **Superseded (2026-09-17,
   doc 03):** `LidarZoneEvent` now stores its `Data` payload as GZip(Protobuf) instead of
-  GZip(JSON), so the model **needs** `[ProtoContract]` / numbered `[ProtoMember]` attributes
+  GZip(JSON), so the dispatcher **needs** an explicit flat `[ProtoContract]` wire DTO
   (protobuf-net). The Newtonsoft binder (a) above is unaffected either way — it's a
   string-only converter for `DataType`.
 - **P4 — `Upsert` de-dupes by `HashSet`** — so a correct `Equals`/`GetHashCode` on

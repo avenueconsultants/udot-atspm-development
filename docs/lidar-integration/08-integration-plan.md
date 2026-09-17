@@ -42,9 +42,10 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
 
 - `Atspm/Data/Models/EventLogModels/LidarZoneEvent.cs` — `: EventLogModelBase`, fields and
   types per [`03-data-model.md`](03-data-model.md) (`zone_id` → `long`, `Equals`/`GetHashCode`
-  including `ServerId`, string props non-unicode), **`[ProtoContract]` + numbered
-  `[ProtoMember]` attributes** (protobuf-net — see doc 03 §"`Data` payload format"; this
-  supersedes the earlier "attribute-free" guidance, which assumed the shared Newtonsoft path).
+  including `ServerId`, string props non-unicode). The storage dispatcher maps it to an
+  **internal flat `[ProtoContract]` wire DTO with numbered `[ProtoMember]` attributes**
+  (protobuf-net — see doc 03 §"`Data` payload format"). Keeping the wire contract separate
+  avoids shadowing inherited model properties with unsynchronized duplicates.
 - New `protobuf-net` (or `protobuf-net.Core`) package reference in `Atspm/Data.csproj`.
 - **Build on top of `codex/blueband-lidar-event-import`**, not a parallel implementation —
   that branch already introduced the versioned compression envelope (`EventLogCompression.cs`,
@@ -63,8 +64,8 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
     property is `IEnumerable<EventLogModelBase>` — nothing in the type system prevents a mixed
     or wrong-type list; spike confirmed this compiles and only fails on read as an
     `InvalidCastException`), and pick a codec/contract accordingly.
-  - `LidarZoneEvent`'s protobuf contract must be **flat and explicit** — declare
-    `LocationIdentifier`/`Timestamp` (inherited from `EventLogModelBase`) as its own numbered
+  - `LidarZoneEvent`'s protobuf wire contract must be **flat and explicit** — the internal
+    wire DTO declares `LocationIdentifier`/`Timestamp` alongside every LiDAR field as numbered
     `[ProtoMember]`s. Spike found that relying on inherited `[ProtoContract]` alone **silently
     drops `Timestamp`** (deserializes to `DateTime.MinValue`, no exception) — this is a
     silent-data-loss risk, not a build-time catch, so WP9 needs an explicit round-trip
@@ -154,8 +155,8 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
     **trim `zone_name`**; return a `HashSet` de-duped on the equality key.
   - `LidarZoneEvent` itself is decode-target only here — the decoder's own JSON parsing
     (`System.Text.Json`, above) is unrelated to how the model is later *stored*. **Storage
-    format is protobuf-net now, not Newtonsoft** (WP1, doc 03) — `LidarZoneEvent` carries
-    `[ProtoContract]`/numbered `[ProtoMember]` attributes for that path. This decoder doesn't
+    format is protobuf-net now, not Newtonsoft** (WP1, doc 03) — the dispatcher maps
+    `LidarZoneEvent` to its internal flat protobuf wire DTO. This decoder doesn't
     need to know or care which storage converter runs downstream; it just builds `LidarZoneEvent`
     instances and returns them, same as any other decoder.
 - Name registration so `DeviceConfiguration.Decoders = ["OusterBlueCityObjectEventsDecoder"]`

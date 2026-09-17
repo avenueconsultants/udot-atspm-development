@@ -105,6 +105,50 @@ namespace Utah.Udot.Atspm.InfrastructureTests.EventLogDecoderTests
         }
 
         [Fact]
+        public async Task LidarZoneEventWritesTypedProtobufAndPreservesInheritedFields()
+        {
+            await using var connection = await OpenConnection();
+            var options = EventLogOptions(connection);
+            var timestamp = new DateTime(2026, 9, 17, 10, 12, 23, DateTimeKind.Unspecified);
+
+            await using (var context = new EventLogContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                context.LidarZoneEvents.Add(new CompressedEventLogs<LidarZoneEvent>
+                {
+                    LocationIdentifier = "5017", DeviceId = 19, DataType = typeof(LidarZoneEvent),
+                    Start = timestamp.Date.AddHours(timestamp.Hour), End = timestamp.Date.AddHours(timestamp.Hour + 1),
+                    Data = [new LidarZoneEvent { LocationIdentifier = "5017", Timestamp = timestamp, ServerId = 700340,
+                        ObjectId = "ab2abe42-cbad-48a3-b6a0-5a47d9ad7cd7", ZoneId = 1785960513198,
+                        ZoneName = "VC-SB-T2-CO-6", Classification = "Vehicle", VendorClassification = "VEHICLE" }]
+                });
+                await context.SaveChangesAsync();
+            }
+
+            var bytes = await ReadBlob(connection, "CompressedEvents", "5017");
+            Assert.Equal("ATSPMCMP", Encoding.ASCII.GetString(bytes, 0, 8));
+            Assert.Equal(EventLogCompression.TypedEnvelopeVersion, bytes[8]);
+            Assert.Equal(EventLogCompression.ProtobufCodec, bytes[9]);
+
+            await using var readContext = new EventLogContext(options);
+            var result = Assert.Single((await readContext.LidarZoneEvents.SingleAsync()).Data);
+            Assert.Equal("5017", result.LocationIdentifier);
+            Assert.Equal(timestamp, result.Timestamp);
+            Assert.Equal(700340, result.ServerId);
+            Assert.Equal(1785960513198, result.ZoneId);
+        }
+
+        [Fact]
+        public void SharedConverterRejectsMixedRuntimeTypes()
+        {
+            var converter = new EventLogCompressedListConverter<EventLogModelBase>();
+            var values = new EventLogModelBase[] { new IndianaEvent(), new SpeedEvent() };
+
+            var exception = Assert.Throws<InvalidDataException>(() => converter.ConvertToProvider(values));
+            Assert.Contains("multiple event types", exception.Message);
+        }
+
+        [Fact]
         public async Task LegacyGZipAndBrotliRowsCoexistInOneEventLogQuery()
         {
             await using var connection = await OpenConnection();

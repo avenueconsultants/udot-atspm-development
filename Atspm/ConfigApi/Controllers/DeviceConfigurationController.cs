@@ -22,6 +22,8 @@ using Utah.Udot.Atspm.Data.Models;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using Utah.Udot.Atspm.Repositories.ConfigurationRepositories;
 using Utah.Udot.Atspm.Services;
+using Utah.Udot.Atspm.Common;
+using Utah.Udot.Atspm.Infrastructure.Attributes;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 using static Microsoft.AspNetCore.OData.Query.AllowedQueryOptions;
 
@@ -54,6 +56,29 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         #endregion
 
         #region Actions
+
+        /// <summary>
+        /// Updates write-only connection credentials without returning their current values.
+        /// Omitted values are preserved.
+        /// </summary>
+        [HttpPost("/api/v1/DeviceConfiguration/{key:int}/credentials")]
+        [AuthorizePermission(AtspmAuthorization.Permissions.DeviceEdit)]
+        [ProducesResponseType(Status204NoContent)]
+        [ProducesResponseType(Status404NotFound)]
+        public async Task<IActionResult> UpdateCredentials(int key, [FromBody] DeviceCredentialsUpdate update)
+        {
+            var configuration = await _repository.LookupAsync(key);
+            if (configuration is null)
+                return NotFound(key);
+
+            if (update.Password is not null)
+                configuration.Password = update.Password;
+            if (update.ConnectionProperties is not null)
+                configuration.ConnectionProperties = update.ConnectionProperties;
+
+            await _repository.UpdateAsync(configuration);
+            return NoContent();
+        }
 
         #endregion
 
@@ -92,5 +117,14 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Write-only device credential update. Null properties mean preserve the stored value.
+    /// </summary>
+    public sealed class DeviceCredentialsUpdate
+    {
+        public string? Password { get; set; }
+        public Dictionary<string, object>? ConnectionProperties { get; set; }
     }
 }

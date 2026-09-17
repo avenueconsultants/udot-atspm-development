@@ -172,13 +172,13 @@ format. That branch:
 doc 17): extend this same envelope with a new `ProtobufCodec` value**, rather than proposing
 a competing per-type converter (the original draft of this section — a per-`LidarZoneEvent`
 `HasConversion` override — is now proven not to work, not just unproven: doc 17 §2 shows it
-throws `InvalidOperationException`). `codex/blueband-lidar-event-import` is a real,
-**unmerged** feature branch (main is at `f630f98d`, that commit isn't reachable from it, doc
-17 §1) — it's evidence the shared-envelope pattern was already chosen for a different codec,
-not "shipped, proven-in-production code." Recommended library: **protobuf-net** (POCO +
-`[ProtoContract]`/`[ProtoMember(n)]` attributes, no `.proto` codegen). This reverses review
-finding P3's "keep `LidarZoneEvent` attribute-free" guidance — that assumed the Newtonsoft
-path.
+throws `InvalidOperationException`). `codex/blueband-lidar-event-import` was a real, unmerged
+feature branch when the spike ran (doc 17 §1) — it was evidence the shared-envelope pattern
+had already been chosen for a different codec,
+not "shipped, proven-in-production code." Recommended library: **protobuf-net** (an internal
+flat wire DTO with `[ProtoContract]`/`[ProtoMember(n)]`, no `.proto` codegen). The domain model
+remains serializer-attribute-free; the mapper keeps inherited properties and the wire contract
+synchronized without CLR property shadowing.
 
 **Confirmed design (2026-09-17, spike-verified — doc 17 §2–3): a dispatcher inside the one
 shared converter, not a second converter.** Since there is no per-type override (above) and
@@ -201,14 +201,14 @@ cannot distinguish which concrete event type a given row holds — the shared
    a **type identifier alongside the codec byte** — e.g. a short type-name field (mirroring
    what `CompressionTypeConverter` already does for the `DataType` discriminator column) — so
    `Decode()` knows which protobuf contract to deserialize into before returning the list.
-3. **Protobuf contract must be flat and explicit — not just "attribute the concrete class."**
+3. **Protobuf wire contract must be flat and explicit — not just "attribute the concrete class."**
    Spike finding, load-bearing: annotating only `LidarZoneEvent`'s own fields with
    `[ProtoMember]` while relying on inheriting `[ProtoContract]` from `EventLogModelBase`
    **silently drops the inherited `Timestamp` field** (deserializes to `DateTime.MinValue`,
-   no exception). The fix is a single flat contract that explicitly declares **every** field
-   that needs to round-trip, including `LocationIdentifier` and `Timestamp` inherited from
-   `EventLogModelBase`, as `LidarZoneEvent`'s own numbered `[ProtoMember]`s — do not rely on
-   attribute inheritance across the `EventLogModelBase` boundary. This is a silent-data-loss
+   no exception). The implemented fix is an internal flat wire DTO that explicitly declares
+   **every** field that needs to round-trip, including `LocationIdentifier` and `Timestamp`,
+   then maps to/from `LidarZoneEvent` — do not rely on attribute inheritance across the
+   `EventLogModelBase` boundary. This is a silent-data-loss
    risk if skipped, not just a build error, so it needs an explicit round-trip test asserting
    `Timestamp`/`LocationIdentifier` survive, not just the LiDAR-specific fields.
 4. Concrete (non-polymorphic) protobuf contracts **can** be built without `[ProtoInclude]` —
@@ -229,9 +229,8 @@ concrete type → wrapped in the extended envelope — and a matching `ValueComp
 existing `AbstractListComparer<T>` should still work; it compares the materialized
 `IEnumerable<T>`, not the bytes).
 
-**New dependency:** `protobuf-net` — spike validated against **3.2.56**, but that was the
-spike's pinned version, not a locked production decision; confirm the version when WP1 adds
-the real `Atspm/Data.csproj` reference. (`Google.Protobuf` appears only transitively via an
+**New dependency:** `protobuf-net` **3.4.30**, pinned in `Atspm/Data.csproj` when WP1 was
+implemented (the earlier spike used 3.2.56). (`Google.Protobuf` appears only transitively via an
 unrelated Google client library; not reused here.)
 
 **Consequence for the multi-vendor design (doc 12):** the dispatcher approach above actually
@@ -246,15 +245,11 @@ infrastructure, adding a type to it is a small, explicit, reviewable change (one
 one dispatcher-table entry) — not an automatic side effect the way JSON's `TypeNameHandling`
 was.
 
-**Coordination requirement:** this design must be built on top of (rebase/merge onto, or
-cherry-pick from) `codex/blueband-lidar-event-import`'s `EventLogCompression.cs` /
-`EventLogCompressedListConverter.cs`, not a second parallel implementation. **Confirmed still
-unmerged as of 2026-09-17** (doc 17 §1): `origin/main` is at `f630f98d`, BlueBand's commit
-(`1b4f5ba8`) is not reachable from it. Recommended sequence (doc 17): commit current docs →
-merge current `origin/main` into `feature/lidar-integration` → merge
-`origin/codex/blueband-lidar-event-import` in (not a cherry-pick of just the converter files,
-which would separate the envelope from its own compatibility tests) → resolve/test the shared
-ingestion/compression code together. See doc 15 §"Coordination required."
+**Coordination completed 2026-09-17:** current `origin/main` and the complete
+`origin/codex/blueband-lidar-event-import` branch were merged into `feature/lidar-integration`
+without conflicts before WP1 changed storage. The protobuf dispatcher extends the same
+`EventLogCompression` / `EventLogCompressedListConverter` implementation and compatibility
+test suite; no parallel compression implementation was introduced. See doc 15.
 
 ### Migrations
 

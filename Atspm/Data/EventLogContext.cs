@@ -66,6 +66,11 @@ namespace Utah.Udot.Atspm.Data
         /// </summary>
         public virtual DbSet<CompressedEventLogs<BluebandLidarEvent>> BluebandLidarEvents { get; set; }
 
+        /// <summary>
+        /// Canonical LiDAR zone/object events.
+        /// </summary>
+        public virtual DbSet<CompressedEventLogs<LidarZoneEvent>> LidarZoneEvents { get; set; }
+
         /// <inheritdoc/>
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {

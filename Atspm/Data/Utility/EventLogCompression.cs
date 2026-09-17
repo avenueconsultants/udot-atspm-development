@@ -32,7 +32,10 @@ namespace Utah.Udot.Atspm.Data.Utility
     {
         internal const byte CurrentEnvelopeVersion = 1;
         internal const byte BrotliCodec = 1;
+        internal const byte TypedEnvelopeVersion = 2;
+        internal const byte ProtobufCodec = 2;
         internal const int EnvelopeHeaderLength = 50;
+        internal const int TypedEnvelopeHeaderLength = 52;
 
         private const int MagicLength = 8;
         private const int VersionOffset = MagicLength;
@@ -40,6 +43,7 @@ namespace Utah.Udot.Atspm.Data.Utility
         private const int LengthOffset = CodecOffset + 1;
         private const int HashOffset = LengthOffset + sizeof(ulong);
         private const int HashLength = 32;
+        private const int TypeLengthOffset = HashOffset + HashLength;
 
         private static readonly byte[] Magic = Encoding.ASCII.GetBytes("ATSPMCMP");
 
@@ -76,43 +80,100 @@ namespace Utah.Udot.Atspm.Data.Utility
         }
 
         /// <summary>
+        /// Encodes a concrete protobuf contract in a typed version 2 envelope.
+        /// </summary>
+        internal static byte[] EncodeProtobuf(string typeIdentifier, byte[] protobuf)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(typeIdentifier);
+            ArgumentNullException.ThrowIfNull(protobuf);
+
+            var typeBytes = Encoding.UTF8.GetBytes(typeIdentifier);
+            if (typeBytes.Length > ushort.MaxValue)
+                throw new ArgumentOutOfRangeException(nameof(typeIdentifier), "The Event Log type identifier is too long.");
+
+            var payload = CompressBrotli(protobuf);
+            var payloadOffset = TypedEnvelopeHeaderLength + typeBytes.Length;
+            var result = new byte[payloadOffset + payload.Length];
+            Magic.CopyTo(result, 0);
+            result[VersionOffset] = TypedEnvelopeVersion;
+            result[CodecOffset] = ProtobufCodec;
+            BinaryPrimitives.WriteUInt64LittleEndian(result.AsSpan(LengthOffset, sizeof(ulong)), (ulong)protobuf.Length);
+            SHA256.HashData(protobuf).CopyTo(result, HashOffset);
+            BinaryPrimitives.WriteUInt16LittleEndian(result.AsSpan(TypeLengthOffset, sizeof(ushort)), (ushort)typeBytes.Length);
+            typeBytes.CopyTo(result, TypedEnvelopeHeaderLength);
+            payload.CopyTo(result, payloadOffset);
+            return result;
+        }
+
+        /// <summary>
         /// Decodes either a legacy raw GZip stream or a recognized ATSPM envelope.
         /// Unknown formats are rejected rather than guessed because Brotli has no
         /// reliable format signature of its own.
         /// </summary>
         internal static string Decode(byte[] data)
         {
+            var decoded = DecodePayload(data);
+            if (decoded.Codec == ProtobufCodec)
+                throw new InvalidDataException("A protobuf Event Log payload cannot be decoded as JSON.");
+            return Encoding.UTF8.GetString(decoded.Payload);
+        }
+
+        /// <summary>
+        /// Decodes legacy JSON or a versioned envelope and retains codec/type metadata.
+        /// </summary>
+        internal static EventLogPayload DecodePayload(byte[] data)
+        {
             ArgumentNullException.ThrowIfNull(data);
-
             if (IsLegacyGZip(data))
-                return data.GZipDecompressToString();
-
+                return new EventLogPayload(0, null, Encoding.UTF8.GetBytes(data.GZipDecompressToString()));
             if (!HasEnvelopeMagic(data))
                 throw new InvalidDataException("Event Log data is neither legacy GZip nor an ATSPM compression envelope.");
-
             if (data.Length < EnvelopeHeaderLength)
                 throw new InvalidDataException("The ATSPM Event Log compression envelope is truncated.");
 
             var version = data[VersionOffset];
-            if (version != CurrentEnvelopeVersion)
-                throw new InvalidDataException($"Unsupported ATSPM Event Log compression envelope version {version}.");
-
             var codec = data[CodecOffset];
-            if (codec != BrotliCodec)
-                throw new InvalidDataException($"Unsupported ATSPM Event Log compression codec {codec}.");
+            int payloadOffset;
+            string typeIdentifier = null;
+
+            if (version == CurrentEnvelopeVersion)
+            {
+                if (codec != BrotliCodec)
+                    throw new InvalidDataException($"Unsupported ATSPM Event Log compression codec {codec}.");
+                payloadOffset = EnvelopeHeaderLength;
+            }
+            else if (version == TypedEnvelopeVersion)
+            {
+                if (codec != ProtobufCodec)
+                    throw new InvalidDataException($"Unsupported typed ATSPM Event Log compression codec {codec}.");
+                if (data.Length < TypedEnvelopeHeaderLength)
+                    throw new InvalidDataException("The typed ATSPM Event Log compression envelope is truncated.");
+                var typeLength = BinaryPrimitives.ReadUInt16LittleEndian(data.AsSpan(TypeLengthOffset, sizeof(ushort)));
+                payloadOffset = TypedEnvelopeHeaderLength + typeLength;
+                if (typeLength == 0 || data.Length < payloadOffset)
+                    throw new InvalidDataException("The typed ATSPM Event Log compression envelope has an invalid type identifier.");
+                typeIdentifier = Encoding.UTF8.GetString(data, TypedEnvelopeHeaderLength, typeLength);
+            }
+            else
+            {
+                throw new InvalidDataException($"Unsupported ATSPM Event Log compression envelope version {version}.");
+            }
 
             var expectedLength = BinaryPrimitives.ReadUInt64LittleEndian(data.AsSpan(LengthOffset, sizeof(ulong)));
             if (expectedLength > int.MaxValue)
                 throw new InvalidDataException($"The ATSPM Event Log payload length {expectedLength} exceeds the supported size.");
-
-            var uncompressed = DecompressBrotli(data.AsSpan(EnvelopeHeaderLength), (int)expectedLength);
-            var expectedHash = data.AsSpan(HashOffset, HashLength);
-            var actualHash = SHA256.HashData(uncompressed);
-
-            if (!CryptographicOperations.FixedTimeEquals(expectedHash, actualHash))
+            var uncompressed = DecompressBrotli(data.AsSpan(payloadOffset), (int)expectedLength);
+            if (!CryptographicOperations.FixedTimeEquals(data.AsSpan(HashOffset, HashLength), SHA256.HashData(uncompressed)))
                 throw new InvalidDataException("The ATSPM Event Log payload failed its SHA-256 integrity check.");
+            return new EventLogPayload(codec, typeIdentifier, uncompressed);
+        }
 
-            return Encoding.UTF8.GetString(uncompressed);
+        private static byte[] CompressBrotli(byte[] uncompressed)
+        {
+            using var output = new MemoryStream();
+            using (var compressor = new BrotliStream(output, CompressionLevel.Optimal, true))
+                compressor.Write(uncompressed, 0, uncompressed.Length);
+            return output.ToArray();
         }
 
         private static bool IsLegacyGZip(ReadOnlySpan<byte> data) =>
@@ -156,5 +217,7 @@ namespace Utah.Udot.Atspm.Data.Utility
                 throw new InvalidDataException("The ATSPM Event Log Brotli payload is invalid.", exception);
             }
         }
+
+        internal sealed record EventLogPayload(byte Codec, string TypeIdentifier, byte[] Payload);
     }
 }

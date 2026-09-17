@@ -137,20 +137,16 @@ per-closed-type converter override. X14 was subsequently settled by an actual sp
 same shared-converter direction this branch took — but by direct evidence, not by inference
 from this branch. See doc 03 §"`Data` payload format," rewritten around the spike results.
 
-## Coordination required with `feature/lidar-integration`
+## Coordination with `feature/lidar-integration` — completed 2026-09-17
 
 Both branches touch `EventLogContext.cs`'s `OnModelCreating` and the compression converter
-class. Before Ouster's storage-format work (doc 03) is built:
+class. The complete BlueBand branch was merged after current `origin/main` and before Ouster
+storage work began. The implementation therefore:
 
-1. Merge or rebase `feature/lidar-integration` onto (or cherry-pick) `codex/blueband-lidar-event-import`
-   so there's one `EventLogCompression`/`EventLogCompressedListConverter` implementation, not two
-   competing ones.
-2. Add the Protobuf codec to the **same** envelope/converter this branch introduced, not a
-   parallel file.
-3. `LidarZoneEvent` (BlueCity) and `BluebandLidarEvent` both become subject to whatever
-   polymorphic-serialization constraint Protobuf introduces (see doc 03 — `[ProtoInclude]`
-   subtype registration is per-`EventLogModelBase`-hierarchy, not per vendor), so this is a
-   shared design conversation across both vendors, not a BlueCity-only decision.
+1. Uses one `EventLogCompression` / `EventLogCompressedListConverter` implementation.
+2. Adds the typed Protobuf codec to that envelope rather than a parallel format.
+3. Keeps BlueBand on the compatible legacy JSON write path while BlueCity uses an internal,
+   concrete flat protobuf wire DTO, avoiding hierarchy-wide `[ProtoInclude]` registrations.
 
 ## Operational notes (from `Atspm/EventLogUtility/BLUEBAND.md`)
 
