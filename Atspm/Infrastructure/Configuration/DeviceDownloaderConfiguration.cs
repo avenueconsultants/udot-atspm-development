@@ -37,10 +37,22 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         /// </summary>
         public bool Ping { get; set; }
 
+        /// <summary>
+        /// Minimum acceptable size of a newly downloaded resource, in bytes.
+        /// Specialized downloaders may use this to reject incomplete payloads.
+        /// </summary>
+        public long MinimumFileSizeBytes { get; set; } = 2;
+
+        /// <summary>
+        /// Maximum acceptable size of a newly downloaded resource, in bytes.
+        /// A value less than one disables the upper bound.
+        /// </summary>
+        public long MaximumFileSizeBytes { get; set; } = 134_217_728;
+
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{BasePath} - {DeleteRemoteFile} - {Ping}";
+            return $"{BasePath} - {DeleteRemoteFile} - {Ping} - {MinimumFileSizeBytes}:{MaximumFileSizeBytes} bytes";
         }
     }
 }
