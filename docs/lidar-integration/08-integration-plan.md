@@ -7,6 +7,16 @@ auto-config. Implementation is done by Codex from this plan + docs 02–07.
 Everything here follows the decisions in [`05-open-questions.md`](05-open-questions.md)
 §Resolved and the "what's best" calls recorded in the README decisions log.
 
+**Progress (2026-09-17):** WP1 (data model + storage) is implemented and committed
+(`f0a19335` — see doc 17, README decisions log). **WP2 implementation is complete; live-box
+validation remains.** The stub-backed component tests cover token acquisition, a 20-minute
+paginated `object_events` download, forced-401 refresh, window chunking, default endpoint
+derivation, and cross-host rejection. `OusterBlueCityEdgeDownloaderClient` implements the
+specified OAuth, windowing, pagination, TLS pin/explicit-untrusted policy, redirect blocking,
+and combined temp-file envelope. The remaining WP2 acceptance step is an opt-in run against
+pilot box `10.235.13.48` over VPN with its rotated credentials. WP3 can now consume the stable
+response-file shape; WP6 follows the authenticated client for `/snmp/zone_mappings` + `/config`.
+
 ## Dependency graph
 
 ```

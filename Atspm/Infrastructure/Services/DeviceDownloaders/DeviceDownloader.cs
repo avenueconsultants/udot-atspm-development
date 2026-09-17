@@ -87,7 +87,18 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DeviceDownloaders
         /// </summary>
         protected virtual Dictionary<string, string> GetConnectionProperties(Device device)
         {
-            return device?.DeviceConfiguration?.ConnectionProperties?.ToDictionary(k => k.Key, k => k.Value?.ToString());
+            var properties = device?.DeviceConfiguration?.ConnectionProperties?.ToDictionary(
+                k => k.Key,
+                k => k.Value?.ToString(),
+                StringComparer.OrdinalIgnoreCase);
+
+            if (device?.DeviceConfiguration?.Protocol == TransportProtocols.OusterBlueCityEdge)
+            {
+                properties ??= new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                properties["LoggingOffset"] = device.DeviceConfiguration.LoggingOffset.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            return properties;
         }
 
         /// <summary>
