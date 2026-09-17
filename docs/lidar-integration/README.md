@@ -7,20 +7,26 @@ on a separate branch (`codex/blueband-lidar-event-import`) — see
 LiDAR data sources for the local prototype; docs 01–14 are the BlueCity design, doc 15 is the
 BlueBand record, and doc 03's storage design now spans both (coordination required, see doc 15).
 
-**Status:** architecture spec — ready for implementation. The storage-format spike (X14,
-doc 05) is **done** ([`17-preflight-findings.md`](17-preflight-findings.md)): the per-type
-converter approach fails, so `LidarZoneEvent` storage is a shared runtime-type dispatcher +
-protobuf, not a per-type override (doc 03, rewritten). That same preflight pass also
-surfaced two must-fix items before WP1/WP5: an exact-hour-boundary edge case in the archive
-idempotency check (H1, doc 08 WP7) and confirmed credential read-exposure on
-`DeviceConfiguration.Password`/`ConnectionProperties` regardless of which field holds a
-secret (doc 10 S2, doc 08 WP5). Both have a concrete fix documented — neither is a design
-blocker, but both are required WP1/WP5 work, not optional hardening. The Edge API contract
-([`07`](07-edge-api-reference.md)) is **verified against a live box** (`10.235.13.48`,
-2026-09-10). A **code-level review** ([`10-architecture-review.md`](10-architecture-review.md))
-confirms the design fits ATSPM's extension points; its findings (B1 local time base,
-H1 archive-merge check, H2/M1/M4, **P7 protobuf-converter risk**…) are folded into docs 02–09.
-Build sequence:
+**Status:** the six preflight gates from [`17-preflight-findings.md`](17-preflight-findings.md)
+are **implemented and committed** on `feature/lidar-integration` at `f0a19335` (not merged
+to `main`): the BlueBand branch is merged in, the shared runtime-type dispatcher +
+typed protobuf envelope replaces the failed per-type-override design, an internal flat wire
+DTO round-trips inherited fields, archive ranges are canonicalized to exactly one hour,
+`Password`/`ConnectionProperties` are removed from OData reads with a separate write-only
+credential endpoint, and `ApproachService` enforces the phase-zero needs-review override.
+Focused storage/archive tests (19/19), the ConfigApi build, and all five provider-project
+builds (SQL Server/PostgreSQL/MySQL/Oracle/SQLite) pass. **Two known gaps, both unrelated to
+this work:** `Atspm/ConfigApiTests` as a whole still fails to build — a **pre-existing** bug
+in `PedestrianAggregationServiceTests.cs` (references `RawDataPoint.TimeStamp`; the real
+property is `Timestamp`, confirmed present on `origin/main` since commit `b0cbb252`, well
+before this branch) — and a full solution build stalled on an unrelated long-running project
+step and was stopped after two minutes rather than confirmed complete. Neither blocks what
+was validated above, but both are open before calling the branch fully CI-green. The Edge API
+contract ([`07`](07-edge-api-reference.md)) is **verified against a live box**
+(`10.235.13.48`, 2026-09-10). The original **code-level review**
+([`10-architecture-review.md`](10-architecture-review.md)) findings (B1 local time base, H1,
+H2/M1/M4, P7) are folded into docs 02–09, now with implementation evidence rather than just
+design. Build sequence:
 [`08-integration-plan.md`](08-integration-plan.md); formal scope:
 [`09-scope-of-work.md`](09-scope-of-work.md); new-measures plan:
 [`11-measures-plan.md`](11-measures-plan.md). Residual [`05`](05-open-questions.md) items are
@@ -102,6 +108,7 @@ records, stored at full resolution.
 | 2026-09-17 | **Codex ran the preflight checklist (doc 16) and reported back in [`17-preflight-findings.md`](17-preflight-findings.md)** — a real spike against the installed toolchain, not analysis. Key results, all folded back into the design: **X14 confirmed to fail** (the per-type EF converter override throws `InvalidOperationException` — storage design is now a write-time runtime-type dispatcher inside the one shared converter, doc 03 rewritten); **H1 confirmed nuanced** (`Timeline` snaps in the general case but produces a degenerate `Start == End` for an exact-hour-boundary batch — WP7 now always computes its own canonical hour range rather than trusting `Timeline`'s output, doc 08); **protobuf contracts must be flat/explicit** (a naive subclass-only contract silently drops the inherited `Timestamp` field — `DateTime.MinValue`, no exception — doc 03/08 WP1 now require an explicit round-trip test for this); **`Password`/`ConnectionProperties` are both confirmed exposed** to any `Device:View`-authorized caller regardless of which one holds a secret (doc 10 S2 escalated from "verify" to "confirmed, fix required before WP5," doc 05 Q8 sharpened); **BlueBand branch is confirmed still unmerged** (`main` at `f630f98d` doesn't contain it — doc 15's "this settles X14"/"shipped" language corrected, since that was an inference from the branch's existence, not the spike); **`ProtectedPhaseNumber = 0` confirmed safe at the data layer** (no validator blocks it), but the needs-review/apply gate itself still needs to be built, not assumed. |
 | 2026-09-17 | **Implementation of the six preflight gates began.** Current `origin/main` and the complete BlueBand branch were merged into this feature branch. The shared converter now writes `LidarZoneEvent` through a typed protobuf envelope using an internal flat wire DTO; legacy JSON/GZip and v1 Brotli remain readable. Archive keys use an explicit one-hour range, credential fields are absent from the OData read model with a write-only `DeviceEdit` endpoint, and `ApproachService` enforces the phase-zero needs-review override. Focused storage/hour-range tests pass. |
 | 2026-09-17 | **Auto-config (WP6) consistency/soundness pass** — user asked to verify the plan is solid before the prototype build, with auto-config called out as high-priority. Found and fixed three real gaps: (1) `Approach.ProtectedPhaseNumber` confirmed via the actual code (`Atspm/Data/Models/ConfigurationModels/Approach.cs`) to be a non-nullable `int` — but `0` is already ATSPM's established "no protected phase" sentinel (used by `LeftTurnGapReport`/`ApproachVolumeReportService`/`PhaseService`), so staging a new `Approach` with `ProtectedPhaseNumber = 0` + `needs-review` is safe, no schema change needed — added to doc 06, and doc 08 WP6 now explicitly blocks apply on any unresolved `needs-review` new approach; (2) `Detector.LidarZoneId` was inconsistently "optional" in doc 08 WP1 while WP6/MP1/doc 09 all treated it as required — promoted to a firm WP1 deliverable, doc 04 updated to match; (3) WP9's test table had no dedicated auto-config test — added one covering channel-match, new-detector staging, the new-approach `needs-review` gate, and idempotent re-run. |
+| 2026-09-17 | **Verified the `ConfigApiTests` build failure Codex flagged is pre-existing and unrelated to this branch.** `PedestrianAggregationServiceTests.cs` references `RawDataPoint.TimeStamp`, but `PedestrianAggregationModels.cs` (`ReportApi/DataAggregation`) defines `Timestamp` — confirmed this mismatch already exists on `origin/main` as of commit `b0cbb252` ("Moved PedestrianAggregationModels from data.models to reportapi"), unrelated to pedestrian/report work this branch never touched. Not a regression from the LiDAR merge or gate implementation; worth fixing separately but doesn't block this branch. |
 | 2026-09-17 | **BlueBand LiDAR folded in as vendor #2** — doc 15 records what's actually built on `codex/blueband-lidar-event-import`: its own `BluebandLidarEvent` model (SPM+ `detector`/`phase`/`ring` events — a different kind of data than BlueCity's zone events, so it correctly got its own model per doc 12's escape hatch, not a forced fit into `LidarZoneEvent`), a lighter "generic-downloader subclass" transport pattern added to doc 12 alongside the dedicated-client pattern, a payload-size download guard worth reusing for BlueCity, and a `DateTimeKind`-aware fix to `EventLogFileImporter.IsAcceptableDateRange` that partially resolves review finding B1. New open items X15–X17 (doc 05) track what this raises: possible phase-based scope for BlueBand specifically, reusing the size guard, and whether anything downstream still assumes one global time base. |
 
 ## Reference
