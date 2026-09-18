@@ -86,10 +86,12 @@ Behaviour:
    - `windowStart = now − LoggingOffset − OverlapMinutes`
      (`LoggingOffset` is the existing `DeviceConfiguration` field, in minutes; it is the
      primary "how far back do we pull" knob)
-   - On the first ever run for a device, clamp `windowStart` to `BackfillStart` (config) or
-     to `windowEnd − FirstRunWindowMinutes` — and never earlier than
-     `EventLogImporterConfiguration…EarliestAcceptableDate`, which otherwise **silently
-     drops** older rows in the decoder (review finding H2).
+   - Phase-1 prototype has no persistent first-run/watermark signal. For a one-time backfill,
+     temporarily raise `LoggingOffset`, run once, then restore it. Before fleet rollout,
+     derive the start from the maximum stored `LidarZoneEvent.Timestamp` per device so first
+     runs and outage catch-up do not depend on an operator step. Never request earlier than
+     `EventLogImporterConfiguration…EarliestAcceptableDate`, which otherwise silently drops
+     older rows in the decoder.
 2. Split `[windowStart, windowEnd]` into chunks of at most `MaxWindowMinutes` (guards
    against a huge catch-up after downtime).
 3. Emit one `Uri` per chunk: `…/object_events?start_time=…&end_time=…&per_page=<PageSize>&page=1&timezone=<tz>&imperial_measuring_unit=<bool>&deduplicate_objects=<bool>`.
@@ -119,7 +121,7 @@ For each chunk `Uri`:
 1. GET `page=1`. Read `pagination.total_count` / `total_pages` for sizing.
 2. Append `events[]`; if `pagination.next_page` is non-null, GET that page; repeat until
    `next_page == null`.
-3. Concatenate all `events` into a single JSON array and write to the temp file
+3. Concatenate all `events` into one JSON envelope and write it to the temp file
    `DeviceDownloader.GenerateLocalFilePath(...)` produced (`.json`). Prepend/keep the
    envelope's `timezone` + `units` — the decoder needs `units`.
 4. Return the `FileInfo`. `DeviceDownloader` yields `Tuple<Device, FileInfo>` downstream;
@@ -197,7 +199,9 @@ Carried on `DeviceConfiguration` so each box can differ:
 | End lag before `now` | `ConnectionProperties["EndLagMinutes"]` | `2` |
 | Max minutes per request chunk | `ConnectionProperties["MaxWindowMinutes"]` | `60` |
 | Page size | `ConnectionProperties["PageSize"]` | `5000` |
-| First-run / backfill window | `ConnectionProperties["FirstRunWindowMinutes"]` or `["BackfillStart"]` | `10080` (7 days — safely inside the ~9–12 day box retention) |
+| Maximum total requested window | `ConnectionProperties["MaxTotalWindowMinutes"]` | `10080` (7 days) |
+| Maximum chunks per run | `ConnectionProperties["MaxChunks"]` | `168` |
+| Maximum pages per chunk | `ConnectionProperties["MaxPages"]` | `1000` |
 | Timezone param | `ConnectionProperties["Timezone"]` | **read from the box `/config.timezone`** (e.g. `US/Mountain`); store naive local (review B1) |
 | Unit system | `ConnectionProperties["Imperial"]` | `true` (imperial — matches box default; doc 05 Q2) |
 | `deduplicate_objects` param | `ConnectionProperties["DeduplicateObjects"]` | `true` |

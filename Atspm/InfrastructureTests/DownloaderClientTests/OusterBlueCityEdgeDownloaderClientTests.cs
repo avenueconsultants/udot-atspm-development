@@ -14,6 +14,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -36,7 +39,7 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
         {
             var handler = new BlueCityStubHandler();
             using var http = new HttpClient(handler);
-            using var sut = new OusterBlueCityEdgeDownloaderClient(http, () => new DateTime(2026, 9, 17, 12, 0, 0));
+            using var sut = new OusterBlueCityEdgeDownloaderClient(http, () => new DateTimeOffset(2026, 9, 17, 18, 0, 0, TimeSpan.Zero));
             var properties = new Dictionary<string, string>
             {
                 ["BaseUrl"] = "https://10.235.13.48/analytics/api/v1/",
@@ -56,9 +59,10 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
 
             Assert.True(sut.IsConnected);
             Assert.Equal(TransportProtocols.OusterBlueCityEdge, sut.Protocol);
-            var resource = Assert.Single(await sut.ListResourcesAsync("object_events"));
-            Assert.Contains("start_time=2026-09-17T11%3A40%3A00", resource.Query);
-            Assert.Contains("end_time=2026-09-17T12%3A00%3A00", resource.Query);
+            var resource = Assert.Single(await sut.ListResourcesAsync(string.Empty));
+            Assert.Equal("/analytics/api/v1/object_events", resource.AbsolutePath);
+            Assert.Contains("start_time=2026-09-17T11%3A40%3A00-06%3A00", resource.Query);
+            Assert.Contains("end_time=2026-09-17T12%3A00%3A00-06%3A00", resource.Query);
             Assert.Contains("per_page=50", resource.Query);
             Assert.Contains("page=1", resource.Query);
             Assert.DoesNotContain("secret-value", resource.AbsoluteUri);
@@ -101,7 +105,7 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
             var handler = new BlueCityStubHandler();
             using var sut = new OusterBlueCityEdgeDownloaderClient(
                 new HttpClient(handler),
-                () => new DateTime(2026, 9, 17, 12, 0, 0));
+                () => new DateTimeOffset(2026, 9, 17, 18, 0, 0, TimeSpan.Zero));
 
             await sut.ConnectAsync(
                 new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443),
@@ -119,10 +123,59 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
             Assert.Equal("/auth/realms/detect/protocol/openid-connect/token", handler.TokenUris.Single().AbsolutePath);
             Assert.Equal(2, resources.Length);
             Assert.All(resources, resource => Assert.Equal("/analytics/api/v1/object_events", resource.AbsolutePath));
-            Assert.Contains("start_time=2026-09-17T09%3A55%3A00", resources[0].Query);
-            Assert.Contains("end_time=2026-09-17T10%3A55%3A00", resources[0].Query);
-            Assert.Contains("start_time=2026-09-17T10%3A55%3A00", resources[1].Query);
-            Assert.Contains("end_time=2026-09-17T11%3A55%3A00", resources[1].Query);
+            Assert.Contains("start_time=2026-09-17T09%3A55%3A00-06%3A00", resources[0].Query);
+            Assert.Contains("end_time=2026-09-17T10%3A55%3A00-06%3A00", resources[0].Query);
+            Assert.Contains("start_time=2026-09-17T10%3A55%3A00-06%3A00", resources[1].Query);
+            Assert.Contains("end_time=2026-09-17T11%3A55%3A00-06%3A00", resources[1].Query);
+        }
+
+        [Fact]
+        public async Task RejectsZeroLoggingOffsetAndMalformedConfiguredUrl()
+        {
+            using var zeroOffset = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
+            await zeroOffset.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443),
+                new NetworkCredential("client", "secret"),
+                connectionProperties: new Dictionary<string, string> { ["LoggingOffset"] = "0", ["Timezone"] = "UTC" });
+            await Assert.ThrowsAsync<DownloaderClientListResourcesException>(() => zeroOffset.ListResourcesAsync(string.Empty));
+
+            using var malformed = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
+            await Assert.ThrowsAsync<DownloaderClientConnectionException>(() => malformed.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443),
+                new NetworkCredential("client", "secret"),
+                connectionProperties: new Dictionary<string, string> { ["BaseUrl"] = "not a URL" }));
+        }
+
+        [Fact]
+        public async Task SecureHandlerDisablesRedirectsAndCertificatePinTakesPrecedence()
+        {
+            using var sut = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
+            await sut.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443),
+                new NetworkCredential("client", "secret"),
+                connectionProperties: new Dictionary<string, string>
+                {
+                    ["LoggingOffset"] = "20",
+                    ["Timezone"] = "UTC",
+                    ["AllowUntrustedCertificate"] = "true",
+                    ["PinnedCertThumbprint"] = "00:11"
+                });
+
+            using var handler = sut.CreateHandler(5000);
+            Assert.False(handler.AllowAutoRedirect);
+            Assert.Equal(TimeSpan.FromSeconds(5), handler.ConnectTimeout);
+            Assert.NotNull(handler.SslOptions.RemoteCertificateValidationCallback);
+
+            using var rsa = RSA.Create(2048);
+            var request = new CertificateRequest("CN=bluecity-test", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            using var certificate = request.CreateSelfSigned(DateTimeOffset.UtcNow.AddMinutes(-1), DateTimeOffset.UtcNow.AddMinutes(5));
+            var colonPin = string.Join(":", Enumerable.Range(0, certificate.Thumbprint.Length / 2).Select(i => certificate.Thumbprint.Substring(i * 2, 2)));
+
+            Assert.Equal(certificate.Thumbprint, certificate.GetCertHashString());
+            Assert.Equal(certificate.Thumbprint, colonPin.Replace(":", string.Empty));
+            Assert.True(OusterBlueCityEdgeDownloaderClient.ValidateCertificate(certificate, null, SslPolicyErrors.RemoteCertificateChainErrors, certificate.Thumbprint, true));
+            Assert.True(OusterBlueCityEdgeDownloaderClient.ValidateCertificate(certificate, null, SslPolicyErrors.RemoteCertificateChainErrors, colonPin, true));
+            Assert.False(OusterBlueCityEdgeDownloaderClient.ValidateCertificate(certificate, null, SslPolicyErrors.None, "0011", true));
         }
 
         public void Dispose()
@@ -150,6 +203,9 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
                     ClientSecrets.Add(form["client_secret"]);
                     return Json($$"""{"access_token":"token-{{TokenRequests}}","expires_in":3600}""");
                 }
+
+                if (request.RequestUri.AbsolutePath.EndsWith("/config", StringComparison.Ordinal))
+                    return Json("""{"timezone":"US/Mountain","imperial_measuring_unit":true}""");
 
                 EventRequests++;
                 BearerTokens.Add(request.Headers.Authorization?.Parameter);

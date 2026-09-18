@@ -54,8 +54,9 @@ on the `Device`.
   "EndLagMinutes": 2,
   "MaxWindowMinutes": 60,
   "PageSize": 5000,
-  "FirstRunWindowMinutes": 10080,   // 7 days — inside the ~9–12 day box retention;
-                                    // also keep >= EventLogImporter EarliestAcceptableDate (review H2)
+  "MaxTotalWindowMinutes": 10080,  // hard cap; one-time prototype backfill temporarily raises LoggingOffset
+  "MaxChunks": 168,
+  "MaxPages": 1000,
   "Timezone": "US/Mountain",        // = the box's config.timezone; store naive local (review B1)
   "Imperial": true,                 // matches box default; doc 05 Q2
   "DeduplicateObjects": true,

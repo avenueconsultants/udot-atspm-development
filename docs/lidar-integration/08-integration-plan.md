@@ -12,8 +12,10 @@ Everything here follows the decisions in [`05-open-questions.md`](05-open-questi
 validation remains.** The stub-backed component tests cover token acquisition, a 20-minute
 paginated `object_events` download, forced-401 refresh, window chunking, default endpoint
 derivation, and cross-host rejection. `OusterBlueCityEdgeDownloaderClient` implements the
-specified OAuth, windowing, pagination, TLS pin/explicit-untrusted policy, redirect blocking,
-and combined temp-file envelope. The remaining WP2 acceptance step is an opt-in run against
+specified OAuth, box-timezone windowing, pagination and safety caps, TLS pin/explicit-untrusted
+policy, redirect blocking, and combined temp-file envelope. The prototype deliberately uses
+a manual one-shot `LoggingOffset` increase for initial backfill; a stored-event watermark is
+required before fleet rollout for automatic first-run/outage catch-up. The remaining WP2 acceptance step is an opt-in run against
 pilot box `10.235.13.48` over VPN with its rotated credentials. WP3 can now consume the stable
 response-file shape; WP6 follows the authenticated client for `/snmp/zone_mappings` + `/config`.
 
@@ -196,7 +198,7 @@ WP0 (UDOT/Ouster prerequisites) gates WP10, informs WP6
   (review H2). Add to `docker-compose.yml` / `appsettings` env.
 - Documented per-device `DeviceConfiguration` / `ConnectionProperties` knobs
   ([`02`](02-ingestion-pipeline.md) §"Window") with the decided defaults
-  (`Imperial=true`, `Timezone` = box `config.timezone`, `FirstRunWindowMinutes=10080`).
+  (`Imperial=true`, `Timezone` = box `config.timezone`, `MaxTotalWindowMinutes=10080`).
 - Optional (only if batch tuning must diverge): a thin `lidar-log` command wrapping the same
   workflow with LiDAR-specific batch defaults.
 

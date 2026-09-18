@@ -22,7 +22,7 @@ storage, workflow, or measures changes** (doc 12).
 | S2 | `OusterBlueCityEdgeDownloaderClient` (`TransportProtocols.OusterBlueCityEdge`) — Keycloak `client_credentials` auth, windowed + paginated `GET /analytics/api/v1/object_events`, self-signed-TLS handling, temp-file output. |
 | S3 | `OusterBlueCityObjectEventsDecoder` — JSON → `LidarZoneEvent`, dedupe on BlueCity server `id`. |
 | S4 | Independent LiDAR ingestion cadence via a **scheduled** `EventLogUtility log --device-type LidarSensor` (no new hosted service — review M4), plus the LiDAR `EventLogImporterConfiguration` (`EarliestAcceptableDate` set for the backfill window). |
-| S5 | Per-device pull-timing configuration (window, overlap, chunk size, page size, first-run/backfill window, units, timezone, TLS) via `DeviceConfiguration` + `ConnectionProperties`. |
+| S5 | Per-device pull-timing configuration (window, overlap, chunk/page/run caps, units, timezone, TLS) via `DeviceConfiguration` + `ConnectionProperties`; manual one-shot prototype backfill and a stored-event watermark before fleet rollout. |
 | S6 | Provisioning: a `Product` row for Ouster BlueCity, a "BlueCity Edge" `DeviceConfiguration` template, and an operator doc for onboarding a box. |
 | S11 | **Vendor-neutral collector architecture** (doc 12): `LidarZoneEvent` carries a canonical `Classification` + raw `VendorClassification`; the Ouster BlueCity client/decoder are named and packaged as one vendor's implementation of a general `IDownloaderClient`/`IEventLogDecoder<LidarZoneEvent>` pair, not a one-off. No second vendor is built in Phase 1, but the contract for adding one is documented and does not require touching storage, workflow, or (once built) measures. |
 | S7 | `lidar-autoconfig` channel-match: pull `GET /snmp/zone_mappings`, parse zone names per the UDOT standard, match `CHANNEL#` to existing `Detector`s at the box's `Location`, and produce a reviewable draft "LiDAR" `Location` version (set `DetectionHardware = LiDar`, `LatencyCorrection = 0`; stage new detectors for unmatched zones). Operator-applied, not auto-applied. |
@@ -106,7 +106,7 @@ storage, workflow, or measures changes** (doc 12).
 
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
-| Short box retention (~9–12 d) + a silent ingestion stall | Permanent data loss | WP8 "behind" alert; 5-min cadence; 7-day first-run/backfill window; ATSPM as system of record |
+| Short box retention (~9–12 d) + a silent ingestion stall | Permanent data loss | WP8 "behind" alert; 5-min cadence; manual bounded prototype backfill; stored-event watermark before fleet rollout; ATSPM as system of record |
 | `object_events` volume (~110k/day/box) | Large hourly blobs, DB growth | Hourly compression (existing); monitor blob size in pilot; revisit if needed |
 | Zone names off-standard on some boxes | Auto-config can't match those zones | Parser tolerates known variants; unmatched zones surfaced in the draft, not dropped; operator finishes them |
 | `ArchiveEventLogsWorkflow` blind-appends on re-run | Duplicate rows | WP7 verifies; add merge-by-key for the lidar path if needed |
