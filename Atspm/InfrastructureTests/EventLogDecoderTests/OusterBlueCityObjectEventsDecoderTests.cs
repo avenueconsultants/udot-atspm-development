@@ -5,6 +5,7 @@
 
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using Utah.Udot.Atspm.Data.Models;
 using Utah.Udot.Atspm.Data.Models.EventLogModels;
 using Utah.Udot.Atspm.Exceptions;
 using Utah.Udot.Atspm.Infrastructure.Configuration;
+using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.Atspm.Infrastructure.Services.EventLogDecoders;
 using Utah.Udot.Atspm.Infrastructure.Services.EventLogImporters;
 using Utah.Udot.Atspm.Services;
@@ -98,8 +100,42 @@ namespace Utah.Udot.Atspm.InfrastructureTests.EventLogDecoderTests
             Assert.Empty(new OusterBlueCityObjectEventsDecoder().Decode(CreateDevice(), stream));
         }
 
+        [Theory]
+        [InlineData("{\"id\":1,\"timestamp\":\"2026-09-10T13:12:25-06:00\",\"object_id\":\"missing-zone\"}")]
+        [InlineData("{\"id\":\"wrong\",\"timestamp\":\"2026-09-10T13:12:25-06:00\",\"object_id\":\"typed\",\"zone_id\":10}")]
+        public void InvalidRecordFailsTheWholeEnvelopeWithDecoderException(string record)
+        {
+            using var stream = JsonStream($$"""{"timezone":"US/Mountain","units":"imperial","events":[{{record}}]}""");
+            Assert.Throws<EventLogDecoderException>(() => new OusterBlueCityObjectEventsDecoder().Decode(CreateDevice(), stream).ToList());
+        }
+
         [Fact]
-        public async Task UnspecifiedTimestampPassesSharedImporterRangeCheckWithoutUtcConversion()
+        public void NullDeviceLocationAndEmptyStreamAreWrappedAsDecoderExceptions()
+        {
+            using var valid = JsonStream("""{"timezone":"US/Mountain","units":"imperial","events":[]}""");
+            Assert.Throws<EventLogDecoderException>(() => new OusterBlueCityObjectEventsDecoder().Decode(null, valid).ToList());
+
+            valid.Position = 0;
+            Assert.Throws<EventLogDecoderException>(() => new OusterBlueCityObjectEventsDecoder().Decode(new Device(), valid).ToList());
+
+            using var empty = new MemoryStream();
+            Assert.Throws<EventLogDecoderException>(() => new OusterBlueCityObjectEventsDecoder().Decode(CreateDevice(), empty).ToList());
+        }
+
+        [Fact]
+        public void DecoderIsAutoRegisteredAndResolvableByExactConfigurationName()
+        {
+            var services = new ServiceCollection();
+            services.AddEventLogDecoders();
+            using var provider = services.BuildServiceProvider();
+
+            var decoder = Assert.Single(provider.GetServices<IEventLogDecoder>(),
+                item => item.GetType().Name == nameof(OusterBlueCityObjectEventsDecoder));
+            Assert.IsType<OusterBlueCityObjectEventsDecoder>(decoder);
+        }
+
+        [Fact]
+        public async Task UnspecifiedTimestampNearHostNowPassesSharedImporterRangeCheckWithoutUtcConversion()
         {
             var wallTime = DateTime.Now.AddMinutes(-1);
             var timestamp = wallTime.ToString("yyyy-MM-dd'T'HH:mm:ss.fff") + "-06:00";

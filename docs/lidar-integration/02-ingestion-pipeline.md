@@ -229,5 +229,10 @@ EndLagMinutes`; therefore `LoggingOffset=10080` fails under the default 5-minute
 | Box unreachable / TLS failure | log via `DeviceDownloaderLogMessages`, skip the device this cycle (existing behaviour) |
 | Downtime longer than the box retains data | measured box retention ≈ **9–12 days** of raw `object_events` (box `10.235.13.48`, 2026-09-10). Beyond that the data is gone. → ATSPM is the system of record; run the poll well inside that window; alert if a device's last-ingested timestamp falls > N days behind |
 | Clock skew box vs ATSPM | both the box `object_events` timestamps and the window request are in the box's local time, so skew is box-vs-real-time only; `EndLagMinutes` absorbs it. Watch `created_at − timestamp` in the pilot. |
-| Partial / malformed page | `EventLogDecoderException` per file (existing importer behaviour); the chunk is retried next cycle via overlap |
+| Partial / malformed page or event | **Prototype policy: fail the whole file** with `EventLogDecoderException`; the chunk is retried next cycle via overlap and WP8 must alert on recurring failures. Skipping individual records is deferred until a counted/logged threshold seam exists, because silent skips would create invisible permanent gaps. |
 | Duplicate rows from overlapping windows | dedupe on server `id` at decode + union-merge at archive (see above) |
+
+The importer compares `DateTimeKind.Unspecified` values with the host's `DateTime.Now`. A host
+west of the intersection could treat the newest box-local records as future data; deploy the
+prototype host in the intersection timezone (or no farther west) until the importer accepts
+an explicit location timezone.

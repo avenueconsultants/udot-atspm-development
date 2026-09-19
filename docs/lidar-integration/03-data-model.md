@@ -52,6 +52,10 @@ event itself — ATSPM's existing config model already separates "what kind of t
 | `UserClassification` | `string` | `user_classification` | operator-defined; nullable (seen: `"car"`) |
 | `SpeedBin` | `string` | `speed_bin` | `"Other"` when the box has no `speed_bins` configured (this box: none) |
 
+BlueCity buses and trucks currently arrive as canonical `Vehicle`; their finer vendor value
+remains in `SubClassification`. Class-mix measures must use `SubClassification` until the
+canonical taxonomy is expanded.
+
 The response envelope (`returned_count`, `query_*`, `timezone`, `units`, `pagination`) is
 query metadata — only `units` (and the resolved `timezone`) are carried onto each record.
 There are **no** `bucket_start` / `bucket_end` fields (the vendor manual is wrong here).
