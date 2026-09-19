@@ -136,7 +136,7 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
             await zeroOffset.ConnectAsync(
                 new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443),
                 new NetworkCredential("client", "secret"),
-                connectionProperties: new Dictionary<string, string> { ["LoggingOffset"] = "0", ["Timezone"] = "UTC" });
+                connectionProperties: new Dictionary<string, string> { ["LoggingOffset"] = "0", ["Timezone"] = "US/Mountain" });
             await Assert.ThrowsAsync<DownloaderClientListResourcesException>(() => zeroOffset.ListResourcesAsync(string.Empty));
 
             using var malformed = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
@@ -156,7 +156,7 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
                 connectionProperties: new Dictionary<string, string>
                 {
                     ["LoggingOffset"] = "20",
-                    ["Timezone"] = "UTC",
+                    ["Timezone"] = "US/Mountain",
                     ["AllowUntrustedCertificate"] = "true",
                     ["PinnedCertThumbprint"] = "00:11"
                 });
@@ -178,6 +178,72 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
             Assert.False(OusterBlueCityEdgeDownloaderClient.ValidateCertificate(certificate, null, SslPolicyErrors.None, "0011", true));
         }
 
+        [Fact]
+        public async Task EnforcesBoxTimezoneAndFailedConfigLeavesClientDisconnected()
+        {
+            using var mismatch = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
+            await Assert.ThrowsAsync<DownloaderClientConnectionException>(() => mismatch.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443), new NetworkCredential("client", "secret"),
+                connectionProperties: new Dictionary<string, string> { ["Timezone"] = "UTC" }));
+            Assert.False(mismatch.IsConnected);
+
+            using var failedConfig = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler { ConfigStatusCode = HttpStatusCode.InternalServerError }));
+            await Assert.ThrowsAsync<DownloaderClientConnectionException>(() => failedConfig.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443), new NetworkCredential("client", "secret")));
+            Assert.False(failedConfig.IsConnected);
+        }
+
+        [Fact]
+        public async Task EnforcesWindowCapsPathPrefixPortAndResponseTimezone()
+        {
+            async Task<OusterBlueCityEdgeDownloaderClient> Connected(Dictionary<string, string> properties = null, BlueCityStubHandler handler = null)
+            {
+                var result = new OusterBlueCityEdgeDownloaderClient(new HttpClient(handler ?? new BlueCityStubHandler()));
+                await result.ConnectAsync(new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443), new NetworkCredential("client", "secret"), connectionProperties: properties);
+                return result;
+            }
+
+            using (var maxTotal = await Connected(new() { ["LoggingOffset"] = "21", ["OverlapMinutes"] = "0", ["EndLagMinutes"] = "0", ["MaxTotalWindowMinutes"] = "20" }))
+                await Assert.ThrowsAsync<DownloaderClientListResourcesException>(() => maxTotal.ListResourcesAsync(string.Empty));
+
+            using (var maxChunks = await Connected(new() { ["LoggingOffset"] = "21", ["OverlapMinutes"] = "0", ["EndLagMinutes"] = "0", ["MaxWindowMinutes"] = "10", ["MaxChunks"] = "2" }))
+                await Assert.ThrowsAsync<DownloaderClientListResourcesException>(() => maxChunks.ListResourcesAsync(string.Empty));
+
+            using (var prefix = await Connected(new() { ["LoggingOffset"] = "20" }))
+            {
+                var normalized = Assert.Single(await prefix.ListResourcesAsync("analytics/api/v1/object_events"));
+                Assert.Equal("/analytics/api/v1/object_events", normalized.AbsolutePath);
+                await Assert.ThrowsAsync<DownloaderClientListResourcesException>(() => prefix.ListResourcesAsync("/lidar-hub/status"));
+            }
+
+            using var portMismatch = new OusterBlueCityEdgeDownloaderClient(new HttpClient(new BlueCityStubHandler()));
+            await Assert.ThrowsAsync<DownloaderClientConnectionException>(() => portMismatch.ConnectAsync(
+                new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443), new NetworkCredential("client", "secret"),
+                connectionProperties: new() { ["TokenUrl"] = "https://10.235.13.48:8443/auth/realms/detect/protocol/openid-connect/token" }));
+
+            var timezoneHandler = new BlueCityStubHandler { ResponseTimezone = "UTC", ForceFirstUnauthorized = false };
+            using var timezone = await Connected(new() { ["LoggingOffset"] = "20" }, timezoneHandler);
+            var resource = Assert.Single(await timezone.ListResourcesAsync(string.Empty));
+            var local = new UriBuilder(Uri.UriSchemeFile, "localhost") { Path = Path.Combine(_tempPath, "timezone.json") }.Uri;
+            await Assert.ThrowsAsync<DownloaderClientDownloadResourceException>(() => timezone.DownloadResourceAsync(local, resource));
+        }
+
+        [Fact]
+        public async Task EnforcesPageCapAndDefaultHandlerHasNoTlsCallback()
+        {
+            var pageHandler = new BlueCityStubHandler { ForceFirstUnauthorized = false, AlwaysNextPage = true };
+            using var client = new OusterBlueCityEdgeDownloaderClient(new HttpClient(pageHandler));
+            await client.ConnectAsync(new IPEndPoint(IPAddress.Parse("10.235.13.48"), 443), new NetworkCredential("client", "secret"),
+                connectionProperties: new() { ["LoggingOffset"] = "20", ["MaxPages"] = "1" });
+            var resource = Assert.Single(await client.ListResourcesAsync(string.Empty));
+            var local = new UriBuilder(Uri.UriSchemeFile, "localhost") { Path = Path.Combine(_tempPath, "pages.json") }.Uri;
+            await Assert.ThrowsAsync<DownloaderClientDownloadResourceException>(() => client.DownloadResourceAsync(local, resource));
+
+            using var handler = client.CreateHandler(5000);
+            Assert.Null(handler.SslOptions.RemoteCertificateValidationCallback);
+            Assert.NotNull(OusterBlueCityEdgeDownloaderClient.ResolveTimeZone("US/Mountain"));
+        }
+
         public void Dispose()
         {
             if (Directory.Exists(_tempPath)) Directory.Delete(_tempPath, true);
@@ -185,6 +251,10 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
 
         private sealed class BlueCityStubHandler : HttpMessageHandler
         {
+            public HttpStatusCode ConfigStatusCode { get; init; } = HttpStatusCode.OK;
+            public string ResponseTimezone { get; init; } = "US/Mountain";
+            public bool ForceFirstUnauthorized { get; init; } = true;
+            public bool AlwaysNextPage { get; init; }
             public int TokenRequests { get; private set; }
             public int EventRequests { get; private set; }
             public List<string> BearerTokens { get; } = [];
@@ -205,17 +275,18 @@ namespace Utah.Udot.Atspm.InfrastructureTests.DownloaderClientTests
                 }
 
                 if (request.RequestUri.AbsolutePath.EndsWith("/config", StringComparison.Ordinal))
-                    return Json("""{"timezone":"US/Mountain","imperial_measuring_unit":true}""");
+                    return ConfigStatusCode == HttpStatusCode.OK
+                        ? Json("""{"timezone":"US/Mountain","imperial_measuring_unit":true}""")
+                        : new HttpResponseMessage(ConfigStatusCode);
 
                 EventRequests++;
                 BearerTokens.Add(request.Headers.Authorization?.Parameter);
                 var page = ParseQuery(request.RequestUri.Query)["page"];
-                if (EventRequests == 1)
+                if (ForceFirstUnauthorized && EventRequests == 1)
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
 
-                return page == "1"
-                    ? Json("""{"timezone":"US/Mountain","units":"imperial","pagination":{"current_page":1,"next_page":2},"events":[{"id":101}]}""")
-                    : Json("""{"timezone":"US/Mountain","units":"imperial","pagination":{"current_page":2,"next_page":null},"events":[{"id":102}]}""");
+                var next = AlwaysNextPage ? int.Parse(page) + 1 : page == "1" ? 2 : (int?)null;
+                return Json($$"""{"timezone":"{{ResponseTimezone}}","units":"imperial","pagination":{"current_page":{{page}},"next_page":{{(next?.ToString() ?? "null")}}},"events":[{"id":{{100 + int.Parse(page)}}}]}""");
             }
 
             private static HttpResponseMessage Json(string value) => new(HttpStatusCode.OK)

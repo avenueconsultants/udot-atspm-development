@@ -54,7 +54,8 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
         public override TransportProtocols Protocol => TransportProtocols.OusterBlueCityEdge;
 
         /// <inheritdoc/>
-        public override bool IsConnected => _client != null && _baseAddress != null && !string.IsNullOrWhiteSpace(_accessToken);
+        public override bool IsConnected => _client != null && _baseAddress != null
+            && !string.IsNullOrWhiteSpace(_accessToken) && !string.IsNullOrWhiteSpace(_timezone);
 
         /// <inheritdoc/>
         protected override async Task Connect(
@@ -84,8 +85,20 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
             _client.BaseAddress = _baseAddress;
             _client.Timeout = TimeSpan.FromMilliseconds(operationTimeout);
 
-            await RefreshToken(token).ConfigureAwait(false);
-            _timezone = GetString("Timezone", null) ?? await ReadBoxTimezone(token).ConfigureAwait(false);
+            try
+            {
+                await RefreshToken(token).ConfigureAwait(false);
+                var boxTimezone = await ReadBoxTimezone(token).ConfigureAwait(false);
+                var configuredTimezone = GetString("Timezone", null);
+                if (configuredTimezone != null && !string.Equals(configuredTimezone, boxTimezone, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidDataException("Configured BlueCity timezone does not match the box timezone.");
+                _timezone = boxTimezone;
+            }
+            catch
+            {
+                ResetConnection();
+                throw;
+            }
         }
 
         internal SocketsHttpHandler CreateHandler(int connectionTimeout)
@@ -208,13 +221,20 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
         /// <inheritdoc/>
         protected override Task Disconnect(CancellationToken token = default)
         {
+            ResetConnection();
+            return Task.CompletedTask;
+        }
+
+        private void ResetConnection()
+        {
             _client?.CancelPendingRequests();
             _client?.Dispose();
             _client = null;
             _accessToken = null;
             _baseAddress = null;
+            _tokenAddress = null;
             _credentials = null;
-            return Task.CompletedTask;
+            _timezone = null;
         }
 
         /// <inheritdoc/>
@@ -225,7 +245,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
             string units = null;
             var current = remote;
             var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            var maxPages = GetInt("MaxPages", 1000);
+            var maxPages = GetInt("MaxPages", 100);
             var pageCount = 0;
 
             while (current != null)
@@ -290,7 +310,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
                 throw new InvalidOperationException("BlueCity LoggingOffset must be at least one minute.");
 
             TimeZoneInfo boxTimeZone;
-            try { boxTimeZone = TimeZoneInfo.FindSystemTimeZoneById(_timezone); }
+            try { boxTimeZone = ResolveTimeZone(_timezone); }
             catch (TimeZoneNotFoundException e) { throw new InvalidOperationException($"Unknown BlueCity timezone '{_timezone}'.", e); }
             catch (InvalidTimeZoneException e) { throw new InvalidOperationException($"Invalid BlueCity timezone '{_timezone}'.", e); }
 
@@ -304,9 +324,11 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
             if (maxWindow < 1 || maxTotalWindow < 1 || maxChunks < 1 || start >= end || totalMinutes > maxTotalWindow)
                 throw new InvalidOperationException("BlueCity download window configuration is invalid.");
 
-            var configuredPath = string.IsNullOrWhiteSpace(path) ? DefaultEventsPath : path;
-            var endpoint = configuredPath.StartsWith(ApiPrefix, StringComparison.OrdinalIgnoreCase)
-                ? new Uri(new UriBuilder(_baseAddress.Scheme, _baseAddress.Host, _baseAddress.Port).Uri, configuredPath.TrimStart('/'))
+            var configuredPath = string.IsNullOrWhiteSpace(path) ? DefaultEventsPath : path.Trim();
+            var normalizedPath = $"/{configuredPath.TrimStart('/')}";
+            var absoluteConfiguredPath = configuredPath.StartsWith('/');
+            var endpoint = absoluteConfiguredPath || normalizedPath.StartsWith(ApiPrefix, StringComparison.OrdinalIgnoreCase)
+                ? new Uri(new UriBuilder(_baseAddress.Scheme, _baseAddress.Host, _baseAddress.Port).Uri, normalizedPath.TrimStart('/'))
                 : new Uri(_baseAddress, configuredPath.TrimStart('/'));
             EnsureSameHost(endpoint);
             if (!endpoint.AbsolutePath.StartsWith(ApiPrefix, StringComparison.OrdinalIgnoreCase))
@@ -357,6 +379,15 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
             return builder.Uri;
         }
 
+        internal static TimeZoneInfo ResolveTimeZone(string timezone)
+        {
+            try { return TimeZoneInfo.FindSystemTimeZoneById(timezone); }
+            catch (TimeZoneNotFoundException) when (string.Equals(timezone, "US/Mountain", StringComparison.OrdinalIgnoreCase))
+            {
+                return TimeZoneInfo.FindSystemTimeZoneById("America/Denver");
+            }
+        }
+
         private static string NormalizeThumbprint(string value) => value?
             .Replace(":", string.Empty, StringComparison.Ordinal)
             .Replace(" ", string.Empty, StringComparison.Ordinal)
@@ -395,9 +426,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Services.DownloaderClients
         /// <inheritdoc/>
         protected override void DisposeManagedCode()
         {
-            _client?.CancelPendingRequests();
-            _client?.Dispose();
-            _client = null;
+            ResetConnection();
         }
     }
 }

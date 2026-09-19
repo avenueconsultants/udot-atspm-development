@@ -56,7 +56,7 @@ on the `Device`.
   "PageSize": 5000,
   "MaxTotalWindowMinutes": 10080,  // hard cap; one-time prototype backfill temporarily raises LoggingOffset
   "MaxChunks": 168,
-  "MaxPages": 1000,
+  "MaxPages": 100,
   "Timezone": "US/Mountain",        // = the box's config.timezone; store naive local (review B1)
   "Imperial": true,                 // matches box default; doc 05 Q2
   "DeduplicateObjects": true,

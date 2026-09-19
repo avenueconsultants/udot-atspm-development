@@ -11,7 +11,7 @@
 
 		<Platforms>AnyCPU;x86</Platforms>
 
-		<AssemblyName>$(NameSpacePrefix).$(SolutionName).$(MSBuildProjectName)</AssemblyName>
+		<AssemblyName>$(NameSpacePrefix).ATSPM.$(MSBuildProjectName)</AssemblyName>
 
 		<RootNamespace>$(NameSpacePrefix).$(SolutionName).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>

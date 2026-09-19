@@ -201,7 +201,7 @@ Carried on `DeviceConfiguration` so each box can differ:
 | Page size | `ConnectionProperties["PageSize"]` | `5000` |
 | Maximum total requested window | `ConnectionProperties["MaxTotalWindowMinutes"]` | `10080` (7 days) |
 | Maximum chunks per run | `ConnectionProperties["MaxChunks"]` | `168` |
-| Maximum pages per chunk | `ConnectionProperties["MaxPages"]` | `1000` |
+| Maximum pages per chunk | `ConnectionProperties["MaxPages"]` | `100` |
 | Timezone param | `ConnectionProperties["Timezone"]` | **read from the box `/config.timezone`** (e.g. `US/Mountain`); store naive local (review B1) |
 | Unit system | `ConnectionProperties["Imperial"]` | `true` (imperial — matches box default; doc 05 Q2) |
 | `deduplicate_objects` param | `ConnectionProperties["DeduplicateObjects"]` | `true` |
@@ -216,6 +216,10 @@ rather than storing full URLs where possible.
 
 All are plain config; changing the cadence (the schedule) or any window value is an
 `appsettings` / device edit, no code redeploy.
+
+The largest usable `LoggingOffset` is `MaxTotalWindowMinutes − OverlapMinutes +
+EndLagMinutes`; therefore `LoggingOffset=10080` fails under the default 5-minute overlap and
+2-minute end lag. Use at most `10077` or raise the total-window cap deliberately.
 
 ## Failure modes to handle
 
