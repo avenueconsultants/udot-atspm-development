@@ -49,7 +49,12 @@ namespace Utah.Udot.Atspm.Data.Enums
 
         /// <summary>
         /// Supports MQTT Protocol
-        ///     
-        Mqtt
+        /// </summary>
+        Mqtt,
+
+        /// <summary>
+        /// Supports the authenticated Ouster BlueCity Edge Analytics API
+        /// </summary>
+        OusterBlueCityEdge
     }
 }

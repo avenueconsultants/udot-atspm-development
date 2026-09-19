@@ -25,6 +25,7 @@ namespace Utah.Udot.ATSPM.ConfigApi.DTO
         public int? Id { get; set; }
         public string DectectorIdentifier { get; set; }
         public int DetectorChannel { get; set; }
+        public long? LidarZoneId { get; set; }
         public int? DistanceFromStopBar { get; set; }
         public int? MinSpeedFilter { get; set; }
         public DateTime DateAdded { get; set; }

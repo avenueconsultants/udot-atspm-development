@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.OData;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.ConfigApi.Services;
+using Utah.Udot.Atspm.ConfigApi.Configuration;
 using Utah.Udot.Atspm.Data;
 using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.Atspm.Infrastructure.Services;
@@ -90,6 +91,7 @@ builder.Host
             l.RequestBodyLogLimit = 4096;
             l.ResponseBodyLogLimit = 4096;
         });
+        s.AddHttpLoggingInterceptor<CredentialHttpLoggingInterceptor>();
         s.AddAtspmDbContext(h);
         s.AddAtspmEFConfigRepositories();
         s.AddScoped<IRouteService, RouteService>();
