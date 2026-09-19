@@ -19,6 +19,13 @@ required before fleet rollout for automatic first-run/outage catch-up. The remai
 pilot box `10.235.13.48` over VPN with its rotated credentials. WP3 can now consume the stable
 response-file shape; WP6 follows the authenticated client for `/snmp/zone_mappings` + `/config`.
 
+**WP3 implementation (2026-09-19):** `OusterBlueCityObjectEventsDecoder` is implemented
+against the combined envelope, including strict units validation, all doc 03 fields,
+vendor-neutral classification mapping with raw-class preservation, local-offset stripping,
+zone-name trimming, equality-key deduplication, and `EventLogDecoderException` wrapping.
+Fixture tests cover a sanitized doc 07 record, overlap, fall-back DST, malformed/unsafe
+envelopes, empty results, unknown beta fields, and the shared importer's date-range filter.
+
 ## Dependency graph
 
 ```
