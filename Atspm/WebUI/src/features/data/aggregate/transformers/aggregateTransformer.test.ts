@@ -14,11 +14,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { AggregationResult } from '@/api/reports'
 import { Color, SolidLineSeriesSymbol } from '@/features/charts/utils'
 import type { EChartsOption, SeriesOption } from 'echarts'
 import type { AggregateOptionsHandler } from '../handlers/aggregateDataHandler'
 import { transformData } from './aggregateTransformer'
-import type { AggregateData } from '../types/aggregateData'
 
 type LegendWithData = { data?: { name?: string; icon?: string }[] }
 
@@ -30,6 +30,8 @@ const buildHandler = (
 ): AggregateOptionsHandler =>
   ({
     updatedLocations: [{ locationIdentifier: '1001' }],
+    startDateTime: new Date('2026-04-01T08:00:00'),
+    endDateTime: new Date('2026-04-01T09:00:00'),
     metricType: 'Detector Activation Count-detectorActivationCount',
     averageOrSum: 0,
     yAxisType: 0,
@@ -37,7 +39,7 @@ const buildHandler = (
     ...overrides,
   }) as unknown as AggregateOptionsHandler
 
-const buildData = (series: AggregateData['series']): AggregateData => ({
+const buildData = (series: AggregationResult['series']): AggregationResult => ({
   identifier: '1001',
   series,
 })
@@ -117,5 +119,42 @@ describe('transformData (aggregate charts)', () => {
     ) as EChartsOption
 
     expect((result.series as SeriesOption[])[0].type).toBe('line')
+  })
+})
+
+it('renders an empty chart when an aggregation has no series', () => {
+  expect(
+    transformData(buildHandler(), { identifier: '1001', series: null }).series
+  ).toEqual([])
+})
+
+it('omits incomplete data points without inventing zero measurements', () => {
+  const result = transformData(
+    buildHandler(),
+    buildData([
+      {
+        dataPoints: [
+          { start: '2026-04-01T08:00:00' },
+          { value: 5 },
+          { start: '2026-04-01T09:00:00', value: 0 },
+        ],
+      },
+    ])
+  )
+  expect((result.series as SeriesOption[])[0].data).toEqual([
+    ['2026-04-01T09:00:00', '0.00'],
+  ])
+})
+
+it('uses named numeric values for pie slices', () => {
+  const result = transformData(
+    buildHandler({ visualChartType: 'pie' }),
+    buildData([
+      { dataPoints: [{ start: '2026-04-01T08:00:00', value: 1.234 }] },
+    ])
+  )
+  expect((result.series as SeriesOption[])[0]).toMatchObject({
+    type: 'pie',
+    data: [{ name: '2026-04-01T08:00:00', value: 1.23 }],
   })
 })

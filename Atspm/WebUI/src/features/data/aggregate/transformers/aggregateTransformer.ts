@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { AggregationDataPoint, AggregationResult } from '@/api/reports'
 import {
   createDataZoom,
   createGrid,
@@ -26,14 +27,11 @@ import {
   SolidLineSeriesSymbol,
   formatChartDateTimeRange,
 } from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
 import { EChartsOption, SeriesOption } from 'echarts'
 import { GroupedListDataItems } from '../components/aggregateTypeSelect'
 import { AggregateOptionsHandler } from '../handlers/aggregateDataHandler'
-import {
-  AggregateData,
-  AggregateDataPointTypes,
-  TransformedAggregateData,
-} from '../types/aggregateData'
+import { TransformedAggregateData } from '../types/aggregateData'
 import {
   MetricTypeOptionsList,
   YAxisOptions,
@@ -70,12 +68,15 @@ const getAggregateMetricType = (
 
 export const transformData = (
   handler: AggregateOptionsHandler,
-  data: AggregateData
+  data: AggregationResult
 ): EChartsOption => {
-  const length = data.series[0].dataPoints.length
-  const start = data.series[0].dataPoints[0].start
-  const end = data.series[0].dataPoints[length - 1].start
-  const locationIdentifier = handler.updatedLocations[0].locationIdentifier
+  const sourceSeries = data.series ?? []
+  const points = sourceSeries[0]?.dataPoints ?? []
+  const start = points[0]?.start ?? dateToTimestamp(handler.startDateTime)
+  const end =
+    points[points.length - 1]?.start ?? dateToTimestamp(handler.endDateTime)
+  const locationIdentifier =
+    handler.updatedLocations[0]?.locationIdentifier ?? data.identifier ?? ''
 
   const metric = handler.metricType.split('-')
   const aggregationType = getAggregationType(metric[0]) as GroupedListDataItems
@@ -105,10 +106,10 @@ export const transformData = (
   const dataName = metric[1]
 
   const legendData =
-    data.series.length === 1
+    sourceSeries.length === 1
       ? [{ name: dataName, icon: SolidLineSeriesSymbol }]
-      : data.series.map((arr) => {
-          return { name: arr.identifier, icon: SolidLineSeriesSymbol }
+      : sourceSeries.map((arr) => {
+          return { name: arr.identifier ?? '', icon: SolidLineSeriesSymbol }
         })
 
   const legend = createLegend({
@@ -127,26 +128,21 @@ export const transformData = (
     (c) => c.id === handler.visualChartType
   )?.id
 
-  const series: SeriesOption[] = []
-
-  if (data.series.length === 1) {
-    series.push({
-      name: dataName,
-      data: transformSeriesData(data.series[0].dataPoints),
-      type: seriesType ? seriesType : 'line',
-      symbolSize: 5,
-      color: Color.Green,
-    })
-  } else {
-    data.series.forEach((arr) =>
-      series.push({
-        name: arr.identifier,
-        data: transformSeriesData(arr.dataPoints),
-        type: seriesType ? seriesType : 'line',
-        symbolSize: 5,
-      })
-    )
-  }
+  const series: SeriesOption[] = sourceSeries.map((item) => {
+    const data = transformSeriesData(item.dataPoints ?? [])
+    const common = {
+      name: sourceSeries.length === 1 ? dataName : (item.identifier ?? ''),
+      ...(sourceSeries.length === 1 ? { color: Color.Green } : {}),
+    }
+    if (seriesType === 'pie') {
+      return {
+        ...common,
+        type: 'pie',
+        data: data.map(([name, value]) => ({ name, value: Number(value) })),
+      }
+    }
+    return { ...common, type: seriesType ?? 'line', data, symbolSize: 5 }
+  })
 
   const chartOptions: EChartsOption = {
     title: title,
@@ -162,15 +158,10 @@ export const transformData = (
 }
 
 const transformSeriesData = (
-  dataPoints: AggregateDataPointTypes
-): (string | number)[][] => {
-  const series: (string | number)[][] = []
-  for (const dataPoint of dataPoints) {
-    const values: (string | number)[] = [
-      dataPoint.start,
-      dataPoint.value.toFixed(2),
-    ]
-    series.push(values)
-  }
-  return series
-}
+  dataPoints: AggregationDataPoint[]
+): [string, string][] =>
+  dataPoints.flatMap(({ start, value }) =>
+    start && typeof value === 'number' && Number.isFinite(value)
+      ? [[start, value.toFixed(2)]]
+      : []
+  )

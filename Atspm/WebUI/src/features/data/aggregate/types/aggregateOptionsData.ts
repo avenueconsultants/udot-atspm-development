@@ -14,7 +14,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { AggregationType as GeneratedAggregationType } from '@/api/reports'
+import {
+  BinSize,
+  AggregationType as GeneratedAggregationType,
+  SeriesType,
+  XAxisType,
+} from '@/api/reports'
 
 export const MetricTypeOptionsList = [
   {
@@ -158,20 +163,20 @@ export const MetricTypeOptionsList = [
 ]
 
 export const xAxisOptions = [
-  { id: 0, label: 'Time' },
-  { id: 1, label: 'Time Of Day' },
-  { id: 2, label: 'Direction' },
-  { id: 3, label: 'Approach' },
-  { id: 4, label: 'Location' },
-  { id: 5, label: 'Detector' },
+  { id: XAxisType.Time, label: 'Time' },
+  { id: XAxisType.TimeOfDay, label: 'Time Of Day' },
+  { id: XAxisType.Direction, label: 'Direction' },
+  { id: XAxisType.Approach, label: 'Approach' },
+  { id: XAxisType.Signal, label: 'Location' },
+  { id: XAxisType.Detector, label: 'Detector' },
 ]
 
 export const YAxisOptions = [
-  { id: 0, label: 'Location' },
-  { id: 1, label: 'Phase Number' },
-  { id: 2, label: 'Direction' },
-  { id: 3, label: 'Route' },
-  { id: 4, label: 'Detector' },
+  { id: SeriesType.Signal, label: 'Location' },
+  { id: SeriesType.PhaseNumber, label: 'Phase Number' },
+  { id: SeriesType.Direction, label: 'Direction' },
+  { id: SeriesType.Route, label: 'Route' },
+  { id: SeriesType.Detector, label: 'Detector' },
 ]
 
 export const chartTypeOptions: {
@@ -184,11 +189,12 @@ export const chartTypeOptions: {
 ]
 
 export const binSizeMarks = [
-  { value: 0, label: '15 min' },
-  { value: 1, label: '30 min' },
-  { value: 2, label: 'hour' },
-  { value: 3, label: 'month' },
-  { value: 4, label: 'year' },
+  { value: BinSize.FifteenMinute, label: '15 min' },
+  { value: BinSize.ThirtyMinute, label: '30 min' },
+  { value: BinSize.Hour, label: 'hour' },
+  { value: BinSize.Day, label: 'day' },
+  { value: BinSize.Month, label: 'month' },
+  { value: BinSize.Year, label: 'year' },
 ]
 
 export const detectionTypes = [

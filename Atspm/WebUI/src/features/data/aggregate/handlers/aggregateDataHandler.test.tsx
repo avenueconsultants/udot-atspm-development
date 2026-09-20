@@ -83,7 +83,17 @@ const locationEnvelope = (id: number, identifier: string) => ({
 
 beforeEach(() => {
   jest.clearAllMocks()
-  mutateAsync.mockResolvedValue([{ locationIdentifier: '1001', value: 42 }])
+  mutateAsync.mockResolvedValue([
+    {
+      identifier: '1001',
+      series: [
+        {
+          identifier: '1001',
+          dataPoints: [{ start: '2026-04-01T08:00:00', value: 42 }],
+        },
+      ],
+    },
+  ])
   postAggregate.mockReturnValue({ mutateAsync })
   locationHandler.mockReturnValue({ location: null, changeLocation })
   routeHandler.mockReturnValue({ routeId: undefined })
@@ -296,11 +306,11 @@ describe('useAggregateOptionsHandler request assembly', () => {
     const { result } = await runWithLocation()
 
     act(() => {
-      result.current.changeBinSize(30)
+      result.current.changeBinSize(1)
       result.current.changeAverageOrSum(1)
       result.current.changeXAxisType(2)
       result.current.changeYAxisType(3)
-      result.current.changeSelectedDays([6, 7])
+      result.current.changeSelectedDays([0, 6])
     })
     await act(async () => {
       result.current.handleRunAnalysis()
@@ -313,8 +323,8 @@ describe('useAggregateOptionsHandler request assembly', () => {
       selectedSeries: 3,
     })
     expect(postedPayload().timeOptions).toMatchObject({
-      selectedBinSize: 30,
-      daysOfWeek: [6, 7],
+      selectedBinSize: 1,
+      daysOfWeek: [0, 6],
     })
   })
 
@@ -327,7 +337,15 @@ describe('useAggregateOptionsHandler request assembly', () => {
 
     await waitFor(() =>
       expect(result.current.aggregatedData).toEqual([
-        { locationIdentifier: '1001', value: 42 },
+        {
+          identifier: '1001',
+          series: [
+            {
+              identifier: '1001',
+              dataPoints: [{ start: '2026-04-01T08:00:00', value: 42 }],
+            },
+          ],
+        },
       ])
     )
   })
