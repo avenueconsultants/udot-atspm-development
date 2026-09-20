@@ -8,17 +8,12 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material'
-import { useId } from 'react'
+import { ComponentProps, useId } from 'react'
 
 interface ATSPM_DialogProps {
   children: React.ReactNode
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
-  auditInfo?: {
-    createdBy?: string
-    createdOn?: string
-    modifiedBy?: string
-    modifiedOn?: string
-  }
+  auditInfo?: ComponentProps<typeof AuditInfo>['obj']
   isOpen: boolean
   onClose: () => void
   title?: string
