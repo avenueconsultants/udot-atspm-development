@@ -15,21 +15,77 @@
 // limitations under the License.
 // #endregion
 import type { Page } from '@playwright/test'
+import type { EChartsOption, EChartsType } from 'echarts'
 
-// Charts are canvases, so a spec that has to click a plotted mark needs the
-// chart's own scene graph. The app does not expose its echarts instances,
-// and reaching for the bundled echarts module through webpack only works
-// in development - the production bundle keeps no module cache. What both
-// builds do carry is React's fiber on the chart's DOM node, so this walks
-// up the tree to the component that holds the instance in a ref. It only
-// reads, and executes nothing.
-//
-// The mark is located by walking zrender's display list for the element
-// that series drew for that data index, and clicked at the centre of the
-// rectangle it actually rendered. Deriving the point from the axes instead
-// (convertToPixel) is wrong on these charts: several carry more than one
-// y-axis, and the bars are laid out with a barGap offset from the axis
-// position, so the computed point lands outside the bar.
+// Charts are canvases, so specs inspect the actual chart instance to read
+// rendered series or locate plotted marks. The app does not expose its
+// echarts instances, and reaching for the bundled echarts module through
+// webpack only works in development - the production bundle keeps no
+// module cache. Both builds carry React's fiber on the chart's DOM node,
+// so this walks up to the component that holds the instance in a ref.
+const getChartInstance = (page: Page, containerSelector: string) =>
+  page.evaluateHandle((containerSelector) => {
+    type Instance = Pick<EChartsType, 'getOption' | 'getZr' | 'getDom'>
+    type Hook = { memoizedState?: unknown; next?: Hook | null }
+    type Fiber = {
+      return?: Fiber | null
+      memoizedState?: Hook | null
+    }
+
+    const isInstance = (value: unknown): value is Instance =>
+      value != null &&
+      typeof (value as Instance).getZr === 'function' &&
+      typeof (value as Instance).getOption === 'function'
+
+    const container = document.querySelector(containerSelector)
+    const dom = (
+      container?.matches('[_echarts_instance_]')
+        ? container
+        : container?.querySelector('[_echarts_instance_]')
+    ) as HTMLElement | null | undefined
+    if (!dom) throw new Error(`no chart under ${containerSelector}`)
+
+    const fiberKey = Object.getOwnPropertyNames(dom).find((key) =>
+      key.startsWith('__reactFiber$')
+    )
+    if (!fiberKey) throw new Error('no React fiber on the chart node')
+
+    // The component that renders the chart keeps the echarts instance in
+    // a ref, so it is one of the hooks on this node or an ancestor.
+    let instance: Instance | undefined
+    let fiber = (dom as unknown as Record<string, Fiber>)[fiberKey] as
+      | Fiber
+      | undefined
+    while (fiber && !instance) {
+      let hook = fiber.memoizedState
+      while (hook && !instance) {
+        const state = hook.memoizedState as { current?: unknown } | undefined
+        if (state && isInstance(state.current)) instance = state.current
+        hook = hook.next
+      }
+      fiber = fiber.return ?? undefined
+    }
+    if (!instance) {
+      throw new Error(`no echarts instance above ${containerSelector}`)
+    }
+
+    return instance
+  }, containerSelector)
+
+/** Reads the actual chart's getOption() result after ECharts has applied it. */
+export const readChartOption = async (
+  page: Page,
+  containerSelector: string
+): Promise<EChartsOption> => {
+  const instance = await getChartInstance(page, containerSelector)
+  try {
+    return await instance.evaluate(
+      (chart) => chart.getOption() as EChartsOption
+    )
+  } finally {
+    await instance.dispose()
+  }
+}
 
 type EchartsPoint = { seriesName: string; dataIndex: number }
 
@@ -42,61 +98,21 @@ export const clickSeriesPoint = async (
   containerSelector: string,
   point: EchartsPoint
 ) => {
-  const target = await page.evaluate(
-    ({ containerSelector, point }) => {
-      type Instance = {
-        getOption: () => { series?: { name?: string }[] }
-        getZr: () => { storage: { getDisplayList: () => unknown[] } }
-        getDom: () => HTMLElement
-      }
+  const instance = await getChartInstance(page, containerSelector)
+  try {
+    const target = await instance.evaluate((instance, point) => {
       type Element = {
         __dataIndex?: number
         shape?: { x: number; y: number; width: number; height: number }
         parent?: { __ecComponentInfo?: { mainType?: string; index?: number } }
       }
-      type Fiber = {
-        return?: Fiber | null
-        memoizedState?: { memoizedState?: unknown; next?: unknown } | null
-      }
 
-      const isInstance = (value: unknown): value is Instance =>
-        value != null &&
-        typeof (value as Instance).getZr === 'function' &&
-        typeof (value as Instance).getOption === 'function'
-
-      const container = document.querySelector(containerSelector)
-      const dom = (
-        container?.matches('[_echarts_instance_]')
-          ? container
-          : container?.querySelector('[_echarts_instance_]')
-      ) as HTMLElement | null | undefined
-      if (!dom) throw new Error(`no chart under ${containerSelector}`)
-
-      const fiberKey = Object.getOwnPropertyNames(dom).find((key) =>
-        key.startsWith('__reactFiber$')
-      )
-      if (!fiberKey) throw new Error('no React fiber on the chart node')
-
-      // The component that renders the chart keeps the echarts instance in
-      // a ref, so it is one of the hooks on this node or an ancestor.
-      let instance: Instance | undefined
-      let fiber = (dom as unknown as Record<string, Fiber>)[fiberKey] as
-        | Fiber
-        | undefined
-      while (fiber && !instance) {
-        let hook = fiber.memoizedState
-        while (hook && !instance) {
-          const state = hook.memoizedState as { current?: unknown } | undefined
-          if (state && isInstance(state.current)) instance = state.current
-          hook = hook.next as typeof hook
-        }
-        fiber = fiber.return ?? undefined
-      }
-      if (!instance) {
-        throw new Error(`no echarts instance above ${containerSelector}`)
-      }
-
-      const series = instance.getOption().series ?? []
+      const option = instance.getOption() as EChartsOption
+      const series = Array.isArray(option.series)
+        ? option.series
+        : option.series
+          ? [option.series]
+          : []
       const seriesIndex = series.findIndex((s) => s.name === point.seriesName)
       if (seriesIndex < 0) {
         throw new Error(
@@ -106,8 +122,11 @@ export const clickSeriesPoint = async (
         )
       }
 
-      // Every element a series draws sits in a group tagged with that
-      // series' index, and carries the data index it stands for.
+      // Locate the mark in zrender's display list rather than through axis
+      // coordinates: multiple y-axes and barGap offsets can put an axis-
+      // derived point outside the bar that was actually drawn.
+      // Every element sits in a group tagged with its series' index and
+      // carries the data index it stands for.
       const mark = (
         instance.getZr().storage.getDisplayList() as Element[]
       ).find(
@@ -123,20 +142,20 @@ export const clickSeriesPoint = async (
         )
       }
 
-      // The click below is dispatched in viewport coordinates, so the chart
-      // has to be on screen before its position is measured - these charts
-      // sit well below the fold once the option panel is above them.
+      // The click uses viewport coordinates, so scroll before measuring.
+      // These charts sit below the fold when the option panel is above them.
       const chart = instance.getDom()
       chart.scrollIntoView({ block: 'center' })
 
-      // Bars are drawn upwards from the axis, so the height is negative;
-      // halving it lands in the middle of the bar either way.
+      // Bars drawn upwards have negative heights; halving still finds
+      // their centre.
       const { x, y, width, height } = mark.shape
       const rect = chart.getBoundingClientRect()
       return { x: rect.left + x + width / 2, y: rect.top + y + height / 2 }
-    },
-    { containerSelector, point }
-  )
+    }, point)
 
-  await page.mouse.click(target.x, target.y)
+    await page.mouse.click(target.x, target.y)
+  } finally {
+    await instance.dispose()
+  }
 }

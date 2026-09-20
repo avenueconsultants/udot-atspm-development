@@ -45,7 +45,12 @@ or a fresh session picks up exactly where the last one stopped.
 
 ### Conventions the suite relies on
 
-- `stubApiHosts` first (answers every API host with `[]`), then
+- New specs import `test` from `support/strictApi.ts` and request the
+  `apiHosts` fixture. It aborts unexpected API requests and fails teardown
+  with their methods and paths. Stub every expected endpoint (including
+  shared chrome) with its host and HTTP method; do not add a permissive
+  catch-all after this fixture.
+- Legacy specs use `stubApiHosts` first (answers every API host with `[]`), then
   `stubEndpoint` for what the spec cares about; the returned request list is
   what to assert on. `signIn` for a session; `blockMapTiles` on any page with
   a map; `mockAppShell` always.
@@ -148,8 +153,8 @@ as the template.
       different chart family (`PrioritySummaryChart`); check the dispatcher
       entry the migration added. `priority-summary.spec.ts`. Priority
       Details has no measure of its own: it is only reachable by clicking a
-      request or service bar on the summary chart, which `e2e/support/
-    echarts.ts` does by finding the rendered mark in zrender's display
+      request or service bar on the summary chart, which
+      `e2e/support/echarts.ts` does by finding the rendered mark in zrender's display
       list. Note for A21: clicking a chart needs the chart scrolled into
       view first, or the click lands below the viewport.
 - [x] **A16. Wait Time** (S) — plans and phase series. `wait-time.spec.ts`.
@@ -262,9 +267,10 @@ as the template.
       location renders one chart each; individually added location via the
       map ("Add Location") goes through `/Location/{key}` with the expanded
       detail.
-- [ ] **A30. Watchdog Summary Report tab** (M) — `WatchDogDashboard`
-      endpoints; issue-type, detection-type and controller-type sunburst
-      charts; date range in the request.
+- [x] **A30. Watchdog Summary Report tab** (M) ? `WatchDogDashboard`
+      and count endpoints; two count pies, controller/issue sunbursts, and
+      detection-type bars. `watchdog-summary.spec.ts` covers date requests,
+      legends, empty/nullable data, regeneration, and request failure/retry.
 - [ ] **A31. Watchdog optional filters** (S) — area / region / jurisdiction /
       issue type / location each land in `Watchdog/getReportData`; "no logs"
       message on an empty result.
@@ -487,3 +493,5 @@ Append one line per finished item: date, item, commit, notes.
 - 2026-08-30 - A23 Time-space 50th percentile: 7 tests (URL route and window run the tool with the whole request body pinned and no link pivot tab, a shared link running the sequence it carries rather than the route defaults, per-location sequence and coordinated-phase presets, hand-typed rings plus a deselected day, a cleared time of day blocking the run, no route, and a failing request). Two app bugs found and fixed with unit tests: `formatTime` threw on the null a cleared MUI time picker returns, so the page hit the error boundary and its own "Select start and end time ranges" guard could never fire (`SelectDateTime` had been laundering the null through an `as Date` cast); and the route-seeding effect rebuilt the sequence and coordinated-phase lists whenever the route id changed, overwriting the ones a shared link had just applied, so a shared 50th percentile link silently ran the presets. Both regressions were re-checked against the unfixed code before the fixes went in. Also named the two selects in the sequence/coordination table, which had no accessible name at all. Gate: 114/114 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
 - 2026-08-30 - A24 Time-space SRM upload: 4 tests (a chosen CSV posted gzipped and base64'd with the window, the overlay merged onto the already-generated chart without re-running the diagram, Clear restoring it locally with no second request, a failing request reported in the accordion, and Apply/Clear disabled until a file is chosen). App fix: the SRM catch block reported `error.message`, so the accordion showed axios' "Request failed with status code 500" rather than the report API's message - it now goes through the shared `getApiErrorMessage`, which is already unit-tested for exactly that body shape; the regression was re-checked against the unfixed code. Refactor: the historic phase-result fixtures, the backend stub and the URL builder moved from `time-space.spec.ts` into `e2e/support/timeSpace.ts` so A25 and A26 start from the same run. Lesson for A25/A26: the sidebar shows one panel at a time (Legend / Uploads / Styles), and the two upload accordions share control names and placeholder text, so scope to the region. Gate: 118/118 CI mode, 681 unit tests, types at 849. App fix and spec in the commits carrying this line.
 - 2026-08-30 - A25 Time-space GPX upload: 7 tests (a parsed track reaching the chart with no request made, the start/end selects offering the corridor in route order and defaulting to its ends, a file that will not parse reported on its row, a well-formed GPX with no track points reported differently, the seeded row being the primary one that cannot be removed while added rows can, the ignore-location toggle flipping and redrawing, and the 50th percentile tool offering GPX but not SRM). Two app bugs found and fixed, both re-checked against the unfixed code: neither caller of `createEmptyTimeSpaceEntry` passed `primary`, so `GpxUploadOptions.primary` was never true anywhere and the "Primary track" label plus the `canDelete` guard were dead; and `parseGpxFile` returned `[]` rather than throwing when DOMParser produced a `<parsererror>` document or the file carried no timed track points, so selecting a non-GPX file was silently accepted and drew nothing. The parser now rejects with a message saying which way the file was unusable and the row shows it; six new unit tests cover the parser, which had none. Refactor: the average fixtures joined the historic ones in `e2e/support/timeSpace.ts` and `time-space-average.spec.ts` moved onto them. Gate note: `prettier --check` needs `--end-of-line auto` on this Windows checkout - see step 4. Gate: 125/125 CI mode, 687 unit tests, types at 849. App fix and spec in the commits carrying this line.
+
+- 2026-09-20 - A30 Watchdog Summary: 8 browser tests for exact date requests, all five rendered chart datasets, legend and unconfigured-issue controls, empty/nullable generated responses, replacing results after a date change, dashboard POST retry, and both count-query failure/recovery paths. Two Jest regressions reproduced silent missing charts after a count GET403 and page-boundary failure after GET500; the page now reports failures inline, retries only failed count lookups, and waits for count requests to finish. Added an opt-in strict API fixture with 3 browser harness tests: unexpected endpoints and HTTP methods abort and fail teardown. The shared ECharts helper reads the actual chart instance in dev and production. Gate: production build passed; 136/136 Chromium tests with no retries; 34 focused Jest tests; typecheck ratchet unchanged at 783; lint and formatting passed. App fix 1b4d91ca; browser specs in the commit carrying this line.
