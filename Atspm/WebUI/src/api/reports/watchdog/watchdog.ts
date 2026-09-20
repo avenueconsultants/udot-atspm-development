@@ -26,6 +26,7 @@ import type {
 
 import type {
   ProblemDetails,
+  WatchDogIssueTypeDTO,
   WatchDogOptions,
   WatchDogResult
 } from '../report-api.schemas';
@@ -56,7 +57,7 @@ export const getWatchdogIssueTypes = (
 ) => {
 
 
-      return reportsRequest<unknown>(
+      return reportsRequest<WatchDogIssueTypeDTO[]>(
       {url: `/api/v1/Watchdog/GetIssueTypes`, method: 'GET', signal
     },
       );

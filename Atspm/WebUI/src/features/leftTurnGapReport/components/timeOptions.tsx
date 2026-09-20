@@ -22,18 +22,18 @@ const timeOptionRaidoButtons = {
 
 interface TimeOptionsProps {
   timeOptions: string
-  setTimeOptions: React.Dispatch<React.SetStateAction<string>>
+  setTimeOptions: (value: string) => void
   startHour: number
-  setStartHour: React.Dispatch<React.SetStateAction<number>>
+  setStartHour: (value: number) => void
   endHour: number
-  setEndHour: React.Dispatch<React.SetStateAction<number>>
+  setEndHour: (value: number) => void
   startMinute: number
-  setStartMinute: React.Dispatch<React.SetStateAction<number>>
+  setStartMinute: (value: number) => void
   endMinute: number
-  setEndMinute: React.Dispatch<React.SetStateAction<number>>
-  setGetAMPMPeakHour: React.Dispatch<React.SetStateAction<boolean>>
-  setGet24HourPeriod: React.Dispatch<React.SetStateAction<boolean>>
-  setGetAMPMPeakPeriod: React.Dispatch<React.SetStateAction<boolean>>
+  setEndMinute: (value: number) => void
+  setGetAMPMPeakHour: (value: boolean) => void
+  setGet24HourPeriod: (value: boolean) => void
+  setGetAMPMPeakPeriod: (value: boolean) => void
 }
 
 // ... (previous imports and code)

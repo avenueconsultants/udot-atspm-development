@@ -1,5 +1,5 @@
 // components/LeftTurnGapReportForm.tsx
-import { SearchLocation as Location } from '@/api/config'
+import { Approach, SearchLocation as Location } from '@/api/config'
 import SelectDateTime from '@/components/selectTimeSpan'
 import { StyledPaper } from '@/components/StyledPaper'
 import { MultiSelectCheckbox } from '@/features/aggregateData/components/chartOptions/MultiSelectCheckbox'
@@ -7,8 +7,8 @@ import { LeftTurnGapOptions } from '@/features/leftTurnGapReport/components/left
 import { LocationDataCheck } from '@/features/leftTurnGapReport/components/locationDataCheck'
 import { ReportInformation } from '@/features/leftTurnGapReport/components/reportInformation'
 import { TimeOptions } from '@/features/leftTurnGapReport/components/timeOptions'
+import { LeftTurnGapReportFormState } from '@/features/leftTurnGapReport/types'
 import SelectLocation from '@/features/locations/components/selectLocation'
-import { LeftTurnGapReportParams } from '@/pages/left-turn-gap-report'
 import { Box } from '@mui/material'
 import React, { useCallback } from 'react'
 
@@ -23,9 +23,9 @@ const daysOfWeekList = [
 ]
 
 interface LeftTurnGapReportFormProps {
-  params: LeftTurnGapReportParams
-  setParams: React.Dispatch<React.SetStateAction<LeftTurnGapReportParams>>
-  approachesData: any
+  params: LeftTurnGapReportFormState
+  setParams: React.Dispatch<React.SetStateAction<LeftTurnGapReportFormState>>
+  approachesData: Approach[] | undefined
 }
 
 const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
@@ -35,7 +35,7 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
 }) => {
   const setApproachIds = useCallback(
     (ids: number[]) => {
-      setParams((prev: LeftTurnGapReportParams) => ({
+      setParams((prev: LeftTurnGapReportFormState) => ({
         ...prev,
         approachIds: ids,
       }))
@@ -43,8 +43,8 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
     [setParams]
   )
 
-  const handleLocationChange = (location: Location) => {
-    setParams((prev: LeftTurnGapReportParams) => ({
+  const handleLocationChange = (location: Location | null) => {
+    setParams((prev: LeftTurnGapReportFormState) => ({
       ...prev,
       location,
     }))
@@ -90,39 +90,39 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
           <LocationDataCheck
             cyclesWithPedCalls={params.cyclesWithPedCalls}
             setCyclesWithPedCalls={(value) =>
-              setParams((prev: any) => ({ ...prev, cyclesWithPedCalls: value }))
+              setParams((prev) => ({ ...prev, cyclesWithPedCalls: value }))
             }
             cyclesWithGapOuts={params.cyclesWithGapOuts}
             setCyclesWithGapOuts={(value: number) =>
-              setParams((prev: any) => ({ ...prev, cyclesWithGapOuts: value }))
+              setParams((prev) => ({ ...prev, cyclesWithGapOuts: value }))
             }
             leftTurnVolume={params.leftTurnVolume}
             setLeftTurnVolume={(value: number) =>
-              setParams((prev: any) => ({ ...prev, leftTurnVolume: value }))
+              setParams((prev) => ({ ...prev, leftTurnVolume: value }))
             }
           />
           <ReportInformation
             finalGapAnalysisReport={params.finalGapAnalysisReport}
             setFinalGapAnalysisReport={(value: boolean) =>
-              setParams((prev: any) => ({
+              setParams((prev) => ({
                 ...prev,
                 finalGapAnalysisReport: value,
               }))
             }
             splitFailAnalysis={params.splitFailAnalysis}
             setSplitFailAnalysis={(value: boolean) =>
-              setParams((prev: any) => ({ ...prev, splitFailAnalysis: value }))
+              setParams((prev) => ({ ...prev, splitFailAnalysis: value }))
             }
             pedestrianCallAnalysis={params.pedestrianCallAnalysis}
             setPedestrianCallAnalysis={(value: boolean) =>
-              setParams((prev: any) => ({
+              setParams((prev) => ({
                 ...prev,
                 pedestrianCallAnalysis: value,
               }))
             }
             conflictingVolumesAnalysis={params.conflictingVolumesAnalysis}
             setConflictingVolumesAnalysis={(value: boolean) =>
-              setParams((prev: any) => ({
+              setParams((prev) => ({
                 ...prev,
                 conflictingVolumesAnalysis: value,
               }))
@@ -131,14 +131,14 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
               params.vehiclesPercentageAcceptableGaps
             }
             setVehiclesPercentageAcceptableGaps={(value: number) =>
-              setParams((prev: any) => ({
+              setParams((prev) => ({
                 ...prev,
                 vehiclesPercentageAcceptableGaps: value,
               }))
             }
             acceptableSplitFailPercentage={params.acceptableSplitFailPercentage}
             setAcceptableSplitFailPercentage={(value: number) =>
-              setParams((prev: any) => ({
+              setParams((prev) => ({
                 ...prev,
                 acceptableSplitFailPercentage: value,
               }))
@@ -161,10 +161,10 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
                 startDateTime={params.startDateTime}
                 endDateTime={params.endDateTime}
                 changeStartDate={(date: Date) =>
-                  setParams((prev: any) => ({ ...prev, startDateTime: date }))
+                  setParams((prev) => ({ ...prev, startDateTime: date }))
                 }
                 changeEndDate={(date: Date) =>
-                  setParams((prev: any) => ({ ...prev, endDateTime: date }))
+                  setParams((prev) => ({ ...prev, endDateTime: date }))
                 }
               />
             </StyledPaper>
@@ -172,39 +172,39 @@ const LeftTurnGapReportForm: React.FC<LeftTurnGapReportFormProps> = ({
           <TimeOptions
             timeOptions={params.timeOptions}
             setTimeOptions={(value: string) =>
-              setParams((prev: any) => ({ ...prev, timeOptions: value }))
+              setParams((prev) => ({ ...prev, timeOptions: value }))
             }
             startHour={params.startHour}
             setStartHour={(value: number) =>
-              setParams((prev: any) => ({ ...prev, startHour: value }))
+              setParams((prev) => ({ ...prev, startHour: value }))
             }
             endHour={params.endHour}
             setEndHour={(value: number) =>
-              setParams((prev: any) => ({ ...prev, endHour: value }))
+              setParams((prev) => ({ ...prev, endHour: value }))
             }
             startMinute={params.startMinute}
             setStartMinute={(value: number) =>
-              setParams((prev: any) => ({ ...prev, startMinute: value }))
+              setParams((prev) => ({ ...prev, startMinute: value }))
             }
             endMinute={params.endMinute}
             setEndMinute={(value: number) =>
-              setParams((prev: any) => ({ ...prev, endMinute: value }))
+              setParams((prev) => ({ ...prev, endMinute: value }))
             }
             setGetAMPMPeakHour={(value: boolean) =>
-              setParams((prev: any) => ({ ...prev, getAMPMPeakHour: value }))
+              setParams((prev) => ({ ...prev, getAMPMPeakHour: value }))
             }
             setGet24HourPeriod={(value: boolean) =>
-              setParams((prev: any) => ({ ...prev, get24HourPeriod: value }))
+              setParams((prev) => ({ ...prev, get24HourPeriod: value }))
             }
             setGetAMPMPeakPeriod={(value: boolean) =>
-              setParams((prev: any) => ({ ...prev, getAMPMPeakPeriod: value }))
+              setParams((prev) => ({ ...prev, getAMPMPeakPeriod: value }))
             }
           />
           <MultiSelectCheckbox
             itemList={daysOfWeekList}
             selectedItems={params.selectedDays}
             setSelectedItems={(days: number[]) =>
-              setParams((prev: any) => ({ ...prev, selectedDays: days }))
+              setParams((prev) => ({ ...prev, selectedDays: days }))
             }
             header="Days"
           />

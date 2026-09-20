@@ -1,17 +1,13 @@
+import { Approach } from '@/api/config'
 import { Box, Checkbox, Paper, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
 
-type Approach = {
-  id: string
-  description: string
-}
-
 type LeftTurnGapOptionsProps = {
-  approaches: Approach[]
-  approachIds: string[]
-  setApproachIds: (approachIds: string[]) => void
+  approaches: Approach[] | undefined
+  approachIds: number[]
+  setApproachIds: (approachIds: number[]) => void
 }
 
 export const LeftTurnGapOptions = ({
@@ -23,7 +19,7 @@ export const LeftTurnGapOptions = ({
 
   const handleCheckChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    approachId: string
+    approachId: number
   ) => {
     setChecked({ ...checked, [event.target.name]: event.target.checked })
     if (event.target.checked) {
@@ -35,12 +31,14 @@ export const LeftTurnGapOptions = ({
 
   useEffect(() => {
     if (approaches) {
-      const newApproachIds = approaches.map((item) => item.id)
+      const newApproachIds = approaches.flatMap((item) =>
+        item.id == null ? [] : [item.id]
+      )
       setApproachIds(newApproachIds)
 
       const initialCheckedState: { [key: string]: boolean } = {}
       approaches.forEach((approach) => {
-        initialCheckedState[approach.description] = true
+        initialCheckedState[String(approach.id)] = true
       })
       setChecked(initialCheckedState)
     } else {
@@ -74,9 +72,13 @@ export const LeftTurnGapOptions = ({
                 }}
               >
                 <Checkbox
-                  checked={checked[approach.description] || false}
-                  onChange={(event) => handleCheckChange(event, approach.id)}
-                  name={approach.description}
+                  disabled={approach.id == null}
+                  checked={checked[String(approach.id)] || false}
+                  onChange={(event) => {
+                    if (approach.id != null)
+                      handleCheckChange(event, approach.id)
+                  }}
+                  name={String(approach.id)}
                   id={`checkbox-${i}`}
                 />
                 <label htmlFor={`checkbox-${i}`}>{approach.description}</label>

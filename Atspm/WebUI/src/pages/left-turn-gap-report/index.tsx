@@ -1,47 +1,27 @@
 // LeftTurnGapReport.tsx
-import { SearchLocation as Location } from '@/api/config'
+import {
+  LeftTurnGapDataCheckOptions,
+  LeftTurnGapReportOptions,
+  useGetLeftTurnGapReportReportData,
+} from '@/api/reports'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useLeftTurnApproaches } from '@/features/leftTurnGapReport/api/getLeftTurnApproaches'
 import { useLeftTurnGapReportDataCheck } from '@/features/leftTurnGapReport/api/getLeftTurnGapReportDataCheck'
-import { useLeftTurnGapReport } from '@/features/leftTurnGapReport/api/getLTGRData'
 import LeftTurnGapReportForm from '@/features/leftTurnGapReport/components/LeftTurnGapReportForm'
 import LTGRReportView from '@/features/leftTurnGapReport/components/LTGRReportView'
 import RunCheckGrid from '@/features/leftTurnGapReport/components/RunCheckGrid'
+import { LeftTurnGapReportFormState } from '@/features/leftTurnGapReport/types'
+import { getApiErrorMessage } from '@/lib/apiError'
 import Authorization from '@/lib/Authorization'
 import { LoadingButton } from '@mui/lab'
 import { Alert, Box } from '@mui/material'
 import { startOfToday, startOfTomorrow } from 'date-fns'
 import { useEffect, useState } from 'react'
 
-export interface LeftTurnGapReportParams {
-  location: Location | null
-  startDateTime: Date
-  endDateTime: Date
-  cyclesWithPedCalls: number
-  cyclesWithGapOuts: number
-  leftTurnVolume: number
-  finalGapAnalysisReport: boolean
-  vehiclesPercentageAcceptableGaps: number
-  acceptableSplitFailPercentage: number
-  splitFailAnalysis: boolean
-  pedestrianCallAnalysis: boolean
-  conflictingVolumesAnalysis: boolean
-  timeOptions: string
-  startHour: number
-  endHour: number
-  startMinute: number
-  endMinute: number
-  getAMPMPeakHour: boolean
-  get24HourPeriod: boolean
-  getAMPMPeakPeriod: boolean
-  approachIds: string[]
-  selectedDays: number[]
-}
-
 const LeftTurnGapReport = () => {
   const requiredClaim = 'Report:View'
 
-  const [params, setParams] = useState<LeftTurnGapReportParams>({
+  const [params, setParams] = useState<LeftTurnGapReportFormState>({
     location: null,
     startDateTime: startOfToday(),
     endDateTime: startOfTomorrow(),
@@ -70,16 +50,9 @@ const LeftTurnGapReport = () => {
   const [errorMessages, setErrorMessages] = useState<string[]>([])
 
   // Fetch approaches
-  const { data: approachesData, refetch: refetchApproaches } =
-    useLeftTurnApproaches({
-      locationId: params.location?.id || '',
-    })
-
-  useEffect(() => {
-    if (params.location?.id) {
-      refetchApproaches()
-    }
-  }, [params.location, refetchApproaches])
+  const { data: approachesData } = useLeftTurnApproaches({
+    locationId: params.location?.id,
+  })
 
   // Reset runCheckSuccess when location, timeframe, or approachIds change
   useEffect(() => {
@@ -91,20 +64,20 @@ const LeftTurnGapReport = () => {
     params.approachIds,
   ])
 
-  const reportDataCheckBody = {
+  const reportDataCheckBody: LeftTurnGapDataCheckOptions = {
     locationIdentifier: params.location?.locationIdentifier,
-    start: params.startDateTime,
-    end: params.endDateTime,
+    start: params.startDateTime.toISOString(),
+    end: params.endDateTime.toISOString(),
     volumePerHourThreshold: params.leftTurnVolume,
     gapOutThreshold: params.cyclesWithGapOuts,
     pedestrianThreshold: params.cyclesWithPedCalls,
     daysOfWeek: params.selectedDays,
   }
 
-  const reportParams = {
+  const reportParams: LeftTurnGapReportOptions = {
     locationIdentifier: params.location?.locationIdentifier || '',
-    start: params.startDateTime,
-    end: params.endDateTime,
+    start: params.startDateTime.toISOString(),
+    end: params.endDateTime.toISOString(),
     approachIds: params.approachIds,
     daysOfWeek: params.selectedDays,
     startHour: params.startHour,
@@ -118,14 +91,13 @@ const LeftTurnGapReport = () => {
     acceptableGapPercentage: params.vehiclesPercentageAcceptableGaps / 100,
     getSplitFail: params.splitFailAnalysis,
     acceptableSplitFailPercentage: params.acceptableSplitFailPercentage / 100,
-    getPedestrianCall: params.conflictingVolumesAnalysis,
+    getPedestrianCall: params.pedestrianCallAnalysis,
     getConflictingVolume: params.conflictingVolumesAnalysis,
   }
 
   const {
     data: reportDataCheckData,
-    error: reportDataCheckError,
-    isLoading: reportDataCheckIsLoading,
+    isFetching: reportDataCheckIsLoading,
     refetch: refetchReportDataCheck,
   } = useLeftTurnGapReportDataCheck({
     body: reportDataCheckBody,
@@ -135,11 +107,9 @@ const LeftTurnGapReport = () => {
   const {
     data: reportData,
     error: reportDataError,
-    isLoading: reportDataIsLoading,
-    refetch: refetchReportData,
-  } = useLeftTurnGapReport({
-    params: reportParams,
-  })
+    isPending: reportDataIsLoading,
+    mutate: fetchReportData,
+  } = useGetLeftTurnGapReportReportData()
 
   const runCheckOnSubmit = () => {
     if (params.approachIds.length === 0) {
@@ -149,27 +119,24 @@ const LeftTurnGapReport = () => {
     refetchReportDataCheck().then((response) => {
       if (response && response.isSuccess) {
         setRunCheckSuccess(true)
+        setErrorMessages([])
       } else {
         setRunCheckSuccess(false)
-        if (reportDataCheckError) {
-          setErrorMessages([reportDataCheckError.message || 'Unknown error'])
-        }
+        setErrorMessages([getApiErrorMessage(response.error)])
       }
     })
   }
 
   // Handle run report
   const handleRunReport = () => {
-    refetchReportData()
+    fetchReportData({ data: reportParams })
   }
 
   // Handle errors
   useEffect(() => {
     if (reportDataError) {
-      const errorMessage = reportDataError.response?.data || 'Unknown error'
-      if (!errorMessages.includes(errorMessage)) {
-        setErrorMessages((prevErrors) => [...prevErrors, errorMessage])
-      }
+      const errorMessage = getApiErrorMessage(reportDataError)
+      setErrorMessages([errorMessage])
     } else {
       setErrorMessages([])
     }
@@ -227,6 +194,11 @@ const LeftTurnGapReport = () => {
             </Alert>
           </Box>
         </Box>
+        {errorMessages.map((message) => (
+          <Alert key={message} severity="error">
+            {message}
+          </Alert>
+        ))}
         {reportDataCheckData &&
           Array.isArray(reportDataCheckData) &&
           reportDataCheckData.length > 0 && (
@@ -236,7 +208,7 @@ const LeftTurnGapReport = () => {
         {reportData && (
           <LTGRReportView
             lTGRDataReport={reportData}
-            approaches={reportDataCheckData}
+            approaches={reportDataCheckData ?? []}
           />
         )}
       </ResponsivePageLayout>

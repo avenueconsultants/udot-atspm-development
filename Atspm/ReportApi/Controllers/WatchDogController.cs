@@ -31,6 +31,7 @@ namespace Utah.Udot.Atspm.ReportApi.Controllers
         /// <inheritdoc/>
         public WatchdogController(IReportService<WatchDogOptions, WatchDogResult> reportService, ILogger<WatchdogController> logger) : base(reportService, logger) { }
         [HttpGet("GetIssueTypes")]
+        [ProducesResponseType(typeof(IEnumerable<WatchDogIssueTypeDTO>), StatusCodes.Status200OK)]
         public IEnumerable<WatchDogIssueTypeDTO> GetIssueTypes()
         {
             var issues = Enum.GetValues(typeof(WatchDogIssueTypes))

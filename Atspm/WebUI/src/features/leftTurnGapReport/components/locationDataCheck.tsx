@@ -20,11 +20,11 @@ const textFieldStyle = {
 
 interface LocationDataCheckPros {
   cyclesWithPedCalls: number
-  setCyclesWithPedCalls: React.Dispatch<React.SetStateAction<number>>
+  setCyclesWithPedCalls: (value: number) => void
   cyclesWithGapOuts: number
-  setCyclesWithGapOuts: React.Dispatch<React.SetStateAction<number>>
+  setCyclesWithGapOuts: (value: number) => void
   leftTurnVolume: number
-  setLeftTurnVolume: React.Dispatch<React.SetStateAction<number>>
+  setLeftTurnVolume: (value: number) => void
 }
 
 export const LocationDataCheck = ({

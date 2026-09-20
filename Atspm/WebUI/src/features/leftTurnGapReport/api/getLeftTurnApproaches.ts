@@ -14,34 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { useQuery } from '@tanstack/react-query'
-
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-
-import { getApproach } from '@/api/config'
-
-export const getLeftTurnApproaches = async (locationId: string) => {
-  return getApproach({
-    filter: `locationId eq ${locationId} and detectors/any(i:i/movementType eq 'L')`,
-    select: 'id, description',
-  })
-}
-
-type QueryFnType = typeof getLeftTurnApproaches
-
-type UseLocationsOptions = {
-  config?: QueryConfig<QueryFnType>
-  locationId: string
-}
+import { useGetApproach } from '@/api/config'
 
 export const useLeftTurnApproaches = ({
-  config,
   locationId,
-}: UseLocationsOptions) => {
-  return useQuery<ExtractFnReturnType<QueryFnType>>({
-    ...config,
-    queryKey: ['approaches', locationId],
-    enabled: false,
-    queryFn: () => getLeftTurnApproaches(locationId),
-  })
-}
+}: {
+  locationId?: number | null
+}) =>
+  useGetApproach(
+    {
+      filter: `locationId eq ${locationId ?? 0} and detectors/any(i:i/movementType eq 'L')`,
+      select: 'id, description',
+    },
+    { query: { enabled: locationId != null } }
+  )

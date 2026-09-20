@@ -74,11 +74,6 @@ interface transformWatchDogLog {
   ignored: boolean
 }
 
-interface WatchDogIssueTypeDTO {
-  id: number
-  name: string
-}
-
 const normalizeWatchdogValue = (value: number | string | null | undefined) =>
   String(value ?? '')
     .replace(/[^a-zA-Z0-9]/g, '')
@@ -137,8 +132,7 @@ const ignoreEventSchema = z.object({
 const WatchDogLogs = () => {
   const { addNotification } = useNotificationStore()
 
-  const { data: issueTypesData } =
-    useGetWatchdogIssueTypes<WatchDogIssueTypeDTO[]>()
+  const { data: issueTypesData } = useGetWatchdogIssueTypes()
   const {
     data: watchdogIgnoreEventsData,
     refetch: refetchWatchdogIgnoreEvents,
@@ -204,10 +198,11 @@ const WatchDogLogs = () => {
 
   const issueTypes = useMemo(() => {
     if (!issueTypesData) return null
-    return issueTypesData.reduce<Record<number, string>>(
-      (acc, issueType) => ({ ...acc, [issueType.id]: issueType.name }),
-      {}
-    )
+    return issueTypesData.reduce<Record<number, string>>((acc, issueType) => {
+      if (issueType.id != null && issueType.name)
+        acc[issueType.id] = issueType.name
+      return acc
+    }, {})
   }, [issueTypesData])
 
   const ignoreEvents = useMemo(

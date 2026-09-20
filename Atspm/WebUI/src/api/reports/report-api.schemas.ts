@@ -2300,6 +2300,12 @@ export interface WatchDogDashboardOptions {
   end?: string;
 }
 
+export interface WatchDogIssueTypeDTO {
+  id?: number;
+  /** @nullable */
+  name?: string | null;
+}
+
 export interface WatchDogLogEventDTO {
   id?: number;
   locationId?: number;

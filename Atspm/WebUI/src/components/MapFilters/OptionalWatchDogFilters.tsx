@@ -12,7 +12,7 @@ import { SyntheticEvent, useState } from 'react'
 
 interface OptionalWatchDogFiltersProps {
   issueType: Record<string, string> | null
-  setSelectedIssueType: (issueType: number) => void
+  setSelectedIssueType: (issueType: number | null) => void
   setAreaId: (areaId: number | null) => void
   setRegionId: (regionId: number | null) => void
   setJurisdictionId: (jurisdictionId: number | null) => void
