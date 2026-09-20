@@ -1,10 +1,13 @@
 import {
+  type DetectionTypeGroup,
+  type DeviceGroup,
   useGetDeviceActiveDevicesCount,
   useGetLocationDetectionTypeCount,
 } from '@/api/config'
 import { useGetWatchDogDashboardDashboardGroup } from '@/api/reports'
 import { StyledPaper } from '@/components/StyledPaper'
 import WatchdogChartsContainer from '@/features/charts/watchdogDashboard/components/WatchdogChartsContainer'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton } from '@mui/lab'
@@ -22,14 +25,30 @@ const WatchdogSummaryReport = () => {
   const {
     mutate: fetchDashboardData,
     data: dashboardData,
-    isPending: isLoading,
+    isPending: isDashboardPending,
     error,
   } = useGetWatchDogDashboardDashboardGroup()
 
-  const { data: deviceCount } = useGetDeviceActiveDevicesCount()
-  const { data: detectionTypeCount } = useGetLocationDetectionTypeCount({
-    date: toUTCDateStamp(endDateTime),
+  const {
+    data: deviceCount,
+    error: deviceCountError,
+    isFetching: isDeviceCountFetching,
+    refetch: refetchDeviceCount,
+  } = useGetDeviceActiveDevicesCount<DeviceGroup[], unknown>(undefined, {
+    query: { throwOnError: false },
   })
+  const {
+    data: detectionTypeCount,
+    error: detectionTypeCountError,
+    isFetching: isDetectionTypeCountFetching,
+    refetch: refetchDetectionTypeCount,
+  } = useGetLocationDetectionTypeCount<DetectionTypeGroup[], unknown>(
+    { date: toUTCDateStamp(endDateTime) },
+    { query: { throwOnError: false } }
+  )
+  const isLoading =
+    isDashboardPending || isDeviceCountFetching || isDetectionTypeCountFetching
+  const requestError = error ?? deviceCountError ?? detectionTypeCountError
   const data = {
     ...dashboardData,
     deviceCount,
@@ -37,6 +56,8 @@ const WatchdogSummaryReport = () => {
   }
 
   const handleGenerateSummary = () => {
+    if (deviceCountError) void refetchDeviceCount()
+    if (detectionTypeCountError) void refetchDetectionTypeCount()
     fetchDashboardData({
       data: {
         start: toUTCDateStamp(startDateTime),
@@ -80,7 +101,11 @@ const WatchdogSummaryReport = () => {
         Generate Summary
       </LoadingButton>
 
-      {error && <Box>Error loading data</Box>}
+      {requestError && (
+        <Box role="alert">
+          Error loading data: {getApiErrorMessage(requestError)}
+        </Box>
+      )}
 
       {!isLoading && dashboardData && deviceCount && detectionTypeCount && (
         <WatchdogChartsContainer data={data} isLoading={isLoading} />
