@@ -48,6 +48,7 @@ namespace Identity.Controllers
 
         [HttpGet]
         [AuthorizePermission(AtspmAuthorization.Permissions.UsersView)]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsersAsync([FromServices] IServiceScopeFactory serviceScopeFactory)
         {
             var usersDto = new List<UserDTO>();

@@ -31,7 +31,7 @@ const UsersAdmin = () => {
     data: allUserData,
     isLoading: usersIsLoading,
     refetch: refetchUsers,
-  } = useGetUsersUsers<UserDTO[]>()
+  } = useGetUsersUsers()
 
   const users = allUserData
 

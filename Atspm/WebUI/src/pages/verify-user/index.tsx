@@ -39,7 +39,7 @@ const VerifyUser = () => {
           onClose={() => handler.handleResponseError(false)}
           severity="error"
         >
-          {handler?.data?.message}
+          {handler.errorMessage}
         </Alert>
       </Snackbar>
     </Box>

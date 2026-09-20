@@ -58,6 +58,7 @@ namespace Identity.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(typeof(AccountResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid || AreValuesNull(model))
@@ -98,6 +99,7 @@ namespace Identity.Controllers
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(typeof(AccountResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -215,6 +217,7 @@ namespace Identity.Controllers
 
         [Authorize]
         [HttpPost("changepassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
@@ -240,6 +243,7 @@ namespace Identity.Controllers
         }
 
         [HttpPost("forgotpassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> ForgotPassword([FromServices] IOptions<IdentityConfiguration> identityOptions, ForgotPasswordViewModel model)
         {
             if (model.Email == null || !ModelState.IsValid)
@@ -282,6 +286,7 @@ namespace Identity.Controllers
 
         [Authorize]
         [HttpPost("verifyUserPasswordReset")]
+        [ProducesResponseType(typeof(VerifyUserPasswordResetResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> VerifyUserPasswordReset(VerifyUserPasswordResetViewModel model)
         {
             var user = await userManager.GetUserAsync(User);
@@ -296,7 +301,7 @@ namespace Identity.Controllers
             {
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 var uriEncodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-                return Ok(new { Token = uriEncodedToken, Username = user.UserName });
+                return Ok(new VerifyUserPasswordResetResult { Token = uriEncodedToken, Username = user.UserName });
             }
 
             return BadRequest(new { Message = "Password provided doesn't match" });

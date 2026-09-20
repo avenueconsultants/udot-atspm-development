@@ -5,6 +5,16 @@
  * OpenId Api with JWT UtahId Tokens
  * OpenAPI spec version: 1.0
  */
+export interface AccountResult {
+  /** @nullable */
+  claims?: string[] | null;
+  /** @nullable */
+  token?: string | null;
+  code?: number;
+  /** @nullable */
+  message?: string | null;
+}
+
 export interface ChangePasswordViewModel {
   /** @minLength 1 */
   newPassword: string;
@@ -112,6 +122,13 @@ export interface RegisterViewModel {
   lastName: string;
 }
 
+export interface RolesResult {
+  /** @nullable */
+  role: string | null;
+  /** @nullable */
+  claims: string[] | null;
+}
+
 export interface UpdateProfileViewModel {
   /**
      * @minLength 0
@@ -188,11 +205,25 @@ export interface VerifyConnectTokenViewModel {
   username: string;
 }
 
+export interface VerifyResetTokenResult {
+  /** @nullable */
+  token: string | null;
+  /** @nullable */
+  message: string | null;
+}
+
 export interface VerifyResetTokenViewModel {
   /** @minLength 1 */
   username: string;
   /** @minLength 1 */
   token: string;
+}
+
+export interface VerifyUserPasswordResetResult {
+  /** @nullable */
+  token: string | null;
+  /** @nullable */
+  username?: string | null;
 }
 
 export interface VerifyUserPasswordResetViewModel {

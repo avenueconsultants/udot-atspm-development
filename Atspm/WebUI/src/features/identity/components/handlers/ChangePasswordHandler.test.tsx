@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { setSecureCookie } from '@/features/identity/utils'
 import { act, renderHook } from '@testing-library/react'
 import Cookies from 'js-cookie'
 import {
@@ -178,3 +179,15 @@ describe('useVerifyTokenHandler', () => {
     consoleError.mockRestore()
   })
 })
+
+it.each([null, ''])(
+  'does not authenticate a token response with token %p',
+  (token) => {
+    jest.mocked(setSecureCookie).mockClear()
+    verifyState = { status: 'success', data: { token, message: 'OK' } }
+    asPath = '/change-password'
+    const { result } = renderHook(() => useVerifyTokenHandler())
+    expect(result.current.isValidToken).toBe(false)
+    expect(setSecureCookie).not.toHaveBeenCalled()
+  }
+)

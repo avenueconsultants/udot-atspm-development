@@ -1,12 +1,14 @@
 import { useGetAccountVerifyUserPasswordReset } from '@/api/identity/atspmAuthenticationApi'
+import { VerifyUserPasswordResetResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import { setSecureCookie } from '@/features/identity/utils'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { addMinutes } from 'date-fns'
 import { FormEvent, useEffect, useState } from 'react'
-import { VerifyUserResponseDto } from '../../types/verifyUserResponseDto'
 import { PasswordHandler, ResponseHandler } from './baseHandler'
 
 export interface VerifyUserHandler extends PasswordHandler, ResponseHandler {
-  data: VerifyUserResponseDto
+  data: VerifyUserPasswordResetResult | undefined
+  errorMessage: string
   submitted: boolean
   handleSubmit(event: FormEvent<HTMLFormElement>): void
 }
@@ -16,26 +18,16 @@ export const useVerifyUserHandler = (): VerifyUserHandler => {
   const [responseError, setResponseError] = useState(false)
   const [responseSuccess, setResponseSuccess] = useState(false)
   const [password, setPassword] = useState<string>('')
-  const [data, setData] = useState<VerifyUserResponseDto>()
 
   const {
     mutate: verifyUser,
-    data: verifyTokenData,
+    data,
     status,
     error,
   } = useGetAccountVerifyUserPasswordReset()
 
   useEffect(() => {
-    if (status === 'error' && error) {
-      setData((error as any).response.data as VerifyUserResponseDto)
-    }
-    if (verifyTokenData) {
-      setData(verifyTokenData as VerifyUserResponseDto)
-    }
-  }, [error, verifyTokenData, status])
-
-  useEffect(() => {
-    if (status === 'success' && data !== undefined) {
+    if (status === 'success' && data?.token && data.username) {
       setSecureCookie('resetToken', data.token, {
         expires: addMinutes(new Date(), 5),
       })
@@ -62,7 +54,10 @@ export const useVerifyUserHandler = (): VerifyUserHandler => {
   }
 
   const component: VerifyUserHandler = {
-    data: data as VerifyUserResponseDto,
+    data,
+    errorMessage: error
+      ? getApiErrorMessage(error, 'Could not verify your password.')
+      : '',
     password,
     responseError,
     responseSuccess,

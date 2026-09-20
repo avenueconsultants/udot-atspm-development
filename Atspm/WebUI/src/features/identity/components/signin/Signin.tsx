@@ -1,6 +1,5 @@
 import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import NextImage from '@/components/NextImage'
-import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
 import { getApiErrorMessage } from '@/lib/apiError'
 import { buildApiUrl } from '@/lib/axios'
@@ -17,7 +16,6 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 export default function Signin() {
-  const [data, setData] = useState<IdentityDto>()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [errors, setErrors] = useState<string | null>(null)
@@ -25,17 +23,11 @@ export default function Signin() {
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const {
     mutate: login,
-    data: mutationData,
+    data,
     status,
     isPending: isLoading,
     error: queryDataError,
   } = useAccountLogin()
-
-  useEffect(() => {
-    if (mutationData) {
-      setData(mutationData as IdentityDto)
-    }
-  }, [data, mutationData])
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -81,9 +73,9 @@ export default function Signin() {
     setPasswordError(null)
   }, [password])
 
-  if (status === 'success' && data !== undefined) {
+  if (status === 'success' && data?.token) {
     setSecureCookie('token', data.token)
-    setSecureCookie('claims', data.claims.join(','))
+    setSecureCookie('claims', (data.claims ?? []).join(','))
     setSecureCookie('loggedIn', 'True')
     window.location.href = '/performance-measures'
   }

@@ -1,39 +1,19 @@
-import {
-  useGetArea,
-  useGetJurisdiction,
-  useGetRegion,
-} from '@/api/config'
+import { useGetArea, useGetJurisdiction, useGetRegion } from '@/api/config'
 import { useGetRolesRoles } from '@/api/identity/atspmAuthenticationApi'
+import { UserDTO } from '@/api/identity/atspmAuthenticationApi.schemas'
 import ATSPMDialog from '@/components/ATSPMDialog/ATSPMDialog'
 import CustomSelect from '@/components/customSelect/CustomSelect'
-import { Role } from '@/features/identity/types/roles'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { TextField } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-interface User {
-  userId: string
-  firstName: string
-  lastName: string
-  userName: string
-  agency: string
-  email: string
-  roles: string[]
-  areas: { id: number; name: string }[]
-  areaIds: number[]
-  regions: { id: number; description: string }[]
-  regionIds: number[]
-  jurisdictions: { id: number; name: string }[]
-  jurisdictionIds: number[]
-}
-
 interface ModalProps {
   isOpen?: boolean
   open?: boolean
   onClose: () => void
-  data: User | null
+  data: UserDTO | null
   onSave: (user: UserFormData) => void | Promise<void>
 }
 
@@ -53,6 +33,19 @@ const userSchema = z.object({
 
 type UserFormData = z.infer<typeof userSchema>
 
+const toUserFormData = (data: UserDTO | null): UserFormData => ({
+  userId: data?.userId || '',
+  firstName: data?.firstName || '',
+  lastName: data?.lastName || '',
+  userName: data?.userName || '',
+  agency: data?.agency || '',
+  email: data?.email || '',
+  roles: data?.roles || [],
+  areaIds: data?.areaIds || [],
+  regionIds: data?.regionIds || [],
+  jurisdictionIds: data?.jurisdictionIds || [],
+})
+
 const normalizeNumberArray = (value: unknown): number[] => {
   if (typeof value === 'string') {
     return value
@@ -71,7 +64,7 @@ const normalizeNumberArray = (value: unknown): number[] => {
 }
 
 const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
-  const { data: roles, isLoading } = useGetRolesRoles<Role[]>()
+  const { data: roles, isLoading } = useGetRolesRoles()
   const { data: areasData, isLoading: areasLoading } = useGetArea()
   const { data: jurisdictionsData, isLoading: jurisdictionsLoading } =
     useGetJurisdiction()
@@ -84,24 +77,13 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
     reset,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
-    defaultValues: {
-      userId: data?.userId || '',
-      firstName: data?.firstName || '',
-      lastName: data?.lastName || '',
-      userName: data?.userName || '',
-      agency: data?.agency || '',
-      email: data?.email || '',
-      roles: data?.roles || [],
-      areaIds: data?.areaIds || [],
-      regionIds: data?.regionIds || [],
-      jurisdictionIds: data?.jurisdictionIds || [],
-    },
+    defaultValues: toUserFormData(data),
   })
 
   // Reset form when data changes
   useEffect(() => {
     if (data) {
-      reset(data)
+      reset(toUserFormData(data))
     }
   }, [data, reset])
 
@@ -130,7 +112,6 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
       isOpen={modalOpen}
       onClose={onClose}
       title="User Details"
-      auditInfo={data}
       dialogProps={{ sx: { width: 500, pt: 0 } }}
       saveButtonProps={{
         disabled: isSaving,
@@ -226,12 +207,13 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Roles"
             name="roles"
             value={field.value}
-            data={roles
-              ?.sort((a, b) => a.role.localeCompare(b.role))
-              .map((role) => ({
-                id: role.role,
-                role: role.role.replace(/([A-Z])/g, ' $1').trim(),
-              }))}
+            data={(roles ?? [])
+              .flatMap(({ role }) =>
+                role
+                  ? [{ id: role, role: role.replace(/([A-Z])/g, ' $1').trim() }]
+                  : []
+              )
+              .sort((a, b) => a.role.localeCompare(b.role))}
             onChange={(event) => field.onChange(event.target.value as string[])}
             onDelete={(id) =>
               field.onChange(field.value.filter((value) => value !== id))
@@ -252,10 +234,18 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Regions"
             name="regionIds"
             value={field.value}
-            data={regionsData}
-            onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
+            data={(regionsData ?? []).flatMap((item) =>
+              item.id == null
+                ? []
+                : [{ id: item.id, description: item.description ?? '' }]
+            )}
+            onChange={(event) =>
+              field.onChange(normalizeNumberArray(event.target.value))
+            }
             onDelete={(id) =>
-              field.onChange(field.value.filter((value) => value !== Number(id)))
+              field.onChange(
+                field.value.filter((value) => value !== Number(id))
+              )
             }
             displayProperty="description"
             fullWidth
@@ -273,10 +263,16 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Jurisdictions"
             name="jurisdictionIds"
             value={field.value}
-            data={jurisdictionsData}
-            onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
+            data={(jurisdictionsData ?? []).flatMap((item) =>
+              item.id == null ? [] : [{ id: item.id, name: item.name ?? '' }]
+            )}
+            onChange={(event) =>
+              field.onChange(normalizeNumberArray(event.target.value))
+            }
             onDelete={(id) =>
-              field.onChange(field.value.filter((value) => value !== Number(id)))
+              field.onChange(
+                field.value.filter((value) => value !== Number(id))
+              )
             }
             displayProperty="name"
             fullWidth
@@ -294,10 +290,16 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
             label="Areas"
             name="areaIds"
             value={field.value}
-            data={areasData}
-            onChange={(event) => field.onChange(normalizeNumberArray(event.target.value))}
+            data={(areasData ?? []).flatMap((item) =>
+              item.id == null ? [] : [{ id: item.id, name: item.name ?? '' }]
+            )}
+            onChange={(event) =>
+              field.onChange(normalizeNumberArray(event.target.value))
+            }
             onDelete={(id) =>
-              field.onChange(field.value.filter((value) => value !== Number(id)))
+              field.onChange(
+                field.value.filter((value) => value !== Number(id))
+              )
             }
             displayProperty="name"
             fullWidth

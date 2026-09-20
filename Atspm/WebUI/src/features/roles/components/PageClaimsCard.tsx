@@ -1,9 +1,10 @@
+import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import { useFlags } from '@/feature-flags/FeatureFlagContext'
 import { Box, MenuItem, Select, Typography } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 
 interface PageClaimsCardProps {
-  currentClaims: { role: string; claims: string[] }[]
+  currentClaims: RolesResult[]
   onClaimsChange: (role: string, claims: string[]) => void
   userClaims: string[]
   setUserClaims: (claims: string[]) => void

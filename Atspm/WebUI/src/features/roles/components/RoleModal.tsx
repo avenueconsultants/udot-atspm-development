@@ -2,9 +2,10 @@ import {
   useGetClaimsClaims,
   useGetRolesRoles,
 } from '@/api/identity/atspmAuthenticationApi'
+import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { Role } from '@/features/identity/types/roles'
 import PageClaimsCard from '@/features/roles/components/PageClaimsCard'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { Box, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,7 +18,7 @@ interface RoleFormData {
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  data: Role | null
+  data: RolesResult | null
   onSave: (roleData: RoleFormData) => void
 }
 
@@ -26,15 +27,14 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
     data: rolesData,
     isLoading: rolesIsLoading,
     error: rolesError,
-  } = useGetRolesRoles<Role[]>()
+  } = useGetRolesRoles()
   const {
     data: claimsData,
     isLoading: claimsIsLoading,
     error: claimsError,
-  } = useGetClaimsClaims<string[]>()
+  } = useGetClaimsClaims()
 
   const [userClaims, setUserClaims] = useState<string[]>(data?.claims || [])
-  const [currentRole, setCurrentRole] = useState<string>(data?.role || '')
 
   const {
     register,
@@ -69,7 +69,7 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
   }
 
   const existingRoleNames = (rolesData || []).map((role) =>
-    role.role.toLowerCase()
+    (role.role ?? '').toLowerCase()
   )
   const isDuplicateRoleName =
     Boolean(isNewRole) &&
@@ -78,7 +78,7 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
 
   if (rolesIsLoading || claimsIsLoading) return null
   if (rolesError || claimsError) {
-    return <div>Error: {rolesError?.message || claimsError?.message}</div>
+    return <div>Error: {getApiErrorMessage(rolesError || claimsError)}</div>
   }
 
   return (
@@ -86,7 +86,6 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       title={isNewRole ? 'Create New Role' : `Role Permissions - ${roleId}`}
-      auditInfo={data}
       onSubmit={handleSubmit(onSubmit)}
       dialogProps={{ sx: { minWidth: 600 } }}
     >
@@ -115,8 +114,6 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
         id={isNewRole ? watchedRoleName : (roleId ?? '')}
         currentClaims={rolesData || []}
         onClaimsChange={handleClaimsChange}
-        currentRole={currentRole}
-        setCurrentRole={setCurrentRole}
         userClaims={userClaims}
         setUserClaims={setUserClaims}
         claimsData={claimsData}

@@ -4,6 +4,7 @@ import {
   useGetRolesCreateRole,
   useGetRolesRoles,
 } from '@/api/identity/atspmAuthenticationApi'
+import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
@@ -13,7 +14,6 @@ import {
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import { Role } from '@/features/identity/types/roles'
 import RoleModal from '@/features/roles/components/RoleModal'
 import { useNotificationStore } from '@/stores/notifications'
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material'
@@ -25,15 +25,12 @@ const RolesAdmin = () => {
   const hasRolesDeleteClaim = useUserHasClaim('Role:Delete')
   const { addNotification } = useNotificationStore()
 
-  const {
-    data: roles,
-    isLoading,
-    refetch: refetchRoles,
-  } = useGetRolesRoles<Role[]>()
+  const { data: roles, isLoading, refetch: refetchRoles } = useGetRolesRoles()
 
   const { mutateAsync: createMutation } = useGetRolesCreateRole()
   const { mutateAsync: deleteMutation } = useDeleteRolesRoleFromRoleName()
-  const { mutateAsync: editMutation } = useGetClaimsAddClaimsToRoleFromRoleName()
+  const { mutateAsync: editMutation } =
+    useGetClaimsAddClaimsToRoleFromRoleName()
 
   const builtInRoles = [
     {
@@ -189,12 +186,13 @@ const RolesAdmin = () => {
   }
 
   const customRoleFilteredData = roles
-    .filter((role: Role) => !builtInRoles.some((pr) => pr.role === role.role))
-    .map((role: Role, index: number) => ({
+    .filter((role) => !builtInRoles.some((pr) => pr.role === role.role))
+    .map((role, index) => ({
       id: index,
-      role: role.role,
+      role: role.role ?? '',
+      name: role.role ?? '',
     }))
-    .sort((a: Role, b: Role) => a.role.localeCompare(b.role))
+    .sort((a, b) => a.role.localeCompare(b.role))
 
   const filteredDefaultRoles = builtInRoles.map((roleObj, index: number) => {
     return {
@@ -260,7 +258,7 @@ const RolesAdmin = () => {
             open={false}
             onClose={onModalClose}
             onConfirm={HandleDeleteRole}
-            deleteLabel={(selectedRow: Role) => selectedRow.role}
+            deleteLabel={(selectedRow: RolesResult) => selectedRow.role ?? ''}
           />
         }
       />

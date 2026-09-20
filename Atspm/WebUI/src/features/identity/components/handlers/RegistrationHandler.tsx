@@ -1,7 +1,8 @@
 import { useAccountRegister } from '@/api/identity/atspmAuthenticationApi'
+import { AccountResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import { setSecureCookie } from '@/features/identity/utils'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { FormEvent, useEffect, useState } from 'react'
-import IdentityDto from '../../types/identityDto'
 import { EmailAndPasswordHandler, ResponseHandler } from './baseHandler'
 
 export interface RegistrationHandler
@@ -10,7 +11,8 @@ export interface RegistrationHandler
   firstName: string
   lastName: string
   agency: string
-  data: IdentityDto
+  data: AccountResult | undefined
+  errorMessage: string
   submitted: boolean
   handleSubmit(event: FormEvent<HTMLFormElement>): void
   saveFirstName(name: string): void
@@ -31,28 +33,12 @@ export const useRegistrationHandler = (): RegistrationHandler => {
   const [responseSuccess, setResponseSuccess] = useState(false)
   const [responseError, setResponseError] = useState(false)
 
-  const [data, setData] = useState<IdentityDto>()
-
-  const {
-    mutate: register,
-    data: mutationData,
-    error,
-    status,
-  } = useAccountRegister()
+  const { mutate: register, data, error, status } = useAccountRegister()
 
   useEffect(() => {
-    if (status === 'error' && error) {
-      setData((error as any).response.data as IdentityDto)
-    }
-    if (mutationData) {
-      setData(mutationData as IdentityDto)
-    }
-  }, [error, mutationData, status])
-
-  useEffect(() => {
-    if (status === 'success' && data !== undefined) {
+    if (status === 'success' && data?.token) {
       setSecureCookie('token', data.token)
-      setSecureCookie('claims', data.claims.join(','))
+      setSecureCookie('claims', (data.claims ?? []).join(','))
       setSecureCookie('loggedIn', 'True')
       window.location.href = '/'
     }
@@ -147,7 +133,10 @@ export const useRegistrationHandler = (): RegistrationHandler => {
   }
 
   const component: RegistrationHandler = {
-    data: data as IdentityDto,
+    data,
+    errorMessage: error
+      ? getApiErrorMessage(error, 'Registration failed. Please try again.')
+      : '',
     email,
     password,
     firstName,

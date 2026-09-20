@@ -25,6 +25,7 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AccountResult,
   ChangePasswordViewModel,
   ClaimModel,
   ClaimsModel,
@@ -35,10 +36,13 @@ import type {
   ProblemDetails,
   ProfileViewModel,
   RegisterViewModel,
+  RolesResult,
   UpdateProfileViewModel,
   UserDTO,
   VerifyConnectTokenViewModel,
+  VerifyResetTokenResult,
   VerifyResetTokenViewModel,
+  VerifyUserPasswordResetResult,
   VerifyUserPasswordResetViewModel
 } from './atspmAuthenticationApi.schemas';
 
@@ -95,7 +99,7 @@ export const accountRegister = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<AccountResult>(
       {url: `/Account/register`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: registerViewModel, signal
@@ -154,7 +158,7 @@ export const accountLogin = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<AccountResult>(
       {url: `/Account/login`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: loginViewModel, signal
@@ -558,7 +562,7 @@ export const getAccountChangePassword = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<void>(
       {url: `/Account/changepassword`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: changePasswordViewModel, signal
@@ -617,7 +621,7 @@ export const getAccountForgotPassword = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<void>(
       {url: `/Account/forgotpassword`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: forgotPasswordViewModel, signal
@@ -676,7 +680,7 @@ export const getAccountVerifyUserPasswordReset = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<VerifyUserPasswordResetResult>(
       {url: `/Account/verifyUserPasswordReset`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyUserPasswordResetViewModel, signal
@@ -1049,7 +1053,7 @@ export const getClaimsClaims = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<string[]>(
       {url: `/Claims`, method: 'GET', signal
     },
       );
@@ -1549,7 +1553,7 @@ export const getRolesRoles = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<RolesResult[]>(
       {url: `/Roles`, method: 'GET', signal
     },
       );
@@ -1752,7 +1756,7 @@ export const deleteTokenVerifyResetToken = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<VerifyResetTokenResult>(
       {url: `/Token/verify/reset`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: verifyResetTokenViewModel, signal
@@ -1870,7 +1874,7 @@ export const getUsersUsers = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<UserDTO[]>(
       {url: `/Users`, method: 'GET', signal
     },
       );

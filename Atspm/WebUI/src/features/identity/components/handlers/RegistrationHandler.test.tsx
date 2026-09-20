@@ -15,17 +15,21 @@
 // limitations under the License.
 // #endregion
 import { act, renderHook } from '@testing-library/react'
+import { AxiosError } from 'axios'
 import { useRegistrationHandler } from './RegistrationHandler'
 
 const register = jest.fn()
+let mutationState: { status: string; error: AxiosError | null } = {
+  status: 'idle',
+  error: null,
+}
 
 jest.mock('@/api/identity/atspmAuthenticationApi', () => ({
   __esModule: true,
   useAccountRegister: () => ({
     mutate: register,
     data: undefined,
-    error: null,
-    status: 'idle',
+    ...mutationState,
   }),
 }))
 
@@ -41,6 +45,7 @@ const submitEvent = {
 describe('useRegistrationHandler validation', () => {
   beforeEach(() => {
     register.mockReset()
+    mutationState = { status: 'idle', error: null }
   })
 
   it('requires each name/agency field to validate itself, not firstName for all three', () => {
@@ -180,5 +185,15 @@ describe('useRegistrationHandler validation', () => {
 
       expect(register).not.toHaveBeenCalled()
     }
+  )
+})
+
+it('handles a registration network failure without treating it as a success response', () => {
+  mutationState = { status: 'error', error: new AxiosError('Network Error') }
+  const { result } = renderHook(() => useRegistrationHandler())
+  expect(result.current.responseError).toBe(true)
+  expect(result.current.data).toBeUndefined()
+  expect(result.current.errorMessage).toBe(
+    'Could not reach the server. Check your connection and try again.'
   )
 })

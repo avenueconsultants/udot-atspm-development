@@ -40,6 +40,7 @@ namespace Identity.Controllers
         }
 
         [HttpPost("verify/reset")]
+        [ProducesResponseType(typeof(VerifyResetTokenResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> VerifyResetToken(VerifyResetTokenViewModel model)
         {
             if (string.IsNullOrEmpty(model.Token))
@@ -61,7 +62,7 @@ namespace Identity.Controllers
             if (result)
             {
                 var token = await _tokenService.GenerateJwtTokenAsync(user);
-                return Ok(new { Token = token, Message = "OK" });
+                return Ok(new VerifyResetTokenResult { Token = token, Message = "OK" });
             }
             else
             {
