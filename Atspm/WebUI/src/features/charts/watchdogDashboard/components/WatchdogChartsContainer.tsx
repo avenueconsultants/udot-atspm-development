@@ -1,9 +1,5 @@
 import { DetectionTypeGroup, DeviceGroup } from '@/api/config'
-import {
-  WatchDogControllerTypeGroup,
-  WatchDogDetectionTypeGroup,
-  WatchDogIssueTypeGroup,
-} from '@/api/reports'
+import { WatchDogDashboardGroup } from '@/api/reports'
 import { Box } from '@mui/material'
 import React from 'react'
 import ControllerTypeChart from './ControllerTypeChart'
@@ -13,10 +9,7 @@ import DeviceCountChart from './DeviceCountChart'
 import IssueTypeChart from './IssueTypeChart'
 
 interface WatchdogChartsContainerProps {
-  data: {
-    issueTypeGroup?: WatchDogIssueTypeGroup[] | null
-    detectionTypeGroup?: WatchDogDetectionTypeGroup[] | null
-    controllerTypeGroup?: WatchDogControllerTypeGroup[] | null
+  data: WatchDogDashboardGroup & {
     deviceCount?: DeviceGroup[]
     detectionTypeCount?: DetectionTypeGroup[]
   }

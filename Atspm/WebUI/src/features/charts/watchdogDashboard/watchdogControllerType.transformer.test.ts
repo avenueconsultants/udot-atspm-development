@@ -14,6 +14,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type {
+  WatchDogControllerTypeGroup,
+  WatchDogIssueTypeCount,
+} from '@/api/reports'
 import type { EChartsOption } from 'echarts'
 import transformWatchdogControllerTypeData from './watchdogControllerType.transformer'
 
@@ -26,16 +30,18 @@ type SunburstNode = {
   children?: SunburstNode[]
 }
 
-const controller = (name: string, issues: { name: string; counts: number }[]) =>
-  ({
-    name,
-    model: [
-      {
-        name: `${name} model`,
-        firmware: [{ name: `${name} fw`, issueType: issues }],
-      },
-    ],
-  }) as never
+const controller = (
+  name: string,
+  issues: WatchDogIssueTypeCount[]
+): WatchDogControllerTypeGroup => ({
+  name,
+  model: [
+    {
+      name: `${name} model`,
+      firmware: [{ name: `${name} fw`, issueType: issues }],
+    },
+  ],
+})
 
 const rootsOf = (chart: EChartsOption): SunburstNode[] => {
   const series = (
@@ -119,6 +125,53 @@ describe('transformWatchdogControllerTypeData', () => {
     for (const name of names) {
       expect(name).not.toContain('NaN')
     }
+  })
+
+  it('handles optional names, collections, and counts from the generated contract', () => {
+    const { sunburst, legendData } = transformWatchdogControllerTypeData([
+      { name: null, model: null },
+      {
+        name: 'Cobalt',
+        model: [
+          { name: null, firmware: null },
+          {
+            name: 'Model',
+            firmware: [
+              { name: null, issueType: null },
+              { name: 'Firmware', issueType: [{ name: null }] },
+            ],
+          },
+        ],
+      },
+    ])
+
+    const roots = rootsOf(sunburst)
+    expect(roots[0]).toMatchObject({ name: 'Unknown\n0.0%', children: [] })
+    expect(roots[1].children?.[0]).toMatchObject({
+      name: 'Unknown',
+      children: [],
+    })
+    expect(roots[1].children?.[1].children?.[0]).toMatchObject({
+      name: 'Unknown',
+      children: [],
+    })
+    expect(roots[1].children?.[1].children?.[1].children?.[0]).toMatchObject({
+      name: 'Unknown\n0.0%',
+      value: 0,
+    })
+    expect(legendData.map((item) => item.name)).toEqual(['Unknown', 'Cobalt'])
+    expect(allNames(roots).join()).not.toMatch(/NaN|undefined|null/)
+  })
+
+  it('allows unnamed controllers to be deselected using their legend label', () => {
+    const { sunburst, legendData } = transformWatchdogControllerTypeData(
+      [{ name: null }],
+      ['Unknown']
+    )
+    expect(rootsOf(sunburst)).toEqual([])
+    expect(legendData).toEqual([
+      expect.objectContaining({ name: 'Unknown', selected: false }),
+    ])
   })
 
   it('handles an empty response', () => {

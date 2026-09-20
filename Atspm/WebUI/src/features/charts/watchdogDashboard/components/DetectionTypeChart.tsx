@@ -1,10 +1,11 @@
+import type { WatchDogDetectionTypeGroup } from '@/api/reports'
 import ApacheEChart from '@/features/charts/components/apacheEChart/ApacheEChart'
 import transformDetectionTypeData from '@/features/charts/watchdogDashboard/watchDogDetectionType.transformer'
 import { Paper } from '@mui/material'
 import React, { useMemo } from 'react'
 
 interface DetectionTypeChartProps {
-  data: any // Replace 'any' with the correct type for your data
+  data?: WatchDogDetectionTypeGroup[] | null
   isLoading: boolean
 }
 
@@ -24,7 +25,7 @@ const DetectionTypeChart: React.FC<DetectionTypeChartProps> = ({
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <h2>Detection Type Breakdown</h2>
       </div>
- 
+
       {!isLoading && detectionTypeChartOption && (
         <ApacheEChart
           id="watchdog-detection-type-chart"
@@ -34,7 +35,6 @@ const DetectionTypeChart: React.FC<DetectionTypeChartProps> = ({
           hideInteractionMessage
         />
       )}
-    
     </Paper>
   )
 }

@@ -15,33 +15,8 @@
 // limitations under the License.
 // #endregion
 import { WatchDogIssueTypeGroup } from '@/api/reports'
-import { EChartsOption } from 'echarts'
+import { EChartsOption, SunburstSeriesOption } from 'echarts'
 import { Color, lightenColor } from '../utils'
-
-// The runtime shape here is nested (products[].model[].firmware[].counts),
-// matching WatchDogIssueTypeGroup - the flat {manufacturer, model, firmware,
-// counts} version this type used to declare didn't match what the code
-// below actually reads off `response`.
-type RawWatchdogData = WatchDogIssueTypeGroup & {
-  name: string
-}
-
-interface TransformedWatchdogData {
-  name: string
-  itemStyle: { color: string }
-  children: {
-    name: string
-    itemStyle: { color: string }
-    value: number
-  }[]
-}
-
-interface TransformedData {
-  sunburst: EChartsOption
-  bar: EChartsOption
-}
-
-//barchart
 
 const issueTypeColors = [
   Color.Blue,
@@ -59,16 +34,16 @@ interface TransformedData {
 }
 
 export default function transformWatchdogIssueTypeData(
-  response: RawWatchdogData[],
+  response: WatchDogIssueTypeGroup[],
   deselectedItems: string[] = []
 ): TransformedData {
   const transformedData = transformData(response, deselectedItems)
 
   // Create legend data from all items, regardless of selection
   const legendData = response.map((item, index) => ({
-    name: item.name,
+    name: item.name ?? 'Unknown',
     color: issueTypeColors[index % issueTypeColors.length],
-    selected: !deselectedItems.includes(item.name),
+    selected: !deselectedItems.includes(item.name ?? 'Unknown'),
   }))
 
   const chart: EChartsOption = {
@@ -124,11 +99,11 @@ export default function transformWatchdogIssueTypeData(
 }
 
 function transformData(
-  data: RawWatchdogData[],
+  data: WatchDogIssueTypeGroup[],
   deselectedItems: string[]
-): TransformedWatchdogData[] {
+): NonNullable<SunburstSeriesOption['data']> {
   const filteredData = data.filter(
-    (item) => !deselectedItems.includes(item.name)
+    (item) => !deselectedItems.includes(item.name ?? 'Unknown')
   )
 
   const totalIssueCount = filteredData.reduce(
@@ -179,13 +154,13 @@ function transformData(
     ).toFixed(1)
 
     return {
-      name: `${item.name}\n${issueTypePercentage}%`,
+      name: `${item.name ?? 'Unknown'}\n${issueTypePercentage}%`,
       itemStyle: {
         color: issueTypeColors[originalIndex % issueTypeColors.length],
       },
       children: (item.products ?? []).map((product) => {
         return {
-          name: `${product.name}`,
+          name: `${product.name ?? 'Unknown'}`,
           itemStyle: {
             color: lightenColor(
               issueTypeColors[originalIndex % issueTypeColors.length],
@@ -194,7 +169,7 @@ function transformData(
           },
           children: (product.model ?? []).map((model) => {
             return {
-              name: `${model.name}`,
+              name: `${model.name ?? 'Unknown'}`,
               itemStyle: {
                 color: lightenColor(
                   issueTypeColors[originalIndex % issueTypeColors.length],
@@ -208,7 +183,7 @@ function transformData(
                     : 0
                 ).toFixed(1)
                 return {
-                  name: `${fw.name}\n${fwPercentage}%`,
+                  name: `${fw.name ?? 'Unknown'}\n${fwPercentage}%`,
                   value: fw.counts ?? 0,
                   itemStyle: {
                     color: lightenColor(

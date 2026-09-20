@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { WatchDogIssueTypeGroup } from '@/api/reports'
 import type { EChartsOption } from 'echarts'
 import transformWatchdogIssueTypeData from './watchdogIssueType.transformer'
 
@@ -31,26 +32,25 @@ type SunburstNode = {
 const issueType = (
   name: string,
   firmwareCounts: number[],
-  over: Record<string, unknown> = {}
-) =>
-  ({
-    name,
-    products: [
-      {
-        name: `${name} product`,
-        model: [
-          {
-            name: `${name} model`,
-            firmware: firmwareCounts.map((counts, i) => ({
-              name: `fw-${i}`,
-              counts,
-            })),
-          },
-        ],
-      },
-    ],
-    ...over,
-  }) as never
+  over: Partial<WatchDogIssueTypeGroup> = {}
+): WatchDogIssueTypeGroup => ({
+  name,
+  products: [
+    {
+      name: `${name} product`,
+      model: [
+        {
+          name: `${name} model`,
+          firmware: firmwareCounts.map((counts, i) => ({
+            name: `fw-${i}`,
+            counts,
+          })),
+        },
+      ],
+    },
+  ],
+  ...over,
+})
 
 const rootsOf = (chart: EChartsOption): SunburstNode[] => {
   const series = (
@@ -122,7 +122,7 @@ describe('transformWatchdogIssueTypeData', () => {
 
   it('treats missing nested collections as empty', () => {
     const { sunburst } = transformWatchdogIssueTypeData([
-      { name: 'Force Off', products: null } as never,
+      { name: 'Force Off', products: null },
     ])
 
     expect(() => rootsOf(sunburst)).not.toThrow()
@@ -137,10 +137,15 @@ describe('transformWatchdogIssueTypeData', () => {
         products: [
           {
             name: 'p',
-            model: [{ name: 'm', firmware: [{ name: 'fw', counts: null }] }],
+            model: [
+              {
+                name: 'm',
+                firmware: [{ name: 'fw', counts: null as unknown as number }],
+              },
+            ],
           },
         ],
-      } as never,
+      },
     ])
 
     const maxOut = rootsOf(sunburst)[1]
@@ -161,6 +166,16 @@ describe('transformWatchdogIssueTypeData', () => {
     for (const name of names) {
       expect(name).not.toContain('NaN')
     }
+  })
+
+  it('uses the same fallback name in the chart and legend for unnamed groups', () => {
+    const data: WatchDogIssueTypeGroup[] = [{ name: null, products: null }]
+    const visible = transformWatchdogIssueTypeData(data)
+    expect(rootsOf(visible.sunburst)[0].name).toBe('Unknown\n0.0%')
+    expect(visible.legendData[0].name).toBe('Unknown')
+    const hidden = transformWatchdogIssueTypeData(data, ['Unknown'])
+    expect(rootsOf(hidden.sunburst)).toEqual([])
+    expect(hidden.legendData[0].selected).toBe(false)
   })
 
   it('handles an empty response', () => {

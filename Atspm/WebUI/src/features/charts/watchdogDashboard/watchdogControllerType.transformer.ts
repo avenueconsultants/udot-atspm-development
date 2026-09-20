@@ -14,45 +14,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { WatchDogControllerTypeGroup } from '@/api/reports'
 import { Color, lightenColor } from '@/features/charts/utils'
-import { EChartsOption } from 'echarts'
-
-interface RawWatchdogData {
-  name: string
-  model: {
-    name: string
-    firmware: {
-      name: string
-      issueType: {
-        name: string
-        counts: number
-      }[]
-    }[]
-  }[]
-}
-
-interface TransformedWatchdogData {
-  name: string
-  itemStyle: { color: string }
-  children: {
-    name: string
-    itemStyle: { color: string }
-    children: {
-      name: string
-      itemStyle: { color: string }
-      children: {
-        name: string
-        value: number
-        itemStyle: { color: string }
-      }[]
-    }[]
-  }[]
-}
+import { EChartsOption, SunburstSeriesOption } from 'echarts'
 
 interface TransformedData {
   sunburst: EChartsOption
   legendData: { name: string; color: string; selected: boolean }[]
-  showUnconfiguredData: boolean
 }
 
 const controllerColors = [
@@ -66,7 +34,7 @@ const controllerColors = [
 ]
 
 export default function transformWatchdogControllerTypeData(
-  response: RawWatchdogData[],
+  response: WatchDogControllerTypeGroup[],
   deselectedItems: string[] = [],
   showUnconfiguredData = false
 ): TransformedData {
@@ -78,9 +46,9 @@ export default function transformWatchdogControllerTypeData(
 
   // Create legend data from all items, regardless of selection
   const legendData = response.map((item, index) => ({
-    name: item.name,
+    name: item.name ?? 'Unknown',
     color: controllerColors[index % controllerColors.length],
-    selected: !deselectedItems.includes(item.name),
+    selected: !deselectedItems.includes(item.name ?? 'Unknown'),
   }))
 
   const chart: EChartsOption = {
@@ -136,29 +104,29 @@ export default function transformWatchdogControllerTypeData(
 }
 
 function transformData(
-  data: RawWatchdogData[],
+  data: WatchDogControllerTypeGroup[],
   deselectedItems: string[],
   showUnconfiguredData: boolean
-): TransformedWatchdogData[] {
+): NonNullable<SunburstSeriesOption['data']> {
   const filteredData = data.filter(
-    (item) => !deselectedItems.includes(item.name)
+    (item) => !deselectedItems.includes(item.name ?? 'Unknown')
   )
 
   const totalIssueCount = filteredData.reduce(
     (sum, item) =>
       sum +
-      item.model.reduce(
+      (item.model ?? []).reduce(
         (modelSum, model) =>
           modelSum +
-          model.firmware.reduce(
+          (model.firmware ?? []).reduce(
             (fwSum, fw) =>
               fwSum +
-              fw.issueType.reduce(
+              (fw.issueType ?? []).reduce(
                 (issueSum, issue) =>
                   showUnconfiguredData ||
                   (issue.name !== 'UnconfiguredDetector' &&
                     issue.name !== 'UnconfiguredApproach')
-                    ? issueSum + issue.counts
+                    ? issueSum + (issue.counts ?? 0)
                     : issueSum,
                 0
               ),
@@ -173,18 +141,18 @@ function transformData(
     const originalIndex = data.findIndex(
       (originalItem) => originalItem.name === item.name
     )
-    const controllerIssueCount = item.model.reduce(
+    const controllerIssueCount = (item.model ?? []).reduce(
       (sum, model) =>
         sum +
-        model.firmware.reduce(
+        (model.firmware ?? []).reduce(
           (fwSum, fw) =>
             fwSum +
-            fw.issueType.reduce(
+            (fw.issueType ?? []).reduce(
               (issueSum, issue) =>
                 showUnconfiguredData ||
                 (issue.name !== 'UnconfiguredDetector' &&
                   issue.name !== 'UnconfiguredApproach')
-                  ? issueSum + issue.counts
+                  ? issueSum + (issue.counts ?? 0)
                   : issueSum,
               0
             ),
@@ -201,27 +169,27 @@ function transformData(
     ).toFixed(1)
 
     return {
-      name: `${item.name}\n${controllerPercentage}%`,
+      name: `${item.name ?? 'Unknown'}\n${controllerPercentage}%`,
       itemStyle: {
         color: controllerColors[originalIndex % controllerColors.length],
       },
-      children: item.model.map((model) => ({
-        name: model.name,
+      children: (item.model ?? []).map((model) => ({
+        name: model.name ?? 'Unknown',
         itemStyle: {
           color: lightenColor(
             controllerColors[originalIndex % controllerColors.length],
             15
           ),
         },
-        children: model.firmware.map((fw) => ({
-          name: fw.name,
+        children: (model.firmware ?? []).map((fw) => ({
+          name: fw.name ?? 'Unknown',
           itemStyle: {
             color: lightenColor(
               controllerColors[originalIndex % controllerColors.length],
               30
             ),
           },
-          children: fw.issueType
+          children: (fw.issueType ?? [])
             .filter(
               (issue) =>
                 showUnconfiguredData ||
@@ -231,12 +199,12 @@ function transformData(
             .map((issue) => {
               const issuePercentage = (
                 controllerIssueCount > 0
-                  ? (issue.counts / controllerIssueCount) * 100
+                  ? ((issue.counts ?? 0) / controllerIssueCount) * 100
                   : 0
               ).toFixed(1)
               return {
-                name: `${issue.name}\n${issuePercentage}%`,
-                value: issue.counts,
+                name: `${issue.name ?? 'Unknown'}\n${issuePercentage}%`,
+                value: issue.counts ?? 0,
                 itemStyle: {
                   color: lightenColor(
                     controllerColors[originalIndex % controllerColors.length],

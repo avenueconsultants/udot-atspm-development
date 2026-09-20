@@ -1,16 +1,18 @@
+import type { WatchDogIssueTypeGroup } from '@/api/reports'
 import ApacheEChart from '@/features/charts/components/apacheEChart/ApacheEChart'
 import { Box, Paper, useMediaQuery, useTheme } from '@mui/material'
+import type { EChartsOption } from 'echarts'
 import React, { useEffect, useState } from 'react'
 import transformWatchdogIssueTypeData from '../watchdogIssueType.transformer'
 import SunburstLegend from './SunburstLegend'
 
 interface IssueTypeChartProps {
-  data: any // Replace 'any' with the actual type of your issue type data
+  data?: WatchDogIssueTypeGroup[] | null
   isLoading: boolean
 }
 
 const IssueTypeChart: React.FC<IssueTypeChartProps> = ({ data, isLoading }) => {
-  const [issueTypeData, setIssueTypeData] = useState<any>(null)
+  const [issueTypeData, setIssueTypeData] = useState<EChartsOption | null>(null)
   const [issueTypeLegend, setIssueTypeLegend] = useState<
     { name: string; color: string; selected: boolean }[]
   >([])
