@@ -1,26 +1,17 @@
-import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import { useFlags } from '@/feature-flags/FeatureFlagContext'
 import { Box, MenuItem, Select, Typography } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
 interface PageClaimsCardProps {
-  currentClaims: RolesResult[]
-  onClaimsChange: (role: string, claims: string[]) => void
+  onClaimsChange: (claims: string[]) => void
   userClaims: string[]
-  setUserClaims: (claims: string[]) => void
-  id: string
   claimsData?: string[]
-  isNewRole?: boolean
 }
 
 const PageClaimsCard = ({
-  currentClaims,
   onClaimsChange,
   userClaims,
-  setUserClaims,
-  id,
   claimsData,
-  isNewRole,
 }: PageClaimsCardProps) => {
   const flags = useFlags()
   const claims = useMemo(
@@ -33,10 +24,6 @@ const PageClaimsCard = ({
     [claimsData, flags.speedManagementTool]
   )
 
-  const [selectedPermissions, setSelectedPermissions] = useState<{
-    [key: string]: string
-  }>({})
-
   const getPermissionName = (claim: string) => claim.split(':')[0]
   const uniquePermissions = useMemo(
     () => Array.from(new Set(claims.map(getPermissionName))),
@@ -44,7 +31,7 @@ const PageClaimsCard = ({
   )
 
   const getAvailableOptions = (permission: string) => {
-    const availableClaims = claims.filter((c) => c.startsWith(permission))
+    const availableClaims = claims.filter((c) => c.startsWith(`${permission}:`))
     const options: string[] = []
     if (availableClaims.some((c) => c.endsWith('View'))) options.push('View')
     if (availableClaims.some((c) => c.endsWith('Edit')))
@@ -70,67 +57,47 @@ const PageClaimsCard = ({
       'Manage speed configurations, impacts, impact types, segments, and versions.'
   }
 
-  useEffect(() => {
-    if (!id || !claims.length) return
-
-    const roleCurrentClaims =
-      currentClaims.find((item) => item.role === id)?.claims || []
-
-    const initialPermissions: { [key: string]: string } = {}
-    const initialClaims = isNewRole
-      ? userClaims
-      : userClaims.length > 0
-        ? userClaims
-        : roleCurrentClaims
-
+  const selectedPermissions = useMemo(() => {
+    const permissions: Record<string, string> = {}
     uniquePermissions.forEach((permission) => {
-      const permClaims = initialClaims.filter((c) => c.startsWith(permission))
-      if (permClaims.includes(`${permission}:Delete`)) {
-        initialPermissions[permission] = 'View, Edit, Delete'
-      } else if (permClaims.includes(`${permission}:Edit`)) {
-        initialPermissions[permission] = 'View & Edit'
-      } else if (permClaims.includes(`${permission}:View`)) {
-        initialPermissions[permission] = 'View'
+      if (userClaims.includes(`${permission}:Delete`)) {
+        permissions[permission] = 'View, Edit, Delete'
+      } else if (userClaims.includes(`${permission}:Edit`)) {
+        permissions[permission] = 'View & Edit'
+      } else if (userClaims.includes(`${permission}:View`)) {
+        permissions[permission] = 'View'
       } else {
-        initialPermissions[permission] = ''
+        permissions[permission] = ''
       }
     })
-
-    setSelectedPermissions(initialPermissions)
-  }, [
-    id,
-    currentClaims,
-    isNewRole,
-    claims.length,
-    uniquePermissions,
-    userClaims,
-  ])
+    return permissions
+  }, [uniquePermissions, userClaims])
 
   const formatPermissionName = (permission: string) =>
     permission.replace(/(?<!^)([A-Z])/g, ' $1')
 
   const handlePermissionChange = (permission: string, value: string) => {
-    const updatedPermissions = { ...selectedPermissions, [permission]: value }
-    setSelectedPermissions(updatedPermissions)
-
-    const newClaims: string[] = []
-
-    Object.entries(updatedPermissions).forEach(([perm, val]) => {
-      switch (val) {
-        case 'View':
-          newClaims.push(`${perm}:View`)
-          break
-        case 'View & Edit':
-          newClaims.push(`${perm}:View`, `${perm}:Edit`)
-          break
-        case 'View, Edit, Delete':
-          newClaims.push(`${perm}:View`, `${perm}:Edit`, `${perm}:Delete`)
-          break
-      }
-    })
-
-    setUserClaims(newClaims.length > 0 ? [...newClaims] : [])
-    onClaimsChange(id, newClaims.length > 0 ? [...newClaims] : [])
+    // Only replace the edited permission; claims hidden by feature flags or
+    // belonging to other permissions must survive an unrelated edit.
+    const newClaims = userClaims.filter(
+      (claim) => !claim.startsWith(`${permission}:`)
+    )
+    switch (value) {
+      case 'View':
+        newClaims.push(`${permission}:View`)
+        break
+      case 'View & Edit':
+        newClaims.push(`${permission}:View`, `${permission}:Edit`)
+        break
+      case 'View, Edit, Delete':
+        newClaims.push(
+          `${permission}:View`,
+          `${permission}:Edit`,
+          `${permission}:Delete`
+        )
+        break
+    }
+    onClaimsChange(newClaims)
   }
 
   return (

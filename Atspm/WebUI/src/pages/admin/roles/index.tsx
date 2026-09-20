@@ -188,6 +188,7 @@ const RolesAdmin = () => {
   const customRoleFilteredData = roles
     .filter((role) => !builtInRoles.some((pr) => pr.role === role.role))
     .map((role, index) => ({
+      ...role,
       id: index,
       role: role.role ?? '',
       name: role.role ?? '',
@@ -242,12 +243,14 @@ const RolesAdmin = () => {
           />
         }
         createModal={
-          <RoleModal
-            isOpen={true}
-            onSave={HandleCreateRole}
-            onClose={onModalClose}
-            data={null}
-          />
+          hasRoleEditClaim ? (
+            <RoleModal
+              isOpen={true}
+              onSave={HandleCreateRole}
+              onClose={onModalClose}
+              data={null}
+            />
+          ) : undefined
         }
         deleteModal={
           <DeleteModal

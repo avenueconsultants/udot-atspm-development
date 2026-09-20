@@ -7,7 +7,6 @@ import ATSPMDialog from '@/components/ATSPMDialog'
 import PageClaimsCard from '@/features/roles/components/PageClaimsCard'
 import { getApiErrorMessage } from '@/lib/apiError'
 import { Box, TextField } from '@mui/material'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface RoleFormData {
@@ -34,8 +33,6 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
     error: claimsError,
   } = useGetClaimsClaims()
 
-  const [userClaims, setUserClaims] = useState<string[]>(data?.claims || [])
-
   const {
     register,
     handleSubmit,
@@ -53,17 +50,17 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
   const roleId = data?.role
   const isNewRole = !roleId
   const watchedRoleName = watch('roleName')
+  const userClaims = watch('claims')
 
-  const handleClaimsChange = (_role: string, claims: string[]) => {
-    setUserClaims(claims)
-    setValue('claims', claims)
+  const handleClaimsChange = (claims: string[]) => {
+    setValue('claims', claims, { shouldDirty: true })
   }
 
   const onSubmit = (formData: RoleFormData) => {
     if (!formData.roleName) return
     onSave({
       roleName: formData.roleName,
-      claims: userClaims,
+      claims: formData.claims,
     })
     onClose()
   }
@@ -111,13 +108,9 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
       )}
 
       <PageClaimsCard
-        id={isNewRole ? watchedRoleName : (roleId ?? '')}
-        currentClaims={rolesData || []}
         onClaimsChange={handleClaimsChange}
         userClaims={userClaims}
-        setUserClaims={setUserClaims}
         claimsData={claimsData}
-        isNewRole={isNewRole}
       />
     </ATSPMDialog>
   )
