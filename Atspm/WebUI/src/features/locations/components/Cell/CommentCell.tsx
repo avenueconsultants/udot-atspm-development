@@ -7,6 +7,8 @@ import {
 import { useCellNavigation } from '@/features/locations/components/Cell/CellNavigation'
 import DeleteConfirmationModal from '@/features/locations/components/editDetector/DeleteCommentConfirmationModal'
 import { ConfigDetector } from '@/features/locations/components/editLocation/locationStore'
+import { getApiErrorMessage } from '@/lib/apiError'
+import { useNotificationStore } from '@/stores/notifications'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -67,9 +69,14 @@ const CommentCell = ({
   const { refetch, data: commentsData } = useGetDetectorComment({
     filter: `detectorId eq ${detector.id}`,
   })
-  const { mutate: addComment } = usePostDetectorComment()
-  const { mutate: deleteComment } = useDeleteDetectorCommentFromKey()
-  const { mutate: updateComment } = usePatchDetectorCommentFromKey()
+  const { mutateAsync: addComment, isPending: isAdding } =
+    usePostDetectorComment()
+  const { mutateAsync: deleteComment, isPending: isDeleting } =
+    useDeleteDetectorCommentFromKey()
+  const { mutateAsync: updateComment, isPending: isUpdating } =
+    usePatchDetectorCommentFromKey()
+  const { addNotification } = useNotificationStore()
+  const isSaving = isAdding || isUpdating
 
   const comments =
     commentsData
@@ -129,30 +136,40 @@ const CommentCell = ({
   }
 
   const handleCloseModal = () => {
+    if (isSaving) return
     setModalOpen(false)
     setEditCommentId(null)
   }
 
-  const handleSaveComment = () => {
-    if (editCommentId !== null) {
-      updateComment(
-        { key: editCommentId, data: { comment: commentText } },
-        { onSuccess: () => refetch() }
-      )
-    } else {
-      addComment(
-        {
+  const handleSaveComment = async () => {
+    if (isSaving) return
+    try {
+      if (editCommentId !== null) {
+        await updateComment({
+          key: editCommentId,
+          data: { comment: commentText },
+        })
+      } else {
+        await addComment({
           data: {
             comment: commentText,
             detectorId: detector.id,
             timeStamp: new Date().toISOString(),
           },
-        },
-        { onSuccess: () => refetch() }
-      )
+        })
+      }
+      setCommentText('')
+      setModalOpen(false)
+      setEditCommentId(null)
+      addNotification({ type: 'success', title: 'Comment saved' })
+      void refetch()
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Error saving comment',
+        message: getApiErrorMessage(error),
+      })
     }
-    setCommentText('')
-    handleCloseModal()
   }
 
   const handleOpenDeleteModal = (id: number | null) => {
@@ -161,18 +178,26 @@ const CommentCell = ({
   }
 
   const handleCloseDeleteModal = () => {
+    if (isDeleting) return
     setDeleteModalOpen(false)
     setEditCommentId(null)
   }
 
-  const handleConfirmDelete = () => {
-    if (editCommentId !== null) {
-      deleteComment(
-        { key: editCommentId },
-        { onSuccess: () => refetch() }
-      )
+  const handleConfirmDelete = async () => {
+    if (editCommentId === null || isDeleting) return
+    try {
+      await deleteComment({ key: editCommentId })
+      setDeleteModalOpen(false)
+      setEditCommentId(null)
+      addNotification({ type: 'success', title: 'Comment deleted' })
+      void refetch()
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Error deleting comment',
+        message: getApiErrorMessage(error),
+      })
     }
-    handleCloseDeleteModal()
   }
 
   const outlineColor = theme.palette.primary.main
@@ -219,7 +244,11 @@ const CommentCell = ({
 
       <Tooltip title={detector.isNew ? 'Save before commenting' : ''}>
         <span>
-          <IconButton onClick={handleIconClick} disabled={detector.isNew}>
+          <IconButton
+            aria-label="View comments"
+            onClick={handleIconClick}
+            disabled={detector.isNew}
+          >
             <Badge
               badgeContent={comments.length}
               color="primary"
@@ -258,6 +287,7 @@ const CommentCell = ({
                   />
                   <Box>
                     <IconButton
+                      aria-label="Edit comment"
                       size="small"
                       onClick={() =>
                         handleOpenModal(c.id ?? null, c.comment ?? '')
@@ -266,6 +296,7 @@ const CommentCell = ({
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
+                      aria-label="Delete comment"
                       size="small"
                       onClick={() => handleOpenDeleteModal(c.id ?? null)}
                     >
@@ -304,6 +335,8 @@ const CommentCell = ({
             {editCommentId !== null ? 'Edit Comment' : 'Add Comment'}
           </Typography>
           <TextField
+            label="Comment"
+            disabled={isSaving}
             autoFocus
             fullWidth
             multiline
@@ -312,9 +345,12 @@ const CommentCell = ({
             onChange={(e) => setCommentText(e.target.value)}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleCloseModal} disabled={isSaving}>
+              Cancel
+            </Button>
             <Button
               onClick={handleSaveComment}
+              disabled={isSaving}
               variant="contained"
               sx={{ ml: 1 }}
             >
@@ -328,6 +364,7 @@ const CommentCell = ({
         open={deleteModalOpen}
         onClose={handleCloseDeleteModal}
         onDelete={handleConfirmDelete}
+        isDeleting={isDeleting}
         commentText={
           comments.find((c) => c.id === editCommentId)?.comment || ''
         }

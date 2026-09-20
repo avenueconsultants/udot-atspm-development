@@ -5,6 +5,7 @@ interface DeleteConfirmationModalProps {
   onClose: () => void
   onDelete: () => void
   commentText: string
+  isDeleting?: boolean
 }
 
 const DeleteCommentConfirmationModal = ({
@@ -12,6 +13,7 @@ const DeleteCommentConfirmationModal = ({
   onClose,
   onDelete,
   commentText,
+  isDeleting = false,
 }: DeleteConfirmationModalProps): JSX.Element => {
   const modalStyle = {
     position: 'absolute',
@@ -40,8 +42,14 @@ const DeleteCommentConfirmationModal = ({
           {commentText}
         </Typography>
         <Box sx={modalButtonLocation}>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={onDelete} style={{ color: 'red' }}>
+          <Button onClick={onClose} disabled={isDeleting}>
+            Cancel
+          </Button>
+          <Button
+            onClick={onDelete}
+            disabled={isDeleting}
+            style={{ color: 'red' }}
+          >
             Delete
           </Button>
         </Box>

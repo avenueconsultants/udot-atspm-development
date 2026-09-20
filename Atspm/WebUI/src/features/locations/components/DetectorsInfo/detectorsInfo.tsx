@@ -124,35 +124,7 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
     )
   }
 
-  const data = detectors
-    .map((detector) => ({
-      id: detector.id,
-      dectectorIdentifier: detector.dectectorIdentifier,
-      detectorChannel: detector.detectorChannel,
-      direction: detector.approach?.directionType?.description,
-      phase: detector.approach?.protectedPhaseNumber,
-      permPhase: detector.approach?.permissivePhaseNumber,
-      overlap: detector.approach?.isProtectedPhaseOverlap,
-      detectionTypes: detector.detectionTypes,
-      detectionHardware: detector.detectionHardware,
-      latencyCorrection: detector.latencyCorrection,
-      movementType: detector.movementType,
-      laneNumber: detector.laneNumber,
-      laneType: laneTypeOptions.find((opt) => opt.id === detector.laneType)
-        ?.description,
-      distanceFromStopBar: detector.distanceFromStopBar,
-      decisionPoint: detector.decisionPoint,
-      movementDelay: detector.movementDelay,
-      minSpeedFilter: detector.minSpeedFilter,
-      comment: detector.detectorComments
-        ?.map((comment) => comment.comment)
-        .join(', '),
-    }))
-    .sort((a, b) => {
-      if ((a.detectorChannel ?? 0) < (b.detectorChannel ?? 0)) return -1
-      if ((a.detectorChannel ?? 0) > (b.detectorChannel ?? 0)) return 1
-      return 0
-    })
+  const data = toDetectorRows(detectors)
 
   const columns: GridColDef[] = [
     {
