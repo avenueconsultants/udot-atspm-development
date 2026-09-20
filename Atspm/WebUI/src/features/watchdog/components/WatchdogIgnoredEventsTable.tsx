@@ -242,7 +242,9 @@ export default function WatchdogIgnoredEvents() {
         <IgnoreEventEditorModal
           open={true}
           onSave={handleEditRow}
-          onClose={() => {}}
+          onClose={() => {
+            // AdminTable supplies the close handler when it clones this modal.
+          }}
         />
       }
       deleteModal={
@@ -251,7 +253,9 @@ export default function WatchdogIgnoredEvents() {
           name={''}
           objectType="Ignored Event"
           open={false}
-          onClose={() => {}}
+          onClose={() => {
+            // AdminTable supplies the close handler when it clones this modal.
+          }}
           onConfirm={handleDeleteById}
           associatedObjects={[]}
           associatedObjectsLabel=""

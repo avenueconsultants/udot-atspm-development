@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 
 const SpeedComplianceChartsContainer = ({ chartData }: { chartData: any }) => {
-  let tableData = chartData.tableData
+  const tableData = chartData.tableData
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'center', pt: 2 }}>

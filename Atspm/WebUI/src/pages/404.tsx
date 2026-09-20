@@ -20,7 +20,7 @@ const Custom404: React.FC = () => {
         404 - Page Not Found
       </Typography>
       <Typography variant="body1" gutterBottom>
-        Oops! The page you're looking for doesn't exist.
+        Oops! The page you&apos;re looking for doesn&apos;t exist.
       </Typography>
       <Button
         sx={{ marginTop: '25px' }}

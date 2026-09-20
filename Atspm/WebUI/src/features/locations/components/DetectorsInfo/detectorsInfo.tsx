@@ -100,14 +100,18 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
 
   const availableDetectionTypes = React.useMemo(() => {
     if (!locationType || !detectionRes.data) return []
-    const all = detectionRes.data as any[]
+    const all = detectionRes.data
     if (locationType.name === 'Intersection') {
       return all.filter((d) =>
-        ['AC', 'AS', 'LLC', 'LLS', 'SBP', 'AP', 'PP'].includes(d.abbreviation)
+        ['AC', 'AS', 'LLC', 'LLS', 'SBP', 'AP', 'PP'].includes(
+          d.abbreviation ?? ''
+        )
       )
     }
     if (locationType.name === 'Ramp') {
-      return all.filter((d) => ['P', 'D', 'IQ', 'EQ'].includes(d.abbreviation))
+      return all.filter((d) =>
+        ['P', 'D', 'IQ', 'EQ'].includes(d.abbreviation ?? '')
+      )
     }
     return []
   }, [locationType, detectionRes.data])
@@ -126,7 +130,7 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
 
   const data = toDetectorRows(detectors)
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<ReturnType<typeof toDetectorRows>[number]>[] = [
     {
       field: 'dectectorIdentifier',
       ...{
@@ -181,8 +185,8 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
       minWidth: 200,
       renderCell: (params) => (
         <DetectionTypesCell
-          detector={params.row as any}
-          detectionTypes={availableDetectionTypes as any}
+          detector={params.row}
+          detectionTypes={availableDetectionTypes}
           readonly
         />
       ),
@@ -301,7 +305,6 @@ function DetectorsInfo({ location }: DetectorsInfoProps) {
         autoHeight
         rows={data}
         columns={columns}
-        getRowId={(row) => row.id}
         rowSelection={false}
         hideFooter
         slots={{ toolbar: CustomToolbar }}

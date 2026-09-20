@@ -71,7 +71,7 @@ const FaqEditorModal = ({ data: faq, isOpen, onClose, onSave }: ModalProps) => {
   }
 
   //NEEDED for dialog to properly close without TextEditor errors.
-  const handleClose = (event: {}, reason: string) => {
+  const handleClose = (event: unknown, reason: string) => {
     if (reason === 'backdropClick') {
       setIsClosing(true)
       setTimeout(() => {

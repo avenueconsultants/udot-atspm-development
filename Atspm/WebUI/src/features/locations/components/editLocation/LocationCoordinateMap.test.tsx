@@ -19,45 +19,45 @@ jest.mock('@/features/locations/utils', () => ({
 }))
 
 jest.mock('react-leaflet', () => {
-  const React = require('react')
+  const React = jest.requireActual<typeof import('react')>('react')
 
   return {
-    MapContainer: React.forwardRef(
-      (
-        { children }: { children: React.ReactNode },
-        ref: React.ForwardedRef<{
-          getContainer: () => HTMLDivElement
-          invalidateSize: () => void
-          setView: () => void
-        }>
-      ) => {
+    MapContainer: React.forwardRef(function MockMapContainer(
+      { children }: { children: React.ReactNode },
+      ref: React.ForwardedRef<{
+        getContainer: () => HTMLDivElement
+        invalidateSize: () => void
+        setView: () => void
+      }>
+    ) {
+      const mapRef = React.useMemo(() => {
         const mapContainer = document.createElement('div')
-        const mapRef = {
+        return {
           getContainer: () => mapContainer,
           invalidateSize: jest.fn(),
           setView: jest.fn(),
         }
+      }, [])
 
-        React.useEffect(() => {
-          if (typeof ref === 'function') {
-            ref(mapRef)
-            return () => ref(null)
-          }
+      React.useEffect(() => {
+        if (typeof ref === 'function') {
+          ref(mapRef)
+          return () => ref(null)
+        }
 
+        if (ref) {
+          ref.current = mapRef
+        }
+
+        return () => {
           if (ref) {
-            ref.current = mapRef
+            ref.current = null
           }
+        }
+      }, [ref, mapRef])
 
-          return () => {
-            if (ref) {
-              ref.current = null
-            }
-          }
-        }, [ref])
-
-        return <div data-testid="map-container">{children}</div>
-      }
-    ),
+      return <div data-testid="map-container">{children}</div>
+    }),
     Marker: () => <div data-testid="marker" />,
     TileLayer: (props: { attribution?: string; url?: string }) => {
       latestTileLayerProps = props
@@ -74,8 +74,12 @@ describe('LocationCoordinateMap', () => {
     ;(generatePin as jest.Mock).mockReset().mockResolvedValue({})
 
     class ResizeObserverMock {
-      observe() {}
-      disconnect() {}
+      observe() {
+        // This test stub does not observe real layout changes.
+      }
+      disconnect() {
+        // There are no observers to disconnect in this test stub.
+      }
     }
 
     global.ResizeObserver = ResizeObserverMock as typeof ResizeObserver

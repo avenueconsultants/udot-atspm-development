@@ -74,7 +74,7 @@ const SM_Popup = ({ routes, open, onClose }: SM_PopupProps) => {
 
   const routeNames = distinctRoutes.map((r) => r.properties.name)
   let mainLabel: string | null = null
-  let allRoutesFormatted: string[] = routeNames
+  const allRoutesFormatted: string[] = routeNames
 
   if (routeNames.length > 1) {
     const firstName = routeNames[0]
