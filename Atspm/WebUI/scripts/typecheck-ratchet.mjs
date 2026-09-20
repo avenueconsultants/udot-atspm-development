@@ -24,6 +24,24 @@ const tsc = spawnSync(
 const output = `${tsc.stdout ?? ''}${tsc.stderr ?? ''}`
 const errors = output.match(/error TS\d+:/g)?.length ?? 0
 
+// TypeScript returns 1 or 2 for ordinary diagnostics. A crash, truncated
+// output, or project configuration error is not a completed typecheck and
+// must never be mistaken for an improvement (especially with --update).
+const diagnosticExit = (tsc.status === 1 || tsc.status === 2) && errors > 0
+if (
+  tsc.error ||
+  tsc.signal ||
+  (tsc.status !== 0 && !diagnosticExit) ||
+  /^error TS\d+:/m.test(output)
+) {
+  console.error(output)
+  console.error(
+    'TypeScript did not complete a valid project check.',
+    tsc.error ?? tsc.signal ?? tsc.status
+  )
+  process.exit(1)
+}
+
 if (errors > baseline.errors) {
   console.error(output)
   console.error(

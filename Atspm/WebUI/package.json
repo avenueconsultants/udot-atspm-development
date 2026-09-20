@@ -15,7 +15,7 @@
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
     "generate:api": "orval --config orval.config.js",
-    "check:api": "orval --config orval.config.js && git diff --exit-code --stat -- src/api",
+    "check:api": "orval --config orval.config.js && node scripts/check-api.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "typecheck:ratchet": "node scripts/typecheck-ratchet.mjs"
   },
