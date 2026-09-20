@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import { MeasureOption, MeasureType } from '@/api/config'
 import { EChartsOption } from 'echarts'
 import { ApproachVolumeSummaryData } from './approachVolume/types'
 import { ChartType, ToolType } from './common/types'
@@ -112,19 +113,22 @@ export type TransformedChartResponse =
   | TransformedTurningMovementCountsResponse
   | TransformedToolResponse
 
-export type ChartDefaults = {
-  abbreviation: string
-  name: string
-  id: number
-  chartType: ChartType
-  showOnWebsite: boolean
-  showOnAggregationSite: boolean
-  displayOrder: number
-  measureOptions: Default[]
+// UI projection of the generated API model: options are keyed by name and
+// the chart type is resolved from the measure abbreviation.
+export type ChartDefaults = Omit<MeasureType, 'measureOptions'> & {
+  chartType: ChartType | 'Unknown'
+  measureOptions: Record<string, Default>
 }
 
+// Editable UI values can be numbers, booleans, or selections. The API stores
+// them as strings; identity and option names come from the generated model.
 export type Default = {
-  id: number
-  option: string
-  value: string | number | boolean | number[]
+  [Key in 'id' | 'option']: NonNullable<MeasureOption[Key]>
+} & {
+  value: NonNullable<MeasureOption['value']> | number | boolean | number[]
 }
+
+export type ChartOptionDefaults = Record<
+  string,
+  Pick<Default, 'value'> & Partial<Pick<Default, 'id' | 'option'>>
+>

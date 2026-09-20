@@ -29,31 +29,31 @@ const LEGACY_OPTION_VALUES: Record<string, Record<string, string>> = {
   percentileSplit: { None: '85', '0': '85' },
 }
 
-const normalizeOptionValue = ({ option, value }: Default) =>
-  typeof value === 'string'
-    ? (LEGACY_OPTION_VALUES[option]?.[value] ?? value)
-    : value
-
 export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
-  const response = (await getMeasureType({
+  const response = await getMeasureType({
     expand: 'measureOptions',
-  })) as unknown as ChartDefaults[]
+  })
 
-  return response.map((chart: ChartDefaults) => ({
+  return response.map((chart) => ({
     ...chart,
     // Keyed on the abbreviation, as the measure picker is: a seeded name
     // need not spell the chart type ("Transit Signal Priority Summary").
     chartType: chartTypeForMeasure(chart),
-    measureOptions: (chart.measureOptions ?? []).reduce(
-      (acc, current) => {
-        acc[current.option] = {
-          ...current,
-          value: normalizeOptionValue(current),
-        }
+    measureOptions: (chart.measureOptions ?? []).reduce<
+      Record<string, Default>
+    >((acc, current) => {
+      if (current.id == null || !current.option || current.value == null)
         return acc
-      },
-      {} as Record<string, Default>
-    ),
+      acc[current.option] = {
+        ...current,
+        id: current.id,
+        option: current.option,
+        value:
+          LEGACY_OPTION_VALUES[current.option]?.[current.value] ??
+          current.value,
+      }
+      return acc
+    }, {}),
   }))
 }
 

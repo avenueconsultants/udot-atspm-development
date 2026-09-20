@@ -30,7 +30,7 @@ const MeasureDefaults = () => {
   }
 
   const handleChartOptionsUpdate = (update: Default) => {
-    mutate({ value: update.value, id: update.id })
+    mutate({ value: String(update.value), id: update.id })
   }
 
   if (isLoading) return <div>Loading...</div>

@@ -14,14 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { patchMeasureOptionFromKey } from '@/api/config'
+import { MeasureOption, patchMeasureOptionFromKey } from '@/api/config'
+import { ChartDefaults } from '@/features/charts/types'
 import { MutationConfig, queryClient } from '@/lib/react-query'
 import { useNotificationStore } from '@/stores/notifications'
 import { useMutation } from '@tanstack/react-query'
 
 type UpdateChartDefault = {
-  value: string
-  id: number
+  [Key in 'id' | 'value']: NonNullable<MeasureOption[Key]>
 }
 
 export const updateChartDefaults = ({
@@ -45,14 +45,18 @@ export const useUpdateChartDefaults = ({
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['chartdefaults'] })
 
-      const previousChartDefaults =
-        queryClient.getQueryData<UpdateChartDefault[]>(['chartdefaults'])
+      const previousChartDefaults = queryClient.getQueryData<ChartDefaults[]>([
+        'chartdefaults',
+      ])
 
       return { previousChartDefaults }
     },
     onError: (_, __, context: any) => {
       if (context?.previousChartDefaults) {
-        queryClient.setQueryData(['chartdefaults'], context.previousChartDefaults)
+        queryClient.setQueryData(
+          ['chartdefaults'],
+          context.previousChartDefaults
+        )
       }
       addNotification({
         type: 'error',

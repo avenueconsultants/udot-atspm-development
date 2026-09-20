@@ -16,16 +16,15 @@
 // #endregion
 jest.mock('@/api/config', () => ({ getMeasureType: jest.fn() }))
 
-import { getMeasureType } from '@/api/config'
+import { getMeasureType, MeasureOption, MeasureType } from '@/api/config'
 import { ChartType } from '@/features/charts/common/types'
-import type { Default } from '@/features/charts/types'
 import { getChartDefaults } from './getChartDefaults'
 
 // The adapter between GET /MeasureType?expand=measureOptions and what the
 // option panels and the report request read: options keyed by name, with
 // stored values the report API no longer accepts mapped to ones it does.
 
-const measure = (options: { id: number; option: string; value: string }[]) => ({
+const measure = (options: MeasureOption[]): MeasureType => ({
   id: 2,
   name: 'Split Monitor',
   abbreviation: 'SM',
@@ -33,17 +32,10 @@ const measure = (options: { id: number; option: string; value: string }[]) => ({
   measureOptions: options,
 })
 
-// ChartDefaults still types measureOptions as the array the API serves,
-// though the adapter keys it by option name; read it as what it is.
-const defaultsFor = async (
-  options: { id: number; option: string; value: string }[]
-) => {
+const defaultsFor = async (options: MeasureOption[]) => {
   ;(getMeasureType as jest.Mock).mockResolvedValue([measure(options)])
   const [chart] = await getChartDefaults()
-  return {
-    ...chart,
-    measureOptions: chart.measureOptions as unknown as Record<string, Default>,
-  }
+  return chart
 }
 
 describe('getChartDefaults', () => {
@@ -86,4 +78,26 @@ describe('getChartDefaults', () => {
     expect(chart.measureOptions.percentileSplit.value).toBe('50')
     expect(chart.measureOptions.binSize.value).toBe('None')
   })
+})
+
+it('handles a measure with no expanded options', async () => {
+  jest
+    .mocked(getMeasureType)
+    .mockResolvedValue([{ id: 1, measureOptions: null }])
+  expect(await getChartDefaults()).toEqual([
+    { id: 1, chartType: 'Unknown', measureOptions: {} },
+  ])
+})
+
+it('omits incomplete defaults and keeps valid zero and empty-string values', async () => {
+  const chart = await defaultsFor([
+    { option: 'missingId', value: '15' },
+    { id: 2, option: null, value: '15' },
+    { id: 3, option: 'missingValue', value: null },
+    { id: 4, option: 'zero', value: '0' },
+    { id: 5, option: 'empty', value: '' },
+  ])
+  expect(Object.keys(chart.measureOptions)).toEqual(['zero', 'empty'])
+  expect(chart.measureOptions.zero.value).toBe('0')
+  expect(chart.measureOptions.empty.value).toBe('')
 })

@@ -17,7 +17,7 @@ import { PurdueSplitFailureChartOptions } from '@/features/charts/purdueSplitFai
 import { SplitMonitorChartOptions } from '@/features/charts/splitMonitor/components/SplitMonitorChartOptions'
 import { TimingAndActuationChartOptions } from '@/features/charts/timingAndActuation/components/TimingAndActuationChartOptions'
 import { TurningMovementCountsChartOptions } from '@/features/charts/turningMovementCounts/components/TurningMovementCountsChartOptions'
-import { Default } from '@/features/charts/types'
+import { ChartOptionDefaults, Default } from '@/features/charts/types'
 import { getDisplayNameFromChartType } from '@/features/charts/utils'
 import { WaitTimeChartOptions } from '@/features/charts/waitTime/components/WaitTimeOptions'
 import { YellowAndRedActuationsChartOptions } from '@/features/charts/yellowAndRedActuations/components/YellowAndRedActuationsChartOptions'
@@ -78,22 +78,15 @@ const SelectChart = ({
     chartDefaultsData.find((chart) => chart.chartType === chartType)
       ?.measureOptions
 
-  const chartDefaultsForUi: Default[] | undefined = useMemo(() => {
+  const chartDefaultsForUi = useMemo(() => {
     if (!chartDefaultsRaw) return undefined
     if (!chartOptions || Object.keys(chartOptions).length === 0)
       return chartDefaultsRaw
 
-    const asRecord = chartDefaultsRaw as unknown as Record<
-      string,
-      { value: unknown; [k: string]: unknown }
-    >
-
-    const merged: Record<string, { value: unknown; [k: string]: unknown }> = {
-      ...asRecord,
-    }
+    const merged: ChartOptionDefaults = { ...chartDefaultsRaw }
 
     Object.entries(chartOptions).forEach(([key, overrideValue]) => {
-      if (overrideValue === undefined || overrideValue === null) return
+      if (overrideValue == null || overrideValue instanceof Date) return
 
       if (merged[key]) {
         merged[key] = { ...merged[key], value: overrideValue }
@@ -102,10 +95,10 @@ const SelectChart = ({
       }
     })
 
-    return merged as unknown as Default[]
+    return merged
   }, [chartDefaultsRaw, chartOptions])
 
-  const simplifyChartDefaults = (chartDefaults: Default[]) => {
+  const simplifyChartDefaults = (chartDefaults: ChartOptionDefaults) => {
     return chartDefaults
       ? Object.entries(chartDefaults).reduce((acc, [key, { value }]) => {
           acc[key] = value
@@ -189,10 +182,7 @@ const SelectChart = ({
     measureTypesPending,
   ])
 
-  const handleChartOptionsUpdate = (update: {
-    option: string
-    value: string | number
-  }) => {
+  const handleChartOptionsUpdate = (update: Default) => {
     setChartOptions((prevOptions) => {
       return {
         ...prevOptions,
