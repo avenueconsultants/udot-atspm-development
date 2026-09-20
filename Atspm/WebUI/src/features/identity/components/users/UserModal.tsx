@@ -73,7 +73,7 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
   const {
     control,
     formState: { errors },
-    getValues,
+    handleSubmit,
     reset,
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -88,17 +88,16 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
   }, [data, reset])
 
   const onSubmit = async (formData: UserFormData) => {
+    if (isSaving) return
     setIsSaving(true)
     try {
       await Promise.resolve(onSave(formData))
       onClose()
+    } catch {
+      // The page reports the error; keep these edits available for retry.
     } finally {
       setIsSaving(false)
     }
-  }
-
-  const handleSaveClick = async () => {
-    await onSubmit(getValues())
   }
 
   const selectLoading =
@@ -112,10 +111,10 @@ const UserModal = ({ isOpen, open, onClose, data, onSave }: ModalProps) => {
       isOpen={modalOpen}
       onClose={onClose}
       title="User Details"
+      onSubmit={handleSubmit(onSubmit)}
       dialogProps={{ sx: { width: 500, pt: 0 } }}
       saveButtonProps={{
         disabled: isSaving,
-        onClick: handleSaveClick,
       }}
     >
       <Controller

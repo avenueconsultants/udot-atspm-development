@@ -15,6 +15,7 @@ import {
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { Backdrop, CircularProgress } from '@mui/material'
 
@@ -78,9 +79,10 @@ const UsersAdmin = () => {
     } catch (error) {
       console.error('Mutation Error:', error)
       addNotification({
-        title: `Error updating user: ${error.message}`,
+        title: `Error updating user: ${getApiErrorMessage(error)}`,
         type: 'error',
       })
+      throw error
     }
   }
 
