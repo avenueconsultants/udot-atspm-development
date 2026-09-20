@@ -1,4 +1,4 @@
-import { AppErrorFallback } from '@/components/AppErrorFallback'
+import { AppErrorBoundary } from '@/components/AppErrorBoundary'
 import Layout from '@/components/layout'
 import { RuntimeEnvProvider } from '@/contexts/RuntimeEnvContext'
 import { FeatureFlagProvider } from '@/feature-flags/FeatureFlagContext'
@@ -19,7 +19,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { NuqsAdapter } from 'nuqs/adapters/next/pages'
 import { useEffect, useState } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
 import { HydrationBoundary, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
@@ -85,12 +84,9 @@ export default function App({ Component, pageProps }: AppProps) {
                           content="width=device-width, minimum-scale=1, maximum-scale=5"
                         />
                       </Head>
-                      <ErrorBoundary
-                        FallbackComponent={AppErrorFallback}
-                        resetKeys={[router.asPath]}
-                      >
+                      <AppErrorBoundary resetKey={router.asPath}>
                         <Component {...pageProps} />
-                      </ErrorBoundary>
+                      </AppErrorBoundary>
                       {process.env.NODE_ENV === 'development' && (
                         <ReactQueryDevtools initialIsOpen={false} />
                       )}

@@ -67,10 +67,11 @@ function getColorFromName(firstName = '', lastName = ''): string {
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  // Deliberately ungated - see the matching comment on Topbar's
-  // useGetMenuItems call. A logged-out 401 no longer crashes the page;
-  // src/lib/react-query.ts stops auth errors from throwing app-wide.
-  const { data: userData, refetch } = useGetProfileProfile<ProfileData>()
+  // Profile lookup failures leave the account controls usable. Keep the
+  // request independent of locally cached session and claim state.
+  const { data: userData, refetch } = useGetProfileProfile<ProfileData>({
+    query: { throwOnError: false },
+  })
   const { closeSideBar } = useSidebarStore()
 
   useEffect(() => {
