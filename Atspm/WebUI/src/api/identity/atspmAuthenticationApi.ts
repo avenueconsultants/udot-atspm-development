@@ -33,6 +33,7 @@ import type {
   ForgotPasswordViewModel,
   LoginViewModel,
   ProblemDetails,
+  ProfileViewModel,
   RegisterViewModel,
   UpdateProfileViewModel,
   UserDTO,
@@ -1402,7 +1403,7 @@ export const getProfileProfile = (
 ) => {
 
 
-      return identityRequest<unknown>(
+      return identityRequest<ProfileViewModel>(
       {url: `/Profile`, method: 'GET', signal
     },
       );

@@ -37,7 +37,8 @@ namespace Identity.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetProfile()
+        [ProducesResponseType(typeof(ProfileViewModel), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ProfileViewModel>> GetProfile()
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)

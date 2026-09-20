@@ -1,5 +1,8 @@
-import { useGetProfileProfile } from '@/api/identity'
-import type { ProfileData } from '@/features/identity/types/profile'
+import {
+  useGetProfileProfile,
+  type ProfileViewModel,
+  type UpdateProfileViewModel,
+} from '@/api/identity'
 import ProfilePage from '@/pages/user/profile'
 import { IDENTITY_API } from '@/test/fixtures/api'
 import { server } from '@/test/msw/server'
@@ -17,12 +20,12 @@ jest.mock('@/stores/notifications', () => ({
 }))
 
 function ProfileConsumer() {
-  const { data } = useGetProfileProfile<ProfileData>()
+  const { data } = useGetProfileProfile()
   return <output aria-label="Account name">{data?.firstName}</output>
 }
 
 it('preserves rejected profile edits and refreshes shared profile data after retry', async () => {
-  let profile: ProfileData = {
+  let profile: ProfileViewModel = {
     firstName: 'Jane',
     lastName: 'Doe',
     agency: 'UDOT',
@@ -42,7 +45,7 @@ it('preserves rejected profile edits and refreshes shared profile data after ret
       }
       profile = {
         ...profile,
-        ...((await request.json()) as Partial<ProfileData>),
+        ...((await request.json()) as UpdateProfileViewModel),
       }
       return new HttpResponse(null, { status: 204 })
     })

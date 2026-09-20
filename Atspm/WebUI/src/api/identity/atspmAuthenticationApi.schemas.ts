@@ -84,6 +84,21 @@ export interface ProblemDetails {
   [key: string]: unknown;
 }
 
+export interface ProfileViewModel {
+  /** @nullable */
+  firstName?: string | null;
+  /** @nullable */
+  lastName?: string | null;
+  /** @nullable */
+  agency?: string | null;
+  /** @nullable */
+  email?: string | null;
+  /** @nullable */
+  phoneNumber?: string | null;
+  /** @nullable */
+  roles?: string | null;
+}
+
 export interface RegisterViewModel {
   /** @minLength 1 */
   email: string;

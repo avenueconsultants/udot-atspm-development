@@ -5,7 +5,6 @@ import Link from 'next/link'
 
 import { useGetProfileProfile } from '@/api/identity/atspmAuthenticationApi'
 import Login from '@/features/identity/components/signin'
-import { ProfileData } from '@/features/identity/types/profile'
 import { useSidebarStore } from '@/stores/sidebar'
 import {
   Avatar,
@@ -69,7 +68,7 @@ export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   // Profile lookup failures leave the account controls usable. Keep the
   // request independent of locally cached session and claim state.
-  const { data: userData, refetch } = useGetProfileProfile<ProfileData>({
+  const { data: userData, refetch } = useGetProfileProfile({
     query: { throwOnError: false },
   })
   const { closeSideBar } = useSidebarStore()
@@ -124,7 +123,10 @@ export default function UserMenu() {
           sx={{
             bgcolor:
               isLoggedIn && userData
-                ? getColorFromName(userData?.firstName, userData?.lastName)
+                ? getColorFromName(
+                    userData.firstName ?? '',
+                    userData.lastName ?? ''
+                  )
                 : '',
           }}
         >

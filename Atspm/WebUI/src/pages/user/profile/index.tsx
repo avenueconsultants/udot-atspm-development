@@ -4,7 +4,6 @@ import {
   useGetProfileUpdateProfile,
 } from '@/api/identity/atspmAuthenticationApi'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { ProfileData } from '@/features/identity/types/profile'
 import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,7 +34,7 @@ type FormData = z.infer<typeof schema>
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
 
-  const { data: profile } = useGetProfileProfile<ProfileData>()
+  const { data: profile } = useGetProfileProfile()
   const { mutateAsync: saveUser } = useGetProfileUpdateProfile()
   const { addNotification } = useNotificationStore()
   const queryClient = useQueryClient()
@@ -60,10 +59,10 @@ const ProfilePage = () => {
   useEffect(() => {
     if (profile) {
       const init = {
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        agency: profile.agency,
-        email: profile.email,
+        firstName: profile.firstName ?? '',
+        lastName: profile.lastName ?? '',
+        agency: profile.agency ?? '',
+        email: profile.email ?? '',
       }
       initial.current = init
       reset(init)
