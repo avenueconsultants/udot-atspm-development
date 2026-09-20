@@ -1,9 +1,12 @@
 import {
+  getGetProfileProfileQueryKey,
   useGetProfileProfile,
   useGetProfileUpdateProfile,
 } from '@/api/identity/atspmAuthenticationApi'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { ProfileData } from '@/features/identity/types/profile'
+import { getApiErrorMessage } from '@/lib/apiError'
+import { useNotificationStore } from '@/stores/notifications'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Box,
@@ -15,6 +18,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -32,7 +36,9 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false)
 
   const { data: profile } = useGetProfileProfile<ProfileData>()
-  const { mutate: saveUser } = useGetProfileUpdateProfile()
+  const { mutateAsync: saveUser } = useGetProfileUpdateProfile()
+  const { addNotification } = useNotificationStore()
+  const queryClient = useQueryClient()
 
   const initial = useRef<FormData | null>(null)
 
@@ -40,7 +46,7 @@ const ProfilePage = () => {
     control,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -65,9 +71,21 @@ const ProfilePage = () => {
     }
   }, [profile, reset])
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    saveUser({ data })
-    setIsEditing(false)
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      await saveUser({ data })
+      setIsEditing(false)
+      addNotification({ type: 'success', title: 'Profile updated' })
+      await queryClient.invalidateQueries({
+        queryKey: getGetProfileProfileQueryKey(),
+      })
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Failed to update profile',
+        message: getApiErrorMessage(error),
+      })
+    }
   }
 
   const cancel = () => {
@@ -98,6 +116,7 @@ const ProfilePage = () => {
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
             <Button
               variant="contained"
+              disabled={isSubmitting}
               onClick={
                 isEditing ? handleSubmit(onSubmit) : () => setIsEditing(true)
               }
@@ -105,7 +124,12 @@ const ProfilePage = () => {
               {isEditing ? 'Save' : 'Edit'}
             </Button>
             {isEditing && (
-              <Button onClick={cancel} variant="outlined" color="inherit">
+              <Button
+                onClick={cancel}
+                disabled={isSubmitting}
+                variant="outlined"
+                color="inherit"
+              >
                 Cancel
               </Button>
             )}
@@ -152,7 +176,7 @@ const ProfilePage = () => {
                     {...field}
                     label={label}
                     fullWidth
-                    disabled={!isEditing}
+                    disabled={!isEditing || isSubmitting}
                     error={!!error}
                     helperText={error?.message}
                   />
