@@ -46,7 +46,7 @@ const WatchdogSummaryReport = () => {
     { date: toUTCDateStamp(endDateTime) },
     { query: { throwOnError: false } }
   )
-  const isLoading =
+  const isGeneratePending =
     isDashboardPending || isDeviceCountFetching || isDetectionTypeCountFetching
   const requestError = error ?? deviceCountError ?? detectionTypeCountError
   const data = {
@@ -91,7 +91,7 @@ const WatchdogSummaryReport = () => {
         />
       </StyledPaper>
       <LoadingButton
-        loading={isLoading}
+        loading={isGeneratePending}
         sx={{ mt: 2, padding: '10px', mb: 2 }}
         loadingPosition="start"
         startIcon={<PlayArrowIcon />}
@@ -107,9 +107,12 @@ const WatchdogSummaryReport = () => {
         </Box>
       )}
 
-      {!isLoading && dashboardData && deviceCount && detectionTypeCount && (
-        <WatchdogChartsContainer data={data} isLoading={isLoading} />
-      )}
+      {!isDashboardPending &&
+        dashboardData &&
+        deviceCount &&
+        detectionTypeCount && (
+          <WatchdogChartsContainer data={data} isLoading={isDashboardPending} />
+        )}
     </>
   )
 }
