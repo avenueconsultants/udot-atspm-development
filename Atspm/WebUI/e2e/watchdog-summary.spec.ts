@@ -455,3 +455,83 @@ for (const failure of [
     }
   )
 }
+
+test('preserves chart selections while count queries refresh after reconnect', async ({
+  page,
+  apiHosts,
+}) => {
+  const { reportRequests } = await stubSummary(page, apiHosts)
+  await openSummary(page)
+  await page.getByRole('button', { name: 'Generate Summary' }).click()
+  await expectCharts(page)
+  const toggle = page.getByRole('checkbox', {
+    name: 'Unconfigured issue types',
+  })
+  await toggle.check()
+  await page.getByText('LowDetectorHits', { exact: true }).click()
+  await expect
+    .poll(() => series(page, chartIds[3]))
+    .toMatchObject([{ data: [] }])
+
+  let releaseCounts: () => void = () => {
+    throw new Error('Count response not initialized')
+  }
+  const countsReady = new Promise<void>((resolve) => {
+    releaseCounts = resolve
+  })
+  const refreshedPaths: string[] = []
+  await page.route(
+    (url) =>
+      url.origin === apiHosts.config &&
+      (url.pathname.endsWith('/Device/GetActiveDevicesCount') ||
+        url.pathname.endsWith('/Location/GetDetectionTypeCount')),
+    async (route) => {
+      if (route.request().method() !== 'GET') return route.fallback()
+      const pathname = new URL(route.request().url()).pathname
+      refreshedPaths.push(pathname)
+      await countsReady
+      await route.fulfill({
+        json: pathname.endsWith('/Device/GetActiveDevicesCount')
+          ? summaryDevices
+          : summaryDetectionCounts,
+      })
+    }
+  )
+  try {
+    // These are the browser events React Query uses to resume stale queries.
+    await page.evaluate(() => window.dispatchEvent(new Event('offline')))
+    await page.evaluate(() => window.dispatchEvent(new Event('online')))
+    await expect.poll(() => refreshedPaths.length).toBe(2)
+    expect(
+      refreshedPaths.some((path) =>
+        path.endsWith('/Device/GetActiveDevicesCount')
+      )
+    ).toBe(true)
+    expect(
+      refreshedPaths.some((path) =>
+        path.endsWith('/Location/GetDetectionTypeCount')
+      )
+    ).toBe(true)
+    await expect(
+      page.getByRole('button', { name: 'Generate Summary' })
+    ).toBeDisabled()
+    await expect(toggle).toBeChecked()
+    await expect(
+      page.locator('#' + chartIds[2] + ' canvas').first()
+    ).toBeVisible()
+    await expect
+      .poll(() => series(page, chartIds[3]))
+      .toMatchObject([{ data: [] }])
+    releaseCounts()
+    await expect(
+      page.getByRole('button', { name: 'Generate Summary' })
+    ).toBeEnabled()
+    await expect(toggle).toBeChecked()
+    await expect
+      .poll(() => series(page, chartIds[3]))
+      .toMatchObject([{ data: [] }])
+    expect(reportRequests).toHaveLength(1)
+  } finally {
+    releaseCounts()
+  }
+})
