@@ -102,7 +102,13 @@ await app.ApplyMigrations<IdentityContext>(async (services) =>
 //Error handling
 if (!app.Environment.IsProduction())
 {
-    app.Services.PrintHostInformation();
+    // Swagger export executes startup during builds; keep configuration out of build logs.
+    if (!string.Equals(Environment.GetEnvironmentVariable("ATSPM_SWAGGER_EXPORT"),
+        "true", StringComparison.OrdinalIgnoreCase))
+    {
+        app.Services.PrintHostInformation();
+    }
+
     app.UseDeveloperExceptionPage();
 }
 else

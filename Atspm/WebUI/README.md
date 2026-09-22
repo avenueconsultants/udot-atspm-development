@@ -22,6 +22,43 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Updating API clients
+
+After changing an API controller, request/response model, or OpenAPI configuration,
+run this command from `Atspm/WebUI`:
+
+```bash
+npm run sync:api
+```
+
+Install the WebUI dependencies with `npm ci` first. The command also needs a .NET
+SDK that can build the APIs' `net8.0` projects and the .NET 8 runtime for export.
+It restores the pinned Swagger CLI, builds ConfigApi, ReportApi, DataApi, and
+IdentityApi in Debug, exports their specifications, then runs Orval for all five
+clients. Speed Management uses the existing `api-specs/speed-spec.json` because
+its backend is maintained separately.
+
+Export runs in Development with in-memory database settings, migrations disabled,
+and configuration dumping suppressed. A running API or database is not required.
+The command stops on restore, build, export, or client-generation failure. All four
+backend exports must succeed before the saved specifications are replaced. An
+Orval failure can leave updated specs or partial generated client changes; fix the
+error and rerun the command before committing.
+
+Review and commit the API projects' `*-spec.json` files and `src/api` together.
+Ordinary .NET builds no longer export specifications automatically.
+
+`npm run generate:api` remains available to regenerate only the frontend clients
+from saved specs. `npm run check:api` checks those clients against the committed
+specs; it does not rebuild the backend.
+
+To export just one API without regenerating clients, restore tools from `Atspm`
+with `dotnet tool restore`, then run from that API's project directory:
+
+```bash
+dotnet msbuild -restore -target:ExportSwaggerSpec
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

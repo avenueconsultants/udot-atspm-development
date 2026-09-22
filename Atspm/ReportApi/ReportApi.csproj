@@ -14,7 +14,6 @@
 		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Version>5.3.1</Version>
-		<GenerateSwaggerSpec>true</GenerateSwaggerSpec>
 		<SwaggerSpecName>reports</SwaggerSpecName>
 	</PropertyGroup>
 
