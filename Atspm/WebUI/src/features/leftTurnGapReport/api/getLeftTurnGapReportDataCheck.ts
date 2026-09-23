@@ -14,41 +14,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { useQuery } from 'react-query'
+import {
+  getLeftTurnGapReportDataCheckReportData,
+  LeftTurnGapDataCheckOptions,
+} from '@/api/reports'
+import { useQuery } from '@tanstack/react-query'
 
-import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-
-import { reportsAxios } from '@/lib/axios'
-
-export const getLeftTurnGapReportDataCheck = async (approachIds, body) => {
-  const result = await Promise.all(
-    approachIds.map(async (approachId) => {
-      return await reportsAxios.post(
-        `/api/v1/LeftTurnGapReportDataCheck/getReportData`,
-        { ...body, approachId: approachId }
-      )
-    })
+// A check is one generated request per selected approach. Include the selection
+// in the cache key so a different approach set cannot reuse an earlier check.
+export const getLeftTurnGapReportDataCheck = (
+  approachIds: number[],
+  body: LeftTurnGapDataCheckOptions,
+  signal?: AbortSignal
+) =>
+  Promise.all(
+    approachIds.map((approachId) =>
+      getLeftTurnGapReportDataCheckReportData({ ...body, approachId }, signal)
+    )
   )
-  return result
-}
-
-type QueryFnType = typeof getLeftTurnGapReportDataCheck
-
-type UseLeftTurnGapReportOptions = {
-  config?: QueryConfig<QueryFnType>
-  body: any
-  approachIds: string[]
-}
 
 export const useLeftTurnGapReportDataCheck = ({
-  config,
   body,
   approachIds,
-}: UseLeftTurnGapReportOptions) => {
-  return useQuery<ExtractFnReturnType<QueryFnType>>({
-    ...config,
-    queryKey: ['LeftTurnGapReportDataCheck', body],
+}: {
+  body: LeftTurnGapDataCheckOptions
+  approachIds: number[]
+}) =>
+  useQuery({
+    queryKey: ['LeftTurnGapReportDataCheck', body, approachIds],
     enabled: false,
-    queryFn: () => getLeftTurnGapReportDataCheck(approachIds, body),
+    throwOnError: false,
+    queryFn: ({ signal }) =>
+      getLeftTurnGapReportDataCheck(approachIds, body, signal),
   })
-}

@@ -1,7 +1,7 @@
+import { useAccountLogin } from '@/api/identity/atspmAuthenticationApi'
 import NextImage from '@/components/NextImage'
-import { useLogin } from '@/features/identity/api/getLogin'
-import IdentityDto from '@/features/identity/types/identityDto'
 import { setSecureCookie } from '@/features/identity/utils'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { buildApiUrl } from '@/lib/axios'
 import { getEnv } from '@/utils/getEnv'
 import { LoadingButton } from '@mui/lab'
@@ -16,25 +16,18 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 
 export default function Signin() {
-  const [data, setData] = useState<IdentityDto>()
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [errors, setErrors] = useState<string | null>(null)
   const [emailError, setEmailError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const {
-    refetch,
-    data: queryData,
+    mutate: login,
+    data,
     status,
-    isLoading,
+    isPending: isLoading,
     error: queryDataError,
-  } = useLogin({ email, password })
-
-  useEffect(() => {
-    if (queryData) {
-      setData(queryData as IdentityDto)
-    }
-  }, [data, queryData])
+  } = useAccountLogin()
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -65,14 +58,14 @@ export default function Signin() {
     }
 
     if (isValid) {
-      refetch()
+      login({ data: { email, password, rememberMe: false } })
     }
   }
 
   useEffect(() => {
     setEmailError(null)
     if (queryDataError) {
-      setErrors(queryDataError.response.data.message)
+      setErrors(getApiErrorMessage(queryDataError, 'Invalid email or password'))
     }
   }, [queryDataError, email])
 
@@ -80,9 +73,9 @@ export default function Signin() {
     setPasswordError(null)
   }, [password])
 
-  if (status === 'success' && data !== undefined) {
+  if (status === 'success' && data?.token) {
     setSecureCookie('token', data.token)
-    setSecureCookie('claims', data.claims.join(','))
+    setSecureCookie('claims', (data.claims ?? []).join(','))
     setSecureCookie('loggedIn', 'True')
     window.location.href = '/performance-measures'
   }

@@ -1,4 +1,4 @@
-import { DetectionType, Detector } from '@/features/locations/types'
+import type { DetectionType, Detector } from '@/api/config'
 import {
   Avatar,
   AvatarGroup,
@@ -14,7 +14,7 @@ import {
 import React, { useState } from 'react'
 
 interface DetectionTypesProps {
-  detector: Detector
+  detector: Pick<Detector, 'detectionTypes'>
   detectionTypes: DetectionType[]
   onUpdate?: (newDetectionTypes: DetectionType[]) => void
   readonly?: boolean
@@ -30,7 +30,7 @@ const DetectionTypesCell = ({
   const theme = useTheme()
 
   const valueAbbreviations = new Set(
-    detector.detectionTypes?.map((dt) => dt.abbreviation)
+    detector.detectionTypes?.map((dt) => dt.abbreviation).filter(Boolean)
   )
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -49,9 +49,10 @@ const DetectionTypesCell = ({
     )
     if (!selectedOption) return
     const isSelected = valueAbbreviations.has(abbreviation)
+    const currentDetectionTypes = detector.detectionTypes ?? []
     const newDetectionTypes = isSelected
-      ? detector.detectionTypes.filter((dt) => dt.abbreviation !== abbreviation)
-      : [...detector.detectionTypes, selectedOption]
+      ? currentDetectionTypes.filter((dt) => dt.abbreviation !== abbreviation)
+      : [...currentDetectionTypes, selectedOption]
     onUpdate(newDetectionTypes)
   }
 
@@ -76,7 +77,10 @@ const DetectionTypesCell = ({
       >
         <AvatarGroup max={12}>
           {detectionTypes.map((option) => (
-            <Tooltip key={option.id} title={option.description}>
+            <Tooltip
+              key={option.id ?? option.abbreviation}
+              title={option.description ?? option.abbreviation}
+            >
               <Avatar
                 sx={{
                   bgcolor: valueAbbreviations.has(option.abbreviation)
@@ -89,7 +93,7 @@ const DetectionTypesCell = ({
                   printColorAdjust: 'exact',
                 }}
               >
-                {option.abbreviation}
+                {option.abbreviation ?? ''}
               </Avatar>
             </Tooltip>
           ))}
@@ -103,8 +107,10 @@ const DetectionTypesCell = ({
         >
           {detectionTypes.map((option) => (
             <MenuItem
-              key={option.id}
-              onClick={() => handleSelect(option.abbreviation)}
+              key={option.id ?? option.abbreviation}
+              onClick={() =>
+                option.abbreviation && handleSelect(option.abbreviation)
+              }
             >
               <Checkbox checked={valueAbbreviations.has(option.abbreviation)} />
               <ListItemText primary={option.description} />

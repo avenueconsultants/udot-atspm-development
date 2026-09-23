@@ -14,12 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import {
-  BaseChartData,
-  BaseChartOptions,
-  ChartType,
-} from '@/features/charts/common/types'
-import { EChartsOption } from 'echarts'
+import { TimingAndActuationsForPhaseResult } from '@/api/reports'
+import { BaseChartOptions, ChartType } from '@/features/charts/common/types'
 
 export interface TimingAndActuationChartOptions extends BaseChartOptions {
   showPedestrianIntervals: boolean
@@ -51,10 +47,6 @@ export interface TimingAndActuationChartOptionsDefaults {
   globalEventParamsList: { id: number; value: string; option: string }
 }
 
-export interface TimingAndActuationEChartsOption extends EChartsOption {
-  amountOfSegments: number
-}
-
 export interface DetectorEvent {
   detectorOn: string
   detectorOff: string
@@ -75,27 +67,7 @@ export interface BasicDetectors {
   events: DetectorEvent[]
 }
 
-export interface AdvancedDetectors extends BasicDetectors {
-  isOffset: boolean
-}
-
-export interface RawTimingAndActuationData extends BaseChartData {
-  phaseNumber: number
-  isPhaseOverLap: boolean
-  phaseNumberSort: string
-  getPermissivePhase: boolean
-  pedestrianIntervals: PedestrianInterval[] | []
-  pedestrianEvents: BasicDetectors[] | []
-  stopBarDetectors: BasicDetectors[] | []
-  laneByLanesDetectors: BasicDetectors[] | []
-  advanceCountDetectors: AdvancedDetectors[] | []
-  advancePresenceDetectors: AdvancedDetectors[] | []
-  cycleAllEvents: Cycle[] | null
-  phaseCustomEvents: unknown
-  approachId: number
-  approachDescription: string
-  phaseType: string
-}
+export type RawTimingAndActuationData = TimingAndActuationsForPhaseResult
 
 export interface RawTimingAndActuationResponse {
   type: ChartType.TimingAndActuation

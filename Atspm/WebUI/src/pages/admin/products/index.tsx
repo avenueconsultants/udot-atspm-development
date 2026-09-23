@@ -1,4 +1,10 @@
-import { Product } from '@/api/config'
+import {
+  Product,
+  useDeleteProductFromKey,
+  useGetProduct,
+  usePatchProductFromKey,
+  usePostProduct,
+} from '@/api/config'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
@@ -7,33 +13,27 @@ import {
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import {
-  useCreateProduct,
-  useDeleteProduct,
-  useEditProduct,
-  useGetProducts,
-} from '@/features/products/api/index'
 import ProductEditorModal from '@/features/products/components/ProductEditorModal'
+import { useNotificationStore } from '@/stores/notifications'
 import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 
 const ProductsAdmin = () => {
   const pageAccess = useViewPage(PageNames.Products)
+  const { addNotification } = useNotificationStore()
 
   const hasDeviceEditClaim = useUserHasClaim('Device:Edit')
   const hasDeviceDeleteClaim = useUserHasClaim('Device:Delete')
 
-  const { mutateAsync: createMutation } = useCreateProduct()
-  const { mutateAsync: deleteMutation } = useDeleteProduct()
-  const { mutateAsync: editMutation } = useEditProduct()
+  const { mutateAsync: createMutation } = usePostProduct()
+  const { mutateAsync: deleteMutation } = useDeleteProductFromKey()
+  const { mutateAsync: editMutation } = usePatchProductFromKey()
 
   const {
-    data: productData,
+    data: products,
     isLoading,
     refetch: refetchProducts,
-  } = useGetProducts()
-
-  const products = productData?.value
+  } = useGetProduct()
 
   if (pageAccess.isLoading) {
     return
@@ -54,19 +54,35 @@ const ProductsAdmin = () => {
     if (notes) sanitizedProduct.notes = notes
 
     try {
-      await createMutation(sanitizedProduct)
+      await createMutation({ data: sanitizedProduct })
+      addNotification({
+        title: 'Product created successfully.',
+        type: 'success',
+      })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error creating product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
-  const HandleDeleteProduct = async (id: number) => {
+  const HandleDeleteProduct = async (id: string | number) => {
     try {
-      await deleteMutation(id)
+      await deleteMutation({ key: Number(id) })
+      addNotification({
+        title: 'Product deleted successfully.',
+        type: 'success',
+      })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error deleting product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 
@@ -75,11 +91,19 @@ const ProductsAdmin = () => {
     try {
       await editMutation({
         data: { manufacturer, model, webPage, notes },
-        id,
+        key: id,
+      })
+      addNotification({
+        title: 'Product updated successfully.',
+        type: 'success',
       })
       refetchProducts()
     } catch (error) {
       console.error('Mutation Error:', error)
+      addNotification({
+        title: `Error updating product: ${error instanceof Error ? error.message : error}`,
+        type: 'error',
+      })
     }
   }
 

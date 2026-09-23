@@ -1,6 +1,6 @@
+import { Faq } from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog/ATSPMDialog'
 import TextEditor from '@/components/TextEditor/JoditTextEditor'
-import { Faq } from '@/features/faq/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, FormControl, InputLabel, OutlinedInput } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -45,7 +45,7 @@ const FaqEditorModal = ({ data: faq, isOpen, onClose, onSave }: ModalProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, touchedFields, isSubmitted },
+    formState: { errors, isSubmitted },
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -71,7 +71,7 @@ const FaqEditorModal = ({ data: faq, isOpen, onClose, onSave }: ModalProps) => {
   }
 
   //NEEDED for dialog to properly close without TextEditor errors.
-  const handleClose = (event: {}, reason: string) => {
+  const handleClose = (event: unknown, reason: string) => {
     if (reason === 'backdropClick') {
       setIsClosing(true)
       setTimeout(() => {

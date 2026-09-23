@@ -1,9 +1,13 @@
+import {
+  useDeleteUsersUpdate,
+  useDeleteUsersUserFromUserId,
+  useGetUsersUsers,
+} from '@/api/identity/atspmAuthenticationApi'
+import { UserDTO } from '@/api/identity/atspmAuthenticationApi.schemas'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
-import { useDeleteUser } from '@/features/identity/api/deleteUser'
 import { UserAssignmentCell } from '@/features/identity/components/users/UserAssignmentCell'
-import { useGetAllUsers } from '@/features/identity/api/getAllUsers'
 import UserModal from '@/features/identity/components/users/UserModal'
 import { UserRolesCell } from '@/features/identity/components/users/UserRolesCell'
 import {
@@ -11,10 +15,8 @@ import {
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import UserDto from '@/features/identity/types/userDto'
-import { identityRequest } from '@/lib/axios'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { useNotificationStore } from '@/stores/notifications'
-import { formatInstantAsLocalDate } from '@/utils/dateTime'
 import { Backdrop, CircularProgress } from '@mui/material'
 
 const UsersAdmin = () => {
@@ -24,12 +26,13 @@ const UsersAdmin = () => {
 
   const { addNotification } = useNotificationStore()
 
-  const { mutateAsync: deleteMutation } = useDeleteUser()
+  const { mutateAsync: deleteMutation } = useDeleteUsersUserFromUserId()
+  const { mutateAsync: updateMutation } = useDeleteUsersUpdate()
   const {
     data: allUserData,
     isLoading: usersIsLoading,
     refetch: refetchUsers,
-  } = useGetAllUsers()
+  } = useGetUsersUsers()
 
   const users = allUserData
 
@@ -40,7 +43,7 @@ const UsersAdmin = () => {
           .filter((value) => !Number.isNaN(value))
       : []
 
-  const handleEditUser = async (userData) => {
+  const handleEditUser = async (userData: UserDTO) => {
     const {
       userId,
       firstName,
@@ -54,21 +57,18 @@ const UsersAdmin = () => {
       jurisdictionIds,
     } = userData
     try {
-      await identityRequest({
-        url: '/Users/update',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await updateMutation({
         data: {
-        userId,
-        firstName,
-        lastName,
-        agency,
-        email: email.toLowerCase(),
-        userName: userName.toLowerCase(),
-        roles,
-        areaIds: normalizeIds(areaIds),
-        regionIds: normalizeIds(regionIds),
-        jurisdictionIds: normalizeIds(jurisdictionIds),
+          userId,
+          firstName,
+          lastName,
+          agency,
+          email: email?.toLowerCase(),
+          userName: userName?.toLowerCase(),
+          roles,
+          areaIds: normalizeIds(areaIds),
+          regionIds: normalizeIds(regionIds),
+          jurisdictionIds: normalizeIds(jurisdictionIds),
         },
       })
       addNotification({
@@ -79,15 +79,16 @@ const UsersAdmin = () => {
     } catch (error) {
       console.error('Mutation Error:', error)
       addNotification({
-        title: `Error updating user: ${error.message}`,
+        title: `Error updating user: ${getApiErrorMessage(error)}`,
         type: 'error',
       })
+      throw error
     }
   }
 
-  const handleDeleteUser = async (id: number) => {
+  const handleDeleteUser = async (userId: string | number) => {
     try {
-      await deleteMutation(id)
+      await deleteMutation({ userId: String(userId) })
       addNotification({
         title: `User deleted successfully.`,
         type: 'success',
@@ -110,8 +111,6 @@ const UsersAdmin = () => {
     return {
       ...user,
       roles: user.roles?.sort(),
-      created: formatInstantAsLocalDate(user.created),
-      modified: formatInstantAsLocalDate(user.modified),
     }
   })
 
@@ -184,7 +183,7 @@ const UsersAdmin = () => {
             name={''}
             deleteByKey="userId"
             objectType="User"
-            deleteLabel={(selectedRow: UserDto) => selectedRow.fullName}
+            deleteLabel={(selectedRow: UserDTO) => selectedRow.fullName ?? ''}
             open={false}
             onConfirm={handleDeleteUser}
           />

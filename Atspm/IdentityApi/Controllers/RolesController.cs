@@ -42,6 +42,7 @@ namespace Identity.Controllers
 
         [HttpGet]
         [AuthorizePermission(AtspmAuthorization.Permissions.RolesView)]
+        [ProducesResponseType(typeof(List<RolesResult>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRolesAsync()
         {
             var roles = roleManager.Roles.ToList();

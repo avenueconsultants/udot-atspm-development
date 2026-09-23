@@ -46,8 +46,13 @@ export const safeJsonParse = <T>(s: string | null) => {
   }
 }
 
-/** Format time-of-day as HH:mm:ss from a Date (local time). */
-export const formatTime = (d: Date) => {
+/**
+ * Format time-of-day as HH:mm:ss from a Date (local time). A cleared time
+ * picker hands over null, and a half-typed one an Invalid Date; both mean
+ * "no time chosen", which callers read as the empty string.
+ */
+export const formatTime = (d: Date | null | undefined) => {
+  if (!d || Number.isNaN(d.getTime())) return ''
   return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`
 }
 

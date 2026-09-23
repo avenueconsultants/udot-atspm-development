@@ -27,6 +27,7 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType } from '@/features/charts/common/types'
@@ -58,38 +59,40 @@ export default function transformLeftTurnGapAnalysisData(
 }
 
 function transformData(data: RawLeftTurnGapData) {
-  const {
-    gap1Count,
-    gap2Count,
-    gap3Count,
-    gap4Count,
-    gap1Min,
-    gap1Max,
-    gap2Min,
-    gap2Max,
-    gap3Min,
-    gap3Max,
-    gap4Min,
-    percentTurnableSeries,
-    trendLineGapThreshold,
-  } = data
+  const gap1Count = toDataPoints(data.gap1Count)
+  const gap2Count = toDataPoints(data.gap2Count)
+  const gap3Count = toDataPoints(data.gap3Count)
+  const gap4Count = toDataPoints(data.gap4Count)
+  const percentTurnableSeries = toDataPoints(data.percentTurnableSeries)
+  const gap1Min = data.gap1Min ?? 0
+  const gap1Max = data.gap1Max ?? 0
+  const gap2Min = data.gap2Min ?? 0
+  const gap2Max = data.gap2Max ?? 0
+  const gap3Min = data.gap3Min ?? 0
+  const gap3Max = data.gap3Max ?? 0
+  const gap4Min = data.gap4Min ?? 0
+  const trendLineGapThreshold = data.trendLineGapThreshold ?? 0
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
+  const phaseDescription = data.phaseDescription ?? ''
 
   const info = createInfoString([
     `Detector Type: `,
-    data.detectionTypeDescription,
+    data.detectionTypeDescription ?? '',
   ])
 
-  const titleHeader = `Left Turn Gap Analysis\n${data.locationDescription} - ${data.phaseDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Left Turn Gap Analysis\n${locationDescription} - ${phaseDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
-    title: ['Left Turn Gap Analysis', data.phaseDescription],
-    location: data.locationDescription,
+    title: ['Left Turn Gap Analysis', phaseDescription],
+    location: locationDescription,
     dateRange,
     info,
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
 
   const yAxis = createYAxis(
     false,
@@ -136,10 +139,10 @@ function transformData(data: RawLeftTurnGapData) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.LeftTurnGapAnalysis
   )
 
@@ -200,7 +203,7 @@ function transformData(data: RawLeftTurnGapData) {
   )
 
   const displayProps = createDisplayProps({
-    description: data.approachDescription,
+    description: data.approachDescription ?? '',
   })
 
   const chartOptions: EChartsOption = {

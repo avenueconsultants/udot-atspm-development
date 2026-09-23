@@ -1,10 +1,7 @@
 import { ECharts, SeriesOption } from 'echarts'
 import { useCallback, useMemo, useRef } from 'react'
 import { GpxPoint } from '../gpxFileParser'
-import {
-  GpxUploadOptions,
-  TIME_SPACE_GPX_TRACKS_LEGEND_NAME,
-} from '../types'
+import { GpxUploadOptions, TIME_SPACE_GPX_TRACKS_LEGEND_NAME } from '../types'
 
 const GPX_OVERLAY_SERIES_ID_PREFIXES = ['gpx-', 'srm-'] as const
 
@@ -14,9 +11,7 @@ function isSeriesOption(
   return Boolean(value && typeof value === 'object')
 }
 
-function isGpxOverlaySeries(
-  series: SeriesOption | null | undefined
-): boolean {
+function isGpxOverlaySeries(series: SeriesOption | null | undefined): boolean {
   if (!isSeriesOption(series) || typeof series.id !== 'string') {
     return false
   }
@@ -114,24 +109,6 @@ export const useGpxAnimationHandler = (
             clip: true,
           })
         }
-
-        const entityTracks = upload.parsedEntityData ?? []
-        entityTracks.forEach((track, index) => {
-          series.push({
-            id: `srm-${upload.id}-${track.entityId}-${index}`,
-            name: `SRM ${track.entityId}`,
-            type: 'line',
-            data: buildShiftedGpxData(chart, upload, track.points),
-            color: 'black',
-            symbol: 'none',
-            silent: true,
-            lineStyle: {
-              width: 2,
-              color: 'black',
-            },
-            clip: true,
-          })
-        })
       })
 
     return series

@@ -1,89 +1,16 @@
+import {
+  LeftTurnGapDataCheckResult,
+  LeftTurnGapReportResult,
+} from '@/api/reports'
 import { LoadingButton } from '@mui/lab'
 import { Box } from '@mui/material'
 import { jsPDF } from 'jspdf'
 import Image from 'next/image'
 import React, { useRef } from 'react'
 
-//TODO: Move interfaces into its own file
-
-interface AcceptableGapListItem {
-  [key: string]: number
-}
-
-interface PercentCyclesWithPedsList {
-  [key: string]: number
-}
-
-interface DemandList {
-  [key: string]: number
-}
-
-interface PercentCyclesWithSplitFailList {
-  [key: string]: number
-}
-
-interface LTGRData {
-  startDate: string
-  endDate: string
-  approachDescription: string
-  signalId: string
-  location: string
-  get24HourPeriod: boolean
-  phaseType: string
-  signalType: string
-  speedLimit: number | null
-  peakPeriodDescription: string | null
-  startTime: string
-  endTime: string
-  cyclesWithSplitFailNum: number
-  cyclesWithSplitFailPercent: number
-  cyclesWithPedCallNum: number
-  cyclesWithPedCallPercent: number
-  crossProductValue: number
-  calculatedVolumeBoundary: number
-  gapDurationConsiderForStudy: boolean
-  splitFailsConsiderForStudy: boolean
-  pedActuationsConsiderForStudy: boolean
-  volumesConsiderForStudy: boolean
-  capacity: number
-  demand: number
-  gapOutPercent: number
-  opposingLanes: number
-  crossProductReview: boolean
-  decisionBoundariesReview: boolean
-  vcRatio: number
-  leftTurnVolume: number
-  opposingThroughVolume: number
-  crossProductConsiderForStudy: boolean
-  acceptableGapList: AcceptableGapListItem
-  percentCyclesWithPedsList: PercentCyclesWithPedsList
-  demandList: DemandList
-  percentCyclesWithSplitFailList: PercentCyclesWithSplitFailList
-  direction: string
-  opposingDirection: string
-}
-
-interface ApproachData {
-  leftTurnVolumeOk: boolean
-  gapOutOk: boolean
-  pedCycleOk: boolean
-  insufficientDetectorEventCount: boolean
-  insufficientCycleAggregation: boolean
-  insufficientPhaseTermination: boolean
-  insufficientPedAggregations: boolean
-  insufficientSplitFailAggregations: boolean
-  insufficientLeftTurnGapAggregations: boolean
-  approachId: number
-  approachDescription: string
-  locationIdentifier: string
-  locationDescription: string
-  start: string
-  end: string
-}
-
 interface LTGRReportViewProps {
-  lTGRDataReport: LTGRData[]
-  approaches: ApproachData[]
+  lTGRDataReport: LeftTurnGapReportResult[]
+  approaches: LeftTurnGapDataCheckResult[]
 }
 
 const LTGRReportView: React.FC<LTGRReportViewProps> = ({
@@ -123,7 +50,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
     doc.setFontSize(14)
     doc.text('Signal ID:', logoX, logoY + 29)
     doc.setFont('helvetica', 'bold')
-    doc.text(approaches[0].locationDescription, logoX + 24, logoY + 29)
+    doc.text(approaches[0]?.locationDescription ?? '-', logoX + 24, logoY + 29)
     doc.setFont('helvetica', 'normal')
     // end of header
 
@@ -131,7 +58,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
     lTGRDataReport.forEach((reportData, index) => {
       const approachDirection = reportData.direction || 'NA'
       const approach = approaches.find(
-        (item) => item.approachDescription.split(' ')[0] === approachDirection
+        (item) => item.approachDescription?.split(' ')[0] === approachDirection
       )
 
       const prevApproachDirection =
@@ -235,7 +162,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       const startDateTextWidth = doc.getTextWidth('Start Date: ')
       doc.setFont('helvetica', 'bold')
       doc.text(
-        approach?.start.substring(0, 10) || '-',
+        approach?.start?.substring(0, 10) || '-',
         115 + startDateTextWidth,
         yPos - 18
       )
@@ -245,7 +172,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       const endDateTextWidth = doc.getTextWidth('End Date: ')
       doc.setFont('helvetica', 'bold')
       doc.text(
-        approach?.end.substring(0, 10) || '-',
+        approach?.end?.substring(0, 10) || '-',
         160 + endDateTextWidth,
         yPos - 18
       )
@@ -266,7 +193,9 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       const capacityTextWidth = doc.getTextWidth('Capacity: ')
       doc.setFont('helvetica', 'bold')
       doc.text(
-        Math.round(reportData.capacity).toLocaleString() || '-',
+        reportData.capacity == null
+          ? '-'
+          : Math.round(reportData.capacity).toLocaleString(),
         17 + capacityTextWidth,
         yPos
       )
@@ -276,7 +205,9 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       const demandTextWidth = doc.getTextWidth('Demand: ')
       doc.setFont('helvetica', 'bold')
       doc.text(
-        Math.round(reportData.demand).toLocaleString() || '-',
+        reportData.demand == null
+          ? '-'
+          : Math.round(reportData.demand).toLocaleString(),
         67 + demandTextWidth,
         yPos
       )
@@ -286,7 +217,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       const vcRatioTextWidth = doc.getTextWidth('V/C Ratio: ')
       doc.setFont('helvetica', 'bold')
       doc.text(
-        reportData.vcRatio.toFixed(2).toLocaleString() || '-',
+        reportData.vcRatio?.toFixed(2) ?? '-',
         117 + vcRatioTextWidth,
         yPos
       )
@@ -357,9 +288,6 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       yPos += 10
 
       doc.text('Cycles With Pedestrian Calls: ', 15, yPos + 10)
-      const pedCallsTextWidth = doc.getTextWidth(
-        'Cycles With Pedestrian Calls: '
-      )
       doc.setFont('helvetica', 'bold')
       doc.text(
         `${reportData.cyclesWithPedCallNum || ' '} (${
@@ -393,9 +321,6 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
       doc.setFontSize(8)
 
       doc.text('Left Turn Movement Volume: ', 105, yPos - 20)
-      const leftTurnVolumeTextWidth = doc.getTextWidth(
-        'Left Turn Movement Volume: '
-      )
       doc.setFont('helvetica', 'bold')
       doc.text(
         `${
@@ -526,13 +451,14 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
         </div>
         <h1>Left Turn Gap Report - </h1>
         <h2 style={{ marginTop: '1.1em' }}>
-          {approaches[0].locationDescription}
+          {approaches[0]?.locationDescription ?? '-'}
         </h2>
       </div>
       {lTGRDataReport.map((reportData, index) => {
         const approachDirection = reportData.direction || 'NA'
         const approach = approaches.find(
-          (item) => item.approachDescription.split(' ')[0] === approachDirection
+          (item) =>
+            item.approachDescription?.split(' ')[0] === approachDirection
         )
         const prevApproachDirection =
           index > 0 ? lTGRDataReport[index - 1].direction || 'NA' : null
@@ -605,10 +531,10 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
                 </p>
                 <p style={{ flexGrow: 1 }}>End: {reportData?.endTime || '-'}</p>
                 <p style={{ flexGrow: 1 }}>
-                  Start Date: {approach?.start.substring(0, 10) || '-'}
+                  Start Date: {approach?.start?.substring(0, 10) || '-'}
                 </p>
                 <p style={{ flexGrow: 1 }}>
-                  End Date: {approach?.end.substring(0, 10) || '-'}{' '}
+                  End Date: {approach?.end?.substring(0, 10) || '-'}{' '}
                 </p>
               </div>
             </div>
@@ -653,10 +579,7 @@ const LTGRReportView: React.FC<LTGRReportViewProps> = ({
                     ? Math.round(reportData.demand).toLocaleString()
                     : '-'}
                 </div>
-                <div>
-                  V/C Ratio:{' '}
-                  {reportData.vcRatio.toFixed(2).toLocaleString() || '-'}
-                </div>
+                <div>V/C Ratio: {reportData.vcRatio?.toFixed(2) ?? '-'}</div>
                 <div>Phase: {reportData?.phaseType || '-'}</div>
               </div>
 

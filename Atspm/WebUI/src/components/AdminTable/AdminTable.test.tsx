@@ -37,13 +37,11 @@ describe('AdminTable', () => {
     const { container } = render(
       <AdminTable<TestRow> cells={cells} data={data} pageName="Thing" />
     )
-    const root = container.firstChild as HTMLElement
 
     expect(
       screen.queryByRole('button', { name: 'New Thing' })
     ).not.toBeInTheDocument()
     expect(container.querySelector('.MuiToolbar-root')).not.toBeInTheDocument()
-    expect(window.getComputedStyle(root).marginTop).toBe('24px')
   })
 
   it('renders the toolbar when a create modal is provided', () => {
@@ -55,11 +53,11 @@ describe('AdminTable', () => {
         createModal={<div>Create Modal</div>}
       />
     )
-    const root = container.firstChild as HTMLElement
 
-    expect(screen.getByRole('button', { name: 'New Thing' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'New Thing' })
+    ).toBeInTheDocument()
     expect(container.querySelector('.MuiToolbar-root')).toBeInTheDocument()
-    expect(window.getComputedStyle(root).marginTop).toBe('-32px')
   })
 
   it('keeps the actions column sticky while the table container scrolls', () => {

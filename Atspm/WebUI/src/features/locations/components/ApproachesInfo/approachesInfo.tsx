@@ -1,4 +1,4 @@
-import { LocationExpanded } from '@/features/locations/types'
+import { Location as LocationExpanded } from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import { Box } from '@mui/material'
@@ -132,7 +132,7 @@ function ApproachesInfo({ location }: ApproachesInfoProps) {
     )
   }
 
-  const { approaches } = location
+  const approaches = location.approaches ?? []
 
   const data = approaches.map((approach) => {
     return {

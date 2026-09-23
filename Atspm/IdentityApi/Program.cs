@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Utah.Udot.Atspm.Data;
 using Utah.Udot.Atspm.Data.Models.IdentityModels;
+using Utah.Udot.Atspm.Infrastructure.Common;
 using Utah.Udot.Atspm.Infrastructure.Configuration;
 
 //git 2
@@ -49,9 +50,10 @@ builder.Host
         {
             o.IncludeXmlComments(typeof(Program).Assembly);
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
-            o.CustomSchemaIds(type => type.Name);
+            o.UseGenericAwareSchemaIds();
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
+            o.UseAtspmSchemaConventions();
         });
         s.AddConfiguredCors(builder.Configuration);
         s.AddHttpLogging(l =>
@@ -98,7 +100,12 @@ await app.ApplyMigrations<IdentityContext>(async (services) =>
 //Error handling
 if (!app.Environment.IsProduction())
 {
-    app.Services.PrintHostInformation();
+    // Swagger export executes startup during builds; keep configuration out of build logs.
+    if (!SwaggerExport.InProgress)
+    {
+        app.Services.PrintHostInformation();
+    }
+
     app.UseDeveloperExceptionPage();
 }
 else

@@ -1,11 +1,12 @@
+import {
+  useDeleteWatchDogIgnoreEventFromKey,
+  useGetWatchDogIgnoreEvent,
+  usePatchWatchDogIgnoreEventFromKey,
+  usePostWatchDogIgnoreEvent,
+  WatchDogIssueTypesName,
+} from '@/api/config'
 import { useLocationStore } from '@/features/locations/components/editLocation/locationStore'
 import WatchDogDatePopup from '@/features/locations/components/editLocation/WatchDogDatePopup'
-import {
-  useCreateWatchdogIgnoreEvents,
-  useDeleteWatchdogIgnoreEvents,
-  useEditWatchdogIgnoreEvents,
-  useGetWatchdogIgnoreEvents,
-} from '@/features/watchdog/api/watchdogIgnoreEvents'
 import { useNotificationStore } from '@/stores/notifications'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import { Box, Button, Divider, Paper, Typography } from '@mui/material'
@@ -22,61 +23,57 @@ interface WatchdogOption {
   locationIdentifier: string
   start: string
   end: string
-  issueType: WatchDogIssueTypes
+  issueType: WatchDogIssueTypesName
 }
 
-enum WatchDogIssueTypes {
-  RecordCount = 'RecordCount',
-  ForceOffThreshold = 'ForceOffThreshold',
-  MaxOutThreshold = 'MaxOutThreshold',
-  LowDetectorHits = 'LowDetectorHits',
-  StuckPed = 'StuckPed',
-  UnconfiguredApproach = 'UnconfiguredApproach',
-  UnconfiguredDetector = 'UnconfiguredDetector',
+interface WatchdogChoice {
+  label: string
+  description: string
+  issueType: WatchDogIssueTypesName
 }
 
-const watchdogOptions = [
+const watchdogOptions: WatchdogChoice[] = [
   {
     label: 'Record Count',
     description:
       'Report phases with record counts below a configured threshold over the previous day.',
-    issueType: WatchDogIssueTypes.RecordCount,
+    issueType: WatchDogIssueTypesName.RecordCount,
   },
   {
     label: 'Force Off Thresholds',
     description:
       'Report phases where the percentage of force offs exceeds a configured threshold within a specified number of activations during certain early morning hours.',
-    issueType: WatchDogIssueTypes.ForceOffThreshold,
+    issueType: WatchDogIssueTypesName.ForceOffThreshold,
   },
   {
     label: 'Max Out Thresholds',
     description:
       'Report signals where the percentage of max outs exceeds a configured threshold within a specified number of activations during certain early morning hours.',
-    issueType: WatchDogIssueTypes.MaxOutThreshold,
+    issueType: WatchDogIssueTypesName.MaxOutThreshold,
   },
   {
     label: 'Low Detector Counts',
     description:
       'Report phases with vehicle detector counts below a configured threshold during the previous day’s peak time period.',
-    issueType: WatchDogIssueTypes.LowDetectorHits,
+    issueType: WatchDogIssueTypesName.LowDetectorHits,
   },
   {
     label: 'Stuck Ped',
     description:
       'Report phases with pedestrian activations exceeding a configured threshold during certain early morning hours.',
-    issueType: WatchDogIssueTypes.StuckPed,
+    issueType: WatchDogIssueTypesName.StuckPed,
   },
   {
     label: 'Unconfigured Approach',
     description:
       'Identifies and processes incoming event data from controllers that lack a corresponding configuration for the specified approach.',
-    issueType: WatchDogIssueTypes.UnconfiguredApproach,
+    issueType: WatchDogIssueTypesName.UnconfiguredApproach,
   },
   {
     label: 'Unconfigured Detector',
     description:
       'Identifies and processes incoming event data from controllers that lack a corresponding configuration for the specified detector.',
-    issueType: WatchDogIssueTypes.UnconfiguredDetector,
+    issueType: WatchDogIssueTypesName.UnconfiguredDetector,
   },
 ]
 
@@ -85,7 +82,7 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
   const { location } = useLocationStore()
   const [ignoreEvents, setIgnoreEvents] = useState<WatchdogOption[]>([])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [selectedOption, setSelectedOption] = useState<null | WatchdogOption>(
+  const [selectedOption, setSelectedOption] = useState<null | WatchdogChoice>(
     null
   )
   const [startDate, setStartDate] = useState<Date | null>(new Date())
@@ -98,25 +95,35 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
     data: watchdogIgnoreEvents,
     isLoading,
     refetch,
-  } = useGetWatchdogIgnoreEvents()
-  const { mutateAsync: addWatchdogIgnoreEvents } =
-    useCreateWatchdogIgnoreEvents()
+  } = useGetWatchDogIgnoreEvent()
+  const { mutateAsync: addWatchdogIgnoreEvents } = usePostWatchDogIgnoreEvent()
   const { mutateAsync: editWatchdogIgnoreEvents } =
-    useEditWatchdogIgnoreEvents()
+    usePatchWatchDogIgnoreEventFromKey()
   const { mutateAsync: deleteWatchdogIgnoreEvents } =
-    useDeleteWatchdogIgnoreEvents()
+    useDeleteWatchDogIgnoreEventFromKey()
 
   useEffect(() => {
-    if (watchdogIgnoreEvents?.value) {
-      const filteredEvents = watchdogIgnoreEvents.value.filter(
-        (event) => event.locationIdentifier === location?.locationIdentifier
-      )
+    if (watchdogIgnoreEvents) {
+      const filteredEvents = watchdogIgnoreEvents
+        .filter(
+          (event) => event.locationIdentifier === location?.locationIdentifier
+        )
+        .map(
+          (event): WatchdogOption => ({
+            id: event.id ?? 0,
+            locationId: event.locationId ?? 0,
+            locationIdentifier: event.locationIdentifier ?? '',
+            start: event.start ?? '',
+            end: event.end ?? '',
+            issueType: event.issueType ?? WatchDogIssueTypesName.RecordCount,
+          })
+        )
       setIgnoreEvents(filteredEvents)
     }
   }, [watchdogIgnoreEvents, location?.locationIdentifier])
 
   const handlePillClick = (
-    option: WatchdogOption,
+    option: WatchdogChoice,
     event: React.MouseEvent<HTMLElement>
   ) => {
     if (!hasEditPermission) return
@@ -145,14 +152,14 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
 
       if (existingEvent) {
         await editWatchdogIgnoreEvents({
+          key: existingEvent.id,
           data: {
             locationId: location?.id,
             locationIdentifier: location?.locationIdentifier,
-            issueType: selectedOption.issueType.toString(),
+            issueType: selectedOption.issueType,
             start: toUTCDateStamp(startDate),
             end: toUTCDateStamp(endDate),
           },
-          id: existingEvent.id,
         })
         addNotification({
           title: 'Watchdog Ignore Event Updated',
@@ -160,11 +167,13 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
         })
       } else {
         await addWatchdogIgnoreEvents({
-          locationId: location?.id,
-          locationIdentifier: location?.locationIdentifier,
-          issueType: selectedOption.issueType.toString(),
-          start: toUTCDateStamp(startDate),
-          end: toUTCDateStamp(endDate),
+          data: {
+            locationId: location?.id,
+            locationIdentifier: location?.locationIdentifier,
+            issueType: selectedOption.issueType,
+            start: toUTCDateStamp(startDate),
+            end: toUTCDateStamp(endDate),
+          },
         })
         addNotification({
           title: 'Watchdog Ignore Event Added',
@@ -179,7 +188,7 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
 
   const handleRemoveIgnore = async () => {
     if (selectedIgnoreEventId) {
-      await deleteWatchdogIgnoreEvents(selectedIgnoreEventId)
+      await deleteWatchdogIgnoreEvents({ key: selectedIgnoreEventId })
       addNotification({
         title: 'Watchdog Ignore Event Removed',
         type: 'success',
@@ -209,7 +218,7 @@ const WatchdogEditor = ({ hasEditPermission }: WatchdogEditorProps) => {
         const ignoreEvent = ignoreEvents.find(
           (e) => e.issueType === option.issueType
         )
-        const pillLabel = isIgnored
+        const pillLabel = ignoreEvent
           ? `Inactive from ${format(
               new Date(ignoreEvent.start),
               'MM/dd/yyyy'

@@ -151,6 +151,9 @@ namespace Utah.Udot.Atspm.Business.SplitMonitor
                     //var planCycleCount = Convert.ToDouble(cycles.Count());
                     var highCycleCount = plan.HighCycleCount;
                     double SkippedPhases = plan.HighCycleCount - cycles.Count();
+                    // PercentileSplit is an int, so "no percentile" travels as 0
+                    // (the UI's "None"). A zero percentile has no cycle to pick,
+                    // so it is left at 0 rather than indexing the ordered cycles.
                     var percentile = Convert.ToDouble(options.PercentileSplit) / 100;
                     phasePlans.Add(new PlanSplitMonitorData(plan.Start, plan.End, plan.PlanNumber)
                     {
@@ -162,7 +165,7 @@ namespace Utah.Udot.Atspm.Business.SplitMonitor
                         PercentMaxOuts = GetPercentMaxOuts(cycles, highCycleCount, plan.PlanNumber),
                         PercentForceOffs = GetPercentForceOffs(cycles, highCycleCount, plan.PlanNumber),
                         AverageSplit = cycles.Count > 0 ? Convert.ToDouble(cycles.Sum(c => c.Duration.TotalSeconds)) / cycles.Count : 0,
-                        PercentileSplit = GetPercentSplit(highCycleCount, percentile, cycles),
+                        PercentileSplit = percentile > 0 ? GetPercentSplit(highCycleCount, percentile, cycles) : 0,
                         Splits = plan.Splits,
                         MinTime = cycles.Min(c => c.Duration.TotalSeconds),
                         ProgrammedSplit = plan.Splits.Where(s => s.Key == phase.PhaseNumber).FirstOrDefault().Value,

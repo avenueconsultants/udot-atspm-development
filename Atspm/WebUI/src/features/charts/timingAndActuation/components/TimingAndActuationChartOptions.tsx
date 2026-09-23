@@ -1,6 +1,7 @@
 import { TimingAndActuationChartOptionsDefaults } from '@/features/charts/timingAndActuation/types'
 import { Default } from '@/features/charts/types'
 import { Box, Typography } from '@mui/material'
+import type { FC } from 'react'
 
 interface TimingAndActuationChartOptionsProps {
   chartDefaults: TimingAndActuationChartOptionsDefaults
@@ -8,11 +9,9 @@ interface TimingAndActuationChartOptionsProps {
   isMeasureDefaultView?: boolean
 }
 
-export const TimingAndActuationChartOptions = ({
-  // chartDefaults,
-  handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
-}: TimingAndActuationChartOptionsProps) => {
+export const TimingAndActuationChartOptions: FC<
+  TimingAndActuationChartOptionsProps
+> = () => {
   //////////////////////////////
   // It sounds like we'll add this back in later, so I'm leaving the code here for now.
   //////////////////////////////

@@ -14,54 +14,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { ChartType } from '@/features/charts/common/types'
+import { getMeasureType } from '@/api/config'
+import { chartTypeForMeasure } from '@/features/charts/common/measureAbbreviations'
 import { ChartDefaults, Default } from '@/features/charts/types'
-import { configAxios } from '@/lib/axios'
 import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query'
-import { ApiResponse } from '@/types'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
-const normalizeString = (str: string) => str.replace(/\s+/g, '').toLowerCase()
-
-const determineChartType = (chartName: string): ChartType | 'Unknown' => {
-  const normalizedChartName = normalizeString(chartName)
-
-  const chartTypeKey = Object.keys(ChartType).find(
-    (key) =>
-      normalizeString(ChartType[key as keyof typeof ChartType]) ===
-      normalizedChartName
-  )
-
-  if (chartTypeKey) {
-    return ChartType[chartTypeKey as keyof typeof ChartType] as ChartType
-  }
-
-  return 'Unknown'
+// Stored option values the panels no longer offer, mapped to one they do.
+// Split Monitor's percentile once offered "None", which the report API's
+// int field could not carry; the option is gone and defaults saved while
+// it existed (as the word, or as the 0 it was briefly sent as) fall back
+// to the seeded 85th.
+const LEGACY_OPTION_VALUES: Record<string, Record<string, string>> = {
+  percentileSplit: { None: '85', '0': '85' },
 }
 
-export const getChartDefaults = async (): Promise<
-  ApiResponse<ChartDefaults>
-> => {
-  const response = await configAxios.get<ApiResponse<ChartDefaults[]>>(
-    '/MeasureType?expand=measureOptions'
-  )
+export const getChartDefaults = async (): Promise<ChartDefaults[]> => {
+  const response = await getMeasureType({
+    expand: 'measureOptions',
+  })
 
-  const enhancedData = response.value.map((chart: ChartDefaults) => ({
+  return response.map((chart) => ({
     ...chart,
-    chartType: determineChartType(chart.name),
-    measureOptions: chart.measureOptions.reduce(
-      (acc, current) => {
-        acc[current.option] = current
+    // Keyed on the abbreviation, as the measure picker is: a seeded name
+    // need not spell the chart type ("Transit Signal Priority Summary").
+    chartType: chartTypeForMeasure(chart),
+    measureOptions: (chart.measureOptions ?? []).reduce<
+      Record<string, Default>
+    >((acc, current) => {
+      if (current.id == null || !current.option || current.value == null)
         return acc
-      },
-      {} as Record<string, Default>
-    ),
+      acc[current.option] = {
+        ...current,
+        id: current.id,
+        option: current.option,
+        value:
+          LEGACY_OPTION_VALUES[current.option]?.[current.value] ??
+          current.value,
+      }
+      return acc
+    }, {}),
   }))
-
-  return {
-    ...response,
-    value: enhancedData,
-  }
 }
 
 type QueryFnType = typeof getChartDefaults

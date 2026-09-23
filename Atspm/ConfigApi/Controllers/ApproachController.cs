@@ -68,7 +68,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         #region Functions
 
         [HttpPost("api/v1/UpsertApproach")]
-        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(typeof(ApproachDto), Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         public async Task<IActionResult> UpsertApproach([FromBody] ApproachDto approach)
         {
@@ -88,7 +88,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         }
 
         [HttpGet("api/v1/GetApproachDto/{id}")]
-        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(typeof(ApproachDto), Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         public async Task<IActionResult> GetApproachDto(int id)
         {

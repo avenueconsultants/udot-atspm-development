@@ -1,4 +1,4 @@
-import { PedatLocationData } from '@/api/reports'
+import { PedatLocationData, RawDataPoint } from '@/api/reports'
 import BoxPlotByLocationChart from '@/features/activeTransportation/components/charts/BoxPlotByLocationChart'
 import { Box, Button, Tab, Tabs } from '@mui/material'
 import { useMemo, useRef, useState } from 'react'
@@ -36,6 +36,16 @@ function downloadCsv(filename: string, csv: string) {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
+}
+
+function getRawTimestamp(point: RawDataPoint): string | undefined {
+  // Preserve the existing legacy spelling without adding it to the API model.
+  return (
+    point.timestamp ??
+    ('timeStamp' in point && typeof point.timeStamp === 'string'
+      ? point.timeStamp
+      : undefined)
+  )
 }
 
 function buildRawCsv(
@@ -77,10 +87,10 @@ function buildRawCsv(
       ? (loc.longitude as number).toFixed(6)
       : ''
     for (const pt of loc.rawData ?? []) {
-      const ts = (pt as any).timestamp ?? (pt as any).timeStamp
+      const ts = getRawTimestamp(pt)
       if (!ts) continue
       const timestamp = new Date(ts).toISOString()
-      const count = (pt as any).pedestrianCount ?? ''
+      const count = pt.pedestrianCount ?? ''
       if (phase && phase == 'All') {
         rows.push(
           [
@@ -141,7 +151,7 @@ function buildStatsCsv(data?: PedatLocationData[]): string {
 
   for (const loc of data) {
     const id = loc.locationIdentifier ?? ''
-    const s: any = (loc as any).statisticData
+    const s = loc.statisticData
     let count: number,
       mean: number,
       std: number,
@@ -165,7 +175,7 @@ function buildStatsCsv(data?: PedatLocationData[]): string {
     } else {
       const vals =
         (loc.rawData ?? [])
-          .map((r: any) => Number(r.pedestrianCount))
+          .map((r) => Number(r.pedestrianCount))
           .filter((v) => Number.isFinite(v)) || []
       const n = vals.length
       const sum = vals.reduce((a, b) => a + b, 0)
@@ -199,7 +209,7 @@ function findDateBounds(data?: PedatLocationData[]) {
   let max = Number.NEGATIVE_INFINITY
   for (const d of data ?? []) {
     for (const r of d.rawData ?? []) {
-      const t = Date.parse((r as any).timestamp ?? (r as any).timeStamp ?? '')
+      const t = Date.parse(getRawTimestamp(r) ?? '')
       if (Number.isFinite(t)) {
         if (t < min) min = t
         if (t > max) max = t

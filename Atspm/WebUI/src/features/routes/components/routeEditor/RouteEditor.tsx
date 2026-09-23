@@ -1,6 +1,9 @@
-import { Location } from '@/features/locations/types'
+import {
+  RouteDto,
+  RouteLocationDto,
+  SearchLocation as Location,
+} from '@/api/config'
 import RouteRow from '@/features/routes/components/routeEditor/RouteRow'
-import { Route, RouteLocation } from '@/features/routes/types'
 import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd'
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 import SaveIcon from '@mui/icons-material/Save'
@@ -20,14 +23,14 @@ import {
 import { memo } from 'react'
 
 interface RouteEditorProps {
-  route: Route
+  route: RouteDto
   location?: Location | null
   hasErrors: boolean
   onAddRoute: () => void
   onDragEnd: (result: DropResult) => void
   handleDistanceChange: (locationIdentifier: string, distance: number) => void
-  handleDirectionUpdate: (updatedLink: RouteLocation) => void
-  handleDeleteLink: (link: RouteLocation) => void
+  handleDirectionUpdate: (updatedLink: RouteLocationDto) => void
+  handleDeleteLink: (link: RouteLocationDto) => void
   handleSaveRoute: () => void
 }
 
@@ -43,7 +46,7 @@ const RouteEditor = ({
   handleSaveRoute,
 }: RouteEditorProps) => {
   const onDeleteLinkClick = (linkId: string) => {
-    const linkToDelete = route.routeLocations.find(
+    const linkToDelete = route.routeLocations?.find(
       (link) => link.locationIdentifier === linkId
     )
     if (linkToDelete) {
@@ -130,7 +133,7 @@ const RouteEditor = ({
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {route.routeLocations.map((link, index) => (
+                  {(route.routeLocations ?? []).map((link, index) => (
                     <RouteRow
                       hasErrors={hasErrors}
                       key={link.locationIdentifier}

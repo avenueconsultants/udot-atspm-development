@@ -30,3 +30,15 @@ export interface TimeOnlyProps {
   changeStartTime(date: Date): void
   changeEndTime(date: Date): void
 }
+
+/**
+ * The same pair for pages where clearing the time picker is meaningful: the
+ * time-space 50th percentile tool refuses to run without both ends, so it has
+ * to be able to tell "not chosen" from a default.
+ */
+export interface NullableTimeOnlyProps {
+  startTime: Date | null
+  endTime: Date | null
+  changeStartTime(date: Date | null): void
+  changeEndTime(date: Date | null): void
+}

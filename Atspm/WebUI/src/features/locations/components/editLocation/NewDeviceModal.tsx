@@ -1,9 +1,14 @@
-import { usePutDeviceFromKey } from '@/api/config'
+import {
+  Device,
+  DeviceConfiguration,
+  DeviceStatusName,
+  DeviceTypesName,
+  useGetDeviceConfiguration,
+  useGetProduct,
+  usePostDevice,
+  usePutDeviceFromKey,
+} from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { useGetDeviceConfigurations } from '@/features/devices/api'
-import { useCreateDevice } from '@/features/devices/api/devices'
-import { DeviceConfiguration } from '@/features/devices/types'
-import { useGetProducts } from '@/features/products/api'
 import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
 import { useNotificationStore } from '@/stores/notifications'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -61,33 +66,45 @@ const knownDeviceKeys = new Set([
   'modifiedBy',
 ])
 
+const devicePropertiesSchema = z.array(
+  z.object({ key: z.string(), value: z.string() })
+)
+
 const deviceSchema = z.object({
   id: z.coerce.number().nullable().optional(),
   deviceIdentifier: z.string().optional(),
   loggingEnabled: z.boolean().default(true),
   ipaddress: z.string().optional(),
-  deviceStatus: z.string().nonempty({ message: 'Status is required' }),
+  deviceStatus: z
+    .string()
+    .nonempty({ message: 'Status is required' })
+    .pipe(z.nativeEnum(DeviceStatusName)),
   notes: z
     .string()
     .max(512, { message: 'Notes must be 512 characters or less' })
     .optional(),
-  deviceType: z.string().nonempty({ message: 'Device type is required' }),
-  deviceConfigurationId: z.coerce.number({
-    required_error: 'Configuration is required',
-  }),
-  productId: z.coerce.number({
-    required_error: 'Product is required',
-  }),
+  deviceType: z
+    .string()
+    .nonempty({ message: 'Device type is required' })
+    .pipe(z.nativeEnum(DeviceTypesName)),
+  deviceConfigurationId: z.union([z.number(), z.string()]).pipe(
+    z.coerce.number({
+      required_error: 'Configuration is required',
+    })
+  ),
+  productId: z.union([z.number(), z.string()]).pipe(
+    z.coerce.number({
+      required_error: 'Product is required',
+    })
+  ),
   locationId: z.number(),
-  deviceProperties: z
-    .array(z.object({ key: z.string(), value: z.string() }))
-    .nullable(),
+  deviceProperties: devicePropertiesSchema.nullable(),
 })
 
 export interface NewDeviceModalProps {
   onClose: () => void
-  device?: any | null
-  locationId: string
+  device?: Device | null
+  locationId: number | undefined
   refetchDevices: () => void
 }
 
@@ -97,16 +114,13 @@ const DeviceModal = ({
   locationId,
   refetchDevices,
 }: NewDeviceModalProps) => {
-  const { data: productsData } = useGetProducts()
-  const { data: deviceConfigurationsData } = useGetDeviceConfigurations()
+  const { data: products } = useGetProduct()
+  const { data: deviceConfigurations } = useGetDeviceConfiguration()
   const { mutate: updateDevice } = usePutDeviceFromKey()
-  const { mutate: createDevice } = useCreateDevice()
+  const { mutate: createDevice } = usePostDevice()
   const { data: deviceTypes } = useConfigEnums(ConfigEnum.DeviceTypes)
   const { data: deviceStatus } = useConfigEnums(ConfigEnum.DeviceStatus)
   const { addNotification } = useNotificationStore()
-
-  const deviceConfigurations = deviceConfigurationsData?.value
-  const products = productsData?.value
 
   const [filteredConfigurations, setFilteredConfigurations] = useState<
     DeviceConfiguration[]
@@ -118,6 +132,13 @@ const DeviceModal = ({
         .map(([key, value]) => ({ key, value: String(value) }))
     : []
 
+  // OData exposes open properties as additional top-level fields. Also accept
+  // property-editor rows already prepared by a caller, without extending Device.
+  const preparedDeviceProperties =
+    device && 'deviceProperties' in device
+      ? devicePropertiesSchema.safeParse(device.deviceProperties)
+      : undefined
+
   const {
     control,
     register,
@@ -127,7 +148,7 @@ const DeviceModal = ({
     getValues,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<z.input<typeof deviceSchema>>({
     resolver: zodResolver(deviceSchema),
     defaultValues: {
       id: device?.id ?? null,
@@ -140,7 +161,9 @@ const DeviceModal = ({
       deviceConfigurationId: device?.deviceConfiguration?.id ?? '',
       productId: device?.deviceConfiguration?.product?.id ?? '',
       locationId: device?.locationId ?? Number(locationId),
-      deviceProperties: device?.deviceProperties ?? defaultDeviceProperties,
+      deviceProperties: preparedDeviceProperties?.success
+        ? preparedDeviceProperties.data
+        : defaultDeviceProperties,
     },
   })
 
@@ -173,23 +196,22 @@ const DeviceModal = ({
 
   const onSubmit = (data: z.infer<typeof deviceSchema>) => {
     const flattenedProps =
-      data.deviceProperties?.reduce(
+      data.deviceProperties?.reduce<Record<string, string>>(
         (acc, { key, value }) => {
           if (key) {
             acc[key] = value
           }
           return acc
         },
-        {} as Record<string, any>
+        {}
       ) || {}
 
     const { id, productId, deviceProperties, ...rest } = data
     const newDeviceDTO = { ...rest, ...flattenedProps }
-    const updateDeviceDTO = { id, ...rest, ...flattenedProps }
 
-    if (data.id) {
+    if (id) {
       updateDevice(
-        { data: updateDeviceDTO, key: data.id },
+        { data: { id, ...rest, ...flattenedProps }, key: id },
         {
           onSuccess: () => {
             addNotification({ title: 'Device Updated', type: 'success' })
@@ -197,21 +219,24 @@ const DeviceModal = ({
             refetchDevices()
             onClose()
           },
-          onError: (error) => {
+          onError: () => {
             addNotification({ title: 'Device Update Failed', type: 'error' })
           },
         }
       )
     } else {
-      createDevice(newDeviceDTO, {
-        onSuccess: () => {
-          refetchDevices()
-          onClose()
-        },
-        onError: (error) => {
-          addNotification({ title: 'Device Creation Failed', type: 'error' })
-        },
-      })
+      createDevice(
+        { data: newDeviceDTO },
+        {
+          onSuccess: () => {
+            refetchDevices()
+            onClose()
+          },
+          onError: () => {
+            addNotification({ title: 'Device Creation Failed', type: 'error' })
+          },
+        }
+      )
     }
   }
 
@@ -227,9 +252,9 @@ const DeviceModal = ({
     <ATSPMDialog
       isOpen={true}
       onClose={handleClose}
-      auditInfo={device}
+      auditInfo={device ?? undefined}
       title={device ? 'Edit Device' : 'Add New Device'}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((values) => onSubmit(deviceSchema.parse(values)))}
     >
       <Box
         sx={{

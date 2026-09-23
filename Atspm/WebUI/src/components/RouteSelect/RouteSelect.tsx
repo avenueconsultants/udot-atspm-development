@@ -1,6 +1,6 @@
+import { SearchLocation as Location } from '@/api/config'
 import { ExpandLocationHandler } from '@/features/data/aggregate/handlers/expandLocationHandler'
 import SelectLocation from '@/features/locations/components/selectLocation'
-import { Location } from '@/features/locations/types'
 import {
   Box,
   Button,
@@ -51,7 +51,11 @@ export const RouteSelect = ({
               (r) => r.id.toString() === handler.routeId.toString()
             )?.id || ''
           }
-          onChange={(e) => handler.changeRouteId(e.target.value as string)}
+          onChange={(e) =>
+            // The MenuItem values are the numeric ids; every handler keeps
+            // routeId as a string.
+            handler.changeRouteId(String(e.target.value))
+          }
           inputProps={{ id: 'route-select' }}
         >
           {handler.routes.map(

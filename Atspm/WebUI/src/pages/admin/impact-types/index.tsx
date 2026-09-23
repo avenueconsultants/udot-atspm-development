@@ -4,6 +4,7 @@ import {
   usePostApiV1ImpactType,
   usePutApiV1ImpactTypeId,
 } from '@/api/speedManagement/aTSPMSpeedManagementApi'
+import { ImpactType } from '@/api/speedManagement/aTSPMSpeedManagementApi.schemas'
 import AdminTable from '@/components/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
@@ -13,7 +14,6 @@ import {
   useViewPage,
 } from '@/features/identity/pagesCheck'
 import ImpactTypeEditorModal from '@/features/speedManagementTool/components/ImpactTypesEditorModal'
-import { ImpactType } from '@/features/speedManagementTool/types/impact'
 import { useNotificationStore } from '@/stores/notifications'
 import { Backdrop, CircularProgress } from '@mui/material'
 

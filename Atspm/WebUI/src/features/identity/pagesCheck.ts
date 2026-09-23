@@ -185,9 +185,14 @@ export const useUserHasClaim = (claim: string) => {
       }
 
       const claims = Cookies.get('claims')
-      const userClaims = claims ? claims.split(',') : []
+      const userClaims = claims
+        ? claims.split(',').map((userClaim) => userClaim.toLowerCase())
+        : []
 
-      if (userClaims.includes(claim) || userClaims.includes('Admin')) {
+      if (
+        userClaims.includes(claim.toLowerCase()) ||
+        userClaims.includes('admin')
+      ) {
         setHasPermission(true)
       } else {
         setHasPermission(false)

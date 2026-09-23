@@ -1,6 +1,9 @@
-import { useLocationApproaches } from '@/features/locations/api'
-import { RouteLocation } from '@/features/routes/types'
-import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
+import {
+  Approach,
+  DirectionTypes,
+  RouteLocationDto,
+  useGetApproach,
+} from '@/api/config'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 import {
@@ -16,8 +19,8 @@ import {
 
 interface DirectionSelectProps {
   hasErrors: boolean
-  link: RouteLocation
-  onUpdate: (updatedLink: RouteLocation) => void
+  link: RouteLocationDto
+  onUpdate: (updatedLink: RouteLocationDto) => void
   updateType: 'primary' | 'opposing'
 }
 
@@ -28,27 +31,23 @@ const DirectionSelect = ({
   updateType,
 }: DirectionSelectProps) => {
   const theme = useTheme()
-  const { data: approachesData } = useLocationApproaches({
-    locationId: link.locationId,
-  })
-
-  const { data: directionTypes } = useConfigEnums(ConfigEnum.DirectionTypes)
-
-  if (!directionTypes) return null
-
-  if (typeof link.primaryDirectionId === 'number') {
-    link.primaryDirectionId = directionTypes?.find(
-      (directionType) => directionType.value == link.primaryDirectionId
-    )?.name as string
-    link.opposingDirectionId = directionTypes?.find(
-      (directionType) => directionType.value == link.opposingDirectionId
-    )?.name as string
-  }
+  // The option labels come from each approach's direction description. The
+  // Location/{key}/approaches navigation action ignores query options, so
+  // its directionType is always null; the Approach entity set honours
+  // $filter and $expand.
+  const { data: approachesData } = useGetApproach(
+    { filter: `locationId eq ${link.locationId}`, expand: 'directionType' },
+    { query: { enabled: link.locationId != null } }
+  )
 
   const directionTypeId =
     updateType === 'primary'
       ? link.primaryDirectionId
       : link.opposingDirectionId
+  const directionDescription =
+    updateType === 'primary'
+      ? link.primaryDirectionDescription
+      : link.opposingDirectionDescription
   const phaseNumber =
     updateType === 'primary' ? link.primaryPhase : link.opposingPhase
   const isOverlap =
@@ -58,30 +57,46 @@ const DirectionSelect = ({
     isOverlap ? 'true' : 'false'
   }`
 
-  const approaches = approachesData?.value?.sort(
-    (a, b) => a.protectedPhaseNumber - b.protectedPhaseNumber
-  )
+  const approaches = approachesData
+    ?.slice()
+    .sort(
+      (a, b) => (a.protectedPhaseNumber ?? 0) - (b.protectedPhaseNumber ?? 0)
+    )
+
+  // Approaches arrive from the OData config API with directionTypeId as the
+  // member name ('NB'), while RouteLocationDto carries the numeric id. Option
+  // values use the number so the current value and the choices compare alike.
+  const directionIdOf = (approach: Approach) =>
+    approach.directionTypeId == null
+      ? undefined
+      : DirectionTypes[approach.directionTypeId]
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
-    const [directionTypeId, protectedPhaseNumber, isOverlapStr] =
+    const [directionTypeIdStr, protectedPhaseNumberStr, isOverlapStr] =
       event.target.value.split('-')
     const selectedApproach = approaches?.find(
       (approach) =>
-        approach.directionTypeId === directionTypeId &&
-        approach.protectedPhaseNumber.toString() === protectedPhaseNumber
+        directionIdOf(approach) === Number(directionTypeIdStr) &&
+        approach.protectedPhaseNumber === Number(protectedPhaseNumberStr)
     )
 
     if (selectedApproach) {
       const updatedLink = { ...link }
+      const newDirectionId = Number(directionTypeIdStr)
+      const newPhase = Number(protectedPhaseNumberStr)
+      const newIsOverlap = isOverlapStr === 'true'
+      const newDescription = selectedApproach.directionType?.description ?? null
 
       if (updateType === 'primary') {
-        updatedLink.primaryDirectionId = directionTypeId
-        updatedLink.primaryPhase = protectedPhaseNumber
-        updatedLink.isPrimaryOverlap = isOverlapStr === 'true'
+        updatedLink.primaryDirectionId = newDirectionId
+        updatedLink.primaryDirectionDescription = newDescription
+        updatedLink.primaryPhase = newPhase
+        updatedLink.isPrimaryOverlap = newIsOverlap
       } else {
-        updatedLink.opposingDirectionId = directionTypeId
-        updatedLink.opposingPhase = protectedPhaseNumber
-        updatedLink.isOpposingOverlap = isOverlapStr === 'true'
+        updatedLink.opposingDirectionId = newDirectionId
+        updatedLink.opposingDirectionDescription = newDescription
+        updatedLink.opposingPhase = newPhase
+        updatedLink.isOpposingOverlap = newIsOverlap
       }
 
       onUpdate(updatedLink)
@@ -93,7 +108,9 @@ const DirectionSelect = ({
       <Select
         error={hasErrors && !directionTypeId}
         value={
-          !!formattedValue || approaches?.length === 0 ? '' : formattedValue
+          directionTypeId == null || approaches?.length === 0
+            ? ''
+            : formattedValue
         }
         onChange={handleSelectChange}
         displayEmpty
@@ -106,7 +123,7 @@ const DirectionSelect = ({
               alignItems: 'center',
             }}
           >
-            <Typography>{directionTypeId}</Typography>
+            <Typography>{directionDescription}</Typography>
             <Typography>{phaseNumber}</Typography>
             {isOverlap ? (
               <CheckBoxIcon color="success" fontSize="small" />
@@ -123,7 +140,7 @@ const DirectionSelect = ({
         {approaches?.map((approach, index) => (
           <MenuItem
             key={`${index}`}
-            value={`${approach.directionTypeId}-${approach.protectedPhaseNumber}-${approach.isProtectedPhaseOverlap}`}
+            value={`${directionIdOf(approach)}-${approach.protectedPhaseNumber}-${approach.isProtectedPhaseOverlap}`}
           >
             <Box
               sx={{
@@ -133,7 +150,7 @@ const DirectionSelect = ({
                 alignItems: 'center',
               }}
             >
-              <Typography>{approach.directionTypeId}</Typography>
+              <Typography>{approach.directionType?.description}</Typography>
               <Typography>{approach.protectedPhaseNumber}</Typography>
               {approach.isProtectedPhaseOverlap ? (
                 <CheckBoxIcon color="success" fontSize="small" />

@@ -1,8 +1,10 @@
-import { useGetDeviceConfigurationEventLogDecoders } from '@/api/config'
+import {
+  DeviceConfiguration,
+  useGetDeviceConfigurationEventLogDecoders,
+  useGetProduct,
+} from '@/api/config'
 import ATSPMDialog from '@/components/ATSPMDialog'
 import { knownKeys } from '@/features/devices/components/DeviceConfigCustomRenderCell'
-import { DeviceConfiguration } from '@/features/devices/types/index'
-import { useGetProducts } from '@/features/products/api'
 import { ConfigEnum, useConfigEnums } from '@/hooks/useConfigEnums'
 import { zodResolver } from '@hookform/resolvers/zod'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -122,7 +124,7 @@ const DeviceConfigModal = ({
     }
   }
 
-  const { data: productData } = useGetProducts()
+  const { data: productData } = useGetProduct()
   const { data: allDecodersData } = useGetDeviceConfigurationEventLogDecoders()
   const { data: transportProtocols } = useConfigEnums(
     ConfigEnum.TransportProtocols
@@ -178,7 +180,7 @@ const DeviceConfigModal = ({
 
   const onSubmit = async (data: DeviceConfigFormData) => {
     try {
-      const selectedProduct = productData?.value.find(
+      const selectedProduct = productData?.find(
         (product) => product.id === data.productId
       )
 
@@ -248,7 +250,7 @@ const DeviceConfigModal = ({
               })
             }
           >
-            {productData?.value.map((product) => (
+            {productData?.map((product) => (
               <MenuItem key={product.id} value={product.id}>
                 {product.model}
               </MenuItem>
@@ -781,7 +783,7 @@ const DeviceConfigModal = ({
             </Box>
           )}
         >
-          {allDecodersData?.value?.map((decoder: string) => (
+          {allDecodersData?.map((decoder: string) => (
             <MenuItem key={decoder} value={decoder}>
               {decoder.replace(/(?!^)([A-Z])/g, ' $1')}
             </MenuItem>

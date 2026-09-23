@@ -43,9 +43,9 @@ import {
   TIME_SPACE_Y_AXIS_PADDING,
 } from '@/features/charts/timeSpaceDiagram/shared/transformers/timeSpaceTransformerBase'
 import {
+  NormalizedTimeSpacePhaseResult,
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
-  TimeSpaceDiagramPhaseResult,
   TimeSpaceTransformOptions,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedTimeSpaceResponse } from '@/features/charts/types'
@@ -58,7 +58,7 @@ export default function transformTimeSpaceAverageData(
   options?: TimeSpaceTransformOptions
 ): TransformedTimeSpaceResponse & { errors?: string[] } {
   const wrappedData =
-    response.data as TimeSpaceDiagramPhaseResult<RawTimeSpaceAverageData>[]
+    response.data as NormalizedTimeSpacePhaseResult<RawTimeSpaceAverageData>[]
   const { errorMessages, successfulData } =
     unwrapTimeSpaceTransformResults(wrappedData)
 

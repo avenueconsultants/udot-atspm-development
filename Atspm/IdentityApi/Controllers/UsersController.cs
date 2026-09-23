@@ -48,6 +48,7 @@ namespace Identity.Controllers
 
         [HttpGet]
         [AuthorizePermission(AtspmAuthorization.Permissions.UsersView)]
+        [ProducesResponseType(typeof(List<UserDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsersAsync([FromServices] IServiceScopeFactory serviceScopeFactory)
         {
             var usersDto = new List<UserDTO>();
@@ -157,7 +158,7 @@ namespace Identity.Controllers
 
         [HttpPost("update")]
         [AuthorizePermission(AtspmAuthorization.Permissions.UsersEdit)]
-        public async Task<IActionResult> AssignRole(UserDTO model)
+        public async Task<IActionResult> Update(UserDTO model)
         {
             if (model == null || !ModelState.IsValid)
             {

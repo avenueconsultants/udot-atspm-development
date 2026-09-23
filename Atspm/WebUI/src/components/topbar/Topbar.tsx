@@ -1,7 +1,7 @@
+import { useGetMenuItems } from '@/api/config'
 import AdminMenu from '@/components/topbar/AdminMenu'
 import { transformMenuItems } from '@/components/topbar/menuUtils'
 import { doesUserHaveAccess } from '@/features/identity/utils'
-import { useGetMenuItems } from '@/features/menuItems/api/getMenuItems'
 import { useSidebarStore } from '@/stores/sidebar'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -10,7 +10,7 @@ import { Box, Button, IconButton, Paper, Typography } from '@mui/material'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import DropDownButton from './DropdownButton'
 import UserMenu from './UserMenu'
 
@@ -32,7 +32,11 @@ const infoItems = [
 export default function Topbar() {
   const { toggleSidebar } = useSidebarStore()
   const [userHasAccess, setUserHasAccess] = useState(false)
-  const { data: menuItemsData, isLoading } = useGetMenuItems()
+  // Keep this ungated for signed-in users without claims. Menu requests can
+  // fail independently of the rest of the navigation, so handle errors locally.
+  const { data: menuItemsData, isLoading } = useGetMenuItems(undefined, {
+    query: { throwOnError: false },
+  })
   const queryClient = useQueryClient()
   useEffect(() => {
     setUserHasAccess(doesUserHaveAccess())
@@ -46,7 +50,7 @@ export default function Topbar() {
     window.open(path, '_blank')
   }
 
-  const menuItems = menuItemsData ? transformMenuItems(menuItemsData.value) : []
+  const menuItems = menuItemsData ? transformMenuItems(menuItemsData) : []
 
   useEffect(() => {
     // This effect runs once when the component mounts but could be triggered on certain conditions like user authentication status change

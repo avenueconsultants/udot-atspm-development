@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { Route } from '@/features/routes/types'
+import { Route } from '@/api/config'
 
 export interface TSBaseHandler {
   routes: Route[]

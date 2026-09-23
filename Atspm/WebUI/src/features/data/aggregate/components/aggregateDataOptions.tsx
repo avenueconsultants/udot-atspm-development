@@ -137,8 +137,8 @@ export const AggregateDataOptions = ({ handler }: props) => {
           onChange={(e, val) => handler.changeBinSize(val as number)}
           marks={binSizeMarks}
           step={null}
-          min={1}
-          max={4}
+          min={binSizeMarks[0].value}
+          max={binSizeMarks[binSizeMarks.length - 1].value}
         />
       </Box>
     )
@@ -164,7 +164,7 @@ export const AggregateDataOptions = ({ handler }: props) => {
     )
   }
   const handleAggregateChange = (e: SelectChangeEvent<unknown>) => {
-    handler.changeMetricType(e.target.value)
+    handler.changeMetricType(String(e.target.value))
   }
   const renderAggregateChartOptions = () => {
     return (

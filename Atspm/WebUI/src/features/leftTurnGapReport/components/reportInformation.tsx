@@ -24,19 +24,17 @@ const textFieldStyle = {
 
 interface ReportInformationProps {
   finalGapAnalysisReport: boolean
-  setFinalGapAnalysisReport: React.Dispatch<React.SetStateAction<boolean>>
+  setFinalGapAnalysisReport: (value: boolean) => void
   splitFailAnalysis: boolean
-  setSplitFailAnalysis: React.Dispatch<React.SetStateAction<boolean>>
+  setSplitFailAnalysis: (value: boolean) => void
   pedestrianCallAnalysis: boolean
-  setPedestrianCallAnalysis: React.Dispatch<React.SetStateAction<boolean>>
+  setPedestrianCallAnalysis: (value: boolean) => void
   conflictingVolumesAnalysis: boolean
-  setConflictingVolumesAnalysis: React.Dispatch<React.SetStateAction<boolean>>
+  setConflictingVolumesAnalysis: (value: boolean) => void
   vehiclesPercentageAcceptableGaps: number
-  setVehiclesPercentageAcceptableGaps: React.Dispatch<
-    React.SetStateAction<number>
-  >
+  setVehiclesPercentageAcceptableGaps: (value: number) => void
   acceptableSplitFailPercentage: number
-  setAcceptableSplitFailPercentage: React.Dispatch<React.SetStateAction<number>>
+  setAcceptableSplitFailPercentage: (value: number) => void
 }
 
 export const ReportInformation = ({

@@ -13,6 +13,12 @@ import {
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 
+// Every choice is a percentile the report API's int field can carry. A
+// default stored as a value the panel no longer offers - "None", or the 0
+// it was briefly sent as - is mapped to one it does by getChartDefaults,
+// so the panel never sees it.
+const PERCENTILE_SPLIT_CHOICES = ['50', '75', '85', '90', '95']
+
 interface SplitMonitorChartOptionsProps {
   chartDefaults: SplitMonitorChartOptionsDefaults
   handleChartOptionsUpdate: (update: Default) => void
@@ -94,7 +100,7 @@ export const SplitMonitorChartOptions = ({
               sx={{ width: '60px' }}
               inputProps={{ id: 'percentile-split-input' }}
             >
-              {['None', '50', '75', '85', '90', '95'].map((option) => (
+              {PERCENTILE_SPLIT_CHOICES.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>

@@ -16,10 +16,10 @@
 // #endregion
 import { ToolType } from '@/features/charts/common/types'
 import type {
+  NormalizedTimeSpacePhaseResult,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceBaseData,
-  TimeSpaceDiagramPhaseResult,
   TimeSpaceSrmPhaseOverlay,
 } from '../../shared/types'
 jest.mock('nanoid', () => ({
@@ -299,23 +299,24 @@ describe('timeSpaceResultData', () => {
   })
 
   it('merges SRM overlays by location, phase type, and order only', () => {
-    const wrappedData: TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[] = [
-      {
-        error: null,
-        isSuccess: true,
-        result: buildHistoricLocation('P1', 'Primary', 1),
-      },
-      {
-        error: null,
-        isSuccess: true,
-        result: buildHistoricLocation('P1', 'Primary', 2),
-      },
-      {
-        error: 'failed',
-        isSuccess: false,
-        result: null,
-      },
-    ]
+    const wrappedData: NormalizedTimeSpacePhaseResult<RawTimeSpaceHistoricData>[] =
+      [
+        {
+          error: null,
+          isSuccess: true,
+          result: buildHistoricLocation('P1', 'Primary', 1),
+        },
+        {
+          error: null,
+          isSuccess: true,
+          result: buildHistoricLocation('P1', 'Primary', 2),
+        },
+        {
+          error: 'failed',
+          isSuccess: false,
+          result: null,
+        },
+      ]
     const overlays: TimeSpaceSrmPhaseOverlay[] = [
       {
         locationIdentifier: 'P1',

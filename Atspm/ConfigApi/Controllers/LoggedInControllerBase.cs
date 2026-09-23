@@ -39,7 +39,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         }
 
         /// <inheritdoc/>
-        public override ActionResult<T> Get(TKey key, ODataQueryOptions<T> options)
+        public override ActionResult<IQueryable<T>> Get(TKey key, ODataQueryOptions<T> options)
         {
             return base.Get(key, options);
         }

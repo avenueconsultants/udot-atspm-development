@@ -27,6 +27,7 @@ import {
   createYAxis,
   formatDataPointForStepView,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType, DataPoint } from '@/features/charts/common/types'
@@ -67,23 +68,27 @@ export default function transformGreenTimeUtilizationData(
 }
 
 function transformData(data: RawGreenTimeUtilizationData) {
-  const {
-    bins,
-    averageSplits,
-    xAxisBinSize,
-    yAxisBinSize,
-    programmedSplits,
-    start,
-    end,
-    plans,
-  } = data
+  const bins: Bin[] = (data.bins ?? []).map((bin) => ({
+    x: bin.x ?? 0,
+    y: bin.y ?? 0,
+    value: bin.value ?? 0,
+  }))
+  const averageSplits = toDataPoints(data.averageSplits)
+  const programmedSplits = toDataPoints(data.programmedSplits)
+  const xAxisBinSize = data.xAxisBinSize ?? 0
+  const yAxisBinSize = data.yAxisBinSize ?? 0
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const plans = data.plans ?? []
+  const locationDescription = data.locationDescription ?? ''
+  const approachDescription = data.approachDescription ?? ''
 
-  const titleHeader = `Green Time Utilization\n${data.locationDescription} - ${data.approachDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Green Time Utilization\n${locationDescription} - ${approachDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
-    title: ['Green Time Utilization', data.approachDescription],
-    location: data.locationDescription,
+    title: ['Green Time Utilization', approachDescription],
+    location: locationDescription,
     dateRange,
   })
 
@@ -107,10 +112,10 @@ function transformData(data: RawGreenTimeUtilizationData) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.GreenTimeUtilization
   )
 
@@ -127,12 +132,9 @@ function transformData(data: RawGreenTimeUtilizationData) {
   const amountOfVehiclesThrough = transformBins(bins)
   const xAxisValues = createTimeAxis(start, end, xAxisBinSize)
 
-  const programmedSplitsData = formatDataPointForStepView(
-    programmedSplits,
-    data.end
-  )
+  const programmedSplitsData = formatDataPointForStepView(programmedSplits, end)
 
-  const averageSplitsData = formatDataPointForStepView(averageSplits, data.end)
+  const averageSplitsData = formatDataPointForStepView(averageSplits, end)
 
   const series = createSeries(
     {
@@ -247,15 +249,15 @@ function transformData(data: RawGreenTimeUtilizationData) {
       name: 'Time',
       nameLocation: 'middle',
       nameGap: 30,
-      min: data.start,
-      max: data.end,
+      min: start,
+      max: end,
       data: xAxisValues,
     },
     {
       type: 'time',
       name: 'DateTime',
-      min: data.start,
-      max: data.end,
+      min: start,
+      max: end,
       show: false,
     },
   ]
@@ -281,7 +283,7 @@ function transformData(data: RawGreenTimeUtilizationData) {
   const planSeries = createPlans(plans, yAxis.length, undefined, 80, 1)
 
   const displayProps = createDisplayProps({
-    description: data.approachDescription,
+    description: approachDescription,
     numberOfLocations: 0,
   })
 

@@ -14,24 +14,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { EChartsOption } from 'echarts'
+import type { WatchDogDetectionTypeGroup } from '@/api/reports'
+import { BarSeriesOption, EChartsOption } from 'echarts'
 
-interface HardwareData {
-  name: string
-  counts: number
-}
+const transformDetectionTypeData = (
+  data: WatchDogDetectionTypeGroup[]
+): EChartsOption => {
+  const xAxisData = data.map(
+    (item) => `${item.name ?? 'Unknown'} (${item.detectionType ?? 'Unknown'})`
+  )
+  const legendData = Array.from(
+    new Set(
+      data.flatMap((item) =>
+        (item.hardware ?? []).map((hw) => hw.name ?? 'Unknown')
+      )
+    )
+  )
 
-interface DetectionTypeData {
-  detectionType: number
-  hardware: HardwareData[]
-  name: string
-}
-
-const transformDetectionTypeData = (data: DetectionTypeData[]): EChartsOption => {
-  const xAxisData = data.map(item => `${item.name} (${item.detectionType})`)
-  const legendData = Array.from(new Set(data.flatMap(item => item.hardware.map(hw => hw.name))))
-
-  const series = legendData.map(hardwareName => ({
+  const series: BarSeriesOption[] = legendData.map((hardwareName) => ({
     name: hardwareName,
     type: 'bar',
 
@@ -46,42 +46,44 @@ const transformDetectionTypeData = (data: DetectionTypeData[]): EChartsOption =>
       fontSize: 8,
       color: '#000000',
       rich: {
-        name: {}
-      }
+        name: {},
+      },
     },
     emphasis: {
-      focus: 'series'
+      focus: 'series',
     },
-    data: data.map(item => {
-      const hardwareItem = item.hardware.find(hw => hw.name === hardwareName)
-      return hardwareItem ? hardwareItem.counts : 0
-    })
+    data: data.map((item) => {
+      const hardwareItem = item.hardware?.find(
+        (hw) => (hw.name ?? 'Unknown') === hardwareName
+      )
+      return hardwareItem?.counts ?? 0
+    }),
   }))
 
   return {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'shadow'
-      }
+        type: 'shadow',
+      },
     },
     legend: {
-        orient: 'vertical',
-        right:70,
-        top: 'center',
-        data: legendData,
-        itemWidth: 26,  
-        itemHeight: 15, 
-        textStyle: {
-          fontSize: 16  
-        }
+      orient: 'vertical',
+      right: 70,
+      top: 'center',
+      data: legendData,
+      itemWidth: 26,
+      itemHeight: 15,
+      textStyle: {
+        fontSize: 16,
       },
-      grid: {
-        left: '3%',
-        right: '25%',
-        bottom: '5%',
-        containLabel: false
-      },
+    },
+    grid: {
+      left: '3%',
+      right: '25%',
+      bottom: '5%',
+      containLabel: false,
+    },
     toolbox: {
       show: false,
       orient: 'vertical',
@@ -92,15 +94,15 @@ const transformDetectionTypeData = (data: DetectionTypeData[]): EChartsOption =>
       {
         type: 'category',
         axisTick: { show: false },
-        data: xAxisData
-      }
+        data: xAxisData,
+      },
     ],
     yAxis: [
       {
-        type: 'value'
-      }
+        type: 'value',
+      },
     ],
-    series: series
+    series: series,
   }
 }
 

@@ -1,4 +1,4 @@
-import { ImpactType } from '@/features/speedManagementTool/types/impact'
+import { ImpactType } from '@/api/speedManagement/aTSPMSpeedManagementApi.schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Button,

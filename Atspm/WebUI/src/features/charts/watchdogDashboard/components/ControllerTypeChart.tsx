@@ -1,3 +1,4 @@
+import type { WatchDogControllerTypeGroup } from '@/api/reports'
 import ApacheEChart from '@/features/charts/components/apacheEChart/ApacheEChart'
 import {
   Box,
@@ -7,12 +8,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material'
+import type { EChartsOption } from 'echarts'
 import React, { useEffect, useState } from 'react'
 import transformWatchdogControllerTypeData from '../watchdogControllerType.transformer'
 import SunburstLegend from './SunburstLegend'
 
 interface ControllerTypeChartProps {
-  data: any // Replace 'any' with the actual type of your controller type data
+  data?: WatchDogControllerTypeGroup[] | null
   isLoading: boolean
 }
 
@@ -20,7 +22,8 @@ const ControllerTypeChart: React.FC<ControllerTypeChartProps> = ({
   data,
   isLoading,
 }) => {
-  const [controllerTypeData, setControllerTypeData] = useState<any>(null)
+  const [controllerTypeData, setControllerTypeData] =
+    useState<EChartsOption | null>(null)
   const [controllerTypeLegend, setControllerTypeLegend] = useState<
     { name: string; color: string; selected: boolean }[]
   >([])

@@ -23,15 +23,30 @@ export function roundTo(
   return Math.round(value * factor) / factor
 }
 
+export interface FormatNumberOptions {
+  /** What a null, undefined or non-numeric value renders as. */
+  empty?: string
+  /** Thousands separators, in the user's locale. */
+  grouping?: boolean
+}
+
 export function formatNumber(
   value: number | string | null | undefined,
-  decimals = 0
+  decimals = 0,
+  { empty = '', grouping = false }: FormatNumberOptions = {}
 ): string {
-  if (value == null) return ''
+  if (value == null) return empty
 
   const numeric = typeof value === 'number' ? value : Number(String(value))
 
-  if (!Number.isFinite(numeric)) return ''
+  if (!Number.isFinite(numeric)) return empty
+
+  if (grouping) {
+    return numeric.toLocaleString(undefined, {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    })
+  }
 
   if (decimals === 0) {
     return String(Math.round(numeric))

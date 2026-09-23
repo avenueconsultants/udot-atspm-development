@@ -1,11 +1,11 @@
+import { DeviceGroup } from '@/api/config'
 import ApacheEChart from '@/features/charts/components/apacheEChart/ApacheEChart'
 import transformDeviceCountData from '@/features/charts/watchdogDashboard/deviceCount.transformer'
-import { DeviceCount } from '@/features/watchdog/types'
 import { Paper } from '@mui/material'
 import React, { useMemo, useEffect, useRef } from 'react'
 
 interface DeviceCountChartProps {
-  data: DeviceCount[]
+  data: DeviceGroup[]
   isLoading: boolean
 }
 

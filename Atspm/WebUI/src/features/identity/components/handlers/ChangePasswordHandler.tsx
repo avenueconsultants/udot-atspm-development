@@ -1,16 +1,17 @@
+import {
+  useDeleteTokenVerifyResetToken,
+  useGetAccountChangePassword,
+} from '@/api/identity/atspmAuthenticationApi'
+import { VerifyResetTokenResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import { setSecureCookie } from '@/features/identity/utils'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { FormEvent, useEffect, useState } from 'react'
-import { useChangePassword } from '../../api/changePassword'
-import { VerifyToken, useVerifyResetToken } from '../../api/verifyResetToken'
-import { ResponseDto } from '../../types/responseDto'
 import { PasswordHandler, ResponseHandler } from './baseHandler'
 
 export interface ChangePasswordHandler
   extends PasswordHandler,
     ResponseHandler {
-  data: ResponseDto
   submitted: boolean
   confirmPassword: string
   validateConfirmPassword(): string | null
@@ -19,7 +20,7 @@ export interface ChangePasswordHandler
 }
 
 export interface VerifyTokenHandler {
-  data: ResponseDto
+  data: VerifyResetTokenResult | undefined
   isLoadingValidity: boolean
   isValidToken: boolean
   resetToken: string
@@ -38,20 +39,11 @@ export const useChangePasswordHandler = ({
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [responseSuccess, setResponseSuccess] = useState(false)
   const [responseError, setResponseError] = useState(false)
-  const [data, setData] = useState<ResponseDto>()
 
-  const {
-    refetch,
-    data: changePasswordData,
-    status,
-  } = useChangePassword({
-    resetToken,
-    newPassword: password,
-    confirmPassword,
-  })
+  const { mutate: changePassword, status } = useGetAccountChangePassword()
 
   useEffect(() => {
-    if (status !== 'loading' && status === 'success') {
+    if (status === 'success') {
       setResponseSuccess(true)
     }
 
@@ -59,12 +51,6 @@ export const useChangePasswordHandler = ({
       setResponseError(true)
     }
   }, [status])
-
-  useEffect(() => {
-    if (changePasswordData) {
-      setData(changePasswordData)
-    }
-  }, [changePasswordData])
 
   const passwordCheck = () => {
     if (password.length < 8) {
@@ -104,11 +90,12 @@ export const useChangePasswordHandler = ({
       return
     }
     setSubmitted(true)
-    refetch()
+    changePassword({
+      data: { resetToken, newPassword: password, confirmPassword },
+    })
   }
 
   const component: ChangePasswordHandler = {
-    data: data as ResponseDto,
     password,
     confirmPassword,
     responseError,
@@ -146,24 +133,19 @@ export const useVerifyTokenHandler = (): VerifyTokenHandler => {
   const [username, setUsername] = useState('')
   const [resetToken, setResetToken] = useState('')
   const [isValidToken, setIsValidToken] = useState(false)
-  const [data, setData] = useState<VerifyToken>()
 
   const {
-    data: verifyResetTokenData,
-    refetch,
+    mutate: verifyResetToken,
+    data,
     status,
-  } = useVerifyResetToken({
-    token: resetToken,
-    username,
-  })
+  } = useDeleteTokenVerifyResetToken()
 
   useEffect(() => {
-    if (verifyResetTokenData) {
-      setData(verifyResetTokenData)
+    if (data?.token) {
       setIsValidToken(true)
-      setSecureCookie('token', verifyResetTokenData.token)
+      setSecureCookie('token', data.token)
     }
-  }, [verifyResetTokenData])
+  }, [data])
 
   useEffect(() => {
     const queryParams = new URLSearchParams(router.asPath.split('?')[1])
@@ -186,9 +168,9 @@ export const useVerifyTokenHandler = (): VerifyTokenHandler => {
 
   useEffect(() => {
     if (resetToken && username && isLoadingValidity) {
-      refetch()
+      verifyResetToken({ data: { token: resetToken, username } })
     }
-  }, [isLoadingValidity, refetch, resetToken, username])
+  }, [isLoadingValidity, verifyResetToken, resetToken, username])
 
   useEffect(() => {
     if (status === 'success') {
@@ -200,7 +182,7 @@ export const useVerifyTokenHandler = (): VerifyTokenHandler => {
   }, [status])
 
   const component: VerifyTokenHandler = {
-    data: data as any,
+    data,
     isLoadingValidity,
     isValidToken,
     resetToken,

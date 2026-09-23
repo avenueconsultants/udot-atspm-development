@@ -37,7 +37,7 @@ function Register() {
         onClose={() => handler.handleResponseError(false)}
       >
         <Alert elevation={6} variant="filled" severity="error">
-          {handler.data?.message}
+          {handler.errorMessage}
         </Alert>
       </Snackbar>
     </Container>

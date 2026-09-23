@@ -19,14 +19,12 @@ interface ClearGuideSpiderLayerProps {
   entities: Entity[]
   associatedEntityIds: string[]
   setAssociatedEntityIds: (ids: string[]) => void
-  setHoveredEntity: (entity: Entity | null) => void
 }
 
 export function ClearGuideSpiderLayer({
   entities,
   associatedEntityIds,
   setAssociatedEntityIds,
-  setHoveredEntity,
 }: ClearGuideSpiderLayerProps) {
   const [spiderLines, setSpiderLines] = React.useState<LatLngExpression[][]>([])
   const [popupInfo, setPopupInfo] = React.useState<{

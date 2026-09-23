@@ -12,7 +12,6 @@ interface PurdueSplitFailureChartOptionsProps {
 export const PurdueSplitFailureChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: PurdueSplitFailureChartOptionsProps) => {
   const [firstSecondsOfRed, setFirstSecondsOfRed] = useState(
     chartDefaults.firstSecondsOfRed.value

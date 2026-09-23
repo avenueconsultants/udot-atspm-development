@@ -24,7 +24,6 @@ interface LocationsDisplayProps {
   setPhase: (phase: number | '') => void
   onLocationDelete: (location: Location) => void
   onDeleteAllLocations: (locations: Location[]) => void
-  onUpdateLocation: (updatedLocation: Location) => void
   errorState: ATErrorState
 }
 
@@ -34,7 +33,6 @@ const LocationsDisplay = ({
   setPhase,
   onLocationDelete,
   onDeleteAllLocations,
-  onUpdateLocation,
 }: LocationsDisplayProps) => {
   const pedestrianPhases = useMemo(() => {
     const set = new Set<number>()

@@ -9,7 +9,7 @@ interface ErrorProps {
 }
 
 const ErrorPage: NextPage<ErrorProps> = ({ statusCode }) => {
-  let message =
+  const message =
     statusCode === 500
       ? "Sorry! There's an internal server error."
       : 'An unexpected error occurred.'

@@ -241,9 +241,7 @@ const phaseListsMatch = (left?: number[] | null, right?: number[] | null) =>
   left.length === right.length &&
   left.every((phase, index) => phase === right[index])
 
-const getCoordinatedPhasePresetValue = (
-  phases?: number[] | null
-): string =>
+const getCoordinatedPhasePresetValue = (phases?: number[] | null): string =>
   COORDINATED_PHASE_PRESETS.find((preset) =>
     phaseListsMatch(phases, preset.phases)
   )?.value ?? CUSTOM_COORDINATED_PHASES_VALUE
@@ -792,6 +790,9 @@ const SequenceAndCoordinationComponent = ({
                     <FormControl variant="outlined" size="small" fullWidth>
                       <Select
                         value={sequenceSelectValue}
+                        inputProps={{
+                          'aria-label': `Sequence for location ${locationId}`,
+                        }}
                         onChange={(event) =>
                           handleSequencePresetChange(
                             location,
@@ -881,14 +882,16 @@ const SequenceAndCoordinationComponent = ({
                     <FormControl variant="outlined" size="small" fullWidth>
                       <Select
                         value={coordPhaseSelectValue}
+                        inputProps={{
+                          'aria-label': `Coordinated phases for location ${locationId}`,
+                        }}
                         onChange={(event) =>
                           handleCoordPhasePresetChange(locationId, event)
                         }
                         renderValue={(value) => {
-                          const selectedPreset =
-                            COORDINATED_PHASE_PRESETS.find(
-                              (preset) => preset.value === value
-                            )
+                          const selectedPreset = COORDINATED_PHASE_PRESETS.find(
+                            (preset) => preset.value === value
+                          )
 
                           return selectedPreset?.label ?? 'Manual'
                         }}

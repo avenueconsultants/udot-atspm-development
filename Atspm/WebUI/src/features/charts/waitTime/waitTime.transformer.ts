@@ -59,18 +59,21 @@ export default function transformWaitTimeData(
 }
 
 function transformData(data: RawWaitTimeData) {
-  const {
-    plans,
-    gapOuts,
-    maxOuts,
-    forceOffs,
-    unknowns,
-    average,
-    volumes,
-    planSplits,
-  } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const plans = data.plans ?? []
+  const gapOuts = data.gapOuts ?? []
+  const maxOuts = data.maxOuts ?? []
+  const forceOffs = data.forceOffs ?? []
+  const unknowns = data.unknowns ?? []
+  const average = data.average ?? []
+  const volumes = data.volumes ?? []
+  const planSplits = data.planSplits ?? []
 
-  const info = createInfoString([data.detectionTypes, ''])
+  const info = createInfoString([data.detectionTypes ?? '', ''])
   const titleHeader = `Wait Time\n${data.locationDescription} - ${data.approachDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
 

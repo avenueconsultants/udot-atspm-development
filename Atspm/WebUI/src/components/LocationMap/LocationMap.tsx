@@ -1,6 +1,6 @@
+import { SearchLocation as Location } from '@/api/config'
 import Markers from '@/components/LocationMap/Markers'
 import MapFilters from '@/components/MapFilters'
-import { Location } from '@/features/locations/types'
 import { useEnv } from '@/hooks/useEnv'
 import ClearIcon from '@mui/icons-material/Clear'
 import {
@@ -96,7 +96,9 @@ const LocationMap = ({
       const markerLocation = locations.find((loc) => loc.id === location.id)
       if (markerLocation) {
         const { latitude, longitude } = markerLocation
-        mapRef.setView([latitude + 0.002, longitude], 16)
+        if (latitude != null && longitude != null) {
+          mapRef.setView([latitude + 0.002, longitude], 16)
+        }
       }
     } else if (route && mapRef && !hasFocusedRoute) {
       const bounds = L.latLngBounds(route.map((coord) => [coord[0], coord[1]]))
@@ -136,12 +138,14 @@ const LocationMap = ({
         filteredLocations
           .filter(
             (loc) =>
+              loc.latitude != null &&
+              loc.longitude != null &&
               loc.latitude >= -90 &&
               loc.latitude <= 90 &&
               loc.longitude >= -180 &&
               loc.longitude <= 180
           )
-          .map((loc) => [loc.latitude, loc.longitude])
+          .map((loc) => [loc.latitude as number, loc.longitude as number])
       )
 
       if (bounds.isValid()) {
@@ -235,9 +239,7 @@ const LocationMap = ({
 
       {googleSession ? (
         <TileLayer
-          attribution={
-            mapInfo.attribution
-          }
+          attribution={mapInfo.attribution}
           url={`/api/google/tiles/{z}/{x}/{y}?session=${encodeURIComponent(googleSession)}`}
           crossOrigin
         />

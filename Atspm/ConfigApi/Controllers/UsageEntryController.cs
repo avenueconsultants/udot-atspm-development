@@ -44,7 +44,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
 
         /// <inheritdoc/>
         [AuthorizePermission(AtspmAuthorization.Permissions.UsageView)]
-        public override ActionResult<UsageEntry> Get(int key, ODataQueryOptions<UsageEntry> options)
+        public override ActionResult<IQueryable<UsageEntry>> Get(int key, ODataQueryOptions<UsageEntry> options)
         {
             return base.Get(key, options);
         }

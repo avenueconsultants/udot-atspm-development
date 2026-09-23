@@ -90,7 +90,7 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
 
   const regionNameById = useMemo(() => {
     const map: Record<string, string> = {}
-    for (const r of (regionsData?.value ?? []) as Region[]) {
+    for (const r of (regionsData ?? []) as Region[]) {
       if (r?.id != null) map[String(r.id)] = String(r.description ?? '')
     }
     return map
@@ -98,7 +98,7 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
 
   const jurisdictionNameById = useMemo(() => {
     const map: Record<string, string> = {}
-    for (const j of (jurisdictionData?.value ?? []) as Jurisdiction[]) {
+    for (const j of (jurisdictionData ?? []) as Jurisdiction[]) {
       if (j?.id != null) map[String(j.id)] = String(j.name ?? '')
     }
     return map
@@ -106,7 +106,7 @@ const Markers = ({ locations, setLocation }: MarkersProps) => {
 
   const areaNameById = useMemo(() => {
     const map: Record<string, string> = {}
-    for (const a of (areasData?.value ?? []) as Area[]) {
+    for (const a of (areasData ?? []) as Area[]) {
       if (a?.id != null) map[String(a.id)] = String(a.name ?? '')
     }
     return map

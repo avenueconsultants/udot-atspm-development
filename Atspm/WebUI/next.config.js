@@ -20,7 +20,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 module.exports = withBundleAnalyzer({
   reactStrictMode: false,
-  transpilePackages: ['react-leaflet'],
+  // msw/until-async are test-only (never imported by app pages), but
+  // next/jest derives its Jest transformIgnorePatterns from this list too,
+  // and msw's until-async dependency ships ESM-only.
+  transpilePackages: ['react-leaflet', 'msw', 'until-async', '@mswjs/interceptors'],
   output: 'standalone',
   webpack: (config) => {
     config.experiments = { ...config.experiments, topLevelAwait: true }

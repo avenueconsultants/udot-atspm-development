@@ -1,5 +1,8 @@
 import { SpeedOverTimeOptions } from '@/api/speedManagement/aTSPMSpeedManagementApi.schemas'
-import { DataSource, TimeOptions } from '@/features/speedManagementTool/enums'
+import {
+  DataSource,
+  SpeedTimePeriod,
+} from '@/features/speedManagementTool/enums'
 import useSpeedManagementStore from '@/features/speedManagementTool/speedManagementStore'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import {
@@ -38,12 +41,11 @@ const SpeedOverTimeChartOptions = ({
       : null
   )
 
-  const [selectedSource, setSelectedSource] = useState<DataSource>(sourceId)
-  const [selectedTimeOptions, setSelectedTimeOptions] = useState<TimeOptions>(
-    TimeOptions.Hour
-  )
-  const [startTime, setStartTime] = useState<Date | null>(new Date())
-  const [endTime, setEndTime] = useState<Date | null>(new Date())
+  const [selectedSource] = useState<DataSource>(sourceId)
+  const [selectedTimeOptions, setSelectedTimeOptions] =
+    useState<SpeedTimePeriod>(SpeedTimePeriod.Day)
+  const [startTime] = useState<Date | null>(new Date())
+  const [endTime] = useState<Date | null>(new Date())
 
   useEffect(() => {
     if (startDate && endDate && startTime && endTime) {
@@ -92,32 +94,10 @@ const SpeedOverTimeChartOptions = ({
     }
   }
 
-  const handleSourceChange = (event: SelectChangeEvent<number>) => {
-    setSelectedSource(event.target.value as DataSource)
-  }
-
-  const handleTimeOptionsChange = (event: SelectChangeEvent<TimeOptions>) => {
-    setSelectedTimeOptions(event.target.value as TimeOptions)
-  }
-
-  const handleStartTimeChange = (time: Date | null) => {
-    if (time && isValid(time)) {
-      setStartTime(time)
-      // You can add error handling for time if needed
-    } else {
-      setStartTime(null)
-      // Handle time errors if necessary
-    }
-  }
-
-  const handleEndTimeChange = (time: Date | null) => {
-    if (time && isValid(time)) {
-      setEndTime(time)
-      // You can add error handling for time if needed
-    } else {
-      setEndTime(null)
-      // Handle time errors if necessary
-    }
+  const handleTimeOptionsChange = (
+    event: SelectChangeEvent<SpeedTimePeriod>
+  ) => {
+    setSelectedTimeOptions(event.target.value as SpeedTimePeriod)
   }
 
   return (
@@ -179,9 +159,9 @@ const SpeedOverTimeChartOptions = ({
             label="Bin Size"
             onChange={handleTimeOptionsChange}
           >
-            <MenuItem value={TimeOptions.Hour}>Hour</MenuItem>
-            <MenuItem value={TimeOptions.Week}>Week</MenuItem>
-            <MenuItem value={TimeOptions.Month}>Month</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Day}>Day</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Week}>Week</MenuItem>
+            <MenuItem value={SpeedTimePeriod.Month}>Month</MenuItem>
           </Select>
         </FormControl>
         {/* Uncomment and update the Source Select component if needed */}

@@ -334,23 +334,23 @@ const About = () => {
     query: {
       staleTime: 5 * 60 * 1000,
       retry: 1,
+      // This page renders its own "unavailable" state; the app-wide policy
+      // would otherwise throw a failed lookup to the error boundary.
+      throwOnError: false,
     },
   })
   const {
     data: latestVersion,
     isLoading: isLatestVersionLoading,
     isError: isLatestVersionError,
-  } = useGetVersionLatestVersionFromPreRelease(
-    false,
-    undefined,
-    {
-      query: {
-        enabled: true,
-        staleTime: 5 * 60 * 1000,
-        retry: 1,
-      },
-    }
-  )
+  } = useGetVersionLatestVersionFromPreRelease(false, undefined, {
+    query: {
+      enabled: true,
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+      throwOnError: false,
+    },
+  })
 
   const isVersionLoading = isCurrentVersionLoading || isLatestVersionLoading
   const isVersionUnavailable = isCurrentVersionError || isLatestVersionError

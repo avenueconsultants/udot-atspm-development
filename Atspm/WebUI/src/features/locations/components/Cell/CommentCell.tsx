@@ -1,12 +1,14 @@
 import {
-  useCreateDetectorComment,
-  useDeleteDetectorComment,
-  useGetDetectorComments,
-  useUpdateDetectorComment,
-} from '@/features/locations/api/detector'
+  useDeleteDetectorCommentFromKey,
+  useGetDetectorComment,
+  usePatchDetectorCommentFromKey,
+  usePostDetectorComment,
+} from '@/api/config'
 import { useCellNavigation } from '@/features/locations/components/Cell/CellNavigation'
 import DeleteConfirmationModal from '@/features/locations/components/editDetector/DeleteCommentConfirmationModal'
 import { ConfigDetector } from '@/features/locations/components/editLocation/locationStore'
+import { getApiErrorMessage } from '@/lib/apiError'
+import { useNotificationStore } from '@/stores/notifications'
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -61,20 +63,28 @@ const CommentCell = ({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  const [editCommentId, setEditCommentId] = useState<string | null>(null)
+  const [editCommentId, setEditCommentId] = useState<number | null>(null)
   const [commentText, setCommentText] = useState('')
 
-  const { refetch, data: commentsData } = useGetDetectorComments(detector.id)
-  const { mutate: addComment } = useCreateDetectorComment()
-  const { mutate: deleteComment } = useDeleteDetectorComment()
-  const { mutate: updateComment } = useUpdateDetectorComment()
+  const { refetch, data: commentsData } = useGetDetectorComment({
+    filter: `detectorId eq ${detector.id}`,
+  })
+  const { mutateAsync: addComment, isPending: isAdding } =
+    usePostDetectorComment()
+  const { mutateAsync: deleteComment, isPending: isDeleting } =
+    useDeleteDetectorCommentFromKey()
+  const { mutateAsync: updateComment, isPending: isUpdating } =
+    usePatchDetectorCommentFromKey()
+  const { addNotification } = useNotificationStore()
+  const isSaving = isAdding || isUpdating
 
   const comments =
-    commentsData?.value
-      .filter((c) => c.detectorId === detector.id)
+    commentsData
+      ?.slice()
       .sort(
         (a, b) =>
-          new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
+          new Date(b.timeStamp ?? 0).getTime() -
+          new Date(a.timeStamp ?? 0).getTime()
       ) || []
 
   useEffect(() => {
@@ -118,7 +128,7 @@ const CommentCell = ({
     setAnchorEl(null)
   }
 
-  const handleOpenModal = (id: string | null = null, text = '') => {
+  const handleOpenModal = (id: number | null = null, text = '') => {
     cellRef.current?.blur()
     setEditCommentId(id)
     setCommentText(text)
@@ -126,45 +136,68 @@ const CommentCell = ({
   }
 
   const handleCloseModal = () => {
+    if (isSaving) return
     setModalOpen(false)
     setEditCommentId(null)
   }
 
-  const handleSaveComment = () => {
-    if (editCommentId) {
-      updateComment(
-        { id: editCommentId, data: { comment: commentText } },
-        { onSuccess: refetch }
-      )
-    } else {
-      addComment(
-        {
-          comment: commentText,
-          detectorId: detector.id,
-          timeStamp: new Date().toISOString(),
-        },
-        { onSuccess: refetch }
-      )
+  const handleSaveComment = async () => {
+    if (isSaving) return
+    try {
+      if (editCommentId !== null) {
+        await updateComment({
+          key: editCommentId,
+          data: { comment: commentText },
+        })
+      } else {
+        await addComment({
+          data: {
+            comment: commentText,
+            detectorId: detector.id,
+            timeStamp: new Date().toISOString(),
+          },
+        })
+      }
+      setCommentText('')
+      setModalOpen(false)
+      setEditCommentId(null)
+      addNotification({ type: 'success', title: 'Comment saved' })
+      void refetch()
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Error saving comment',
+        message: getApiErrorMessage(error),
+      })
     }
-    setCommentText('')
-    handleCloseModal()
   }
 
-  const handleOpenDeleteModal = (id: string) => {
+  const handleOpenDeleteModal = (id: number | null) => {
     setEditCommentId(id)
     setDeleteModalOpen(true)
   }
 
   const handleCloseDeleteModal = () => {
+    if (isDeleting) return
     setDeleteModalOpen(false)
     setEditCommentId(null)
   }
 
-  const handleConfirmDelete = () => {
-    if (editCommentId) {
-      deleteComment(editCommentId, { onSuccess: refetch })
+  const handleConfirmDelete = async () => {
+    if (editCommentId === null || isDeleting) return
+    try {
+      await deleteComment({ key: editCommentId })
+      setDeleteModalOpen(false)
+      setEditCommentId(null)
+      addNotification({ type: 'success', title: 'Comment deleted' })
+      void refetch()
+    } catch (error) {
+      addNotification({
+        type: 'error',
+        title: 'Error deleting comment',
+        message: getApiErrorMessage(error),
+      })
     }
-    handleCloseDeleteModal()
   }
 
   const outlineColor = theme.palette.primary.main
@@ -211,7 +244,11 @@ const CommentCell = ({
 
       <Tooltip title={detector.isNew ? 'Save before commenting' : ''}>
         <span>
-          <IconButton onClick={handleIconClick} disabled={detector.isNew}>
+          <IconButton
+            aria-label="View comments"
+            onClick={handleIconClick}
+            disabled={detector.isNew}
+          >
             <Badge
               badgeContent={comments.length}
               color="primary"
@@ -246,18 +283,22 @@ const CommentCell = ({
                 <ListItem key={c.id} divider alignItems="flex-start">
                   <ListItemText
                     primary={c.comment}
-                    secondary={new Date(c.timeStamp).toLocaleString()}
+                    secondary={new Date(c.timeStamp ?? 0).toLocaleString()}
                   />
                   <Box>
                     <IconButton
+                      aria-label="Edit comment"
                       size="small"
-                      onClick={() => handleOpenModal(c.id, c.comment)}
+                      onClick={() =>
+                        handleOpenModal(c.id ?? null, c.comment ?? '')
+                      }
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
+                      aria-label="Delete comment"
                       size="small"
-                      onClick={() => handleOpenDeleteModal(c.id)}
+                      onClick={() => handleOpenDeleteModal(c.id ?? null)}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -291,9 +332,11 @@ const CommentCell = ({
           }}
         >
           <Typography variant="h6" gutterBottom>
-            {editCommentId ? 'Edit Comment' : 'Add Comment'}
+            {editCommentId !== null ? 'Edit Comment' : 'Add Comment'}
           </Typography>
           <TextField
+            label="Comment"
+            disabled={isSaving}
             autoFocus
             fullWidth
             multiline
@@ -302,9 +345,12 @@ const CommentCell = ({
             onChange={(e) => setCommentText(e.target.value)}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button onClick={handleCloseModal} disabled={isSaving}>
+              Cancel
+            </Button>
             <Button
               onClick={handleSaveComment}
+              disabled={isSaving}
               variant="contained"
               sx={{ ml: 1 }}
             >
@@ -318,6 +364,7 @@ const CommentCell = ({
         open={deleteModalOpen}
         onClose={handleCloseDeleteModal}
         onDelete={handleConfirmDelete}
+        isDeleting={isDeleting}
         commentText={
           comments.find((c) => c.id === editCommentId)?.comment || ''
         }

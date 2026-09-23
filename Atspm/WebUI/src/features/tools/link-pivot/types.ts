@@ -30,7 +30,7 @@ export interface LinkPivotAdjustmentOptions {
   biasDirection: 'Downstream' | 'Upstream'
 }
 
-export interface LinkPivotPcdOptions {
+export interface LinkPivotPcdFormOptions {
   startDate: string
   endDate: string
   startTime: string
@@ -42,7 +42,9 @@ export interface LinkPivotPcdOptions {
   delta: number
 }
 
-export type LinkPivotOptions = LinkPivotAdjustmentOptions | LinkPivotPcdOptions
+export type LinkPivotFormOptions =
+  | LinkPivotAdjustmentOptions
+  | LinkPivotPcdFormOptions
 
 export interface LinkPivotComponentDto {
   locationIdentifier: string

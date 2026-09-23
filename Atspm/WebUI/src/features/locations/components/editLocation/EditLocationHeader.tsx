@@ -27,8 +27,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
-import { useQueryClient } from 'react-query'
 
 const modalStyle = {
   position: 'absolute' as const,
@@ -60,7 +60,7 @@ export default function EditLocationHeader() {
       { enabled: false }
     )
 
-  const locationVersions = versionsData?.value
+  const locationVersions = versionsData
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -127,11 +127,14 @@ export default function EditLocationHeader() {
           updateLocationVersion(newLoc)
           fetchLocationVersions()
           addNotification({ type: 'success', title: 'New Version Added' })
+          setOpenAddDialog(false)
+          setNewVersionLabel('')
+        },
+        onError: () => {
+          addNotification({ type: 'error', title: 'Error Adding New Version' })
         },
       }
     )
-    setOpenAddDialog(false)
-    setNewVersionLabel('')
   }
 
   const handleDeleteCurrentVersionConfirm = () => {
@@ -144,10 +147,13 @@ export default function EditLocationHeader() {
             locationVersions?.find((ver) => ver.id !== location.id) || null
           )
           addNotification({ type: 'success', title: 'Version Deleted' })
+          setOpenDeleteModal(false)
+        },
+        onError: () => {
+          addNotification({ type: 'error', title: 'Error Deleting Version' })
         },
       }
     )
-    setOpenDeleteModal(false)
   }
 
   const handleDeleteLocationConfirm = () => {
@@ -160,10 +166,13 @@ export default function EditLocationHeader() {
           setLocation(null)
           addNotification({ type: 'success', title: 'Location Deleted' })
           await queryClient.invalidateQueries()
+          setOpenDeleteModal(false)
+        },
+        onError: () => {
+          addNotification({ type: 'error', title: 'Error Deleting Location' })
         },
       }
     )
-    setOpenDeleteModal(false)
   }
 
   const deleteModalText =
@@ -179,7 +188,7 @@ export default function EditLocationHeader() {
     if (deleteAction === 'deleteLocation') handleDeleteLocationConfirm()
   }
 
-  const locationType = locationTypeData?.value.find(
+  const locationType = locationTypeData?.find(
     (type) => type.id === location.locationTypeId
   )
   const locationTypeConfig = getLocationTypeConfig(locationType?.id)

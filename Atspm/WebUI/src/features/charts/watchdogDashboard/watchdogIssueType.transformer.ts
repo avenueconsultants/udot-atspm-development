@@ -14,36 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { EChartsOption } from 'echarts'
+import { WatchDogIssueTypeGroup } from '@/api/reports'
+import { EChartsOption, SunburstSeriesOption } from 'echarts'
 import { Color, lightenColor } from '../utils'
-
-interface RawWatchdogData {
-  issueType: number
-  products: {
-    manufacturer: string
-    model: string
-    firmware: string
-    counts: number
-  }[]
-  name: string
-}
-
-interface TransformedWatchdogData {
-  name: string
-  itemStyle: { color: string }
-  children: {
-    name: string
-    itemStyle: { color: string }
-    value: number
-  }[]
-}
-
-interface TransformedData {
-  sunburst: EChartsOption
-  bar: EChartsOption
-}
-
-//barchart
 
 const issueTypeColors = [
   Color.Blue,
@@ -61,16 +34,16 @@ interface TransformedData {
 }
 
 export default function transformWatchdogIssueTypeData(
-  response: RawWatchdogData[],
+  response: WatchDogIssueTypeGroup[],
   deselectedItems: string[] = []
 ): TransformedData {
   const transformedData = transformData(response, deselectedItems)
 
   // Create legend data from all items, regardless of selection
   const legendData = response.map((item, index) => ({
-    name: item.name,
+    name: item.name ?? 'Unknown',
     color: issueTypeColors[index % issueTypeColors.length],
-    selected: !deselectedItems.includes(item.name),
+    selected: !deselectedItems.includes(item.name ?? 'Unknown'),
   }))
 
   const chart: EChartsOption = {
@@ -126,23 +99,26 @@ export default function transformWatchdogIssueTypeData(
 }
 
 function transformData(
-  data: RawWatchdogData[],
+  data: WatchDogIssueTypeGroup[],
   deselectedItems: string[]
-): TransformedWatchdogData[] {
+): NonNullable<SunburstSeriesOption['data']> {
   const filteredData = data.filter(
-    (item) => !deselectedItems.includes(item.name)
+    (item) => !deselectedItems.includes(item.name ?? 'Unknown')
   )
 
   const totalIssueCount = filteredData.reduce(
     (sum, item) =>
       sum +
-      item.products.reduce(
+      (item.products ?? []).reduce(
         (productSum, product) =>
           productSum +
-          product.model.reduce(
+          (product.model ?? []).reduce(
             (modelSum, model) =>
               modelSum +
-              model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
+              (model.firmware ?? []).reduce(
+                (fwSum, fw) => fwSum + (fw.counts ?? 0),
+                0
+              ),
             0
           ),
         0
@@ -154,65 +130,61 @@ function transformData(
     const originalIndex = data.findIndex(
       (originalItem) => originalItem.name === item.name
     )
-    const issueTypeCount = item.products.reduce(
+    const issueTypeCount = (item.products ?? []).reduce(
       (sum, product) =>
         sum +
-        product.model.reduce(
+        (product.model ?? []).reduce(
           (modelSum, model) =>
             modelSum +
-            model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
+            (model.firmware ?? []).reduce(
+              (fwSum, fw) => fwSum + (fw.counts ?? 0),
+              0
+            ),
           0
         ),
       0
     )
 
+    // Both denominators here are sums over the data, so they are 0 on a
+    // dashboard where nothing has been flagged yet - a normal state, not an
+    // error. Dividing anyway wrote a literal "NaN%" into the sunburst node
+    // labels.
     const issueTypePercentage = (
-      (issueTypeCount / totalIssueCount) *
-      100
+      totalIssueCount > 0 ? (issueTypeCount / totalIssueCount) * 100 : 0
     ).toFixed(1)
 
     return {
-      name: `${item.name}\n${issueTypePercentage}%`,
+      name: `${item.name ?? 'Unknown'}\n${issueTypePercentage}%`,
       itemStyle: {
         color: issueTypeColors[originalIndex % issueTypeColors.length],
       },
-      children: item.products.map((product) => {
-        const productCount = product.model.reduce(
-          (sum, model) =>
-            sum + model.firmware.reduce((fwSum, fw) => fwSum + fw.counts, 0),
-          0
-        )
-
+      children: (item.products ?? []).map((product) => {
         return {
-          name: `${product.name}`,
+          name: `${product.name ?? 'Unknown'}`,
           itemStyle: {
             color: lightenColor(
               issueTypeColors[originalIndex % issueTypeColors.length],
               15
             ),
           },
-          children: product.model.map((model) => {
-            const modelCount = model.firmware.reduce(
-              (sum, fw) => sum + fw.counts,
-              0
-            )
-
+          children: (product.model ?? []).map((model) => {
             return {
-              name: `${model.name}`,
+              name: `${model.name ?? 'Unknown'}`,
               itemStyle: {
                 color: lightenColor(
                   issueTypeColors[originalIndex % issueTypeColors.length],
                   30
                 ),
               },
-              children: model.firmware.map((fw) => {
+              children: (model.firmware ?? []).map((fw) => {
                 const fwPercentage = (
-                  (fw.counts / issueTypeCount) *
-                  100
+                  issueTypeCount > 0
+                    ? ((fw.counts ?? 0) / issueTypeCount) * 100
+                    : 0
                 ).toFixed(1)
                 return {
-                  name: `${fw.name}\n${fwPercentage}%`,
-                  value: fw.counts,
+                  name: `${fw.name ?? 'Unknown'}\n${fwPercentage}%`,
+                  value: fw.counts ?? 0,
                   itemStyle: {
                     color: lightenColor(
                       issueTypeColors[originalIndex % issueTypeColors.length],

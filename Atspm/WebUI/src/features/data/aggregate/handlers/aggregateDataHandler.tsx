@@ -1,4 +1,23 @@
 import {
+  Location,
+  RouteLocationDto,
+  useGetLocationFromKey,
+  useGetRouteRouteViewFromId,
+} from '@/api/config'
+import {
+  AggregationCalculationType,
+  AggregationOptions,
+  AggregationResult,
+  AggregationType,
+  BinSize,
+  DayOfWeek,
+  FilterDirection,
+  FilterMovement,
+  SeriesType,
+  TimeOptions,
+  XAxisType,
+} from '@/api/reports'
+import {
   LocationHandler,
   useLocationHandler,
 } from '@/components/handlers/locationHandler'
@@ -6,28 +25,19 @@ import {
   RouteHandler,
   useRouteHandler,
 } from '@/components/handlers/routeHandler'
-import { useGetLocation } from '@/features/locations/api'
-import { LocationExpanded } from '@/features/locations/types'
-import { useGetRouteWithExpandedLocations } from '@/features/routes/api/getRouteWithExpandedLocations'
+import { unwrapLocationFromKey } from '@/features/locations/utils/unwrapLocationFromKey'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
 import { dateToTimestamp } from '@/utils/dateTime'
 import { startOfToday, startOfTomorrow } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { usePostAggregateData } from '../../api/getAggregateData'
 import {
-  AggregateApiData,
-  AggregateFilterDirection,
-  AggregateFilterMovement,
-  AggregateTimeOptions,
-} from '../types/aggregateApiData'
-import { AggregateData } from '../types/aggregateData'
-import {
-  AggregationType,
-  MetricTypeOptionsList,
-  YAxisOptions,
+  aggregationTypeByName,
   binSizeMarks,
   chartTypeOptions,
+  MetricTypeOptionsList,
   xAxisOptions,
+  YAxisOptions,
 } from '../types/aggregateOptionsData'
 import {
   ExpandLocationHandler,
@@ -40,7 +50,7 @@ export interface AggregateOptionsHandler
     RouteHandler,
     LocationHandler,
     ExpandLocationHandler {
-  aggregatedData: AggregateData[]
+  aggregatedData: AggregationResult[]
   selectedDays: number[]
   selectedDirections: number[]
   selectedMovements: number[]
@@ -64,6 +74,22 @@ export interface AggregateOptionsHandler
   handleRunAnalysis(): void
 }
 
+// selectedLocations mixes locations picked individually (from a single
+// Location lookup) with locations pulled in from a selected route (from
+// RouteLocationDto, which carries denormalized display fields the plain
+// Location navigation properties don't). RouteLocationDto already has
+// everything the UI needs from either source, so it's the shared shape;
+// individually-picked locations are adapted into it here.
+const toRouteLocationDto = (location: Location): RouteLocationDto => ({
+  locationIdentifier: location.locationIdentifier,
+  primaryName: location.primaryName,
+  secondaryName: location.secondaryName,
+  latitude: location.latitude,
+  longitude: location.longitude,
+  locationId: location.id,
+  approaches: location.approaches as unknown as RouteLocationDto['approaches'],
+})
+
 export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   const [startDateTime, setStartDateTime] = useState(startOfToday())
   const [endDateTime, setEndDateTime] = useState(startOfTomorrow())
@@ -73,7 +99,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   const [endTime, setEndTime] = useState(
     new Date(new Date().setHours(0, 0, 0, 0))
   )
-  const [selectedDays, setSelectedDays] = useState<number[]>([1, 2, 3, 4, 5])
+  const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>([1, 2, 3, 4, 5])
   const [selectedDirections, setSelectedDirections] = useState<number[]>([
     0, 1, 2, 3, 4, 5, 6, 7,
   ])
@@ -81,37 +107,44 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     0, 1, 2, 3, 4, 5, 6, 7,
   ])
   const [metricType, setMetricType] = useState<string>('')
-  const [xAxisType, setXAxisType] = useState<number>(xAxisOptions[0].id)
-  const [yAxisType, setYAxisType] = useState<number>(YAxisOptions[0].id)
+  const [xAxisType, setXAxisType] = useState<XAxisType>(xAxisOptions[0].id)
+  const [yAxisType, setYAxisType] = useState<SeriesType>(YAxisOptions[0].id)
   const [detectionType, setDetectionType] = useState<string>('')
   const [visualChartType, setVisualChartType] = useState<
     'line' | 'bar' | 'pie'
   >(chartTypeOptions[0].id)
-  const [binSize, setBinSize] = useState<number>(binSizeMarks[0].value)
-  const [locationId, setLocationId] = useState<string>('')
-  const [averageOrSum, setAverageOrSum] = useState<number>(0)
+  const [binSize, setBinSize] = useState<BinSize>(binSizeMarks[0].value)
+  const [locationId, setLocationId] = useState<number | undefined>(undefined)
+  const [averageOrSum, setAverageOrSum] = useState<AggregationCalculationType>(
+    AggregationCalculationType.Sum
+  )
   const [selectedLocations, setSelectedLocations] = useState<
-    LocationExpanded[]
+    RouteLocationDto[]
   >([])
-  const [aggregatedData, setAggregatedData] = useState<AggregateData[]>([])
+  const [aggregatedData, setAggregatedData] = useState<AggregationResult[]>([])
   const [routeExpandedLocations, setRouteExpandedLocations] = useState<
-    LocationExpanded[]
+    RouteLocationDto[]
   >([])
-  const {
-    data: locationExpandedData,
-    refetch: refetchLocationExpanded,
-    status,
-  } = useGetLocation(locationId)
+  const { data: locationFromKey, status } = useGetLocationFromKey(
+    locationId ?? 0,
+    {
+      expand:
+        'areas, devices, approaches($expand=Detectors($expand=DetectionTypes, detectorComments))',
+    },
+    { query: { enabled: locationId != null } }
+  )
+  const locationExpandedData = unwrapLocationFromKey(locationFromKey)
   const postMutation = usePostAggregateData()
   const routeHandler = useRouteHandler()
-  const {
-    data: routeWithExpandedLocations,
-    refetch: refectRouteExpanded,
-    status: routeStatus,
-  } = useGetRouteWithExpandedLocations({
-    routeId: routeHandler.routeId,
-    includeLocationDetail: true,
-  })
+  const routeIdNumber = routeHandler.routeId
+    ? Number(routeHandler.routeId)
+    : undefined
+  const { data: routeWithExpandedLocations, status: routeStatus } =
+    useGetRouteRouteViewFromId(
+      routeIdNumber ?? 0,
+      { includeLocationDetail: true },
+      { query: { enabled: routeIdNumber != null } }
+    )
   const locationHandler = useLocationHandler()
   const expandedLocationsHandler = useExpandLocationHandler({
     locations: selectedLocations,
@@ -119,14 +152,15 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     changeLocation: locationHandler.changeLocation,
   })
 
-  const locationIds = selectedLocations.map((location) => location.id)
+  const locationIdentifiers = selectedLocations.map(
+    (location) => location.locationIdentifier
+  )
 
-  const getAggregateTypeEnumValue = (enumString: string): number => {
-    if (Object.values(AggregationType).includes(enumString)) {
-      // Type assertion to tell TypeScript that enumString is a valid member of AggregationType
-      return AggregationType[enumString as keyof typeof AggregationType]
-    }
-    return 0
+  const getAggregateTypeEnumValue = (enumString: string): AggregationType => {
+    return (
+      aggregationTypeByName[enumString as keyof typeof aggregationTypeByName] ??
+      aggregationTypeByName['Detector Activation Count']
+    )
   }
 
   const getDataTypeValue = (aggregateVal: string, dataVal: string): number => {
@@ -143,7 +177,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     return dataTypeIndex
   }
 
-  const createTimeOptions = (): AggregateTimeOptions => {
+  const createTimeOptions = (): TimeOptions => {
     return {
       start: dateToTimestamp(startDateTime),
       end: dateToTimestamp(endDateTime),
@@ -157,7 +191,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     }
   }
 
-  const createFilterDirections = (): AggregateFilterDirection[] => {
+  const createFilterDirections = (): FilterDirection[] => {
     return selectedDirections.map((directionId) => {
       return {
         directionTypeId: directionId,
@@ -167,7 +201,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     })
   }
 
-  const createFilterMovements = (): AggregateFilterMovement[] => {
+  const createFilterMovements = (): FilterMovement[] => {
     return selectedMovements.map((movementId) => {
       return {
         movementTypeId: movementId,
@@ -177,9 +211,9 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     })
   }
 
-  const createAggregateObject = (): AggregateApiData => {
+  const createAggregateObject = (): AggregationOptions => {
     const locationIdentifiers = selectedLocations.map(
-      (location) => location.locationIdentifier
+      (location) => location.locationIdentifier ?? ''
     )
     const metric = metricType.split('-')
     const aggregationType = getAggregateTypeEnumValue(metric[0])
@@ -206,10 +240,8 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
   }
 
   const handleSubmit = async () => {
-    const aggregateObject: AggregateApiData = createAggregateObject()
-    const result: AggregateData[] = (await postMutation.mutateAsync(
-      aggregateObject
-    )) as unknown as AggregateData[]
+    const aggregateObject: AggregationOptions = createAggregateObject()
+    const result = await postMutation.mutateAsync(aggregateObject)
     setAggregatedData(result)
   }
 
@@ -217,26 +249,24 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     if (routeHandler.routeId) {
       setSelectedLocations([])
       setRouteExpandedLocations([])
-      refectRouteExpanded()
     }
-  }, [refectRouteExpanded, routeHandler.routeId])
+  }, [routeHandler.routeId])
 
   useEffect(() => {
     if (routeExpandedLocations && routeExpandedLocations.length > 0) {
       const filteredExpandedLocations = routeExpandedLocations.filter(
-        (location) => !locationIds.includes(location.id)
+        (location) => !locationIdentifiers.includes(location.locationIdentifier)
       )
       if (filteredExpandedLocations.length > 0) {
         setSelectedLocations((prev) => [...prev, ...filteredExpandedLocations])
       }
       setRouteExpandedLocations([])
     }
-  }, [locationIds, routeExpandedLocations])
+  }, [locationIdentifiers, routeExpandedLocations])
 
   useEffect(() => {
     if (routeStatus === 'success' && routeWithExpandedLocations) {
-      const locationsExpandedData = routeWithExpandedLocations.routeLocations
-      setRouteExpandedLocations(locationsExpandedData)
+      setRouteExpandedLocations(routeWithExpandedLocations.routeLocations ?? [])
     }
   }, [routeStatus, routeWithExpandedLocations])
 
@@ -244,27 +274,21 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     if (locationHandler.location) {
       setLocationId(locationHandler.location.id)
     } else if (locationHandler.location === null) {
-      setLocationId('')
+      setLocationId(undefined)
     }
   }, [locationHandler.location])
 
   useEffect(() => {
-    if (locationId !== '') {
-      refetchLocationExpanded()
-    }
-  }, [locationId, refetchLocationExpanded])
-
-  useEffect(() => {
     if (status === 'success' && locationExpandedData) {
-      setSelectedLocations((prevArr) => {
-        return prevArr.some(
+      const asRouteLocation = toRouteLocationDto(locationExpandedData)
+      setSelectedLocations((prevArr) =>
+        prevArr.some(
           (location) =>
-            location.locationIdentifier ===
-            locationExpandedData.value[0].locationIdentifier
+            location.locationIdentifier === asRouteLocation.locationIdentifier
         )
           ? prevArr
-          : [...prevArr, ...locationExpandedData.value]
-      })
+          : [...prevArr, asRouteLocation]
+      )
     }
   }, [locationExpandedData, status])
 
@@ -272,7 +296,7 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
     ...expandedLocationsHandler,
     ...locationHandler,
     ...routeHandler,
-    aggregatedData: aggregatedData as AggregateData[],
+    aggregatedData,
     startDateTime,
     endDateTime,
     startTime,
@@ -291,7 +315,9 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
       handleSubmit()
     },
     changeSelectedDays(days) {
-      setSelectedDays(days)
+      setSelectedDays(
+        Object.values(DayOfWeek).filter((day) => days.includes(day))
+      )
     },
     changeSelectedDirections(directions) {
       setSelectedDirections(directions)
@@ -315,13 +341,22 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
       setMetricType(metricType)
     },
     changeBinSize(binSize) {
-      setBinSize(binSize)
+      const selected = Object.values(BinSize).find(
+        (option) => option === binSize
+      )
+      if (selected !== undefined) setBinSize(selected)
     },
     changeXAxisType(value) {
-      setXAxisType(value)
+      const selected = Object.values(XAxisType).find(
+        (option) => option === value
+      )
+      if (selected !== undefined) setXAxisType(selected)
     },
     changeYAxisType(value) {
-      setYAxisType(value)
+      const selected = Object.values(SeriesType).find(
+        (option) => option === value
+      )
+      if (selected !== undefined) setYAxisType(selected)
     },
     changeDetectionType(value) {
       setDetectionType(value)
@@ -330,7 +365,10 @@ export const useAggregateOptionsHandler = (): AggregateOptionsHandler => {
       setVisualChartType(value)
     },
     changeAverageOrSum(value) {
-      setAverageOrSum(value)
+      const selected = Object.values(AggregationCalculationType).find(
+        (option) => option === value
+      )
+      if (selected !== undefined) setAverageOrSum(selected)
     },
   }
 

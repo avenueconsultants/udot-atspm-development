@@ -1,10 +1,12 @@
+import {
+  useGetClaimsClaims,
+  useGetRolesRoles,
+} from '@/api/identity/atspmAuthenticationApi'
+import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import ATSPMDialog from '@/components/ATSPMDialog'
-import { useGetClaims } from '@/features/identity/api/getClaims'
-import { useGetRoles } from '@/features/identity/api/getRoles'
-import { Role } from '@/features/identity/types/roles'
 import PageClaimsCard from '@/features/roles/components/PageClaimsCard'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { Box, TextField } from '@mui/material'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface RoleFormData {
@@ -15,7 +17,7 @@ interface RoleFormData {
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
-  data: Role | null
+  data: RolesResult | null
   onSave: (roleData: RoleFormData) => void
 }
 
@@ -24,22 +26,19 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
     data: rolesData,
     isLoading: rolesIsLoading,
     error: rolesError,
-  } = useGetRoles()
+  } = useGetRolesRoles()
   const {
     data: claimsData,
     isLoading: claimsIsLoading,
     error: claimsError,
-  } = useGetClaims()
-
-  const [userClaims, setUserClaims] = useState<string[]>(data?.claims || [])
-  const [currentRole, setCurrentRole] = useState<string>(data?.role || '')
+  } = useGetClaimsClaims()
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<RoleFormData>({
     defaultValues: {
       roleName: data?.role || '',
@@ -51,23 +50,23 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
   const roleId = data?.role
   const isNewRole = !roleId
   const watchedRoleName = watch('roleName')
+  const userClaims = watch('claims')
 
-  const handleClaimsChange = (_role: string, claims: string[]) => {
-    setUserClaims(claims)
-    setValue('claims', claims)
+  const handleClaimsChange = (claims: string[]) => {
+    setValue('claims', claims, { shouldDirty: true })
   }
 
   const onSubmit = (formData: RoleFormData) => {
     if (!formData.roleName) return
     onSave({
       roleName: formData.roleName,
-      claims: userClaims,
+      claims: formData.claims,
     })
     onClose()
   }
 
   const existingRoleNames = (rolesData || []).map((role) =>
-    role.role.toLowerCase()
+    (role.role ?? '').toLowerCase()
   )
   const isDuplicateRoleName =
     Boolean(isNewRole) &&
@@ -76,7 +75,7 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
 
   if (rolesIsLoading || claimsIsLoading) return null
   if (rolesError || claimsError) {
-    return <div>Error: {rolesError?.message || claimsError?.message}</div>
+    return <div>Error: {getApiErrorMessage(rolesError || claimsError)}</div>
   }
 
   return (
@@ -84,7 +83,6 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       title={isNewRole ? 'Create New Role' : `Role Permissions - ${roleId}`}
-      auditInfo={data}
       onSubmit={handleSubmit(onSubmit)}
       dialogProps={{ sx: { minWidth: 600 } }}
     >
@@ -110,15 +108,9 @@ const RoleModal = ({ isOpen, onSave, onClose, data }: ModalProps) => {
       )}
 
       <PageClaimsCard
-        id={isNewRole ? watchedRoleName : (roleId ?? '')}
-        currentClaims={rolesData || []}
         onClaimsChange={handleClaimsChange}
-        currentRole={currentRole}
-        setCurrentRole={setCurrentRole}
         userClaims={userClaims}
-        setUserClaims={setUserClaims}
         claimsData={claimsData}
-        isNewRole={isNewRole}
       />
     </ATSPMDialog>
   )

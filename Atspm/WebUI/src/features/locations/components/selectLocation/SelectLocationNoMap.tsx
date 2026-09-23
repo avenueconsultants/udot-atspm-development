@@ -1,4 +1,4 @@
-import { Location } from '@/features/locations/types'
+import { SearchLocation as Location } from '@/api/config'
 import { Autocomplete, Box, TextField } from '@mui/material'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'

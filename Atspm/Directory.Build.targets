@@ -1,0 +1,42 @@
+<Project>
+
+  <!--
+    Explicit OpenAPI export used by WebUI's `npm run sync:api` command.
+    Ordinary builds do not export specs. To export one API directly, run
+    `dotnet msbuild -restore -target:ExportSwaggerSpec` from its project
+    directory. SwaggerSpecName opts API projects into export;
+    SwaggerSpecOutputDir can point at a temporary staging directory.
+
+    The Swashbuckle CLI is pinned as an ordinary package reference, so restore
+    puts it on disk and MSBuild reports where: nothing here needs to know how
+    the NuGet cache is laid out. The CLI loads the built API to read its Swagger
+    document, so it runs against that API's deps.json and runtimeconfig.json
+    rather than its own, which target a different framework version.
+
+    Export stays in Development and sets ATSPM_SWAGGER_EXPORT only in its child
+    process to suppress configuration dumps. In-memory database settings and
+    disabled migrations allow export without a running database.
+  -->
+  <ItemGroup Condition="'$(SwaggerSpecName)' != ''">
+    <PackageReference Include="Swashbuckle.AspNetCore.Cli" Version="7.1.0"
+                      GeneratePathProperty="true" ExcludeAssets="all" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(SwaggerSpecName)' != ''">
+    <SwaggerCliDll>$(PkgSwashbuckle_AspNetCore_Cli)/tools/$(TargetFramework)/any/dotnet-swagger.dll</SwaggerCliDll>
+    <SwaggerSpecOutputDir Condition="'$(SwaggerSpecOutputDir)' == ''">$(MSBuildProjectDirectory)</SwaggerSpecOutputDir>
+    <SwaggerSpecOutput>$([System.IO.Path]::Combine('$(SwaggerSpecOutputDir)', '$(SwaggerSpecName)-spec.json'))</SwaggerSpecOutput>
+  </PropertyGroup>
+
+  <Target Name="ExportSwaggerSpec" DependsOnTargets="Build">
+    <Error Condition="'$(SwaggerSpecName)' == ''"
+           Text="OpenAPI export is not configured for $(MSBuildProjectName): SwaggerSpecName is required." />
+    <Error Condition="!Exists('$(SwaggerCliDll)')"
+           Text="OpenAPI export failed for $(MSBuildProjectName): no Swashbuckle CLI at '$(SwaggerCliDll)'. Build with -restore so its package is downloaded." />
+    <MakeDir Directories="$(SwaggerSpecOutputDir)" />
+    <Exec WorkingDirectory="$(MSBuildProjectDirectory)"
+          Command="dotnet exec --depsfile &quot;$(TargetDir)$(TargetName).deps.json&quot; --runtimeconfig &quot;$(TargetDir)$(TargetName).runtimeconfig.json&quot; &quot;$(SwaggerCliDll)&quot; tofile --output &quot;$(SwaggerSpecOutput)&quot; &quot;$(TargetPath)&quot; v1"
+          EnvironmentVariables="DOTNET_ENVIRONMENT=Development;ASPNETCORE_ENVIRONMENT=Development;ATSPM_SWAGGER_EXPORT=true;DatabaseConfiguration__ConfigContext__DBType=InMemory;DatabaseConfiguration__ConfigContext__Host=localhost;DatabaseConfiguration__ConfigContext__Database=swagger-export;DatabaseConfiguration__ConfigContext__RunMigrations=false;DatabaseConfiguration__AggregationContext__DBType=InMemory;DatabaseConfiguration__AggregationContext__Host=localhost;DatabaseConfiguration__AggregationContext__Database=swagger-export;DatabaseConfiguration__AggregationContext__RunMigrations=false;DatabaseConfiguration__EventLogContext__DBType=InMemory;DatabaseConfiguration__EventLogContext__Host=localhost;DatabaseConfiguration__EventLogContext__Database=swagger-export;DatabaseConfiguration__EventLogContext__RunMigrations=false;DatabaseConfiguration__IdentityContext__DBType=InMemory;DatabaseConfiguration__IdentityContext__Host=localhost;DatabaseConfiguration__IdentityContext__Database=swagger-export;DatabaseConfiguration__IdentityContext__RunMigrations=false" />
+  </Target>
+
+</Project>

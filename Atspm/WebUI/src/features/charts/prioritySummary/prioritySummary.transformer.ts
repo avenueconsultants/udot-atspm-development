@@ -41,6 +41,7 @@ import {
   formatChartDateTimeRange,
   triangleSvgSymbol,
 } from '@/features/charts/utils'
+import { dateToTimestamp } from '@/utils/dateTime'
 import { EChartsOption } from 'echarts'
 
 const SYMBOL_SIZE = 8
@@ -160,8 +161,10 @@ function transformTspChart(
       const inMs = Date.parse(c.checkIn)
       const outMs = Date.parse(c.checkOut)
 
-      const windowStart = new Date(inMs - 125_000).toISOString()
-      const windowEnd = new Date(outMs + 125_000).toISOString()
+      // Wall-clock literals, as the details request will send them; an
+      // ISO string here would shift the window by the browser's UTC offset.
+      const windowStart = dateToTimestamp(new Date(inMs - 125_000))
+      const windowEnd = dateToTimestamp(new Date(outMs + 125_000))
 
       return [
         c.checkIn,
@@ -205,8 +208,8 @@ function transformTspChart(
       ? Date.parse(c.checkOut)
       : inMs + 30_000
 
-    const windowStart = new Date(inMs - 120_000).toISOString()
-    const windowEnd = new Date(outMs + 120_000).toISOString()
+    const windowStart = dateToTimestamp(new Date(inMs - 120_000))
+    const windowEnd = dateToTimestamp(new Date(outMs + 120_000))
 
     return [
       c.checkIn,

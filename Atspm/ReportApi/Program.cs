@@ -77,10 +77,10 @@ builder.Host
         {
             o.IncludeXmlComments(typeof(Program).Assembly);
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
-            o.CustomSchemaIds(type => type.Name);
+            o.UseGenericAwareSchemaIds();
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
-
+            o.UseAtspmSchemaConventions();
         });
         s.AddConfiguredCors(builder.Configuration);
         s.AddHttpLogging(l =>
@@ -239,7 +239,12 @@ await app.ApplyMigrations<AggregationContext>();
 //Error handling
 if (!app.Environment.IsProduction())
 {
-    app.Services.PrintHostInformation();
+    // Swagger export executes startup during builds; keep configuration out of build logs.
+    if (!SwaggerExport.InProgress)
+    {
+        app.Services.PrintHostInformation();
+    }
+
     app.UseDeveloperExceptionPage();
 }
 else
@@ -272,3 +277,4 @@ app.MapJsonHealthChecks();
 #endregion
 
 app.Run();
+

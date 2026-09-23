@@ -16,6 +16,7 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<IncludeOpenAPIAnalyzers>True</IncludeOpenAPIAnalyzers>
 		<Version>5.3.1</Version>
+		<SwaggerSpecName>data</SwaggerSpecName>
 	</PropertyGroup>
 
 	<ItemGroup>

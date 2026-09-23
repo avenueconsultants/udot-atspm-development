@@ -41,7 +41,9 @@ describe('TurningMovementCountsChartOptions', () => {
 
     expect(screen.getByText('Combine Thru and Thru-Right')).toBeInTheDocument()
 
-    const checkbox = screen.getByRole('checkbox')
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Combine Thru and Thru-Right',
+    })
     expect(checkbox).not.toBeChecked()
 
     await user.click(checkbox)

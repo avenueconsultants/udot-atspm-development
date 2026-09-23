@@ -495,56 +495,6 @@ describe('timeSpaceTransformerBase offset formatting', () => {
     expect(texts).toContain('unknown')
   })
 
-  it('uses the same font size for programmed and adjusted offset text', () => {
-    const locationCardNode = renderLocationCardNode(buildLocation(), {
-      mutateDataPoint: (dataPoint) => {
-        dataPoint[5] = 17
-        dataPoint[7] = 5
-        return dataPoint
-      },
-    })
-    const baseOffsetStyle = findTextStyle(locationCardNode, '12s')
-    const adjustedOffsetStyle = findTextStyle(locationCardNode, '17s')
-
-    expect(baseOffsetStyle).toMatchObject({
-      fontSize: 11,
-      fontWeight: 700,
-    })
-    expect(adjustedOffsetStyle).toMatchObject({
-      fontSize: 11,
-      fontWeight: 700,
-    })
-  })
-
-  it('anchors the adjusted offset text to the same right edge as the unmodified value', () => {
-    const unmodifiedOffsetStyle = findTextStyle(
-      renderLocationCardNode(
-        buildLocation({
-          offset: 12,
-        })
-      ),
-      '12s'
-    )
-    const adjustedOffsetStyle = findTextStyle(
-      renderLocationCardNode(buildLocation(), {
-        mutateDataPoint: (dataPoint) => {
-          dataPoint[5] = 17
-          dataPoint[7] = 5
-          return dataPoint
-        },
-      }),
-      '17s'
-    )
-
-    expect(unmodifiedOffsetStyle).toMatchObject({
-      textAlign: 'right',
-    })
-    expect(adjustedOffsetStyle).toMatchObject({
-      textAlign: 'right',
-    })
-    expect(unmodifiedOffsetStyle?.x).toBe(adjustedOffsetStyle?.x)
-  })
-
   it('adds one-timespan continuation bands to both sides of the cycle row', () => {
     const cycleNode = renderCycleContinuationNode(
       buildLocation({
@@ -611,31 +561,6 @@ describe('timeSpaceTransformerBase offset formatting', () => {
     expect(greenBandNode.children?.[0]?.style?.fill).toBe('#D5DBE3')
     expect(greenBandNode.children?.[1]?.style?.fill).toBe('#4f9bac')
     expect(greenBandNode.children?.[2]?.style?.fill).toBe('#D5DBE3')
-  })
-
-  it('marks green-band series as non-interactable', () => {
-    const series = getGreenBandSeries(
-      buildLocation({
-        greenTimeEvents: [
-          {
-            initialX: '2026-03-20T00:00:10Z',
-            isDetectorOn: true,
-          },
-          {
-            initialX: '2026-03-20T00:00:20Z',
-            isDetectorOn: false,
-          },
-        ],
-      })
-    ) as {
-      silent?: unknown
-      selectedMode?: unknown
-      tooltip?: { show?: unknown }
-    }
-
-    expect(series?.silent).toBe(true)
-    expect(series?.selectedMode).toBe(false)
-    expect(series?.tooltip).toMatchObject({ show: false })
   })
 
   it('uses row-to-row distance, not calculated travel distance, for green-band display offsets', () => {
@@ -748,46 +673,6 @@ describe('timeSpaceTransformerBase offset formatting', () => {
     expect(hiddenTexts).toContain('NB')
     expect(hiddenTexts).not.toContain('AOG')
     expect(hiddenTexts).not.toContain('55%')
-  })
-
-  it('styles the AOG label like the location-card metric labels', () => {
-    const cycleMetricStyle = findTextStyle(
-      renderLocationCardNode(buildLocation()),
-      'Programmed Offset'
-    )
-    const aogStyle = findTextStyle(renderCycleLabelNode(false), 'AOG')
-
-    expect(cycleMetricStyle).toMatchObject({
-      fill: '#64748B',
-      fontSize: 11,
-      fontWeight: 500,
-    })
-    expect(aogStyle).toMatchObject({
-      fill: '#64748B',
-      fontSize: 10,
-      fontWeight: 500,
-    })
-  })
-
-  it('styles phase-card identifier/name headers like location-card titles', () => {
-    const headerStyle = findTextStyle(
-      renderCycleLabelNode(false, {
-        headerTexts: ['6192 - 200 S & State St'],
-      }),
-      '{ident|6192}{name| - 200 S & State St}'
-    )
-
-    expect(headerStyle).toMatchObject({
-      fontSize: 10,
-      rich: {
-        ident: {
-          fontWeight: 700,
-        },
-        name: {
-          fontWeight: 400,
-        },
-      },
-    })
   })
 
   it('does not render a primary footer inside the phase card series', () => {

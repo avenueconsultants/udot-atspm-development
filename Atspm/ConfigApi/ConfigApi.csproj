@@ -15,6 +15,7 @@
 		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
 		<UserSecretsId>6ae15f41-e3a6-4c86-90f8-7344f3a24ee5</UserSecretsId>
 		<Version>5.3.1</Version>
+		<SwaggerSpecName>config</SwaggerSpecName>
 	</PropertyGroup>
 
 	<ItemGroup>

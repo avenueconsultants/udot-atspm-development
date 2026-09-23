@@ -13,7 +13,6 @@ interface ApproachDelayChartOptionsProps {
 export const ApproachDelayChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: ApproachDelayChartOptionsProps) => {
   const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 

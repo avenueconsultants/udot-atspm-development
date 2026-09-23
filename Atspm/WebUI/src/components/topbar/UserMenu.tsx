@@ -3,7 +3,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 
 import Link from 'next/link'
 
-import { useUserInfo } from '@/features/identity/api/getUserInfo'
+import { useGetProfileProfile } from '@/api/identity/atspmAuthenticationApi'
 import Login from '@/features/identity/components/signin'
 import { useSidebarStore } from '@/stores/sidebar'
 import {
@@ -18,7 +18,7 @@ import {
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 
-function getColorFromName(firstName: string, lastName: string): string {
+function getColorFromName(firstName = '', lastName = ''): string {
   const colors = [
     '#1e824c',
     '#007a7c',
@@ -66,7 +66,11 @@ function getColorFromName(firstName: string, lastName: string): string {
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { data: userData, refetch } = useUserInfo({})
+  // Profile lookup failures leave the account controls usable. Keep the
+  // request independent of locally cached session and claim state.
+  const { data: userData, refetch } = useGetProfileProfile({
+    query: { throwOnError: false },
+  })
   const { closeSideBar } = useSidebarStore()
 
   useEffect(() => {
@@ -119,14 +123,17 @@ export default function UserMenu() {
           sx={{
             bgcolor:
               isLoggedIn && userData
-                ? getColorFromName(userData?.firstName, userData?.lastName)
+                ? getColorFromName(
+                    userData.firstName ?? '',
+                    userData.lastName ?? ''
+                  )
                 : '',
           }}
         >
           {isLoggedIn ? (
             <>
-              {userData?.firstName.charAt(0).toUpperCase()}
-              {userData?.lastName.charAt(0).toUpperCase()}
+              {userData?.firstName?.charAt(0).toUpperCase()}
+              {userData?.lastName?.charAt(0).toUpperCase()}
             </>
           ) : (
             <PersonOutlineOutlinedIcon />

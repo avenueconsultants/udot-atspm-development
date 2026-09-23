@@ -53,9 +53,9 @@ export default function ClearGuideSourcePanel() {
   } | null>(null)
   const [copied, setCopied] = useState(false)
 
-  const { mutateAsync: startConvert, isLoading: converting } =
+  const { mutateAsync: startConvert, isPending: converting } =
     usePostApiV1EntityFileShapefileFetchFile()
-  const { mutateAsync: processGeo, isLoading: processing } =
+  const { mutateAsync: processGeo, isPending: processing } =
     usePostApiV1EntityFileGeojsonFetchFile()
 
   // Convert form

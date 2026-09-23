@@ -1,5 +1,5 @@
 import { StyledComponentHeader } from '@/components/HeaderStyling/StyledComponentHeader'
-import { Box, Checkbox, FormControlLabel, Paper } from '@mui/material'
+import { Box, Checkbox, FormControlLabel } from '@mui/material'
 
 interface MultiSelectCheckboxProps {
   itemList: string[]

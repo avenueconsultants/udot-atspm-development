@@ -67,21 +67,24 @@ export default function transformPurdueSplitFailureData(
 }
 
 function transformData(data: RawPurdueSplitFailureData) {
-  const {
-    plans,
-    failLines,
-    gapOutGreenOccupancies,
-    gapOutRedOccupancies,
-    forceOffGreenOccupancies,
-    forceOffRedOccupancies,
-    averageGor,
-    averageRor,
-    percentFails,
-  } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const plans = data.plans ?? []
+  const failLines = data.failLines ?? []
+  const gapOutGreenOccupancies = data.gapOutGreenOccupancies ?? []
+  const gapOutRedOccupancies = data.gapOutRedOccupancies ?? []
+  const forceOffGreenOccupancies = data.forceOffGreenOccupancies ?? []
+  const forceOffRedOccupancies = data.forceOffRedOccupancies ?? []
+  const averageGor = data.averageGor ?? []
+  const averageRor = data.averageRor ?? []
+  const percentFails = data.percentFails ?? []
 
   const info = createInfoString([
     'Total Split Failures: ',
-    data.totalSplitFails.toLocaleString(),
+    (data.totalSplitFails ?? 0).toLocaleString(),
   ])
 
   const titleHeader = `Purdue Split Failure\n${data.locationDescription} - ${data.approachDescription}`
@@ -116,7 +119,8 @@ function transformData(data: RawPurdueSplitFailureData) {
   const failLinesText = 'Fail Lines'
   const percentFailsText = 'Percent Fails'
 
-  const isPermissivePhase = data.phaseType.toLowerCase() === 'permissive'
+  const isPermissivePhase =
+    (data.phaseType ?? '').toLowerCase() === 'permissive'
 
   const legend = createLegend({
     top: grid.top,

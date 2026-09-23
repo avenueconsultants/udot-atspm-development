@@ -1,3 +1,4 @@
+import { LeftTurnGapDataCheckResult } from '@/api/reports'
 import {
   Paper,
   Table,
@@ -10,23 +11,7 @@ import {
 import React from 'react'
 
 type RunCheckProps = {
-  data: {
-    leftTurnVolumeOk: boolean
-    gapOutOk: boolean
-    pedCycleOk: boolean
-    insufficientDetectorEventCount: boolean
-    insufficientCycleAggregation: boolean
-    insufficientPhaseTermination: boolean
-    insufficientPedAggregations: boolean
-    insufficientSplitFailAggregations: boolean
-    insufficientLeftTurnGapAggregations: boolean
-    approachId: number
-    approachDescription: string
-    locationIdentifier: string
-    locationDescription: string
-    start: string
-    end: string
-  }
+  data: LeftTurnGapDataCheckResult[]
 }
 
 const RunCheckGrid: React.FC<RunCheckProps> = ({ data }) => {

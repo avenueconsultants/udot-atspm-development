@@ -1,19 +1,19 @@
 import {
-  useDeleteApiV1RolesRoleName,
-  useGetApiV1Roles,
-  usePostApiV1Roles,
+  useDeleteRolesRoleFromRoleName,
+  useGetClaimsAddClaimsToRoleFromRoleName,
+  useGetRolesCreateRole,
+  useGetRolesRoles,
 } from '@/api/identity/atspmAuthenticationApi'
+import { RolesResult } from '@/api/identity/atspmAuthenticationApi.schemas'
 import AdminTable from '@/components/AdminTable/AdminTable'
 import DeleteModal from '@/components/AdminTable/DeleteModal'
 import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useFlags } from '@/feature-flags/FeatureFlagContext'
-import { useAddRoleClaims } from '@/features/identity/api/addRoleClaims'
 import {
   PageNames,
   useUserHasClaim,
   useViewPage,
 } from '@/features/identity/pagesCheck'
-import { Role } from '@/features/identity/types/roles'
 import RoleModal from '@/features/roles/components/RoleModal'
 import { useNotificationStore } from '@/stores/notifications'
 import { Backdrop, Box, CircularProgress, Typography } from '@mui/material'
@@ -25,11 +25,12 @@ const RolesAdmin = () => {
   const hasRolesDeleteClaim = useUserHasClaim('Role:Delete')
   const { addNotification } = useNotificationStore()
 
-  const { data: roles, isLoading, refetch: refetchRoles } = useGetApiV1Roles()
+  const { data: roles, isLoading, refetch: refetchRoles } = useGetRolesRoles()
 
-  const { mutateAsync: createMutation } = usePostApiV1Roles()
-  const { mutateAsync: deleteMutation } = useDeleteApiV1RolesRoleName()
-  const { mutateAsync: editMutation } = useAddRoleClaims()
+  const { mutateAsync: createMutation } = useGetRolesCreateRole()
+  const { mutateAsync: deleteMutation } = useDeleteRolesRoleFromRoleName()
+  const { mutateAsync: editMutation } =
+    useGetClaimsAddClaimsToRoleFromRoleName()
 
   const builtInRoles = [
     {
@@ -102,7 +103,8 @@ const RolesAdmin = () => {
     protectedRoles.push('SpeedConfigurationAdmin')
   }
 
-  const HandleDeleteRole = async (roleName: string) => {
+  const HandleDeleteRole = async (roleNameKey: string | number) => {
+    const roleName = String(roleNameKey)
     if (protectedRoles.includes(roleName)) {
       return
     }
@@ -123,7 +125,7 @@ const RolesAdmin = () => {
     try {
       await editMutation({
         roleName: roleData.roleName,
-        claims: roleData.claims,
+        data: { claims: roleData.claims },
       })
       refetchRoles()
       addNotification({
@@ -149,7 +151,7 @@ const RolesAdmin = () => {
       if (roleData.claims.length > 0) {
         await editMutation({
           roleName: roleData.roleName,
-          claims: roleData.claims,
+          data: { claims: roleData.claims },
         })
       }
       refetchRoles()
@@ -184,12 +186,14 @@ const RolesAdmin = () => {
   }
 
   const customRoleFilteredData = roles
-    .filter((role: Role) => !builtInRoles.some((pr) => pr.role === role.role))
-    .map((role: Role, index: number) => ({
+    .filter((role) => !builtInRoles.some((pr) => pr.role === role.role))
+    .map((role, index) => ({
+      ...role,
       id: index,
-      role: role.role,
+      role: role.role ?? '',
+      name: role.role ?? '',
     }))
-    .sort((a: Role, b: Role) => a.role.localeCompare(b.role))
+    .sort((a, b) => a.role.localeCompare(b.role))
 
   const filteredDefaultRoles = builtInRoles.map((roleObj, index: number) => {
     return {
@@ -239,12 +243,14 @@ const RolesAdmin = () => {
           />
         }
         createModal={
-          <RoleModal
-            isOpen={true}
-            onSave={HandleCreateRole}
-            onClose={onModalClose}
-            data={null}
-          />
+          hasRoleEditClaim ? (
+            <RoleModal
+              isOpen={true}
+              onSave={HandleCreateRole}
+              onClose={onModalClose}
+              data={null}
+            />
+          ) : undefined
         }
         deleteModal={
           <DeleteModal
@@ -255,7 +261,7 @@ const RolesAdmin = () => {
             open={false}
             onClose={onModalClose}
             onConfirm={HandleDeleteRole}
-            deleteLabel={(selectedRow: Role) => selectedRow.role}
+            deleteLabel={(selectedRow: RolesResult) => selectedRow.role ?? ''}
           />
         }
       />

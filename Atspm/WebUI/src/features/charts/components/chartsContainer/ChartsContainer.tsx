@@ -13,9 +13,9 @@ import { TransformedApproachVolumeResponse } from '@/features/charts/types'
 import LocationsConfigContainer from '@/features/locations/components/locationConfigContainer'
 import { dateToTimestamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { LoadingButton } from '@mui/lab'
 import { Alert, Box } from '@mui/material'
-import { AxiosError } from 'axios'
 import { differenceInMinutes } from 'date-fns'
 import { usePathname, useRouter } from 'next/navigation'
 import { RefObject, createRef, useEffect, useRef, useState } from 'react'
@@ -243,9 +243,7 @@ export default function ChartsContainer({
 
         {isError && (
           <Alert severity="error" sx={{ marginLeft: 1 }}>
-            {error instanceof AxiosError
-              ? error.response?.data
-              : (error as Error).message}
+            {getApiErrorMessage(error)}
           </Alert>
         )}
 

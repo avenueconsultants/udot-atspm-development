@@ -11,6 +11,7 @@ type SelectLocationMapProps = {
   filteredLocations: Location[]
   route?: number[][]
   center?: [number, number]
+  zoom?: number
   mapHeight?: number | string
   filters: Filters
   updateFilters: (filters: Partial<Filters>) => void
@@ -23,6 +24,7 @@ function SelectLocationMap({
   filteredLocations,
   route,
   center,
+  zoom,
   mapHeight,
   filters,
   updateFilters,
@@ -46,6 +48,7 @@ function SelectLocationMap({
       filteredLocations,
       route,
       center,
+      zoom,
       mapHeight,
       filters,
       updateFilters,
@@ -57,6 +60,7 @@ function SelectLocationMap({
       filteredLocations,
       route,
       center,
+      zoom,
       mapHeight,
       filters,
       updateFilters,

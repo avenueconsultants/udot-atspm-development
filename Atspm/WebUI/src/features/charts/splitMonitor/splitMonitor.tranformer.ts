@@ -64,16 +64,21 @@ export default function transformSplitMonitorData(
 }
 
 function transformData(data: RawSplitMonitorData) {
-  const {
-    plans,
-    programmedSplits,
-    gapOuts,
-    maxOuts,
-    forceOffs,
-    unknowns,
-    peds,
-    percentileSplit,
-  } = data
+  // Destructured straight off the generated result type, where every
+  // collection is nullable. Several of these are read for `.length` to
+  // decide which legend entries to draw, so a report with no data for the
+  // window arrived as null and threw before the chart was built. Defaulted
+  // here so the chart renders empty instead.
+  const plans = data.plans ?? []
+  const programmedSplits = data.programmedSplits ?? []
+  const gapOuts = data.gapOuts ?? []
+  const maxOuts = data.maxOuts ?? []
+  const forceOffs = data.forceOffs ?? []
+  const unknowns = data.unknowns ?? []
+  const peds = data.peds ?? []
+  // The percentile the report was asked for, echoed back to label the
+  // per-plan value below. Nullable on the contract like every other field.
+  const percentileSplit = data.percentileSplit
 
   const titleHeader = `Split Monitor\n${data.locationDescription} - ${data.phaseDescription}`
   const dateRange = formatChartDateTimeRange(data.start, data.end)
@@ -224,8 +229,10 @@ function transformData(data: RawSplitMonitorData) {
   )
 
   const planOptions: PlanOptions<SplitMonitorPlan> = {
-    percentileSplit: (value: number) =>
-      percentileSplit && `${Math.round(value)}s (${percentileSplit}th %)`,
+    percentileSplit: (value) =>
+      percentileSplit
+        ? `${Math.round(value)}s (${percentileSplit}th %)`
+        : `${Math.round(value)}s`,
     averageSplit: (value) => `${Math.round(value)}s Avg. Split`,
     percentGapOuts: (value) => `${Math.round(value)}% Gap Outs`,
     percentMaxOuts: (value) => value && `${Math.round(value)}% Max Outs`,

@@ -1,8 +1,13 @@
+import {
+  type DetectionTypeGroup,
+  type DeviceGroup,
+  useGetDeviceActiveDevicesCount,
+  useGetLocationDetectionTypeCount,
+} from '@/api/config'
+import { useGetWatchDogDashboardDashboardGroup } from '@/api/reports'
 import { StyledPaper } from '@/components/StyledPaper'
 import WatchdogChartsContainer from '@/features/charts/watchdogDashboard/components/WatchdogChartsContainer'
-import { useGetDetectionTypeCount } from '@/features/watchdog/api/GetDetectionTypeCount'
-import { useGetDeviceCount } from '@/features/watchdog/api/getDeviceCount'
-import { useGetWatchdogDashboardData } from '@/features/watchdog/api/getWatchdogDashboardData'
+import { getApiErrorMessage } from '@/lib/apiError'
 import { toUTCDateStamp } from '@/utils/dateTime'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import { LoadingButton } from '@mui/lab'
@@ -18,20 +23,32 @@ const WatchdogSummaryReport = () => {
   const [endDateTime, setEndDateTime] = useState(subDays(startOfTomorrow(), 1))
 
   const {
+    mutate: fetchDashboardData,
     data: dashboardData,
-    refetch: fetchDashboardData,
-    isLoading,
+    isPending: isDashboardPending,
     error,
-  } = useGetWatchdogDashboardData({
-    start: toUTCDateStamp(startDateTime),
-    end: toUTCDateStamp(endDateTime),
-    enabled: false,
-  })
+  } = useGetWatchDogDashboardDashboardGroup()
 
-  const { data: deviceCount } = useGetDeviceCount()
-  const { data: detectionTypeCount } = useGetDetectionTypeCount(
-    toUTCDateStamp(endDateTime)
+  const {
+    data: deviceCount,
+    error: deviceCountError,
+    isFetching: isDeviceCountFetching,
+    refetch: refetchDeviceCount,
+  } = useGetDeviceActiveDevicesCount<DeviceGroup[], unknown>(undefined, {
+    query: { throwOnError: false },
+  })
+  const {
+    data: detectionTypeCount,
+    error: detectionTypeCountError,
+    isFetching: isDetectionTypeCountFetching,
+    refetch: refetchDetectionTypeCount,
+  } = useGetLocationDetectionTypeCount<DetectionTypeGroup[], unknown>(
+    { date: toUTCDateStamp(endDateTime) },
+    { query: { throwOnError: false } }
   )
+  const isGeneratePending =
+    isDashboardPending || isDeviceCountFetching || isDetectionTypeCountFetching
+  const requestError = error ?? deviceCountError ?? detectionTypeCountError
   const data = {
     ...dashboardData,
     deviceCount,
@@ -39,7 +56,14 @@ const WatchdogSummaryReport = () => {
   }
 
   const handleGenerateSummary = () => {
-    fetchDashboardData()
+    if (deviceCountError) void refetchDeviceCount()
+    if (detectionTypeCountError) void refetchDetectionTypeCount()
+    fetchDashboardData({
+      data: {
+        start: toUTCDateStamp(startDateTime),
+        end: toUTCDateStamp(endDateTime),
+      },
+    })
   }
 
   const handleStartDateTimeChange = (date: Date) => {
@@ -67,7 +91,7 @@ const WatchdogSummaryReport = () => {
         />
       </StyledPaper>
       <LoadingButton
-        loading={isLoading}
+        loading={isGeneratePending}
         sx={{ mt: 2, padding: '10px', mb: 2 }}
         loadingPosition="start"
         startIcon={<PlayArrowIcon />}
@@ -77,11 +101,18 @@ const WatchdogSummaryReport = () => {
         Generate Summary
       </LoadingButton>
 
-      {error && <Box>Error loading data</Box>}
-
-      {!isLoading && dashboardData && deviceCount && detectionTypeCount && (
-        <WatchdogChartsContainer data={data} isLoading={isLoading} />
+      {requestError && (
+        <Box role="alert">
+          Error loading data: {getApiErrorMessage(requestError)}
+        </Box>
       )}
+
+      {!isDashboardPending &&
+        dashboardData &&
+        deviceCount &&
+        detectionTypeCount && (
+          <WatchdogChartsContainer data={data} isLoading={isDashboardPending} />
+        )}
     </>
   )
 }

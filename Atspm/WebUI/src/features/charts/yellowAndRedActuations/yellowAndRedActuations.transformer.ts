@@ -28,6 +28,7 @@ import {
   createXAxis,
   createYAxis,
   formatExportFileName,
+  toDataPoints,
   transformSeriesData,
 } from '@/features/charts/common/transformers'
 import { ChartType, PlanOptions } from '@/features/charts/common/types'
@@ -63,23 +64,30 @@ export default function transformYellowAndRedActuationsData(
 }
 
 function transformData(data: RawYellowAndRedActuationsData) {
-  const { plans, yellowEvents, redClearanceEvents, detectorEvents } = data
+  const plans = data.plans ?? []
+  const yellowEvents = toDataPoints(data.yellowEvents)
+  const redClearanceEvents = toDataPoints(data.redClearanceEvents)
+  const detectorEvents = toDataPoints(data.detectorEvents)
+  const start = data.start ?? ''
+  const end = data.end ?? ''
+  const locationDescription = data.locationDescription ?? ''
+  const approachDescription = data.approachDescription ?? ''
 
   const info = createInfoString(
-    ['Total Violations: ', data.totalViolations.toLocaleString()],
-    ['Severe Violations (SV): ', data.severeViolations.toLocaleString()],
+    ['Total Violations: ', (data.totalViolations ?? 0).toLocaleString()],
+    ['Severe Violations (SV): ', (data.severeViolations ?? 0).toLocaleString()],
     [
       'Yellow Light Occurrences (YLO): ',
-      data.yellowLightOccurences.toLocaleString(),
+      (data.yellowLightOccurences ?? 0).toLocaleString(),
     ]
   )
 
-  const titleHeader = `Yellow And Red Actuations \n${data.locationDescription} - ${data.approachDescription}`
-  const dateRange = formatChartDateTimeRange(data.start, data.end)
+  const titleHeader = `Yellow And Red Actuations \n${locationDescription} - ${approachDescription}`
+  const dateRange = formatChartDateTimeRange(start, end)
 
   const title = createTitle({
-    title: ['Yellow And Red Actuations', data.approachDescription],
-    location: data.locationDescription,
+    title: ['Yellow And Red Actuations', approachDescription],
+    location: locationDescription,
     dateRange,
     info,
     invertColors: data.isPermissivePhase,
@@ -95,7 +103,7 @@ function transformData(data: RawYellowAndRedActuationsData) {
     },
   })
 
-  const xAxis = createXAxis(data.start, data.end)
+  const xAxis = createXAxis(start, end)
 
   const grid = createGrid({
     top: 200,
@@ -133,10 +141,10 @@ function transformData(data: RawYellowAndRedActuationsData) {
 
   const toolbox = createToolbox(
     {
-      title: formatExportFileName(titleHeader, data.start, data.end),
+      title: formatExportFileName(titleHeader, start, end),
       dateRange,
     },
-    data.locationIdentifier,
+    data.locationIdentifier ?? '',
     ChartType.YellowAndRedActuations
   )
 
@@ -188,11 +196,14 @@ function transformData(data: RawYellowAndRedActuationsData) {
   )
 
   const planOptions: PlanOptions<YellowAndRedActuationsPlan> = {
-    totalViolations: (value: number) => `TV: ${value}`,
-    severeViolations: (value: number) => `SV: ${value}`,
-    percentSevereViolations: (value: number) => `% SV: ${Math.round(value)}%`,
-    percentViolations: (value: number) => `% V: ${Math.round(value)}%`,
-    averageTimeViolations: (value: number) => `Avg V: ${Math.round(value)}s`,
+    totalViolations: (value: number | undefined) => `TV: ${value ?? 0}`,
+    severeViolations: (value: number | undefined) => `SV: ${value ?? 0}`,
+    percentSevereViolations: (value: number | undefined) =>
+      `% SV: ${Math.round(value ?? 0)}%`,
+    percentViolations: (value: number | undefined) =>
+      `% V: ${Math.round(value ?? 0)}%`,
+    averageTimeViolations: (value: number | undefined) =>
+      `Avg V: ${Math.round(value ?? 0)}s`,
   }
 
   const planSeries = createPlans(
@@ -205,7 +216,7 @@ function transformData(data: RawYellowAndRedActuationsData) {
   )
 
   const displayProps = createDisplayProps({
-    description: data.approachDescription,
+    description: approachDescription,
     isPermissivePhase: data.isPermissivePhase,
   })
 

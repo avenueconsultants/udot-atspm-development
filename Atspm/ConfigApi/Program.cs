@@ -23,6 +23,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.ConfigApi.Services;
 using Utah.Udot.Atspm.Data;
+using Utah.Udot.Atspm.Infrastructure.Common;
 using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.Atspm.Infrastructure.Services;
 using Utah.Udot.ATSPM.ConfigApi.Mappings;
@@ -72,7 +73,11 @@ builder.Host
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
+            o.UseAtspmSchemaConventions();
+            o.SchemaFilter<ODataEnumMemberNameSchemaFilter>();
+            o.OperationFilter<ODataCollectionResponseOperationFilter>();
             o.DocumentFilter<GenerateMeasureOptionSchemas>();
+            o.DocumentFilter<ODataJsonContentTypesDocumentFilter>();
         }, v =>
         v.AddOData(o => o.AddRouteComponents("api/v{version:apiVersion}"))
         .AddODataApiExplorer(o =>
@@ -117,7 +122,12 @@ await app.ApplyMigrations<ConfigContext>();
 //Error handling
 if (!app.Environment.IsProduction())
 {
-    app.Services.PrintHostInformation();
+    // Swagger export executes startup during builds; keep configuration out of build logs.
+    if (!SwaggerExport.InProgress)
+    {
+        app.Services.PrintHostInformation();
+    }
+
     app.UseODataRouteDebug();
     app.UseDeveloperExceptionPage();
 }

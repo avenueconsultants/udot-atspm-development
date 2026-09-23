@@ -41,6 +41,7 @@ namespace Identity.Controllers
         // GET: api/claims
         [HttpGet]
         [AuthorizePermission(AtspmAuthorization.Permissions.RolesView)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetClaims()
         {
             var descriptions = Enum.GetValues(typeof(ClaimTypes))

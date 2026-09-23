@@ -32,6 +32,9 @@ interface SplitMonitorPlan {
   percentileSplit50th: number
 }
 
+// Plan 254 is the controller's free (uncoordinated) plan.
+const isFreePlan = (plan: SplitMonitorPlan) => plan.planNumber === '254'
+
 interface ChartResults {
   chart: {
     displayProps: {
@@ -50,14 +53,16 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
   if (phases.length === 0) {
     return null
   }
-  const createHeaderLabel = (planNumber: string) => {
-    return planNumber === '254' ? 'Free' : `Plan ${planNumber}`
-  }
+  const createHeaderLabel = (plan: SplitMonitorPlan) =>
+    isFreePlan(plan) ? 'Free' : `Plan ${plan.planNumber}`
 
-  const resolveForceOffsOrMaxOuts = (plan: SplitMonitorPlan) => {
+  // A free plan has no force-offs; its phases max out instead, which is
+  // what the clipboard export reports for it too.
+  const resolveForceOffsOrMaxOuts = (plan: SplitMonitorPlan, key: string) => {
+    const isFree = isFreePlan(plan)
     return (
-      <BorderedCell color={plan.planNumber === '254' ? 'red' : 'blue'}>
-        {formatNumber(plan.percentForceOffs)}
+      <BorderedCell key={key} color={isFree ? 'red' : 'blue'}>
+        {formatNumber(isFree ? plan.percentMaxOuts : plan.percentForceOffs)}
       </BorderedCell>
     )
   }
@@ -112,9 +117,7 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
   const createClipboardText = () => {
     let clipboardText = 'Phase\tMetric'
     phases[0].chart.displayProps.plans.forEach((plan) => {
-      clipboardText += `\t${
-        plan.planNumber === '254' ? 'Free' : `Plan ${plan.planNumber}`
-      }`
+      clipboardText += `\t${createHeaderLabel(plan)}`
     })
     clipboardText += '\n'
 
@@ -145,7 +148,7 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
         key: 'percentForceOffs',
         label: 'Force Offs or Max Outs (%)',
         formatter: formatNumber,
-        specialCondition: (plan: SplitMonitorPlan) => plan.planNumber === '254',
+        specialCondition: isFreePlan,
       },
       { key: 'percentGapOuts', label: 'Gap Outs (%)', formatter: formatNumber },
       { key: 'percentSkips', label: 'Skips (%)', formatter: formatNumber },
@@ -286,7 +289,7 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
                 <BorderedCell>Metric</BorderedCell>
                 {maxPhase.chart.displayProps.plans.map((plan, i) => (
                   <BorderedCell key={`${plan.planNumber}-${i}`}>
-                    {createHeaderLabel(plan.planNumber)}
+                    {createHeaderLabel(plan)}
                   </BorderedCell>
                 ))}
               </TableRow>
@@ -384,8 +387,11 @@ const PhaseTable = ({ phases }: PhaseTableProps) => {
                       <span style={{ color: 'blue' }}>Force Offs</span> or{' '}
                       <span style={{ color: '#b00000' }}>Max Outs</span> (%)
                     </BorderedCell>
-                    {phase.chart.displayProps.plans.map((plan) =>
-                      resolveForceOffsOrMaxOuts(plan)
+                    {phase.chart.displayProps.plans.map((plan, j) =>
+                      resolveForceOffsOrMaxOuts(
+                        plan,
+                        `percentForceOffs-${plan.planNumber}-${i}-${j}`
+                      )
                     )}
                   </TableRow>
                   <TableRow>

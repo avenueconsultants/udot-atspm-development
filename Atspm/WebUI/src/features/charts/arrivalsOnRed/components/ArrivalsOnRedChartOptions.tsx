@@ -13,7 +13,6 @@ interface ArrivalsOnRedChartOptionsProps {
 export const ArrivalsOnRedChartOptions = ({
   chartDefaults,
   handleChartOptionsUpdate,
-  isMeasureDefaultView = false,
 }: ArrivalsOnRedChartOptionsProps) => {
   const [binSize, setBinSize] = useState(chartDefaults.binSize?.value)
 

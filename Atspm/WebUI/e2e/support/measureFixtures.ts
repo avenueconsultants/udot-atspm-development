@@ -1,0 +1,290 @@
+// #region license
+// Copyright 2026 Utah Departement of Transportation
+// for WebUI - e2e/support/measureFixtures.ts
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//http://www.apache.org/licenses/LICENSE-2.
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// #endregion
+import type { MeasureType, SearchLocation } from '../../src/api/config'
+import { searchLocations } from '../../src/test/fixtures/config'
+
+// A measure as GET /MeasureType?expand=measureOptions serves it. The options
+// are what SelectChart turns into the measure's defaults: every value is a
+// string in the config API, and the app sends them on as-is (booleans get
+// converted, numbers do not), so a spec can see exactly what the report
+// API receives.
+//
+// The chart-type lookup keys on the abbreviation (see
+// `common/measureAbbreviations.ts`), so that is the field a measure has to
+// get right to be selectable at all.
+export const measureWithOptions = ({
+  id,
+  name,
+  abbreviation,
+  options,
+}: {
+  id: number
+  name: string
+  abbreviation: string
+  options: Record<string, string>
+}): MeasureType => ({
+  id,
+  name,
+  abbreviation,
+  showOnWebsite: true,
+  showOnAggregationSite: false,
+  displayOrder: id,
+  created: null,
+  modified: null,
+  createdBy: null,
+  modifiedBy: null,
+  measureOptions: Object.entries(options).map(([option, value], index) => ({
+    id: id * 100 + index,
+    option,
+    value,
+    measureTypeId: id,
+    created: null,
+    modified: null,
+    createdBy: null,
+    modifiedBy: null,
+  })),
+})
+
+export const purdueCoordinationDiagramMeasure = measureWithOptions({
+  id: 6,
+  name: 'Purdue Coordination Diagram',
+  abbreviation: 'PCD',
+  options: {
+    binSize: '15',
+    yAxisDefault: '150',
+    getVolume: 'true',
+    showPlanStatistics: 'true',
+  },
+})
+
+// The recorded search location, offering exactly the given measure ids.
+export const searchLocationWithCharts = (charts: number[]): SearchLocation => ({
+  ...searchLocations[0],
+  charts,
+})
+
+// The recorded search location, offering exactly the given measure.
+export const searchLocationWithMeasure = (
+  measure: MeasureType
+): SearchLocation => searchLocationWithCharts([measure.id ?? 0])
+
+export const splitMonitorMeasure = measureWithOptions({
+  id: 2,
+  name: 'Split Monitor',
+  abbreviation: 'SM',
+  options: {
+    percentileSplit: '85',
+    yAxisDefault: '100',
+  },
+})
+
+// Seeded with the eight detector-channel toggles even though the current
+// option panel shows none of them: they still travel as measure defaults.
+export const timingAndActuationMeasure = measureWithOptions({
+  id: 17,
+  name: 'Timing And Actuation',
+  abbreviation: 'TAA',
+  options: {
+    extendStartStopSearch: '2',
+    showAdvancedCount: 'TRUE',
+    showAdvancedDilemmaZone: 'TRUE',
+    showAllLanesInfo: 'FALSE',
+    showLaneByLaneCount: 'TRUE',
+    showPedestrianActuation: 'TRUE',
+    showPedestrianIntervals: 'TRUE',
+    showStopBarPresence: 'TRUE',
+  },
+})
+
+export const turningMovementCountsMeasure = measureWithOptions({
+  id: 5,
+  name: 'Turning Movement Counts',
+  abbreviation: 'TMC',
+  options: {
+    binSize: '15',
+    yAxisDefault: '300',
+    combineThruRight: 'FALSE',
+  },
+})
+
+export const purduePhaseTerminationMeasure = measureWithOptions({
+  id: 1,
+  name: 'Purdue Phase Termination',
+  abbreviation: 'PPT',
+  options: {
+    selectedConsecutiveCount: '1',
+  },
+})
+
+export const approachVolumeMeasure = measureWithOptions({
+  id: 7,
+  name: 'Approach Volume',
+  abbreviation: 'AV',
+  options: {
+    binSize: '15',
+    showAdvanceDetection: 'TRUE',
+    showDirectionalSplits: 'TRUE',
+    showNbEbVolume: 'TRUE',
+    showSbWbVolume: 'TRUE',
+    showTMCDetection: 'TRUE',
+    showTotalVolume: 'FALSE',
+  },
+})
+
+export const approachDelayMeasure = measureWithOptions({
+  id: 8,
+  name: 'Approach Delay',
+  abbreviation: 'AD',
+  options: {
+    getVolume: 'TRUE',
+    getPermissivePhase: 'TRUE',
+  },
+})
+
+// The abbreviation, not the name, is what SelectChart maps to a ChartType,
+// and Approach Speed's is 'Speed'.
+export const approachSpeedMeasure = measureWithOptions({
+  id: 10,
+  name: 'Approach Speed',
+  abbreviation: 'Speed',
+  options: {
+    binSize: '15',
+  },
+})
+
+// The seeded option names are the report contract's field names
+// (ArrivalOnRedOptions.getPermissivePhase), which is what lets the seeded
+// defaults reach the request unchanged.
+export const arrivalsOnRedMeasure = measureWithOptions({
+  id: 9,
+  name: 'Arrivals On Red',
+  abbreviation: 'AoR',
+  options: {
+    getPermissivePhase: 'TRUE',
+    showPlanStatistics: 'TRUE',
+    binSize: '15',
+  },
+})
+
+export const greenTimeUtilizationMeasure = measureWithOptions({
+  id: 36,
+  name: 'Green Time Utilization',
+  abbreviation: 'GTU',
+  options: {
+    xAxisBinSize: '15',
+    yAxisBinSize: '4',
+  },
+})
+
+export const leftTurnGapAnalysisMeasure = measureWithOptions({
+  id: 31,
+  name: 'Left Turn Gap Analysis',
+  abbreviation: 'LTGA',
+  options: {
+    binSize: '15',
+    gap1Min: '1',
+    gap1Max: '3.3',
+    gap2Min: '3.3',
+    gap2Max: '3.7',
+    gap3Min: '3.7',
+    gap3Max: '7.4',
+    gap4Min: '7.4',
+    trendLineGapThreshold: '7.4',
+  },
+})
+
+export const pedestrianDelayMeasure = measureWithOptions({
+  id: 3,
+  name: 'Pedestrian Delay',
+  abbreviation: 'PedD',
+  options: {
+    pedRecallThreshold: '75',
+    showCycleLength: 'TRUE',
+    showPedBeginWalk: 'TRUE',
+    showPedRecall: 'FALSE',
+    showPercentDelay: 'TRUE',
+    timeBuffer: '15',
+    yAxisDefault: '180',
+  },
+})
+
+export const purdueSplitFailureMeasure = measureWithOptions({
+  id: 12,
+  name: 'Purdue Split Failure',
+  abbreviation: 'SF',
+  options: {
+    firstSecondsOfRed: '5',
+    showAvgLines: 'TRUE',
+    showFailLines: 'TRUE',
+    showPercentFailLines: 'FALSE',
+  },
+})
+
+// Seeded without options; the option panel says so.
+export const preemptionDetailsMeasure = measureWithOptions({
+  id: 4,
+  name: 'Preemption Details',
+  abbreviation: 'PD',
+  options: {},
+})
+
+export const prioritySummaryMeasure = measureWithOptions({
+  id: 39,
+  name: 'Transit Signal Priority Summary',
+  abbreviation: 'TSPS',
+  options: {
+    binSize: '15',
+  },
+})
+
+export const waitTimeMeasure = measureWithOptions({
+  id: 32,
+  name: 'Wait Time',
+  abbreviation: 'WT',
+  options: {
+    binSize: '15',
+  },
+})
+
+export const yellowAndRedActuationsMeasure = measureWithOptions({
+  id: 11,
+  name: 'Yellow and Red Actuations',
+  abbreviation: 'YRA',
+  options: {
+    severeLevelSeconds: '5',
+    yAxisDefault: '20',
+  },
+})
+
+// The seed carries no measure options for Ramp Metering, so this is the
+// shape the option panel actually meets in production.
+export const rampMeteringMeasure = measureWithOptions({
+  id: 37,
+  name: 'Ramp Metering',
+  abbreviation: 'RM',
+  options: {},
+})
+
+// The same measure as an installation that has added the option.
+export const rampMeteringMeasureWithCombineLanes = measureWithOptions({
+  id: 37,
+  name: 'Ramp Metering',
+  abbreviation: 'RM',
+  options: {
+    combineLanes: 'FALSE',
+  },
+})

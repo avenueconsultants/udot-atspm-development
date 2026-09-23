@@ -14,21 +14,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { configAxios } from '@/lib/axios'
+import { MeasureOption, patchMeasureOptionFromKey } from '@/api/config'
+import { ChartDefaults } from '@/features/charts/types'
 import { MutationConfig, queryClient } from '@/lib/react-query'
 import { useNotificationStore } from '@/stores/notifications'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 type UpdateChartDefault = {
-  value: string
-  id: number
+  [Key in 'id' | 'value']: NonNullable<MeasureOption[Key]>
 }
 
 export const updateChartDefaults = ({
   id,
   value,
-}: UpdateChartDefault): Promise<UpdateChartDefault> => {
-  return configAxios.patch(`/measureOption/${id}`, { value: value.toString() })
+}: UpdateChartDefault): Promise<void> => {
+  return patchMeasureOptionFromKey(id, {
+    value: value.toString(),
+  })
 }
 
 type UseUpdateChartDefaultsOptions = {
@@ -41,16 +43,20 @@ export const useUpdateChartDefaults = ({
   const { addNotification } = useNotificationStore()
   return useMutation({
     onMutate: async () => {
-      await queryClient.cancelQueries('chartDefaults')
+      await queryClient.cancelQueries({ queryKey: ['chartdefaults'] })
 
-      const previousChartDefaults =
-        queryClient.getQueryData<UpdateChartDefault[]>('chartDefaults')
+      const previousChartDefaults = queryClient.getQueryData<ChartDefaults[]>([
+        'chartdefaults',
+      ])
 
       return { previousChartDefaults }
     },
     onError: (_, __, context: any) => {
       if (context?.previousChartDefaults) {
-        queryClient.setQueryData('chartDefaults', context.previousChartDefaults)
+        queryClient.setQueryData(
+          ['chartdefaults'],
+          context.previousChartDefaults
+        )
       }
       addNotification({
         type: 'error',
@@ -58,7 +64,7 @@ export const useUpdateChartDefaults = ({
       })
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('chartDefaults')
+      queryClient.invalidateQueries({ queryKey: ['chartdefaults'] })
       addNotification({
         type: 'success',
         title: 'Chart Default Updated',

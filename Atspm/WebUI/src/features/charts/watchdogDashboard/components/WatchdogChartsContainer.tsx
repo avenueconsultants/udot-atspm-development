@@ -1,4 +1,5 @@
-import { WatchdogDashboardData } from '@/features/watchdog/types'
+import { DetectionTypeGroup, DeviceGroup } from '@/api/config'
+import { WatchDogDashboardGroup } from '@/api/reports'
 import { Box } from '@mui/material'
 import React from 'react'
 import ControllerTypeChart from './ControllerTypeChart'
@@ -8,7 +9,10 @@ import DeviceCountChart from './DeviceCountChart'
 import IssueTypeChart from './IssueTypeChart'
 
 interface WatchdogChartsContainerProps {
-  data: WatchdogDashboardData
+  data: WatchDogDashboardGroup & {
+    deviceCount?: DeviceGroup[]
+    detectionTypeCount?: DetectionTypeGroup[]
+  }
   isLoading: boolean
 }
 
@@ -20,11 +24,14 @@ const WatchdogChartsContainer: React.FC<WatchdogChartsContainerProps> = ({
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Box sx={{ display: 'flex', gap: 3 }}>
         <Box sx={{ flex: 1 }}>
-          <DeviceCountChart data={data?.deviceCount} isLoading={isLoading} />
+          <DeviceCountChart
+            data={data?.deviceCount ?? []}
+            isLoading={isLoading}
+          />
         </Box>
         <Box sx={{ flex: 1 }}>
           <DetectionTypeCountChart
-            data={data?.detectionTypeCount}
+            data={data?.detectionTypeCount ?? []}
             isLoading={isLoading}
           />
         </Box>
