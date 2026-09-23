@@ -14,7 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import { configAxios, reportsAxios } from '@/lib/axios'
+import type { MeasureType } from '@/api/config/config-api.schemas'
+import {
+  getGetMeasureTypeQueryOptions,
+  getMeasureType,
+  getMeasureTypeCount,
+  getMeasureTypeFromKey,
+} from '@/api/config/measure-type/measure-type'
+import { configAxios, configRequest, reportsAxios } from '@/lib/axios'
 import {
   CONFIG_API,
   odataCollection,
@@ -24,29 +31,71 @@ import {
 } from '@/test/fixtures/api'
 import { measureTypes } from '@/test/fixtures/config'
 import { server } from '@/test/msw/server'
+import { QueryClient } from '@tanstack/react-query'
 import { http, HttpResponse } from 'msw'
 
 // axios.test.ts drives the interceptors directly. These go through the real
 // instances jest.setup.ts creates, end to end, against responses in the
 // shapes the APIs were recorded sending.
 describe('config API responses', () => {
-  it('unwraps an OData collection to its items', async () => {
+  it('returns an item array from a generated collection request', async () => {
     server.use(
       http.get(`${CONFIG_API}/MeasureType`, () =>
         HttpResponse.json(odataCollection('MeasureType', measureTypes))
       )
     )
 
-    await expect(configAxios.get('/MeasureType')).resolves.toEqual(measureTypes)
+    const result: MeasureType[] = await getMeasureType()
+    expect(result).toEqual(measureTypes)
   })
 
-  it('passes a keyed GET through as the single entity it is', async () => {
-    const entity = odataEntity('MeasureType', measureTypes[0])
+  it('returns an item array from a generated keyed request', async () => {
     server.use(
-      http.get(`${CONFIG_API}/MeasureType/1`, () => HttpResponse.json(entity))
+      http.get(`${CONFIG_API}/MeasureType/1`, () =>
+        HttpResponse.json(odataCollection('MeasureType', [measureTypes[0]]))
+      )
     )
 
-    const result = await configAxios.get('/MeasureType/1')
+    const result: MeasureType[] = await getMeasureTypeFromKey(1)
+    expect(result).toEqual([measureTypes[0]])
+  })
+
+  it('returns a scalar from a generated count request', async () => {
+    server.use(
+      http.get(`${CONFIG_API}/MeasureType/$count`, () => HttpResponse.text('2'))
+    )
+
+    const result: number = await getMeasureTypeCount()
+    expect(result).toBe(2)
+  })
+
+  it('infers item arrays for generated query options', async () => {
+    server.use(
+      http.get(`${CONFIG_API}/MeasureType`, () =>
+        HttpResponse.json(odataCollection('MeasureType', measureTypes))
+      )
+    )
+
+    const client = new QueryClient()
+    try {
+      const result: MeasureType[] = await client.fetchQuery(
+        getGetMeasureTypeQueryOptions()
+      )
+      expect(result).toEqual(measureTypes)
+    } finally {
+      client.clear()
+    }
+  })
+
+  it('passes a single-entity response through unchanged', async () => {
+    const entity = odataEntity('MeasureType', measureTypes[0])
+    server.use(
+      http.get(`${CONFIG_API}/MeasureType/Single`, () =>
+        HttpResponse.json(entity)
+      )
+    )
+
+    const result = await configAxios.get('/MeasureType/Single')
 
     expect(Array.isArray(result)).toBe(false)
     expect(result).toEqual(entity)
@@ -62,9 +111,13 @@ describe('config API responses', () => {
       )
     )
 
-    await expect(configAxios.get('/MeasureOption/3')).resolves.toEqual(
-      measureOption
-    )
+    const result: typeof measureOption = await configRequest<
+      typeof measureOption
+    >({
+      url: '/MeasureOption/3',
+      method: 'GET',
+    })
+    expect(result).toEqual(measureOption)
   })
 
   it('rejects a missing key with the 404 the API sends', async () => {

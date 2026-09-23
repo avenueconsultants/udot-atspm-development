@@ -26,12 +26,14 @@ import type {
 
 import type {
   Area,
+  GetArea200,
   GetAreaCountParams,
+  GetAreaFromKey200,
   GetAreaFromKeyParams,
   GetAreaLocationsCountFromKeyParams,
+  GetAreaLocationsFromKey200,
   GetAreaLocationsFromKeyParams,
   GetAreaParams,
-  Location,
   PatchAreaFromKeyParams,
   PostAreaParams,
   PutAreaFromKeyParams
@@ -67,7 +69,7 @@ export const getAreaLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetAreaLocationsFromKey200>(
       {url: `/Area/${key}/locations`, method: 'GET',
         params, signal
     },
@@ -167,7 +169,7 @@ export const getAreaLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<number>(
       {url: `/Area/${key}/locations/$count`, method: 'GET',
         params, signal
     },
@@ -263,7 +265,7 @@ export const getArea = (
 ) => {
 
 
-      return configRequest<Area[]>(
+      return configRequest<GetArea200>(
       {url: `/Area`, method: 'GET',
         params, signal
     },
@@ -410,7 +412,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Area[]>(
+      return configRequest<number>(
       {url: `/Area/$count`, method: 'GET',
         params, signal
     },
@@ -498,7 +500,7 @@ export const getAreaFromKey = (
 ) => {
 
 
-      return configRequest<Area>(
+      return configRequest<GetAreaFromKey200>(
       {url: `/Area/${key}`, method: 'GET',
         params, signal
     },

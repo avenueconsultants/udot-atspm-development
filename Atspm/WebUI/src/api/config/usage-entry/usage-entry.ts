@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetUsageEntry200,
   GetUsageEntryCountParams,
+  GetUsageEntryFromKey200,
   GetUsageEntryFromKeyParams,
   GetUsageEntryParams,
   PatchUsageEntryFromKeyParams,
@@ -60,7 +62,7 @@ export const getUsageEntry = (
 ) => {
 
 
-      return configRequest<UsageEntry[]>(
+      return configRequest<GetUsageEntry200>(
       {url: `/UsageEntry`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<UsageEntry[]>(
+      return configRequest<number>(
       {url: `/UsageEntry/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getUsageEntryFromKey = (
 ) => {
 
 
-      return configRequest<UsageEntry>(
+      return configRequest<GetUsageEntryFromKey200>(
       {url: `/UsageEntry/${key}`, method: 'GET',
         params, signal
     },

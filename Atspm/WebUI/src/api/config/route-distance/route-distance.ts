@@ -25,19 +25,22 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetRouteDistance200,
   GetRouteDistanceCountParams,
+  GetRouteDistanceFromKey200,
   GetRouteDistanceFromKeyParams,
   GetRouteDistanceNextLocationsCountFromKeyParams,
+  GetRouteDistanceNextLocationsFromKey200,
   GetRouteDistanceNextLocationsFromKeyParams,
   GetRouteDistanceParams,
   GetRouteDistancePreviousLocationsCountFromKeyParams,
+  GetRouteDistancePreviousLocationsFromKey200,
   GetRouteDistancePreviousLocationsFromKeyParams,
   GetRouteDistanceRouteDistanceByLocationIdentifiersFromLocationAAndLocationBParams,
   PatchRouteDistanceFromKeyParams,
   PostRouteDistanceParams,
   PutRouteDistanceFromKeyParams,
-  RouteDistance,
-  RouteLocation
+  RouteDistance
 } from '../config-api.schemas';
 
 import { configRequest } from '../../../lib/axios';
@@ -70,7 +73,7 @@ export const getRouteDistancePreviousLocationsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetRouteDistancePreviousLocationsFromKey200>(
       {url: `/RouteDistance/${key}/previousLocations`, method: 'GET',
         params, signal
     },
@@ -170,7 +173,7 @@ export const getRouteDistancePreviousLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/RouteDistance/${key}/previousLocations/$count`, method: 'GET',
         params, signal
     },
@@ -270,7 +273,7 @@ export const getRouteDistanceNextLocationsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetRouteDistanceNextLocationsFromKey200>(
       {url: `/RouteDistance/${key}/nextLocations`, method: 'GET',
         params, signal
     },
@@ -370,7 +373,7 @@ export const getRouteDistanceNextLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/RouteDistance/${key}/nextLocations/$count`, method: 'GET',
         params, signal
     },
@@ -573,7 +576,7 @@ export const getRouteDistance = (
 ) => {
 
 
-      return configRequest<RouteDistance[]>(
+      return configRequest<GetRouteDistance200>(
       {url: `/RouteDistance`, method: 'GET',
         params, signal
     },
@@ -720,7 +723,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<RouteDistance[]>(
+      return configRequest<number>(
       {url: `/RouteDistance/$count`, method: 'GET',
         params, signal
     },
@@ -808,7 +811,7 @@ export const getRouteDistanceFromKey = (
 ) => {
 
 
-      return configRequest<RouteDistance>(
+      return configRequest<GetRouteDistanceFromKey200>(
       {url: `/RouteDistance/${key}`, method: 'GET',
         params, signal
     },

@@ -25,32 +25,36 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  Approach,
-  Area,
   DeleteLocationAllVersionsFromKeyParams,
   DeleteLocationSetLocationTodFromKeyParams,
-  DetectionTypeGroup,
-  Device,
+  GetLocation200,
+  GetLocationAllVersionsOfLocationFromIdentifier200,
   GetLocationAllVersionsOfLocationFromIdentifierParams,
   GetLocationApproachesCountFromKeyParams,
+  GetLocationApproachesFromKey200,
   GetLocationApproachesFromKeyParams,
   GetLocationAreasCountFromKeyParams,
+  GetLocationAreasFromKey200,
   GetLocationAreasFromKeyParams,
   GetLocationCopyLocationToNewVersionFromKeyParams,
   GetLocationCountParams,
+  GetLocationDetectionTypeCount200,
   GetLocationDetectionTypeCountParams,
   GetLocationDevicesCountFromKeyParams,
+  GetLocationDevicesFromKey200,
   GetLocationDevicesFromKeyParams,
+  GetLocationFromKey200,
   GetLocationFromKeyParams,
+  GetLocationLatestVersionOfAllLocations200,
   GetLocationLatestVersionOfAllLocationsParams,
   GetLocationLatestVersionOfLocationFromIdentifierParams,
+  GetLocationLocationsForSearch200,
   GetLocationLocationsForSearchParams,
   GetLocationParams,
   Location,
   PatchLocationFromKeyParams,
   PostLocationParams,
-  PutLocationFromKeyParams,
-  SearchLocation
+  PutLocationFromKeyParams
 } from '../config-api.schemas';
 
 import { configRequest } from '../../../lib/axios';
@@ -83,7 +87,7 @@ export const getLocationApproachesFromKey = (
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<GetLocationApproachesFromKey200>(
       {url: `/Location/${key}/approaches`, method: 'GET',
         params, signal
     },
@@ -183,7 +187,7 @@ export const getLocationApproachesCountFromKey = (
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<number>(
       {url: `/Location/${key}/approaches/$count`, method: 'GET',
         params, signal
     },
@@ -283,7 +287,7 @@ export const getLocationAreasFromKey = (
 ) => {
 
 
-      return configRequest<Area[]>(
+      return configRequest<GetLocationAreasFromKey200>(
       {url: `/Location/${key}/areas`, method: 'GET',
         params, signal
     },
@@ -383,7 +387,7 @@ export const getLocationAreasCountFromKey = (
 ) => {
 
 
-      return configRequest<Area[]>(
+      return configRequest<number>(
       {url: `/Location/${key}/areas/$count`, method: 'GET',
         params, signal
     },
@@ -483,7 +487,7 @@ export const getLocationDevicesFromKey = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<GetLocationDevicesFromKey200>(
       {url: `/Location/${key}/devices`, method: 'GET',
         params, signal
     },
@@ -583,7 +587,7 @@ export const getLocationDevicesCountFromKey = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<number>(
       {url: `/Location/${key}/devices/$count`, method: 'GET',
         params, signal
     },
@@ -975,7 +979,7 @@ export const getLocationAllVersionsOfLocationFromIdentifier = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetLocationAllVersionsOfLocationFromIdentifier200>(
       {url: `/Location/GetAllVersionsOfLocation(identifier=${identifier})`, method: 'GET',
         params, signal
     },
@@ -1074,7 +1078,7 @@ export const getLocationLatestVersionOfAllLocations = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetLocationLatestVersionOfAllLocations200>(
       {url: `/Location/GetLatestVersionOfAllLocations`, method: 'GET',
         params, signal
     },
@@ -1167,7 +1171,7 @@ export const getLocationDetectionTypeCount = (
 ) => {
 
 
-      return configRequest<DetectionTypeGroup[]>(
+      return configRequest<GetLocationDetectionTypeCount200>(
       {url: `/Location/GetDetectionTypeCount`, method: 'GET',
         params, signal
     },
@@ -1260,7 +1264,7 @@ export const getLocationLocationsForSearch = (
 ) => {
 
 
-      return configRequest<SearchLocation[]>(
+      return configRequest<GetLocationLocationsForSearch200>(
       {url: `/Location/GetLocationsForSearch`, method: 'GET',
         params, signal
     },
@@ -1350,7 +1354,7 @@ export const getLocation = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetLocation200>(
       {url: `/Location`, method: 'GET',
         params, signal
     },
@@ -1497,7 +1501,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<number>(
       {url: `/Location/$count`, method: 'GET',
         params, signal
     },
@@ -1585,7 +1589,7 @@ export const getLocationFromKey = (
 ) => {
 
 
-      return configRequest<Location>(
+      return configRequest<GetLocationFromKey200>(
       {url: `/Location/${key}`, method: 'GET',
         params, signal
     },

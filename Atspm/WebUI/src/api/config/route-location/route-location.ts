@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetRouteLocation200,
   GetRouteLocationCountParams,
+  GetRouteLocationFromKey200,
   GetRouteLocationFromKeyParams,
   GetRouteLocationParams,
   PatchRouteLocationFromKeyParams,
@@ -60,7 +62,7 @@ export const getRouteLocation = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetRouteLocation200>(
       {url: `/RouteLocation`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/RouteLocation/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getRouteLocationFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation>(
+      return configRequest<GetRouteLocationFromKey200>(
       {url: `/RouteLocation/${key}`, method: 'GET',
         params, signal
     },

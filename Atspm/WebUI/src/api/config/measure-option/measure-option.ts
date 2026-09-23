@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetMeasureOption200,
   GetMeasureOptionCountParams,
+  GetMeasureOptionFromKey200,
   GetMeasureOptionFromKeyParams,
   GetMeasureOptionParams,
   MeasureOption,
@@ -60,7 +62,7 @@ export const getMeasureOption = (
 ) => {
 
 
-      return configRequest<MeasureOption[]>(
+      return configRequest<GetMeasureOption200>(
       {url: `/MeasureOption`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureOption[]>(
+      return configRequest<number>(
       {url: `/MeasureOption/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getMeasureOptionFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOption>(
+      return configRequest<GetMeasureOptionFromKey200>(
       {url: `/MeasureOption/${key}`, method: 'GET',
         params, signal
     },

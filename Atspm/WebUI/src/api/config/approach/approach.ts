@@ -27,11 +27,13 @@ import type {
 import type {
   Approach,
   ApproachDto,
-  Detector,
+  GetApproach200,
   GetApproachApproachDtoFromIdParams,
   GetApproachCountParams,
   GetApproachDetectorsCountFromKeyParams,
+  GetApproachDetectorsFromKey200,
   GetApproachDetectorsFromKeyParams,
+  GetApproachFromKey200,
   GetApproachFromKeyParams,
   GetApproachParams,
   PatchApproachFromKeyParams,
@@ -70,7 +72,7 @@ export const getApproachDetectorsFromKey = (
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<GetApproachDetectorsFromKey200>(
       {url: `/Approach/${key}/detectors`, method: 'GET',
         params, signal
     },
@@ -170,7 +172,7 @@ export const getApproachDetectorsCountFromKey = (
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<number>(
       {url: `/Approach/${key}/detectors/$count`, method: 'GET',
         params, signal
     },
@@ -420,7 +422,7 @@ export const getApproach = (
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<GetApproach200>(
       {url: `/Approach`, method: 'GET',
         params, signal
     },
@@ -567,7 +569,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<number>(
       {url: `/Approach/$count`, method: 'GET',
         params, signal
     },
@@ -655,7 +657,7 @@ export const getApproachFromKey = (
 ) => {
 
 
-      return configRequest<Approach>(
+      return configRequest<GetApproachFromKey200>(
       {url: `/Approach/${key}`, method: 'GET',
         params, signal
     },

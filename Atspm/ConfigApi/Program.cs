@@ -23,6 +23,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.ConfigApi.Services;
 using Utah.Udot.Atspm.Data;
+using Utah.Udot.Atspm.Infrastructure.Common;
 using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.Atspm.Infrastructure.Services;
 using Utah.Udot.ATSPM.ConfigApi.Mappings;
@@ -72,11 +73,9 @@ builder.Host
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
-            // Wraps $ref properties in allOf so their nullability survives (a bare $ref
-            // can't carry `nullable`), and so schema filters see them per property.
-            o.UseAllOfToExtendReferenceSchemas();
-            o.DocumentEnumMemberNames();
+            o.UseAtspmSchemaConventions();
             o.SchemaFilter<ODataEnumMemberNameSchemaFilter>();
+            o.OperationFilter<ODataCollectionResponseOperationFilter>();
             o.DocumentFilter<GenerateMeasureOptionSchemas>();
             o.DocumentFilter<ODataJsonContentTypesDocumentFilter>();
         }, v =>
@@ -124,8 +123,7 @@ await app.ApplyMigrations<ConfigContext>();
 if (!app.Environment.IsProduction())
 {
     // Swagger export executes startup during builds; keep configuration out of build logs.
-    if (!string.Equals(Environment.GetEnvironmentVariable("ATSPM_SWAGGER_EXPORT"),
-        "true", StringComparison.OrdinalIgnoreCase))
+    if (!SwaggerExport.InProgress)
     {
         app.Services.PrintHostInformation();
     }

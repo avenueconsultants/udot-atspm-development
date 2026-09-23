@@ -18,12 +18,12 @@ import { location1001 } from '@/test/fixtures/config'
 import { unwrapLocationFromKey } from './unwrapLocationFromKey'
 
 describe('unwrapLocationFromKey', () => {
-  it('returns the entity a current config API sends', () => {
-    expect(unwrapLocationFromKey(location1001)).toBe(location1001)
+  it('takes the single location out of the collection the config API sends', () => {
+    expect(unwrapLocationFromKey([location1001])).toBe(location1001)
   })
 
-  it('takes the first item from the envelope older config APIs sent', () => {
-    expect(unwrapLocationFromKey([location1001])).toBe(location1001)
+  it('passes through a config API that serializes a single entity', () => {
+    expect(unwrapLocationFromKey(location1001)).toBe(location1001)
   })
 
   it('has nothing to unwrap before the query resolves', () => {

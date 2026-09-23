@@ -25,21 +25,24 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  Approach,
   DirectionType,
+  GetDirectionType200,
   GetDirectionTypeApproachesCountFromKeyParams,
+  GetDirectionTypeApproachesFromKey200,
   GetDirectionTypeApproachesFromKeyParams,
   GetDirectionTypeCountParams,
+  GetDirectionTypeFromKey200,
   GetDirectionTypeFromKeyParams,
   GetDirectionTypeOpposingDirectionsCountFromKeyParams,
+  GetDirectionTypeOpposingDirectionsFromKey200,
   GetDirectionTypeOpposingDirectionsFromKeyParams,
   GetDirectionTypeParams,
   GetDirectionTypePrimaryDirectionsCountFromKeyParams,
+  GetDirectionTypePrimaryDirectionsFromKey200,
   GetDirectionTypePrimaryDirectionsFromKeyParams,
   PatchDirectionTypeFromKeyParams,
   PostDirectionTypeParams,
-  PutDirectionTypeFromKeyParams,
-  RouteLocation
+  PutDirectionTypeFromKeyParams
 } from '../config-api.schemas';
 
 import { configRequest } from '../../../lib/axios';
@@ -72,7 +75,7 @@ export const getDirectionTypeApproachesFromKey = (
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<GetDirectionTypeApproachesFromKey200>(
       {url: `/DirectionType/${key}/approaches`, method: 'GET',
         params, signal
     },
@@ -172,7 +175,7 @@ export const getDirectionTypeApproachesCountFromKey = (
 ) => {
 
 
-      return configRequest<Approach[]>(
+      return configRequest<number>(
       {url: `/DirectionType/${key}/approaches/$count`, method: 'GET',
         params, signal
     },
@@ -272,7 +275,7 @@ export const getDirectionTypePrimaryDirectionsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetDirectionTypePrimaryDirectionsFromKey200>(
       {url: `/DirectionType/${key}/primaryDirections`, method: 'GET',
         params, signal
     },
@@ -372,7 +375,7 @@ export const getDirectionTypePrimaryDirectionsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/DirectionType/${key}/primaryDirections/$count`, method: 'GET',
         params, signal
     },
@@ -472,7 +475,7 @@ export const getDirectionTypeOpposingDirectionsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetDirectionTypeOpposingDirectionsFromKey200>(
       {url: `/DirectionType/${key}/opposingDirections`, method: 'GET',
         params, signal
     },
@@ -572,7 +575,7 @@ export const getDirectionTypeOpposingDirectionsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/DirectionType/${key}/opposingDirections/$count`, method: 'GET',
         params, signal
     },
@@ -668,7 +671,7 @@ export const getDirectionType = (
 ) => {
 
 
-      return configRequest<DirectionType[]>(
+      return configRequest<GetDirectionType200>(
       {url: `/DirectionType`, method: 'GET',
         params, signal
     },
@@ -815,7 +818,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DirectionType[]>(
+      return configRequest<number>(
       {url: `/DirectionType/$count`, method: 'GET',
         params, signal
     },
@@ -903,7 +906,7 @@ export const getDirectionTypeFromKey = (
 ) => {
 
 
-      return configRequest<DirectionType>(
+      return configRequest<GetDirectionTypeFromKey200>(
       {url: `/DirectionType/${key}`, method: 'GET',
         params, signal
     },

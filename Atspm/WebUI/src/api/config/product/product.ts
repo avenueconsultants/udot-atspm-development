@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetProduct200,
   GetProductCountParams,
+  GetProductFromKey200,
   GetProductFromKeyParams,
   GetProductParams,
   PatchProductFromKeyParams,
@@ -60,7 +62,7 @@ export const getProduct = (
 ) => {
 
 
-      return configRequest<Product[]>(
+      return configRequest<GetProduct200>(
       {url: `/Product`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Product[]>(
+      return configRequest<number>(
       {url: `/Product/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getProductFromKey = (
 ) => {
 
 
-      return configRequest<Product>(
+      return configRequest<GetProductFromKey200>(
       {url: `/Product/${key}`, method: 'GET',
         params, signal
     },

@@ -25,13 +25,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetJurisdiction200,
   GetJurisdictionCountParams,
+  GetJurisdictionFromKey200,
   GetJurisdictionFromKeyParams,
   GetJurisdictionLocationsCountFromKeyParams,
+  GetJurisdictionLocationsFromKey200,
   GetJurisdictionLocationsFromKeyParams,
   GetJurisdictionParams,
   Jurisdiction,
-  Location,
   PatchJurisdictionFromKeyParams,
   PostJurisdictionParams,
   PutJurisdictionFromKeyParams
@@ -67,7 +69,7 @@ export const getJurisdictionLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetJurisdictionLocationsFromKey200>(
       {url: `/Jurisdiction/${key}/locations`, method: 'GET',
         params, signal
     },
@@ -167,7 +169,7 @@ export const getJurisdictionLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<number>(
       {url: `/Jurisdiction/${key}/locations/$count`, method: 'GET',
         params, signal
     },
@@ -263,7 +265,7 @@ export const getJurisdiction = (
 ) => {
 
 
-      return configRequest<Jurisdiction[]>(
+      return configRequest<GetJurisdiction200>(
       {url: `/Jurisdiction`, method: 'GET',
         params, signal
     },
@@ -410,7 +412,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Jurisdiction[]>(
+      return configRequest<number>(
       {url: `/Jurisdiction/$count`, method: 'GET',
         params, signal
     },
@@ -498,7 +500,7 @@ export const getJurisdictionFromKey = (
 ) => {
 
 
-      return configRequest<Jurisdiction>(
+      return configRequest<GetJurisdictionFromKey200>(
       {url: `/Jurisdiction/${key}`, method: 'GET',
         params, signal
     },

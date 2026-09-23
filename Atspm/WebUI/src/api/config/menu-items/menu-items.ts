@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetMenuItems200,
   GetMenuItemsCountParams,
+  GetMenuItemsFromKey200,
   GetMenuItemsFromKeyParams,
   GetMenuItemsParams,
   MenuItem,
@@ -60,7 +62,7 @@ export const getMenuItems = (
 ) => {
 
 
-      return configRequest<MenuItem[]>(
+      return configRequest<GetMenuItems200>(
       {url: `/MenuItems`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MenuItem[]>(
+      return configRequest<number>(
       {url: `/MenuItems/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getMenuItemsFromKey = (
 ) => {
 
 
-      return configRequest<MenuItem>(
+      return configRequest<GetMenuItemsFromKey200>(
       {url: `/MenuItems/${key}`, method: 'GET',
         params, signal
     },

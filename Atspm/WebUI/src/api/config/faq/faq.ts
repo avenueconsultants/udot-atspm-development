@@ -26,7 +26,9 @@ import type {
 
 import type {
   Faq,
+  GetFaq200,
   GetFaqCountParams,
+  GetFaqFromKey200,
   GetFaqFromKeyParams,
   GetFaqParams,
   PatchFaqFromKeyParams,
@@ -60,7 +62,7 @@ export const getFaq = (
 ) => {
 
 
-      return configRequest<Faq[]>(
+      return configRequest<GetFaq200>(
       {url: `/Faq`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Faq[]>(
+      return configRequest<number>(
       {url: `/Faq/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getFaqFromKey = (
 ) => {
 
 
-      return configRequest<Faq>(
+      return configRequest<GetFaqFromKey200>(
       {url: `/Faq/${key}`, method: 'GET',
         params, signal
     },

@@ -52,12 +52,29 @@ Ordinary .NET builds no longer export specifications automatically.
 from saved specs. `npm run check:api` checks those clients against the committed
 specs; it does not rebuild the backend.
 
-To export just one API without regenerating clients, restore tools from `Atspm`
-with `dotnet tool restore`, then run from that API's project directory:
+To export just one API without regenerating clients, run this from that API's
+project directory:
 
 ```bash
 dotnet msbuild -restore -target:ExportSwaggerSpec
 ```
+
+ConfigApi documents OData collection responses as objects with a required
+`value` array and optional `@odata.context`, `@odata.count`, and
+`@odata.nextLink` properties, including legacy keyed GETs that return one-item
+collections. Ordinary JSON DTOs and arrays nested inside entities keep their
+original schemas. `/$count` routes return scalar counts as `text/plain`.
+
+Orval generates those envelope types directly from the published specification.
+`configRequest` describes the Axios interceptor's unwrapped return type, so
+collection requests and their React Query hooks still return item arrays.
+The adapter recognizes default OData JSON responses by their `@odata.context`
+property and array-valued `value`; ordinary DTOs with a `value` field pass through.
+
+Run the formatter/Swagger contract tests with
+`dotnet test ../ConfigApiContractTests/ConfigApiContractTests.csproj` and the
+frontend adapter tests with
+`npm test -- --runInBand src/lib/axios.responses.test.ts`.
 
 ## Learn More
 

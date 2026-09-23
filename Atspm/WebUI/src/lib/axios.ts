@@ -123,8 +123,21 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   return config
 }
 
-export const configRequest = <T>(config: AxiosRequestConfig): Promise<T> => {
-  return configAxios.request<unknown, T>(config)
+// Describe the interceptor's result while keeping generated types faithful to
+// the HTTP response. Check the context key so ordinary DTOs with value arrays
+// retain their own type. The context is optional in the OData wire schema.
+type UnwrapODataCollection<T> = T extends { value: unknown[] }
+  ? '@odata.context' extends keyof T
+    ? T['value']
+    : T
+  : T
+
+export const configRequest = <T>(
+  config: AxiosRequestConfig
+): Promise<UnwrapODataCollection<T>> => {
+  return configAxios.request<unknown, unknown>(config) as Promise<
+    UnwrapODataCollection<T>
+  >
 }
 
 export const reportsRequest = <T>(config: AxiosRequestConfig): Promise<T> => {

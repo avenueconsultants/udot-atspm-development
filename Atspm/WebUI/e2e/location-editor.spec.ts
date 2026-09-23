@@ -23,7 +23,7 @@ import {
   WatchDogIssueTypesName,
   type WatchDogIgnoreEvent,
 } from '../src/api/config/config-api.schemas'
-import { odataCollection, odataEntity } from '../src/test/fixtures/api'
+import { odataCollection } from '../src/test/fixtures/api'
 import {
   detector10011,
   location1001,
@@ -76,7 +76,8 @@ const stubBackend = async (page: Page) => {
     host: hosts.config,
     path: '/Location/1',
     method: 'GET',
-    body: odataEntity('Location', locationForEditor),
+    // ConfigApi's keyed GET is an OData collection, not a bare entity.
+    body: odataCollection('Location', [locationForEditor]),
   })
 
   return hosts

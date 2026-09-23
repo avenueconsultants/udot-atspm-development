@@ -25,12 +25,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetRegion200,
   GetRegionCountParams,
+  GetRegionFromKey200,
   GetRegionFromKeyParams,
   GetRegionLocationsCountFromKeyParams,
+  GetRegionLocationsFromKey200,
   GetRegionLocationsFromKeyParams,
   GetRegionParams,
-  Location,
   PatchRegionFromKeyParams,
   PostRegionParams,
   PutRegionFromKeyParams,
@@ -67,7 +69,7 @@ export const getRegionLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetRegionLocationsFromKey200>(
       {url: `/Region/${key}/locations`, method: 'GET',
         params, signal
     },
@@ -167,7 +169,7 @@ export const getRegionLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<number>(
       {url: `/Region/${key}/locations/$count`, method: 'GET',
         params, signal
     },
@@ -263,7 +265,7 @@ export const getRegion = (
 ) => {
 
 
-      return configRequest<Region[]>(
+      return configRequest<GetRegion200>(
       {url: `/Region`, method: 'GET',
         params, signal
     },
@@ -410,7 +412,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Region[]>(
+      return configRequest<number>(
       {url: `/Region/$count`, method: 'GET',
         params, signal
     },
@@ -498,7 +500,7 @@ export const getRegionFromKey = (
 ) => {
 
 
-      return configRequest<Region>(
+      return configRequest<GetRegionFromKey200>(
       {url: `/Region/${key}`, method: 'GET',
         params, signal
     },

@@ -1787,6 +1787,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetApproachDetectorsFromKey200 = {
+  value: Detector[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetApproachDetectorsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -1818,6 +1828,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetApproach200 = {
+  value: Approach[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostApproachParams = {
 select?: string;
 expand?: string;
@@ -1836,6 +1856,16 @@ count?: boolean;
 export type GetApproachFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetApproachFromKey200 = {
+  value: Approach[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutApproachFromKeyParams = {
@@ -1857,6 +1887,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetAreaLocationsFromKey200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetAreaLocationsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -1874,6 +1914,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetArea200 = {
+  value: Area[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostAreaParams = {
@@ -1896,6 +1946,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetAreaFromKey200 = {
+  value: Area[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutAreaFromKeyParams = {
 select?: string;
 expand?: string;
@@ -1913,6 +1973,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDetectionTypeDetectorsFromKey200 = {
+  value: Detector[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDetectionTypeDetectorsCountFromKeyParams = {
@@ -1933,6 +2003,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetDetectionTypeMeasureTypesFromKey200 = {
+  value: MeasureType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetDetectionTypeMeasureTypesCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -1950,6 +2030,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDetectionType200 = {
+  value: DetectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDetectionTypeParams = {
@@ -1972,6 +2062,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDetectionTypeFromKey200 = {
+  value: DetectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDetectionTypeFromKeyParams = {
 select?: string;
 expand?: string;
@@ -1989,6 +2089,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDetectorDetectorCommentsFromKey200 = {
+  value: DetectorComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDetectorDetectorCommentsCountFromKeyParams = {
@@ -2009,6 +2119,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetDetectorDetectionTypesFromKey200 = {
+  value: DetectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetDetectorDetectionTypesCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2026,6 +2146,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDetector200 = {
+  value: Detector[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDetectorParams = {
@@ -2048,6 +2178,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDetectorFromKey200 = {
+  value: Detector[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDetectorFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2066,6 +2206,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDetectorComment200 = {
+  value: DetectorComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDetectorCommentParams = {
@@ -2088,6 +2238,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDetectorCommentFromKey200 = {
+  value: DetectorComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDetectorCommentFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2107,6 +2267,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetDeviceActiveDevicesByLocationFromLocationId200 = {
+  value: Device[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetDeviceActiveDevicesCountParams = {
 select?: string;
 filter?: string;
@@ -2114,6 +2284,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDeviceActiveDevicesCount200 = {
+  value: DeviceGroup[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDeviceParams = {
@@ -2124,6 +2304,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDevice200 = {
+  value: Device[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDeviceParams = {
@@ -2146,6 +2336,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDeviceFromKey200 = {
+  value: Device[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDeviceFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2163,6 +2363,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDeviceConfigurationDevicesFromKey200 = {
+  value: Device[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDeviceConfigurationDevicesCountFromKeyParams = {
@@ -2183,6 +2393,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetDeviceConfigurationEventLogDecoders200 = {
+  value: string[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetDeviceConfigurationParams = {
 select?: string;
 expand?: string;
@@ -2191,6 +2411,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDeviceConfiguration200 = {
+  value: DeviceConfiguration[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDeviceConfigurationParams = {
@@ -2213,6 +2443,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDeviceConfigurationFromKey200 = {
+  value: DeviceConfiguration[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDeviceConfigurationFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2230,6 +2470,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDirectionTypeApproachesFromKey200 = {
+  value: Approach[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDirectionTypeApproachesCountFromKeyParams = {
@@ -2250,6 +2500,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetDirectionTypePrimaryDirectionsFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetDirectionTypePrimaryDirectionsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2266,6 +2526,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDirectionTypeOpposingDirectionsFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetDirectionTypeOpposingDirectionsCountFromKeyParams = {
@@ -2285,6 +2555,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetDirectionType200 = {
+  value: DirectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostDirectionTypeParams = {
@@ -2307,6 +2587,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetDirectionTypeFromKey200 = {
+  value: DirectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutDirectionTypeFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2325,6 +2615,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetFaq200 = {
+  value: Faq[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostFaqParams = {
@@ -2347,6 +2647,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetFaqFromKey200 = {
+  value: Faq[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutFaqFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2366,6 +2676,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetJurisdictionLocationsFromKey200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetJurisdictionLocationsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2383,6 +2703,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetJurisdiction200 = {
+  value: Jurisdiction[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostJurisdictionParams = {
@@ -2405,6 +2735,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetJurisdictionFromKey200 = {
+  value: Jurisdiction[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutJurisdictionFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2423,6 +2763,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocationApproachesFromKey200 = {
+  value: Approach[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetLocationApproachesCountFromKeyParams = {
@@ -2445,6 +2795,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetLocationAreasFromKey200 = {
+  value: Area[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetLocationAreasCountFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2463,6 +2823,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocationDevicesFromKey200 = {
+  value: Device[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetLocationDevicesCountFromKeyParams = {
@@ -2509,6 +2879,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetLocationAllVersionsOfLocationFromIdentifier200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetLocationLatestVersionOfAllLocationsParams = {
 select?: string;
 filter?: string;
@@ -2516,6 +2896,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocationLatestVersionOfAllLocations200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetLocationDetectionTypeCountParams = {
@@ -2526,6 +2916,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocationDetectionTypeCount200 = {
+  value: DetectionTypeGroup[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetLocationLocationsForSearchParams = {
@@ -2553,6 +2953,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetLocationLocationsForSearch200 = {
+  value: SearchLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetLocationParams = {
 select?: string;
 expand?: string;
@@ -2561,6 +2971,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocation200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostLocationParams = {
@@ -2583,6 +3003,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetLocationFromKey200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutLocationFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2602,6 +3032,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetLocationTypeLocationsFromKey200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetLocationTypeLocationsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2619,6 +3059,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetLocationType200 = {
+  value: LocationType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostLocationTypeParams = {
@@ -2641,6 +3091,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetLocationTypeFromKey200 = {
+  value: LocationType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutLocationTypeFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2660,6 +3120,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetMeasureCommentMeasureTypesFromKey200 = {
+  value: MeasureType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetMeasureCommentMeasureTypesCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2677,6 +3147,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureComment200 = {
+  value: MeasureComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostMeasureCommentParams = {
@@ -2699,6 +3179,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetMeasureCommentFromKey200 = {
+  value: MeasureComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutMeasureCommentFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2717,6 +3207,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureOption200 = {
+  value: MeasureOption[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostMeasureOptionParams = {
@@ -2739,6 +3239,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetMeasureOptionFromKey200 = {
+  value: MeasureOption[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutMeasureOptionFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2758,6 +3268,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetMeasureOptionPresetMeasureOptionPresetTypes200 = {
+  value: string[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetMeasureOptionPresetParams = {
 select?: string;
 expand?: string;
@@ -2766,6 +3286,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureOptionPreset200 = {
+  value: MeasureOptionPreset[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostMeasureOptionPresetParams = {
@@ -2788,6 +3318,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetMeasureOptionPresetFromKey200 = {
+  value: MeasureOptionPreset[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutMeasureOptionPresetFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2805,6 +3345,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureTypeDetectionTypesFromKey200 = {
+  value: DetectionType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetMeasureTypeDetectionTypesCountFromKeyParams = {
@@ -2825,6 +3375,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetMeasureTypeMeasureCommentsFromKey200 = {
+  value: MeasureComment[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetMeasureTypeMeasureCommentsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2841,6 +3401,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureTypeMeasureOptionPresetsFromKey200 = {
+  value: MeasureOptionPreset[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetMeasureTypeMeasureOptionPresetsCountFromKeyParams = {
@@ -2860,6 +3430,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMeasureType200 = {
+  value: MeasureType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostMeasureTypeParams = {
@@ -2882,6 +3462,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetMeasureTypeFromKey200 = {
+  value: MeasureType[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutMeasureTypeFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2900,6 +3490,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetMenuItems200 = {
+  value: MenuItem[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostMenuItemsParams = {
@@ -2922,6 +3522,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetMenuItemsFromKey200 = {
+  value: MenuItem[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutMenuItemsFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2940,6 +3550,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetProduct200 = {
+  value: Product[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostProductParams = {
@@ -2962,6 +3582,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetProductFromKey200 = {
+  value: Product[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutProductFromKeyParams = {
 select?: string;
 expand?: string;
@@ -2981,6 +3611,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetRegionLocationsFromKey200 = {
+  value: Location[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetRegionLocationsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -2998,6 +3638,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetRegion200 = {
+  value: Region[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PostRegionParams = {
@@ -3020,6 +3670,16 @@ select?: string;
 expand?: string;
 };
 
+export type GetRegionFromKey200 = {
+  value: Region[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PutRegionFromKeyParams = {
 select?: string;
 expand?: string;
@@ -3037,6 +3697,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetRouteRouteLocationsFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetRouteRouteLocationsCountFromKeyParams = {
@@ -3071,6 +3741,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetRoute200 = {
+  value: Route[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostRouteParams = {
 select?: string;
 expand?: string;
@@ -3089,6 +3769,16 @@ count?: boolean;
 export type GetRouteFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetRouteFromKey200 = {
+  value: Route[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutRouteFromKeyParams = {
@@ -3110,6 +3800,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetRouteDistancePreviousLocationsFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type GetRouteDistancePreviousLocationsCountFromKeyParams = {
 select?: string;
 filter?: string;
@@ -3126,6 +3826,16 @@ orderby?: string;
 top?: number;
 skip?: number;
 count?: boolean;
+};
+
+export type GetRouteDistanceNextLocationsFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type GetRouteDistanceNextLocationsCountFromKeyParams = {
@@ -3151,6 +3861,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetRouteDistance200 = {
+  value: RouteDistance[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostRouteDistanceParams = {
 select?: string;
 expand?: string;
@@ -3169,6 +3889,16 @@ count?: boolean;
 export type GetRouteDistanceFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetRouteDistanceFromKey200 = {
+  value: RouteDistance[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutRouteDistanceFromKeyParams = {
@@ -3191,6 +3921,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetRouteLocation200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostRouteLocationParams = {
 select?: string;
 expand?: string;
@@ -3209,6 +3949,16 @@ count?: boolean;
 export type GetRouteLocationFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetRouteLocationFromKey200 = {
+  value: RouteLocation[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutRouteLocationFromKeyParams = {
@@ -3231,6 +3981,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetUsageEntry200 = {
+  value: UsageEntry[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostUsageEntryParams = {
 select?: string;
 expand?: string;
@@ -3249,6 +4009,16 @@ count?: boolean;
 export type GetUsageEntryFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetUsageEntryFromKey200 = {
+  value: UsageEntry[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutUsageEntryFromKeyParams = {
@@ -3291,6 +4061,16 @@ skip?: number;
 count?: boolean;
 };
 
+export type GetWatchDogIgnoreEvent200 = {
+  value: WatchDogIgnoreEvent[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
+};
+
 export type PostWatchDogIgnoreEventParams = {
 select?: string;
 expand?: string;
@@ -3309,6 +4089,16 @@ count?: boolean;
 export type GetWatchDogIgnoreEventFromKeyParams = {
 select?: string;
 expand?: string;
+};
+
+export type GetWatchDogIgnoreEventFromKey200 = {
+  value: WatchDogIgnoreEvent[];
+  /** Context URL; omitted when odata.metadata=none is requested. */
+  '@odata.context'?: string;
+  /** Total count when requested. IEEE754Compatible=true serializes the count as a string. */
+  '@odata.count'?: number | string;
+  /** URL of the next page, when the response is a partial result. */
+  '@odata.nextLink'?: string;
 };
 
 export type PutWatchDogIgnoreEventFromKeyParams = {

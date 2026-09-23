@@ -25,12 +25,15 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  Device,
   DeviceConfiguration,
+  GetDeviceConfiguration200,
   GetDeviceConfigurationCountParams,
   GetDeviceConfigurationDevicesCountFromKeyParams,
+  GetDeviceConfigurationDevicesFromKey200,
   GetDeviceConfigurationDevicesFromKeyParams,
+  GetDeviceConfigurationEventLogDecoders200,
   GetDeviceConfigurationEventLogDecodersParams,
+  GetDeviceConfigurationFromKey200,
   GetDeviceConfigurationFromKeyParams,
   GetDeviceConfigurationParams,
   PatchDeviceConfigurationFromKeyParams,
@@ -68,7 +71,7 @@ export const getDeviceConfigurationDevicesFromKey = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<GetDeviceConfigurationDevicesFromKey200>(
       {url: `/DeviceConfiguration/${key}/devices`, method: 'GET',
         params, signal
     },
@@ -168,7 +171,7 @@ export const getDeviceConfigurationDevicesCountFromKey = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<number>(
       {url: `/DeviceConfiguration/${key}/devices/$count`, method: 'GET',
         params, signal
     },
@@ -268,7 +271,7 @@ export const getDeviceConfigurationEventLogDecoders = (
 ) => {
 
 
-      return configRequest<string[]>(
+      return configRequest<GetDeviceConfigurationEventLogDecoders200>(
       {url: `/DeviceConfiguration/GetEventLogDecoders`, method: 'GET',
         params, signal
     },
@@ -359,7 +362,7 @@ export const getDeviceConfiguration = (
 ) => {
 
 
-      return configRequest<DeviceConfiguration[]>(
+      return configRequest<GetDeviceConfiguration200>(
       {url: `/DeviceConfiguration`, method: 'GET',
         params, signal
     },
@@ -506,7 +509,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DeviceConfiguration[]>(
+      return configRequest<number>(
       {url: `/DeviceConfiguration/$count`, method: 'GET',
         params, signal
     },
@@ -594,7 +597,7 @@ export const getDeviceConfigurationFromKey = (
 ) => {
 
 
-      return configRequest<DeviceConfiguration>(
+      return configRequest<GetDeviceConfigurationFromKey200>(
       {url: `/DeviceConfiguration/${key}`, method: 'GET',
         params, signal
     },

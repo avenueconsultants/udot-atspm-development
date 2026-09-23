@@ -25,8 +25,11 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetMeasureOptionPreset200,
   GetMeasureOptionPresetCountParams,
+  GetMeasureOptionPresetFromKey200,
   GetMeasureOptionPresetFromKeyParams,
+  GetMeasureOptionPresetMeasureOptionPresetTypes200,
   GetMeasureOptionPresetMeasureOptionPresetTypesParams,
   GetMeasureOptionPresetParams,
   MeasureOptionPreset,
@@ -64,7 +67,7 @@ export const getMeasureOptionPresetMeasureOptionPresetTypes = (
 ) => {
 
 
-      return configRequest<string[]>(
+      return configRequest<GetMeasureOptionPresetMeasureOptionPresetTypes200>(
       {url: `/MeasureOptionPreset/GetMeasureOptionPresetTypes`, method: 'GET',
         params, signal
     },
@@ -154,7 +157,7 @@ export const getMeasureOptionPreset = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[]>(
+      return configRequest<GetMeasureOptionPreset200>(
       {url: `/MeasureOptionPreset`, method: 'GET',
         params, signal
     },
@@ -301,7 +304,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[]>(
+      return configRequest<number>(
       {url: `/MeasureOptionPreset/$count`, method: 'GET',
         params, signal
     },
@@ -389,7 +392,7 @@ export const getMeasureOptionPresetFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset>(
+      return configRequest<GetMeasureOptionPresetFromKey200>(
       {url: `/MeasureOptionPreset/${key}`, method: 'GET',
         params, signal
     },

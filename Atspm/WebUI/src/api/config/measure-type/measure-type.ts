@@ -25,18 +25,20 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  DetectionType,
+  GetMeasureType200,
   GetMeasureTypeCountParams,
   GetMeasureTypeDetectionTypesCountFromKeyParams,
+  GetMeasureTypeDetectionTypesFromKey200,
   GetMeasureTypeDetectionTypesFromKeyParams,
+  GetMeasureTypeFromKey200,
   GetMeasureTypeFromKeyParams,
   GetMeasureTypeMeasureCommentsCountFromKeyParams,
+  GetMeasureTypeMeasureCommentsFromKey200,
   GetMeasureTypeMeasureCommentsFromKeyParams,
   GetMeasureTypeMeasureOptionPresetsCountFromKeyParams,
+  GetMeasureTypeMeasureOptionPresetsFromKey200,
   GetMeasureTypeMeasureOptionPresetsFromKeyParams,
   GetMeasureTypeParams,
-  MeasureComment,
-  MeasureOptionPreset,
   MeasureType,
   PatchMeasureTypeFromKeyParams,
   PostMeasureTypeParams,
@@ -73,7 +75,7 @@ export const getMeasureTypeDetectionTypesFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<GetMeasureTypeDetectionTypesFromKey200>(
       {url: `/MeasureType/${key}/detectionTypes`, method: 'GET',
         params, signal
     },
@@ -173,7 +175,7 @@ export const getMeasureTypeDetectionTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<number>(
       {url: `/MeasureType/${key}/detectionTypes/$count`, method: 'GET',
         params, signal
     },
@@ -273,7 +275,7 @@ export const getMeasureTypeMeasureCommentsFromKey = (
 ) => {
 
 
-      return configRequest<MeasureComment[]>(
+      return configRequest<GetMeasureTypeMeasureCommentsFromKey200>(
       {url: `/MeasureType/${key}/measureComments`, method: 'GET',
         params, signal
     },
@@ -373,7 +375,7 @@ export const getMeasureTypeMeasureCommentsCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureComment[]>(
+      return configRequest<number>(
       {url: `/MeasureType/${key}/measureComments/$count`, method: 'GET',
         params, signal
     },
@@ -473,7 +475,7 @@ export const getMeasureTypeMeasureOptionPresetsFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[]>(
+      return configRequest<GetMeasureTypeMeasureOptionPresetsFromKey200>(
       {url: `/MeasureType/${key}/measureOptionPresets`, method: 'GET',
         params, signal
     },
@@ -573,7 +575,7 @@ export const getMeasureTypeMeasureOptionPresetsCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureOptionPreset[]>(
+      return configRequest<number>(
       {url: `/MeasureType/${key}/measureOptionPresets/$count`, method: 'GET',
         params, signal
     },
@@ -669,7 +671,7 @@ export const getMeasureType = (
 ) => {
 
 
-      return configRequest<MeasureType[]>(
+      return configRequest<GetMeasureType200>(
       {url: `/MeasureType`, method: 'GET',
         params, signal
     },
@@ -816,7 +818,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<MeasureType[]>(
+      return configRequest<number>(
       {url: `/MeasureType/$count`, method: 'GET',
         params, signal
     },
@@ -904,7 +906,7 @@ export const getMeasureTypeFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType>(
+      return configRequest<GetMeasureTypeFromKey200>(
       {url: `/MeasureType/${key}`, method: 'GET',
         params, signal
     },

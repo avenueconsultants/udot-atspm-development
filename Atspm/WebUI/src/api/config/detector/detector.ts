@@ -25,14 +25,16 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  DetectionType,
   Detector,
-  DetectorComment,
+  GetDetector200,
   GetDetectorCountParams,
   GetDetectorDetectionTypesCountFromKeyParams,
+  GetDetectorDetectionTypesFromKey200,
   GetDetectorDetectionTypesFromKeyParams,
   GetDetectorDetectorCommentsCountFromKeyParams,
+  GetDetectorDetectorCommentsFromKey200,
   GetDetectorDetectorCommentsFromKeyParams,
+  GetDetectorFromKey200,
   GetDetectorFromKeyParams,
   GetDetectorParams,
   PatchDetectorFromKeyParams,
@@ -70,7 +72,7 @@ export const getDetectorDetectorCommentsFromKey = (
 ) => {
 
 
-      return configRequest<DetectorComment[]>(
+      return configRequest<GetDetectorDetectorCommentsFromKey200>(
       {url: `/Detector/${key}/detectorComments`, method: 'GET',
         params, signal
     },
@@ -170,7 +172,7 @@ export const getDetectorDetectorCommentsCountFromKey = (
 ) => {
 
 
-      return configRequest<DetectorComment[]>(
+      return configRequest<number>(
       {url: `/Detector/${key}/detectorComments/$count`, method: 'GET',
         params, signal
     },
@@ -270,7 +272,7 @@ export const getDetectorDetectionTypesFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<GetDetectorDetectionTypesFromKey200>(
       {url: `/Detector/${key}/detectionTypes`, method: 'GET',
         params, signal
     },
@@ -370,7 +372,7 @@ export const getDetectorDetectionTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<number>(
       {url: `/Detector/${key}/detectionTypes/$count`, method: 'GET',
         params, signal
     },
@@ -466,7 +468,7 @@ export const getDetector = (
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<GetDetector200>(
       {url: `/Detector`, method: 'GET',
         params, signal
     },
@@ -613,7 +615,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<number>(
       {url: `/Detector/$count`, method: 'GET',
         params, signal
     },
@@ -701,7 +703,7 @@ export const getDetectorFromKey = (
 ) => {
 
 
-      return configRequest<Detector>(
+      return configRequest<GetDetectorFromKey200>(
       {url: `/Detector/${key}`, method: 'GET',
         params, signal
     },

@@ -53,13 +53,10 @@ builder.Host
         {
             o.IncludeXmlComments(typeof(Program).Assembly);
             o.CustomOperationIds((controller, verb, action) => $"{verb}{controller}{action}");
-            o.CustomSchemaIds(SchemaIdWithGenericSupport);
+            o.UseGenericAwareSchemaIds();
             o.EnableAnnotations();
             o.AddAtspmSecurityDefinitions();
-            // Wraps $ref properties in allOf so their nullability survives (a bare $ref
-            // can't carry `nullable`).
-            o.UseAllOfToExtendReferenceSchemas();
-            o.DocumentEnumMemberNames();
+            o.UseAtspmSchemaConventions();
             //o.OperationFilter<TimestampFormatHeader>();
             o.OperationFilter<DataTypeEnumOperationFilter>();
             o.DocumentFilter<GenerateAggregationSchemas>();
@@ -95,8 +92,7 @@ await app.ApplyMigrations<AggregationContext>();
 if (!app.Environment.IsProduction())
 {
     // Swagger export executes startup during builds; keep configuration out of build logs.
-    if (!string.Equals(Environment.GetEnvironmentVariable("ATSPM_SWAGGER_EXPORT"),
-        "true", StringComparison.OrdinalIgnoreCase))
+    if (!SwaggerExport.InProgress)
     {
         app.Services.PrintHostInformation();
     }
@@ -134,21 +130,6 @@ app.MapJsonHealthChecks();
 
 app.Run();
 
-// Swashbuckle's default schema-id generator already handles generic types (e.g.
-// KeyValuePair<DateTime, int>) sensibly. Overriding it with a bare type.Name falls
-// back to the raw CLR name (e.g. "KeyValuePair`2"), which isn't a valid OpenAPI
-// component key, so generic types need their own naming here.
-static string SchemaIdWithGenericSupport(Type type)
-{
-    if (!type.IsGenericType)
-    {
-        return type.Name;
-    }
-
-    var name = type.Name.Split('`')[0];
-    var args = string.Join("And", type.GetGenericArguments().Select(SchemaIdWithGenericSupport));
-    return $"{name}Of{args}";
-}
 
 
 

@@ -64,24 +64,13 @@ export function syncApi({ webRoot = defaultWebRoot, run = runCommand } = {}) {
   // Speed Management is maintained separately; its committed spec is an input.
   validateSpec(join(webRoot, 'api-specs', 'speed-spec.json'))
 
-  console.log('Restoring the pinned Swagger CLI...')
-  run(
-    'dotnet',
-    [
-      'tool',
-      'restore',
-      '--tool-manifest',
-      join(apiRoot, '.config', 'dotnet-tools.json'),
-    ],
-    apiRoot
-  )
-
   const temporaryRoot = resolve(tmpdir())
   const exportDirectory = mkdtempSync(join(temporaryRoot, 'atspm-api-sync-'))
   try {
     for (const { project, spec } of apis) {
       console.log('Building and exporting ' + project + '...')
-      // Each project's directory determines its appsettings files during startup.
+      // Each project's directory determines its appsettings files during startup,
+      // and -restore downloads the Swashbuckle CLI the export target runs.
       run(
         'dotnet',
         [

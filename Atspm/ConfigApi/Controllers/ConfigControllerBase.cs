@@ -78,7 +78,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public virtual ActionResult<T> Get(TKey key, ODataQueryOptions<T> options)
+        public virtual ActionResult<IQueryable<T>> Get(TKey key, ODataQueryOptions<T> options)
         {
             var result = _repository.GetList().Where(w => w.Id.Equals(key));
 
@@ -87,9 +87,9 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
                 return NotFound(key);
             }
 
-            // The SingleResult itself, not its Queryable: [EnableQuery] serializes the
-            // former as one entity and the latter as a { value: [...] } collection.
-            return Ok(SingleResult.Create(result));
+            // Preserve the existing collection response for keyed reads. OData adds
+            // the { value: [ item ] } envelope; the response operation filter documents it.
+            return Ok(SingleResult.Create(result).Queryable);
         }
 
         /// <summary>

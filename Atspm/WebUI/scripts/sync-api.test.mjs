@@ -89,7 +89,6 @@ test('publishes all four fresh exports before generating clients and cleans stag
   syncApi({
     webRoot,
     run(command, args, cwd) {
-      if (args[0] === 'tool') return
       if (command === 'dotnet') {
         expectSavedSpecs(root, oldSpec)
         exported.push(basename(cwd))
@@ -111,22 +110,6 @@ test('publishes all four fresh exports before generating clients and cleans stag
   ).toBe(oldSpec)
 })
 
-test('tool restore failure stops before any API build or publication', () => {
-  const { root, webRoot } = fixture()
-  let calls = 0
-  expect(() =>
-    syncApi({
-      webRoot,
-      run() {
-        calls++
-        throw new Error('restore failed')
-      },
-    })
-  ).toThrow(/restore failed/)
-  expect(calls).toBe(1)
-  expectSavedSpecs(root, oldSpec)
-})
-
 test('a later backend failure leaves every saved spec intact and skips Orval', () => {
   const { root, webRoot } = fixture()
   let directory
@@ -134,7 +117,6 @@ test('a later backend failure leaves every saved spec intact and skips Orval', (
     syncApi({
       webRoot,
       run(command, args, cwd) {
-        if (args[0] === 'tool') return
         expect(command).toBe('dotnet')
         if (basename(cwd) === 'ReportApi') throw new Error('export failed')
         directory = exportSpec(args, cwd)
@@ -154,7 +136,6 @@ test.each(['missing', 'invalid JSON', 'empty paths'])(
       syncApi({
         webRoot,
         run(command, args, cwd) {
-          if (args[0] === 'tool') return
           expect(command).toBe('dotnet')
           exports++
           if (mode === 'invalid JSON') exportSpec(args, cwd, '{')
@@ -175,7 +156,6 @@ test('client generation failure is propagated and temporary exports are cleaned'
     syncApi({
       webRoot,
       run(command, args, cwd) {
-        if (args[0] === 'tool') return
         if (command === 'dotnet') directory = exportSpec(args, cwd)
         else throw new Error('client generation failed')
       },

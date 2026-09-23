@@ -87,9 +87,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Detector"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -174,12 +204,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -381,9 +410,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Approach"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -507,12 +566,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -563,7 +621,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Approach"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Approach"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -793,9 +884,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -880,12 +1001,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -967,9 +1087,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Area"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Area"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -1093,12 +1243,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Area"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -1149,7 +1298,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Area"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Area"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -1378,9 +1560,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Detector"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -1464,12 +1676,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -1554,9 +1765,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -1640,12 +1881,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -1727,9 +1967,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -1853,12 +2123,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -1908,7 +2177,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DetectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -2135,9 +2437,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectorComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectorComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -2222,12 +2554,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectorComment"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -2313,9 +2644,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -2400,12 +2761,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -2487,9 +2847,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Detector"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -2613,12 +3003,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Detector"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -2669,7 +3058,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Detector"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Detector"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -2895,9 +3317,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectorComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectorComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -3021,12 +3473,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectorComment"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -3077,7 +3528,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DetectorComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectorComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -3306,9 +3790,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -3379,9 +3893,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DeviceGroup"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceGroup"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -3458,9 +4002,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -3584,12 +4158,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -3640,7 +4213,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Device"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -3870,9 +4476,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -3957,12 +4593,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -4038,9 +4673,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -4117,9 +4782,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DeviceConfiguration"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceConfiguration"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -4243,12 +4938,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DeviceConfiguration"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -4299,7 +4993,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceConfiguration"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DeviceConfiguration"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -4528,9 +5255,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Approach"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -4614,12 +5371,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -4704,9 +5460,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -4790,12 +5576,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -4880,9 +5665,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -4966,12 +5781,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -5053,9 +5867,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DirectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DirectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -5179,12 +6023,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DirectionType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -5234,7 +6077,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DirectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DirectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -5457,9 +6333,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Faq"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Faq"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -5583,12 +6489,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Faq"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -5639,7 +6544,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Faq"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Faq"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -5869,9 +6807,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -5956,12 +6924,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -6043,9 +7010,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Jurisdiction"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Jurisdiction"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -6169,12 +7166,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Jurisdiction"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -6225,7 +7221,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Jurisdiction"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Jurisdiction"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -6462,9 +7491,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Approach"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -6556,12 +7615,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Approach"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -6654,9 +7712,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Area"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Area"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -6748,12 +7836,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Area"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -6846,9 +7933,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Device"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -6940,12 +8057,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Device"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -7241,9 +8357,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -7317,9 +8463,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -7398,9 +8574,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionTypeGroup"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectionTypeGroup"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -7507,9 +8713,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SearchLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SearchLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -7589,9 +8825,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -7715,12 +8981,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -7771,7 +9036,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -8001,9 +9299,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -8088,12 +9416,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -8175,9 +9502,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LocationType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LocationType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -8301,12 +9658,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LocationType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -8357,7 +9713,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LocationType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/LocationType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -8587,9 +9976,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -8674,12 +10093,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -8761,9 +10179,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -8887,12 +10335,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureComment"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -8943,7 +10390,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MeasureComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -9169,9 +10649,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOption"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureOption"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -9295,12 +10805,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOption"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -9351,7 +10860,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MeasureOption"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureOption"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -9571,9 +11113,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -9650,9 +11222,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOptionPreset"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureOptionPreset"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -9776,12 +11378,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOptionPreset"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -9832,7 +11433,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MeasureOptionPreset"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureOptionPreset"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -10062,9 +11696,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/DetectionType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -10149,12 +11813,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DetectionType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -10240,9 +11903,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureComment"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureComment"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -10327,12 +12020,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureComment"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -10418,9 +12110,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOptionPreset"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureOptionPreset"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -10505,12 +12227,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureOptionPreset"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -10592,9 +12313,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -10718,12 +12469,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MeasureType"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -10774,7 +12524,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MeasureType"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MeasureType"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -11000,9 +12783,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MenuItem"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MenuItem"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -11126,12 +12939,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/MenuItem"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -11182,7 +12994,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MenuItem"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MenuItem"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -11408,9 +13253,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Product"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -11534,12 +13409,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Product"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -11590,7 +13464,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Product"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -11820,9 +13727,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Location"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -11907,12 +13844,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Location"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -11994,9 +13930,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Region"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Region"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -12120,12 +14086,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Region"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -12176,7 +14141,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Region"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Region"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -12406,9 +14404,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -12493,12 +14521,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -12712,9 +14739,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Route"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Route"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -12838,12 +14895,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Route"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -12894,7 +14950,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Route"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Route"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -13124,9 +15213,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -13211,12 +15330,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -13302,9 +15420,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -13389,12 +15537,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -13528,9 +15675,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteDistance"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteDistance"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -13654,12 +15831,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteDistance"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -13710,7 +15886,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RouteDistance"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteDistance"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -13936,9 +16145,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -14062,12 +16301,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RouteLocation"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -14118,7 +16356,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RouteLocation"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/RouteLocation"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -14344,9 +16615,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UsageEntry"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UsageEntry"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -14470,12 +16771,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UsageEntry"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -14526,7 +16826,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UsageEntry"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UsageEntry"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }
@@ -14950,9 +17283,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WatchDogIgnoreEvent"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WatchDogIgnoreEvent"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
                   }
                 }
               }
@@ -15076,12 +17439,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WatchDogIgnoreEvent"
-                  }
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int64"
                 }
               }
             }
@@ -15132,7 +17494,40 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WatchDogIgnoreEvent"
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WatchDogIgnoreEvent"
+                      }
+                    },
+                    "@odata.context": {
+                      "type": "string",
+                      "description": "Context URL; omitted when odata.metadata=none is requested."
+                    },
+                    "@odata.count": {
+                      "oneOf": [
+                        {
+                          "minimum": 0,
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        {
+                          "pattern": "^[0-9]+$",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Total count when requested. IEEE754Compatible=true serializes the count as a string."
+                    },
+                    "@odata.nextLink": {
+                      "type": "string",
+                      "description": "URL of the next page, when the response is a partial result."
+                    }
+                  }
                 }
               }
             }

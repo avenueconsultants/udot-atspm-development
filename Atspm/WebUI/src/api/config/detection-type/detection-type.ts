@@ -26,15 +26,17 @@ import type {
 
 import type {
   DetectionType,
-  Detector,
+  GetDetectionType200,
   GetDetectionTypeCountParams,
   GetDetectionTypeDetectorsCountFromKeyParams,
+  GetDetectionTypeDetectorsFromKey200,
   GetDetectionTypeDetectorsFromKeyParams,
+  GetDetectionTypeFromKey200,
   GetDetectionTypeFromKeyParams,
   GetDetectionTypeMeasureTypesCountFromKeyParams,
+  GetDetectionTypeMeasureTypesFromKey200,
   GetDetectionTypeMeasureTypesFromKeyParams,
   GetDetectionTypeParams,
-  MeasureType,
   PatchDetectionTypeFromKeyParams,
   PostDetectionTypeParams,
   PutDetectionTypeFromKeyParams
@@ -70,7 +72,7 @@ export const getDetectionTypeDetectorsFromKey = (
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<GetDetectionTypeDetectorsFromKey200>(
       {url: `/DetectionType/${key}/detectors`, method: 'GET',
         params, signal
     },
@@ -170,7 +172,7 @@ export const getDetectionTypeDetectorsCountFromKey = (
 ) => {
 
 
-      return configRequest<Detector[]>(
+      return configRequest<number>(
       {url: `/DetectionType/${key}/detectors/$count`, method: 'GET',
         params, signal
     },
@@ -270,7 +272,7 @@ export const getDetectionTypeMeasureTypesFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[]>(
+      return configRequest<GetDetectionTypeMeasureTypesFromKey200>(
       {url: `/DetectionType/${key}/measureTypes`, method: 'GET',
         params, signal
     },
@@ -370,7 +372,7 @@ export const getDetectionTypeMeasureTypesCountFromKey = (
 ) => {
 
 
-      return configRequest<MeasureType[]>(
+      return configRequest<number>(
       {url: `/DetectionType/${key}/measureTypes/$count`, method: 'GET',
         params, signal
     },
@@ -466,7 +468,7 @@ export const getDetectionType = (
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<GetDetectionType200>(
       {url: `/DetectionType`, method: 'GET',
         params, signal
     },
@@ -613,7 +615,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DetectionType[]>(
+      return configRequest<number>(
       {url: `/DetectionType/$count`, method: 'GET',
         params, signal
     },
@@ -701,7 +703,7 @@ export const getDetectionTypeFromKey = (
 ) => {
 
 
-      return configRequest<DetectionType>(
+      return configRequest<GetDetectionTypeFromKey200>(
       {url: `/DetectionType/${key}`, method: 'GET',
         params, signal
     },

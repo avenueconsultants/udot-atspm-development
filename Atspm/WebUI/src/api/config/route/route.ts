@@ -25,10 +25,13 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetRoute200,
   GetRouteCountParams,
+  GetRouteFromKey200,
   GetRouteFromKeyParams,
   GetRouteParams,
   GetRouteRouteLocationsCountFromKeyParams,
+  GetRouteRouteLocationsFromKey200,
   GetRouteRouteLocationsFromKeyParams,
   GetRouteRouteViewFromIdParams,
   PatchRouteFromKeyParams,
@@ -36,7 +39,6 @@ import type {
   PutRouteFromKeyParams,
   Route,
   RouteDto,
-  RouteLocation,
   UpsertRouteRouteParams
 } from '../config-api.schemas';
 
@@ -70,7 +72,7 @@ export const getRouteRouteLocationsFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<GetRouteRouteLocationsFromKey200>(
       {url: `/Route/${key}/routeLocations`, method: 'GET',
         params, signal
     },
@@ -170,7 +172,7 @@ export const getRouteRouteLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<RouteLocation[]>(
+      return configRequest<number>(
       {url: `/Route/${key}/routeLocations/$count`, method: 'GET',
         params, signal
     },
@@ -426,7 +428,7 @@ export const getRoute = (
 ) => {
 
 
-      return configRequest<Route[]>(
+      return configRequest<GetRoute200>(
       {url: `/Route`, method: 'GET',
         params, signal
     },
@@ -573,7 +575,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Route[]>(
+      return configRequest<number>(
       {url: `/Route/$count`, method: 'GET',
         params, signal
     },
@@ -661,7 +663,7 @@ export const getRouteFromKey = (
 ) => {
 
 
-      return configRequest<Route>(
+      return configRequest<GetRouteFromKey200>(
       {url: `/Route/${key}`, method: 'GET',
         params, signal
     },

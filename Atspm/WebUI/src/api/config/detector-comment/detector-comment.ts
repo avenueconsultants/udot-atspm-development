@@ -26,7 +26,9 @@ import type {
 
 import type {
   DetectorComment,
+  GetDetectorComment200,
   GetDetectorCommentCountParams,
+  GetDetectorCommentFromKey200,
   GetDetectorCommentFromKeyParams,
   GetDetectorCommentParams,
   PatchDetectorCommentFromKeyParams,
@@ -60,7 +62,7 @@ export const getDetectorComment = (
 ) => {
 
 
-      return configRequest<DetectorComment[]>(
+      return configRequest<GetDetectorComment200>(
       {url: `/DetectorComment`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<DetectorComment[]>(
+      return configRequest<number>(
       {url: `/DetectorComment/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getDetectorCommentFromKey = (
 ) => {
 
 
-      return configRequest<DetectorComment>(
+      return configRequest<GetDetectorCommentFromKey200>(
       {url: `/DetectorComment/${key}`, method: 'GET',
         params, signal
     },

@@ -26,10 +26,13 @@ import type {
 
 import type {
   Device,
-  DeviceGroup,
+  GetDevice200,
+  GetDeviceActiveDevicesByLocationFromLocationId200,
   GetDeviceActiveDevicesByLocationFromLocationIdParams,
+  GetDeviceActiveDevicesCount200,
   GetDeviceActiveDevicesCountParams,
   GetDeviceCountParams,
+  GetDeviceFromKey200,
   GetDeviceFromKeyParams,
   GetDeviceParams,
   PatchDeviceFromKeyParams,
@@ -67,7 +70,7 @@ export const getDeviceActiveDevicesByLocationFromLocationId = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<GetDeviceActiveDevicesByLocationFromLocationId200>(
       {url: `/Device/GetActiveDevicesByLocation(locationId=${locationId})`, method: 'GET',
         params, signal
     },
@@ -166,7 +169,7 @@ export const getDeviceActiveDevicesCount = (
 ) => {
 
 
-      return configRequest<DeviceGroup[]>(
+      return configRequest<GetDeviceActiveDevicesCount200>(
       {url: `/Device/GetActiveDevicesCount`, method: 'GET',
         params, signal
     },
@@ -256,7 +259,7 @@ export const getDevice = (
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<GetDevice200>(
       {url: `/Device`, method: 'GET',
         params, signal
     },
@@ -403,7 +406,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<Device[]>(
+      return configRequest<number>(
       {url: `/Device/$count`, method: 'GET',
         params, signal
     },
@@ -491,7 +494,7 @@ export const getDeviceFromKey = (
 ) => {
 
 
-      return configRequest<Device>(
+      return configRequest<GetDeviceFromKey200>(
       {url: `/Device/${key}`, method: 'GET',
         params, signal
     },

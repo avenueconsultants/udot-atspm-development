@@ -25,7 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetWatchDogIgnoreEvent200,
   GetWatchDogIgnoreEventCountParams,
+  GetWatchDogIgnoreEventFromKey200,
   GetWatchDogIgnoreEventFromKeyParams,
   GetWatchDogIgnoreEventParams,
   PatchWatchDogIgnoreEventFromKeyParams,
@@ -60,7 +62,7 @@ export const getWatchDogIgnoreEvent = (
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent[]>(
+      return configRequest<GetWatchDogIgnoreEvent200>(
       {url: `/WatchDogIgnoreEvent`, method: 'GET',
         params, signal
     },
@@ -207,7 +209,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent[]>(
+      return configRequest<number>(
       {url: `/WatchDogIgnoreEvent/$count`, method: 'GET',
         params, signal
     },
@@ -295,7 +297,7 @@ export const getWatchDogIgnoreEventFromKey = (
 ) => {
 
 
-      return configRequest<WatchDogIgnoreEvent>(
+      return configRequest<GetWatchDogIgnoreEventFromKey200>(
       {url: `/WatchDogIgnoreEvent/${key}`, method: 'GET',
         params, signal
     },

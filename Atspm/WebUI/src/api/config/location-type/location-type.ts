@@ -25,12 +25,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  GetLocationType200,
   GetLocationTypeCountParams,
+  GetLocationTypeFromKey200,
   GetLocationTypeFromKeyParams,
   GetLocationTypeLocationsCountFromKeyParams,
+  GetLocationTypeLocationsFromKey200,
   GetLocationTypeLocationsFromKeyParams,
   GetLocationTypeParams,
-  Location,
   LocationType,
   PatchLocationTypeFromKeyParams,
   PostLocationTypeParams,
@@ -67,7 +69,7 @@ export const getLocationTypeLocationsFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<GetLocationTypeLocationsFromKey200>(
       {url: `/LocationType/${key}/locations`, method: 'GET',
         params, signal
     },
@@ -167,7 +169,7 @@ export const getLocationTypeLocationsCountFromKey = (
 ) => {
 
 
-      return configRequest<Location[]>(
+      return configRequest<number>(
       {url: `/LocationType/${key}/locations/$count`, method: 'GET',
         params, signal
     },
@@ -263,7 +265,7 @@ export const getLocationType = (
 ) => {
 
 
-      return configRequest<LocationType[]>(
+      return configRequest<GetLocationType200>(
       {url: `/LocationType`, method: 'GET',
         params, signal
     },
@@ -410,7 +412,7 @@ const {mutation: mutationOptions} = options ?
 ) => {
 
 
-      return configRequest<LocationType[]>(
+      return configRequest<number>(
       {url: `/LocationType/$count`, method: 'GET',
         params, signal
     },
@@ -498,7 +500,7 @@ export const getLocationTypeFromKey = (
 ) => {
 
 
-      return configRequest<LocationType>(
+      return configRequest<GetLocationTypeFromKey200>(
       {url: `/LocationType/${key}`, method: 'GET',
         params, signal
     },

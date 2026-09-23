@@ -24,10 +24,9 @@ export const IDENTITY_API = 'http://localhost/identity/api/v1'
 export const REPORTS_API = 'http://localhost/reports/api/v1'
 export const DATA_API = 'http://localhost/data/api/v1'
 
-// The config API is OData. Collections arrive wrapped in an envelope, a
-// keyed GET returns the bare entity with only the context link added, and a
-// missing key is a 404 whose body is the key. Recorded from ConfigApi running
-// against a seeded in-memory database.
+// ConfigApi collection responses, including legacy keyed GETs, use envelopes.
+// Single-entity actions add a context link directly to the entity. A missing
+// key is a 404 whose body contains the key.
 export const odataCollection = <T>(entitySet: string, value: T[]) => ({
   '@odata.context': `${CONFIG_API}/$metadata#${entitySet}`,
   value,
