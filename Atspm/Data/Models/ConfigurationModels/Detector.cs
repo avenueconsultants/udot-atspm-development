@@ -39,6 +39,11 @@ namespace Utah.Udot.Atspm.Data.Models
 
         /// <inheritdoc/>
         public int DetectorChannel { get; set; }
+
+        /// <summary>
+        /// Stable identifier of the LiDAR zone mapped to this detector.
+        /// </summary>
+        public long? LidarZoneId { get; set; }
         
         /// <summary>
         /// Distance from stop bar

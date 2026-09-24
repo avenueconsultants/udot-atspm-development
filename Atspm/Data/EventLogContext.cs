@@ -61,6 +61,16 @@ namespace Utah.Udot.Atspm.Data
         /// </summary>
         public virtual DbSet<CompressedEventLogs<PedestrianCounter>> PedestrianCounters { get; set; }
 
+        /// <summary>
+        /// <inheritdoc cref="BluebandLidarEvent"/>
+        /// </summary>
+        public virtual DbSet<CompressedEventLogs<BluebandLidarEvent>> BluebandLidarEvents { get; set; }
+
+        /// <summary>
+        /// Canonical LiDAR zone/object events.
+        /// </summary>
+        public virtual DbSet<CompressedEventLogs<LidarZoneEvent>> LidarZoneEvents { get; set; }
+
         /// <inheritdoc/>
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
@@ -93,7 +103,7 @@ namespace Utah.Udot.Atspm.Data
                 .AddCompressedTableDiscriminators(typeof(EventLogModelBase), typeof(CompressedEventLogs<>));
 
                 builder.Property(e => e.Data)
-                .HasConversion<CompressedListConverter<EventLogModelBase>, AbstractListComparer<EventLogModelBase>>();
+                .HasConversion<EventLogCompressedListConverter<EventLogModelBase>, AbstractListComparer<EventLogModelBase>>();
             });
 
             OnModelCreatingPartial(modelBuilder);

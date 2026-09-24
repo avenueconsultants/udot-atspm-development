@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Infrastructure.Configuration;
+using Utah.Udot.Atspm.Infrastructure.Services.DeviceDownloaders;
 using Utah.Udot.Atspm.Services;
 using Xunit.Sdk;
 
@@ -40,7 +41,11 @@ namespace Utah.Udot.Atspm.InfrastructureTests.Attributes
                 clients.Add(Mock.Of<IDownloaderClient>(a => a.Protocol == (TransportProtocols)i, MockBehavior.Strict));
             }
 
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(m => m.GetTypes().Where(w => w.GetInterfaces().Contains(typeof(IDeviceDownloader)))).ToList();
+            // Generic downloader contract tests use generic device fixtures. Specialized
+            // adapters have focused tests for their narrower selection predicates.
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(m => m.GetTypes().Where(w => w == typeof(DeviceDownloader)))
+                .ToList();
             foreach (var t in types)
             {
                 yield return new object[] { t, clients, new NullLogger<IDeviceDownloader>(), Mock.Of<IOptionsSnapshot<DeviceDownloaderConfiguration>>() };
