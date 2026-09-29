@@ -1,9 +1,9 @@
 name: Generate Code Documentation
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 3 * * 0' # weekly on Sunday at 03:00 UTC (optional)
+  push:
+    branches:
+      - main
 
 jobs:
   generate:
