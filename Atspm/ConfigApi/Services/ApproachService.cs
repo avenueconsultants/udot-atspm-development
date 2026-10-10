@@ -35,6 +35,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
 
         public async Task<ApproachDto> UpsertApproachAsync(ApproachDto dto)
         {
+            dto.ValidateReviewGate();
             Approach approach;
             if (dto.Id.HasValue && dto.Id > 0)
             {
@@ -82,6 +83,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                     {
                         detector.DectectorIdentifier = detectorDto.DectectorIdentifier;
                         detector.DetectorChannel = detectorDto.DetectorChannel;
+                        detector.LidarZoneId = detectorDto.LidarZoneId;
                         detector.DistanceFromStopBar = detectorDto.DistanceFromStopBar;
                         detector.MinSpeedFilter = detectorDto.MinSpeedFilter;
                         detector.DateAdded = detectorDto.DateAdded;
@@ -104,6 +106,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                         {
                             DectectorIdentifier = detectorDto.DectectorIdentifier,
                             DetectorChannel = detectorDto.DetectorChannel,
+                            LidarZoneId = detectorDto.LidarZoneId,
                             DistanceFromStopBar = detectorDto.DistanceFromStopBar,
                             MinSpeedFilter = detectorDto.MinSpeedFilter,
                             DateAdded = detectorDto.DateAdded,
@@ -156,6 +159,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                     {
                         DectectorIdentifier = d.DectectorIdentifier,
                         DetectorChannel = d.DetectorChannel,
+                        LidarZoneId = d.LidarZoneId,
                         DistanceFromStopBar = d.DistanceFromStopBar,
                         MinSpeedFilter = d.MinSpeedFilter,
                         DateAdded = d.DateAdded,
@@ -218,6 +222,7 @@ namespace Utah.Udot.Atspm.ConfigApi.Services
                     Id = d.Id,
                     DectectorIdentifier = d.DectectorIdentifier,
                     DetectorChannel = d.DetectorChannel,
+                    LidarZoneId = d.LidarZoneId,
                     DistanceFromStopBar = d.DistanceFromStopBar,
                     MinSpeedFilter = d.MinSpeedFilter,
                     DateAdded = d.DateAdded,

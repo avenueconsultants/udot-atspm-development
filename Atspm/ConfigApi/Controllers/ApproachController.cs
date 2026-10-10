@@ -81,6 +81,10 @@ namespace Utah.Udot.Atspm.ConfigApi.Controllers
                 var approachResult = await approachService.UpsertApproachAsync(approach);
                 return Ok(approachResult);
             }
+            catch (System.ComponentModel.DataAnnotations.ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(Status500InternalServerError, ex.Message);
