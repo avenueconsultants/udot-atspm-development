@@ -2373,3 +2373,83 @@ export interface YellowRedActivationsResult {
   detectorEvents?: DataPointForDouble[] | null;
 }
 
+export type IncidentBandKind = typeof IncidentBandKind[keyof typeof IncidentBandKind];
+
+
+export const IncidentBandKind = {
+  Vehicle: 'Vehicle',
+  Pedestrian: 'Pedestrian',
+  LocationWide: 'LocationWide',
+} as const;
+
+export type SignalIndication = typeof SignalIndication[keyof typeof SignalIndication];
+
+
+export const SignalIndication = {
+  Green: 'Green',
+  Yellow: 'Yellow',
+  RedClearance: 'RedClearance',
+  Red: 'Red',
+  Walk: 'Walk',
+  FlashingDontWalk: 'FlashingDontWalk',
+  DontWalk: 'DontWalk',
+} as const;
+
+export interface IncidentSignalChange {
+  timestamp?: string;
+  indication?: SignalIndication;
+  eventCode?: number;
+}
+
+export interface IncidentBand {
+  /** @nullable */
+  key?: string | null;
+  kind?: IncidentBandKind;
+  /** @nullable */
+  phaseNumber?: number | null;
+  isOverlap?: boolean;
+  /** @nullable */
+  label?: string | null;
+  isConfigured?: boolean;
+  /** @nullable */
+  vehicleBandKey?: string | null;
+  /** @nullable */
+  changes?: IncidentSignalChange[] | null;
+}
+
+export interface IncidentEvent {
+  timestamp?: string;
+  eventCode?: number;
+  /** @nullable */
+  eventName?: string | null;
+  eventParam?: number;
+  /** @nullable */
+  paramType?: string | null;
+  /** @nullable */
+  bandKey?: string | null;
+  /** @nullable */
+  permissiveBandKey?: string | null;
+  /** @nullable */
+  parameterDescription?: string | null;
+}
+
+export interface IncidentReconstructionResult {
+  start?: string;
+  end?: string;
+  /** @nullable */
+  locationIdentifier?: string | null;
+  /** @nullable */
+  locationDescription?: string | null;
+  lookbackStart?: string;
+  /** @nullable */
+  bands?: IncidentBand[] | null;
+  /** @nullable */
+  events?: IncidentEvent[] | null;
+}
+
+export interface IncidentReconstructionOptions {
+  /** @nullable */
+  locationIdentifier?: string | null;
+  start?: string;
+  end?: string;
+}

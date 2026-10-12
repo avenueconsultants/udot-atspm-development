@@ -20,6 +20,7 @@ export * from './approach-speed/approach-speed';
 export * from './approach-volume/approach-volume';
 export * from './arrival-on-red/arrival-on-red';
 export * from './green-time-utilization/green-time-utilization';
+export * from './incident-reconstruction/incident-reconstruction';
 export * from './left-turn-gap-analysis/left-turn-gap-analysis';
 export * from './left-turn-gap-duration/left-turn-gap-duration';
 export * from './left-turn-gap-report/left-turn-gap-report';

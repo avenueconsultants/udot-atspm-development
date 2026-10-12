@@ -256,7 +256,7 @@ interface MarkedDayProps extends PickersDayProps<Date> {
   dayAvailability?: CalendarDayAvailability[] | undefined
 }
 
-function MarkedDay(props: MarkedDayProps) {
+export function MarkedDay(props: MarkedDayProps) {
   const {
     highlightedDays,
     dayAvailability,

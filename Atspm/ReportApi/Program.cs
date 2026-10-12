@@ -24,6 +24,7 @@ using Utah.Udot.Atspm.Business.ApproachSpeed;
 using Utah.Udot.Atspm.Business.ApproachVolume;
 using Utah.Udot.Atspm.Business.ArrivalOnRed;
 using Utah.Udot.Atspm.Business.GreenTimeUtilization;
+using Utah.Udot.Atspm.Business.IncidentReconstruction;
 using Utah.Udot.Atspm.Business.LeftTurnGapAnalysis;
 using Utah.Udot.Atspm.Business.LeftTurnGapReport;
 using Utah.Udot.Atspm.Business.LinkPivot;
@@ -131,6 +132,7 @@ builder.Host
         s.AddScoped<IReportService<TimeSpaceDiagramAverageOptions, IEnumerable<TimeSpaceDiagramAveragePhaseResult>>, TimeSpaceDiagramAverageReportService>();
         s.AddScoped<IReportService<TransitSignalPriorityOptions, List<TransitSignalPriorityResult>>, TransitSignalPriorityReportService>();
         s.AddScoped<IReportService<TimingAndActuationsOptions, IEnumerable<TimingAndActuationsForPhaseResult>>, TimingAndActuactionReportService>();
+        s.AddScoped<IReportService<IncidentReconstructionOptions, IncidentReconstructionResult>, IncidentReconstructionReportService>();
         s.AddScoped<IReportService<TurningMovementCountsOptions, TurningMovementCountsResult>, TurningMovementCountReportService>();
         s.AddScoped<IReportService<YellowRedActivationsOptions, IEnumerable<YellowRedActivationsResult>>, YellowRedActivationsReportService>();
         s.AddScoped<IReportService<WaitTimeOptions, IEnumerable<WaitTimeResult>>, WaitTimeReportService>();
@@ -168,6 +170,7 @@ builder.Host
         s.AddScoped<TimeSpaceDiagramSrmService>();
         s.AddScoped<TimeSpaceAverageService>();
         s.AddScoped<TimingAndActuationsForPhaseService>();
+        s.AddScoped<IncidentReconstructionService>();
         s.AddScoped<PriorityDetailsReportService>();
         s.AddScoped<TimeSpaceDiagramReportService>();
         s.AddScoped<TransitSignalPriorityService>();

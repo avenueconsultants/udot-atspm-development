@@ -608,6 +608,98 @@
         }
       }
     },
+    "/api/v1/IncidentReconstruction/test": {
+      "get": {
+        "tags": [
+          "IncidentReconstruction"
+        ],
+        "summary": "Get example data for testing",
+        "operationId": "GetIncidentReconstructionTestData",
+        "responses": {
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentReconstructionResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/IncidentReconstruction/getReportData": {
+      "post": {
+        "tags": [
+          "IncidentReconstruction"
+        ],
+        "summary": "Get report data",
+        "operationId": "GetIncidentReconstructionReportData",
+        "requestBody": {
+          "description": "Reporting options",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentReconstructionOptions"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentReconstructionOptions"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/IncidentReconstructionOptions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncidentReconstructionResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/LeftTurnGapAnalysis/test": {
       "get": {
         "tags": [
@@ -4396,6 +4488,166 @@
         },
         "additionalProperties": false
       },
+      "IncidentBand": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "kind": {
+            "$ref": "#/components/schemas/IncidentBandKind"
+          },
+          "phaseNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isOverlap": {
+            "type": "boolean"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "isConfigured": {
+            "type": "boolean"
+          },
+          "vehicleBandKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "changes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentSignalChange"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentBandKind": {
+        "enum": [
+          "Vehicle",
+          "Pedestrian",
+          "LocationWide"
+        ],
+        "type": "string"
+      },
+      "IncidentEvent": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "eventName": {
+            "type": "string",
+            "nullable": true
+          },
+          "eventParam": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paramType": {
+            "type": "string",
+            "nullable": true
+          },
+          "bandKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "permissiveBandKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "parameterDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentReconstructionOptions": {
+        "type": "object",
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentReconstructionResult": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "lookbackStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "bands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentBand"
+            },
+            "nullable": true
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncidentEvent"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IncidentSignalChange": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "indication": {
+            "$ref": "#/components/schemas/SignalIndication"
+          },
+          "eventCode": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "IndexedVolume": {
         "type": "object",
         "properties": {
@@ -7867,6 +8119,18 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "SignalIndication": {
+        "enum": [
+          "Green",
+          "Yellow",
+          "RedClearance",
+          "Red",
+          "Walk",
+          "FlashingDontWalk",
+          "DontWalk"
+        ],
+        "type": "string"
       },
       "SpeedPlan": {
         "type": "object",
