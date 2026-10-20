@@ -2,7 +2,7 @@
 
 Configuration options available to the **Event Log Utility** container.
 
-<small>Generated on September 1, 2026 at 8:35 PM UTC.</small>
+<small>Generated on September 29, 2026 at 4:54 PM UTC.</small>
 
 ## Contents
 
@@ -22,7 +22,7 @@ Configuration options available to the **Event Log Utility** container.
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -39,7 +39,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -56,7 +56,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -73,7 +73,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -90,7 +90,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 > Configuration for event log decoders
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DecodeEventsConfiguration.cs#L20)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DecodeEventsConfiguration.cs#L20)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -102,7 +102,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Options pattern model for services that implement IDeviceDownloader
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DeviceDownloaderConfiguration.cs#L23)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DeviceDownloaderConfiguration.cs#L23)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -116,7 +116,7 @@ Options pattern model for services that implement IDeviceDownloader
 
 Configuration options for the Device Event Logging background service.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DeviceEventLoggingConfiguration.cs#L25)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DeviceEventLoggingConfiguration.cs#L25)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -132,7 +132,7 @@ Configuration options for the Device Event Logging background service.
 
 > Configuration for aggregating the event logs
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/EventLogAggregateConfiguration.cs#L23)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/EventLogAggregateConfiguration.cs#L23)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -145,7 +145,7 @@ Configuration options for the Device Event Logging background service.
 
 > Configuration for extracting raw event log files
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/EventLogExtractConfiguration.cs#L20)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/EventLogExtractConfiguration.cs#L20)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -162,7 +162,7 @@ Configuration options for the Device Event Logging background service.
 
 Options pattern model for services that implement IEventLogImporter
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/EventLogImporterConfiguration.cs#L23)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/EventLogImporterConfiguration.cs#L23)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -175,7 +175,7 @@ Options pattern model for services that implement IEventLogImporter
 
 Options for transferring event logs between repositories.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/EventLogTransferOptions.cs#L25)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/EventLogTransferOptions.cs#L25)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -199,8 +199,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -209,8 +209,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -219,8 +219,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -229,8 +229,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -272,14 +272,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
     "DeleteSource": false
   },
   "EventLogTransferOptions": {
-    "SourceRepository": {
-      "Provider": "PostgreSql",
-      "ConnectionString": "Host=localhost;Port=5432;Database=atspm;Username=atspm;Password=replace-with-a-secret"
-    },
-    "DestinationRepository": {
-      "Provider": "PostgreSql",
-      "ConnectionString": "Host=localhost;Port=5432;Database=atspm;Username=atspm;Password=replace-with-a-secret"
-    },
+    "SourceRepository": {},
+    "DestinationRepository": {},
     "IncludedLocations": [],
     "ExcludedLocations": [],
     "StartDate": null,
@@ -289,3 +283,10 @@ This example includes every documented setting. Replace placeholder secrets, URL
   }
 }
 ```
+
+## Download templates
+
+- [JSON example](event-log-utility.example.json)
+- [Environment example](event-log-utility.env.example)
+
+These are starting points from the source revision linked above. Replace placeholders before use.

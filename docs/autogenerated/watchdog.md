@@ -2,7 +2,7 @@
 
 Configuration options available to the **Watchdog** container.
 
-<small>Generated on September 1, 2026 at 8:35 PM UTC.</small>
+<small>Generated on September 29, 2026 at 4:54 PM UTC.</small>
 
 ## Contents
 
@@ -16,7 +16,7 @@ Configuration options available to the **Watchdog** container.
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -33,7 +33,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -50,7 +50,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -67,7 +67,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -86,7 +86,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Configuration values used by Watchdog scans, report windows, thresholds, and email behavior.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/WatchdogConfiguration.cs#L23)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/WatchdogConfiguration.cs#L23)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -134,8 +134,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -144,8 +144,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -154,8 +154,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -164,8 +164,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -202,8 +202,15 @@ This example includes every documented setting. Replace placeholder secrets, URL
     "EmailPmErrors": true,
     "EmailAmErrors": true,
     "EmailRampErrors": true,
-    "DefaultEmailAddress": "atspm@example.com",
+    "DefaultEmailAddress": "replace-me",
     "Sort": "replace-me"
   }
 }
 ```
+
+## Download templates
+
+- [JSON example](watchdog.example.json)
+- [Environment example](watchdog.env.example)
+
+These are starting points from the source revision linked above. Replace placeholders before use.

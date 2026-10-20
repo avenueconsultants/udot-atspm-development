@@ -2,7 +2,7 @@
 
 Configuration options available to the **Identity API** container.
 
-<small>Generated on September 1, 2026 at 8:35 PM UTC.</small>
+<small>Generated on September 29, 2026 at 4:54 PM UTC.</small>
 
 ## Contents
 
@@ -10,15 +10,15 @@ Configuration options available to the **Identity API** container.
 - [DatabaseConfiguration:AggregationContext](#databaseconfigurationaggregationcontext)
 - [DatabaseConfiguration:EventLogContext](#databaseconfigurationeventlogcontext)
 - [DatabaseConfiguration:IdentityContext](#databaseconfigurationidentitycontext)
+- [IdentityConfiguration](#identityconfiguration)
 - [Jwt](#jwt)
 - [Oidc](#oidc)
-- [IdentityConfiguration](#identityconfiguration)
 
 ## DatabaseConfiguration:ConfigContext
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -35,7 +35,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -52,7 +52,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ Contains configuration settings for database connectivity and provides logic to 
 
 Contains configuration settings for database connectivity and provides logic to generate provider-specific connection strings.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/DatabaseConfiguration.cs#L32)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -82,13 +82,24 @@ Contains configuration settings for database connectivity and provides logic to 
 | `RunMigrations` | `bool` | `Not set` | No |  | `DatabaseConfiguration__IdentityContext__RunMigrations` | Gets or sets a value indicating whether database migrations should be executed automatically on startup. |
 | `Options` | `Dictionary<string, string>` | `new()` | No |  | `DatabaseConfiguration__IdentityContext__Options__KEY` | Gets or sets a dictionary of additional provider-specific connection options. |
 
+## IdentityConfiguration
+
+> Configuration for identity API
+
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/IdentityConfiguration.cs#L20)
+
+| Setting | Type | Default | Required | Options | Environment variable | Description |
+| --- | --- | --- | --- | --- | --- | --- |
+| `Website` | `string` | `Not set` | No |  | `IdentityConfiguration__Website` |  |
+| `DefaultEmailAddress` | `string` | `Not set` | No |  | `IdentityConfiguration__DefaultEmailAddress` |  |
+
 ## Jwt
 
 > Configuration for API JWT bearer authentication
 
 Configuration values used by the APIs to validate and issue JWT bearer tokens.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/Documentation/ApiConfigurationSections.cs#L26)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/Documentation/ApiConfigurationSections.cs#L26)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -103,7 +114,7 @@ Configuration values used by the APIs to validate and issue JWT bearer tokens.
 
 Optional OpenID Connect configuration used when an external identity provider is enabled.
 
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/Documentation/ApiConfigurationSections.cs#L55)
+[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/82bc9983533671a00d92532289c438e54a5f60e5/Atspm/Infrastructure/Configuration/Documentation/ApiConfigurationSections.cs#L55)
 
 | Setting | Type | Default | Required | Options | Environment variable | Description |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -111,17 +122,6 @@ Optional OpenID Connect configuration used when an external identity provider is
 | `ClientId` | `string` | `Not set` | No |  | `Oidc__ClientId` | Client identifier registered with the OpenID Connect identity provider. |
 | `ClientSecret` | `string` | `Not set` | No |  | `Oidc__ClientSecret` | Client secret registered with the OpenID Connect identity provider. |
 | `CallbackPath` | `string` | `Not set` | No |  | `Oidc__CallbackPath` | Callback path used by the OpenID Connect redirect flow. |
-
-## IdentityConfiguration
-
-> Configuration for identity API
-
-[View source](https://github.com/avenueconsultants/udot-atspm-development/blob/959a545293005ce48ea370b1258fd3768f2e9032/Atspm/Infrastructure/Configuration/IdentityConfiguration.cs#L20)
-
-| Setting | Type | Default | Required | Options | Environment variable | Description |
-| --- | --- | --- | --- | --- | --- | --- |
-| `Website` | `string` | `Not set` | No |  | `IdentityConfiguration__Website` |  |
-| `DefaultEmailAddress` | `string` | `Not set` | No |  | `IdentityConfiguration__DefaultEmailAddress` |  |
 
 ## Example JSON configuration
 
@@ -134,8 +134,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -144,8 +144,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -154,8 +154,8 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
@@ -164,28 +164,35 @@ This example includes every documented setting. Replace placeholder secrets, URL
       "DBType": "InMemory",
       "Host": "localhost",
       "Port": null,
-      "Database": "atspm",
-      "User": "atspm",
+      "Database": "replace-me",
+      "User": "replace-me",
       "Password": "replace-with-a-secret",
       "RunMigrations": false,
       "Options": {}
     }
   },
+  "IdentityConfiguration": {
+    "Website": "replace-me",
+    "DefaultEmailAddress": "replace-me"
+  },
   "Jwt": {
     "Issuer": "https://identity.example.com",
-    "Audience": "atspm",
+    "Audience": "replace-me",
     "Key": "replace-with-a-secret",
     "ExpireDays": null
   },
   "Oidc": {
     "Authority": "https://identity-provider.example.com",
-    "ClientId": "atspm",
+    "ClientId": "replace-me",
     "ClientSecret": "replace-with-a-secret",
     "CallbackPath": "/signin-oidc"
-  },
-  "IdentityConfiguration": {
-    "Website": "https://atspm.example.com",
-    "DefaultEmailAddress": "atspm@example.com"
   }
 }
 ```
+
+## Download templates
+
+- [JSON example](identity-api.example.json)
+- [Environment example](identity-api.env.example)
+
+These are starting points from the source revision linked above. Replace placeholders before use.
