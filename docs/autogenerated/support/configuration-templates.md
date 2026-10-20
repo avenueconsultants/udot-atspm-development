@@ -2,9 +2,9 @@
 
 Downloadable examples for the documented configuration sections. They are starting points, not deployment settings.
 
-<small>Generated on September 29, 2026 at 4:54 PM UTC.</small>
+<small>Generated on October 20, 2026 at 9:20 PM UTC.</small>
 
-Source revision: [82bc9983533671a00d92532289c438e54a5f60e5](https://github.com/avenueconsultants/udot-atspm-development/tree/82bc9983533671a00d92532289c438e54a5f60e5).
+Source revision: [014125495b799c394f50df26a74eff5ca863e8d7](https://github.com/avenueconsultants/udot-atspm-development/tree/014125495b799c394f50df26a74eff5ca863e8d7).
 
 String values and credentials use safe placeholders. Review the configuration reference and replace them before use. The generator never writes deployment configuration.
 
