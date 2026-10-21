@@ -203,6 +203,7 @@ export default function TimeOfDayDirectionSelector({
           </Typography>
         )}
         <Box
+          data-testid={`time-of-day-directions-${field}`}
           role="group"
           aria-label={label ? undefined : 'Primary directions'}
           aria-labelledby={label ? `${field}-label` : undefined}

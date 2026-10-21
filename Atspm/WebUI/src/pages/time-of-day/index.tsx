@@ -453,7 +453,7 @@ export default function TimeOfDayPage() {
 
   return (
     <ResponsivePageLayout title="Time-of-Day Plan Analysis" useFullWidth>
-      <Stack spacing={2}>
+      <Stack spacing={2} data-testid="time-of-day-page">
         <TimeOfDayOptions
           options={formState}
           onChange={handleFormStateChange}
@@ -468,6 +468,7 @@ export default function TimeOfDayPage() {
           }}
         >
           <LoadingButton
+            data-testid="time-of-day-generate"
             loading={isLoading}
             loadingPosition="start"
             startIcon={<PlayArrowIcon />}
@@ -478,17 +479,21 @@ export default function TimeOfDayPage() {
             Generate Analysis
           </LoadingButton>
           {pageError.type !== 'NONE' && (
-            <ChartMessages
-              messages={[pageError.message]}
-              ariaLabel="Analysis errors"
-            />
+            <Box data-testid="time-of-day-errors">
+              <ChartMessages
+                messages={[pageError.message]}
+                ariaLabel="Analysis errors"
+              />
+            </Box>
           )}
           {result?.warnings && result.warnings.length > 0 && (
-            <ChartMessages
-              messages={result.warnings}
-              severity="warning"
-              ariaLabel="Analysis warnings"
-            />
+            <Box data-testid="time-of-day-warnings">
+              <ChartMessages
+                messages={result.warnings}
+                severity="warning"
+                ariaLabel="Analysis warnings"
+              />
+            </Box>
           )}
         </Box>
       </Stack>

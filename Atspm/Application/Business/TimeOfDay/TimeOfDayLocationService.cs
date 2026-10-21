@@ -255,9 +255,9 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 PeakRawVolume = peakRaw,
                 PeakSmoothedVolume = peakSmoothed,
                 PeakHourlyRate = peakHourly > 0 ? peakHourly : null,
-                PeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(peakSmoothed / capacity.Value * 100) : null,
-                AmPeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(amPeak / capacity.Value * 100) : null,
-                PmPeakOccupancyPercent = capacity > 0 ? TimeOfDayProfileService.Round(pmPeak / capacity.Value * 100) : null,
+                PeakOccupancyPercent = observations.Count > 0 && capacity > 0 ? TimeOfDayProfileService.Round(peakSmoothed / capacity.Value * 100) : null,
+                AmPeakOccupancyPercent = observations.Count > 0 && capacity > 0 ? TimeOfDayProfileService.Round(amPeak / capacity.Value * 100) : null,
+                PmPeakOccupancyPercent = observations.Count > 0 && capacity > 0 ? TimeOfDayProfileService.Round(pmPeak / capacity.Value * 100) : null,
                 CrossTrafficReview = "Cross-traffic review unavailable: no usable cross-traffic data.",
                 AmDirectionExceptionMessage = BuildDirectionExceptionMessage(
                     options.AmPrimaryDirections.Count > 0 ? options.AmPrimaryDirections : options.AllDayPrimaryDirections,

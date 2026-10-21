@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Alert, Box } from '@mui/material'
 import type { ReactNode } from 'react'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import type {
@@ -191,6 +191,7 @@ export default function TimeOfDayChartWorkspace({
   const showPercentAxis = model.percentSeriesNames.some(
     (seriesName) => selectedSeries[seriesName]
   )
+  const hasChartData = model.layers.some((layer) => layer.available)
   const sidebarLayers = useMemo(
     () => getSidebarLayers(model.layers, activeMode),
     [activeMode, model.layers]
@@ -258,16 +259,22 @@ export default function TimeOfDayChartWorkspace({
         >
           {summary}
           <Box sx={{ flex: 1, minHeight: 0, overflowX: 'auto' }}>
-            <Box sx={{ width: '100%', height: '100%', minWidth: 600 }}>
-              <TimeOfDayEChart
-                option={model.option}
-                selectedSeries={selectedSeries}
-                showPercentAxis={showPercentAxis}
-                selectedDetail={selectedDetail}
-                onSelectDetail={selectDetail}
-                onToggleScheduleView={toggleScheduleView}
-              />
-            </Box>
+            {hasChartData ? (
+              <Box sx={{ width: '100%', height: '100%', minWidth: 600 }}>
+                <TimeOfDayEChart
+                  option={model.option}
+                  selectedSeries={selectedSeries}
+                  showPercentAxis={showPercentAxis}
+                  selectedDetail={selectedDetail}
+                  onSelectDetail={selectDetail}
+                  onToggleScheduleView={toggleScheduleView}
+                />
+              </Box>
+            ) : (
+              <Alert severity="warning" sx={{ m: 2 }}>
+                No Data Available
+              </Alert>
+            )}
           </Box>
         </Box>
         <Box

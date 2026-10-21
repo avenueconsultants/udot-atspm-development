@@ -115,6 +115,9 @@ TestResult*/
 
 # Node.js dependencies (if applicable)
 node_modules/
+**/playwright-report/
+**/test-results/
+**/blob-report/
 
 # NPM debug file
 npm-debug.log*

@@ -11,7 +11,12 @@
     "prepare": "cd ../.. && husky install Atspm/WebUI/.husky",
     "analyze": "cross-env ANALYZE=true next build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:e2e": "playwright test",
+    "test:e2e:seed": "dotnet run --project e2e/seed/TimeOfDay.Seed.csproj",
+    "test:e2e:seeded": "npm run test:e2e:seed && npm run test:e2e",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -73,6 +78,7 @@
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
     "@next/bundle-analyzer": "^13.4.8",
+    "@playwright/test": "^1.64.1",
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.5",

@@ -85,8 +85,22 @@ export default function TimeOfDayCorridorOptions({
     updateLocations(selectedLocations)
   }
 
+  const moveLocation = (sourceIndex: number, destinationIndex: number) => {
+    if (
+      destinationIndex < 0 ||
+      destinationIndex >= options.selectedLocations.length
+    )
+      return
+
+    const selectedLocations = [...options.selectedLocations]
+    const [movedLocation] = selectedLocations.splice(sourceIndex, 1)
+    selectedLocations.splice(destinationIndex, 0, movedLocation)
+    updateLocations(selectedLocations)
+  }
+
   return (
     <Paper
+      data-testid="time-of-day-corridor"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -185,6 +199,7 @@ export default function TimeOfDayCorridorOptions({
               )}
             </Stack>
             <Button
+              data-testid="time-of-day-clear-locations"
               size="small"
               color="error"
               startIcon={<DeleteOutlineIcon />}
@@ -262,6 +277,7 @@ export default function TimeOfDayCorridorOptions({
                         >
                           {(dragProvided, dragSnapshot) => (
                             <Box
+                              data-testid="time-of-day-location-row"
                               component="li"
                               ref={dragProvided.innerRef}
                               {...dragProvided.draggableProps}
@@ -278,6 +294,7 @@ export default function TimeOfDayCorridorOptions({
                               onBlur={() => setHighlightedLocationId(undefined)}
                               onClick={() => setFocusedLocation(location)}
                               onKeyDown={(event) => {
+                                if (event.target !== event.currentTarget) return
                                 if (
                                   event.key === 'Enter' ||
                                   event.key === ' '
@@ -319,6 +336,19 @@ export default function TimeOfDayCorridorOptions({
                                   aria-label={`Reorder ${locationLabel}`}
                                   {...dragProvided.dragHandleProps}
                                   onClick={(event) => event.stopPropagation()}
+                                  onKeyDown={(event) => {
+                                    if (
+                                      event.key !== 'ArrowUp' &&
+                                      event.key !== 'ArrowDown'
+                                    )
+                                      return
+                                    event.preventDefault()
+                                    event.stopPropagation()
+                                    moveLocation(
+                                      index,
+                                      index + (event.key === 'ArrowUp' ? -1 : 1)
+                                    )
+                                  }}
                                   sx={{
                                     ml: -0.5,
                                     color: 'text.disabled',

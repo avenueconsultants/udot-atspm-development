@@ -50,6 +50,7 @@ x-environment: &default-environment
   DatabaseConfiguration__IdentityContext__Options__Keepalive: "${DatabaseConfiguration__IdentityContext__Options__Keepalive}"
   DatabaseConfiguration__IdentityContext__Options__Pooling: "${DatabaseConfiguration__IdentityContext__Options__Pooling}"
   DatabaseConfiguration__IdentityContext__Options__Timeout: "${DatabaseConfiguration__IdentityContext__Options__Timeout}"
+  DatabaseConfiguration__IdentityContext__RunMigrations: "${DatabaseConfiguration__IdentityContext__RunMigrations}"
 
   # JWT Configuration
   Jwt__ExpireDays: "${JWT_EXPIRE_DAYS}"
@@ -63,7 +64,7 @@ services:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
@@ -149,6 +150,8 @@ services:
     environment:
       <<: *default-environment
       ASPNETCORE_URLS: "https://+:5003"
+      ADMIN_EMAIL: "${ADMIN_EMAIL}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD}"
 
       EmailConfiguration__SmtpEmailService__Host: "${EmailConfiguration__Host}"
       EmailConfiguration__SmtpEmailService__Port: "${EmailConfiguration__Port}"

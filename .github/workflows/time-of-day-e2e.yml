@@ -1,0 +1,88 @@
+name: Time of Day E2E
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'Atspm/Application/Business/TimeOfDay/**'
+      - 'Atspm/ReportApi/ReportServices/TimeOfDayReportService.cs'
+      - 'Atspm/WebUI/src/features/timeOfDay/**'
+      - 'Atspm/WebUI/src/pages/time-of-day/**'
+      - 'Atspm/WebUI/e2e/**'
+      - 'Atspm/WebUI/playwright.config.ts'
+      - 'Atspm/docker-compose.yml'
+      - '.github/workflows/time-of-day-e2e.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PLAYWRIGHT_BASE_URL: https://localhost:3443
+      PLAYWRIGHT_ADMIN_EMAIL: atspm@avenueconsultants.com
+      PLAYWRIGHT_ADMIN_PASSWORD: ThisIsAPassword1!
+      ADMIN_EMAIL: atspm@avenueconsultants.com
+      ADMIN_PASSWORD: ThisIsAPassword1!
+      ADMIN_ROLE: Admin
+      SEED_ADMIN: 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: Atspm/WebUI/package-lock.json
+
+      - name: Start PostgreSQL and application stack
+        working-directory: Atspm
+        run: docker compose up -d --build postgres database-installer configapi dataapi reportapi identityapi webui nginx
+
+      - name: Wait for the web application
+        run: |
+          for attempt in {1..90}; do
+            if curl --insecure --fail --silent https://localhost:3443/login > /dev/null \
+              && curl --insecure --fail --silent https://localhost:44400/swagger/index.html > /dev/null \
+              && curl --insecure --fail --silent https://localhost:44402/swagger/index.html > /dev/null \
+              && curl --insecure --fail --silent https://localhost:44403/swagger/index.html > /dev/null; then
+              exit 0
+            fi
+            sleep 5
+          done
+          docker compose -f Atspm/docker-compose.yml logs
+          exit 1
+
+      - name: Install browser test dependencies
+        working-directory: Atspm/WebUI
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Seed deterministic Time of Day fixtures
+        working-directory: Atspm/WebUI
+        run: npm run test:e2e:seed
+
+      - name: Run Time of Day Playwright suite
+        working-directory: Atspm/WebUI
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: time-of-day-playwright-report
+          path: Atspm/WebUI/playwright-report
+          if-no-files-found: ignore
+
+      - name: Show service logs after failure
+        if: failure()
+        working-directory: Atspm
+        run: docker compose logs

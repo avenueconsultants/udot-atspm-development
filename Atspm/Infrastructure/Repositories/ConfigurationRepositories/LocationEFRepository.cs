@@ -158,6 +158,7 @@ namespace Utah.Udot.Atspm.Infrastructure.Repositories.ConfigurationRepositories
                 .FromSpecification(new LocationIdentifierSpecification(LocationIdentifier))
                 .Where(Location => Location.Start <= startDate)
                 .FromSpecification(new ActiveLocationSpecification())
+                .OrderByDescending(location => location.Start)
                 .FirstOrDefault();
 
             return result;
