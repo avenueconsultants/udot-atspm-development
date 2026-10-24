@@ -1,15 +1,15 @@
 import { act, renderHook } from '@testing-library/react'
 import type { ECharts, EChartsOption, SeriesOption } from 'echarts'
-import type { GpxUploadOptions } from '../types'
+import type { GpxChartTrack } from '../gpxRoutePlacement'
 import {
   mergeChartSeriesWithGpxOverlays,
   useGpxAnimationHandler,
 } from './gpxAnimation.handler'
 
 class MockChart {
-  option: EChartsOption & { displayProps?: { locations: string[] } }
+  option: EChartsOption
 
-  constructor(option: EChartsOption & { displayProps?: { locations: string[] } }) {
+  constructor(option: EChartsOption) {
     this.option = cloneOption(option)
   }
 
@@ -32,26 +32,12 @@ function cloneSeries(series: Array<SeriesOption | null | undefined>) {
   return JSON.parse(JSON.stringify(series)) as EChartsOption['series']
 }
 
-function cloneOption(
-  option: EChartsOption & { displayProps?: { locations: string[] } }
-) {
-  return JSON.parse(JSON.stringify(option)) as EChartsOption & {
-    displayProps?: { locations: string[] }
-  }
+function cloneOption(option: EChartsOption) {
+  return JSON.parse(JSON.stringify(option)) as EChartsOption
 }
 
-function buildChartOption(): EChartsOption & {
-  displayProps: { locations: string[] }
-} {
+function buildChartOption(): EChartsOption {
   return {
-    displayProps: {
-      locations: ['5600', '5700'],
-    },
-    yAxis: [
-      {
-        data: [0, 300],
-      },
-    ],
     series: [
       {
         id: 'Cycles EB',
@@ -71,26 +57,26 @@ function buildChartOption(): EChartsOption & {
         type: 'line',
         data: [['2025-02-17T13:00:00', 10]],
       },
-      {
-        id: 'srm-stale-bus-1-0',
-        name: 'SRM stale',
-        type: 'line',
-        data: [['2025-02-17T13:01:00', 12]],
-      },
     ],
   }
 }
 
-function buildUploads(): GpxUploadOptions[] {
+function buildTracks(): GpxChartTrack[] {
   return [
     {
       id: 'upload-1',
-      startLocation: '5600',
-      endLocation: '5700',
-      parsedData: [
-        { time: '2025-02-17T13:06:00', distance: 0 },
-        { time: '2025-02-17T13:07:00', distance: 35 },
+      data: [
+        [Date.UTC(2025, 1, 17, 20, 6), 0],
+        [Date.UTC(2025, 1, 17, 20, 7), null],
+        [Date.UTC(2025, 1, 17, 20, 8), 35],
       ],
+      message: null,
+    },
+    {
+      id: 'upload-2',
+      data: [],
+      message:
+        "No part of this drive during the chart's time follows this route.",
     },
   ]
 }
@@ -113,7 +99,7 @@ describe('gpxAnimation handler', () => {
       [
         { id: 'Cycles EB', type: 'line', data: [] },
         { id: 'gpx-stale', type: 'line', data: [] },
-        { id: 'srm-stale-1', type: 'line', data: [] },
+        { id: 'SRM 5600 Primary', type: 'line', data: [] },
         { id: 'Location axis', type: 'custom', data: [] },
       ],
       [{ id: 'gpx-upload-1', type: 'line', data: [] }]
@@ -121,19 +107,20 @@ describe('gpxAnimation handler', () => {
 
     expect(merged.map((series) => series.id)).toEqual([
       'Cycles EB',
+      'SRM 5600 Primary',
       'Location axis',
       'gpx-upload-1',
     ])
   })
 
-  it('keeps the time-space series visible when GPX overlays are applied and removes stale overlays when cleared', () => {
+  it('draws placed tracks over the time-space series and removes stale overlays when cleared', () => {
     const chart = new MockChart(buildChartOption())
     const { result, rerender } = renderHook(
-      ({ uploads }) =>
-        useGpxAnimationHandler(chart as unknown as ECharts, uploads),
+      ({ tracks }) =>
+        useGpxAnimationHandler(chart as unknown as ECharts, tracks),
       {
         initialProps: {
-          uploads: buildUploads(),
+          tracks: buildTracks(),
         },
       }
     )
@@ -155,8 +142,12 @@ describe('gpxAnimation handler', () => {
         }
       )?.lineStyle?.type
     ).toBe('dotted')
+    // The gap where the drive left the route stays a gap.
+    expect(getSeriesById(chart, 'gpx-upload-1')?.data).toEqual(
+      buildTracks()[0].data
+    )
 
-    rerender({ uploads: [] })
+    rerender({ tracks: [] })
 
     act(() => {
       result.current.play()

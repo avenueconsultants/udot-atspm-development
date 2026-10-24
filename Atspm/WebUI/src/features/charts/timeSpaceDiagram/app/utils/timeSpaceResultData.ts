@@ -15,9 +15,7 @@
 // limitations under the License.
 // #endregion
 import { ToolType } from '@/features/charts/common/types'
-import { nanoid } from 'nanoid'
 import type {
-  GpxUploadOptions,
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
@@ -25,19 +23,6 @@ import type {
   TimeSpaceDiagramPhaseResult,
   TimeSpaceSrmPhaseOverlay,
 } from '../../shared/types'
-
-export function createEmptyTimeSpaceEntry(
-  locations: string[],
-  primary = false
-): GpxUploadOptions {
-  return {
-    id: nanoid(),
-    startLocation: locations[0] ?? '',
-    endLocation: locations[locations.length - 1] ?? '',
-    error: null,
-    primary,
-  }
-}
 
 export function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
   baseData: T[],
@@ -69,6 +54,10 @@ export function recomputeTimeSpaceData<T extends TimeSpaceBaseData>(
           speed: current.speed,
           approachId: current.approachId,
           approachDescription: current.approachDescription,
+          latitude: current.latitude,
+          longitude: current.longitude,
+          // The 50th percentile chart sorts its rows by route order.
+          order: (current as { order?: number }).order,
           calculatedDistanceToNext: 0,
           calculatedDistanceToPrevious: 0,
           isIgnoredLocation: true,
@@ -119,9 +108,7 @@ export function recomputeWrappedTimeSpaceData(
   }
 
   const unwrappedData = wrappedData
-    .filter(
-      (item): item is WrappedResultWithData => !!item.result
-    )
+    .filter((item): item is WrappedResultWithData => !!item.result)
     .map((item) => item.result)
 
   const recomputed = recomputeTimeSpaceData(unwrappedData, ignoredLocations)
@@ -204,16 +191,4 @@ export function addDefaultTimeSpaceValues(
     type: timeSpaceData.type,
     data: processedData as RawTimeSpaceDiagramResponse['data'],
   }
-}
-
-export function getPrimaryTimeSpaceLocations(
-  timeSpaceData: RawTimeSpaceDiagramResponse
-) {
-  return timeSpaceData.data
-    .filter(
-      (phase) =>
-        !!phase.result &&
-        phase.result.phaseType === 'Primary'
-    )
-    .map((phase) => phase.result.locationIdentifier)
 }

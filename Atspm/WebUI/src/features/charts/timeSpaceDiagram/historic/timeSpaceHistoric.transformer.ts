@@ -48,6 +48,7 @@ import {
   SRM_GAP_LEGEND_PREFIX,
 } from '@/features/charts/timeSpaceDiagram/historic/series/timeSpaceHistoricMovementSeries'
 import { generatePedestrianIntervalLines } from '@/features/charts/timeSpaceDiagram/historic/series/timeSpaceHistoricPedestrianSeries'
+import { buildGpxRoute } from '@/features/charts/timeSpaceDiagram/shared/gpxRoutePlacement'
 import {
   generateCycleLabels,
   generateCycles,
@@ -60,6 +61,7 @@ import {
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceDiagramPhaseResult,
+  TimeSpaceDisplayProps,
   TimeSpaceTransformOptions,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { TransformedTimeSpaceResponse } from '@/features/charts/types'
@@ -111,6 +113,7 @@ function transformData(
     primaryDirection,
     primaryDistanceData,
     primaryPhaseData,
+    rawDistanceData,
   } = buildTimeSpacePhaseLayout(data, {
     distanceSpacingMode: options?.distanceSpacingMode,
   })
@@ -439,12 +442,21 @@ function transformData(
   //   )
   // )
 
-  const displayProps = createDisplayProps({
-    description: '',
-    numberOfLocations: primaryPhaseData.length,
-    height: chartHeight,
-    locations: primaryPhaseData.map((p) => p.locationIdentifier),
-  })
+  const displayProps: TimeSpaceDisplayProps = {
+    ...createDisplayProps({
+      description: '',
+      numberOfLocations: primaryPhaseData.length,
+      height: chartHeight,
+      locations: primaryPhaseData.map((p) => p.locationIdentifier),
+    }),
+    gpxRoute: buildGpxRoute({
+      locations: primaryPhaseData,
+      routeFeet: rawDistanceData,
+      chartPositions: locationCenterDistanceData,
+      startMs: chartStartMs,
+      endMs: chartEndMs,
+    }),
+  }
 
   const legends = createLegend({
     top: grid.top,

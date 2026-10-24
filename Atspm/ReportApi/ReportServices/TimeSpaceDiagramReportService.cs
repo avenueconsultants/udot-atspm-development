@@ -497,6 +497,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         {
             viewModel.LocationDescription = phase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = phase.Approach.Description;
+            viewModel.Latitude = phase.Approach.Location.Latitude;
+            viewModel.Longitude = phase.Approach.Location.Longitude;
             viewModel.PhaseType = phaseType;
             viewModel.Order = order;
             viewModel.TmcForPhase = tmcEventsForPhase;
