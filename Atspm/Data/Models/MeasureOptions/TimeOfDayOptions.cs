@@ -1,13 +1,13 @@
 #region license
 // Copyright 2026 Utah Departement of Transportation
 // for Data - Utah.Udot.Atspm.Data.Models.MeasureOptions/TimeOfDayOptions.cs
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +21,18 @@ namespace Utah.Udot.Atspm.Data.Models.MeasureOptions
     {
         public const int FixedBinSizeMinutes = 15;
 
+        // Shared analysis windows, in minutes after midnight. End times are exclusive.
+        public const int AmPeakStartMinutes = 5 * 60;
+        public const int AmPeakEndMinutes = 10 * 60;
+        public const int PmPeakStartMinutes = 14 * 60;
+        public const int PmPeakEndMinutes = 19 * 60;
+
         public List<string> LocationIdentifiers { get; set; } = new();
         public List<DateOnly> SelectedDates { get; set; } = new();
         public int BinSizeMinutes { get; set; } = FixedBinSizeMinutes;
+        /// <summary>
+        /// Selects the volume data source. Current plans always use controller plan events.
+        /// </summary>
         public TimeOfDayDataSource DataSource { get; set; } = TimeOfDayDataSource.IndianaEvents;
         public List<string> AllDayPrimaryDirections { get; set; } = new();
         public List<string> AmPrimaryDirections { get; set; } = new();

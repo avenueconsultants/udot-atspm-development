@@ -88,18 +88,18 @@ const MarkerItem = memo(
         opacity={hasHighlightedMarker && !isHighlighted ? 0.45 : 1}
         zIndexOffset={isHighlighted ? 1000 : 0}
       >
-          <Tooltip
-            permanent
-            direction={'right'}
-            offset={[-8, -22]}
-            opacity={1}
-            pane={LOCATION_LABEL_PANE}
-            className={`${styles.locationIdentifierLabel} ${locationTypeLabelClass}`}
-          >
-            <span className={styles.locationIdentifierText}>
-              {locationIdentifier}
-            </span>
-          </Tooltip>
+        <Tooltip
+          permanent
+          direction={'right'}
+          offset={[-8, -22]}
+          opacity={1}
+          pane={LOCATION_LABEL_PANE}
+          className={`${styles.locationIdentifierLabel} ${locationTypeLabelClass}`}
+        >
+          <span className={styles.locationIdentifierText}>
+            {locationIdentifier}
+          </span>
+        </Tooltip>
         <Popup offset={POPUP_OFFSET} closeButton={false} autoPan>
           <LocationPopup
             marker={marker}
@@ -252,10 +252,7 @@ const Markers = ({
           )}&lng=${encodeURIComponent(lng)}`
         )
         const data = (await r.json()) as { available: boolean }
-        updateStreetViewStatus(
-          id,
-          data.available ? 'available' : 'unavailable'
-        )
+        updateStreetViewStatus(id, data.available ? 'available' : 'unavailable')
       } catch {
         updateStreetViewStatus(id, 'unavailable')
       } finally {
@@ -276,10 +273,7 @@ const Markers = ({
 
   return (
     <>
-      <Pane
-        name={LOCATION_LABEL_PANE}
-        style={LOCATION_LABEL_PANE_STYLE}
-      />
+      <Pane name={LOCATION_LABEL_PANE} style={LOCATION_LABEL_PANE_STYLE} />
       <MarkerClusterGroup chunkedLoading disableClusteringAtZoom={16}>
         {locations.map((marker) => {
           const icon = icons[marker.id]

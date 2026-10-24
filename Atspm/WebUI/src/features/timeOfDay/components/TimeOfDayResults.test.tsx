@@ -1,4 +1,4 @@
-import type { TimeOfDayResult } from '@/api/reports'
+import type { TimeOfDayResult, TimeOfDayWarningDto } from '@/api/reports'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { init as initECharts } from 'echarts'
 import {
@@ -124,6 +124,46 @@ describe('TimeOfDayResults unified workspace', () => {
     mockChartHandlers.clear()
   })
 
+  test('shows missing and partial plan coverage on the chart and schedules tabs', () => {
+    const missingMessage =
+      'No plan events are available for 7174 on 2026-04-06, including the preceding 12 hours; that date is excluded from the existing representative schedule.'
+    const partialMessage =
+      'The plan at midnight is unknown for 7621 on 2026-04-06; the existing schedule starts at the first recorded plan change.'
+    render(
+      <TimeOfDayResults
+        result={{
+          ...result,
+          warnings: [
+            {
+              code: 'MissingPlanData',
+              locationIdentifier: '7174',
+              message: missingMessage,
+            },
+            {
+              code: 'PartialPlanData',
+              locationIdentifier: '7621',
+              message: partialMessage,
+            },
+            {
+              code: 'NoLocationVolumeData',
+              locationIdentifier: '7174',
+              message: 'Unrelated volume warning.',
+            },
+          ],
+        }}
+      />
+    )
+
+    for (const message of [missingMessage, partialMessage]) {
+      expect(screen.getByText(message).closest('[role="alert"]')).toBeTruthy()
+    }
+    expect(screen.queryByText('Unrelated volume warning.')).toBeNull()
+    fireEvent.click(screen.getByRole('tab', { name: 'Schedules' }))
+    for (const message of [missingMessage, partialMessage]) {
+      expect(screen.getByText(message).closest('[role="alert"]')).toBeTruthy()
+    }
+  })
+
   test('uses top-level chart and location data tabs', () => {
     render(<TimeOfDayResults result={result} />)
 
@@ -200,24 +240,25 @@ describe('TimeOfDayResults unified workspace', () => {
   })
 
   test('renders multiple backend messages without rewriting them', () => {
+    const backendWarnings: TimeOfDayWarningDto[] = [
+      {
+        code: 'PartialLocationData',
+        locationIdentifier: '7117',
+        message:
+          'Location 7117 has usable volume data for 3 of 4 selected dates.',
+      },
+      {
+        code: 'PartialLocationData',
+        locationIdentifier: '7403',
+        message:
+          'Location 7403 has usable volume data for 3 of 4 selected dates.',
+      },
+    ]
     render(
       <ChartMessages
         severity="warning"
         ariaLabel="Analysis warnings"
-        messages={[
-          {
-            code: 'PartialLocationData',
-            locationIdentifier: '7117',
-            message:
-              'Location 7117 has usable volume data for 3 of 4 selected dates.',
-          },
-          {
-            code: 'PartialLocationData',
-            locationIdentifier: '7403',
-            message:
-              'Location 7403 has usable volume data for 3 of 4 selected dates.',
-          },
-        ]}
+        messages={backendWarnings}
       />
     )
 
@@ -280,14 +321,12 @@ describe('TimeOfDayResults unified workspace', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Show Proposed details' })
     )
-    ;['AM peak plan', 'Midday plan', 'PM peak plan', 'FREE operation'].forEach(
-      (label) => {
-        expect(screen.getByText(label)).toBeTruthy()
-        expect(
-          screen.queryByRole('checkbox', { name: `Toggle ${label}` })
-        ).toBeNull()
-      }
-    )
+    ;['Plan 1', 'FREE'].forEach((label) => {
+      expect(screen.getByText(label)).toBeTruthy()
+      expect(
+        screen.queryByRole('checkbox', { name: `Toggle ${label}` })
+      ).toBeNull()
+    })
 
     expect(
       screen.getByRole('checkbox', { name: 'Toggle Median raw volume' })
@@ -536,7 +575,8 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(mockChart.dispatchAction).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'highlight',
-        seriesName: 'AM Signal Peaks',
+        seriesIndex: expect.any(Number),
+        dataIndex: expect.any(Number),
       })
     )
 
@@ -603,7 +643,8 @@ describe('TimeOfDayResults unified workspace', () => {
     expect(mockChart.dispatchAction).toHaveBeenCalledWith(
       expect.objectContaining({
         type: 'highlight',
-        seriesName: 'AM Cross Traffic Locations',
+        seriesIndex: expect.any(Number),
+        dataIndex: expect.any(Number),
       })
     )
 

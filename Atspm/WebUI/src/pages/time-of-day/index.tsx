@@ -8,6 +8,11 @@ import ChartMessages from '@/features/charts/components/chartMessages/ChartMessa
 import { useTimeOfDayReport } from '@/features/timeOfDay/api/getTimeOfDay'
 import TimeOfDayOptions from '@/features/timeOfDay/components/TimeOfDayOptions'
 import TimeOfDayResults from '@/features/timeOfDay/components/TimeOfDayResults'
+import {
+  getChangedTimeOfDayFormFields,
+  mergeUntouchedTimeOfDayFormState,
+  type TimeOfDayFormField,
+} from '@/features/timeOfDay/formState'
 import type { TimeOfDayMeasureDefaults } from '@/features/timeOfDay/measureDefaults'
 import {
   buildTimeOfDaySchedulePresets,
@@ -15,8 +20,6 @@ import {
   timeOfDayMeasureTypeId,
 } from '@/features/timeOfDay/measureDefaults'
 import {
-  areDateArraysEqual,
-  areLaneCountsEqual,
   areStringArraysEqual,
   createSearchLocationsFromIdentifiers,
   dataSourceParser,
@@ -35,6 +38,7 @@ import type {
 } from '@/features/timeOfDay/types'
 import {
   defaultPrimaryDirections,
+  timeOfDayBinSizeMinutes,
   timeOfDayDefaultTuningOptions,
   timeOfDayTuningOptionKeys,
 } from '@/features/timeOfDay/types'
@@ -50,7 +54,7 @@ import {
   parseAsString,
   useQueryStates,
 } from 'nuqs'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 type PageError =
   | { type: 'NONE' }
@@ -80,11 +84,6 @@ const getTuningOptions = (
     }),
     {} as TimeOfDayTuningOptions
   )
-
-const areTuningOptionsEqual = (
-  current: TimeOfDayFormState,
-  next: TimeOfDayTuningOptions
-) => timeOfDayTuningOptionKeys.every((key) => current[key] === next[key])
 
 const getErrorMessage = (error: unknown) => {
   if (error instanceof AxiosError) {
@@ -144,9 +143,7 @@ export default function TimeOfDayPage() {
   const [qs, setQs] = useQueryStates(
     {
       locations: parseAsArrayOf(parseAsString, ',').withDefault([]),
-      dates: parseAsArrayOf(ymdDateParser, ',').withDefault(
-        defaultFormState.selectedDates
-      ),
+      dates: parseAsArrayOf(ymdDateParser, ','),
       dataSource: dataSourceParser.withDefault(defaultFormState.dataSource),
       primaryDirections: parseAsArrayOf(parseAsString, ',').withDefault(
         defaultFormState.allDayPrimaryDirections
@@ -157,9 +154,7 @@ export default function TimeOfDayPage() {
       pmPrimaryDirections: parseAsArrayOf(parseAsString, ',').withDefault(
         defaultFormState.pmPrimaryDirections
       ),
-      laneCapacity: parseAsInteger.withDefault(
-        defaultFormState.laneCapacityVehiclesPerHour
-      ),
+      laneCapacity: parseAsInteger,
       amEntryPctOfPeak: parseAsFloat,
       amExitPctOfPeak: parseAsFloat,
       pmEntryPctOfPeak: parseAsFloat,
@@ -182,6 +177,10 @@ export default function TimeOfDayPage() {
   )
   const [formState, setFormState] =
     useState<TimeOfDayFormState>(defaultFormState)
+  const editedFormFieldsRef = useRef(new Set<TimeOfDayFormField>())
+  // Keep dynamic defaults out of qs so only URL edits change this key.
+  const queryStateKey = JSON.stringify(qs)
+  const previousQueryStateKeyRef = useRef(queryStateKey)
   const [pageError, setPageError] = useState<PageError>({ type: 'NONE' })
   const {
     data: result,
@@ -193,7 +192,7 @@ export default function TimeOfDayPage() {
 
   useEffect(() => {
     const selectedDates = normalizeDates(
-      qs.dates,
+      qs.dates ?? defaultFormState.selectedDates,
       defaultFormState.selectedDates
     )
     const allDayPrimaryDirections = normalizeDirections(
@@ -209,7 +208,9 @@ export default function TimeOfDayPage() {
       allDayPrimaryDirections
     )
     const laneCapacityVehiclesPerHour =
-      Number.isFinite(qs.laneCapacity) && qs.laneCapacity > 0
+      qs.laneCapacity !== null &&
+      Number.isFinite(qs.laneCapacity) &&
+      qs.laneCapacity > 0
         ? qs.laneCapacity
         : defaultFormState.laneCapacityVehiclesPerHour
     const directionLaneCounts = normalizeLaneCounts(qs.laneCounts)
@@ -248,44 +249,28 @@ export default function TimeOfDayPage() {
         measureDefaultOptions.shoulderReviewThresholdPercent,
     }
 
-    setFormState((currentFormState) => {
-      if (
-        areDateArraysEqual(currentFormState.selectedDates, selectedDates) &&
-        currentFormState.dataSource === qs.dataSource &&
-        areStringArraysEqual(
-          currentFormState.allDayPrimaryDirections,
-          allDayPrimaryDirections
-        ) &&
-        areStringArraysEqual(
-          currentFormState.amPrimaryDirections,
-          amPrimaryDirections
-        ) &&
-        areStringArraysEqual(
-          currentFormState.pmPrimaryDirections,
-          pmPrimaryDirections
-        ) &&
-        currentFormState.laneCapacityVehiclesPerHour ===
-          laneCapacityVehiclesPerHour &&
-        areTuningOptionsEqual(currentFormState, tuningOptions) &&
-        areLaneCountsEqual(
-          currentFormState.directionLaneCounts,
-          directionLaneCounts
-        )
-      ) {
-        return currentFormState
-      }
+    const resolvedFormState: Partial<TimeOfDayFormState> = {
+      selectedDates,
+      dataSource: qs.dataSource,
+      allDayPrimaryDirections,
+      amPrimaryDirections,
+      pmPrimaryDirections,
+      ...tuningOptions,
+      directionLaneCounts,
+    }
+    if (previousQueryStateKeyRef.current !== queryStateKey) {
+      editedFormFieldsRef.current.clear()
+      previousQueryStateKeyRef.current = queryStateKey
+    }
+    const editedFields = new Set(editedFormFieldsRef.current)
 
-      return {
-        ...currentFormState,
-        selectedDates,
-        dataSource: qs.dataSource,
-        allDayPrimaryDirections,
-        amPrimaryDirections,
-        pmPrimaryDirections,
-        ...tuningOptions,
-        directionLaneCounts,
-      }
-    })
+    setFormState((currentFormState) =>
+      mergeUntouchedTimeOfDayFormState(
+        currentFormState,
+        resolvedFormState,
+        editedFields
+      )
+    )
   }, [
     qs.dates,
     qs.dataSource,
@@ -308,6 +293,8 @@ export default function TimeOfDayPage() {
     qs.splitReviewThresholdPercent,
     qs.shoulderReviewThresholdPercent,
     qs.laneCounts,
+    queryStateKey,
+    chartDefaultsData,
     defaultFormState,
     measureDefaultOptions,
   ])
@@ -377,6 +364,15 @@ export default function TimeOfDayPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [qsLocationsKey])
 
+  const handleFormStateChange = (nextFormState: TimeOfDayFormState) => {
+    setFormState((currentFormState) => {
+      getChangedTimeOfDayFormFields(currentFormState, nextFormState).forEach(
+        (field) => editedFormFieldsRef.current.add(field)
+      )
+      return nextFormState
+    })
+  }
+
   const buildRequestOptions = (): TimeOfDayRequestOptions | null => {
     const locationIdentifiers = formState.selectedLocations
       .map((location) => location.locationIdentifier)
@@ -409,7 +405,7 @@ export default function TimeOfDayPage() {
       allDayPrimaryDirections: formState.allDayPrimaryDirections,
       amPrimaryDirections: formState.amPrimaryDirections,
       pmPrimaryDirections: formState.pmPrimaryDirections,
-      binSizeMinutes: 15,
+      binSizeMinutes: timeOfDayBinSizeMinutes,
       ...getTuningOptions(formState),
       directionLaneCounts: formState.directionLaneCounts,
     }
@@ -460,7 +456,7 @@ export default function TimeOfDayPage() {
       <Stack spacing={2}>
         <TimeOfDayOptions
           options={formState}
-          onChange={setFormState}
+          onChange={handleFormStateChange}
           schedulePresets={schedulePresets}
         />
         <Box

@@ -1,13 +1,13 @@
 #region license
 // Copyright 2026 Utah Departement of Transportation
 // for Application - Utah.Udot.Atspm.Business.TimeOfDay/TimeOfDayProfileService.cs
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,14 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             IReadOnlyList<TimeOfDayVolumeObservation> observations,
             IReadOnlyList<DateOnly> selectedDates,
             int binSizeMinutes);
+
+        TimeOfDayProfileDto BuildRepresentativeProfile(
+            string label,
+            IReadOnlyList<TimeOfDayLocationAnalysisData> locationData,
+            IReadOnlyList<DateOnly> selectedDates,
+            int binSizeMinutes,
+            Func<TimeOfDayLocationAnalysisData, IEnumerable<TimeOfDayVolumeObservation>> observationSelector,
+            string direction = "");
 
         TimeOfDayProfileDto SumProfiles(
             string label,
@@ -121,6 +129,45 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 MovementLabel = movementLabel,
                 Points = rawPoints
             };
+        }
+
+        public TimeOfDayProfileDto BuildRepresentativeProfile(
+            string label,
+            IReadOnlyList<TimeOfDayLocationAnalysisData> locationData,
+            IReadOnlyList<DateOnly> selectedDates,
+            int binSizeMinutes,
+            Func<TimeOfDayLocationAnalysisData, IEnumerable<TimeOfDayVolumeObservation>> observationSelector,
+            string direction = "")
+        {
+            var perLocationProfiles = new List<TimeOfDayProfileDto>();
+
+            foreach (var location in locationData)
+            {
+                var observations = observationSelector(location).ToList();
+                if (observations.Count == 0)
+                {
+                    continue;
+                }
+
+                var profile = BuildProfile(
+                    $"{location.Location.LocationIdentifier} {label}",
+                    direction,
+                    string.Empty,
+                    string.Empty,
+                    observations,
+                    selectedDates,
+                    binSizeMinutes);
+
+                if (profile.Points.Any(p => p.AverageVolume > 0 || p.SmoothedVolume > 0))
+                {
+                    perLocationProfiles.Add(profile);
+                }
+            }
+
+            return MedianProfiles(
+                label,
+                perLocationProfiles,
+                direction);
         }
 
         public TimeOfDayProfileDto SumProfiles(
@@ -250,6 +297,15 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 MovementLabel = movementLabel,
                 Points = points
             };
+        }
+
+        internal static TimeOfDayProfilePointDto FindPeak(TimeOfDayProfileDto profile, int startMinutes, int endMinutes)
+        {
+            return profile.Points
+                .Where(point => point.Minutes >= startMinutes && point.Minutes < endMinutes)
+                .OrderByDescending(point => point.SmoothedVolume)
+                .ThenBy(point => point.Minutes)
+                .FirstOrDefault();
         }
 
         internal static string FormatTime(int minutes)

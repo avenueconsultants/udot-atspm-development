@@ -4,7 +4,7 @@ import { Box, Slider, Stack, TextField, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import { TimePicker } from '@mui/x-date-pickers'
 import { format } from 'date-fns'
-import type { ChangeEvent, ReactNode } from 'react'
+import { useState, type ChangeEvent, type ReactNode } from 'react'
 import type { TimeOfDaySchedulePreset } from '../measureDefaults'
 import type { TimeOfDayFormState, TimeOfDayTuningOptionKey } from '../types'
 import TimeOfDaySchedulePresetSelect from './TimeOfDaySchedulePresetSelect'
@@ -109,6 +109,20 @@ const occupancyReviewFields: TuningFieldDefinition[] = [
   },
 ]
 
+// Out-of-range values stay as a draft so they never reach the request; the
+// backend rejects non-positive capacities, lane counts, and bin counts.
+const getRangeError = (field: TuningFieldDefinition, rawValue?: string) => {
+  if (rawValue === undefined || rawValue.trim() === '') return undefined
+
+  const value = Number(rawValue)
+  const { min, max } = field.inputProps ?? {}
+  if (!Number.isFinite(value)) return 'Enter a number'
+  if (typeof min === 'number' && value < min) return `Min ${min}`
+  if (typeof max === 'number' && value > max) return `Max ${max}`
+
+  return undefined
+}
+
 const parseTimeString = (value: unknown) => {
   if (typeof value !== 'string') return null
 
@@ -135,16 +149,37 @@ export default function TimeOfDayAdvancedSidebar({
   onChange,
   schedulePresets = [],
 }: TimeOfDayAdvancedSidebarProps) {
+  const [numberDrafts, setNumberDrafts] = useState<
+    Partial<Record<TimeOfDayTuningOptionKey, string>>
+  >({})
+
   const updateOptions = (patch: Partial<TimeOfDayFormState>) =>
     onChange({ ...options, ...patch })
 
   const handleTuningFieldChange =
     (field: TuningFieldDefinition) =>
     (event: ChangeEvent<HTMLInputElement>) => {
+      const rawValue = event.target.value
+      setNumberDrafts((current) => ({
+        ...current,
+        [field.option]: rawValue,
+      }))
+      if (rawValue.trim() === '' || getRangeError(field, rawValue)) return
+
       updateOptions({
-        [field.option]: Number(event.target.value),
+        [field.option]: Number(rawValue),
       } as Partial<TimeOfDayFormState>)
     }
+
+  const clearTuningFieldDraft = (field: TuningFieldDefinition) => {
+    setNumberDrafts((current) => {
+      if (!(field.option in current)) return current
+
+      const next = { ...current }
+      delete next[field.option]
+      return next
+    })
+  }
 
   const handleLaneCountChange = (direction: string, rawValue: string) => {
     const directionLaneCounts = { ...options.directionLaneCounts }
@@ -296,8 +331,11 @@ export default function TimeOfDayAdvancedSidebar({
         <TextField
           size="small"
           type="number"
-          value={options[field.option]}
+          value={numberDrafts[field.option] ?? options[field.option]}
           onChange={handleTuningFieldChange(field)}
+          onBlur={() => clearTuningFieldDraft(field)}
+          error={Boolean(getRangeError(field, numberDrafts[field.option]))}
+          helperText={getRangeError(field, numberDrafts[field.option])}
           inputProps={{
             ...field.inputProps,
             'aria-label': field.label,
@@ -338,8 +376,11 @@ export default function TimeOfDayAdvancedSidebar({
         fullWidth
         size="small"
         type="number"
-        value={options[field.option]}
+        value={numberDrafts[field.option] ?? options[field.option]}
         onChange={handleTuningFieldChange(field)}
+        onBlur={() => clearTuningFieldDraft(field)}
+        error={Boolean(getRangeError(field, numberDrafts[field.option]))}
+        helperText={getRangeError(field, numberDrafts[field.option])}
         inputProps={{
           ...field.inputProps,
           'aria-label': [field.label, field.unitLabel]

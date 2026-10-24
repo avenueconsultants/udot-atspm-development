@@ -1,13 +1,13 @@
 #region license
 // Copyright 2026 Utah Departement of Transportation
 // for Application - Utah.Udot.Atspm.Business.TimeOfDay/TimeOfDayDtos.cs
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -79,6 +79,9 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
     {
         public List<string> PrimaryDirections { get; set; } = new();
         public List<string> CrossDirections { get; set; } = new();
+        /// <summary>Effective directions for AM, PM, and all other hours. Legacy direction lists describe all-day selection.</summary>
+        public Dictionary<string, List<string>> PrimaryDirectionsByPeriod { get; set; } = new();
+        public Dictionary<string, List<string>> CrossDirectionsByPeriod { get; set; } = new();
         public TimeOfDayProfileDto PrimaryProfile { get; set; } = new();
         public TimeOfDayProfileDto CrossStreetProfile { get; set; } = new();
         public List<TimeOfDayCrossTrafficSharePointDto> CrossTrafficShare { get; set; } = new();
@@ -125,8 +128,6 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         public string MiddayValleyTime { get; set; } = string.Empty;
         public string PmPeakTime { get; set; } = string.Empty;
         public string SummaryText { get; set; } = string.Empty;
-        public string AlgorithmVersion { get; set; } = string.Empty;
-        public string ThresholdConfigurationName { get; set; } = string.Empty;
     }
 
     public class TimeOfDayPlanComparisonDto
@@ -149,7 +150,17 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         public List<TimeOfDayProfileDto> MovementProfiles { get; set; } = new();
         public TimeOfDayLocationSummaryDto Summary { get; set; } = new();
         public List<Plan> CurrentPlanSchedule { get; set; } = new();
+        /// <summary>
+        /// Actual plan intervals clipped to each selected date, before representative bin sampling.
+        /// </summary>
+        public List<TimeOfDayDailyPlanScheduleDto> DailyPlanSchedules { get; set; } = new();
         public string DataQualityFlag { get; set; } = string.Empty;
+    }
+
+    public class TimeOfDayDailyPlanScheduleDto
+    {
+        public DateOnly Date { get; set; }
+        public List<Plan> Plans { get; set; } = new();
     }
 
     public class TimeOfDayLocationSummaryDto

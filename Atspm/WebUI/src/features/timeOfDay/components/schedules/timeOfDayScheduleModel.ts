@@ -125,9 +125,6 @@ export const buildTimeOfDaySchedulesModel = (
   result: TimeOfDayResult
 ): TimeOfDaySchedulesModel => {
   const locations = getUniqueLocations(result)
-  const exceptionIdentifiers = new Set(
-    result.planComparison?.exceptionLocationIdentifiers?.filter(Boolean) ?? []
-  )
   const commonSchedule = result.planComparison?.commonCurrentSchedule?.length
     ? result.planComparison.commonCurrentSchedule
     : deriveCommonSchedule(locations)
@@ -138,14 +135,12 @@ export const buildTimeOfDaySchedulesModel = (
 
   locations.forEach((location) => {
     const scheduleSignature = getScheduleSignature(location.schedule)
+    // A location without a schedule has no plan data; the backend leaves it
+    // out of the exception list, so it must not be counted as common.
     const matchesCommonSchedule =
       Boolean(commonSignature) && scheduleSignature === commonSignature
-    const inferredCommonSchedule =
-      Boolean(commonSignature) &&
-      !scheduleSignature &&
-      !exceptionIdentifiers.has(location.identifier)
 
-    if (matchesCommonSchedule || inferredCommonSchedule) {
+    if (matchesCommonSchedule) {
       commonLocations.push(location)
       return
     }
@@ -187,4 +182,13 @@ export const getScheduleSummary = (schedule: Plan[]) =>
     )
     .join(', ')
 
-export const getScheduleColorMap = getSchedulePlanColorMap
+/**
+ * The one plan-number color map for time-of-day. The Schedules tab and the
+ * analysis chart both read it so a plan is the same color everywhere.
+ */
+export const getTimeOfDayPlanColorMap = (model: TimeOfDaySchedulesModel) =>
+  getSchedulePlanColorMap([
+    model.proposedSchedule,
+    model.commonSchedule,
+    ...model.exceptions.map((exception) => exception.schedule),
+  ])

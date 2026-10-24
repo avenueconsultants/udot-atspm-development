@@ -54,7 +54,7 @@ namespace Utah.Udot.ATSPM.InfrastructureTests.WorkflowSteps
 
         [Fact]
         [Trait(nameof(GenerateSignalPlansStep), "Process")]
-        public async Task Process_GroupsByLocation_PreservesReturningPlanNumbers()
+        public async Task Process_GroupsByLocationAndParam_ProducesMultipleChunks()
         {
             var sut = new GenerateSignalPlansStep();
             var startTime = DateTime.Now.Date;

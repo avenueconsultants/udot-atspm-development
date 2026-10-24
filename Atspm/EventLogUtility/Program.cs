@@ -18,7 +18,6 @@
 //trick git
 
 using Google.Cloud.Diagnostics.Common;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.CommandLine.Builder;
@@ -44,13 +43,6 @@ cmdBuilder.UseHost(a =>
     return Host.CreateDefaultBuilder(a)
     //.UseConsoleLifetime()
     .ApplyVolumeConfiguration()
-
-    .ConfigureAppConfiguration((h, c) =>
-    {
-        c.AddUserSecrets<Program>(optional: true); // Load secrets first
-        c.AddCommandLine(args);                    // Override with command-line args
-
-    })
     .ConfigureLogging((h, l) =>
     {
         if (OperatingSystem.IsWindows())

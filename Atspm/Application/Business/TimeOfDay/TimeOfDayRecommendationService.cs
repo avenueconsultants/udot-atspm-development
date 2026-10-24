@@ -1,13 +1,13 @@
 #region license
 // Copyright 2026 Utah Departement of Transportation
 // for Application - Utah.Udot.Atspm.Business.TimeOfDay/TimeOfDayRecommendationService.cs
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,9 +31,6 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
 
     public class TimeOfDayRecommendationService : ITimeOfDayRecommendationService
     {
-        private const string AlgorithmVersion = "tod-v2";
-        private const string ThresholdConfigurationName = "Configured thresholds";
-
         private readonly ITimeOfDayProfileService profileService;
 
         public TimeOfDayRecommendationService(ITimeOfDayProfileService profileService)
@@ -51,8 +48,6 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             {
                 return new TimeOfDayRecommendationDto
                 {
-                    AlgorithmVersion = AlgorithmVersion,
-                    ThresholdConfigurationName = ThresholdConfigurationName,
                     SummaryText = "Recommended schedule unavailable because no usable volume profile was found."
                 };
             }
@@ -71,8 +66,6 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             {
                 return new TimeOfDayRecommendationDto
                 {
-                    AlgorithmVersion = AlgorithmVersion,
-                    ThresholdConfigurationName = ThresholdConfigurationName,
                     SummaryText = $"Recommended schedule unavailable because primary direction data is unavailable for {string.Join("; ", unavailableDirectionMessages)}."
                 };
             }
@@ -88,21 +81,20 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 corridorProfile,
                 "PM primary");
 
-            var maxAmEnd = ParseTimeOrDefault(options.MaxAmEndTime, 10 * 60);
+            var maxAmEnd = ParseTimeOrDefault(options.MaxAmEndTime, TimeOfDayOptions.AmPeakEndMinutes);
             var maxPmEnd = ParseTimeOrDefault(options.MaxPmEndTime, 20 * 60);
             var freeFallback = ParseTimeOrDefault(options.FreeFallbackTime, 23 * 60 + 30);
             var binSize = InferBinSize(corridorProfile);
+            // A bin-aligned boundary must not round past the configured limit.
+            maxAmEnd = maxAmEnd / binSize * binSize;
+            maxPmEnd = maxPmEnd / binSize * binSize;
 
-            var amPeak = FindPeak(amProfile, 5 * 60, 10 * 60);
-            var pmPeak = FindPeak(pmProfile, 14 * 60, 19 * 60);
+            var amPeak = TimeOfDayProfileService.FindPeak(amProfile, TimeOfDayOptions.AmPeakStartMinutes, TimeOfDayOptions.AmPeakEndMinutes);
+            var pmPeak = TimeOfDayProfileService.FindPeak(pmProfile, TimeOfDayOptions.PmPeakStartMinutes, TimeOfDayOptions.PmPeakEndMinutes);
             var dailyPeak = corridorProfile.Points.Max(p => p.SmoothedVolume);
             var baseline = Percentile(corridorProfile.Points.Select(p => p.SmoothedVolume).ToList(), 0.15);
-            var amPeakValue = amPeak != null
-                ? FindMaxSmoothed(amProfile, 5 * 60, 12 * 60, dailyPeak)
-                : dailyPeak;
-            var pmPeakValue = pmPeak != null
-                ? FindMaxSmoothed(pmProfile, 12 * 60, 19 * 60, dailyPeak)
-                : dailyPeak;
+            var amPeakValue = amPeak?.SmoothedVolume ?? dailyPeak;
+            var pmPeakValue = pmPeak?.SmoothedVolume ?? dailyPeak;
 
             var amEntryThreshold = baseline + (amPeakValue - baseline) * options.AmEntryPctOfPeak;
             var amExitThreshold = baseline + (amPeakValue - baseline) * options.AmExitPctOfPeak;
@@ -112,20 +104,62 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 dailyPeak * options.FreeEntryPctOfDailyPeak,
                 baseline + (dailyPeak - baseline) * options.FreeEntryPctOfDynamicRange);
 
+            var am = FindAmPeriod(amProfile, amPeak, amEntryThreshold, amExitThreshold, maxAmEnd, options.EntrySustainedBins);
+            var pm = FindPmPeriod(pmProfile, pmPeak, pmEntryThreshold, pmExitThreshold, maxPmEnd, options.EntrySustainedBins, am.End);
+            var pmEntry = pm.Start;
+
+            var middayValley = amPeak != null && pmPeak != null
+                ? FindValley(
+                    corridorProfile,
+                    Math.Max(amPeak.Minutes, 9 * 60 + 30),
+                    Math.Min(pmPeak.Minutes, 16 * 60))
+                : null;
+            if (middayValley != null && pmEntry < middayValley.Minutes)
+            {
+                pmEntry = Math.Max(TimeOfDayOptions.PmPeakStartMinutes, middayValley.Minutes);
+            }
+
+            if (pmEntry < TimeOfDayOptions.PmPeakStartMinutes)
+            {
+                pmEntry = TimeOfDayOptions.PmPeakStartMinutes;
+            }
+
+            var freeStart = FindFreeStart(corridorProfile, pm.End, freeThreshold, options.FreeSustainedBins, freeFallback);
+
+            var boundaries = NormalizeBoundaries(
+                new[] { am.Start, am.End, pmEntry, pm.End, freeStart },
+                binSize);
+            return new TimeOfDayRecommendationDto
+            {
+                RecommendedSchedule = BuildSchedule(representativeDate, boundaries),
+                AmPeakTime = amPeak?.TimeOfDay ?? string.Empty,
+                MiddayValleyTime = middayValley?.TimeOfDay ?? FindValley(corridorProfile, boundaries[1], boundaries[2])?.TimeOfDay ?? string.Empty,
+                PmPeakTime = pmPeak?.TimeOfDay ?? string.Empty,
+                SummaryText = $"Recommended TOD schedule has AM peak {amPeak?.TimeOfDay ?? "unavailable"} and PM peak {pmPeak?.TimeOfDay ?? "unavailable"}."
+            };
+        }
+
+        private static (int Start, int End) FindAmPeriod(
+            TimeOfDayProfileDto amProfile,
+            TimeOfDayProfilePointDto amPeak,
+            double amEntryThreshold,
+            double amExitThreshold,
+            int maxAmEnd,
+            int sustainedBins)
+        {
             var amEntry = FindFirstSustained(
                 amProfile,
                 4 * 60,
-                amPeak?.Minutes ?? 10 * 60,
-                amEntryThreshold,
-                options.EntrySustainedBins,
-                true);
+                amPeak?.Minutes ?? TimeOfDayOptions.AmPeakEndMinutes,
+                sustainedBins,
+                point => point.SmoothedVolume >= amEntryThreshold);
             var amExit = amPeak != null
                 ? FindLastSustainedAbove(
                     amProfile,
                     amPeak.Minutes,
                     maxAmEnd,
                     amExitThreshold,
-                    options.EntrySustainedBins)
+                    sustainedBins)
                 : null;
 
             if (!amExit.HasValue && amPeak != null)
@@ -154,28 +188,37 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                     amProfile,
                     5 * 60,
                     maxAmEnd - 60,
-                    amEntryThreshold,
-                    options.EntrySustainedBins,
-                    true) ?? 6 * 60;
+                    sustainedBins,
+                    point => point.SmoothedVolume >= amEntryThreshold) ?? 6 * 60;
             }
 
             amEntry ??= 6 * 60;
             amExit ??= maxAmEnd;
+            return (amEntry.Value, amExit.Value);
+        }
 
+        private static (int Start, int End) FindPmPeriod(
+            TimeOfDayProfileDto pmProfile,
+            TimeOfDayProfilePointDto pmPeak,
+            double pmEntryThreshold,
+            double pmExitThreshold,
+            int maxPmEnd,
+            int sustainedBins,
+            int amEnd)
+        {
             var pmEntry = FindFirstSustained(
                 pmProfile,
-                Math.Max(amExit.Value, 14 * 60),
-                pmPeak?.Minutes ?? 19 * 60,
-                pmEntryThreshold,
-                options.EntrySustainedBins,
-                true);
+                Math.Max(amEnd, TimeOfDayOptions.PmPeakStartMinutes),
+                pmPeak?.Minutes ?? TimeOfDayOptions.PmPeakEndMinutes,
+                sustainedBins,
+                point => point.SmoothedVolume >= pmEntryThreshold);
             var pmExit = pmPeak != null
                 ? FindLastSustainedAbove(
                     pmProfile,
                     pmPeak.Minutes,
                     maxPmEnd,
                     pmExitThreshold,
-                    options.EntrySustainedBins)
+                    sustainedBins)
                 : null;
 
             if (pmEntry.HasValue && pmExit.HasValue && pmExit.Value <= pmEntry.Value)
@@ -197,89 +240,47 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             {
                 pmEntry = FindFirstSustained(
                     pmProfile,
-                    14 * 60,
+                    TimeOfDayOptions.PmPeakStartMinutes,
                     maxPmEnd - 60,
-                    pmEntryThreshold,
-                    options.EntrySustainedBins,
-                    true);
+                    sustainedBins,
+                    point => point.SmoothedVolume >= pmEntryThreshold);
 
                 if (pmEntry.HasValue && pmEntry.Value >= pmExit.Value)
                 {
-                    pmEntry = Math.Max(14 * 60, maxPmEnd - 180);
+                    pmEntry = Math.Max(TimeOfDayOptions.PmPeakStartMinutes, maxPmEnd - 180);
                 }
             }
 
-            pmEntry ??= 14 * 60;
+            pmEntry ??= TimeOfDayOptions.PmPeakStartMinutes;
             pmExit ??= maxPmEnd;
+            return (pmEntry.Value, pmExit.Value);
+        }
 
-            var middayValley = amPeak != null && pmPeak != null
-                ? FindValley(
-                    corridorProfile,
-                    Math.Max(amPeak.Minutes, 9 * 60 + 30),
-                    Math.Min(pmPeak.Minutes, 16 * 60))
-                : null;
-            int? middayStart = amExit;
-            int? middayEnd = pmEntry;
-
-            if (middayValley != null)
-            {
-                if (!middayStart.HasValue)
-                {
-                    middayStart = Math.Max(9 * 60 + 30, Math.Min(middayValley.Minutes, 13 * 60));
-                }
-
-                if (pmEntry.Value < middayValley.Minutes)
-                {
-                    pmEntry = Math.Max(14 * 60, middayValley.Minutes);
-                    middayEnd = pmEntry;
-                }
-            }
-
-            if (!middayStart.HasValue && amPeak != null)
-            {
-                middayStart = FindValley(corridorProfile, amPeak.Minutes, 14 * 60)?.Minutes;
-            }
-
-            if (middayStart.HasValue && middayStart.Value < 9 * 60)
-            {
-                middayStart = 9 * 60;
-            }
-
-            if (pmEntry.Value < 14 * 60)
-            {
-                pmEntry = 14 * 60;
-                middayEnd = pmEntry;
-            }
-
-            middayStart = amExit;
-            middayEnd = pmEntry;
-
-            if (middayStart.HasValue && middayEnd.HasValue && middayEnd.Value <= middayStart.Value)
-            {
-                middayStart = null;
-                middayEnd = null;
-            }
-
-            var eveningStart = pmExit.Value;
-            var freeStartFloor = Math.Max(pmExit.Value, 19 * 60);
+        private static int FindFreeStart(
+            TimeOfDayProfileDto corridorProfile,
+            int pmEnd,
+            double freeThreshold,
+            int sustainedBins,
+            int freeFallback)
+        {
+            var freeStartFloor = Math.Max(pmEnd, 19 * 60);
             var freeStart = FindFirstSustained(
                 corridorProfile,
                 freeStartFloor,
                 23 * 60 + 30,
-                freeThreshold,
-                options.FreeSustainedBins,
-                false);
+                sustainedBins,
+                point => point.SmoothedVolume <= freeThreshold);
 
-            if (freeStart.HasValue && freeStart.Value <= eveningStart)
+            if (freeStart.HasValue && freeStart.Value <= pmEnd)
             {
                 freeStart = null;
             }
 
-            freeStart ??= freeFallback;
+            return freeStart ?? freeFallback;
+        }
 
-            var boundaries = NormalizeBoundaries(
-                new[] { amEntry.Value, amExit.Value, pmEntry.Value, pmExit.Value, freeStart.Value },
-                binSize);
+        private static List<Plan> BuildSchedule(DateOnly representativeDate, IReadOnlyList<int> boundaries)
+        {
             var start = representativeDate.ToDateTime(TimeOnly.MinValue);
             var end = start.AddDays(1);
             var schedule = new List<Plan>();
@@ -290,17 +291,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             AddPlan(schedule, "13", start.AddMinutes(boundaries[2]), start.AddMinutes(boundaries[3]));
             AddPlan(schedule, "7", start.AddMinutes(boundaries[3]), start.AddMinutes(boundaries[4]));
             AddPlan(schedule, "254", start.AddMinutes(boundaries[4]), end);
-
-            return new TimeOfDayRecommendationDto
-            {
-                RecommendedSchedule = schedule,
-                AmPeakTime = amPeak?.TimeOfDay ?? string.Empty,
-                MiddayValleyTime = middayValley?.TimeOfDay ?? FindValley(corridorProfile, boundaries[1], boundaries[2])?.TimeOfDay ?? string.Empty,
-                PmPeakTime = pmPeak?.TimeOfDay ?? string.Empty,
-                AlgorithmVersion = AlgorithmVersion,
-                ThresholdConfigurationName = ThresholdConfigurationName,
-                SummaryText = $"Recommended TOD schedule uses {AlgorithmVersion} with AM peak {amPeak?.TimeOfDay ?? "unavailable"} and PM peak {pmPeak?.TimeOfDay ?? "unavailable"}."
-            };
+            return schedule;
         }
 
         private TimeOfDayProfileDto SelectProfile(
@@ -309,11 +300,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             TimeOfDayProfileDto fallback,
             string label)
         {
-            var normalized = requestedDirections
-                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
-                .Where(d => !string.IsNullOrWhiteSpace(d))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
+            var normalized = TimeOfDayDirectionHelper.NormalizeDirections(requestedDirections);
 
             if (normalized.Count == 0)
             {
@@ -335,32 +322,16 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
             IReadOnlyList<TimeOfDayProfileDto> directionalProfiles,
             List<string> messages)
         {
-            var availableDirections = directionalProfiles
-                .Where(profile => profile.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
-                .Select(profile => TimeOfDayDirectionHelper.NormalizeDirection(profile.Direction))
-                .Where(direction => !string.IsNullOrWhiteSpace(direction))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
-            var missingDirections = requestedDirections
-                .Select(TimeOfDayDirectionHelper.NormalizeDirection)
-                .Where(direction => !string.IsNullOrWhiteSpace(direction))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Where(direction => !availableDirections.Contains(direction, StringComparer.OrdinalIgnoreCase))
-                .ToList();
+            var missingDirections = TimeOfDayDirectionHelper.FindMissingDirections(
+                requestedDirections,
+                directionalProfiles
+                    .Where(profile => profile.Points.Any(point => point.AverageVolume > 0 || point.SmoothedVolume > 0))
+                    .Select(profile => profile.Direction));
 
             if (missingDirections.Count > 0)
             {
                 messages.Add($"{period}: {string.Join(", ", missingDirections)}");
             }
-        }
-
-        private static TimeOfDayProfilePointDto FindPeak(TimeOfDayProfileDto profile, int startMinutes, int endMinutes)
-        {
-            return profile.Points
-                .Where(p => p.Minutes >= startMinutes && p.Minutes <= endMinutes)
-                .OrderByDescending(p => p.SmoothedVolume)
-                .ThenBy(p => p.Minutes)
-                .FirstOrDefault();
         }
 
         private static TimeOfDayProfilePointDto FindValley(TimeOfDayProfileDto profile, int startMinutes, int endMinutes)
@@ -372,27 +343,12 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .FirstOrDefault();
         }
 
-        private static double FindMaxSmoothed(
-            TimeOfDayProfileDto profile,
-            int startMinutes,
-            int endMinutes,
-            double fallback)
-        {
-            var values = profile.Points
-                .Where(p => p.Minutes >= startMinutes && p.Minutes <= endMinutes)
-                .Select(p => p.SmoothedVolume)
-                .ToList();
-
-            return values.Count > 0 ? values.Max() : fallback;
-        }
-
         private static int? FindFirstSustained(
             TimeOfDayProfileDto profile,
             int startMinutes,
             int endMinutes,
-            double threshold,
             int sustainedBins,
-            bool aboveThreshold)
+            Func<TimeOfDayProfilePointDto, bool> meetsThreshold)
         {
             var points = profile.Points
                 .Where(p => p.Minutes >= startMinutes && p.Minutes <= endMinutes)
@@ -409,7 +365,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 var sustained = points
                     .Skip(i)
                     .Take(sustainedBins)
-                    .All(p => aboveThreshold ? p.SmoothedVolume >= threshold : p.SmoothedVolume <= threshold);
+                    .All(meetsThreshold);
 
                 if (sustained)
                 {
@@ -432,23 +388,27 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
                 .OrderBy(p => p.Minutes)
                 .ToList();
             var runLength = 0;
-            int? runEndTime = null;
+            var runEnd = 0;
+            var binSize = InferBinSize(profile);
 
             for (var i = points.Count - 1; i >= 0; i--)
             {
                 if (points[i].SmoothedVolume >= threshold)
                 {
+                    if (runLength == 0 || points[i + 1].Minutes - points[i].Minutes != binSize)
+                    {
+                        runLength = 0;
+                        runEnd = Math.Min(points[i].Minutes + binSize, endMinutes);
+                    }
                     runLength++;
-                    runEndTime = points[i].Minutes;
                     if (runLength >= sustainedBins)
                     {
-                        return runEndTime;
+                        return runEnd;
                     }
                 }
                 else
                 {
                     runLength = 0;
-                    runEndTime = null;
                 }
             }
 
@@ -477,7 +437,7 @@ namespace Utah.Udot.Atspm.Business.TimeOfDay
         {
             return profile.Points.Count > 1
                 ? profile.Points[1].Minutes - profile.Points[0].Minutes
-                : 15;
+                : TimeOfDayOptions.FixedBinSizeMinutes;
         }
 
         private static int ParseTimeOrDefault(string value, int defaultMinutes)

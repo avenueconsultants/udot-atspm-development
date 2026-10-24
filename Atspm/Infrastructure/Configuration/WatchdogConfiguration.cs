@@ -63,12 +63,12 @@ namespace Utah.Udot.Atspm.Infrastructure.Configuration
         /// <summary>
         /// Inclusive start hour for the previous-day PM detector scan.
         /// </summary>
-        public int PmPeakStartHour { get; set; } = 18;
+        public int PmPeakStartHour { get; set; } = 17;
 
         /// <summary
         /// >Exclusive end hour for the PM detector scan.
         /// </summary>
-        public int PmPeakEndHour { get; set; } = 17;
+        public int PmPeakEndHour { get; set; } = 18;
 
         /// <summary>
         /// Inclusive start hour for ramp-detector volume checks.
