@@ -71,13 +71,16 @@ namespace Utah.Udot.ATSPM.Infrastructure.WorkflowSteps
                     }
                 }
 
-                var tl = new Timeline<StartEndRange>(list, TimeSpan.FromHours(1));
+                // The toolkit Timeline returns Start == End for a batch containing only an
+                // exact-hour event. Build the primary-key range explicitly so every poll of
+                // the same hour addresses the same row.
+                var (hourStart, hourEnd) = GetCanonicalHourRange(g.First().Item2.Timestamp);
 
                 dynamic comp = Activator.CreateInstance(typeof(CompressedEventLogs<>).MakeGenericType(g.Key.Item7));
 
                 comp.LocationIdentifier = g.Key.LocationIdentifier;
-                comp.Start = tl.Start;
-                comp.End = tl.End;
+                comp.Start = hourStart;
+                comp.End = hourEnd;
                 comp.DataType = g.Key.Item7;
                 comp.DeviceId = g.Key.Id;
                 comp.Data = list;
@@ -85,6 +88,15 @@ namespace Utah.Udot.ATSPM.Infrastructure.WorkflowSteps
 
                 yield return comp;
             }
+        }
+
+        /// <summary>
+        /// Returns the stable half-open archive range containing a timestamp.
+        /// </summary>
+        public static (DateTime Start, DateTime End) GetCanonicalHourRange(DateTime timestamp)
+        {
+            var start = new DateTime(timestamp.Year, timestamp.Month, timestamp.Day, timestamp.Hour, 0, 0, timestamp.Kind);
+            return (start, start.AddHours(1));
         }
     }
 

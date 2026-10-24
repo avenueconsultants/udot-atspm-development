@@ -1,0 +1,28 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Utah.Udot.SqlDatabaseProvider.Migrations.Config
+{
+    /// <inheritdoc />
+    public partial class LidarDetectorMapping : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<long>(
+                name: "LidarZoneId",
+                table: "Detectors",
+                type: "bigint",
+                nullable: true);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "LidarZoneId",
+                table: "Detectors");
+        }
+    }
+}

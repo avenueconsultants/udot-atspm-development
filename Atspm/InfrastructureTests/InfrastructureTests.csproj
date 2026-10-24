@@ -11,7 +11,7 @@
 
 		<Platforms>AnyCPU;x86</Platforms>
 
-		<AssemblyName>$(NameSpacePrefix).$(SolutionName).$(MSBuildProjectName)</AssemblyName>
+		<AssemblyName>$(NameSpacePrefix).ATSPM.$(MSBuildProjectName)</AssemblyName>
 
 		<RootNamespace>$(NameSpacePrefix).$(SolutionName).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 	</PropertyGroup>
@@ -60,6 +60,15 @@
 
 	<ItemGroup>
 		<Folder Include="EventLogDecoderTests\TestData\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="EventLogDecoderTests\TestData\blueband-events.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="EventLogDecoderTests\TestData\bluecity-object-events.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

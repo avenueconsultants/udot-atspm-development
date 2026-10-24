@@ -17,6 +17,7 @@
 
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Models.ConfigurationModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace Utah.Udot.ATSPM.ConfigApi.DTO
 {
@@ -26,6 +27,14 @@ namespace Utah.Udot.ATSPM.ConfigApi.DTO
         public string Description { get; set; }
         public int? Mph { get; set; }
         public int ProtectedPhaseNumber { get; set; }
+        /// <summary>
+        /// Indicates an auto-configured approach that still requires operator review.
+        /// </summary>
+        public bool NeedsReview { get; set; }
+        /// <summary>
+        /// Explicit operator acknowledgement that phase zero should be applied.
+        /// </summary>
+        public bool AllowZeroProtectedPhase { get; set; }
         public bool IsProtectedPhaseOverlap { get; set; }
         public int? PermissivePhaseNumber { get; set; }
         public bool IsPermissivePhaseOverlap { get; set; }
@@ -36,5 +45,11 @@ namespace Utah.Udot.ATSPM.ConfigApi.DTO
         public int LocationId { get; set; }
         public DirectionTypes DirectionTypeId { get; set; }
         public ICollection<DetectorDto> Detectors { get; set; }
+
+        public void ValidateReviewGate()
+        {
+            if (NeedsReview && ProtectedPhaseNumber == 0 && !AllowZeroProtectedPhase)
+                throw new ValidationException("A needs-review approach cannot be applied with ProtectedPhaseNumber 0 without an explicit override.");
+        }
     }
 }

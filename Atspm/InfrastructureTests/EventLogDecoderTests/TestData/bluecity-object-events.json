@@ -1,0 +1,28 @@
+{
+  "timezone": "US/Mountain",
+  "units": "imperial",
+  "events": [
+    {
+      "id": 98765432101,
+      "perception_id": 29044184,
+      "timestamp": "2026-09-10T13:12:25.116278-06:00",
+      "created_at": "2026-09-10T13:12:25.816278-06:00",
+      "object_id": "ab2abe42-cbad-48a3-b6a0-5a47d9ad7cd7",
+      "zone_name": "VC-SB-T2-CO-6   ",
+      "zone_id": 1785960513198,
+      "dwell_time_ms": 699,
+      "num_samples": 8,
+      "avg_speed": 31.5,
+      "p50_speed": 30.1,
+      "p85_speed": 35.7,
+      "avg_height": 4.8,
+      "avg_length": 14.2,
+      "avg_width": 6.1,
+      "classification": "VEHICLE",
+      "sub_classification": "car",
+      "user_classification": null,
+      "speed_bin": "Other",
+      "future_beta_field": { "ignored": true }
+    }
+  ]
+}

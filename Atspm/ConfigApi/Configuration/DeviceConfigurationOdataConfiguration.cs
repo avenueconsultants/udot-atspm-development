@@ -33,6 +33,10 @@ namespace Utah.Udot.Atspm.ConfigApi.Configuration
             var model = builder.EntitySet<DeviceConfiguration>("DeviceConfiguration").EntityType;
             model.Page(default, default);
             model.Expand(1, SelectExpandType.Automatic, new string[] { "product" });
+            // Credentials are write-only through the dedicated DeviceEdit endpoint.
+            // Keeping them out of the EDM also protects $select=* and navigation expansion.
+            model.Ignore(p => p.Password);
+            model.Ignore(p => p.ConnectionProperties);
 
             switch (apiVersion.MajorVersion)
             {
@@ -46,8 +50,6 @@ namespace Utah.Udot.Atspm.ConfigApi.Configuration
                         model.Property(p => p.OperationTimeout).DefaultValueString = "2000";
                         //model.Property(p => p.DataModel).MaxLength = 512;
                         model.Property(p => p.UserName).MaxLength = 50;
-                        model.Property(p => p.Password).MaxLength = 50;
-
                         var a = model.Collection.Function("GetEventLogDecoders");
                         a.ReturnsCollection<string>();
 
