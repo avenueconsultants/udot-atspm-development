@@ -20,7 +20,7 @@ import { addDays, differenceInCalendarDays } from 'date-fns'
 import type { GpxPoint } from './gpxFileParser'
 import type { GpxUploadOptions } from './types'
 
-export interface GpxRouteSignal {
+interface GpxRouteSignal {
   locationIdentifier: string
   latitude: number | null
   longitude: number | null
