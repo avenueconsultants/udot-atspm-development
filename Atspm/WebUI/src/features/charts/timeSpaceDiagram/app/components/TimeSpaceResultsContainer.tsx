@@ -311,9 +311,12 @@ export default function TimeSpaceResultsContainer({
             <Paper sx={{ mb: 3 }}>
               <LinkPivotAdjustmentTable
                 data={pivot.data.adjustments}
+                // The first signal can come back with no cycle length programmed,
+                // so use the first signal that has one.
                 cycleLength={
-                  baseTimeSpaceData.data.find((entry) => entry.result)?.result
-                    ?.cycleLength ?? null
+                  baseTimeSpaceData.data.find(
+                    (entry) => (entry.result?.cycleLength ?? 0) > 0
+                  )?.result?.cycleLength ?? null
                 }
               />
             </Paper>

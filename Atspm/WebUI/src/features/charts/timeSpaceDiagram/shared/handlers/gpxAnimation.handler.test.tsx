@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import type { ECharts, EChartsOption, SeriesOption } from 'echarts'
 import type { GpxChartTrack } from '../gpxRoutePlacement'
+import { TIME_SPACE_CYCLE_LABEL_SERIES_Z } from '../transformers/timeSpaceTransformerBase'
 import {
   mergeChartSeriesWithGpxOverlays,
   useGpxAnimationHandler,
@@ -135,6 +136,10 @@ describe('gpxAnimation handler', () => {
       'gpx-upload-1',
     ])
     expect(getSeriesById(chart, 'gpx-upload-1')?.name).toBe('GPX Tracks')
+    // Drawn over the signal bars and their duration labels.
+    expect(
+      (getSeriesById(chart, 'gpx-upload-1') as SeriesOption & { z?: number })?.z
+    ).toBeGreaterThan(TIME_SPACE_CYCLE_LABEL_SERIES_Z)
     expect(
       (
         getSeriesById(chart, 'gpx-upload-1') as SeriesOption & {

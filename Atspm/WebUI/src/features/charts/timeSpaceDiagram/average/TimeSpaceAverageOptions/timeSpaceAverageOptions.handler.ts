@@ -21,11 +21,11 @@ import { TimeSpaceAverageOptions } from '@/features/charts/timeSpaceDiagram/shar
 import { Route, RouteLocation } from '@/features/routes/types'
 import { DateTimeProps, TimeOnlyProps } from '@/types/TimeProps'
 import {
+  formatLocalDateToYYYYMMDD,
   formatTime,
-  formatUtcDateToYYYYMMDD,
   parseNum,
   parseTimeOfDayToDate,
-  parseYYYYMMDDToUtcDate,
+  parseYYYYMMDDToLocalDate,
   safeJsonParse,
 } from '@/utils/searchParams'
 import { set, subDays, subMonths } from 'date-fns'
@@ -146,11 +146,11 @@ export const useAverageOptionsHandler = ({
       setSpeedLimit(options.speedLimit ?? null)
 
     if (typeof options.startDate === 'string') {
-      const d = parseYYYYMMDDToUtcDate(options.startDate)
+      const d = parseYYYYMMDDToLocalDate(options.startDate)
       if (d) setStartDate(d)
     }
     if (typeof options.endDate === 'string') {
-      const d = parseYYYYMMDDToUtcDate(options.endDate)
+      const d = parseYYYYMMDDToLocalDate(options.endDate)
       if (d) setEndDate(d)
     }
 
@@ -172,8 +172,8 @@ export const useAverageOptionsHandler = ({
   }
 
   const toOptions = (): TimeSpaceAverageOptions => ({
-    startDate: formatUtcDateToYYYYMMDD(startDate),
-    endDate: formatUtcDateToYYYYMMDD(endDate),
+    startDate: formatLocalDateToYYYYMMDD(startDate),
+    endDate: formatLocalDateToYYYYMMDD(endDate),
     startTime: formatTime(startTime),
     endTime: formatTime(endTime),
 
