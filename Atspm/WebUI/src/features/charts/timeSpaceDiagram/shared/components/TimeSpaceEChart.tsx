@@ -63,19 +63,23 @@ import {
 import type { ECharts, EChartsOption, SeriesOption } from 'echarts'
 import { init } from 'echarts'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { GpxChartTrack } from '../gpxRoutePlacement'
 import { useGpxAnimationHandler } from '../handlers/gpxAnimation.handler'
 import {
   applyTimeSpaceAppearanceToOption,
   createDefaultTimeSpaceAppearanceSettings,
   type TimeSpaceAppearanceSettings,
 } from '../timeSpaceAppearance'
-import { GpxUploadOptions, TIME_SPACE_GPX_TRACKS_LEGEND_NAME } from '../types'
+import { TIME_SPACE_GPX_TRACKS_LEGEND_NAME } from '../types'
 import TimeSpaceSidebar from './TimeSpaceSidebar'
 
 export { buildOffsetResetButtons } from '@/features/charts/timeSpaceDiagram/renderer/utils/timeSpaceChartGeometry'
 export { getRequestedLegendVisibility } from '@/features/charts/timeSpaceDiagram/renderer/utils/timeSpaceLegend'
 
 export type TimeSpaceChartProps = TimeSpaceChartRendererProps
+
+// One shared empty list, so a chart without tracks doesn't redraw every render.
+const NO_GPX_TRACKS: GpxChartTrack[] = []
 
 const SRM_LEGEND_PREFIXES = [
   'SRM Collection',
@@ -120,7 +124,7 @@ export default function TimeSpaceEChart(prop: TimeSpaceChartProps) {
     option,
     style,
     theme,
-    gpxEntries,
+    gpxTracks = NO_GPX_TRACKS,
     ignoredLocations = [],
     onToggleIgnoredLocation,
     distanceSpacingMode = 'distance',
@@ -164,26 +168,10 @@ export default function TimeSpaceEChart(prop: TimeSpaceChartProps) {
     useState(0)
 
   const hasGpxTracks = useMemo(
-    () =>
-      (gpxEntries ?? []).some(
-        (entry) =>
-          !entry?.error &&
-          Array.isArray(entry.parsedData) &&
-          entry.parsedData.length > 0
-      ),
-    [gpxEntries]
+    () => gpxTracks.some((track) => track.data.length > 0),
+    [gpxTracks]
   )
-  const hasSrmTracks = useMemo(
-    () =>
-      hasSrmSeriesData(option) ||
-      (gpxEntries ?? []).some(
-        (entry) =>
-          !entry?.error &&
-          Array.isArray(entry.parsedEntityData) &&
-          entry.parsedEntityData.length > 0
-      ),
-    [gpxEntries, option]
-  )
+  const hasSrmTracks = useMemo(() => hasSrmSeriesData(option), [option])
   const baseSelectedSeries = useMemo(
     () => getLegendSelectedMap(option),
     [option]
@@ -339,10 +327,7 @@ export default function TimeSpaceEChart(prop: TimeSpaceChartProps) {
 
   useTimeSpaceHandler(chart, timeSpaceHandlerSyncVersion)
 
-  const { play: playGpxAnimations } = useGpxAnimationHandler(
-    chart,
-    gpxEntries as GpxUploadOptions[]
-  )
+  const { play: playGpxAnimations } = useGpxAnimationHandler(chart, gpxTracks)
 
   useEffect(() => {
     const dom = chartRef.current

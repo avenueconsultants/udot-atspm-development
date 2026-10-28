@@ -2,9 +2,14 @@ import { transformTimeSpaceData } from '@/features/charts/api'
 import { ToolType } from '@/features/charts/common/types'
 import { useTimeSpaceSrmData } from '@/features/charts/timeSpaceDiagram/api/getTimeSpaceSrmData'
 import { GpxUploadAccordion } from '@/features/charts/timeSpaceDiagram/shared/components/GpxUploader/GpxUploadAccordion'
+import { createGpxUploadEntry } from '@/features/charts/timeSpaceDiagram/shared/components/GpxUploader/GpxUploadComponent'
 import { SrmUploadAccordion } from '@/features/charts/timeSpaceDiagram/shared/components/SrmUploader/SrmUploadAccordion'
 import TimeSpaceEChart from '@/features/charts/timeSpaceDiagram/shared/components/TimeSpaceEChart'
 import { gzipAndBase64 } from '@/features/charts/timeSpaceDiagram/shared/fileEncoding'
+import {
+  getStartEndLocations,
+  placeGpxTracks,
+} from '@/features/charts/timeSpaceDiagram/shared/gpxRoutePlacement'
 import type { TransformedTimeSpaceResponse } from '@/features/charts/types'
 import LinkPivotAdjustmentTable from '@/features/tools/link-pivot/components/LinkPivotAdjustmentTable'
 import { LinkPivotApproachLinkComponent } from '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent'
@@ -20,11 +25,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type {
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceDiagramPhaseResult,
+  TimeSpaceDisplayProps,
   TimeSpaceDistanceSpacingMode,
   TimeSpaceHistoricOptions,
   TimeSpaceOptions,
@@ -32,8 +38,6 @@ import type {
 } from '../../shared/types'
 import {
   addDefaultTimeSpaceValues,
-  createEmptyTimeSpaceEntry,
-  getPrimaryTimeSpaceLocations,
   mergeSrmOverlaysIntoWrappedData,
   recomputeWrappedTimeSpaceData,
   supportsLinkPivotForTimeSpace,
@@ -70,11 +74,7 @@ export default function TimeSpaceResultsContainer({
   const { mutateAsync: fetchSrmData, isLoading: isApplyingSrm } =
     useTimeSpaceSrmData()
 
-  const locations = getPrimaryTimeSpaceLocations(baseTimeSpaceData)
-
-  const [gpxEntries, setGpxEntries] = useState([
-    createEmptyTimeSpaceEntry(locations),
-  ])
+  const [gpxEntries, setGpxEntries] = useState([createGpxUploadEntry(true)])
   const [ignoredLocations, setIgnoredLocation] = useState<string[]>([])
   const [distanceSpacingMode, setDistanceSpacingMode] =
     useState<TimeSpaceDistanceSpacingMode>('distance')
@@ -135,15 +135,12 @@ export default function TimeSpaceResultsContainer({
   }
 
   useEffect(() => {
-    const nextBaseData = addDefaultTimeSpaceValues(timeSpaceData)
-    const nextLocations = getPrimaryTimeSpaceLocations(nextBaseData)
-
     setActiveTab(0)
-    setBaseTimeSpaceData(nextBaseData)
+    setBaseTimeSpaceData(addDefaultTimeSpaceValues(timeSpaceData))
     setIgnoredLocation([])
     setDistanceSpacingMode('distance')
     setRouteOrientation('configured')
-    setGpxEntries([createEmptyTimeSpaceEntry(nextLocations)])
+    setGpxEntries([createGpxUploadEntry(true)])
     setSrmError(null)
     setHasAppliedSrm(false)
   }, [timeSpaceData])
@@ -190,7 +187,20 @@ export default function TimeSpaceResultsContainer({
     routeOrientation,
   ])
 
-  const chartHeight = transformedData.data.chart.displayProps?.height ?? 500
+  // Missing until the first transform finishes, and after one fails.
+  const displayProps = transformedData.data.chart.displayProps as
+    | TimeSpaceDisplayProps
+    | undefined
+  const chartHeight = displayProps?.height ?? 500
+  const gpxRoute = displayProps?.gpxRoute
+  const gpxTracks = useMemo(
+    () => placeGpxTracks(gpxEntries, gpxRoute),
+    [gpxEntries, gpxRoute]
+  )
+  const gpxStartEndLocations = useMemo(
+    () => getStartEndLocations(gpxRoute),
+    [gpxRoute]
+  )
   const pcdTimeWindow =
     getLinkPivotPcdTimeWindowFromTimeSpaceOptions(timeSpaceOptions)
   const linkPivotTabLabel = (
@@ -215,7 +225,8 @@ export default function TimeSpaceResultsContainer({
       )}
 
       <GpxUploadAccordion
-        locations={locations}
+        tracks={gpxTracks}
+        startEndLocations={gpxStartEndLocations}
         entries={gpxEntries}
         setEntries={setGpxEntries}
       />
@@ -281,7 +292,7 @@ export default function TimeSpaceResultsContainer({
                 height: `${chartHeight}px`,
                 position: 'relative',
               }}
-              gpxEntries={gpxEntries}
+              gpxTracks={gpxTracks}
               ignoredLocations={ignoredLocations}
               onToggleIgnoredLocation={toggleIgnoredLocation}
               distanceSpacingMode={distanceSpacingMode}

@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
+import type { GpxChartTrack } from '@/features/charts/timeSpaceDiagram/shared/gpxRoutePlacement'
 import type {
-  GpxUploadOptions,
   TimeSpaceDistanceSpacingMode,
   TimeSpaceRouteOrientation,
 } from '@/features/charts/timeSpaceDiagram/shared/types'
@@ -30,7 +30,7 @@ export interface TimeSpaceChartRendererProps {
   option: EChartsOption
   style?: CSSProperties
   theme?: 'light' | 'dark'
-  gpxEntries?: GpxUploadOptions[]
+  gpxTracks?: GpxChartTrack[]
   ignoredLocations?: string[]
   onToggleIgnoredLocation?: (location: string) => void
   distanceSpacingMode?: TimeSpaceDistanceSpacingMode

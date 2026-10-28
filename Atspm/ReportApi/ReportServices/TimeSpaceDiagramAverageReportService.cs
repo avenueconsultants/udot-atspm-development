@@ -128,6 +128,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
                     );
                 viewModel.LocationDescription = primaryPhase.Approach.Location.LocationDescription();
                 viewModel.ApproachDescription = primaryPhase.Approach.Description;
+                viewModel.Latitude = primaryPhase.Approach.Location.Latitude;
+                viewModel.Longitude = primaryPhase.Approach.Location.Longitude;
                 viewModel.PhaseType = phaseType;
                 viewModel.Order = order;
                 return TimeSpaceDiagramAveragePhaseResult.Success(viewModel);

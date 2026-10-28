@@ -21,7 +21,7 @@ import {
   PedestrianInterval,
 } from '@/features/charts/timingAndActuation/types'
 import { GpxPoint } from './gpxFileParser'
-import type { SrmEntityTrack } from './srmFileParser'
+import type { GpxRoute } from './gpxRoutePlacement'
 
 export const TIME_SPACE_GPX_TRACKS_LEGEND_NAME = 'GPX Tracks'
 
@@ -97,6 +97,8 @@ export interface RawTimeSpaceBaseData extends BaseChartData {
   approachId: number
   approachDescription: string
   phaseType: 'Primary' | 'Opposing'
+  latitude?: number | null
+  longitude?: number | null
 }
 
 export interface TimeSpaceBaseData extends RawTimeSpaceBaseData {
@@ -205,6 +207,13 @@ export interface TimeSpaceTransformOptions {
   routeOrientation?: TimeSpaceRouteOrientation
 }
 
+// What the time-space transformers hand the results page beside the chart.
+export interface TimeSpaceDisplayProps {
+  height: number
+  gpxRoute: GpxRoute
+  [key: string]: unknown
+}
+
 export interface RawTimeSpaceDiagramResponse {
   type: ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage
   data: TimeSpaceResponseData
@@ -214,9 +223,9 @@ export interface GpxUploadOptions {
   id: string
   file?: File
   parsedData?: GpxPoint[]
-  parsedEntityData?: SrmEntityTrack[]
-  startLocation: string
-  endLocation: string
+  // Only used when the route's signals have no map positions.
+  startLocation?: string
+  endLocation?: string
   primary?: boolean
   error?: string | null
 }
