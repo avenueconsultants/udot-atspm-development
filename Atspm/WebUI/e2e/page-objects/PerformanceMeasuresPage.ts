@@ -19,16 +19,19 @@ export class PerformanceMeasuresPage {
     })
     await this.page.goto(`/performance-measures?${params}`)
     await expect(
-      this.page.getByRole('combobox', { name: 'Measure', exact: true })
-    ).toHaveText(/\S/)
+      this.page.locator('input#measure-type-select'),
+      `Fixture must expose the requested ${chartType} measure`
+    ).toHaveValue(chartType)
     await expect(this.generateButton()).toBeVisible()
   }
 
   async generate(endpoint: string) {
     const responsePromise = this.page.waitForResponse(
       (response) =>
-        new URL(response.url()).pathname.toLowerCase() ===
-          endpoint.toLowerCase() && response.request().method() === 'POST'
+        new URL(response.url()).pathname
+          .toLowerCase()
+          .endsWith(endpoint.toLowerCase()) &&
+        response.request().method() === 'POST'
     )
     await this.generateButton().click()
     const response = await responsePromise

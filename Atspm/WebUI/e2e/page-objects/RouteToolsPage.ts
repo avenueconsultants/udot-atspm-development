@@ -7,8 +7,13 @@ export class RouteToolsPage {
 
   async routeId() {
     const { root, headers } = await api(this.page, 'CONFIG_URL')
-    const query = new URLSearchParams({ $filter: `name eq '${featureData.route}'` })
-    const response = await this.page.request.get(`${root}/api/v1/Route?${query}`, { headers })
+    const query = new URLSearchParams({
+      $filter: `name eq '${featureData.route}'`,
+    })
+    const response = await this.page.request.get(
+      `${root}/api/v1/Route?${query}`,
+      { headers }
+    )
     expect(response.status()).toBe(200)
     const body = await response.json()
     expect(body.value).toHaveLength(1)
@@ -17,9 +22,16 @@ export class RouteToolsPage {
 
   async historic() {
     const routeId = await this.routeId()
-    const params = new URLSearchParams({ toolType: 'TimeSpaceHistoric', routeId, start: featureData.start, end: '2026-01-05T08:20:00' })
+    const params = new URLSearchParams({
+      toolType: 'TimeSpaceHistoric',
+      routeId,
+      start: featureData.start,
+      end: '2026-01-05T08:20:00',
+    })
     await this.page.goto(`/time-space-diagrams?${params}`)
-    await expect(this.page.getByRole('combobox', { name: 'Route Select' })).toHaveValue(featureData.route)
+    await expect(
+      this.page.getByRole('combobox', { name: 'Route Select' })
+    ).toHaveValue(featureData.route)
     return routeId
   }
 }
