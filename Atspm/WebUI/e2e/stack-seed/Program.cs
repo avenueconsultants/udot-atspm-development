@@ -27,6 +27,7 @@ await config.WatchDogIgnoreEvents.Where(row => identifiers.Contains(row.Location
 var oldRoutes = await config.Routes.Include(route => route.RouteLocations).Where(route => route.Name == routeName).ToListAsync();
 config.Routes.RemoveRange(oldRoutes);
 await config.SaveChangesAsync();
+await config.RouteDistances.Where(row => row.LocationIdentifierA == "E2ECORE01" && row.LocationIdentifierB == "E2ECORE02").ExecuteDeleteAsync();
 var oldLocations = await config.Locations.Include(location => location.Approaches).ThenInclude(approach => approach.Detectors)
     .Where(location => identifiers.Contains(location.LocationIdentifier)).ToListAsync();
 config.Locations.RemoveRange(oldLocations);
@@ -34,8 +35,24 @@ await config.SaveChangesAsync();
 
 var locationTypeId = await config.LocationTypes.Select(row => row.Id).FirstAsync();
 var jurisdiction = await config.Jurisdictions.FirstAsync();
-var detectionTypes = await config.DetectionTypes.Where(row => row.Id == DetectionTypes.AC || row.Id == DetectionTypes.LLC || row.Id == DetectionTypes.SBP || row.Id == DetectionTypes.PP).ToListAsync();
+var detectionTypes = await config.DetectionTypes.Include(row => row.MeasureTypes).Where(row => row.Id == DetectionTypes.AC || row.Id == DetectionTypes.LLC || row.Id == DetectionTypes.SBP || row.Id == DetectionTypes.PP).ToListAsync();
 if (detectionTypes.Count != 4) throw new InvalidOperationException("Run the database installer before seeding feature fixtures.");
+// Empty databases have detection/measure reference rows but no eligibility links.
+// These are the supported measurement types exercised by the fixture detectors.
+var measures = await config.MeasureType.Where(row => new[] { 5, 6, 7, 8, 12, 13 }.Contains(row.Id)).ToListAsync();
+foreach (var detectionType in detectionTypes)
+{
+    var measureIds = detectionType.Id switch
+    {
+        DetectionTypes.AC => new[] { 6, 7, 8, 13 },
+        DetectionTypes.LLC => new[] { 5, 7 },
+        DetectionTypes.SBP => new[] { 12 },
+        _ => Array.Empty<int>(),
+    };
+    foreach (var measure in measures.Where(row => measureIds.Contains(row.Id)))
+        if (!detectionType.MeasureTypes.Any(row => row.Id == measure.Id)) detectionType.MeasureTypes.Add(measure);
+}
+await config.SaveChangesAsync();
 var locations = new List<Location>();
 foreach (var (identifier, index) in identifiers.Select((value, index) => (value, index)))
 {
@@ -75,6 +92,7 @@ foreach (var (identifier, index) in identifiers.Select((value, index) => (value,
 }
 await config.SaveChangesAsync();
 
+var corridorDistance = new RouteDistance { LocationIdentifierA = "E2ECORE01", LocationIdentifierB = "E2ECORE02", Distance = 528 };
 config.Routes.Add(new Route
 {
     Name = routeName,
@@ -82,6 +100,8 @@ config.Routes.Add(new Route
     {
         LocationIdentifier = location.LocationIdentifier, Order = index, PrimaryPhase = 2, OpposingPhase = 6,
         PrimaryDirectionId = DirectionTypes.NB, OpposingDirectionId = DirectionTypes.SB,
+        NextLocationDistance = index == 0 ? corridorDistance : null,
+        PreviousLocationDistance = index == 1 ? corridorDistance : null,
     }).ToList(),
 });
 foreach (var location in locations.Where(location => location.LocationIdentifier != "E2EEMPTY01"))
@@ -93,6 +113,10 @@ foreach (var location in locations.Where(location => location.LocationIdentifier
         EventCode = (short)code, EventParam = (short)parameter,
     });
     Add(0, 131, 1); // Coordination pattern.
+    Add(0, 132, 60); // Programmed cycle length.
+    Add(0, 133, 0); // Programmed offset.
+    for (var phase = 1; phase <= 8; phase++)
+        Add(0, 133 + phase, phase is 2 or 6 ? 35 : phase is 1 or 5 ? 25 : 0);
     for (var cycle = 0; cycle <= 60; cycle++)
     {
         foreach (var phase in new[] { 2, 6 })
