@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "fixtures/featureData.ts",
+    "helpers/**/*.ts",
+    "page-objects/**/*.ts",
+    "specs/*/**/*.spec.ts"
+  ]
+}

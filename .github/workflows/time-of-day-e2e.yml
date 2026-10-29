@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - 'Atspm/Application/**'
+      - 'Atspm/Data/**'
+      - 'Atspm/DatabaseInstaller/**'
       - 'Atspm/ConfigApi/**'
       - 'Atspm/DataApi/**'
       - 'Atspm/IdentityApi/**'
@@ -12,9 +14,6 @@ on:
       - 'Atspm/ReportApi/**'
       - 'Atspm/WebUI/src/**'
       - 'Atspm/WebUI/package*.json'
-      - 'Atspm/ReportApi/ReportServices/TimeOfDayReportService.cs'
-      - 'Atspm/WebUI/src/features/timeOfDay/**'
-      - 'Atspm/WebUI/src/pages/time-of-day/**'
       - 'Atspm/WebUI/e2e/**'
       - 'Atspm/WebUI/playwright.config.ts'
       - 'Atspm/docker-compose.yml'
@@ -49,6 +48,10 @@ jobs:
           cache: npm
           cache-dependency-path: Atspm/WebUI/package-lock.json
 
+      - name: Prepare API development certificate
+        working-directory: Atspm
+        run: openssl pkcs12 -export -out nginx/certs/aspnetapp.pfx -inkey nginx/certs/webui.key -in nginx/certs/webui.crt -passout pass:password
+
       - name: Start PostgreSQL and application stack
         working-directory: Atspm
         run: docker compose up -d --build postgres database-installer configapi dataapi reportapi identityapi webui nginx
@@ -76,6 +79,10 @@ jobs:
       - name: Seed deterministic feature fixtures
         working-directory: Atspm/WebUI
         run: npm run test:e2e:seed
+
+      - name: Type-check feature browser tests
+        working-directory: Atspm/WebUI
+        run: npm run test:e2e:typecheck:features
 
       - name: Run feature Playwright suites
         working-directory: Atspm/WebUI
