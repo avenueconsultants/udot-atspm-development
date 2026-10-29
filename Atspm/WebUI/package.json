@@ -13,7 +13,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
-    "test:e2e:seed": "dotnet run --project e2e/seed/TimeOfDay.Seed.csproj",
+    "test:e2e:seed": "dotnet run --project e2e/seed/TimeOfDay.Seed.csproj && dotnet run --project e2e/stack-seed/Stack.Seed.csproj",
     "test:e2e:seeded": "npm run test:e2e:seed && npm run test:e2e",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report"

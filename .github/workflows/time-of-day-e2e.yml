@@ -1,10 +1,17 @@
-name: Time of Day E2E
+name: Feature E2E
 
 on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'Atspm/Application/Business/TimeOfDay/**'
+      - 'Atspm/Application/**'
+      - 'Atspm/ConfigApi/**'
+      - 'Atspm/DataApi/**'
+      - 'Atspm/IdentityApi/**'
+      - 'Atspm/Infrastructure/**'
+      - 'Atspm/ReportApi/**'
+      - 'Atspm/WebUI/src/**'
+      - 'Atspm/WebUI/package*.json'
       - 'Atspm/ReportApi/ReportServices/TimeOfDayReportService.cs'
       - 'Atspm/WebUI/src/features/timeOfDay/**'
       - 'Atspm/WebUI/src/pages/time-of-day/**'
@@ -66,11 +73,11 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
 
-      - name: Seed deterministic Time of Day fixtures
+      - name: Seed deterministic feature fixtures
         working-directory: Atspm/WebUI
         run: npm run test:e2e:seed
 
-      - name: Run Time of Day Playwright suite
+      - name: Run feature Playwright suites
         working-directory: Atspm/WebUI
         run: npm run test:e2e
 
@@ -78,7 +85,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: time-of-day-playwright-report
+          name: feature-playwright-report
           path: Atspm/WebUI/playwright-report
           if-no-files-found: ignore
 
