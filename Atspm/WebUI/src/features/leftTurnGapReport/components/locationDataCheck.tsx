@@ -57,6 +57,7 @@ export const LocationDataCheck = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <TextField
             id="cycles-with-ped-outs"
+            type="number"
             value={cyclesWithPedCalls}
             onChange={(e) =>
               setCyclesWithPedCalls(
@@ -71,6 +72,7 @@ export const LocationDataCheck = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <TextField
             id="cycles-with-gap-outs"
+            type="number"
             value={cyclesWithGapOuts}
             onChange={(e) =>
               setCyclesWithGapOuts((e.target as HTMLInputElement).valueAsNumber)
@@ -83,6 +85,7 @@ export const LocationDataCheck = ({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <TextField
             id="left-turn-volume"
+            type="number"
             value={leftTurnVolume}
             onChange={(e) =>
               setLeftTurnVolume((e.target as HTMLInputElement).valueAsNumber)
