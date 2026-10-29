@@ -34,8 +34,8 @@ await config.SaveChangesAsync();
 
 var locationTypeId = await config.LocationTypes.Select(row => row.Id).FirstAsync();
 var jurisdiction = await config.Jurisdictions.FirstAsync();
-var detectionTypes = await config.DetectionTypes.Where(row => row.Id == DetectionTypes.AC || row.Id == DetectionTypes.LLC || row.Id == DetectionTypes.SBP).ToListAsync();
-if (detectionTypes.Count != 3) throw new InvalidOperationException("Run the database installer before seeding feature fixtures.");
+var detectionTypes = await config.DetectionTypes.Where(row => row.Id == DetectionTypes.AC || row.Id == DetectionTypes.LLC || row.Id == DetectionTypes.SBP || row.Id == DetectionTypes.PP).ToListAsync();
+if (detectionTypes.Count != 4) throw new InvalidOperationException("Run the database installer before seeding feature fixtures.");
 var locations = new List<Location>();
 foreach (var (identifier, index) in identifiers.Select((value, index) => (value, index)))
 {
@@ -117,6 +117,13 @@ foreach (var location in locations.Where(location => location.LocationIdentifier
             Add(cycle * 60 + second + 1, 81, channel);
         }
     }
+    // Two independent TSP requests, one early green and one extension, twenty seconds each.
+    Add(300, 112, 1); Add(302, 113, 1); Add(305, 118, 1); Add(310, 119, 1); Add(320, 115, 1);
+    Add(600, 112, 2); Add(602, 114, 2); Add(605, 118, 2); Add(610, 119, 2); Add(620, 115, 2);
+    // One preemption request with entry, track clearance, dwell, and exit.
+    Add(900, 102, 1); Add(905, 105, 1); Add(907, 106, 1); Add(910, 107, 1); Add(920, 104, 1); Add(925, 111, 1);
+    // Mainline flow, encoded occupancy (118 -> 11), and speed in km/h.
+    Add(1200, 1371, 1700); Add(1200, 1372, 118); Add(1200, 1373, 116);
     events.IndiannaEvents.Add(new CompressedEventLogs<IndianaEvent>
     {
         LocationIdentifier = location.LocationIdentifier, DeviceId = 0, DataType = typeof(IndianaEvent),
