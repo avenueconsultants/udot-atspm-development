@@ -8,13 +8,20 @@ export class LocationAdminPage {
   async goto() {
     const location = await fixtureLocation(this.page, featureData.admin)
     await this.page.goto(`/admin/locations/${location.id}`)
-    await expect(this.page.getByLabel('Primary Name', { exact: true })).toBeVisible()
+    await expect(
+      this.page.getByLabel('Primary Name', { exact: true })
+    ).toBeVisible()
     return location
   }
 
   async openApproach() {
-    await this.page.getByRole('tab', { name: 'Approaches', exact: true }).click()
+    await this.page
+      .getByRole('tab', { name: 'Approaches', exact: true })
+      .click()
     await this.page.getByRole('button', { name: /E2E NB through/ }).click()
-    return this.page.getByRole('table').filter({ hasText: 'Approach Speed (mph)' }).first()
+    return this.page
+      .getByRole('table')
+      .filter({ hasText: 'Approach Speed (mph)' })
+      .first()
   }
 }

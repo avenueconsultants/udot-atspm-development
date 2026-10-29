@@ -6,7 +6,6 @@ import {
   MovementTypes,
 } from '@/api/config'
 import AuditInfo from '@/components/AuditInfo'
-import { Color } from '@/features/charts/utils'
 import { useEditApproach } from '@/features/locations/api/approach'
 import ApproachEditorRowHeader from '@/features/locations/components/editApproach/ApproachEditorRow'
 import DeleteApproachModal from '@/features/locations/components/editApproach/DeleteApproachModal'
@@ -152,6 +151,8 @@ function EditApproach({ approach }: ApproachAdminProps) {
     modifiedApproach.protectedPhaseNumber = protectedPhaseNumber
     modifiedApproach.permissivePhaseNumber = permissivePhaseNumber
     modifiedApproach.pedestrianPhaseNumber = pedestrianPhaseNumber
+    modifiedApproach.mph =
+      String(approach.mph ?? '').trim() === '' ? null : Number(approach.mph)
     modifiedApproach.transitSignalPriorityNumber =
       approach.transitSignalPriorityNumber === ''
         ? null
