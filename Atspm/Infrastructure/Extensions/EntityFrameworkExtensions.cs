@@ -113,73 +113,46 @@ namespace Utah.Udot.Atspm.Infrastructure.Extensions
                 return;
             }
 
-            var user = await userManager.FindByEmailAsync(email);
-            if (user == null)
+            var existingUser = await userManager.FindByEmailAsync(email);
+            if (existingUser == null)
             {
                 logMessages.AdminNotFound(email);
 
-                user = new ApplicationUser
-                {
-                    UserName = email,
-                    Email = email,
-                    EmailConfirmed = true,
-                    FirstName = "Admin",
-                    LastName = "User"
-                };
+                var user = new ApplicationUser { UserName = email, Email = email };
                 var result = await userManager.CreateAsync(user, password);
 
-                if (!result.Succeeded)
+                if (result.Succeeded)
+                {
+                    var adminRole = AtspmAuthorization.Roles.Admin;
+
+                    if (!await roleManager.RoleExistsAsync(adminRole))
+                    {
+                        logMessages.CreatingRole(adminRole);
+                        await roleManager.CreateAsync(new IdentityRole(adminRole));
+                    }
+
+                    var addToRoleResult = await userManager.AddToRoleAsync(user, adminRole);
+
+                    if (addToRoleResult.Succeeded)
+                    {
+                        logMessages.SeedingSuccess(email, adminRole);
+                    }
+                    else
+                    {
+                        var errors = string.Join(", ", addToRoleResult.Errors.Select(e => e.Description));
+                        logMessages.RoleAssignmentError(adminRole, errors);
+                    }
+                }
+                else
                 {
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                     logMessages.UserCreationError(errors);
-                    return;
                 }
             }
             else
             {
                 logMessages.UserAlreadyExists(email);
-
-                var requiresUpdate = false;
-                if (string.IsNullOrWhiteSpace(user.FirstName))
-                {
-                    user.FirstName = "Admin";
-                    requiresUpdate = true;
-                }
-                if (string.IsNullOrWhiteSpace(user.LastName))
-                {
-                    user.LastName = "User";
-                    requiresUpdate = true;
-                }
-                if (!user.EmailConfirmed)
-                {
-                    user.EmailConfirmed = true;
-                    requiresUpdate = true;
-                }
-                if (requiresUpdate)
-                {
-                    await userManager.UpdateAsync(user);
-                }
             }
-
-            var adminRole = AtspmAuthorization.Roles.Admin;
-            if (!await roleManager.RoleExistsAsync(adminRole))
-            {
-                logMessages.CreatingRole(adminRole);
-                await roleManager.CreateAsync(new IdentityRole(adminRole));
-            }
-
-            if (!await userManager.IsInRoleAsync(user, adminRole))
-            {
-                var addToRoleResult = await userManager.AddToRoleAsync(user, adminRole);
-                if (!addToRoleResult.Succeeded)
-                {
-                    var errors = string.Join(", ", addToRoleResult.Errors.Select(e => e.Description));
-                    logMessages.RoleAssignmentError(adminRole, errors);
-                    return;
-                }
-            }
-
-            logMessages.SeedingSuccess(email, adminRole);
         }
 
         /// <summary>

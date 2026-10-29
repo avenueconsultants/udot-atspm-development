@@ -243,7 +243,11 @@ string Connection(string key)
     if (builder.Host is "postgres" or "localhost")
     {
         builder.Host = "localhost";
-        builder.Port = 5433;
+        builder.Port = int.TryParse(
+            Environment.GetEnvironmentVariable("TOD_E2E_POSTGRES_PORT"),
+            out var port)
+            ? port
+            : 5432;
     }
     return builder.ConnectionString;
 }

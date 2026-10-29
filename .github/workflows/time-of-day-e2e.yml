@@ -42,9 +42,23 @@ jobs:
           cache: npm
           cache-dependency-path: Atspm/WebUI/package-lock.json
 
+      - name: Generate ephemeral local HTTPS certificates
+        working-directory: Atspm
+        run: |
+          openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
+            -keyout nginx/certs/webui.key \
+            -out nginx/certs/webui.crt \
+            -subj '/CN=localhost' \
+            -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+          openssl pkcs12 -export \
+            -out nginx/certs/aspnetapp.pfx \
+            -inkey nginx/certs/webui.key \
+            -in nginx/certs/webui.crt \
+            -passout pass:password
+
       - name: Start PostgreSQL and application stack
         working-directory: Atspm
-        run: docker compose up -d --build postgres database-installer configapi dataapi reportapi identityapi webui nginx
+        run: docker compose --env-file WebUI/e2e/docker.env up -d --build postgres database-installer configapi dataapi reportapi identityapi webui nginx
 
       - name: Wait for the web application
         run: |
@@ -57,7 +71,7 @@ jobs:
             fi
             sleep 5
           done
-          docker compose -f Atspm/docker-compose.yml logs
+          docker compose --env-file Atspm/WebUI/e2e/docker.env -f Atspm/docker-compose.yml logs
           exit 1
 
       - name: Install browser test dependencies
@@ -85,4 +99,4 @@ jobs:
       - name: Show service logs after failure
         if: failure()
         working-directory: Atspm
-        run: docker compose logs
+        run: docker compose --env-file WebUI/e2e/docker.env logs

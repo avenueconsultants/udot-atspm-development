@@ -57,16 +57,13 @@ The work found several issues that would not have been exposed by mocked browser
 
 - Historical location lookup did not order applicable versions by start date. It could
   return an older configuration when multiple versions existed. The lookup now
-  deterministically selects the newest version effective on the requested date. This
-  repository method is shared by many reports, so the correction benefits more than
-  Time-of-Day.
+  deterministically selects the newest version effective on the requested date, which
+  is required for Time-of-Day capacity calculations across configuration changes.
 - Occupancy was displayed as zero when no observations existed. It is now represented
   as unavailable instead of implying a measured zero.
 - A location with schedule data but no usable observations could render an empty chart.
   The UI now presents a clear no-data state.
 - Corridor reordering is now operable from the keyboard as well as by pointer drag.
-- Administrator seeding is idempotent and repairs required profile/role state for a
-  pre-existing local administrator.
 
 ## Verification results
 
