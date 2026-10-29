@@ -37,7 +37,11 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
     [result]
   )
   const hasChartData =
-    hasPlanProfileData(result) || hasSplitPressureData(result)
+    hasPlanProfileData(result) ||
+    hasSplitPressureData(result) ||
+    analysisModel.layers.some(
+      (layer) => layer.group === 'Schedules' && layer.available
+    )
   const renderDetails = useCallback(
     ({
       detailTab,
