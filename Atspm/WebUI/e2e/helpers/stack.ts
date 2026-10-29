@@ -17,11 +17,12 @@ export async function api(
   const token = (await page.context().cookies()).find(
     (cookie) => cookie.name === 'token'
   )?.value
+  const headers: Record<string, string> = token
+    ? { Authorization: `Bearer ${decodeURIComponent(token)}` }
+    : {}
   return {
     root,
-    headers: token
-      ? { Authorization: `Bearer ${decodeURIComponent(token)}` }
-      : {},
+    headers,
   }
 }
 
