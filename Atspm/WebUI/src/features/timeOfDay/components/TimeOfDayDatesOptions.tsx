@@ -136,7 +136,6 @@ export default function TimeOfDayDatesOptions({
 
   return (
     <Paper
-      data-testid="time-of-day-dates"
       sx={{
         width: { xs: '100%', sm: '336px' },
         height: 600,
@@ -187,7 +186,6 @@ export default function TimeOfDayDatesOptions({
                 sx={{ height: 20, minWidth: 26 }}
               />
               <Button
-                data-testid="time-of-day-clear-dates"
                 size="small"
                 color="error"
                 startIcon={<DeleteOutlineIcon />}

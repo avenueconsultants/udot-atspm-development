@@ -56,7 +56,6 @@ export default function TimeOfDayAnalysisOptions({
   return (
     <>
       <Paper
-        data-testid="time-of-day-analysis-options"
         sx={{
           width: { xs: '100%', sm: 360 },
           display: 'flex',
@@ -73,7 +72,6 @@ export default function TimeOfDayAnalysisOptions({
               </Divider>
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <ToggleButtonGroup
-                  data-testid="time-of-day-data-source"
                   exclusive
                   color="primary"
                   size="small"

@@ -1,4 +1,0 @@
-services:
-  postgres:
-    ports: !override
-      - "5433:5432"

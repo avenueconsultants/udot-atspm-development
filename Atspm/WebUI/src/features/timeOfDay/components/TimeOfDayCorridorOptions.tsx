@@ -100,7 +100,6 @@ export default function TimeOfDayCorridorOptions({
 
   return (
     <Paper
-      data-testid="time-of-day-corridor"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -199,7 +198,6 @@ export default function TimeOfDayCorridorOptions({
               )}
             </Stack>
             <Button
-              data-testid="time-of-day-clear-locations"
               size="small"
               color="error"
               startIcon={<DeleteOutlineIcon />}
@@ -277,7 +275,6 @@ export default function TimeOfDayCorridorOptions({
                         >
                           {(dragProvided, dragSnapshot) => (
                             <Box
-                              data-testid="time-of-day-location-row"
                               component="li"
                               ref={dragProvided.innerRef}
                               {...dragProvided.draggableProps}

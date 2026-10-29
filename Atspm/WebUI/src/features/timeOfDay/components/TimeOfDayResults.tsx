@@ -67,7 +67,6 @@ export default function TimeOfDayResults({ result }: TimeOfDayResultsProps) {
 
   return (
     <Stack
-      data-testid="time-of-day-results"
       spacing={0}
       sx={{
         position: 'relative',
