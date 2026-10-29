@@ -6,11 +6,35 @@ CI retries, and failure screenshots/video/traces from `playwright.config.ts`.
 Successful analysis tests use the actual Config, Data, Report, and Identity APIs.
 Only explicit failure-injection tests intercept a response.
 
+## Testing branches
+
+Each branch starts from `time-of-day-testing` and includes the shared fixture
+foundation. Feature tests are isolated to the named branch so the branches can be
+reviewed independently and merged together.
+
+| Branch                                | Additional feature checks |
+| ------------------------------------- | ------------------------: |
+| `performance-measures-testing`        |                         7 |
+| `location-administration-testing`     |                         6 |
+| `core-performance-measures-testing`   |                         6 |
+| `time-space-link-pivot-testing`       |                        10 |
+| `turning-movement-pedestrian-testing` |                         5 |
+| `left-turn-gap-report-testing`        |                         7 |
+| `authentication-permissions-testing`  |                        14 |
+| `watchdog-testing`                    |                         6 |
+| `aggregate-specialized-tools-testing` |                        10 |
+
+These are 71 new checks in addition to the original 64 checks, which include the
+shared authentication setup. Each feature directory has its own README with
+individual cases and coverage limits. The administration and left-turn branches
+also include the narrow input-serialization fixes exposed by their regressions.
+
 ## Run locally
 
 Start the Docker stack from `Atspm`:
 
 ```powershell
+docker run --rm --entrypoint openssl -v "${PWD}/nginx/certs:/certs" mcr.microsoft.com/dotnet/sdk:8.0 pkcs12 -export -out /certs/aspnetapp.pfx -inkey /certs/webui.key -in /certs/webui.crt -passout pass:password
 docker compose up -d --build postgres database-installer configapi dataapi reportapi identityapi webui nginx
 ```
 
@@ -20,8 +44,14 @@ Then, from `Atspm/WebUI`:
 npm ci
 npx playwright install chromium
 npm run test:e2e:seeded
+npm run test:e2e:typecheck:features
 npm run test:e2e:report
 ```
+
+The feature TypeScript command checks the new suites under feature subdirectories,
+their fixtures, and page objects. Repository-wide `tsc --noEmit` continues to report
+existing errors in generated API schemas, application code, and original top-level
+Time-of-Day specs.
 
 `test:e2e:seed` runs both the existing Time-of-Day seeder and the feature seeder.
 Run against a dedicated test stack: the seeders replace their named fixture data.
@@ -51,9 +81,15 @@ On January 5, 2026, from 08:00 to 09:00, the populated locations contain:
 - Detector channels 1 (NB through), 2 (SB through), and 3 (NB left).
 - Two activations per detector per minute: second 15 and second 45.
 - Therefore 30 activations per quarter, 120 per detector per hour, and 360 total.
+- Coordination diagrams include 59 complete red-to-red cycles inside this hour;
+  one green arrival and one red arrival fall outside those complete cycles.
 - Matching quarter-hour detector-count aggregation rows.
 - Pedestrian calls five seconds before walk begins.
 - A fixed Watchdog record-count log for each populated location.
+- Required detector-to-measure eligibility links and a 528-foot corridor distance.
+- Programmed sixty-second cycle, zero offset, and phase splits for average diagrams.
+- Two priority requests (one early green, one extension), one preemption, and
+  encoded ramp-meter mainline flow, occupancy, and speed observations.
 
 `E2EEMPTY01` has configuration and no event/aggregation observations. The seeder
 also creates `e2e-reader@example.invalid` with no privileged roles for permission
