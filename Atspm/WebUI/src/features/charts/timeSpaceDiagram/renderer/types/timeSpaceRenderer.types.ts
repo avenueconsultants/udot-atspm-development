@@ -14,10 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // #endregion
-import type {
-  GpxUploadOptions,
-  TimeSpaceDistanceSpacingMode,
-} from '@/features/charts/timeSpaceDiagram/shared/types'
+import type { GpxChartTrack } from '@/features/charts/timeSpaceDiagram/shared/gpxRoutePlacement'
+import type { TimeSpaceDistanceSpacingMode } from '@/features/charts/timeSpaceDiagram/shared/types'
 import type { EChartsOption } from 'echarts'
 import type { CSSProperties, ReactNode } from 'react'
 
@@ -29,7 +27,7 @@ export interface TimeSpaceChartRendererProps {
   option: EChartsOption
   style?: CSSProperties
   theme?: 'light' | 'dark'
-  gpxEntries?: GpxUploadOptions[]
+  gpxTracks?: GpxChartTrack[]
   ignoredLocations?: string[]
   onToggleIgnoredLocation?: (location: string) => void
   distanceSpacingMode?: TimeSpaceDistanceSpacingMode

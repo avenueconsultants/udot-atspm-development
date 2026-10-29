@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material'
 import { parseGpxFile } from '../../gpxFileParser'
+import { resolveStartEnd } from '../../gpxRoutePlacement'
 import { GpxUploadOptions } from '../../types'
 import {
   UPLOAD_ALERT_SX,
@@ -25,7 +26,10 @@ import {
 interface GpxUploadRowProps {
   entry: GpxUploadOptions
   index: number
-  locations: string[]
+  // Why the chart can't draw this drive, once a file is loaded.
+  message?: string | null
+  // Signals offered as "Start" and "End"; empty hides the pickers.
+  startEndLocations: string[]
   canDelete: boolean
   onDelete: () => void
   onChange: (updates: Partial<GpxUploadOptions>) => void
@@ -37,8 +41,11 @@ export const GpxUploadRow = ({
   canDelete,
   onDelete,
   onChange,
-  locations,
+  message,
+  startEndLocations,
 }: GpxUploadRowProps) => {
+  const { start, end } = resolveStartEnd(startEndLocations, entry)
+
   return (
     <Box
       sx={{
@@ -120,15 +127,17 @@ export const GpxUploadRow = ({
                   onChange({
                     file,
                     parsedData: parsed,
-                    parsedEntityData: undefined,
                     error: null,
                   })
-                } catch {
+                } catch (error) {
                   onChange({
                     file: undefined,
                     parsedData: undefined,
-                    parsedEntityData: undefined,
-                    error: 'Invalid GPX file',
+                    // The parser says which way the file was unusable.
+                    error:
+                      error instanceof Error
+                        ? error.message
+                        : 'Invalid GPX file',
                   })
                 }
               }}
@@ -178,55 +187,71 @@ export const GpxUploadRow = ({
           </Alert>
         )}
 
-        <Stack direction="row" spacing={1}>
-          <TextField
-            select
-            label="Start"
-            size="small"
-            value={entry.startLocation}
-            onChange={(e) =>
-              onChange({
-                startLocation: e.target.value,
-              })
-            }
-            fullWidth
-            sx={{
-              '& .MuiInputBase-input': {
-                fontSize: '0.82rem',
-              },
-            }}
-          >
-            {locations?.map((l, i) => (
-              <MenuItem key={i} value={l} sx={{ fontSize: '0.82rem' }}>
-                {l}
-              </MenuItem>
-            ))}
-          </TextField>
+        {message && (
+          <Alert severity="warning" sx={UPLOAD_ALERT_SX}>
+            {message}
+          </Alert>
+        )}
 
-          <TextField
-            select
-            label="End"
-            size="small"
-            value={entry.endLocation}
-            onChange={(e) =>
-              onChange({
-                endLocation: e.target.value,
-              })
-            }
-            fullWidth
-            sx={{
-              '& .MuiInputBase-input': {
-                fontSize: '0.82rem',
-              },
-            }}
-          >
-            {locations?.map((l, i) => (
-              <MenuItem key={i} value={l} sx={{ fontSize: '0.82rem' }}>
-                {l}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Stack>
+        {startEndLocations.length > 0 && (
+          <>
+            <Alert severity="info" sx={UPLOAD_ALERT_SX}>
+              The first or last signal on this route has no map position, so
+              this drive is placed by distance driven from Start. Make sure the
+              recording begins at the Start signal.
+            </Alert>
+
+            <Stack direction="row" spacing={1}>
+              <TextField
+                select
+                label="Start"
+                size="small"
+                value={start}
+                onChange={(e) =>
+                  onChange({
+                    startLocation: e.target.value,
+                  })
+                }
+                fullWidth
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '0.82rem',
+                  },
+                }}
+              >
+                {startEndLocations.map((l, i) => (
+                  <MenuItem key={i} value={l} sx={{ fontSize: '0.82rem' }}>
+                    {l}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                select
+                label="End"
+                size="small"
+                value={end}
+                onChange={(e) =>
+                  onChange({
+                    endLocation: e.target.value,
+                  })
+                }
+                fullWidth
+                sx={{
+                  '& .MuiInputBase-input': {
+                    fontSize: '0.82rem',
+                  },
+                }}
+              >
+                {startEndLocations.map((l, i) => (
+                  <MenuItem key={i} value={l} sx={{ fontSize: '0.82rem' }}>
+                    {l}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Stack>
+          </>
+        )}
       </Stack>
     </Box>
   )

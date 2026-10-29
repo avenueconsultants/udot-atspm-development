@@ -1,27 +1,29 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import { Box, Button, Stack } from '@mui/material'
 import { nanoid } from 'nanoid'
+import type { GpxChartTrack } from '../../gpxRoutePlacement'
 import { GpxUploadOptions } from '../../types'
 import { GpxUploadRow } from './GpxUploadRow'
 
 interface Prop {
-  locations: string[]
+  tracks: GpxChartTrack[]
+  // Signals offered as "Start" and "End"; empty hides the pickers.
+  startEndLocations: string[]
   entries: GpxUploadOptions[]
   setEntries: React.Dispatch<React.SetStateAction<GpxUploadOptions[]>>
 }
 
-function createEmptyEntry(primary = false): GpxUploadOptions {
+// The first row is the primary track, which can't be removed.
+export function createGpxUploadEntry(primary = false): GpxUploadOptions {
   return {
     id: nanoid(),
-    startLocation: '',
-    endLocation: '',
     error: null,
     primary,
   }
 }
 
 export const GpxUploadComponent = (prop: Prop) => {
-  const { locations, entries, setEntries } = prop
+  const { tracks, startEndLocations, entries, setEntries } = prop
 
   const updateEntry = (id: string, updates: Partial<GpxUploadOptions>) => {
     setEntries((prev) =>
@@ -30,7 +32,7 @@ export const GpxUploadComponent = (prop: Prop) => {
   }
 
   const addEntry = () => {
-    setEntries((prev) => [...prev, createEmptyEntry(false)])
+    setEntries((prev) => [...prev, createGpxUploadEntry()])
   }
 
   const deleteEntry = (id: string) => {
@@ -45,7 +47,8 @@ export const GpxUploadComponent = (prop: Prop) => {
             key={`${index} ${entry.id}`}
             entry={entry}
             index={index}
-            locations={locations}
+            message={tracks.find((track) => track.id === entry.id)?.message}
+            startEndLocations={startEndLocations}
             canDelete={!entry.primary}
             onDelete={() => deleteEntry(entry.id)}
             onChange={(updates) => updateEntry(entry.id, updates)}

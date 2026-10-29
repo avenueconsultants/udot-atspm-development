@@ -1,6 +1,7 @@
 import { ToolType } from '@/features/charts/common/types'
 import type { Route, RouteLocation } from '@/features/routes/types'
 import { act, renderHook, waitFor } from '@testing-library/react'
+import type { ReadonlyURLSearchParams } from 'next/navigation'
 import { useAverageOptionsHandler } from './timeSpaceAverageOptions.handler'
 
 function buildRouteLocation(
@@ -101,5 +102,34 @@ describe('useAverageOptionsHandler', () => {
     expect(JSON.parse(params.get('coordinatedPhases') ?? '[]')).toEqual(
       options.coordinatedPhases
     )
+  })
+
+  it('opens a shared link on the same calendar days it names', () => {
+    const { result } = renderHook(() => useAverageOptionsHandler({ routes }))
+
+    act(() => {
+      result.current.applyFromSearchParams(
+        new URLSearchParams(
+          'toolType=TimeSpaceAverage&routeId=4122&startDate=2026-04-15&endDate=2026-04-16'
+        ) as unknown as ReadonlyURLSearchParams
+      )
+    })
+
+    expect(result.current.startDateTime.getDate()).toBe(15)
+    expect(result.current.endDateTime.getDate()).toBe(16)
+    expect(result.current.toOptions().startDate).toBe('2026-04-15')
+    expect(result.current.toOptions().endDate).toBe('2026-04-16')
+  })
+
+  it('sends the calendar day picked in the date picker', () => {
+    const { result } = renderHook(() => useAverageOptionsHandler({ routes }))
+
+    act(() => {
+      result.current.changeStartDate(new Date(2026, 3, 15))
+      result.current.changeEndDate(new Date(2026, 3, 16, 23, 30))
+    })
+
+    expect(result.current.toOptions().startDate).toBe('2026-04-15')
+    expect(result.current.toOptions().endDate).toBe('2026-04-16')
   })
 })

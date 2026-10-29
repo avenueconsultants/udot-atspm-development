@@ -17,6 +17,12 @@
 import type { Config } from 'jest'
 import nextJest from 'next/jest.js'
 
+// Pin a zone west of universal time that observes daylight saving, so date
+// tests behave the same on every machine. This has to be set here: each test
+// file gets its own copy of process.env, so setting it inside a test does not
+// move the clock.
+process.env.TZ = 'America/Denver'
+
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './',
