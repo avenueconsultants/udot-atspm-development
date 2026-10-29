@@ -11,8 +11,10 @@ export class LoginPage {
   async signIn(email: string, password: string) {
     await this.goto()
     await this.page.getByLabel('Email Address').fill(email)
-    await this.page.getByLabel('Password', { exact: true }).fill(password)
-    await this.page.getByRole('button', { name: 'Sign In', exact: true }).click()
+    await this.page.getByLabel('Password').fill(password)
+    await this.page
+      .getByRole('button', { name: 'Sign In', exact: true })
+      .click()
     await expect(this.page).toHaveURL(/\/performance-measures$/)
   }
 }
