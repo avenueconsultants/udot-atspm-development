@@ -413,23 +413,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
         private List<IndianaEvent> GetEventOverallapingTime(DateTime start, IReadOnlyList<IndianaEvent> programmedCycleForPlan, string eventType)
         {
-            var planEvent = programmedCycleForPlan.Where(e => e.Timestamp == start).ToList();
-
-
-            if (!planEvent.Any())
-            {
-                planEvent = programmedCycleForPlan.Where(e => e.Timestamp < start)
-                    .GroupBy(log => log.EventCode)
-                    .Select(group => group.OrderByDescending(e => e.Timestamp).FirstOrDefault())
-                    .Where(e => e != null)
-                    .Cast<IndianaEvent>()
-                    .ToList();
-            }
+            var planEvent = programmedCycleForPlan
+                .Where(e => e.Timestamp <= start)
+                .GroupBy(e => e.EventCode)
+                .Select(group => group.OrderByDescending(e => e.Timestamp).First())
+                .ToList();
 
             if (!planEvent.Any())
                 throw new NullReferenceException($"Error grabbing {eventType}");
 
-            return planEvent.ToList();
+            return planEvent;
         }
 
         private static bool IsPlanSameForTimePeriod(List<Plan> planEventsForPeriod)
