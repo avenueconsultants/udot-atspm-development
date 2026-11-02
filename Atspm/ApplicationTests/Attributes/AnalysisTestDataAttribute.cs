@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for ApplicationTests - Utah.Udot.Atspm.ApplicationTests.Attributes/AnalysisTestDataAttribute.cs
 // 
@@ -16,6 +16,7 @@
 #endregion
 
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,16 +27,24 @@ using Xunit.Sdk;
 
 namespace Utah.Udot.Atspm.ApplicationTests.Attributes
 {
+    /// <summary>
+    /// Custom generic xUnit data attribute to dynamically load test inputs and expected outputs
+    /// from JSON data files matching the specific test type name.
+    /// </summary>
+    /// <typeparam name="T">The test data type parameter.</typeparam>
     public class AnalysisTestDataAttribute<T> : DataAttribute where T : AnalysisTestDataBase
     {
+        /// <inheritdoc/>
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
             var dir = new DirectoryInfo(Path.Combine(Path.GetFullPath(@"..\..\..\"), "Analysis", "TestData"));
+            var hasFiles = false;
 
             if (dir.Exists)
             {
                 foreach (var f in dir.GetFiles("*.json").Where(f => f.Name.Contains(typeof(T).Name)))
                 {
+                    hasFiles = true;
                     var json = File.ReadAllText(f.FullName);
                     var testFile = JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings()
                     {
@@ -63,6 +72,88 @@ namespace Utah.Udot.Atspm.ApplicationTests.Attributes
 
                     yield return new object[] { testFile.Configuration, testFile.Input, testFile.Output };
                 }
+            }
+
+            if (!hasFiles)
+            {
+                yield return new object[] { default, default, default };
+            }
+        }
+    }
+
+    /// <summary>
+    /// Non-generic custom xUnit data attribute that dynamically infers the test data type
+    /// from the generic base class parameter of the declaring class.
+    /// </summary>
+    public class AnalysisTestDataAttribute : DataAttribute
+    {
+        /// <inheritdoc/>
+        public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+        {
+            var declaringType = testMethod.DeclaringType;
+            Type testDataType = null;
+
+            while (declaringType != null)
+            {
+                if (declaringType.IsGenericType)
+                {
+                    var genericTypeDefinition = declaringType.GetGenericTypeDefinition();
+                    var genericArgs = declaringType.GetGenericArguments();
+
+                    if (genericTypeDefinition.Name.StartsWith("WorkflowStepTestBase") && genericArgs.Length == 5)
+                    {
+                        testDataType = genericArgs[1];
+                        break;
+                    }
+                }
+                declaringType = declaringType.BaseType;
+            }
+
+            if (testDataType == null)
+            {
+                yield break;
+            }
+
+            var dir = new DirectoryInfo(Path.Combine(Path.GetFullPath(@"..\..\..\"), "Analysis", "TestData"));
+            var hasFiles = false;
+
+            if (dir.Exists)
+            {
+                foreach (var f in dir.GetFiles("*.json").Where(f => f.Name.Contains(testDataType.Name)))
+                {
+                    hasFiles = true;
+                    var json = File.ReadAllText(f.FullName);
+                    var testFile = (AnalysisTestDataBase)JsonConvert.DeserializeObject(json, testDataType, new JsonSerializerSettings()
+                    {
+                        TypeNameHandling = TypeNameHandling.All,
+                    });
+
+                    if (testFile.Configuration is ILocationLayer config)
+                    {
+                        if (testFile.Input is IEnumerable<ILocationLayer> input)
+                        {
+                            foreach (var i in input)
+                            {
+                                i.LocationIdentifier = config.LocationIdentifier;
+                            }
+                        }
+
+                        if (testFile.Output is IEnumerable<ILocationLayer> output)
+                        {
+                            foreach (var o in output)
+                            {
+                                o.LocationIdentifier = config.LocationIdentifier;
+                            }
+                        }
+                    }
+
+                    yield return new object[] { testFile.Configuration, testFile.Input, testFile.Output };
+                }
+            }
+
+            if (!hasFiles)
+            {
+                yield return new object[] { default, default, default };
             }
         }
     }
