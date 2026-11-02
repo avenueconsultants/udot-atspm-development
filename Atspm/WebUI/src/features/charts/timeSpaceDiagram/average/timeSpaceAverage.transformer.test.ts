@@ -19,6 +19,7 @@ import type { EChartsOption, SeriesOption } from 'echarts'
 import type {
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
+  TimeSpaceDisplayProps,
 } from '../shared/types'
 import transformTimeSpaceAverageData from './timeSpaceAverage.transformer'
 
@@ -61,6 +62,68 @@ function buildAverageLocation(
 }
 
 describe('transformTimeSpaceAverageData', () => {
+  it.each(['distance', 'sequence', 'hybrid'] as const)(
+    'aligns GPX with the directional signal rows in %s spacing',
+    (distanceSpacingMode) => {
+      const rows = [
+        buildAverageLocation('Primary', {
+          locationIdentifier: '7000',
+          order: 0,
+        }),
+        buildAverageLocation('Primary', {
+          locationIdentifier: '7001',
+          order: 1,
+        }),
+        buildAverageLocation('Opposing', {
+          locationIdentifier: '7001',
+          order: 0,
+        }),
+        buildAverageLocation('Opposing', {
+          locationIdentifier: '7000',
+          order: 1,
+        }),
+      ]
+      const result = transformTimeSpaceAverageData(
+        {
+          type: ToolType.TimeSpaceAverage,
+          data: rows.map((row) => ({
+            isSuccess: true,
+            error: null,
+            result: row,
+          })),
+        },
+        { distanceSpacingMode }
+      )
+      const chart = result.data.chart as EChartsOption
+      const series = chart.series as SeriesOption[]
+      const route = (result.data.chart.displayProps as TimeSpaceDisplayProps)
+        .gpxRoute
+      if (!route) throw new Error('Expected the chart to provide a GPX route')
+
+      expect(route.signals).toHaveLength(2)
+      for (const signal of route.signals) {
+        const primary = series.find(
+          (entry) =>
+            String(entry.id).startsWith(
+              `Cycle Rail ${signal.locationIdentifier} `
+            ) && String(entry.id).endsWith(' primary')
+        )
+        const opposing = series.find(
+          (entry) =>
+            String(entry.id).startsWith(
+              `Cycle Rail ${signal.locationIdentifier} `
+            ) && String(entry.id).endsWith(' opposing')
+        )
+        expect(signal.primaryChartPosition).toBe(
+          (primary?.data as [string, number][])[0][1]
+        )
+        expect(signal.opposingChartPosition).toBe(
+          (opposing?.data as [string, number][])[0][1]
+        )
+      }
+    }
+  )
+
   it('returns transformed chart data when wrapped results are successful', () => {
     const response: RawTimeSpaceDiagramResponse = {
       type: ToolType.TimeSpaceAverage,

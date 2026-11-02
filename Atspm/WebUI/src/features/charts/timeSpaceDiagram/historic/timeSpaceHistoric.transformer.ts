@@ -452,7 +452,8 @@ function transformData(
     gpxRoute: buildGpxRoute({
       locations: primaryPhaseData,
       routeFeet: rawDistanceData,
-      chartPositions: locationCenterDistanceData,
+      primaryChartPositions: primaryDistanceData,
+      opposingChartPositions: [...opposingDistanceData].reverse(),
       startMs: chartStartMs,
       endMs: chartEndMs,
     }),
