@@ -28,7 +28,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string Error { get; set; }
 
         /// <summary>
-        /// The average phase result data if successful, null if there was an error
+        /// The average phase result data; on failure it holds the phase metadata for an empty/no-data row
         /// </summary>
         public TimeSpaceDiagramAverageResult Result { get; set; }
 
@@ -44,9 +44,9 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             => new() { Result = result };
 
         /// <summary>
-        /// Creates a failed result wrapper with an error message
+        /// Creates a failed result wrapper with phase metadata for rendering an empty/no-data row
         /// </summary>
-        public static TimeSpaceDiagramAveragePhaseResult Failure(string error)
-            => new() { Error = error };
+        public static TimeSpaceDiagramAveragePhaseResult Failure(string error, TimeSpaceDiagramAverageResult result)
+            => new() { Error = error, Result = result };
     }
 }

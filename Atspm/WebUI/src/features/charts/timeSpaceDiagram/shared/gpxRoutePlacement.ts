@@ -20,14 +20,15 @@ import { addDays, differenceInCalendarDays } from 'date-fns'
 import type { GpxPoint } from './gpxFileParser'
 import type { GpxUploadOptions } from './types'
 
-export interface GpxRouteSignal {
+interface GpxRouteSignal {
   locationIdentifier: string
   latitude: number | null
   longitude: number | null
   // Feet along the route from the first signal.
   routeFeet: number
-  // The signal's y value on the chart, in whatever spacing mode is showing.
-  chartPosition: number
+  // Directional signal rows, in whatever spacing mode is showing.
+  primaryChartPosition: number
+  opposingChartPosition: number
 }
 
 // What the chart tells a GPX track about where it can be drawn. Signals are
@@ -54,6 +55,7 @@ export interface GpxChartTrack {
 type StartEndPicks = Pick<GpxUploadOptions, 'startLocation' | 'endLocation'>
 type MappedSignal = GpxRouteSignal & { latitude: number; longitude: number }
 type PlanePoint = { x: number; y: number }
+type RouteDirection = 1 | -1
 
 const FEET_PER_DEGREE_LATITUDE = 364_000
 // The drive passes a signal at its closest approach while inside this radius.
@@ -62,18 +64,15 @@ const SIGNAL_PASS_RADIUS_FEET = 150
 const OFF_ROUTE_FEET = 200
 // How far past the first and last signal the drive is still drawn.
 const ROUTE_END_ALLOWANCE_FEET = 150
-// A phone's position wanders while stopped; moving less than this from the
-// last counted point is that wander, not driving.
-const STOPPED_DRIFT_FEET = 25
-// Between two signal passes, driving farther than this is a detour, not the
-// road between them.
+// Keep the existing visibility rule for roads that bend between signal passes.
 const DETOUR_FACTOR = 1.5
 const DETOUR_ALLOWANCE_FEET = 300
 
 export function buildGpxRoute({
   locations,
   routeFeet,
-  chartPositions,
+  primaryChartPositions,
+  opposingChartPositions,
   startMs,
   endMs,
   matchTimeOfDay = false,
@@ -84,7 +83,9 @@ export function buildGpxRoute({
     longitude?: number | null
   }[]
   routeFeet: number[]
-  chartPositions: number[]
+  primaryChartPositions: number[]
+  // Both arrays follow primary route order, including the opposing rows.
+  opposingChartPositions: number[]
   startMs: number
   endMs: number
   matchTimeOfDay?: boolean
@@ -98,7 +99,8 @@ export function buildGpxRoute({
       latitude: location.latitude ?? null,
       longitude: location.longitude ?? null,
       routeFeet: routeFeet[index],
-      chartPosition: chartPositions[index],
+      primaryChartPosition: primaryChartPositions[index],
+      opposingChartPosition: opposingChartPositions[index],
     })),
   }
 }
@@ -141,9 +143,8 @@ export function placeGpxTracks(
 }
 
 /**
- * Places each GPS point at its position along the route, by map position when
- * the route's first and last signals have one, otherwise by distance driven
- * from the row's Start signal.
+ * Anchors the drive by map position when the route's ends have one, otherwise
+ * at the row's Start signal, then places its cumulative distance on the chart.
  */
 export function placeGpxTrack(
   recorded: GpxPoint[],
@@ -199,11 +200,9 @@ export function placeGpxTrack(
 }
 
 /**
- * Where the drive passes one signal and then another, positions between the
- * two passes follow the distance driven, so curves and stops land where they
- * happened. Anywhere else (before the first pass, after the last, or a
- * turnaround) the point is projected onto the straight line between the
- * nearest two signals.
+ * Like SRM, anchor once at the first signal pass and accumulate every GPS
+ * step in one direction for the whole file. Map projections decide direction
+ * and visibility, but later signal passes never rescale or reset distance.
  */
 function placeByMap(points: GpxPoint[], route: GpxRoute) {
   const signals = route.signals.filter(hasMapPosition)
@@ -212,37 +211,64 @@ function placeByMap(points: GpxPoint[], route: GpxRoute) {
     toPlane(signal.latitude, signal.longitude)
   )
   const track = points.map((point) => toPlane(point.latitude, point.longitude))
-  const routeFeet = track.map((point) =>
+  const projectedFeet = track.map((point) =>
     projectOntoRoute(point, signals, signalPoints)
   )
-  const driven = getDrivenFeet(track)
   const passes = findSignalPasses(track, signalPoints)
+  const anchor = passes[0]
+  // A recording wholly between signals can still start at its map position.
+  const anchorIndex =
+    anchor?.index ?? projectedFeet.findIndex((feet) => feet != null)
+  if (anchorIndex < 0) return points.map(() => null)
 
+  const anchorFeet = anchor
+    ? signals[anchor.signal].routeFeet
+    : (projectedFeet[anchorIndex] as number)
+  const direction = getTrackDirection(projectedFeet)
+  const driven = getDrivenFeet(points)
+  const visible = projectedFeet.map((feet) => feet != null)
+  // A reasonable path between signals may bend outside their straight-line
+  // corridor. Keep drawing it, without fitting its distance to those signals.
   for (let i = 1; i < passes.length; i++) {
     const from = passes[i - 1]
     const to = passes[i]
     if (from.signal === to.signal) continue
-
-    const drivenBetween = driven[to.index] - driven[from.index]
     const straightLine = getDistance(
       signalPoints[from.signal],
       signalPoints[to.signal]
     )
-    if (drivenBetween > straightLine * DETOUR_FACTOR + DETOUR_ALLOWANCE_FEET) {
+    if (
+      driven[to.index] - driven[from.index] >
+      straightLine * DETOUR_FACTOR + DETOUR_ALLOWANCE_FEET
+    ) {
       continue
     }
+    for (let j = from.index; j <= to.index; j++) visible[j] = true
+  }
+  const toChartPosition = createChartPositioner(route, direction)
+  const minFeet = route.signals[0].routeFeet - ROUTE_END_ALLOWANCE_FEET
+  const maxFeet =
+    route.signals[route.signals.length - 1].routeFeet + ROUTE_END_ALLOWANCE_FEET
 
-    const fromFeet = signals[from.signal].routeFeet
-    const toFeet = signals[to.signal].routeFeet
-    for (let j = from.index; j <= to.index; j++) {
-      const fraction =
-        drivenBetween > 0 ? (driven[j] - driven[from.index]) / drivenBetween : 0
-      routeFeet[j] = fromFeet + fraction * (toFeet - fromFeet)
+  return visible.map((isVisible, i) => {
+    const feet = anchorFeet + direction * (driven[i] - driven[anchorIndex])
+    return !isVisible || feet < minFeet || feet > maxFeet
+      ? null
+      : toChartPosition(feet)
+  })
+}
+
+// Use the largest displacement from the first mapped point, so a little GPS
+// wander at the beginning does not choose the direction for the whole file.
+function getTrackDirection(projectedFeet: (number | null)[]): RouteDirection {
+  const first = projectedFeet.find((feet) => feet != null) ?? 0
+  let furthest = first
+  for (const feet of projectedFeet) {
+    if (feet != null && Math.abs(feet - first) > Math.abs(furthest - first)) {
+      furthest = feet
     }
   }
-
-  const toChartPosition = createChartPositioner(route)
-  return routeFeet.map((feet) => (feet == null ? null : toChartPosition(feet)))
+  return furthest < first ? -1 : 1
 }
 
 /**
@@ -263,24 +289,22 @@ function placeFromStart(
   const routeLength = Math.abs(endFeet - startFeet)
   if (!(routeLength > 0)) return null
 
-  const direction = Math.sign(endFeet - startFeet)
-  const toPlane = createPlaneProjection(points)
-  const track = points.map((point) => toPlane(point.latitude, point.longitude))
-  const toChartPosition = createChartPositioner(route)
+  const direction = endFeet > startFeet ? 1 : -1
+  const toChartPosition = createChartPositioner(route, direction)
 
-  return getDrivenFeet(track).map((driven) =>
+  return getDrivenFeet(points).map((driven) =>
     driven > routeLength + ROUTE_END_ALLOWANCE_FEET
       ? null
       : toChartPosition(startFeet + direction * driven)
   )
 }
 
-// Converts feet along the route to the chart's y value through every signal on
-// the chart, mapped or not, so the drive crosses each signal's row as it
-// reaches that signal in any spacing mode.
-function createChartPositioner(route: GpxRoute) {
+// Maps route feet onto the same directional rows and spacing used by SRM.
+function createChartPositioner(route: GpxRoute, direction: RouteDirection) {
   const routeFeet = route.signals.map((signal) => signal.routeFeet)
-  const chartPositions = route.signals.map((signal) => signal.chartPosition)
+  const chartPositions = route.signals.map((signal) =>
+    direction === 1 ? signal.primaryChartPosition : signal.opposingChartPosition
+  )
 
   return (feet: number) =>
     getDistanceAtDisplayCoordinate(routeFeet, chartPositions, feet)
@@ -401,16 +425,25 @@ function projectOntoRoute(
   return best && best.offRouteFeet <= OFF_ROUTE_FEET ? best.routeFeet : null
 }
 
-// Feet driven to each point, counted from the last point that moved far
-// enough, so a stop at a red light adds nothing however long it lasts.
-function getDrivenFeet(track: PlanePoint[]) {
+// SRM accumulates Haversine distances in feet between every consecutive pair.
+function getDrivenFeet(points: GpxPoint[]) {
   const driven = [0]
-  let counted = track[0]
-  for (let i = 1; i < track.length; i++) {
-    const step = getDistance(counted, track[i])
-    const isMoving = step >= STOPPED_DRIFT_FEET
-    driven.push(driven[i - 1] + (isMoving ? step : 0))
-    if (isMoving) counted = track[i]
+  const toRadians = (degrees: number) => (degrees * Math.PI) / 180
+  const earthRadiusFeet = 6_371_000 * 3.28084
+
+  for (let i = 1; i < points.length; i++) {
+    const from = points[i - 1]
+    const to = points[i]
+    const latitudeDelta = toRadians(to.latitude - from.latitude)
+    const longitudeDelta = toRadians(to.longitude - from.longitude)
+    const a =
+      Math.sin(latitudeDelta / 2) ** 2 +
+      Math.cos(toRadians(from.latitude)) *
+        Math.cos(toRadians(to.latitude)) *
+        Math.sin(longitudeDelta / 2) ** 2
+    const step =
+      2 * earthRadiusFeet * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    driven.push(driven[i - 1] + step)
   }
   return driven
 }

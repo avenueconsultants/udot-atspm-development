@@ -136,9 +136,55 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
             catch (Exception ex)
             {
-                return TimeSpaceDiagramAveragePhaseResult.Failure(
+                return CreateEmptyPhaseResult(
+                    parameter,
+                    primaryPhase,
+                    offset,
+                    cycleLength,
+                    distanceToNextLocation,
+                    distanceToPreviousLocation,
+                    phaseType,
+                    order,
                     $"Error building time-space average data for location {currRouteLocation.LocationIdentifier}, phase {primaryPhase.Approach.ProtectedPhaseNumber} ({phaseType}): {ex.Message}");
             }
+        }
+
+        // Keeps a failed phase on the chart as an empty row, so it holds its place
+        // and distance on the route instead of the signals around it closing the gap.
+        private static TimeSpaceDiagramAveragePhaseResult CreateEmptyPhaseResult(
+            TimeSpaceDiagramAverageOptions parameter,
+            PhaseDetail phase,
+            int? offset,
+            int? cycleLength,
+            double distanceToNextLocation,
+            double distanceToPreviousLocation,
+            string phaseType,
+            int order,
+            string error)
+        {
+            var viewModel = new TimeSpaceDiagramAverageResult(
+                phase.Approach.Id,
+                phase.Approach.Location.LocationIdentifier,
+                parameter.StartDate.ToDateTime(parameter.StartTime),
+                parameter.EndDate.ToDateTime(parameter.EndTime),
+                phase.PhaseNumber,
+                phase.Approach.DirectionType.Abbreviation,
+                distanceToNextLocation,
+                distanceToPreviousLocation,
+                parameter.SpeedLimit ?? phase.Approach.Mph ?? 0,
+                offset,
+                0,
+                false,
+                cycleLength,
+                [],
+                []);
+            viewModel.LocationDescription = phase.Approach.Location.LocationDescription();
+            viewModel.ApproachDescription = phase.Approach.Description;
+            viewModel.Latitude = phase.Approach.Location.Latitude;
+            viewModel.Longitude = phase.Approach.Location.Longitude;
+            viewModel.PhaseType = phaseType;
+            viewModel.Order = order;
+            return TimeSpaceDiagramAveragePhaseResult.Failure(error, viewModel);
         }
 
         private bool IsCoordPhasesMatchRoutePhases(int[] coordPhasesForLocation, int primaryPhase, int opposingPhase)
@@ -367,23 +413,16 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
 
         private List<IndianaEvent> GetEventOverallapingTime(DateTime start, IReadOnlyList<IndianaEvent> programmedCycleForPlan, string eventType)
         {
-            var planEvent = programmedCycleForPlan.Where(e => e.Timestamp == start).ToList();
-
-
-            if (!planEvent.Any())
-            {
-                planEvent = programmedCycleForPlan.Where(e => e.Timestamp < start)
-                    .GroupBy(log => log.EventCode)
-                    .Select(group => group.OrderByDescending(e => e.Timestamp).FirstOrDefault())
-                    .Where(e => e != null)
-                    .Cast<IndianaEvent>()
-                    .ToList();
-            }
+            var planEvent = programmedCycleForPlan
+                .Where(e => e.Timestamp <= start)
+                .GroupBy(e => e.EventCode)
+                .Select(group => group.OrderByDescending(e => e.Timestamp).First())
+                .ToList();
 
             if (!planEvent.Any())
                 throw new NullReferenceException($"Error grabbing {eventType}");
 
-            return planEvent.ToList();
+            return planEvent;
         }
 
         private static bool IsPlanSameForTimePeriod(List<Plan> planEventsForPeriod)

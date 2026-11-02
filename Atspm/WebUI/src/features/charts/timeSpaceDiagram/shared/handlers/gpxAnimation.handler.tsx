@@ -1,9 +1,12 @@
 import { ECharts, SeriesOption } from 'echarts'
 import { useCallback, useMemo } from 'react'
 import type { GpxChartTrack } from '../gpxRoutePlacement'
+import { TIME_SPACE_CYCLE_LABEL_SERIES_Z } from '../transformers/timeSpaceTransformerBase'
 import { TIME_SPACE_GPX_TRACKS_LEGEND_NAME } from '../types'
 
 const GPX_OVERLAY_SERIES_ID_PREFIX = 'gpx-'
+// Above the signal bars and their duration labels, so the drive stays visible.
+const GPX_OVERLAY_SERIES_Z = TIME_SPACE_CYCLE_LABEL_SERIES_Z + 1
 
 function isSeriesOption(
   value: SeriesOption | null | undefined
@@ -59,6 +62,7 @@ export const useGpxAnimationHandler = (
           color: 'black',
           symbol: 'none',
           silent: true,
+          z: GPX_OVERLAY_SERIES_Z,
           lineStyle: {
             width: 3,
             color: 'black',

@@ -19,6 +19,7 @@ import type { TSBaseHandler } from '@/features/charts/timeSpaceDiagram/shared/op
 import { TimeSpaceHistoricOptions } from '@/features/charts/timeSpaceDiagram/shared/types'
 import { Route } from '@/features/routes/types'
 import { DateTimeProps } from '@/types/TimeProps'
+import { dateToTimestamp } from '@/utils/dateTime'
 import { parseBool, parseDate, parseNum } from '@/utils/searchParams'
 import { set, subDays } from 'date-fns'
 import type { ReadonlyURLSearchParams } from 'next/navigation'
@@ -172,8 +173,10 @@ export const useHistoricOptionsHandler = ({
 
     if (o.speedLimit != null) p.set('speedLimit', String(o.speedLimit))
 
-    if (o.start instanceof Date) p.set('start', o.start.toISOString())
-    if (o.end instanceof Date) p.set('end', o.end.toISOString())
+    // Signal clock time with no zone, so the link opens on the same times in
+    // any time zone. Older links ending in "Z" still read back as instants.
+    if (o.start instanceof Date) p.set('start', dateToTimestamp(o.start))
+    if (o.end instanceof Date) p.set('end', dateToTimestamp(o.end))
 
     // include these so links reproduce exactly
     if (o.extendStartStopSearch != null)

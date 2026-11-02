@@ -25,7 +25,8 @@ import {
   type GpxChartPoint,
 } from './gpxRoutePlacement'
 
-const FEET_PER_DEGREE = 364_000
+// A degree of latitude on the sphere used by SRM's distance calculation.
+const FEET_PER_DEGREE = (Math.PI * 6_371_000 * 3.28084) / 180
 const SOUTH_LATITUDE = 40.6
 const LONGITUDE = -111.87
 const FEET_PER_DEGREE_LONGITUDE =
@@ -44,7 +45,17 @@ const END_MS = START_MS + 20 * 60_000
 // drawn a quarter of a chart unit per foot.
 const routeOf = (
   mapPositions: { latitude: number | null; longitude: number | null }[],
-  { routeFeet = [0, 4000, 8000], chartPositions = [0, 1000, 2000] } = {}
+  {
+    routeFeet = [0, 4000, 8000],
+    chartPositions = [0, 1000, 2000],
+    primaryChartPositions = chartPositions,
+    opposingChartPositions = chartPositions,
+  }: {
+    routeFeet?: number[]
+    chartPositions?: number[]
+    primaryChartPositions?: number[]
+    opposingChartPositions?: number[]
+  } = {}
 ) =>
   buildGpxRoute({
     locations: mapPositions.map((mapPosition, i) => ({
@@ -52,7 +63,8 @@ const routeOf = (
       ...mapPosition,
     })),
     routeFeet,
-    chartPositions,
+    primaryChartPositions,
+    opposingChartPositions,
     startMs: START_MS,
     endMs: END_MS,
   })
@@ -106,6 +118,62 @@ const positionAt = (data: GpxChartPoint[], index: number) =>
   data[index][1] as number
 
 describe('placeGpxTrack', () => {
+  it('does not re-anchor when a later signal distance differs from the recorded distance', () => {
+    const differentDistances = routeOf([at(0), at(4000), at(8000)], {
+      routeFeet: [0, 5000, 8000],
+      chartPositions: [0, 1250, 2000],
+    })
+    const { data } = placeGpxTrack(
+      drive(northbound(0, 8000)),
+      differentDistances
+    )
+
+    expect(positionAt(data, 100)).toBeCloseTo(1000)
+    expect(positionAt(data, 100)).toBeLessThan(1250)
+    expect(positionAt(data, 125)).toBeCloseTo(1250)
+  })
+
+  it.each([
+    ['primary', 0, 8000, -10, 1990],
+    ['opposing', 8000, 0, 2010, 10],
+  ] as const)(
+    'uses the %s signal rows for the whole file',
+    (_, from, to, start, end) => {
+      const directionalRoute = routeOf([at(0), at(4000), at(8000)], {
+        primaryChartPositions: [-10, 990, 1990],
+        opposingChartPositions: [10, 1010, 2010],
+      })
+      const { data } = placeGpxTrack(
+        drive(northbound(from, to)),
+        directionalRoute
+      )
+
+      expect(positionAt(data, 0)).toBeCloseTo(start)
+      expect(positionAt(data, data.length - 1)).toBeCloseTo(end)
+    }
+  )
+
+  it.each([
+    [1000, 2000],
+    [2000, 1000],
+  ])(
+    'places a recording wholly between signals (%i to %i feet)',
+    (from, to) => {
+      const { data } = placeGpxTrack(drive(northbound(from, to)), route)
+
+      expect(positionAt(data, 0)).toBeCloseTo(from / 4)
+      expect(positionAt(data, data.length - 1)).toBeCloseTo(to / 4)
+    }
+  )
+
+  it('counts movements smaller than 25 feet on every sample', () => {
+    const { data } = placeGpxTrack(drive(northbound(0, 100, 5)), route)
+
+    expect(positionAt(data, 1)).toBeCloseTo(1.25)
+    expect(positionAt(data, 2)).toBeCloseTo(2.5)
+    expect(positionAt(data, 20)).toBeCloseTo(25)
+  })
+
   it('places each point by where it is on the route, not by distance from where the file starts', () => {
     // Starts 120 feet south of the first signal, one point every 40 feet.
     const points = drive(northbound(-120, 8120))
@@ -120,27 +188,31 @@ describe('placeGpxTrack', () => {
     expect(positionAt(data, 206)).toBeCloseTo(2030) // past the last signal
   })
 
-  it('holds still through a stop at a red light while the position wanders', () => {
+  it('counts GPS wander through a stop instead of filtering or correcting it at later signals', () => {
     // A minute stopped 120 feet short of the second signal.
     const points = drive([
       ...northbound(0, 3880),
       ...stoppedAt(3880, 0, 60),
       ...northbound(3920, 8000),
     ])
-    const { data } = placeGpxTrack(points, route)
+    const longerRoute = routeOf([at(0), at(4000), at(12000)], {
+      routeFeet: [0, 4000, 12000],
+      chartPositions: [0, 1000, 3000],
+    })
+    const { data } = placeGpxTrack(points, longerRoute)
 
     expect(positionAt(data, 50)).toBeCloseTo(500) // 2000 feet north
 
     const stopPositions = data
       .slice(98, 158)
       .map(([, position]) => position as number)
-    expect(
-      Math.max(...stopPositions) - Math.min(...stopPositions)
-    ).toBeLessThan(0.5)
-    expect(stopPositions[0]).toBeCloseTo(970, 0)
+    expect(stopPositions[stopPositions.length - 1]).toBeGreaterThan(
+      stopPositions[0] + 50
+    )
+    expect(positionAt(data, points.length - 1)).toBeGreaterThan(2000)
   })
 
-  it('leaves a gap past the end of the route and picks the drive back up on the way back', () => {
+  it('leaves a gap past the end and keeps one direction even if the recording turns around', () => {
     const points = drive([
       ...northbound(7000, 10000),
       ...northbound(10000, 7000).slice(1),
@@ -159,11 +231,11 @@ describe('placeGpxTrack', () => {
     expect(positionAtNorth(8000)).toBeCloseTo(2000)
     expect(positionAtNorth(8120)).toBeCloseTo(2030)
     expect(positionAtNorth(9000)).toBeNull()
-    expect(positionAtNorth(8000, 100)).toBeCloseTo(2000)
-    expect(positionAtNorth(7000, 100)).toBeCloseTo(1750)
+    expect(positionAtNorth(8000, 100)).toBeNull()
+    expect(positionAtNorth(7000, 100)).toBeNull()
   })
 
-  it('follows the road between two signals where it bends away from the straight line', () => {
+  it('keeps drawing a road bend without rescaling its distance at the next signal', () => {
     // Bows 400 feet east halfway between the first two signals.
     const bend = northbound(0, 4000).map(([north]): [number, number] => [
       north,
@@ -172,8 +244,9 @@ describe('placeGpxTrack', () => {
     const points = drive([...bend, ...northbound(4040, 4400)])
     const { data } = placeGpxTrack(points, route)
 
-    expect(positionAt(data, 50)).toBeCloseTo(500, 0)
-    expect(positionAt(data, 100)).toBeCloseTo(1000)
+    expect(data.every(([, position]) => position != null)).toBe(true)
+    expect(positionAt(data, 50)).toBeGreaterThan(500)
+    expect(positionAt(data, 100)).toBeGreaterThan(1000)
   })
 
   it('does not stretch a detour along the route', () => {
@@ -294,6 +367,32 @@ describe('placeGpxTrack', () => {
 })
 
 describe("placing a drive from Start when the route's ends have no map positions", () => {
+  it.each([
+    ['7000', '7002', -10],
+    ['7002', '7000', 2010],
+  ] as const)(
+    'uses the directional signal row when Start is %s and End is %s',
+    (startLocation, endLocation, expectedStart) => {
+      const directionalRoute = routeOf(
+        [at(0), at(4000), { latitude: null, longitude: null }],
+        {
+          primaryChartPositions: [-10, 990, 1990],
+          opposingChartPositions: [10, 1010, 2010],
+        }
+      )
+      const { data } = placeGpxTrack(
+        drive(northbound(0, 100)),
+        directionalRoute,
+        {
+          startLocation,
+          endLocation,
+        }
+      )
+
+      expect(positionAt(data, 0)).toBe(expectedStart)
+    }
+  )
+
   it('offers Start and End only when the first or last signal has no map position', () => {
     expect(getStartEndLocations(undefined)).toEqual([])
     expect(getStartEndLocations(route)).toEqual([])
@@ -302,7 +401,7 @@ describe("placing a drive from Start when the route's ends have no map positions
     expect(getStartEndLocations(unmapped)).toEqual(['7000', '7001', '7002'])
   })
 
-  it('places each point by distance driven from Start, holding still through a stop', () => {
+  it('places each point by distance driven from Start, including GPS wander at a stop', () => {
     // Drives east, so only the distance driven can place it.
     const points = drive([
       ...northbound(0, 2000).map(([east]): [number, number] => [0, east]),
@@ -316,10 +415,9 @@ describe("placing a drive from Start when the route's ends have no map positions
 
     expect(message).toBeNull()
     expect(positionAt(data, 0)).toBe(0)
-    expect(new Set(stopPositions).size).toBe(1)
+    expect(new Set(stopPositions).size).toBeGreaterThan(1)
     expect(stopPositions[0]).toBeCloseTo(500, 0) // 2000 feet driven
-    expect(positionAt(data, 130)).toBeCloseTo(1000, 0) // 4000 feet driven
-    expect(positionAt(data, 233)).toBeGreaterThan(2000) // just past End
+    expect(positionAt(data, 130)).toBeGreaterThan(1000)
     expect(data[240][1]).toBeNull() // too far past End
   })
 
@@ -330,8 +428,9 @@ describe("placing a drive from Start when the route's ends have no map positions
     ])
     const { data } = placeGpxTrack(drive(crawl), unmapped)
 
-    // Within the 25 feet a stopped position may wander, a quarter unit a foot.
-    expect(positionAt(data, 400)).toBeGreaterThan(1000 - 25 / 4)
+    expect(positionAt(data, 1)).toBeCloseTo(2.5)
+    expect(positionAt(data, 2)).toBeCloseTo(5)
+    expect(positionAt(data, 400)).toBeCloseTo(1000, 0)
   })
 
   it('runs toward End when End comes before Start on the route', () => {
