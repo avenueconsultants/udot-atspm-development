@@ -6,12 +6,14 @@ import {
   Box,
   Typography,
 } from '@mui/material'
+import type { GpxChartTrack } from '../../gpxRoutePlacement'
 import { GpxUploadOptions } from '../../types'
 import { UPLOAD_ACCORDION_SX } from '../uploadStyles'
 import { GpxUploadComponent } from './GpxUploadComponent'
 
 interface Prop {
-  locations: string[]
+  tracks: GpxChartTrack[]
+  startEndLocations: string[]
   entries: GpxUploadOptions[]
   setEntries: React.Dispatch<React.SetStateAction<GpxUploadOptions[]>>
 }
@@ -35,14 +37,15 @@ export const GpxUploadAccordion = (prop: Prop) => {
               mt: 0.1,
             }}
           >
-            Map one or more GPX files to the corridor and animate them.
+            Add one or more GPX files to draw your drives on the chart.
           </Typography>
         </Box>
       </AccordionSummary>
 
       <AccordionDetails>
         <GpxUploadComponent
-          locations={prop.locations}
+          tracks={prop.tracks}
+          startEndLocations={prop.startEndLocations}
           entries={prop.entries}
           setEntries={prop.setEntries}
         />

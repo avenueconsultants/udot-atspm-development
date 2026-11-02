@@ -86,9 +86,9 @@ export const parseTimeOfDayToDate = (time: string | undefined | null) => {
 }
 
 /**
- * Parse "YYYY-MM-DD" as a Date (UTC midnight).
+ * Parse "YYYY-MM-DD" as a Date (local midnight), so date pickers show that same day.
  */
-export const parseYYYYMMDDToUtcDate = (s: string | undefined | null) => {
+export const parseYYYYMMDDToLocalDate = (s: string | undefined | null) => {
   if (!s) return undefined
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s.trim())
   if (!m) return undefined
@@ -108,12 +108,13 @@ export const parseYYYYMMDDToUtcDate = (s: string | undefined | null) => {
   )
     return undefined
 
-  return new Date(Date.UTC(yyyy, mm - 1, dd, 0, 0, 0))
+  return new Date(yyyy, mm - 1, dd, 0, 0, 0)
 }
 
-export const formatUtcDateToYYYYMMDD = (date: Date) => {
-  const year = date.getUTCFullYear()
-  const month = pad2(date.getUTCMonth() + 1)
-  const day = pad2(date.getUTCDate())
+/** Format the calendar day of a Date as YYYY-MM-DD (local time). */
+export const formatLocalDateToYYYYMMDD = (date: Date) => {
+  const year = date.getFullYear()
+  const month = pad2(date.getMonth() + 1)
+  const day = pad2(date.getDate())
   return `${year}-${month}-${day}`
 }

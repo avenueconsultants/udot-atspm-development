@@ -1,10 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import { ToolType } from '@/features/charts/common/types'
+import type { RawLinkPivotForTsdData } from '@/features/tools/link-pivot/types'
 import type {
   RawTimeSpaceAverageData,
   RawTimeSpaceDiagramResponse,
   RawTimeSpaceHistoricData,
   TimeSpaceAverageOptions,
+  TimeSpaceDiagramPhaseResult,
   TimeSpaceHistoricOptions,
 } from '../../shared/types'
 import TimeSpaceResultsContainer from './TimeSpaceResultsContainer'
@@ -57,10 +59,15 @@ jest.mock(
   })
 )
 
-jest.mock('@/features/tools/link-pivot/components/LinkPivotAdjustmentTable', () => ({
-  __esModule: true,
-  default: () => <div>Link Pivot Adjustments</div>,
-}))
+jest.mock(
+  '@/features/tools/link-pivot/components/LinkPivotAdjustmentTable',
+  () => ({
+    __esModule: true,
+    default: ({ cycleLength }: { cycleLength: number | null }) => (
+      <div>Adjustments cycle length: {String(cycleLength)}</div>
+    ),
+  })
+)
 
 jest.mock(
   '@/features/tools/link-pivot/components/LinkPivotApproachLinkComponent',
@@ -141,6 +148,53 @@ function buildAverageDatum(): RawTimeSpaceAverageData {
   }
 }
 
+function buildLinkPivotTsdData(): RawLinkPivotForTsdData[] {
+  return [
+    {
+      direction: 'Primary',
+      data: {
+        adjustments: [],
+        approachLinks: [],
+        totalAogDownstreamBefore: 0,
+        totalPaogDownstreamBefore: 0,
+        totalAogDownstreamPredicted: 0,
+        totalPaogDownstreamPredicted: 0,
+        totalAogUpstreamBefore: 0,
+        totalPaogUpstreamBefore: 0,
+        totalAogUpstreamPredicted: 0,
+        totalPaogUpstreamPredicted: 0,
+        totalAogBefore: 0,
+        totalPaogBefore: 0,
+        totalAogPredicted: 0,
+        totalPaogPredicted: 0,
+        totalChartExisting: 0,
+        totalChartPositiveChange: 0,
+        totalChartNegativeChange: 0,
+        totalChartRemaining: 0,
+        totalUpstreamChartExisting: 0,
+        totalUpstreamChartPositiveChange: 0,
+        totalUpstreamChartNegativeChange: 0,
+        totalUpstreamChartRemaining: 0,
+        totalDownstreamChartExisting: 0,
+        totalDownstreamChartPositiveChange: 0,
+        totalDownstreamChartNegativeChange: 0,
+        totalDownstreamChartRemaining: 0,
+      },
+    },
+  ]
+}
+
+const historicOptions: TimeSpaceHistoricOptions = {
+  routeId: '17',
+  speedLimit: null,
+  start: new Date('2026-04-23T08:00:00Z'),
+  end: new Date('2026-04-23T08:20:00Z'),
+  chartType: '',
+  extendStartStopSearch: 2,
+  showAllLanesInfo: true,
+  locationIdentifier: '6192',
+}
+
 describe('TimeSpaceResultsContainer link-pivot tabs', () => {
   it('shows the link-pivot tab for historic runs even before link-pivot data arrives', () => {
     const timeSpaceData: RawTimeSpaceDiagramResponse = {
@@ -153,22 +207,11 @@ describe('TimeSpaceResultsContainer link-pivot tabs', () => {
         },
       ],
     }
-    const timeSpaceOptions: TimeSpaceHistoricOptions = {
-      routeId: '17',
-      speedLimit: null,
-      start: new Date('2026-04-23T08:00:00Z'),
-      end: new Date('2026-04-23T08:20:00Z'),
-      chartType: '',
-      extendStartStopSearch: 2,
-      showAllLanesInfo: true,
-      locationIdentifier: '6192',
-    }
-
     render(
       <TimeSpaceResultsContainer
         timeSpaceData={timeSpaceData}
         linkPivotTsdData={[]}
-        timeSpaceOptions={timeSpaceOptions}
+        timeSpaceOptions={historicOptions}
       />
     )
 
@@ -204,43 +247,82 @@ describe('TimeSpaceResultsContainer link-pivot tabs', () => {
     render(
       <TimeSpaceResultsContainer
         timeSpaceData={timeSpaceData}
-        linkPivotTsdData={[
-          {
-            direction: 'Primary',
-            data: {
-              adjustments: [],
-              approachLinks: [],
-              totalAogDownstreamBefore: 0,
-              totalPaogDownstreamBefore: 0,
-              totalAogDownstreamPredicted: 0,
-              totalPaogDownstreamPredicted: 0,
-              totalAogUpstreamBefore: 0,
-              totalPaogUpstreamBefore: 0,
-              totalAogUpstreamPredicted: 0,
-              totalPaogUpstreamPredicted: 0,
-              totalAogBefore: 0,
-              totalPaogBefore: 0,
-              totalAogPredicted: 0,
-              totalPaogPredicted: 0,
-              totalChartExisting: 0,
-              totalChartPositiveChange: 0,
-              totalChartNegativeChange: 0,
-              totalChartRemaining: 0,
-              totalUpstreamChartExisting: 0,
-              totalUpstreamChartPositiveChange: 0,
-              totalUpstreamChartNegativeChange: 0,
-              totalUpstreamChartRemaining: 0,
-              totalDownstreamChartExisting: 0,
-              totalDownstreamChartPositiveChange: 0,
-              totalDownstreamChartNegativeChange: 0,
-              totalDownstreamChartRemaining: 0,
-            },
-          },
-        ]}
+        linkPivotTsdData={buildLinkPivotTsdData()}
         timeSpaceOptions={timeSpaceOptions}
       />
     )
 
     expect(screen.queryByRole('tab', { name: 'Link Pivot' })).toBeNull()
+  })
+})
+
+describe('TimeSpaceResultsContainer Adjustments cycle length', () => {
+  const renderWithFirstSignal = (
+    firstSignal: TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>
+  ) =>
+    render(
+      <TimeSpaceResultsContainer
+        timeSpaceData={{
+          type: ToolType.TimeSpaceHistoric,
+          data: [
+            firstSignal,
+            {
+              error: null,
+              isSuccess: true,
+              result: { ...buildHistoricDatum(), cycleLength: 150 },
+            },
+          ],
+        }}
+        linkPivotTsdData={buildLinkPivotTsdData()}
+        timeSpaceOptions={historicOptions}
+      />
+    )
+
+  it.each([
+    [
+      'failed while building its row',
+      {
+        error: 'Error building time-space data for location 6192',
+        isSuccess: false,
+        result: { ...buildHistoricDatum(), cycleLength: null },
+      },
+    ],
+    [
+      'has no cycle length programmed',
+      {
+        error: null,
+        isSuccess: true,
+        result: { ...buildHistoricDatum(), cycleLength: null },
+      },
+    ],
+    [
+      'reports a zero cycle length',
+      {
+        error: null,
+        isSuccess: true,
+        result: { ...buildHistoricDatum(), cycleLength: 0 },
+      },
+    ],
+    [
+      'failed without a row',
+      { error: 'Speed is not configured', isSuccess: false, result: null },
+    ],
+  ])(
+    'uses the next signal with a cycle length when the first signal %s',
+    (_, firstSignal) => {
+      renderWithFirstSignal(firstSignal)
+
+      expect(screen.getByText('Adjustments cycle length: 150')).not.toBeNull()
+    }
+  )
+
+  it('uses the first signal when it has a cycle length', () => {
+    renderWithFirstSignal({
+      error: null,
+      isSuccess: true,
+      result: { ...buildHistoricDatum(), cycleLength: 120 },
+    })
+
+    expect(screen.getByText('Adjustments cycle length: 120')).not.toBeNull()
   })
 })

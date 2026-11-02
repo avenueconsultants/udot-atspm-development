@@ -476,15 +476,22 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
             }
             catch (Exception ex)
             {
-                return CreateErrorPhaseResult(
+                // Keep the location on the chart as an empty row instead of the
+                // signals around it closing the gap.
+                return CreateEmptyPhaseResult(
                     parameter,
-                    routeLocation,
                     currentPhase,
-                    phaseType: phaseType,
-                    order: order,
-                    distanceToNextLocation: distanceToNextLocation,
-                    distanceToPreviousLocation: distanceToPreviousLocation,
-                    errorMessage: $"Error building time-space data for location {currentPhase.Approach.Location.LocationIdentifier}, phase {currentPhase.Approach.ProtectedPhaseNumber} ({phaseType}), in time range {parameter.Start:u} to {parameter.End:u}: {ex.Message}");
+                    programmedCycleLength,
+                    tmcEventsForPhase,
+                    routeLocation,
+                    srmTracks,
+                    distanceToNextLocation,
+                    distanceToPreviousLocation,
+                    isFirstElement,
+                    isLastElement,
+                    phaseType,
+                    $"Error building time-space data for location {currentPhase.Approach.Location.LocationIdentifier}, phase {currentPhase.Approach.ProtectedPhaseNumber} ({phaseType}), in time range {parameter.Start:u} to {parameter.End:u}: {ex.Message}",
+                    order);
             }
         }
 
@@ -497,6 +504,8 @@ namespace Utah.Udot.Atspm.ReportApi.ReportServices
         {
             viewModel.LocationDescription = phase.Approach.Location.LocationDescription();
             viewModel.ApproachDescription = phase.Approach.Description;
+            viewModel.Latitude = phase.Approach.Location.Latitude;
+            viewModel.Longitude = phase.Approach.Location.Longitude;
             viewModel.PhaseType = phaseType;
             viewModel.Order = order;
             viewModel.TmcForPhase = tmcEventsForPhase;

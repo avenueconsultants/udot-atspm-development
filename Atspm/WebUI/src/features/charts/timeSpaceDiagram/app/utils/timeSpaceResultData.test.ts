@@ -22,15 +22,9 @@ import type {
   TimeSpaceDiagramPhaseResult,
   TimeSpaceSrmPhaseOverlay,
 } from '../../shared/types'
-jest.mock('nanoid', () => ({
-  nanoid: () => 'test-entry-id',
-}))
-
 import {
   addDefaultTimeSpaceValues,
   canFetchLinkPivotForTimeSpace,
-  createEmptyTimeSpaceEntry,
-  getPrimaryTimeSpaceLocations,
   mergeSrmOverlaysIntoWrappedData,
   recomputeTimeSpaceData,
   recomputeWrappedTimeSpaceData,
@@ -115,19 +109,6 @@ function buildHistoricLocation(
 }
 
 describe('timeSpaceResultData', () => {
-  it('creates an empty GPX entry from the first and last locations', () => {
-    const entry = createEmptyTimeSpaceEntry(['1000', '2000', '3000'], true)
-
-    expect(entry).toMatchObject({
-      startLocation: '1000',
-      endLocation: '3000',
-      primary: true,
-      error: null,
-    })
-    expect(typeof entry.id).toBe('string')
-    expect(entry.id.length).toBeGreaterThan(0)
-  })
-
   it('only allows link-pivot fetches for historic runs', () => {
     expect(canFetchLinkPivotForTimeSpace(ToolType.TimeSpaceAverage)).toBe(false)
     expect(canFetchLinkPivotForTimeSpace(ToolType.TimeSpaceHistoric)).toBe(true)
@@ -182,6 +163,28 @@ describe('timeSpaceResultData', () => {
         isIgnoredLocation: false,
       }),
     ])
+  })
+
+  it('keeps an ignored location in its route order and on the map', () => {
+    const recomputed = recomputeTimeSpaceData<RawTimeSpaceHistoricData>(
+      [
+        buildHistoricLocation('P1', 'Primary', 1),
+        buildHistoricLocation('P2', 'Primary', 2, {
+          latitude: 40.6,
+          longitude: -111.87,
+        }),
+        buildHistoricLocation('P3', 'Primary', 3),
+      ],
+      ['P2']
+    )
+
+    expect(recomputed[1]).toMatchObject({
+      locationIdentifier: 'P2',
+      order: 2,
+      latitude: 40.6,
+      longitude: -111.87,
+      isIgnoredLocation: true,
+    })
   })
 
   it('recomputes wrapped data while preserving failed entries in place', () => {
@@ -299,23 +302,24 @@ describe('timeSpaceResultData', () => {
   })
 
   it('merges SRM overlays by location, phase type, and order only', () => {
-    const wrappedData: TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[] = [
-      {
-        error: null,
-        isSuccess: true,
-        result: buildHistoricLocation('P1', 'Primary', 1),
-      },
-      {
-        error: null,
-        isSuccess: true,
-        result: buildHistoricLocation('P1', 'Primary', 2),
-      },
-      {
-        error: 'failed',
-        isSuccess: false,
-        result: null,
-      },
-    ]
+    const wrappedData: TimeSpaceDiagramPhaseResult<RawTimeSpaceHistoricData>[] =
+      [
+        {
+          error: null,
+          isSuccess: true,
+          result: buildHistoricLocation('P1', 'Primary', 1),
+        },
+        {
+          error: null,
+          isSuccess: true,
+          result: buildHistoricLocation('P1', 'Primary', 2),
+        },
+        {
+          error: 'failed',
+          isSuccess: false,
+          result: null,
+        },
+      ]
     const overlays: TimeSpaceSrmPhaseOverlay[] = [
       {
         locationIdentifier: 'P1',
@@ -406,35 +410,5 @@ describe('timeSpaceResultData', () => {
       }),
     })
     expect(nextResponse.data[2]).toEqual(response.data[2])
-  })
-
-  it('returns primary location identifiers for every result row', () => {
-    const response: RawTimeSpaceDiagramResponse = {
-      type: ToolType.TimeSpaceHistoric,
-      data: [
-        {
-          error: null,
-          isSuccess: true,
-          result: buildHistoricLocation('P1', 'Primary', 1),
-        },
-        {
-          error: null,
-          isSuccess: true,
-          result: buildHistoricLocation('O1', 'Opposing', 1),
-        },
-        {
-          error: 'No controller event logs found',
-          isSuccess: false,
-          result: buildHistoricLocation('P2', 'Primary', 2),
-        },
-        {
-          error: 'failed',
-          isSuccess: false,
-          result: null,
-        },
-      ],
-    }
-
-    expect(getPrimaryTimeSpaceLocations(response)).toEqual(['P1', 'P2'])
   })
 })

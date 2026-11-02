@@ -15,7 +15,12 @@
 // limitations under the License.
 // #endregion
 import type { Route } from '@/features/routes/types'
-import { inferHistoricLocationIdentifier } from './historicTimeSpaceOptions.handler'
+import { act, renderHook } from '@testing-library/react'
+import type { ReadonlyURLSearchParams } from 'next/navigation'
+import {
+  inferHistoricLocationIdentifier,
+  useHistoricOptionsHandler,
+} from './historicTimeSpaceOptions.handler'
 
 function buildRoute(
   id: number,
@@ -92,5 +97,58 @@ describe('inferHistoricLocationIdentifier', () => {
 
   it('replaces stale explicit locations with the selected route default', () => {
     expect(inferHistoricLocationIdentifier(routes, '17', '9999')).toBe('1001')
+  })
+})
+
+describe('useHistoricOptionsHandler shared links', () => {
+  const applyLink = (query: string) => {
+    const { result } = renderHook(() =>
+      useHistoricOptionsHandler({ routes: [] })
+    )
+    act(() => {
+      result.current.applyFromSearchParams(
+        new URLSearchParams(query) as unknown as ReadonlyURLSearchParams
+      )
+    })
+    return result
+  }
+
+  it('writes signal clock times with no time zone', () => {
+    const { result } = renderHook(() =>
+      useHistoricOptionsHandler({ routes: [] })
+    )
+    act(() => {
+      result.current.changeStartDate(new Date(2026, 3, 15, 16, 0, 0))
+      result.current.changeEndDate(new Date(2026, 3, 15, 16, 20, 0))
+    })
+
+    const params = result.current.toSearchParams()
+
+    expect(params.get('start')).toBe('2026-04-15T16:00:00')
+    expect(params.get('end')).toBe('2026-04-15T16:20:00')
+  })
+
+  it('opens a link on the clock times it names', () => {
+    const result = applyLink(
+      'toolType=TimeSpaceHistoric&routeId=98&start=2026-04-15T16:00:00&end=2026-04-15T16:20:00'
+    )
+
+    expect(result.current.startDateTime).toEqual(
+      new Date(2026, 3, 15, 16, 0, 0)
+    )
+    expect(result.current.endDateTime).toEqual(new Date(2026, 3, 15, 16, 20, 0))
+  })
+
+  it('still reads older links that end in Z as that moment', () => {
+    const result = applyLink(
+      'toolType=TimeSpaceHistoric&routeId=98&start=2026-04-15T22:00:00.000Z&end=2026-04-15T22:20:00.000Z'
+    )
+
+    expect(result.current.startDateTime.toISOString()).toBe(
+      '2026-04-15T22:00:00.000Z'
+    )
+    expect(result.current.endDateTime.toISOString()).toBe(
+      '2026-04-15T22:20:00.000Z'
+    )
   })
 })

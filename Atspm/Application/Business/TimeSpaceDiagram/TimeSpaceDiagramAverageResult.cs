@@ -60,6 +60,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         public string Direction { get; set; }
         public double DistanceToNextLocation { get; set; }
         public double DistanceToPreviousLocation { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public int Order { get; set; }
         public List<CycleEventsDto> CycleAllEvents { get; set; }
         public List<DataPointWithDetectorCheckBase> GreenTimeEvents { get; set; }
