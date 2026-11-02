@@ -23,6 +23,7 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
 {
     public class TimeSpaceAverageService
     {
+        private const short PhaseEndRedClearanceEventCode = 11;
         private readonly CycleService _cycleService;
         private readonly Dictionary<int, short> phaseToProgramPhases = new Dictionary<int, short>()
         {
@@ -95,7 +96,16 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             {
                 startOfRefPoint = CalculateStartOfRefPointForNonCoordPhases(options, offset.Value, selectedPhase, selectedSequence, programSplits, controllerEventLogs, phaseDetail);
             }
-            var cycleEvents = CreateCyclesEvents(startOfRefPoint, options.StartDate.ToDateTime(options.EndTime), options.StartDate.ToDateTime(options.StartTime), cycleLength.Value, percentileSplitCycle);
+            var redClearanceSeconds = phaseDetail.UseOverlap
+                ? null
+                : GetRedClearanceDuration(percentileSplitCycle, controllerEventLogs, selectedPhase);
+            var cycleEvents = CreateCyclesEvents(
+                startOfRefPoint,
+                options.StartDate.ToDateTime(options.EndTime),
+                options.StartDate.ToDateTime(options.StartTime),
+                cycleLength.Value,
+                percentileSplitCycle,
+                redClearanceSeconds);
 
             var greenTimeEventsResult = new List<DataPointWithDetectorCheckBase>();
             var speedLimit = options.SpeedLimit ?? phaseDetail.Approach.Mph ?? 0;
@@ -198,7 +208,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             DateTime end,
             DateTime start,
             int cycleLength,
-            GreenToGreenCycle percentileSplitCycle)
+            GreenToGreenCycle percentileSplitCycle,
+            double? redClearanceSeconds)
         {
             List<GreenToGreenCycle> cycles = new List<GreenToGreenCycle>();
             var events = new List<CycleEventsDto>();
@@ -230,6 +241,12 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
                 events.Add(new CycleEventsDto(cycle.StartTime, 1));
                 events.Add(new CycleEventsDto(cycle.YellowEvent, 8));
                 events.Add(new CycleEventsDto(cycle.RedEvent, 9));
+                if (redClearanceSeconds.HasValue && redClearanceSeconds.Value < cycle.TotalRedTime)
+                {
+                    events.Add(new CycleEventsDto(
+                        cycle.RedEvent.AddSeconds(redClearanceSeconds.Value),
+                        PhaseEndRedClearanceEventCode));
+                }
             }
 
 
@@ -265,6 +282,8 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
         private GreenToGreenCycle GetPercentileSplitCycle(TimeSpaceDiagramAverageOptions options, List<IndianaEvent> controllerEventLogs, int phaseToCalculateEventsFor, bool overlap)
         {
             var cycleEventCodes = TimeSpaceService.GetCycleCodes(overlap);
+            // Cycle detection requires consecutive green/yellow/red/green events.
+            cycleEventCodes.Remove(PhaseEndRedClearanceEventCode);
             var events = TimeSpaceService.GetEvents(phaseToCalculateEventsFor, controllerEventLogs, cycleEventCodes);
             var cycles = _cycleService.GetGreenToGreenCycles(options.StartDate.ToDateTime(options.StartTime), options.EndDate.ToDateTime(options.EndTime), events);
 
@@ -281,6 +300,29 @@ namespace Utah.Udot.Atspm.Business.TimeSpaceDiagram
             }
 
             return cycles[medianIndex];
+        }
+
+        private double? GetRedClearanceDuration(
+            GreenToGreenCycle cycle,
+            List<IndianaEvent> controllerEventLogs,
+            int phaseNumber)
+        {
+            if (cycle == null)
+            {
+                return null;
+            }
+
+            var endRedClearanceEvent = controllerEventLogs
+                .Where(e => e.EventCode == PhaseEndRedClearanceEventCode
+                    && e.EventParam == phaseNumber
+                    && e.Timestamp >= cycle.RedEvent
+                    && e.Timestamp < cycle.EndTime)
+                .OrderBy(e => e.Timestamp)
+                .FirstOrDefault();
+
+            return endRedClearanceEvent == null
+                ? null
+                : (endRedClearanceEvent.Timestamp - cycle.RedEvent).TotalSeconds;
         }
 
         private double CalculateStartOfRefPointForCoordPhases(int offset, int programmedSplit, GreenToGreenCycle percentileSplit)
