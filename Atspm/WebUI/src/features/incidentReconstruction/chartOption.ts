@@ -131,6 +131,8 @@ export interface ChartInput {
   geometry: ChartGeometry
   chartWidth: number
   measure: MeasureText
+  /** The intersection drawing's time, in adjusted time, or null when it's hidden. */
+  cursor: number | null
 }
 
 type SegmentDatum = [number, number, number]
@@ -139,6 +141,7 @@ type EventDatum = [number, number, number]
 
 export const CANDIDATE_SERIES_ID = 'candidates'
 export const LABELED_SERIES_ID = 'labeled'
+export const CURSOR_SERIES_ID = 'cursor'
 
 interface Segment {
   start: number
@@ -326,6 +329,7 @@ export function buildChartOption(input: ChartInput): EChartsOption {
       ...(input.labeled.length
         ? [labeledSeries(eventData(input.labeled), input.labeled)]
         : []),
+      cursorSeries(input.cursor),
     ],
     graphic: [
       ...adjustmentGraphics(input),
@@ -513,6 +517,33 @@ function labeledSeries(
     z: 5,
     clip: true,
     tooltip: { formatter: eventTooltip(rows) },
+  }
+}
+
+/** A line down every band at the intersection drawing's time. Always present, so its data can change alone. */
+export function cursorSeries(cursor: number | null): CustomSeriesOption {
+  const renderItem: CustomSeriesRenderItem = (params, api) => {
+    const coordSys = params.coordSys as unknown as {
+      y: number
+      height: number
+    }
+    const [x] = api.coord([api.value(0), 0])
+    return {
+      type: 'line',
+      shape: { x1: x, y1: coordSys.y, x2: x, y2: coordSys.y + coordSys.height },
+      style: { stroke: BADGE_COLOR, lineWidth: 2 },
+    }
+  }
+
+  return {
+    type: 'custom',
+    id: CURSOR_SERIES_ID,
+    silent: true,
+    renderItem,
+    encode: { x: 0 },
+    data: cursor === null ? [] : [[cursor]],
+    z: 6,
+    clip: true,
   }
 }
 

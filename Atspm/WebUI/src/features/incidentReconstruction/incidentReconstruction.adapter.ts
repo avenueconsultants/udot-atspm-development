@@ -15,16 +15,23 @@
 // limitations under the License.
 // #endregion
 import type {
+  IncidentApproach,
   IncidentBand,
+  IncidentDetector,
   IncidentEvent,
   IncidentReconstructionResult,
   IncidentSignalChange,
 } from '@/api/reports'
 import {
+  ApproachDetector,
+  Direction,
   IncidentBandKind,
   IncidentReport,
   LOCATION_BAND_KEY,
+  Movement,
+  ReportApproach,
   SignalChange,
+  SignalHeadType,
   SignalIndication,
   TimelineBand,
   TimelineEvent,
@@ -36,6 +43,30 @@ import { formatClock, parseControllerTime } from './wallClock'
 
 const bandKinds = new Set<string>(Object.values(IncidentBandKind))
 const indications = new Set<string>(Object.values(SignalIndication))
+const directions = new Set<string>([
+  'NB',
+  'SB',
+  'EB',
+  'WB',
+  'NE',
+  'NW',
+  'SE',
+  'SW',
+] satisfies Direction[])
+const movements = new Set<string>([
+  'L',
+  'TL',
+  'LTR',
+  'T',
+  'TR',
+  'R',
+] satisfies Movement[])
+const signalHeadTypes = new Set<string>([
+  'ProtectedOnly',
+  'PermissiveOnly',
+  'FiveHead',
+  'FYA',
+] satisfies SignalHeadType[])
 
 export function toIncidentReport(
   result: IncidentReconstructionResult
@@ -84,6 +115,51 @@ export function toIncidentReport(
     end,
     bands,
     events,
+    approaches: (result.approaches ?? []).map((approach) =>
+      toReportApproach(approach, bandKeys)
+    ),
+  }
+}
+
+function toReportApproach(
+  approach: IncidentApproach,
+  bandKeys: Set<string>
+): ReportApproach {
+  const inReport = (key: string | null | undefined) =>
+    key && bandKeys.has(key) ? key : null
+
+  return {
+    description: approach.description ?? '',
+    direction:
+      approach.direction && directions.has(approach.direction)
+        ? (approach.direction as Direction)
+        : null,
+    protectedBandKey: inReport(approach.protectedBandKey),
+    permissiveBandKey: inReport(approach.permissiveBandKey),
+    pedestrianBandKey: inReport(approach.pedestrianBandKey),
+    signalHeadType:
+      approach.signalHeadType && signalHeadTypes.has(approach.signalHeadType)
+        ? (approach.signalHeadType as SignalHeadType)
+        : null,
+    detectors: (approach.detectors ?? []).map(toApproachDetector),
+  }
+}
+
+function toApproachDetector(detector: IncidentDetector): ApproachDetector {
+  return {
+    channel: detector.channel ?? 0,
+    laneNumber: detector.laneNumber ?? null,
+    movement:
+      detector.movementType && movements.has(detector.movementType)
+        ? (detector.movementType as Movement)
+        : null,
+    laneType: detector.laneType ?? 'NA',
+    distanceFromStopBar:
+      detector.distanceFromStopBar == null
+        ? null
+        : Math.max(0, detector.distanceFromStopBar),
+    detectionTypes: detector.detectionTypes ?? [],
+    latencyCorrection: detector.latencyCorrection ?? 0,
   }
 }
 

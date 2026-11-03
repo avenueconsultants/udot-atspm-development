@@ -2433,6 +2433,38 @@ export interface IncidentEvent {
   parameterDescription?: string | null;
 }
 
+export interface IncidentDetector {
+  channel?: number;
+  /** @nullable */
+  laneNumber?: number | null;
+  /** @nullable */
+  movementType?: string | null;
+  /** @nullable */
+  laneType?: string | null;
+  /** @nullable */
+  distanceFromStopBar?: number | null;
+  /** @nullable */
+  detectionTypes?: string[] | null;
+  latencyCorrection?: number;
+}
+
+export interface IncidentApproach {
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  direction?: string | null;
+  /** @nullable */
+  protectedBandKey?: string | null;
+  /** @nullable */
+  permissiveBandKey?: string | null;
+  /** @nullable */
+  pedestrianBandKey?: string | null;
+  /** @nullable */
+  signalHeadType?: string | null;
+  /** @nullable */
+  detectors?: IncidentDetector[] | null;
+}
+
 export interface IncidentReconstructionResult {
   start?: string;
   end?: string;
@@ -2445,6 +2477,8 @@ export interface IncidentReconstructionResult {
   bands?: IncidentBand[] | null;
   /** @nullable */
   events?: IncidentEvent[] | null;
+  /** @nullable */
+  approaches?: IncidentApproach[] | null;
 }
 
 export interface IncidentReconstructionOptions {

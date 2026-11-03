@@ -32,7 +32,7 @@ import {
   Tabs,
   Typography,
 } from '@mui/material'
-import { Ref, useState } from 'react'
+import { ReactNode, Ref, useState } from 'react'
 import AdjustmentField from './AdjustmentField'
 import ClockWarning from './ClockWarning'
 import IncidentChart, { IncidentChartHandle } from './IncidentChart'
@@ -70,6 +70,13 @@ interface ChartPanelProps {
   onRemoveSignal(key: string): void
   onSuggestNames(): void
   onSaveImage(): void
+  showingIntersection: boolean
+  onShowingIntersectionChange(showing: boolean): void
+  /** The intersection drawing, shown above the chart. */
+  intersection: ReactNode
+  /** The intersection drawing's time, adjusted, or null when it's hidden. */
+  cursor: number | null
+  onCursorChange(time: number): void
 }
 
 /** In the side panel's order. */
@@ -103,6 +110,11 @@ export default function ChartPanel({
   onRemoveSignal,
   onSuggestNames,
   onSaveImage,
+  showingIntersection,
+  onShowingIntersectionChange,
+  intersection,
+  cursor,
+  onCursorChange,
 }: ChartPanelProps) {
   const visible = zoomedWindow(start, end, zoom)
   const fullSpan = zoom.from <= 0 && zoom.to >= 100
@@ -110,7 +122,7 @@ export default function ChartPanel({
   const hasEmptyLabel = labeled.some((row) => row.label.trim() === '')
 
   return (
-    // The controls, the chart and the tables each get a card.
+    // The controls, the intersection, the chart and the tables each get a card.
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, minWidth: 0 }}>
       <StyledPaper sx={{ p: 2 }}>
         <Box
@@ -167,8 +179,23 @@ export default function ChartPanel({
             }
             label="Pick on chart"
           />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showingIntersection}
+                onChange={(event) =>
+                  onShowingIntersectionChange(event.target.checked)
+                }
+              />
+            }
+            label="Intersection"
+          />
         </Box>
       </StyledPaper>
+
+      {showingIntersection && (
+        <StyledPaper sx={{ p: 3 }}>{intersection}</StyledPaper>
+      )}
 
       <StyledPaper sx={{ p: 3 }}>
         <ClockWarning messages={warnings} />
@@ -208,6 +235,8 @@ export default function ChartPanel({
             onZoomChange={onZoomChange}
             onPick={onPick}
             onSaveImage={onSaveImage}
+            cursor={cursor}
+            onCursorChange={onCursorChange}
           />
         )}
       </StyledPaper>

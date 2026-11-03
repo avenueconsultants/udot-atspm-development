@@ -64,6 +64,78 @@ namespace Utah.Udot.Atspm.Business.IncidentReconstruction
         public List<IncidentBand> Bands { get; set; } = new();
 
         public List<IncidentEvent> Events { get; set; } = new();
+
+        /// <summary>
+        /// The configured approaches, for drawing the intersection.
+        /// </summary>
+        public List<IncidentApproach> Approaches { get; set; } = new();
+    }
+
+    /// <summary>
+    /// One configured approach, the bands that carry its signals, and its detectors.
+    /// </summary>
+    public class IncidentApproach
+    {
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Direction of travel: "NB", "SB", "EB", "WB", "NE", "NW", "SE", "SW", or "NA" when not set.
+        /// </summary>
+        public string Direction { get; set; }
+
+        /// <summary>
+        /// The protected phase's band, or null when the report has none.
+        /// </summary>
+        public string ProtectedBandKey { get; set; }
+
+        /// <summary>
+        /// The permissive phase's band, or null when the report has none.
+        /// </summary>
+        public string PermissiveBandKey { get; set; }
+
+        /// <summary>
+        /// The pedestrian signal's band, or null when the report has none.
+        /// </summary>
+        public string PedestrianBandKey { get; set; }
+
+        /// <summary>
+        /// "ProtectedOnly", "PermissiveOnly", "FiveHead", or "FYA", by the same rule as the Left Turn Gap report.
+        /// </summary>
+        public string SignalHeadType { get; set; }
+
+        /// <summary>
+        /// Detectors in service during the window.
+        /// </summary>
+        public List<IncidentDetector> Detectors { get; set; } = new();
+    }
+
+    public class IncidentDetector
+    {
+        public int Channel { get; set; }
+
+        public int? LaneNumber { get; set; }
+
+        /// <summary>
+        /// "L", "TL", "T", "TR", "R", "LTR", or "NA" when not set.
+        /// </summary>
+        public string MovementType { get; set; }
+
+        /// <summary>
+        /// "V", "Bike", "Ped", "E", "LRT", "Bus", "HDV", or "NA" when not set.
+        /// </summary>
+        public string LaneType { get; set; }
+
+        public int? DistanceFromStopBar { get; set; }
+
+        /// <summary>
+        /// "B", "AC", "AS", "LLC", "LLS", "SBP", "AP", "P", in that order; unknown types are left out.
+        /// </summary>
+        public List<string> DetectionTypes { get; set; } = new();
+
+        /// <summary>
+        /// Seconds the controller logs this detector's changes late.
+        /// </summary>
+        public double LatencyCorrection { get; set; }
     }
 
     /// <summary>

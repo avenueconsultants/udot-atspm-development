@@ -30,12 +30,16 @@ import {
   CANDIDATE_SERIES_ID,
   LABELED_SERIES_ID,
   buildChartOption,
+  cursorSeries,
 } from '@/features/incidentReconstruction/chartOption'
 import { EventRow } from '@/features/incidentReconstruction/eventRows'
 import { normalizeAdjustment } from '@/features/incidentReconstruction/latencyAdjustment'
 import { TimelineBand } from '@/features/incidentReconstruction/types'
 import { SignalNames } from '@/features/incidentReconstruction/urlCodecs'
-import { formatClock } from '@/features/incidentReconstruction/wallClock'
+import {
+  formatClock,
+  roundToTenth,
+} from '@/features/incidentReconstruction/wallClock'
 import type { ECharts } from 'echarts'
 import { init } from 'echarts'
 import {
@@ -115,7 +119,14 @@ interface IncidentChartProps {
   onPick(key: string): void
   /** The chart's save button. */
   onSaveImage(): void
+  /** The intersection drawing's time, adjusted, or null when it's hidden. */
+  cursor: number | null
+  /** Clicking the chart while the intersection drawing shows. Adjusted time. */
+  onCursorChange(time: number): void
 }
+
+/** A press that moves farther than this is a drag, not a click. */
+const CLICK_SLOP = 4
 
 /** Widths are kept only once the fonts have loaded. */
 function createCanvasMeasure(fontsReady: boolean): MeasureText {
@@ -154,6 +165,8 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
       onZoomChange,
       onPick,
       onSaveImage,
+      cursor,
+      onCursorChange,
     },
     ref
   ) {
@@ -215,6 +228,8 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
       onSaveImage,
       labeled,
       candidates,
+      cursor,
+      onCursorChange,
     })
     handlers.current = {
       onZoomChange,
@@ -222,7 +237,12 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
       onSaveImage,
       labeled,
       candidates,
+      cursor,
+      onCursorChange,
     }
+    // The cursor moves many times a second while playing, so it is set on its
+    // own and the full option only reads its latest value.
+    const optionSet = useRef(false)
     const handleSaveImage = useCallback(
       () => handlers.current.onSaveImage(),
       []
@@ -314,6 +334,32 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
         const row = rows && data ? rows[data[2]] : undefined
         if (row) handlers.current.onPick(row.event.key)
       })
+      // A click on the bands moves the intersection drawing's time. Panning
+      // and dragging callouts also end in a click, so those are left out.
+      const zr = chart.getZr()
+      let pressedAt: [number, number] | null = null
+      zr.on('mousedown', (event) => {
+        pressedAt = [event.offsetX, event.offsetY]
+      })
+      zr.on('click', (event) => {
+        const point = [event.offsetX, event.offsetY]
+        const pressed = pressedAt
+        pressedAt = null
+        if (
+          handlers.current.cursor === null ||
+          !pressed ||
+          Math.hypot(point[0] - pressed[0], point[1] - pressed[1]) >
+            CLICK_SLOP ||
+          !chart.containPixel({ gridIndex: 0 }, point)
+        ) {
+          return
+        }
+        const [time] = chart.convertFromPixel({ gridIndex: 0 }, point) as [
+          number,
+          number,
+        ]
+        handlers.current.onCursorChange(roundToTenth(time))
+      })
       const observer = new ResizeObserver((entries) =>
         setWidth(Math.round(entries[0].contentRect.width))
       )
@@ -323,6 +369,7 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
         observer.disconnect()
         chart.dispose()
         chartRef.current = null
+        optionSet.current = false
       }
     }, [])
 
@@ -352,9 +399,11 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
           geometry,
           chartWidth: width,
           measure,
+          cursor: handlers.current.cursor,
         }),
         { replaceMerge: ['series', 'graphic'] }
       )
+      optionSet.current = true
     }, [
       title,
       subtitle,
@@ -376,18 +425,30 @@ const IncidentChart = forwardRef<IncidentChartHandle, IncidentChartProps>(
       fontsReady,
     ])
 
+    useEffect(() => {
+      const chart = chartRef.current
+      if (!chart || !optionSet.current) return
+      chart.setOption({ series: [cursorSeries(cursor)] })
+    }, [cursor])
+
     useImperativeHandle(
       ref,
       () => ({
         getImage: async () => {
           const chart = chartRef.current
           if (!chart) return null
+          // The intersection's time line isn't part of the saved chart.
+          const cursor = handlers.current.cursor
+          if (cursor !== null) chart.setOption({ series: [cursorSeries(null)] })
           const dataUrl = chart.getDataURL({
             type: 'png',
             pixelRatio: PIXEL_RATIO,
             backgroundColor: '#fff',
             excludeComponents: ['dataZoom', 'toolbox'],
           })
+          if (cursor !== null) {
+            chart.setOption({ series: [cursorSeries(cursor)] })
+          }
           return cropChart(
             dataUrl,
             chart.getWidth(),

@@ -53,6 +53,45 @@ export interface TimelineEvent {
   parameterDescription: string
 }
 
+/** Direction of travel. */
+export type Direction = 'NB' | 'SB' | 'EB' | 'WB' | 'NE' | 'NW' | 'SE' | 'SW'
+
+export type Movement = 'L' | 'TL' | 'LTR' | 'T' | 'TR' | 'R'
+
+export interface ApproachDetector {
+  channel: number
+  laneNumber: number | null
+  /** Null when the configuration doesn't say. */
+  movement: Movement | null
+  /** "V", "Bike", "Ped", "E" (exit) and so on. */
+  laneType: string
+  /** Feet. Null when the configuration doesn't say. */
+  distanceFromStopBar: number | null
+  /** "SBP" (stop bar presence), "AC" (advanced count) and so on. */
+  detectionTypes: string[]
+  /** Seconds the controller logs this detector's changes late. */
+  latencyCorrection: number
+}
+
+/** How the approach's signal head shows a permissive movement. */
+export type SignalHeadType =
+  | 'ProtectedOnly'
+  | 'PermissiveOnly'
+  | 'FiveHead'
+  | 'FYA'
+
+export interface ReportApproach {
+  description: string
+  /** Null when the configuration doesn't say. */
+  direction: Direction | null
+  protectedBandKey: string | null
+  permissiveBandKey: string | null
+  pedestrianBandKey: string | null
+  /** Null when the report doesn't say. */
+  signalHeadType: SignalHeadType | null
+  detectors: ApproachDetector[]
+}
+
 export interface IncidentReport {
   locationIdentifier: string
   locationDescription: string
@@ -62,6 +101,7 @@ export interface IncidentReport {
   bands: TimelineBand[]
   /** Sorted by time; events at the same time keep the controller's log order. */
   events: TimelineEvent[]
+  approaches: ReportApproach[]
 }
 
 /** What one Generate produced: the report plus the inputs it was drawn with. */

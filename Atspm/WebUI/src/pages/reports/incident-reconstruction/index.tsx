@@ -11,6 +11,7 @@ import ChartPanel from '@/features/incidentReconstruction/components/ChartPanel'
 import EventsPanel from '@/features/incidentReconstruction/components/EventsPanel'
 import { IncidentChartHandle } from '@/features/incidentReconstruction/components/IncidentChart'
 import InputsCard from '@/features/incidentReconstruction/components/InputsCard'
+import IntersectionPanel from '@/features/incidentReconstruction/components/IntersectionPanel'
 import SignalsPanel from '@/features/incidentReconstruction/components/SignalsPanel'
 import {
   chartBands,
@@ -43,6 +44,7 @@ import {
 import {
   normalizeAdjustment,
   toAdjusted,
+  toController,
 } from '@/features/incidentReconstruction/latencyAdjustment'
 import { reportErrorMessage } from '@/features/incidentReconstruction/reportError'
 import {
@@ -131,6 +133,9 @@ const IncidentReconstruction = () => {
   const [picking, setPicking] = useState(false)
   const [tab, setTab] = useState<PanelTab>('signals')
   const [panelOpen, setPanelOpen] = useState(true)
+  const [showingIntersection, setShowingIntersection] = useState(false)
+  // The intersection drawing's time, controller clock.
+  const [intersectionTime, setIntersectionTime] = useState(0)
   const generation = useRef(0)
   const loadedLink = useRef(false)
   const chartRef = useRef<IncidentChartHandle>(null)
@@ -176,6 +181,7 @@ const IncidentReconstruction = () => {
           end: inputs.end,
           generation: generation.current,
         })
+        setIntersectionTime(inputs.start)
         setZoom(FULL_ZOOM)
       } catch (caught) {
         setView(null)
@@ -595,6 +601,32 @@ const IncidentReconstruction = () => {
             }
             onSuggestNames={handleSuggestNames}
             onSaveImage={() => void handleSaveImage()}
+            showingIntersection={showingIntersection}
+            onShowingIntersectionChange={setShowingIntersection}
+            intersection={
+              <IntersectionPanel
+                report={view.report}
+                names={qs.names}
+                start={view.start}
+                end={view.end}
+                time={intersectionTime}
+                adjustmentSeconds={adjustmentSeconds}
+                onTimeChange={setIntersectionTime}
+              />
+            }
+            cursor={
+              showingIntersection
+                ? toAdjusted(intersectionTime, adjustmentSeconds)
+                : null
+            }
+            onCursorChange={(time) =>
+              setIntersectionTime(
+                Math.min(
+                  view.end,
+                  Math.max(view.start, toController(time, adjustmentSeconds))
+                )
+              )
+            }
           />
         </Box>
       )}

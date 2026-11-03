@@ -119,10 +119,58 @@ namespace Utah.Udot.Atspm.Business.IncidentReconstruction
                 LocationDescription = location.LocationDescription(),
                 LookbackStart = lookbackStart,
                 Bands = bands.Ordered(),
-                Events = windowEvents.Select(e => ToIncidentEvent(e, location, detectors, bands, options)).ToList()
+                Events = windowEvents.Select(e => ToIncidentEvent(e, location, detectors, bands, options)).ToList(),
+                Approaches = (location.Approaches ?? Enumerable.Empty<Approach>())
+                    .Select(a => ToIncidentApproach(a, bands, options))
+                    .ToList()
             };
             return result;
         }
+
+        private static IncidentApproach ToIncidentApproach(Approach approach, BandSet bands, IncidentReconstructionOptions options)
+        {
+            var pedPhase = approach.PedestrianPhaseNumber ?? approach.ProtectedPhaseNumber;
+            return new IncidentApproach
+            {
+                Description = approach.Description,
+                Direction = approach.DirectionTypeId.ToString(),
+                ProtectedBandKey = approach.ProtectedPhaseNumber > 0
+                    ? KeyInReport(bands, VehicleBandKey(approach.IsProtectedPhaseOverlap, approach.ProtectedPhaseNumber))
+                    : null,
+                PermissiveBandKey = approach.PermissivePhaseNumber > 0
+                    ? KeyInReport(bands, VehicleBandKey(approach.IsPermissivePhaseOverlap, approach.PermissivePhaseNumber.Value))
+                    : null,
+                PedestrianBandKey = pedPhase > 0
+                    ? KeyInReport(bands, PedestrianBandKey(approach.IsPedestrianPhaseOverlap, pedPhase))
+                    : null,
+                SignalHeadType = approach.GetSignalHeadType().ToString(),
+                Detectors = (approach.Detectors ?? Enumerable.Empty<Detector>())
+                    .Where(d => InServiceDuring(d, options))
+                    .OrderBy(d => d.DetectorChannel)
+                    .Select(d => new IncidentDetector
+                    {
+                        Channel = d.DetectorChannel,
+                        LaneNumber = d.LaneNumber,
+                        MovementType = d.MovementType.ToString(),
+                        LaneType = d.LaneType.ToString(),
+                        DistanceFromStopBar = d.DistanceFromStopBar,
+                        DetectionTypes = (d.DetectionTypes ?? Enumerable.Empty<DetectionType>())
+                            .Select(t => t.Id)
+                            .Where(t => t != DetectionTypes.NA)
+                            .Distinct()
+                            .OrderBy(t => t)
+                            .Select(t => t.ToString())
+                            .ToList(),
+                        LatencyCorrection = d.LatencyCorrection
+                    })
+                    .ToList()
+            };
+        }
+
+        private static string KeyInReport(BandSet bands, string key) => bands.Contains(key) ? key : null;
+
+        private static bool InServiceDuring(Detector detector, IncidentReconstructionOptions options) =>
+            detector.DateAdded <= options.End && (detector.DateDisabled == null || detector.DateDisabled > options.Start);
 
         private static void AddConfiguredVehicleBands(BandSet bands, IReadOnlyList<PhaseDetail> phases)
         {
@@ -368,7 +416,7 @@ namespace Utah.Udot.Atspm.Business.IncidentReconstruction
 
             // Prefer the detector that was active during the window when a channel was reused.
             var (detector, approach) = onChannel
-                .Where(d => d.Detector.DateAdded <= options.End && (d.Detector.DateDisabled == null || d.Detector.DateDisabled > options.Start))
+                .Where(d => InServiceDuring(d.Detector, options))
                 .DefaultIfEmpty(onChannel[0])
                 .First();
             result.ParameterDescription = DescribeDetector(detector, approach);
