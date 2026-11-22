@@ -34,6 +34,7 @@ public sealed class CorridorOffsetReportServiceTests
         Assert.True(result.Signals[1].Locked);
         Assert.Equal(0, result.Proposed.Shifts[1]);
         Assert.Contains(result.Notes, note => note.Contains("35 mph fallback"));
+        Assert.Contains(result.Notes, note => note.Contains("Signal A (EB) has entrance counts for 1 of 2 through lanes"));
     }
 
     [Fact]
@@ -140,12 +141,21 @@ public sealed class CorridorOffsetReportServiceTests
         {
             ProtectedPhaseNumber = phase, DirectionTypeId = direction, Mph = speed,
             DirectionType = new DirectionType { Abbreviation = direction.ToString() },
-            Detectors = [new Detector
-            {
-                DetectorChannel = channel, LaneNumber = 1, MovementType = MovementTypes.T,
-                DistanceFromStopBar = advance ? 100 : 0, DateAdded = Start.AddYears(-1),
-                DetectionTypes = [new DetectionType { Id = advance ? DetectionTypes.AC : DetectionTypes.LLC }]
-            }]
+            Detectors =
+            [
+                new Detector
+                {
+                    DetectorChannel = channel, LaneNumber = 1, MovementType = MovementTypes.T,
+                    DistanceFromStopBar = advance ? 100 : 0, DateAdded = Start.AddYears(-1),
+                    DetectionTypes = [new DetectionType { Id = advance ? DetectionTypes.AC : DetectionTypes.LLC }]
+                },
+                .. (phase == 2 && advance ? new[] { new Detector
+                {
+                    DetectorChannel = channel + 1, LaneNumber = 2, MovementType = MovementTypes.T,
+                    DistanceFromStopBar = 100, DateAdded = Start.AddYears(-1),
+                    DetectionTypes = [new DetectionType { Id = DetectionTypes.AC }]
+                } } : Array.Empty<Detector>())
+            ]
         };
 
     private static IReadOnlyList<IndianaEvent> BuildEvents(int cycle, bool second)

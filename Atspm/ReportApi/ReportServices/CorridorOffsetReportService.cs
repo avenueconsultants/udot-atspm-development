@@ -34,6 +34,46 @@ public class CorridorOffsetReportService(
 
     public async Task<CorridorResult> ExecuteAsync(CorridorOffsetOptions options, CancellationToken cancellationToken)
     {
+        var (input, notes) = await BuildInputAsync(options, cancellationToken);
+        var signals = input.Signals;
+        var seeds = new List<(string Name, int[] Shifts)>();
+        if (options.CompareLinkPivot)
+        {
+            try
+            {
+                foreach (var plan in await linkPivot.GetLinkPivotForTSD(new TimeSpaceDiagramOptions
+                {
+                    RouteId = options.RouteId,
+                    Start = options.Start,
+                    End = options.End,
+                    LocationIdentifier = signals[0].Id
+                }))
+                {
+                    var adjustments = plan.Data.Adjustments
+                        .GroupBy(adjustment => adjustment.LocationIdentifier)
+                        .ToDictionary(group => group.Key, group => group.Last().Adjustment);
+                    if (signals.Any(signal => !adjustments.ContainsKey(signal.Id)))
+                        continue;
+                    var shifts = signals.Select(signal => CenterShift(adjustments[signal.Id], input.Cycle)).ToArray();
+                    if (signals.Select((signal, index) => signal.Locked && shifts[index] != 0).Any(conflict => conflict))
+                        continue;
+                    seeds.Add(($"Link Pivot ({plan.Direction})", shifts));
+                }
+            }
+            catch (Exception exception) when (exception is not OperationCanceledException)
+            {
+                logger.LogWarning(exception, "Link Pivot comparison was unavailable for corridor route {RouteId}", options.RouteId);
+            }
+
+            if (seeds.Count == 0)
+                notes.Add("Link Pivot comparison is unavailable for this period or incompatible with the locked entrance signals.");
+        }
+        return CorridorReplay.Optimize(input, seeds, notes, cancellationToken);
+    }
+
+    internal async Task<(CorridorInput Input, List<string> Notes)> BuildInputAsync(
+        CorridorOffsetOptions options, CancellationToken cancellationToken)
+    {
         if (options.RouteId <= 0 || options.Start.Date != options.End.Date ||
             options.End <= options.Start)
             throw new InvalidOperationException("Select a route and a same-day window within one coordinated plan.");
@@ -116,40 +156,7 @@ public class CorridorOffsetReportService(
             (index == observations.Count - 1 && opposing.EnteringAfterSignal))).ToArray();
         var input = new CorridorInput(cycleLength, signals,
             [new CorridorDay(options.Start, duration, primary, opposing)], maxShift, options.MaxDirectionalIncrease);
-
-        var seeds = new List<(string Name, int[] Shifts)>();
-        if (options.CompareLinkPivot)
-        {
-            try
-            {
-                foreach (var plan in await linkPivot.GetLinkPivotForTSD(new TimeSpaceDiagramOptions
-                {
-                    RouteId = options.RouteId,
-                    Start = options.Start,
-                    End = options.End,
-                    LocationIdentifier = signals[0].Id
-                }))
-                {
-                    var adjustments = plan.Data.Adjustments
-                        .GroupBy(adjustment => adjustment.LocationIdentifier)
-                        .ToDictionary(group => group.Key, group => group.Last().Adjustment);
-                    if (signals.Any(signal => !adjustments.ContainsKey(signal.Id)))
-                        continue;
-                    var shifts = signals.Select(signal => CenterShift(adjustments[signal.Id], cycleLength)).ToArray();
-                    if (signals.Select((signal, index) => signal.Locked && shifts[index] != 0).Any(conflict => conflict))
-                        continue;
-                    seeds.Add(($"Link Pivot ({plan.Direction})", shifts));
-                }
-            }
-            catch (Exception exception) when (exception is not OperationCanceledException)
-            {
-                logger.LogWarning(exception, "Link Pivot comparison was unavailable for corridor route {RouteId}", options.RouteId);
-            }
-
-            if (seeds.Count == 0)
-                notes.Add("Link Pivot comparison is unavailable for this period or incompatible with the locked entrance signals.");
-        }
-        return CorridorReplay.Optimize(input, seeds, notes, cancellationToken);
+        return (input, notes);
     }
 
     private static CorridorDirection BuildDirection(IReadOnlyList<Observation> signals, CorridorOffsetOptions options,
@@ -182,16 +189,22 @@ public class CorridorOffsetReportService(
             if (index != entrance)
                 continue;
 
-            entries = GetEntries(signal, approach, greens, options, feetPerSecond, reverse, false);
+            var entranceData = GetEntries(signal, approach, greens, options, feetPerSecond, reverse, false);
+            entries = entranceData.Entries;
             if (!entries.Any(entry => entry.Score))
             {
-                entries = GetEntries(signal, approach, greens, options, feetPerSecond, reverse, true);
+                entranceData = GetEntries(signal, approach, greens, options, feetPerSecond, reverse, true);
+                entries = entranceData.Entries;
                 enteringAfterSignal = true;
                 if (entries.Any(entry => entry.Score))
                     notes.Add($"Signal {id} is locked because its entrance stream is seeded from stop-bar count events on green.");
             }
             if (!entries.Any(entry => entry.Score))
                 throw new InvalidOperationException($"Signal {id} has no usable through-count events for the {(reverse ? "opposing" : "primary")} entrance.");
+
+            var direction = approach.DirectionType?.Abbreviation ?? (reverse ? "opposing" : "primary");
+            if (entranceData.LanesWithCounts < laneCount)
+                notes.Add($"Signal {id} ({direction}) has entrance counts for {entranceData.LanesWithCounts} of {laneCount} through lanes listed in the detector configuration.");
         }
 
         var entranceApproach = reverse ? signals[entrance].Opposing : signals[entrance].Primary;
@@ -199,7 +212,7 @@ public class CorridorOffsetReportService(
         return new CorridorDirection(name, approaches, entries, enteringAfterSignal);
     }
 
-    private static IReadOnlyList<CorridorEntry> GetEntries(Observation signal, Approach approach,
+    private static (IReadOnlyList<CorridorEntry> Entries, int LanesWithCounts) GetEntries(Observation signal, Approach approach,
         IReadOnlyList<CorridorGreen> greens, CorridorOffsetOptions options, double feetPerSecond, bool reverse, bool stopBar)
     {
         var warmup = options.Start.AddSeconds(-2 * signal.Cycle);
@@ -216,7 +229,7 @@ public class CorridorOffsetReportService(
             .GroupBy(detector => detector.LaneNumber.GetValueOrDefault())
             .Select(group => group.OrderBy(detector => detector.DetectorChannel).First());
 
-        return detectors.SelectMany(detector =>
+        var entries = detectors.SelectMany(detector =>
             {
                 var distance = stopBar ? 0 : detector.DistanceFromStopBar.GetValueOrDefault();
                 return detections[detector.DetectorChannel].Select(entry => entry.Timestamp).Distinct()
@@ -224,10 +237,13 @@ public class CorridorOffsetReportService(
                     .Where(timestamp => timestamp >= warmup && timestamp < options.End)
                     .Select(timestamp => new CorridorEntry((timestamp - options.Start).TotalSeconds,
                         distance / feetPerSecond, signal.Distance + (reverse ? distance : -distance),
-                        timestamp >= options.Start));
+                        timestamp >= options.Start))
+                    .Select(entry => (Entry: entry, Lane: detector.LaneNumber.GetValueOrDefault()));
             })
-            .Where(entry => !stopBar || greens.Any(green => entry.Time >= green.Start && entry.Time < green.End))
-            .OrderBy(entry => entry.Time + entry.SecondsToStopBar).ToArray();
+            .Where(item => !stopBar || greens.Any(green => item.Entry.Time >= green.Start && item.Entry.Time < green.End))
+            .ToArray();
+        return (entries.Select(item => item.Entry).OrderBy(entry => entry.Time + entry.SecondsToStopBar).ToArray(),
+            entries.Where(item => item.Entry.Score && item.Lane > 0).Select(item => item.Lane).Distinct().Count());
     }
 
     private static bool IsActive(Detector detector, CorridorOffsetOptions options) =>
