@@ -2,6 +2,7 @@ import { ResponsivePageLayout } from '@/components/ResponsivePage'
 import { useTimeSpaceCall } from '@/features/charts/api/getTools'
 import { ToolType } from '@/features/charts/common/types'
 import { useLinkPivotForTsd } from '@/features/charts/timeSpaceDiagram/api/getLinkPivotForTsd'
+import CorridorOffsetsTab from '@/features/charts/timeSpaceDiagram/app/components/CorridorOffsetsTab'
 import TimeSpaceResultsContainer from '@/features/charts/timeSpaceDiagram/app/components/TimeSpaceResultsContainer'
 import { canFetchLinkPivotForTimeSpace } from '@/features/charts/timeSpaceDiagram/app/utils/timeSpaceResultData'
 import { AverageOptionsComponent } from '@/features/charts/timeSpaceDiagram/average/TimeSpaceAverageOptions'
@@ -29,6 +30,7 @@ const TimeSpaceDiagram = () => {
   const [currentTab, setCurrentTab] = useState<
     ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage
   >(ToolType.TimeSpaceHistoric)
+  const [showCorridor, setShowCorridor] = useState(false)
   const [hasAttemptedGenerate, setHasAttemptedGenerate] = useState(false)
 
   const { data: routesData, isLoading: isLoadingRoutes } = useGetRoute()
@@ -106,8 +108,13 @@ const TimeSpaceDiagram = () => {
 
   const handleChange = (
     _: React.SyntheticEvent,
-    newValue: ToolType.TimeSpaceHistoric | ToolType.TimeSpaceAverage
+    newValue:
+      | ToolType.TimeSpaceHistoric
+      | ToolType.TimeSpaceAverage
+      | 'CorridorOffsets'
   ) => {
+    setShowCorridor(newValue === 'CorridorOffsets')
+    if (newValue === 'CorridorOffsets') return
     setCurrentTab(newValue)
     setHasAttemptedGenerate(false)
   }
@@ -149,7 +156,7 @@ const TimeSpaceDiagram = () => {
 
   return (
     <ResponsivePageLayout title={'Time-Space Diagrams'} noBottomMargin>
-      <TabContext value={currentTab}>
+      <TabContext value={showCorridor ? 'CorridorOffsets' : currentTab}>
         <Box>
           <TabList
             onChange={handleChange}
@@ -159,6 +166,7 @@ const TimeSpaceDiagram = () => {
           >
             <Tab label="Historic" value={ToolType.TimeSpaceHistoric} />
             <Tab label="50th Percentile" value={ToolType.TimeSpaceAverage} />
+            <Tab label="Corridor Offsets" value="CorridorOffsets" />
           </TabList>
         </Box>
 
@@ -171,7 +179,11 @@ const TimeSpaceDiagram = () => {
             <AverageOptionsComponent handler={averageHandler} />
           </TabPanel>
 
-          <Box>
+          <TabPanel value="CorridorOffsets" sx={{ padding: 0, pt: 2 }}>
+            <CorridorOffsetsTab routes={routes} />
+          </TabPanel>
+
+          <Box hidden={showCorridor}>
             <Box display="flex" alignItems="center" height="50px" marginTop={2}>
               <LoadingButton
                 loading={isLoading}

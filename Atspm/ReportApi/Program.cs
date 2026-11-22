@@ -180,6 +180,7 @@ builder.Host
         s.AddScoped<TimingAndActuationsForPhaseService>();
         s.AddScoped<PriorityDetailsReportService>();
         s.AddScoped<TimeSpaceDiagramReportService>();
+        s.AddScoped<CorridorOffsetReportService>();
         s.AddScoped<TransitSignalPriorityService>();
         s.AddScoped<TurningMovementCountsService>();
         s.AddScoped<WaitTimeService>();
