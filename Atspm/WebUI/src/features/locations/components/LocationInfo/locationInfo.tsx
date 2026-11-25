@@ -17,7 +17,7 @@ function LocationInfo({ location }: LocationInfoProps) {
           <TableCell>Latitude</TableCell>
           <TableCell>Longitude</TableCell>
           <TableCell>Region</TableCell>
-          <TableCell>Jursidiction</TableCell>
+          <TableCell>Jurisdiction</TableCell>
           <TableCell align="center">Display On Map</TableCell>
           <TableCell align="center">All Peds are 1:1</TableCell>
         </TableRow>
