@@ -1,6 +1,5 @@
 import { getPriorityDetailsReportData } from '@/api/reports/priority-details/priority-details'
 import transformPriorityDetailsData from '@/features/charts/prioritySummary/priorityDetails.transformer'
-import { dateToTimestamp } from '@/utils/dateTime'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Button } from '@mui/material'
 import type { ECharts, EChartsOption, SetOptionOpts } from 'echarts'
@@ -86,8 +85,8 @@ export default function PrioritySummaryDetailsChart({
 
         const detailsResponse = await getPriorityDetailsReportData({
           locationIdentifier,
-          start: dateToTimestamp(start),
-          end: dateToTimestamp(end),
+          start,
+          end,
         })
 
         const transformed = transformPriorityDetailsData(detailsResponse)
