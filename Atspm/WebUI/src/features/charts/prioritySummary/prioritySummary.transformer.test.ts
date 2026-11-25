@@ -18,6 +18,63 @@ import type { PrioritySummaryResult } from '@/api/reports'
 import transformPrioritySummaryData from './prioritySummary.transformer'
 
 describe('transformPrioritySummaryData', () => {
+  it('stores padded wall-clock drilldown windows for request and service bars', () => {
+    const response: PrioritySummaryResult = {
+      start: '2026-11-18T06:00:00',
+      end: '2026-11-18T18:00:00',
+      locationIdentifier: '5051',
+      averageDuration: '00:01:00',
+      cycles: [
+        {
+          tspNumber: 1,
+          checkIn: '2026-11-18T11:50:00',
+          checkOut: '2026-11-18T11:51:00',
+          requestEndOffsetSec: 60,
+          serviceStartOffsetSec: 10,
+          serviceEndOffsetSec: 20,
+        },
+        {
+          tspNumber: 1,
+          checkIn: '2026-11-18T14:46:00',
+          serviceStartOffsetSec: 10,
+          serviceEndOffsetSec: 20,
+        },
+      ],
+    }
+
+    const { series } = transformPrioritySummaryData(response).data.charts[0].chart
+    if (!Array.isArray(series)) throw new Error('Expected chart series')
+
+    const requestBar = series.find(
+      (entry) =>
+        typeof entry.name === 'string' && entry.name.startsWith('TSP Request')
+    )
+    const serviceBar = series.find(
+      (entry) =>
+        typeof entry.name === 'string' && entry.name.startsWith('TSP Service')
+    )
+
+    expect(requestBar?.data).toEqual([
+      expect.arrayContaining([
+        '5051',
+        '2026-11-18T11:47:55',
+        '2026-11-18T11:53:05',
+      ]),
+    ])
+    expect(serviceBar?.data).toEqual([
+      expect.arrayContaining([
+        '5051',
+        '2026-11-18T11:48:00',
+        '2026-11-18T11:53:00',
+      ]),
+      expect.arrayContaining([
+        '5051',
+        '2026-11-18T14:44:00',
+        '2026-11-18T14:48:30',
+      ]),
+    ])
+  })
+
   it('creates a combined chart before one chart per TSP number and filters unassigned events by TSP', () => {
     const response: PrioritySummaryResult = {
       start: '2026-04-07T08:00:00Z',

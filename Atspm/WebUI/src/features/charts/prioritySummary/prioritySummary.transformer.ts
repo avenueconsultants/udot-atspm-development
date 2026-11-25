@@ -41,6 +41,7 @@ import {
   formatChartDateTimeRange,
   triangleSvgSymbol,
 } from '@/features/charts/utils'
+import { toWallClockDateTimeLiteral } from '@/utils/dateTime'
 import { EChartsOption } from 'echarts'
 
 const SYMBOL_SIZE = 8
@@ -76,6 +77,15 @@ function durationToSeconds(duration: string): string {
   const seconds = Number(h) * 3600 + Number(m) * 60 + Number(s)
 
   return seconds.toFixed(1)
+}
+
+function parseWallClockTimeForArithmetic(value: string | undefined): number {
+  // Use UTC for arithmetic so the browser's timezone cannot shift report times.
+  return value ? Date.parse(`${toWallClockDateTimeLiteral(value)}Z`) : NaN
+}
+
+function formatDrilldownTime(timeMs: number): string {
+  return toWallClockDateTimeLiteral(new Date(timeMs).toISOString())
 }
 
 function transformLocation(data: PrioritySummaryResult) {
@@ -157,11 +167,11 @@ function transformTspChart(
   const requestBar = cycles
     .filter((c) => c.requestEndOffsetSec != null && c.requestEndOffsetSec >= 0)
     .map((c) => {
-      const inMs = Date.parse(c.checkIn)
-      const outMs = Date.parse(c.checkOut)
+      const inMs = parseWallClockTimeForArithmetic(c.checkIn)
+      const outMs = parseWallClockTimeForArithmetic(c.checkOut)
 
-      const windowStart = new Date(inMs - 125_000).toISOString()
-      const windowEnd = new Date(outMs + 125_000).toISOString()
+      const windowStart = formatDrilldownTime(inMs - 125_000)
+      const windowEnd = formatDrilldownTime(outMs + 125_000)
 
       return [
         c.checkIn,
@@ -200,13 +210,12 @@ function transformTspChart(
   ])
 
   const serviceDurationData = serviceCycles.map((c) => {
-    const inMs = Date.parse(c.checkIn)
-    const outMs = Number.isFinite(Date.parse(c.checkOut))
-      ? Date.parse(c.checkOut)
-      : inMs + 30_000
+    const inMs = parseWallClockTimeForArithmetic(c.checkIn)
+    const checkOutMs = parseWallClockTimeForArithmetic(c.checkOut)
+    const outMs = Number.isFinite(checkOutMs) ? checkOutMs : inMs + 30_000
 
-    const windowStart = new Date(inMs - 120_000).toISOString()
-    const windowEnd = new Date(outMs + 120_000).toISOString()
+    const windowStart = formatDrilldownTime(inMs - 120_000)
+    const windowEnd = formatDrilldownTime(outMs + 120_000)
 
     return [
       c.checkIn,
