@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for Application - Utah.Udot.Atspm.Common/AtspmAuthorization.cs
 // 
@@ -70,6 +70,7 @@ namespace Utah.Udot.Atspm.Common
             public const string GeneralConfigurationAdmin = "GeneralConfigurationAdmin";
             /// <summary>Administrator for location-specific configurations.</summary>
             public const string LocationConfigurationAdmin = "LocationConfigurationAdmin";
+            public const string ConfigurationOwner = "ConfigurationOwner";
             /// <summary>Administrator for managing plugins.</summary>
             public const string PluginAdmin = "PluginAdmin";
             /// <summary>Administrator for report generation and management.</summary>
@@ -131,6 +132,7 @@ namespace Utah.Udot.Atspm.Common
             public const string LocationConfigurationsDelete = "LocationConfiguration:Delete";
             /// <summary>Permission to modify specific location configurations.</summary>
             public const string LocationConfigurationsEdit = "LocationConfiguration:Edit";
+            public const string ConfigurationReviewPromote = "ConfigReview:Promote";
             /// <summary>Permission to view specific location configurations.</summary>
             public const string LocationConfigurationsView = "LocationConfiguration:View";
 
@@ -230,6 +232,15 @@ namespace Utah.Udot.Atspm.Common
                     Permissions.LocationConfigurationsEdit,
                     Permissions.LocationConfigurationsDelete,
                     Permissions.DeviceView
+                }
+            },
+            {
+                Roles.ConfigurationOwner,
+                new List<string>
+                {
+                    Permissions.LocationConfigurationsView,
+                    Permissions.LocationConfigurationsEdit,
+                    Permissions.ConfigurationReviewPromote
                 }
             },
             {

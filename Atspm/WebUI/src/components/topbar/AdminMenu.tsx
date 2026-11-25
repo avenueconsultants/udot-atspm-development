@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 const GROUPS: Record<string, PageNames[]> = {
   'Location Configuration': [
     PageNames.Location,
+    PageNames.ConfigReview,
     PageNames.Routes,
     PageNames.Products,
     PageNames.DeviceConfigurations,

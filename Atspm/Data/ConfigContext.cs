@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for Data - Utah.Udot.Atspm.Data/ConfigContext.cs
 // 
@@ -26,6 +26,8 @@ using Utah.Udot.Atspm.Data.Configuration.IdentityConfiguration;
 using Utah.Udot.Atspm.Data.Enums;
 using Utah.Udot.Atspm.Data.Interfaces;
 using Utah.Udot.Atspm.Data.Utility;
+
+using Utah.Udot.Atspm.Data.Models.ConfigReviewModels;
 
 namespace Utah.Udot.Atspm.Data
 {
@@ -94,6 +96,13 @@ namespace Utah.Udot.Atspm.Data
         /// Locations table
         /// </summary>
         public virtual DbSet<Location> Locations { get; set; }
+        public DbSet<ConfigReview> ConfigReviews => Set<ConfigReview>();
+        public DbSet<ConfigReviewBaseline> ConfigReviewBaselines => Set<ConfigReviewBaseline>();
+        public DbSet<ConfigSnapshot> ConfigSnapshots => Set<ConfigSnapshot>();
+        public DbSet<ConfigSnapshotFile> ConfigSnapshotFiles => Set<ConfigSnapshotFile>();
+        public DbSet<ConfigReviewItem> ConfigReviewItems => Set<ConfigReviewItem>();
+        public DbSet<LocationControllerField> LocationControllerFields => Set<LocationControllerField>();
+        public DbSet<ConfigPromotionField> ConfigPromotionFields => Set<ConfigPromotionField>();
 
         /// <summary>
         /// Location types table
@@ -202,6 +211,7 @@ namespace Utah.Udot.Atspm.Data
         /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ConfigReviewSchema.Apply(modelBuilder);
             modelBuilder.ApplyConfiguration(new ApproachConfiguration());
             modelBuilder.ApplyConfiguration(new AreaConfiguration());
             modelBuilder.ApplyConfiguration(new DetectionTypeConfiguration());

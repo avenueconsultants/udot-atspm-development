@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.OData;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Utah.Udot.Atspm.ConfigApi.Services;
+using Utah.Udot.Atspm.ConfigApi.Services.ConfigReview;
 using Utah.Udot.Atspm.Data;
 using Utah.Udot.Atspm.Infrastructure.Extensions;
 using Utah.Udot.Atspm.Infrastructure.Services;
@@ -94,6 +95,7 @@ builder.Host
         s.AddAtspmEFConfigRepositories();
         s.AddScoped<IRouteService, RouteService>();
         s.AddScoped<IApproachService, ApproachService>();
+        s.AddScoped<ConfigReviewService>();
         s.AddPathBaseFilter(h);
         s.AddAtspmIdentity(h);
         s.AddHttpClient<IGitHubReleaseService, GitHubReleaseService>();

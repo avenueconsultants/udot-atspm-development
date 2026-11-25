@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for SqlLiteDatabaseProvider - Utah.Udot.ATSPM.SqlLiteDatabaseProvider.Migrations/ConfigContextModelSnapshot.cs
 // 
@@ -3160,6 +3160,117 @@ namespace Utah.Udot.ATSPM.SqlLiteDatabaseProvider.Migrations
 
                     b.Navigation("PreviousLocations");
                 });
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<string>("LocationIdentifier").IsRequired().IsUnicode(true).HasMaxLength(64).HasColumnType("TEXT");
+                    b.Property<DateTime>("AsOfDate").HasColumnType("TEXT");
+                    b.Property<string>("Status").IsRequired().IsUnicode(true).HasMaxLength(20).HasColumnType("TEXT");
+                    b.Property<string>("CreatedBy").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("TEXT");
+                    b.Property<DateTime>("CreatedAt").HasColumnType("TEXT");
+                    b.Property<Guid?>("CurrentSnapshotId").HasColumnType("TEXT");
+                    b.Property<Guid>("Revision").IsConcurrencyToken().HasColumnType("TEXT");
+                    b.Property<int?>("RouteId").HasColumnType("INTEGER");
+                    b.Property<Guid?>("BatchId").HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("BatchId");
+                    b.HasIndex("LocationIdentifier");
+                    b.ToTable("ConfigReviews");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", b =>
+                {
+                    b.Property<Guid>("ReviewId").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<int>("LocationId").HasColumnType("INTEGER");
+                    b.Property<string>("Configuration").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<DateTime>("CapturedAt").HasColumnType("TEXT");
+                    b.HasKey("ReviewId");
+                    b.ToTable("ConfigReviewBaselines");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigSnapshotFile", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<Guid>("ReviewId").HasColumnType("TEXT");
+                    b.Property<string>("Name").IsRequired().IsUnicode(true).HasMaxLength(255).HasColumnType("TEXT");
+                    b.Property<string>("Sha256").IsRequired().IsUnicode(true).HasMaxLength(64).HasColumnType("TEXT");
+                    b.Property<long>("Size").HasColumnType("INTEGER");
+                    b.Property<bool>("Stored").HasColumnType("INTEGER");
+                    b.Property<string>("ParseReport").IsRequired().IsUnicode(true).HasMaxLength(512).HasColumnType("TEXT");
+                    b.Property<DateTime>("ReceivedAt").HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigSnapshotFiles");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigSnapshot", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<Guid>("ReviewId").HasColumnType("TEXT");
+                    b.Property<string>("Contract").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<DateTime>("ReceivedAt").HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigSnapshots");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewItem", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<Guid>("ReviewId").HasColumnType("TEXT");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("TEXT");
+                    b.Property<string>("Group").IsRequired().IsUnicode(true).HasMaxLength(32).HasColumnType("TEXT");
+                    b.Property<string>("Classification").IsRequired().IsUnicode(true).HasMaxLength(24).HasColumnType("TEXT");
+                    b.Property<string>("Disposition").IsRequired().IsUnicode(true).HasMaxLength(24).HasColumnType("TEXT");
+                    b.Property<string>("Summary").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("TEXT");
+                    b.Property<string>("BaselineValue").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<string>("ControllerValue").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<string>("Sources").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<string>("Annotation").IsUnicode(true).HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigReviewItems");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.LocationControllerField", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<int>("LocationId").HasColumnType("INTEGER");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("TEXT");
+                    b.Property<string>("Value").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("LocationId", "Field").IsUnique();
+                    b.ToTable("LocationControllerFields");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigPromotionField", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("TEXT");
+                    b.Property<Guid>("ReviewId").HasColumnType("TEXT");
+                    b.Property<Guid>("SnapshotId").HasColumnType("TEXT");
+                    b.Property<int>("LocationId").HasColumnType("INTEGER");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("TEXT");
+                    b.Property<string>("Value").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<string>("Sources").IsRequired().IsUnicode(true).HasColumnType("TEXT");
+                    b.Property<string>("ApprovedBy").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("TEXT");
+                    b.Property<DateTime>("ApprovedAt").HasColumnType("TEXT");
+                    b.Property<string>("Reason").IsRequired().IsUnicode(true).HasMaxLength(512).HasColumnType("TEXT");
+                    b.Property<string>("Basis").IsRequired().IsUnicode(true).HasMaxLength(20).HasColumnType("TEXT");
+                    b.Property<string>("Annotation").IsUnicode(true).HasColumnType("TEXT");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigPromotionFields");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", b =>
+                {
+                    b.HasOne("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview", null)
+                        .WithOne()
+                        .HasForeignKey("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
 #pragma warning restore 612, 618
         }
     }

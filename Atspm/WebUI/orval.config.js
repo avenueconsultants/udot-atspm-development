@@ -15,6 +15,22 @@
 // limitations under the License.
 // #endregion
 module.exports = {
+  configReview: {
+    input: {
+      target: './api-specs/config-spec.json',
+      override: { transformer: './orval-templates/config-review.cjs' },
+    },
+    output: {
+      target: './src/features/configReview/generated/client.ts',
+      client: 'react-query',
+      httpClient: 'axios',
+      mode: 'single',
+      override: {
+        mutator: { path: './src/lib/axios.ts', name: 'configRequest' },
+      },
+    },
+  },
+
   // config: {
   //   input: {
   //     target: './api-specs/config-spec.json',

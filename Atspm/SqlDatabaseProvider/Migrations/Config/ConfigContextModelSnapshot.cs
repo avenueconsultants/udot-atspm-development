@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for SqlDatabaseProvider - Utah.Udot.ATSPM.SqlDatabaseProvider.Migrations/ConfigContextModelSnapshot.cs
 // 
@@ -3211,6 +3211,117 @@ namespace Utah.Udot.ATSPM.SqlDatabaseProvider.Migrations
 
                     b.Navigation("PreviousLocations");
                 });
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<string>("LocationIdentifier").IsRequired().IsUnicode(true).HasMaxLength(64).HasColumnType("nvarchar(64)");
+                    b.Property<DateTime>("AsOfDate").HasColumnType("datetime2");
+                    b.Property<string>("Status").IsRequired().IsUnicode(true).HasMaxLength(20).HasColumnType("nvarchar(20)");
+                    b.Property<string>("CreatedBy").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("nvarchar(256)");
+                    b.Property<DateTime>("CreatedAt").HasColumnType("datetime2");
+                    b.Property<Guid?>("CurrentSnapshotId").HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("Revision").IsConcurrencyToken().HasColumnType("uniqueidentifier");
+                    b.Property<int?>("RouteId").HasColumnType("int");
+                    b.Property<Guid?>("BatchId").HasColumnType("uniqueidentifier");
+                    b.HasKey("Id");
+                    b.HasIndex("BatchId");
+                    b.HasIndex("LocationIdentifier");
+                    b.ToTable("ConfigReviews");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", b =>
+                {
+                    b.Property<Guid>("ReviewId").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<int>("LocationId").HasColumnType("int");
+                    b.Property<string>("Configuration").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("CapturedAt").HasColumnType("datetime2");
+                    b.HasKey("ReviewId");
+                    b.ToTable("ConfigReviewBaselines");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigSnapshotFile", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("ReviewId").HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name").IsRequired().IsUnicode(true).HasMaxLength(255).HasColumnType("nvarchar(255)");
+                    b.Property<string>("Sha256").IsRequired().IsUnicode(true).HasMaxLength(64).HasColumnType("nvarchar(64)");
+                    b.Property<long>("Size").HasColumnType("bigint");
+                    b.Property<bool>("Stored").HasColumnType("bit");
+                    b.Property<string>("ParseReport").IsRequired().IsUnicode(true).HasMaxLength(512).HasColumnType("nvarchar(512)");
+                    b.Property<DateTime>("ReceivedAt").HasColumnType("datetime2");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigSnapshotFiles");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigSnapshot", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("ReviewId").HasColumnType("uniqueidentifier");
+                    b.Property<string>("Contract").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ReceivedAt").HasColumnType("datetime2");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigSnapshots");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewItem", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("ReviewId").HasColumnType("uniqueidentifier");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("nvarchar(128)");
+                    b.Property<string>("Group").IsRequired().IsUnicode(true).HasMaxLength(32).HasColumnType("nvarchar(32)");
+                    b.Property<string>("Classification").IsRequired().IsUnicode(true).HasMaxLength(24).HasColumnType("nvarchar(24)");
+                    b.Property<string>("Disposition").IsRequired().IsUnicode(true).HasMaxLength(24).HasColumnType("nvarchar(24)");
+                    b.Property<string>("Summary").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("nvarchar(256)");
+                    b.Property<string>("BaselineValue").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<string>("ControllerValue").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<string>("Sources").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<string>("Annotation").IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigReviewItems");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.LocationControllerField", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<int>("LocationId").HasColumnType("int");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("nvarchar(128)");
+                    b.Property<string>("Value").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
+                    b.HasIndex("LocationId", "Field").IsUnique();
+                    b.ToTable("LocationControllerFields");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigPromotionField", b =>
+                {
+                    b.Property<Guid>("Id").ValueGeneratedNever().HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("ReviewId").HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("SnapshotId").HasColumnType("uniqueidentifier");
+                    b.Property<int>("LocationId").HasColumnType("int");
+                    b.Property<string>("Field").IsRequired().IsUnicode(true).HasMaxLength(128).HasColumnType("nvarchar(128)");
+                    b.Property<string>("Value").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<string>("Sources").IsRequired().IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.Property<string>("ApprovedBy").IsRequired().IsUnicode(true).HasMaxLength(256).HasColumnType("nvarchar(256)");
+                    b.Property<DateTime>("ApprovedAt").HasColumnType("datetime2");
+                    b.Property<string>("Reason").IsRequired().IsUnicode(true).HasMaxLength(512).HasColumnType("nvarchar(512)");
+                    b.Property<string>("Basis").IsRequired().IsUnicode(true).HasMaxLength(20).HasColumnType("nvarchar(20)");
+                    b.Property<string>("Annotation").IsUnicode(true).HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
+                    b.HasIndex("ReviewId");
+                    b.ToTable("ConfigPromotionFields");
+                });
+
+            modelBuilder.Entity("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", b =>
+                {
+                    b.HasOne("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview", null)
+                        .WithOne()
+                        .HasForeignKey("Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReviewBaseline", "ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
 #pragma warning restore 612, 618
         }
     }

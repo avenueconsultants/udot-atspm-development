@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright 2026 Utah Departement of Transportation
 // for Application - Utah.Udot.Atspm.Extensions/LocationRepositoryExtensions.cs
 // 
@@ -36,7 +36,7 @@ namespace Utah.Udot.Atspm.Extensions
         /// <param name="id">Location version to copy</param>
         /// <param name="newVersionLabel">Label for new version</param>
         /// <returns>New version of copied <see cref="Location"/></returns>
-        public static async Task<Location> CopyLocationToNewVersion(this ILocationRepository repo, int id, string newVersionLabel)
+        public static async Task<Location> CopyLocationToNewVersion(this ILocationRepository repo, int id, string newVersionLabel, DateTime? effectiveDate = null)
         {
             var sourceLocation = repo.GetVersionByIdDetached(id);
             if (sourceLocation != null)
@@ -45,7 +45,7 @@ namespace Utah.Udot.Atspm.Extensions
                 // Detach the original entity
 
                 newVersion.VersionAction = LocationVersionActions.NewVersion;
-                newVersion.Start = DateTime.Today;
+                newVersion.Start = effectiveDate ?? DateTime.Today;
                 newVersion.Note = newVersionLabel;
 
                 newVersion.Id = 0;

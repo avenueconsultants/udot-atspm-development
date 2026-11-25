@@ -20,6 +20,595 @@
     }
   ],
   "paths": {
+    "/ConfigReview": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "listConfigReviews",
+        "parameters": [
+          {
+            "name": "locationIdentifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfigReviewEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "createConfigReviews",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigReviewCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfigReviewEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/routes/{batchId}": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "getConfigReviewRoute",
+        "parameters": [
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfigReviewRouteLocation"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/load": {
+      "post": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "captureConfigReviewBaseline",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewBaselineView"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/files": {
+      "post": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "uploadConfigReviewJson",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewSnapshotReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/snapshot": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "getConfigReviewSnapshot",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewSnapshotReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "submitConfigReviewSnapshot",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigReviewSnapshot"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewSnapshotReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/items": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "getConfigReviewItems",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConfigReviewFinding"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/items/{itemId}": {
+      "patch": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "updateConfigReviewItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigReviewDecision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewFinding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/promote": {
+      "post": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "promoteConfigReview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigReviewPromotion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/{id}/report": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "getConfigReviewReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigReviewReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
+    "/ConfigReview/configuration": {
+      "get": {
+        "tags": [
+          "ConfigReview"
+        ],
+        "operationId": "getApprovedControllerConfiguration",
+        "parameters": [
+          {
+            "name": "locationIdentifier",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "asOfDate",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "409": {
+            "description": "Review changed or cannot be promoted"
+          }
+        }
+      }
+    },
     "/Approach/{key}/detectors": {
       "get": {
         "tags": [
@@ -66493,6 +67082,877 @@
   },
   "components": {
     "schemas": {
+      "ConfigReviewEntry": {
+        "type": "object",
+        "required": [
+          "id",
+          "locationIdentifier",
+          "asOfDate",
+          "status",
+          "routeId",
+          "batchId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "locationIdentifier": {
+            "type": "string"
+          },
+          "asOfDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
+          },
+          "routeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "batchId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "asOfDate"
+        ],
+        "properties": {
+          "locationIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "routeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "asOfDate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ConfigReviewBaselineView": {
+        "type": "object",
+        "required": [
+          "locationId",
+          "start",
+          "approaches",
+          "fields"
+        ],
+        "properties": {
+          "locationId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approaches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "phase",
+                "overlap",
+                "direction",
+                "description"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "phase": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "overlap": {
+                  "type": "boolean"
+                },
+                "direction": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "description": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ConfigReviewEvidence": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "basis",
+          "reason"
+        ],
+        "properties": {
+          "basis": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "nullable": true
+          },
+          "direction": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "movement": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "lane": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewDecision": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "disposition"
+        ],
+        "properties": {
+          "disposition": {
+            "type": "string"
+          },
+          "annotation": {
+            "$ref": "#/components/schemas/ConfigReviewEvidence",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewPromotion": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "reason": {
+            "type": "string"
+          },
+          "effectiveDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewFinding": {
+        "type": "object",
+        "required": [
+          "id",
+          "field",
+          "group",
+          "classification",
+          "disposition",
+          "summary",
+          "baselineValue",
+          "controllerValue",
+          "sources",
+          "annotation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string"
+          },
+          "classification": {
+            "type": "string"
+          },
+          "disposition": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "baselineValue": {
+            "type": "string"
+          },
+          "controllerValue": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "string"
+          },
+          "annotation": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewPromotionAudit": {
+        "type": "object",
+        "required": [
+          "id",
+          "field",
+          "value",
+          "approvedBy",
+          "approvedAt",
+          "basis",
+          "reason",
+          "sources",
+          "annotation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "field": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "approvedBy": {
+            "type": "string"
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "basis": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "string"
+          },
+          "annotation": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewUploadFile": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "sha256",
+          "size",
+          "stored",
+          "parseReport"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stored": {
+            "type": "boolean"
+          },
+          "parseReport": {
+            "type": "string"
+          }
+        }
+      },
+      "ConfigReviewSource": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "name",
+          "decoder",
+          "groups"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-fA-F0-9]{64}$",
+            "nullable": true
+          },
+          "decoder": {
+            "type": "string"
+          },
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ConfigReviewPhase": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "phase"
+        ],
+        "properties": {
+          "phase": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "inUse": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ring": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "barrier": {
+            "type": "string",
+            "nullable": true
+          },
+          "concurrent": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "minGreen": {
+            "type": "number",
+            "nullable": true
+          },
+          "passage": {
+            "type": "number",
+            "nullable": true
+          },
+          "maxGreen1": {
+            "type": "number",
+            "nullable": true
+          },
+          "maxGreen2": {
+            "type": "number",
+            "nullable": true
+          },
+          "yellowChange": {
+            "type": "number",
+            "nullable": true
+          },
+          "redClear": {
+            "type": "number",
+            "nullable": true
+          },
+          "walk": {
+            "type": "number",
+            "nullable": true
+          },
+          "pedClear": {
+            "type": "number",
+            "nullable": true
+          },
+          "options": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ConfigReviewSnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "locationIdentifier",
+          "make",
+          "model",
+          "collectedAt",
+          "sources",
+          "unavailable"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "type": "integer",
+            "format": "int32",
+            "enum": [
+              1
+            ]
+          },
+          "locationIdentifier": {
+            "type": "string"
+          },
+          "make": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "firmware": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "text"
+            ],
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "nullable": true
+          },
+          "collectedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "configWrittenAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigReviewSource"
+            }
+          },
+          "phases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigReviewPhase"
+            }
+          },
+          "phasesNotInUse": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "phase",
+                "reason"
+              ],
+              "properties": {
+                "phase": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "overlaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "overlap",
+                "type",
+                "includedPhases",
+                "modifierPhases"
+              ],
+              "properties": {
+                "overlap": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "type": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "includedPhases": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                },
+                "modifierPhases": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                },
+                "trailGreen": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "trailYellow": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "trailRed": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "patterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pattern",
+                "cycle",
+                "offset"
+              ],
+              "properties": {
+                "pattern": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "cycle": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "offset": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "splitNumber": {
+                  "type": "integer",
+                  "format": "int32",
+                  "nullable": true
+                },
+                "sequenceNumber": {
+                  "type": "integer",
+                  "format": "int32",
+                  "nullable": true
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "splitTables": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "splitNumber",
+                "ringSplits"
+              ],
+              "properties": {
+                "splitNumber": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "ringSplits": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "sequences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sequenceNumber",
+                "ringPhases"
+              ],
+              "properties": {
+                "sequenceNumber": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "ringPhases": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  }
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "detectors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "channel"
+              ],
+              "properties": {
+                "channel": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "callPhase": {
+                  "type": "integer",
+                  "format": "int32",
+                  "nullable": true
+                },
+                "switchPhase": {
+                  "type": "integer",
+                  "format": "int32",
+                  "nullable": true
+                },
+                "delay": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "extend": {
+                  "type": "number",
+                  "nullable": true
+                },
+                "options": {
+                  "type": "integer",
+                  "format": "int32",
+                  "nullable": true
+                },
+                "source": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "runningPattern": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "coordCycleTime": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            },
+            "nullable": true
+          },
+          "unavailable": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "conflicts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "group",
+                "field",
+                "firstValue",
+                "firstSource",
+                "secondValue",
+                "secondSource"
+              ],
+              "properties": {
+                "group": {
+                  "type": "string"
+                },
+                "field": {
+                  "type": "string"
+                },
+                "firstValue": {},
+                "firstSource": {
+                  "type": "string"
+                },
+                "secondValue": {},
+                "secondSource": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fieldSources": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ConfigReviewSource"
+              }
+            },
+            "readOnly": true
+          }
+        }
+      },
+      "ConfigReviewSnapshotReceipt": {
+        "type": "object",
+        "required": [
+          "snapshotId",
+          "snapshot",
+          "files"
+        ],
+        "properties": {
+          "snapshotId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/ConfigReviewSnapshot",
+            "nullable": true
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigReviewUploadFile"
+            }
+          }
+        }
+      },
+      "ConfigReviewReport": {
+        "type": "object",
+        "required": [
+          "review",
+          "baseline",
+          "snapshot",
+          "items",
+          "promotions"
+        ],
+        "properties": {
+          "review": {
+            "$ref": "#/components/schemas/ConfigReviewEntry"
+          },
+          "baseline": {
+            "$ref": "#/components/schemas/ConfigReviewBaselineView",
+            "nullable": true
+          },
+          "snapshot": {
+            "$ref": "#/components/schemas/ConfigReviewSnapshotReceipt"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigReviewFinding"
+            }
+          },
+          "promotions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigReviewPromotionAudit"
+            }
+          }
+        }
+      },
+      "ConfigReviewRouteLocation": {
+        "type": "object",
+        "required": [
+          "review",
+          "baselineCaptured",
+          "firmware",
+          "undeclaredPedestrianPhases",
+          "unresolvedConflicts",
+          "findings"
+        ],
+        "properties": {
+          "review": {
+            "$ref": "#/components/schemas/ConfigReviewEntry"
+          },
+          "baselineCaptured": {
+            "type": "boolean"
+          },
+          "firmware": {
+            "type": "string",
+            "nullable": true
+          },
+          "undeclaredPedestrianPhases": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unresolvedConflicts": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "findings": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "Approach": {
         "type": "object",
         "properties": {

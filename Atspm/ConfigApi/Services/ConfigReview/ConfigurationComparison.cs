@@ -1,0 +1,143 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using Utah.Udot.Atspm.Data.Models;
+using Utah.Udot.Atspm.Data.Models.ConfigReviewModels;
+
+namespace Utah.Udot.Atspm.ConfigApi.Services.ConfigReview;
+
+public sealed record BaselineDetector(int Id, int Channel, int? Lane, int Movement, DateTime DateAdded, DateTime? DateDisabled);
+public sealed record BaselineApproach(int Id, int Phase, bool Overlap, int Direction, string? Description,
+    int? PermissivePhase, bool PermissiveOverlap, int? PedestrianPhase, bool PedestrianOverlap,
+    BaselineDetector[] Detectors);
+public sealed record ReviewBaseline(int LocationId, DateTime Start, BaselineApproach[] Approaches, Dictionary<string, string> Fields);
+public sealed record ReviewAnnotation(string Basis, string Reason, decimal? Confidence, int? Direction, int? Movement, int? Lane);
+public sealed record ReviewItemUpdate(string Disposition, ReviewAnnotation? Annotation);
+public sealed record RouteReviewLocation(Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview Review,
+    bool BaselineCaptured, string? Firmware, int UndeclaredPedestrianPhases, int UnresolvedConflicts, int Findings);
+public sealed record CreateReview(string? LocationIdentifier, int? RouteId, DateOnly AsOfDate);
+public sealed record PromoteReview(string Reason, DateOnly? EffectiveDate);
+public sealed record SnapshotReceipt(Guid? SnapshotId, ControllerSnapshot? Snapshot, IReadOnlyList<ConfigSnapshotFile> Files);
+public sealed record ReviewReport(Utah.Udot.Atspm.Data.Models.ConfigReviewModels.ConfigReview Review, ReviewBaseline? Baseline,
+    SnapshotReceipt Snapshot, IReadOnlyList<ConfigReviewItem> Items, IReadOnlyList<ConfigPromotionField> Promotions);
+
+internal static class ConfigurationComparison
+{
+    internal static ReviewBaseline Capture(Location location, IEnumerable<LocationControllerField> fields, DateTime end)
+    {
+        var approaches = location.Approaches.OrderBy(ap => ap.Id).Select(ap => new BaselineApproach(
+            ap.Id, ap.ProtectedPhaseNumber, ap.IsProtectedPhaseOverlap, (int)ap.DirectionTypeId, ap.Description,
+            ap.PermissivePhaseNumber, ap.IsPermissivePhaseOverlap, ap.PedestrianPhaseNumber, ap.IsPedestrianPhaseOverlap,
+            ap.Detectors.Where(detector => detector.DateAdded < end &&
+                (!detector.DateDisabled.HasValue || detector.DateDisabled.Value >= end.AddDays(-1)))
+                .OrderBy(detector => detector.Id)
+                .Select(detector => new BaselineDetector(detector.Id, detector.DetectorChannel, detector.LaneNumber,
+                    (int)detector.MovementType, detector.DateAdded, detector.DateDisabled)).ToArray())).ToArray();
+        return new(location.Id, location.Start, approaches, fields.OrderBy(field => field.Field)
+            .ToDictionary(field => field.Field, field => field.Value));
+    }
+
+    internal static List<ConfigReviewItem> Compare(Guid reviewId, ReviewBaseline baseline, ControllerSnapshot snapshot)
+    {
+        var result = new List<ConfigReviewItem>();
+        var payload = JsonSerializer.SerializeToNode(snapshot, SnapshotContract.Json)!.AsObject();
+        var unavailable = snapshot.Unavailable.ToHashSet();
+        var excluded = snapshot.PhasesNotInUse.Select(phase => phase.Phase).ToHashSet();
+        foreach (var (collection, key) in SnapshotContract.Collections)
+        {
+            if (collection == "phasesNotInUse" || unavailable.Contains(collection))
+                continue;
+            foreach (var record in payload[collection]!.AsArray())
+            {
+                var data = record!.AsObject();
+                var number = data[key]!.GetValue<int>();
+                if (collection == "phases" && (excluded.Contains(number) || data["inUse"]?.GetValue<bool>() == false))
+                    continue;
+                if (collection == "overlaps" && data["type"]!.GetValue<int>() <= 1)
+                    continue;
+                foreach (var (property, proposed) in data)
+                {
+                    if (property == key || property == "source" || proposed == null ||
+                        (collection == "detectors" && property == "callPhase"))
+                        continue;
+                    var group = SnapshotContract.GroupFor(collection, property);
+                    if (!unavailable.Contains(group))
+                        AddField($"{collection}.{number}.{property}", group, proposed.ToJsonString(),
+                            data["source"]?.GetValue<string>());
+                }
+            }
+        }
+        if (snapshot.Firmware != null && !unavailable.Contains("firmware"))
+            AddField("firmware", "firmware", SnapshotContract.Serialize(snapshot.Firmware), null);
+        if (snapshot.ConfigWrittenAt.HasValue && !unavailable.Contains("configWrittenAt"))
+            AddField("configWrittenAt", "configWrittenAt", SnapshotContract.Serialize(snapshot.ConfigWrittenAt), null);
+
+        if (!unavailable.Contains("phases") && !unavailable.Contains("phaseStructure"))
+        {
+            foreach (var phase in snapshot.Phases.Where(p => p.InUse == true))
+            {
+                var isDeclared = baseline.Approaches.Any(ap => (!ap.Overlap && ap.Phase == phase.Phase) ||
+                    (!ap.PermissiveOverlap && ap.PermissivePhase == phase.Phase));
+                if (!isDeclared)
+                    Add($"approaches.{phase.Phase}", "phaseStructure", "NeedsDirection",
+                        $"Phase {phase.Phase} is in use and has no ATSPM approach.", "null",
+                        SnapshotContract.Serialize(phase.Phase), phase.Source);
+                if (phase.Walk > 0 && phase.PedClear > 0 &&
+                    !baseline.Approaches.Any(ap => !ap.PedestrianOverlap && ap.PedestrianPhase == phase.Phase))
+                    Add($"pedestrian.{phase.Phase}", "phaseTiming", "Held",
+                        $"Phase {phase.Phase} has pedestrian timing and no ATSPM pedestrian phase declaration.",
+                        "null", SnapshotContract.Serialize(phase.Phase), phase.Source);
+            }
+        }
+
+        if (!unavailable.Contains("detectors"))
+        {
+            foreach (var detector in snapshot.Detectors)
+            {
+                var matches = baseline.Approaches.Where(ap => ap.Detectors.Any(d => d.Channel == detector.Channel)).ToArray();
+                var field = $"detectors.{detector.Channel}.callPhase";
+                if (detector.CallPhase is null or 0)
+                {
+                    if (matches.Length == 0)
+                        Add(field, "detectors", "NotComparable", $"Channel {detector.Channel} is not assigned to a call phase.",
+                            "null", "null", detector.Source);
+                    continue;
+                }
+
+                if (matches.Any(ap => ap.Overlap || ap.Phase == detector.CallPhase ||
+                    (!ap.PermissiveOverlap && ap.PermissivePhase == detector.CallPhase)))
+                    continue;
+                Add(field, "detectors", "NeedsDirection",
+                    $"Channel {detector.Channel} calls phase {detector.CallPhase} and needs an approach assignment.",
+                    SnapshotContract.Serialize(matches.Select(ap => ap.Phase)),
+                    SnapshotContract.Serialize(detector.CallPhase), detector.Source);
+            }
+        }
+        foreach (var conflict in snapshot.Conflicts)
+            Add($"!{conflict.Field}", conflict.Group, "Held", "Snapshot sources disagree on this field.",
+                conflict.FirstValue.GetRawText(), conflict.SecondValue.GetRawText(), null,
+                SnapshotContract.Serialize(new { conflict.FirstSource, conflict.SecondSource }));
+        return result;
+
+        void AddField(string field, string group, string proposed, string? source)
+        {
+            var existing = baseline.Fields.GetValueOrDefault(field, "null");
+            if (!JsonNode.DeepEquals(JsonNode.Parse(existing), JsonNode.Parse(proposed)))
+                Add(field, group, "Certain", $"{field}: controller value differs from the stored ATSPM value.",
+                    existing, proposed, source);
+        }
+
+        void Add(string field, string group, string classification, string summary, string oldValue, string value,
+            string? reportedSource, string? explicitSources = null)
+        {
+            result.Add(new ConfigReviewItem
+            {
+                Id = Guid.NewGuid(), ReviewId = reviewId, Field = field, Group = group, Classification = classification,
+                Disposition = "Pending", Summary = summary, BaselineValue = oldValue, ControllerValue = value,
+                Sources = explicitSources ?? SnapshotContract.Serialize(new
+                {
+                    reportedSource, sources = SnapshotContract.Sources(snapshot, group, field).ToArray()
+                })
+            });
+        }
+    }
+}

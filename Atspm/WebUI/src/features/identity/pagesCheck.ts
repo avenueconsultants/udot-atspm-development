@@ -25,6 +25,7 @@ export enum PageNames {
   Jurisdiction = 'Jurisdictions',
   MenuItems = 'Menu Items',
   Location = 'Locations',
+  ConfigReview = 'Configuration Review',
   MeasureDefaults = 'Measure Defaults',
   Products = 'Products',
   Region = 'Regions',
@@ -48,6 +49,7 @@ const locationConfigListToLink: Map<string, string> = new Map([
   [PageNames.Areas, '/admin/areas'],
   [PageNames.Jurisdiction, '/admin/jurisdictions'],
   [PageNames.Location, '/admin/locations'],
+  [PageNames.ConfigReview, '/admin/config-review'],
   [PageNames.Region, '/admin/regions'],
   [PageNames.Routes, '/admin/routes'],
 ])
