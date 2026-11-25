@@ -247,7 +247,7 @@ function transformCyclesOnly(rows: PriorityDetailsResult[]): EChartsOption {
         })),
         {
           name: 'Detection Event',
-          icon: 'image:///DetectionEvent.svg',
+          icon: 'image:///detectionEvent.svg',
         },
       ],
     }),
