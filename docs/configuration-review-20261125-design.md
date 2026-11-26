@@ -1,96 +1,131 @@
 # ATSPM Configuration Review — Design
 
-Nov 25, 2026 · @Derek
+Move the corridor configuration review out of an external page and into ATSPM, so ATSPM holds the
+reviewed configuration and every later step reads it from there. The review answers one question
+per location: does ATSPM describe the intersection the controller is actually running?
 
-Move the corridor configuration review out of an external page and into ATSPM, so ATSPM holds the reviewed configuration and every later step reads it from there. The review answers one question per location: does ATSPM describe the intersection the controller is actually running?
-
-This covers the comparison tool only. Getting the snapshot — reaching field equipment, decoding controller files, reading NTCIP — is a separate tool with its own design, and nothing here contacts a controller.
+This covers the comparison tool only. Getting the snapshot — reaching field equipment, decoding
+controller files, reading NTCIP — is a separate tool with its own design, and nothing here contacts
+a controller.
 
 ## Purpose and scope
 
-Configuration is the input to every ATSPM measure, so an answer about it belongs in the configuration database rather than in a run that ends. Today the review happens outside ATSPM, in scripts and a published page, and the answer is discarded when the run finishes.
+Configuration is the input to every ATSPM measure, so an answer about it belongs in the
+configuration database rather than in a run that ends. Today the review happens outside ATSPM, in
+scripts and a published page, and the answer is discarded when the run finishes.
 
-The goal is a workflow an engineer completes in the browser: load what ATSPM has, upload what the cabinet holds, see the difference drawn rather than described, supply by hand what no machine can know, and promote the result — with provenance on every field, so a later reader can tell a measurement from an inference.
+The goal is a workflow an engineer completes in the browser: load what ATSPM has, upload what the
+cabinet holds, see the difference drawn rather than described, supply by hand what no machine can
+know, and promote the result — with provenance on every field, so a later reader can tell a
+measurement from an inference.
 
 In scope:
 
 - Loading current ATSPM configuration for a location or a route.
-- Uploading controller configuration files and normalizing each one.
+- Accepting a normalized snapshot per location, validated against the contract below.
 - Rendering ring-barrier structure, phase timing and detector assignment from controller data.
 - Manual entry of what no controller holds, and of inferences produced elsewhere.
 - Promoting an approved review into ATSPM configuration, with an audit trail.
 
-Out of scope:
+Not in scope:
 
-- Collecting from field equipment and decoding controller files. A separate tool does both and hands this one a normalized snapshot.
-- Inference itself. The methods that attribute detectors to phases stay outside. This accepts their output as annotated input.
+- Collecting from field equipment, and decoding controller files. A separate tool does both and
+  hands this one a normalized snapshot. Nothing here contacts a controller.
+- Inference itself. The methods that attribute detectors to phases stay outside; this accepts their
+  output as annotated input.
 - Writing anything to a controller, by any route.
 
 ## What each source can supply
 
-No single source is complete. Location 7423 has been read both ways and the two agree exactly where they overlap.
+No single source is complete, and this is measured rather than argued: location 7423 has been read
+both ways and the two agree exactly where they overlap.
 
-| Group | Econolite ASC3.DB | NTCIP over SNMP | MaxTime HTTP API |
+| Group | Econolite `ASC3.DB` | NTCIP over SNMP | MaxTime HTTP API |
 | --- | --- | --- | --- |
-| Phase timing | Yes | Yes, 56 of 56 fields identical | No |
-| Phase ring, concurrency, enabled flag | Sequence table located, not decoded | Yes | No |
-| Coordination patterns | Yes, 6 of 120 slots | Yes, same five patterns, same cycles and offsets | No |
-| Split tables, per-phase seconds | Yes, only source | Pointer only | No |
-| Detector call phase | Absent | Yes, 16 of 64 slots | No |
-| Overlap definitions | Not located | Yes, with type separating configured from default | No |
-| Date the cabinet wrote its database | Yes, only source | No | No |
-| Direction, movement, lane | No | No | No |
+| Phase timing | yes | yes — 56 of 56 fields identical | no |
+| Phase ring, concurrency, enabled flag | sequence table located, not decoded | yes | no |
+| Coordination patterns | yes — 6 of 120 slots | yes — same five patterns, same cycles and offsets | no |
+| Split tables, per-phase seconds | yes, only source | pointer only | no |
+| Detector call phase | absent | yes — 16 of 64 slots | no |
+| Overlap definitions | not located | yes, with `type` separating configured from default | no |
+| Date the cabinet wrote its database | yes, only source | no | no |
+| Direction, movement, lane | no | no | no |
 
-Absent means searched for and not there. The detector plan was pursued six ways, ending in an enumeration of every array the Econolite firmware indexes by a counter field. There are four, with 16, 120, 100 and 99 records, none with 64. Not decoded means located but unfinished. No means the source has no such concept.
+Three words in that table mean different things and must not be flattened. **Absent** means
+searched for and not there: the detector plan was pursued six ways, ending in an enumeration of
+every array the Econolite firmware indexes by a counter field — there are four, with 16, 120, 100
+and 99 records, none with 64. **Not decoded** means located but unfinished. **No** means the source
+has no such concept.
 
-A snapshot can arrive with a group it cannot fill. The contract records that as unavailable, the merge rule specifies source precedence, and the UI explains when a source cannot supply a group. Which route filled which group is the collection tool’s business.
+This matters to the comparison tool for one reason: a snapshot can arrive with a group it simply
+cannot fill, and that is not the same as the controller having nothing there. Hence `unavailable` in
+the contract, the source precedence in the merge rule, and the "this source cannot tell you" notices
+in the UI. Which route filled which group is the collection tool's business; what arrives, and what
+is missing from it, is this tool's.
 
 ## The flow
 
-1. **Load.** Fetch the version in effect for a chosen date for a location or the locations on a route. Store the baseline so promotion can detect subsequent configuration changes.
-2. **Upload.** Attach a normalized snapshot per location, produced by the collection tool or posted by a client. Validate the contract and capture provenance.
-3. **Review.** Render one structure with controller values in place, mark differences with their origins, and classify them. No configuration writes occur.
-4. **Annotate.** Supply direction, movement, and lane. Record external inferences with their basis and confidence.
-5. **Promote.** Write the approved items into ATSPM configuration for later analysis.
+Five steps, each a distinct state on a `ConfigReview` row.
 
-A review need not reach promotion to be useful. A location whose detector plan is unavailable can be promoted for its phases and timing while its channels stay open, and the review records which.
+1. **Load.** Fetch the ATSPM configuration version in effect for a chosen date, for one location or
+   every location on a route. The baseline is captured into the review rather than read live, so a
+   later promotion can tell whether the configuration moved underneath it.
+2. **Upload.** Attach a normalized snapshot, one per location, produced by the separate collection
+   tool or posted by a client. The tool validates it against the schema and records where it came
+   from; it does not parse controller files itself.
+3. **Review.** The page draws one structure, not two: the controller's values stand in place of
+   ATSPM's, each marked where it came from the controller and differs, and every difference is
+   classified. Nothing is written yet.
+4. **Annotate.** Supply direction, movement and lane for what the controller cannot describe, and
+   record inferences with their basis and confidence.
+5. **Promote.** Write the approved items into ATSPM configuration. From here the later analysis
+   steps read ATSPM.
 
-## Unified snapshot contract
+A review need not reach step 5 to be useful. A location whose detector plan is unavailable can be
+promoted for its phases and timing while its channels stay open, and the review records which.
 
-Every collection source produces the same schema. Examples include an Econolite file, NTCIP, a MaxTime file if available, a central-system export, or an external client that derives structure another way.
+## The unified snapshot contract
+
+Every route to controller data produces this same shape — Econolite file, NTCIP, a MaxTime file if
+one is found, a central-system export, or an external client that derived structure some other way.
+The page renders from it and nothing else, so a new source becomes a new producer of this contract
+rather than a change to the UI, the API or the database.
 
 ```json
 {
   "schemaVersion": 1,
   "locationIdentifier": "7423",
-  "make": "Econolite",
-  "model": "Cobalt",
+  "make": "Econolite", "model": "Cobalt",
   "firmware": { "text": "ASC3 Actuated Controller", "version": null },
   "collectedAt": "2026-11-25T10:26:00Z",
   "configWrittenAt": "2026-10-21T00:00:00Z",
   "sources": [
     { "kind": "file", "name": "ASC3.DB", "sha256": "...",
-      "decoder": "Asc3ConfigDecoder", "groups": ["phases", "patterns", "splitTables"] }
+      "decoder": "Asc3ConfigDecoder", "groups": ["phases","patterns","splitTables"] }
   ],
   "phases": [
-    { "phase": 2, "inUse": true, "ring": 1, "barrier": "A", "concurrent": [5, 6],
+    { "phase": 2, "inUse": true, "ring": 1, "barrier": "A", "concurrent": [5,6],
       "minGreen": 15, "passage": 1.6, "maxGreen1": 40, "maxGreen2": 0,
       "yellowChange": 4.8, "redClear": 1.5, "walk": 7, "pedClear": 18,
       "options": 1127, "source": "file:ASC3.DB@0x009050+36*1" }
   ],
-  "phasesNotInUse": [{ "phase": 14, "reason": "ring0" }],
+  "phasesNotInUse": [ { "phase": 14, "reason": "ring0" } ],
   "overlaps": [
-    { "overlap": 1, "type": 1, "includedPhases": [1, 2], "modifierPhases": [],
+    { "overlap": 1, "type": 1, "includedPhases": [1,2], "modifierPhases": [],
       "trailGreen": 0, "trailYellow": 0, "trailRed": 0 }
   ],
   "patterns": [
     { "pattern": 1, "cycle": 150, "offset": 140, "splitNumber": 1, "sequenceNumber": 1 }
   ],
   "splitTables": [
-    { "splitNumber": 1, "ringSplits": { "1": [28, 65, 18, 39], "2": [28, 65, 18, 39] } }
+    { "splitNumber": 1, "ringSplits": { "1": [28,65,18,39], "2": [28,65,18,39] } }
+  ],
+  "sequences": [
+    { "sequenceNumber": 1, "ringPhases": { "1": [1,2,3,4], "2": [5,6,7,8] } }
   ],
   "detectors": [
-    { "channel": 18, "callPhase": 6, "switchPhase": null, "delay": 0, "extend": 0.0, "options": 144 }
+    { "channel": 18, "callPhase": 6, "switchPhase": null,
+      "delay": 0, "extend": 0.0, "options": 144 }
   ],
   "status": { "runningPattern": 7, "coordCycleTime": 120 },
   "unavailable": ["splitTables"],
@@ -99,130 +134,270 @@ Every collection source produces the same schema. Examples include an Econolite 
 }
 ```
 
-The JSON above illustrates the shape. A valid submission supplies actual checksums and lists a group as unavailable only when it supplies no records for that group.
+Rules that travel with it:
 
-- Ring comes from the controller. Derive barrier membership from connected components of concurrent phases. A standard controller produces A = {1,2,5,6} and B = {3,4,7,8}. Location 7521 runs 11 and 15 in the slots commonly occupied by 3 and 7.
-- A phase in use requires an enabled flag, green time, and a ring. Templates at 7417 gave green time and rings to disabled phases. At 7521, two enabled phases had no green time. Ring 0 is unassigned. Record excluded phases and their reasons in `phasesNotInUse`.
-- Concurrency and overlap phase lists carry one phase number per octet. For overlap 1 at 7423, octets 01 02 mean phases 1 and 2. Treating these octets as a bitmap gives the wrong set.
-- Overlap type distinguishes firmware defaults from configured overlaps. At 7423, type 1 appears for four consecutive pairs and ATSPM declares no overlap approaches. At 7077, type 2 defines {5,7}, {1,3,11}, and {1,11}, which correspond to ATSPM overlaps 1, 2, and 4.
-- `status` describes live controller state and is excluded from comparison and promotion.
-- Detector records have no direction, movement, or lane. These are annotations.
-- An empty detector list with no unavailable flag claims no detectors are present. Unavailable is required for a group the supplied sources cannot fill.
+- **Ring and barrier are read, not assumed.** The eight-phase maps are a convention, not a fact:
+  location 7521 runs no phase 3 and no phase 7 and fills those slots with 11 and 15. Ring comes from
+  the controller; barrier is derived as the connected components of "may run concurrently with",
+  which reproduces A = {1,2,5,6} and B = {3,4,7,8} on a standard controller and still works where
+  the numbering does not.
+- **`inUse` requires an enabled flag, green time and a ring.** All three failures were observed:
+  7417 carries a firmware template giving green time and a ring to eight phases that are not
+  enabled; 7521 enables two phases with no green time; a phase in ring 0 belongs to no ring and
+  cannot be served. Phases failing the test go in `phasesNotInUse` with the reason, so a reader sees
+  they were considered.
+- **Phase lists are lists of phase numbers, one octet each.** `concurrent`, `includedPhases` and
+  `modifierPhases` all decode this way — overlap 1 at 7423 returns the octets `01 02`, meaning
+  phases 1 and 2. Read as a bitmap the same bytes give phases 1, 3, 10 and 11, which is wrong
+  without looking wrong.
+- **`overlaps[].type` separates a configured overlap from a firmware default.** 7423 returns four of
+  type 1 holding consecutive pairs and ATSPM declares no overlap approaches there; 7077 returns
+  three of type 2 holding {5,7}, {1,3,11} and {1,11}, and ATSPM declares overlap approaches 1, 2 and
+  4 — the same three.
+- **`status` is not configuration.** It is what the controller is doing at the moment of the read,
+  useful for confirming a read landed on the right cabinet, and it must never be promoted or
+  compared.
+- **`detectors` carries no direction, movement or lane**, because no controller holds them. The
+  schema has no field for them, so a decoder cannot invent one.
+- **`callPhase` is the assignment this contract compares on.** NTCIP's `vehicleDetectorCallPhase`
+  answers `noSuchName` on every firmware met so far — two MaxTime generations and Econolite ASC/3
+  alike — and the value arrives in the `switchPhase` column. A producer that passes the raw column
+  through leaves `callPhase` empty, and the comparison then reports no detector assignments at all:
+  not an error, just silence. A snapshot carrying `switchPhase` without `callPhase` is rejected.
+- **`unavailable` is mandatory** where no supplied source can fill a group. An empty `detectors`
+  array with `unavailable: []` is a claim that the controller has none.
 
-### Ring, barrier and sequence
+### Ring, barrier and sequence all come from the controller
 
-| Element | Origin | Evidence |
+None of the three is inferred from phase numbering.
+
+| | Where it comes from | Status |
 | --- | --- | --- |
-| Ring | Reported per phase | Proven on both makes |
-| Barrier | Connected components of the concurrency relationship | Reproduces standard barriers and supports nonstandard phase numbers |
-| Sequence | `patterns[].sequenceNumber` | The number is proven. A definition may be unavailable, like split seconds behind a split number. |
+| Ring | Reported per phase by the controller | Proven on both makes |
+| Barrier | Derived from `concurrent` as the connected components of "may run concurrently with" | Proven; reproduces A = {1,2,5,6} and B = {3,4,7,8} on a standard controller |
+| Sequence | `patterns[].sequenceNumber` names the sequence a pattern uses | The number is proven; the definition behind it is a pointer, like `splitNumber` |
 
-Phase keys are unrestricted by the standard eight-phase convention. Econolite reports 16 slots and MaxTime reports 40. Location 7077 operates phase 11 in ring 1, concurrent with 5 and 6 and serving two overlaps. At 7521, 11 and 15 replace 3 and 7. A previous renderer crashed on that configuration because its fixed maps could not place those phases.
+A sequence number without its definition is the same situation as a split number without its split
+seconds: the producing source declares the group `unavailable`, and the UI says so rather than
+showing an empty one.
 
-### Merge and rendering
+### Phase numbers are not limited to 8
 
-1. Prefer NTCIP over file for phase structure, overlaps, detectors, and patterns. Prefer file over NTCIP for split tables and the database write date. Use either for phase timing.
-2. Identical values appear once, with both sources represented in `sources[].groups`.
-3. Where values differ, precedence determines the displayed value and `conflicts` retains both values and both sources. The database write date can help explain a stale source.
-4. Block promotion of a conflicted group until a reviewer dispositions the conflict.
+The contract must not assume they are, and neither must anything reading it. Econolite controllers
+on this corridor report 16 phase slots and MaxTime reports 40, and both are used above 8 in
+practice:
 
-At 7423 the sources agreed on all 56 phase timing fields and on cycle and offset for the five programmed patterns.
+- 7077 runs phase 11, in ring 1, concurrent with 5 and 6, and it drives two overlaps.
+- 7521 runs phases 11 and 15 — and runs no phase 3 and no phase 7 at all, so 11 and 15 occupy those
+  slots in the barrier structure.
+
+Any phase number the controller reports is a valid key. A consumer that cannot place one has a bug,
+not a missing case — the eight-phase maps are a convention, not a fact about any intersection. This
+was learned the hard way: feeding 7521's phases above 8 into a renderer built on those maps produced
+a phase with no ring and no barrier and took the whole page down.
+
+## Merge rule, and what drives the screen
+
+A snapshot may be built from more than one source, so precedence is stated rather than left to
+whichever decoder ran last.
+
+1. Per group, sources are ordered: NTCIP over file for phase structure, overlaps, detectors and
+   patterns; file over NTCIP for split tables and the database write date. Phase timing may come
+   from either, since they have been measured to agree.
+2. Same field, same value from two sources: record once, list both in `sources[].groups`.
+3. Same field, **different** values: precedence decides what displays, and the disagreement is
+   appended to `conflicts` with both values and both sources. A conflict is never silently resolved
+   and never dropped — two sources disagreeing about one controller is a finding, and can mean one
+   is stale, which is what the write date exists to reveal.
+4. A conflict in any group blocks promotion of that group until a person dispositions it.
+
+Exercised once: at 7423 the file and NTCIP agreed on all 56 phase timing fields and on all five
+programmed patterns' cycle and offset, producing no conflicts.
+
+The page renders from the contract alone. This mapping is the acceptance criterion for the format —
+an on-screen element with no row here means the contract is incomplete.
 
 | On-screen element | Reads |
 | --- | --- |
-| Ring-barrier diagram | Phase ring, barrier, concurrency, and in-use flag |
-| Scaled box widths | Selected pattern’s split table and ring splits |
-| Phase and pedestrian timing | Phase timing fields, walk, and pedestrian clearance |
-| Pattern selector and caption | Patterns |
-| Detector chips | Channel and call phase |
-| Overlap annotations | Included phases and overlap type |
-| Firmware badge | Firmware |
-| Read and cabinet write times | Collection and database write timestamps |
-| Coverage notices | Unavailable groups and excluded phases |
-| Conflict banner | Conflicts |
-| Provenance marker | Source on the corresponding record |
+| Ring-barrier sequence diagram | `phases[].ring`, `.barrier`, `.concurrent`, `.inUse` |
+| Box width when drawn to scale | `splitTables[].ringSplits` for the selected pattern |
+| Phase order within a ring | `sequences[].ringPhases` |
+| Phase timing table | all `phases[]` timing fields |
+| Pedestrian rows | `phases[].walk`, `.pedClear` |
+| Pattern selector and its caption | `patterns[]` |
+| Detector-to-phase chips | `detectors[].channel`, `.callPhase` |
+| Overlap annotations on phase boxes | `overlaps[].includedPhases`, `.type` |
+| Firmware badge | `firmware` |
+| "read on / cabinet wrote on" line | `collectedAt`, `configWrittenAt` |
+| "this source cannot tell you" notices | `unavailable`, `phasesNotInUse` |
+| Conflict banner | `conflicts` |
+| Provenance on hover | the `source` on each record |
 
 ## Data model and API
 
-Add entities under `Atspm/Data/Models/ConfigReviewModels/` and DbSets on `ConfigContext`. A review keys on `locationIdentifier` and outlives a configuration version.
+New entities in `Atspm/Data/Models/ConfigReviewModels/`, with DbSets on `ConfigContext` so a review
+joins to `Location` and `Approach` without a second connection. They key on `locationIdentifier`,
+not `locationId`: a review outlives any single configuration version, and a review keyed on the
+integer would be orphaned the moment a new version was created.
 
 | Entity | Holds |
 | --- | --- |
-| ConfigReview | One attempt per location with Draft, Reviewed, Promoted, or Abandoned status |
-| ConfigReviewBaseline | Captured ATSPM configuration |
-| ConfigSnapshotFile | File name, SHA-256, size, storage flag, and parse report |
-| ConfigSnapshot | Merged normalized contract |
-| ConfigReviewItem | Classification, disposition, basis, and confidence for a difference |
+| `ConfigReview` | One review per location per attempt. Status: Draft, Reviewed, Promoted, Abandoned |
+| `ConfigReviewBaseline` | The ATSPM configuration as loaded — captured, not referenced |
+| `ConfigSnapshotFile` | Per upload: name, sha256, size, whether stored, parse report |
+| `ConfigSnapshot` | The merged normalized contract |
+| `ConfigReviewItem` | One row per difference, with classification, disposition, basis and confidence |
 
-The comparison assigns Certain, NeedsDirection, Held, or NotComparable. A person assigns Pending, Accepted, Rejected, or Deferred. An overlap approach’s protected number is an overlap key. Comparing it directly with the detector call phase created five false conflicts in one earlier review. A detector can belong to an approach without calling a phase. At 7423 this applies to 24 of 40 channels, including count and system detectors.
+`ConfigReviewItem.Classification` is set by the comparison, not by a person: **Certain** (the
+controller settles it), **NeedsDirection** (phase known, direction not — promotable once annotated),
+**Held** (cannot be decided from any data held), **NotComparable** (the two sources describe
+different things). `Disposition` is the person's: Pending, Accepted, Rejected, Deferred.
 
-Attribute-routed endpoints under `/api/v1/ConfigReview`:
+Two comparison rules exist because both produced false findings before they were understood, and
+both must be implemented as stated. **An overlap number is not a phase number** —
+`Approach.ProtectedPhaseNumber` holds an overlap number when `IsProtectedPhaseOverlap` is set, and
+comparing it against a call phase invented five conflicts at one location where there are none.
+**A detector may belong to an approach and call no phase** — count and system detectors do exactly
+that, 24 of 40 live channels at 7423. A controller's silence about a channel is never an ATSPM
+error.
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| POST | / | Create with location identifier and as-of date |
-| POST | /{id}/load | Capture the baseline |
-| POST | /{id}/files | Upload |
-| GET | /{id}/snapshot | Return normalized contract and parse reports |
-| PUT | /{id}/snapshot | Accept a validated external contract |
-| GET | /{id}/items | Return classified differences |
-| PATCH | /{id}/items/{itemId} | Record disposition and annotation |
-| POST | /{id}/promote | Write accepted items into configuration |
-| GET | /{id}/report | Return the reviewed state |
+A third follows from the pedestrian findings: **a pedestrian movement the controller programs and
+no approach declares is `NeedsDirection`, not `Held`.** The controller settles that the movement
+exists; only the approach carrying it is missing. Classified `Held` it could never be promoted, and
+it is the most common finding on a corridor — 71 across 19 locations on R2:192, where no approach
+anywhere records a `pedestrianPhaseNumber`. Walk plus clearance also sets a floor under the phase,
+so a cycle shortened without it is shortened below what the crossing needs.
 
-External clients supply a contract through PUT and identify their decoder as `external:<name>`.
+Endpoints under `Atspm/ConfigApi`, attribute-routed rather than OData entity sets, in the manner of
+`LocationController.CopyLocationToNewVersion`:
+
+```
+POST   /api/v1/ConfigReview                      create {locationIdentifier, asOfDate}
+POST   /api/v1/ConfigReview/{id}/load            capture the ATSPM baseline
+POST   /api/v1/ConfigReview/{id}/files           upload a snapshot
+GET    /api/v1/ConfigReview/{id}/snapshot        the stored snapshot + validation report
+PUT    /api/v1/ConfigReview/{id}/snapshot        accept a contract from a client
+GET    /api/v1/ConfigReview/{id}/items           classified differences
+PATCH  /api/v1/ConfigReview/{id}/items/{itemId}  disposition and annotation
+POST   /api/v1/ConfigReview/{id}/promote         write accepted items into configuration
+GET    /api/v1/ConfigReview/{id}/report          the reviewed state, for later steps
+```
+
+`PUT .../snapshot` is how an external client supplies a contract it produced itself — an agent that
+parsed files, ran NTCIP, or derived structure from event logs. Validated against the schema and
+recorded with `sources[].decoder = "external:<name>"`, so nothing later mistakes it for a file
+parse.
 
 ## Web UI and promotion
 
-Use the Next.js pages router, MUI, and generated React Query clients from the configuration API spec. Mount under `WebUI/src/pages/admin/config-review/[[...id]].tsx`. The feature has baseline and upload panels, a ring-barrier SVG, phase timing and detector assignment tables, a grouped difference list, an annotation drawer, and a promotion bar. Reuse the approach and detector editing forms for annotation where possible so validation stays aligned.
+Next.js pages router, MUI, orval-generated react-query clients from `api-specs/config-spec.json` —
+matching the existing admin pages.
 
-Draw one diagram with rings stacked and barriers in service order. Mark the controller value where it differs, with the original ATSPM value and provenance on the marker. Derive ring and barrier placement from controller data regardless of phase number.
+```
+WebUI/src/pages/admin/config-review/[[...id]].tsx
+WebUI/src/features/configReview/
+  components/
+    LoadBaselinePanel.tsx
+    UploadSnapshotPanel.tsx   dropzone, schema validation report
+    RingBarrierDiagram.tsx    SVG, from the contract
+    PhaseTimingTable.tsx
+    DetectorAssignment.tsx
+    DifferenceList.tsx        grouped by classification
+    AnnotationDrawer.tsx      reuses features/locations/components/editApproach + editDetector
+    PromoteBar.tsx            counts, and what is excluded and why
+```
 
-### Versioning
+`RingBarrierDiagram` takes `phases[]` with `ring`, `barrier` and `concurrent`, and lays out barriers
+in service order with rings stacked. **It must not contain a phase-number-to-ring map.** Reuse
+`editApproach` and `editDetector` for annotation, so the review edits through the same forms as the
+existing editor and validation stays in one place.
 
-`CopyLocationToNewVersion` sets the new version’s `Start` to today. A review for November 18 cannot correct that window by creating a November 25 version.
+One diagram, not two. Where the controller and ATSPM disagree, the controller's value is drawn in
+place and marked as controller-sourced, with the ATSPM value and the provenance available on the
+marker. Two diagrams side by side double what a reader has to hold in mind to find the one box that
+disagrees, and the marking carries the same information in one view.
 
-- **Correct in place.** Default when the as-of date falls inside the captured version. Keep its start unchanged.
-- **New version.** Use when the field configuration changed. The operator supplies the effective date.
+The diagram must place any phase number the snapshot contains, up to the controller's own maximum —
+40 on MaxTime, 16 on Econolite — taking ring from the phase and barrier from `concurrent`. No
+phase-number-to-ring or phase-number-to-barrier table anywhere in the component.
 
-Every promoted field records snapshot ID, source checksum, approver, time, reason, and measured or inferred basis.
+### The versioning trap
 
-### Security
+`CopyLocationToNewVersion` in `Atspm/Application/Extensions/LocationRepositoryExtensions.cs` sets
+the new version's `Start` to today. A new version therefore **never corrects a past window**: an
+analysis of 18 November reading a version that starts 25 November sees none of the correction.
 
-- Validate and reject malformed snapshots. Record a reason for a received rejection without storing its contents.
-- Limit request size. Treat all snapshot fields as data, including names and provenance strings.
-- Reject snapshots carrying credentials or account data.
-- Upload and annotation require location-edit permission. Promotion requires a configuration owner.
-- Promotion applies normal ATSPM configuration validation and audit. Collection and controller writes stay outside this tool.
+Promotion must offer both and default correctly:
 
-## Phasing, validation, and open questions
+- **Correct in place** — the default when the review's as-of date falls inside the version in
+  effect. The configuration was always wrong, so editing the version that was in effect makes the
+  analysis window read correctly.
+- **New version** — when the configuration was right and the field changed. `Start` is the date the
+  change took effect, supplied by the operator.
 
-1. Read-only comparison that accepts, compares, classifies, and durably renders snapshots.
-2. Annotation and promotion, including effective dates and field-level audit.
-3. Route-level reviews, including a 19-location corridor and roll-ups such as firmware and undeclared pedestrian phases.
+Every promoted field records the snapshot id, the source file checksum, the approver, the time, the
+reason, and whether the value was measured or inferred. A later reader must be able to ask of any
+field: where did this come from, and did anyone measure it.
 
-- [ ] Standard eight-phase barriers and phases above 8 render without a hardcoded map.
-- [ ] Location 7521 shows ring 1 as {1,2} then {4,11} and ring 2 as {5,6} then {8,15}.
-- [ ] Phases not in use are excluded from programmed and undeclared findings.
-- [ ] Overlap approaches never generate wrong-phase findings.
-- [ ] Unassigned undeclared detectors are classified differently from assigned ones.
-- [ ] Unavailable groups show a notice.
-- [ ] Conflicts preserve both values and block the group until disposition.
-- [ ] Invalid snapshots are rejected and recorded without partial storage.
-- [ ] In-place promotion preserves Location.Start and a new version sets it.
-- [ ] Inferred and measured promotions are distinguishable in the audit.
+## Security rules
 
-| Question | Blocks |
-| --- | --- |
-| Should the tool accept raw files or normalized snapshots only? | Upload and security surface |
-| Should reviews share ConfigContext or use their own context? | Data model |
-| Can promotion apply across a route in one action, and is partial promotion acceptable? | Promotion UI and API |
-| Should the UI suggest direction from the corridor convention? Phase 2 is westbound at 17 of 19 locations on R2:192 and northbound where the road changes orientation. | Annotation design |
+An uploaded snapshot is untrusted input: it arrives as a claim about a controller, from a tool or a
+client this one does not control.
 
-## Decisions for this branch
+- Validate against the schema before anything is stored, and reject rather than coerce. A snapshot
+  that fails validation is recorded as received and rejected, with the reason, so the operator sees
+  it arrived.
+- Cap payload size and reject above it.
+- Never execute or interpret any part of a snapshot as code or as a path.
+- A snapshot carries no credentials and no account data. If one arrives containing either, reject it
+  and record that it did — the collection tool is responsible for never putting them in, and this is
+  the backstop.
+- Permissions: uploading and annotating require the same role as editing a location. Promotion
+  requires the configuration-owner role. These are different privileges and should not be merged.
 
-- Multipart upload accepts normalized JSON. The client PUT endpoint requires an external decoder label. ATSPM stores the validated contract, and records the original artifact’s digest and validation outcome.
-- Review records share ConfigContext. Approved timing and controller fields are versioned against the ATSPM location and exposed at the configuration read endpoint by location identifier and as-of date.
-- A route review creates one attempt and captures one baseline for each location with a version in effect. The route rollup links to those attempts. Approval and promotion operate per location and can select a subset of fields. The closed review retains all dispositions and the fields actually promoted.
-- Configuration owners receive the ConfigReview:Promote permission. The annotation drawer uses the location editor’s direction and movement enum lookups while staging its changes in the review.
-- Configuration Review retains collection and approval provenance separately. The controller collection and inference tools supply their own normalized output.
+Promotion is the only operation that changes ATSPM, and it writes through the existing configuration
+services rather than around them, so the usual validation and audit apply.
+
+## Phasing, validation and open questions
+
+Each phase is useful on its own and shippable.
+
+1. **Read-only comparison.** Accept a snapshot, compare, classify, render. No promotion, no
+   annotation. This alone replaces the external page and makes the findings durable.
+2. **Annotation and promotion.** Dispositions, annotation drawer, promote with in-place versus new
+   version, audit trail.
+3. **Route-level review.** Nineteen locations at a time, with corridor-wide roll-ups: firmware in
+   use, pedestrian phases declared nowhere, systematic patterns across locations.
+
+### Validation checklist
+
+- [ ] A standard eight-phase snapshot produces barriers A = {1,2,5,6} and B = {3,4,7,8} with no
+      hardcoded map, and a snapshot containing phases above 8 renders every one of them — no phase
+      number the controller reports is dropped or left without a ring and a barrier.
+- [ ] A snapshot for location 7521 produces ring 1 = {1,2} then {4,11}, ring 2 = {5,6} then {8,15},
+      and the diagram draws all eight boxes.
+- [ ] Phases marked not in use are neither reported as programmed nor as undeclared.
+- [ ] An overlap approach never produces a wrong-phase difference.
+- [ ] An undeclared channel the snapshot leaves unassigned is classified differently from one it
+      assigns.
+- [ ] A pedestrian movement the controller programs and no approach declares is promotable once
+      annotated, not `Held`.
+- [ ] A snapshot carrying `switchPhase` without `callPhase` is rejected rather than read as no
+      detector assignments.
+- [ ] A snapshot listing a group in `unavailable` renders the notice rather than an empty list.
+- [ ] Two sources disagreeing on one field produce a conflict, block promotion of that group, and
+      lose neither value.
+- [ ] A snapshot that fails schema validation is rejected and recorded, not partially stored.
+- [ ] Promoting in place leaves `Location.Start` unchanged; promoting as a new version sets it.
+- [ ] A promoted inference is distinguishable from a promoted measurement in the audit record.
+
+### Open questions
+
+| # | Question | Blocks |
+| --- | --- | --- |
+| 1 | Does the tool accept raw controller files at all, or only normalized snapshots? Only snapshots is simpler and keeps binary parsing in one place; raw files are a convenience if someone has a file and not the collector. | The upload endpoint and the security surface |
+| 2 | Review entities on `ConfigContext`, or their own context? `ConfigContext` keeps joins to `Location` and `Approach` simple; a separate one keeps review history out of the configuration schema. | Data model |
+| 3 | Is promotion per location only, or can it apply across a route in one action, and is a partial route promotion acceptable? | Promotion UI and API |
+| 4 | Should the UI suggest a direction from the corridor convention, clearly as a suggestion, or stay silent? Phase 2 is westbound at 17 of 19 locations on R2:192 and northbound at the two where the mainline runs north-south. | Annotation design |
+
+Collection, controller file decoding and the NTCIP reader are a separate tool with its own design.

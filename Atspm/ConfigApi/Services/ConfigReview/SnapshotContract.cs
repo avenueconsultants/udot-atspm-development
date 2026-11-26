@@ -111,6 +111,19 @@ internal static partial class SnapshotContract
             !snapshot.Unavailable.Contains("splitTables"))
             throw new InvalidDataException("List splitTables as unavailable when a referenced definition is missing.");
 
+        // NTCIP's vehicleDetectorCallPhase answers noSuchName on every firmware met so far - two
+        // MaxTime generations and Econolite ASC/3 alike - and the assignment arrives in the
+        // switchPhase column instead. A producer that passes the raw column straight through leaves
+        // callPhase empty, and the comparison then reports no detector assignments at all: not an
+        // error, just silence, which is the worst way for this to be wrong. callPhase is the field
+        // this contract compares on, so whichever column a controller carried the value in, the
+        // producer maps it before sending.
+        if (snapshot.Detectors.Any(detector => detector.SwitchPhase is > 0 && detector.CallPhase is null or 0))
+            throw new InvalidDataException(
+                "A detector carries switchPhase with no callPhase. callPhase is the assignment this " +
+                "contract compares on; map the controller's column onto it rather than passing it " +
+                "through, or the comparison will report no detector assignments at all.");
+
         return snapshot;
     }
 

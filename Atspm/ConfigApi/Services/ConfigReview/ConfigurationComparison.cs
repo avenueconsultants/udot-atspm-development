@@ -81,10 +81,20 @@ internal static class ConfigurationComparison
                     Add($"approaches.{phase.Phase}", "phaseStructure", "NeedsDirection",
                         $"Phase {phase.Phase} is in use and has no ATSPM approach.", "null",
                         SnapshotContract.Serialize(phase.Phase), phase.Source);
+                // NeedsDirection, not Held: the controller settles that a pedestrian movement is
+                // programmed here, and the only thing missing is which approach carries it. Held
+                // would make this unpromotable, and it is the most common finding on a corridor -
+                // 71 of them across 19 locations on R2:192, where no approach anywhere records a
+                // pedestrianPhaseNumber. Until it is declared the crossing is served on the street
+                // and absent from pedestrian delay, pedestrian actuations and the StuckPed watchdog,
+                // all of which select their phases from the configuration.
                 if (phase.Walk > 0 && phase.PedClear > 0 &&
                     !baseline.Approaches.Any(ap => !ap.PedestrianOverlap && ap.PedestrianPhase == phase.Phase))
-                    Add($"pedestrian.{phase.Phase}", "phaseTiming", "Held",
-                        $"Phase {phase.Phase} has pedestrian timing and no ATSPM pedestrian phase declaration.",
+                    Add($"pedestrian.{phase.Phase}", "phaseStructure", "NeedsDirection",
+                        $"Phase {phase.Phase} is programmed for pedestrians - walk {phase.Walk}s, clearance " +
+                        $"{phase.PedClear}s - and no ATSPM approach declares a pedestrian phase for it. " +
+                        $"Walk plus clearance also sets a floor under the phase, so a cycle shortened " +
+                        $"without it is shortened below what the crossing needs.",
                         "null", SnapshotContract.Serialize(phase.Phase), phase.Source);
             }
         }

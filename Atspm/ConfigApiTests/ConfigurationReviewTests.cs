@@ -199,6 +199,40 @@ public class ConfigurationReviewTests
         Assert.Empty(await db.ConfigPromotionFields.ToListAsync());
     }
 
+    [Fact]
+    public async Task PedestrianTimingWithNoDeclarationIsPromotableRatherThanHeld()
+    {
+        // The controller settles that a pedestrian movement is programmed; only the approach that
+        // carries it is missing. Classified Held it could never be promoted, and it is the most
+        // common finding on a corridor - 71 across 19 locations on R2:192.
+        await using var fixture = await Fixture.Create();
+        var id = await fixture.Review();
+        var withPed = Snapshot.Replace("\"minGreen\":15", "\"minGreen\":15,\"walk\":7,\"pedClear\":26");
+        await fixture.Upload(id, withPed);
+        var report = await fixture.Service.Report(id, default);
+
+        var item = Assert.Single(report.Items, entry => entry.Field == "pedestrian.11");
+        Assert.Equal("NeedsDirection", item.Classification);
+        Assert.Equal("phaseStructure", item.Group);
+    }
+
+    [Fact]
+    public async Task SwitchPhaseWithoutCallPhaseIsRejectedRatherThanReadAsNoAssignment()
+    {
+        // NTCIP's vehicleDetectorCallPhase answers noSuchName on every firmware met so far and the
+        // assignment arrives in switchPhase. Passing the raw column through would leave callPhase
+        // empty and the comparison would report no detector assignments at all - silently.
+        await using var fixture = await Fixture.Create();
+        var id = await fixture.Review();
+        var raw = Snapshot.Replace("{\"channel\":44,\"callPhase\":11}",
+            "{\"channel\":44,\"switchPhase\":11}");
+        await Assert.ThrowsAsync<InvalidDataException>(() => fixture.Upload(id, raw));
+        var report = await fixture.Service.Report(id, default);
+
+        Assert.Null(report.Snapshot.Snapshot);
+        Assert.Contains("callPhase", Assert.Single(report.Snapshot.Files).ParseReport);
+    }
+
     private const string Snapshot = """
     {"schemaVersion":1,"locationIdentifier":"7521","make":"Econolite","model":"Cobalt",
     "collectedAt":"2026-11-18T10:26:00Z","sources":[{"kind":"file","name":"ASC3.DB",
