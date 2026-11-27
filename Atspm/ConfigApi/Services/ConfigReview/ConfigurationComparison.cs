@@ -116,8 +116,18 @@ internal static class ConfigurationComparison
                 if (matches.Any(ap => ap.Overlap || ap.Phase == detector.CallPhase ||
                     (!ap.PermissiveOverlap && ap.PermissivePhase == detector.CallPhase)))
                     continue;
-                Add(field, "detectors", "NeedsDirection",
-                    $"Channel {detector.Channel} calls phase {detector.CallPhase} and needs an approach assignment.",
+                // A channel ATSPM already places on a different phase is not the same finding as one
+                // it has never heard of, and the difference matters: at 7423 channels 18 and 20 are
+                // each on the other's phase, which makes every measure drawn from them read the
+                // wrong approach. The cabinet settles which phase the channel calls; which of
+                // ATSPM's fields is wrong - the phase, the direction, or the field wiring - needs a
+                // look at the intersection, so it stays a finding rather than a correction.
+                var summary = matches.Length == 0
+                    ? $"Channel {detector.Channel} calls phase {detector.CallPhase} and needs an approach assignment."
+                    : $"Channel {detector.Channel} calls phase {detector.CallPhase} in the controller, and ATSPM has " +
+                      $"it on {string.Join(", ", matches.Select(ap => $"phase {ap.Phase}"))}. One of the two is wrong " +
+                      $"about this approach, and every measure drawn from the channel follows ATSPM.";
+                Add(field, "detectors", "NeedsDirection", summary,
                     SnapshotContract.Serialize(matches.Select(ap => ap.Phase)),
                     SnapshotContract.Serialize(detector.CallPhase), detector.Source);
             }
@@ -131,9 +141,26 @@ internal static class ConfigurationComparison
         void AddField(string field, string group, string proposed, string? source)
         {
             var existing = baseline.Fields.GetValueOrDefault(field, "null");
-            if (!JsonNode.DeepEquals(JsonNode.Parse(existing), JsonNode.Parse(proposed)))
-                Add(field, group, "Certain", $"{field}: controller value differs from the stored ATSPM value.",
+            if (JsonNode.DeepEquals(JsonNode.Parse(existing), JsonNode.Parse(proposed)))
+                return;
+            // Most of what a controller holds has nowhere to live in ATSPM, so the common case here
+            // is not a disagreement but a field ATSPM has never stored. Saying "differs from the
+            // stored ATSPM value" about an empty field reads as a discrepancy to chase and buries
+            // the handful of real ones: at 7423 it would have produced 121 of them against 13
+            // findings an engineer would act on. Name it for what it is, and drop the ones that
+            // carry nothing - a controller zero against nothing stored says only that the
+            // parameter is unused.
+            if (existing == "null")
+            {
+                if (proposed is "0" or "0.0" or "false" or "null" or "[]" or "\"\"")
+                    return;
+                Add(field, group, "Certain",
+                    $"{field}: the controller reports {proposed}. ATSPM stores nothing for this field.",
                     existing, proposed, source);
+                return;
+            }
+            Add(field, group, "Certain", $"{field}: controller value differs from the stored ATSPM value.",
+                existing, proposed, source);
         }
 
         void Add(string field, string group, string classification, string summary, string oldValue, string value,
