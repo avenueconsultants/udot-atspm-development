@@ -27,6 +27,7 @@ import {
   type Assignments,
 } from '../assignments'
 import { gateFailures, phaseGroups, stateMarks } from '../cards'
+import { movementName, sharedProtectedPhases } from '../naming'
 import { ringOrder, splitTableFor } from '../splits'
 import type { Baseline, ControllerSnapshot, ReviewItem } from '../types'
 import DetectorCard from './DetectorCard'
@@ -82,8 +83,8 @@ export default function AssemblyBoard({
     }
     setNotice(
       candidates.length === 0
-        ? `ATSPM has no approach on phase ${phase}, so channel ${channel} cannot be placed there yet. An approach has to exist first.`
-        : `Phase ${phase} is carried by ${candidates.length} approaches, so channel ${channel} needs one chosen from its menu: ${candidates
+        ? `ATSPM has no movement on phase ${phase}, so channel ${channel} cannot be placed there yet. A movement has to exist first.`
+        : `Phase ${phase} is carried by ${candidates.length} movements, so channel ${channel} needs one chosen from its menu: ${candidates
             .map((candidate) => candidate.label)
             .join('; ')}.`
     )
@@ -105,6 +106,7 @@ export default function AssemblyBoard({
   )
   const failures = gateFailures(baseline, snapshot, assignments)
   const splits = snapshot ? splitTableFor(snapshot, pattern) : undefined
+  const shared = sharedProtectedPhases(baseline)
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -120,7 +122,7 @@ export default function AssemblyBoard({
             <Typography variant="h6">Location {locationIdentifier}</Typography>
             <Chip
               size="small"
-              label={`${baseline.approaches.length} approaches · ${declaredChannels.size} detectors in ATSPM`}
+              label={`${baseline.approaches.length} movements · ${declaredChannels.size} detectors in ATSPM`}
             />
             {snapshot && (
               <Chip
@@ -226,7 +228,7 @@ export default function AssemblyBoard({
 
           <Box>
             <Typography variant="overline" color="text.secondary">
-              Channels with no ATSPM approach · {tray.length}
+              Channels on no movement · {tray.length}
             </Typography>
             <Droppable droppableId={trayDroppableId} direction="horizontal">
               {(provided, dropping) => (
@@ -287,6 +289,32 @@ export default function AssemblyBoard({
           {notice && (
             <Alert severity="info" onClose={() => setNotice(null)}>
               {notice}
+            </Alert>
+          )}
+
+          {shared.length > 0 && (
+            <Alert severity="warning">
+              <Typography variant="body2">
+                Two movements share a protected phase. That is legitimate under
+                split phasing, and the phase-keyed measures — Purdue
+                coordination, corridor offsets, left turn gap — look a movement
+                up by its protected phase number and take the first match, so
+                only one of them reaches those charts.
+              </Typography>
+              <Stack component="ul" sx={{ pl: 2, m: 0 }}>
+                {shared.map((entry) => (
+                  <Typography
+                    component="li"
+                    variant="caption"
+                    key={`${entry.overlap ? 'o' : 'p'}-${entry.phase}`}
+                  >
+                    {entry.overlap ? 'Overlap' : 'Phase'} {entry.phase}:{' '}
+                    {entry.approaches
+                      .map((approach) => movementName(approach))
+                      .join(', ')}
+                  </Typography>
+                ))}
+              </Stack>
             </Alert>
           )}
 

@@ -12,19 +12,15 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
+import { legs, movementName } from '../naming'
 import type { Baseline, BaselineApproach } from '../types'
 
-const directions: Record<number, string> = {
-  0: '—',
-  1: 'NB',
-  2: 'SB',
-  3: 'EB',
-  4: 'WB',
-  5: 'NE',
-  6: 'NW',
-  7: 'SE',
-  8: 'SW',
+/** A phase, an overlap number, or nothing - and an overlap number is not a phase number. */
+function phaseCell(phase: number | null, overlap: boolean): string {
+  if (!phase) return '—'
+  return `${overlap ? 'Overlap' : 'Phase'} ${phase}`
 }
+
 const movements: Record<number, string> = {
   0: '—',
   1: 'Through',
@@ -105,62 +101,74 @@ export default function BaselineView({ baseline }: { baseline: Baseline }) {
         <Chip label={`Configuration version ${baseline.locationId}`} />
         <Chip label={`Effective ${baseline.start.slice(0, 10)}`} />
         <Chip
-          label={`${baseline.approaches.length} approaches · ${phases.length} declared phases · ${detectors.length} detectors`}
+          label={`${baseline.approaches.length} movements · ${phases.length} declared phases · ${detectors.length} detectors`}
         />
       </Stack>
 
-      {phases.length === 0 ? (
+      {baseline.approaches.length === 0 ? (
         <Alert severity="warning">
-          ATSPM declares no approaches for this location, so there is nothing to
+          ATSPM declares no movements for this location, so there is nothing to
           compare a controller against yet.
         </Alert>
       ) : (
-        <Stack spacing={1}>
-          <Typography variant="h6">Phases ATSPM declares</Typography>
-          <TableContainer>
-            <Table size="small" aria-label="Phases ATSPM declares">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Phase</TableCell>
-                  <TableCell>Role</TableCell>
-                  <TableCell>Overlap</TableCell>
-                  <TableCell>Direction</TableCell>
-                  <TableCell>Approach</TableCell>
-                  <TableCell>Detectors</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {phases.map((entry) => (
-                  <TableRow
-                    key={`${entry.role}-${entry.overlap ? 'o' : 'p'}-${entry.phase}-${entry.approach.id}`}
-                  >
-                    <TableCell>{entry.phase}</TableCell>
-                    <TableCell>{entry.role}</TableCell>
-                    <TableCell>
-                      {entry.overlap ? (
-                        <Chip size="small" label="Overlap" />
-                      ) : (
-                        '—'
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {directions[entry.approach.direction] ??
-                        entry.approach.direction}
-                    </TableCell>
-                    <TableCell>{entry.approach.description ?? '—'}</TableCell>
-                    <TableCell>
-                      {entry.role === 'Protected' &&
-                      entry.approach.detectors.length
-                        ? entry.approach.detectors
-                            .map((detector) => detector.channel)
-                            .join(', ')
-                        : '—'}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Stack spacing={2}>
+          <Typography variant="h6">Movements ATSPM declares</Typography>
+          {/* An Approach row is one movement: one direction, with the phase that runs it
+              protected, the phase that runs it permissive, and its pedestrian phase. The leg an
+              engineer calls an approach is the group of them sharing a direction, which is a
+              heading here rather than a row, because ATSPM stores no such thing. */}
+          {legs(baseline).map((leg) => (
+            <Stack key={leg.direction} spacing={0.5}>
+              <Typography variant="subtitle2">
+                {leg.label} · {leg.approaches.length}{' '}
+                {leg.approaches.length === 1 ? 'movement' : 'movements'}
+              </Typography>
+              <TableContainer>
+                <Table size="small" aria-label={leg.label}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Movement</TableCell>
+                      <TableCell>Protected</TableCell>
+                      <TableCell>Permissive</TableCell>
+                      <TableCell>Pedestrian</TableCell>
+                      <TableCell>Detectors</TableCell>
+                      <TableCell>Stored description</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {leg.approaches.map((approach) => (
+                      <TableRow key={approach.id}>
+                        <TableCell>{movementName(approach)}</TableCell>
+                        <TableCell>
+                          {phaseCell(approach.phase, approach.overlap)}
+                        </TableCell>
+                        <TableCell>
+                          {phaseCell(
+                            approach.permissivePhase,
+                            approach.permissiveOverlap
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {phaseCell(
+                            approach.pedestrianPhase,
+                            approach.pedestrianOverlap
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {approach.detectors.length
+                            ? approach.detectors
+                                .map((detector) => detector.channel)
+                                .join(', ')
+                            : '—'}
+                        </TableCell>
+                        <TableCell>{approach.description ?? '—'}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Stack>
+          ))}
         </Stack>
       )}
 
@@ -171,13 +179,11 @@ export default function BaselineView({ baseline }: { baseline: Baseline }) {
             {detectors.map(({ approach, detector }) => (
               <Chip
                 key={detector.id}
-                label={`Ch ${detector.channel} · ${
+                label={`Ch ${detector.channel} · ${movementName(approach)} · ${
                   approach.overlap ? 'Overlap' : 'Phase'
                 } ${approach.phase} · ${
-                  directions[approach.direction] ?? approach.direction
-                } ${movements[detector.movement] ?? ''}${
-                  detector.lane ? ` · lane ${detector.lane}` : ''
-                }`}
+                  movements[detector.movement] ?? ''
+                }${detector.lane ? ` · lane ${detector.lane}` : ''}`}
               />
             ))}
           </Stack>
@@ -213,7 +219,7 @@ export default function BaselineView({ baseline }: { baseline: Baseline }) {
             Ring and barrier assignments, the phase sequence, overlap membership
             and every phase timing value - minimum green, passage, maximum
             green, yellow, red clearance, walk and pedestrian clearance - are
-            not stored here. ATSPM records which phase an approach watches, not
+            not stored here. ATSPM records which phase a movement watches, not
             how the controller runs it. Upload a controller snapshot to see the
             ring and barrier diagram, the sequence and the timing, and to find
             out whether the phases above are the ones actually in service.

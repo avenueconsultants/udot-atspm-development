@@ -14,6 +14,7 @@ import {
   worstState,
   type CardState,
 } from '../cards'
+import { movementName } from '../naming'
 import { programmedSplit, type Pattern } from '../splits'
 import type {
   Baseline,
@@ -24,7 +25,7 @@ import type {
 } from '../types'
 import CardLedger from './CardLedger'
 import DetectorCard from './DetectorCard'
-import MovementArrow, { directionNames } from './MovementArrow'
+import MovementArrow from './MovementArrow'
 
 // Fields drawn in their own rows, so the generic settings block below shows only what is left and
 // a parameter added to the contract appears with no change here.
@@ -98,7 +99,7 @@ export default function PhaseCard({
   const roles = rolesFor(baseline, phase.phase)
   const split = programmedSplit(snapshot, phase, pattern)
   // A channel belongs on this card when the controller calls this phase with it, or when ATSPM or
-  // the engineer has placed it on an approach this phase carries. At 7423 channel 18 does both on
+  // the engineer has placed it on a movement this phase carries. At 7423 channel 18 does both on
   // two different cards, which is the finding, so the card does not try to pick one.
   const ours = [...placements.entries()]
     .filter(([, placement]) =>
@@ -186,12 +187,14 @@ export default function PhaseCard({
             ? roles
                 .map(
                   ({ approach, role }) =>
-                    `${role}: ${directionNames[approach.direction] ?? 'unknown direction'}${
-                      approach.description ? ` (${approach.description})` : ''
+                    `${role} for ${movementName(approach)}${
+                      approach.description
+                        ? ` (stored as ${approach.description})`
+                        : ''
                     }`
                 )
                 .join(' · ')
-            : 'Direction unknown — no ATSPM approach carries this phase.'}
+            : 'Direction unknown — no ATSPM movement carries this phase.'}
         </Typography>
 
         <Divider />

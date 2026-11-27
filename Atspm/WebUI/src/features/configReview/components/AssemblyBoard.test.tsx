@@ -8,6 +8,7 @@ import {
   targetsForPhase,
 } from '../assignments'
 import { gateFailures, phaseGroups, stateOf } from '../cards'
+import { sharedProtectedPhases } from '../naming'
 import { programmedSplit, ringOrder } from '../splits'
 import type { Baseline, ControllerSnapshot, ReviewItem } from '../types'
 import AssemblyBoard from './AssemblyBoard'
@@ -253,12 +254,12 @@ test('renders the board with the plan, the cards and the tray', () => {
   expect(screen.getByText('Location 7423')).toBeTruthy()
   expect(screen.getByText(/splits placed by sequence/)).toBeTruthy()
   expect(screen.getByText('Run together: 1 + 2 + 5 + 6')).toBeTruthy()
-  expect(screen.getByText(/Channels with no ATSPM approach · 1/)).toBeTruthy()
+  expect(screen.getByText(/Channels on no movement · 1/)).toBeTruthy()
   // Phase 1 has no approach, so it says so rather than guessing a direction from the number.
   // Six of the eight phases in service have no approach, and each card says so.
   expect(
     screen.getAllByText(
-      /Direction unknown — no ATSPM approach carries this phase/
+      /Direction unknown — no ATSPM movement carries this phase/
     ).length
   ).toBe(6)
   // Phases 2, 4, 6 and 8 sit at position 1 in their ring and take the 40s split.
@@ -291,7 +292,7 @@ test('a phase with one approach settles a drop, and the rest have to be chosen',
 
 test('an assignment moves the channel and keeps what it replaced', () => {
   const moved = assign(baseline, {}, 18, 2)
-  expect(moved[18].was).toBe('Phase 2 WB · WBT Ph2')
+  expect(moved[18].was).toBe('WBT · protected 2')
   const placed = placements(baseline, moved)
   expect(placed.get(18)?.approach?.id).toBe(2)
   // Dragging a channel changes the approach it belongs to and nothing else about it.
@@ -314,7 +315,7 @@ test('an assignment moves the channel and keeps what it replaced', () => {
   // and it is no longer reported as a channel with no detector at all.
   expect(failures).not.toContainEqual({
     subject: 'Channel 33',
-    missing: ['an ATSPM detector on phase 1'],
+    missing: ['a movement on phase 1 to carry it'],
   })
 })
 
@@ -329,11 +330,39 @@ test('the menu assigns a channel without a mouse drag', async () => {
     />
   )
   // Channel 33 shows twice: on the phase 1 card because the controller calls phase 1 with it, and
-  // in the tray because ATSPM holds no approach for it. Either card's menu does the same thing.
+  // in the tray because it sits on no movement. Either card's menu does the same thing.
   await user.click(
-    screen.getAllByLabelText('Assign channel 33 to an approach')[0]
+    screen.getAllByLabelText('Assign channel 33 to a movement')[0]
   )
-  await user.click(screen.getByText('Phase 2 WB · WBT Ph2'))
-  expect(screen.getAllByText(/was no approach/).length).toBeGreaterThan(0)
-  expect(screen.getByText(/Channels with no ATSPM approach · 0/)).toBeTruthy()
+  // The menu lists the movements under the leg an engineer looks for first.
+  expect(screen.getByText('Westbound approach')).toBeTruthy()
+  await user.click(screen.getByText('WBT · protected 2'))
+  expect(screen.getAllByText(/was no movement/).length).toBeGreaterThan(0)
+  expect(screen.getByText(/Channels on no movement · 0/)).toBeTruthy()
+})
+
+test('says when two movements share a protected phase, and why it matters', () => {
+  // Split phasing is legitimate, and the phase-keyed measures still take only the first match.
+  const split = {
+    ...baseline,
+    approaches: [
+      baseline.approaches[0],
+      { ...baseline.approaches[1], id: 3, phase: 2, direction: 4 },
+    ],
+  }
+  expect(
+    sharedProtectedPhases(split).map((entry) => [
+      entry.phase,
+      entry.approaches.length,
+    ])
+  ).toEqual([[2, 2]])
+  render(
+    <AssemblyBoard
+      locationIdentifier="7423"
+      baseline={split}
+      snapshot={snapshot}
+      items={items}
+    />
+  )
+  expect(screen.getByText(/Two movements share a protected phase/)).toBeTruthy()
 })

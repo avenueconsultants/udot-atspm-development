@@ -83,7 +83,7 @@ public class ConfigurationReviewCorridorTests(ITestOutputHelper output)
         // The two ATSPM declares, each on the other's phase. The cabinet settles the phase; which
         // ATSPM field is wrong needs the direction no controller records, so these are findings
         // rather than corrections - and the summary has to say ATSPM holds a different phase,
-        // because "needs an approach assignment" would read as a channel nobody had got to yet.
+        // because "sits on no ATSPM movement" would read as a channel nobody had got to yet.
         Assert.Equal("NeedsDirection", callPhase[18]);
         Assert.Equal("NeedsDirection", callPhase[20]);
         var swapped = report.Items.Single(item => item.Field == "detectors.18.callPhase");

@@ -60,17 +60,59 @@ const baseline: Baseline = {
   ],
 }
 
-test('shows the phases, directions and detectors ATSPM declares', () => {
+// One Approach row is one movement, and the leg an engineer calls an approach is the heading over
+// them. The movement letters come from the detectors, because the row itself does not store them.
+test('groups the movements ATSPM declares under the leg they belong to', () => {
   render(<BaselineView baseline={baseline} />)
-  const rows = screen
-    .getByRole('table', { name: 'Phases ATSPM declares' })
-    .querySelectorAll('tbody tr')
-  expect([...rows].map((row) => row.textContent)).toEqual([
-    '2Protected—WBWBT Ph218',
-    '6Protected—EBEBT Ph620',
-  ])
-  expect(screen.getByText('Ch 18 · Phase 2 · WB Through · lane 1')).toBeTruthy()
-  expect(screen.getByText('Ch 20 · Phase 6 · EB Through · lane 1')).toBeTruthy()
+  expect(
+    [
+      ...screen
+        .getByRole('table', { name: 'Eastbound approach' })
+        .querySelectorAll('tbody tr'),
+    ].map((row) => row.textContent)
+  ).toEqual(['EBTPhase 6——20EBT Ph6'])
+  expect(
+    [
+      ...screen
+        .getByRole('table', { name: 'Westbound approach' })
+        .querySelectorAll('tbody tr'),
+    ].map((row) => row.textContent)
+  ).toEqual(['WBTPhase 2——18WBT Ph2'])
+  expect(screen.getByText('Westbound approach · 1 movement')).toBeTruthy()
+  expect(
+    screen.getByText('Ch 18 · WBT · Phase 2 · Through · lane 1')
+  ).toBeTruthy()
+  expect(
+    screen.getByText('Ch 20 · EBT · Phase 6 · Through · lane 1')
+  ).toBeTruthy()
+})
+
+test('names a permissive phase and an overlap in the movement row', () => {
+  render(
+    <BaselineView
+      baseline={{
+        ...baseline,
+        approaches: [
+          {
+            ...baseline.approaches[0],
+            permissivePhase: 2,
+            phase: 5,
+            pedestrianPhase: 2,
+            detectors: [
+              { ...baseline.approaches[0].detectors[0], movement: 3 },
+            ],
+          },
+        ],
+      }}
+    />
+  )
+  expect(
+    [
+      ...screen
+        .getByRole('table', { name: 'Westbound approach' })
+        .querySelectorAll('tbody tr'),
+    ].map((row) => row.textContent)
+  ).toEqual(['WBLPhase 5Phase 2Phase 218WBT Ph2'])
 })
 
 test('says plainly that ring, sequence and timing are not stored here', () => {
@@ -110,6 +152,6 @@ test('keeps an overlap apart from the phase of the same number', () => {
 
 test('warns when ATSPM declares nothing to compare against', () => {
   render(<BaselineView baseline={{ ...baseline, approaches: [] }} />)
-  expect(screen.getByText(/declares no approaches/)).toBeTruthy()
+  expect(screen.getByText(/declares no movements/)).toBeTruthy()
   expect(screen.getByText(/declares no detectors here/)).toBeTruthy()
 })

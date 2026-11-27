@@ -324,6 +324,7 @@ WebUI/src/features/configReview/
   cards.ts                    the four states, the card ledger, the save gate
   splits.ts                   split seconds by ring position, and the basis for it
   assignments.ts              the engineer's channel placements, and the drop resolution
+  naming.ts                   movement names, leg grouping, shared protected phases
 ```
 
 `RingBarrierDiagram` takes `phases[]` with `ring`, `barrier` and `concurrent`, and lays out barriers
@@ -366,6 +367,48 @@ Each location section has three zones, top to bottom:
 3. **The tray** — detector cards belonging to no phase: every channel the controller reports with no
    ATSPM detector against it, which at 7423 is fourteen of sixteen.
 
+#### What an `Approach` row is, and what it is called on screen
+
+The entity has drifted, and the drift is the schema's doing rather than carelessness. `Approach`
+holds one `DirectionTypeId`, one `ProtectedPhaseNumber`, an optional `PermissivePhaseNumber`, an
+optional `PedestrianPhaseNumber`, each with its own overlap flag, plus `Mph`, a free-text
+`Description`, a TSP number and its detectors. The protected/permissive pair is a property of a
+single movement — "protected on 5, permissive on 2" is the westbound left, while the westbound
+through is protected on 2 with no permissive — so one row cannot describe a leg that has a protected
+left. The row is a **movement**. UDOT's own data already says so: 7423's rows are described "WBT
+Ph2" and "EBT Ph6", hand-typed strings encoding direction, movement and phase, and that string is
+the row's working identity because the approach editor displays nothing else.
+
+The movement is not stored on the row. It lives on `Detector.MovementType`, and that is what every
+movement-aware report reads — the time-space diagram's right and left turn sets, the left turn gap
+services, turning movement counts, and `IsThrough` in the corridor offset service. So the name is
+derived from the detectors, and a row whose detectors carry two different movements is shown with
+both (`WBT/L`), because that is a row being used as a leg.
+
+The consumers read a movement three different ways, and the identity they depend on is phase plus
+direction:
+
+| How it is read | By | What it means for the board |
+| --- | --- | --- |
+| `Approaches.FirstOrDefault(a => a.ProtectedPhaseNumber == N)` | Purdue coordination, corridor offsets, left turn gap | Two rows claiming one protected phase and one of them never reaches those charts |
+| Every row in a direction, detectors pooled, filtered by detection type and lane type | Approach volume | Movement granularity is fine here, and works better than a leg |
+| `Detector.MovementType` | Time-space, left turn gap, turning movement counts | Movement on the parent is decoration; the detector carries the truth |
+
+So on screen: each row is a **movement card**, labelled `WBL · protected 5 · permissive 2` with its
+arrow, and the movements are grouped under the leg heading — "Westbound approach" — that an engineer
+means by the word. The leg is a grouping, not an entity, because ATSPM stores no such thing. The
+stored description keeps its own column beside the generated name, so a row whose description no
+longer matches its detectors is visible rather than authoritative.
+
+Two rows sharing a protected phase is legitimate under split phasing, so it is a flag and not an
+error, and the flag says which measures take only the first match. `LeftTurnGapAnalysisReportService`
+goes further and hardcodes phases 2, 6, 4 and 8, so it cannot serve the two locations on this
+corridor that run phases 11 and 15 — worth recording because it is the kind of assumption that reads
+as missing data.
+
+The contract's field keys (`approaches.<phase>`) are unchanged: they are a wire format, and renaming
+them would break every stored finding for the sake of vocabulary that belongs on screen.
+
 #### What may be dragged, and what may not
 
 A board that lets an engineer drag anything teaches them that every box is their opinion. Some boxes
@@ -379,7 +422,7 @@ has one authority, and the board enforces it.
 | Overlap membership and type | Controller | Same |
 | Phase timing, walk, pedestrian clearance | Controller | Never draggable; editable only as a proposed change to send to the controller, which is a later step |
 | Which phase a channel calls | Controller (`detectors[].callPhase`) | Fills and locks |
-| Which approach a detector belongs to | **Engineer** | Dragged. No device holds it |
+| Which movement a detector belongs to | **Engineer** | Dragged. No device holds it |
 | Direction, movement, lane, hardware, distance, speed | **Engineer** | Edited in place. No device holds direction in any form ATSPM can take |
 | Whether a phase is protected or permissive for a movement | **Engineer**, from the controller's structure | Edited in place, with the structure shown beside it |
 
@@ -392,23 +435,23 @@ not happened yet. For direction and detector-to-approach the engineer is the aut
 because every device on this corridor is silent about them — a radar knows lanes, not compass
 bearings, and a controller knows channels, not which pavement they sit under.
 
-#### A drop names a phase; ATSPM stores an approach
+#### A drop names a phase; ATSPM stores a movement
 
 A phase card is the obvious thing to drag a channel onto, and it is not what ATSPM records. A
-detector hangs off an `Approach`, and an approach carries a phase, a direction and a description —
-so a drop has to be resolved from the phase the person aimed at to the approach the database needs.
+detector hangs off an `Approach` row, which is one movement carrying a phase in a direction — so a
+drop has to be resolved from the phase the person aimed at to the movement the database needs.
 Three cases, and the board distinguishes them rather than picking for the person:
 
-- **One approach carries the phase.** The drop settles it. This is the common case and the one that
+- **One movement carries the phase.** The drop settles it. This is the common case and the one that
   removes the click-through.
-- **Two or more carry it**, protected on one and permissive on another, or two approaches of the same
+- **Two or more carry it**, protected on one and permissive on another, or two movements of the same
   phase in different directions. The board will not guess which pavement the loop sits under, so it
-  says which approaches are candidates and the person picks from the card's menu.
+  says which movements are candidates and the person picks from the card's menu.
 - **None carries it.** There is nothing in ATSPM to attach the detector to. The board says the
-  approach has to exist first rather than inventing one, because an approach invented to hold a
-  channel would carry direction NA and a blank description, and both save without complaint.
+  movement has to exist first rather than inventing one, because a row invented to hold a channel
+  would carry direction NA and a blank description, and both save without complaint.
 
-Dragging a channel changes the approach it belongs to and nothing else about it: a channel ATSPM
+Dragging a channel changes the movement it belongs to and nothing else about it: a channel ATSPM
 already holds keeps its identifier, movement, lane, hardware and detection types, and only its parent
 changes. A channel ATSPM has never held arrives with none of those, so the gate asks for all five on
 the card rather than letting a bare detector be saved — a detector with no detection type joins to no
@@ -419,8 +462,8 @@ channel 18 shows on the phase 6 card because the controller calls phase 6 with i
 card because ATSPM has it there. That duplication is the finding, so the board shows both rather than
 choosing a winner. Each card's drag handle is its own, and a drop from either resolves the same way.
 
-The menu is not a fallback for the drag; it is the same action. It lists every approach at the
-location plus "no approach", so every placement — including taking a channel off an approach — is
+The menu is not a fallback for the drag; it is the same action. It lists every movement at the
+location, grouped under its leg, plus "no movement", so every placement — including taking a channel off an approach — is
 reachable from the keyboard, and a trackpad in a cabinet doorway is enough to do the work.
 
 #### Correction logging

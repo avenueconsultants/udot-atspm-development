@@ -1,3 +1,4 @@
+import { legName, movementLabel } from './naming'
 import type { Baseline, BaselineApproach } from './types'
 
 export type BaselineDetector = BaselineApproach['detectors'][number]
@@ -20,43 +21,25 @@ export type Assignments = Record<number, Assignment>
 export type AssignTarget = {
   id: number | null
   label: string
+  leg: string
   phase: number | null
 }
 
-const directionLabels: Record<number, string> = {
-  0: 'direction unknown',
-  1: 'NB',
-  2: 'SB',
-  3: 'EB',
-  4: 'WB',
-  5: 'NE',
-  6: 'NW',
-  7: 'SE',
-  8: 'SW',
-}
-
-export function approachLabel(approach: BaselineApproach): string {
-  const kind = approach.overlap ? 'Overlap' : 'Phase'
-  const direction = directionLabels[approach.direction] ?? 'direction unknown'
-  return `${kind} ${approach.phase} ${direction}${
-    approach.description ? ` · ${approach.description}` : ''
-  }`
-}
-
-/** Every approach a channel may be placed on at this location, plus taking it off all of them. */
+/** Every movement a channel may be placed on at this location, plus taking it off all of them. */
 export function targetsFor(baseline: Baseline): AssignTarget[] {
   return [
     ...baseline.approaches.map((approach) => ({
       id: approach.id,
-      label: approachLabel(approach),
+      label: movementLabel(approach),
+      leg: legName(approach.direction),
       phase: approach.overlap ? null : approach.phase,
     })),
-    { id: null, label: 'No approach', phase: null },
+    { id: null, label: 'No movement', leg: 'Take it off', phase: null },
   ]
 }
 
 /**
- * The approaches that carry a given phase, protected or permissive. A drop onto a phase card is
+ * The movements that carry a given phase, protected or permissive. A drop onto a phase card is
  * only unambiguous when exactly one of them exists; with two the person has to say which, and with
  * none there is nothing in ATSPM to place the channel on.
  */
@@ -72,7 +55,8 @@ export function targetsForPhase(
     )
     .map((approach) => ({
       id: approach.id,
-      label: approachLabel(approach),
+      label: movementLabel(approach),
+      leg: legName(approach.direction),
       phase,
     }))
 }
@@ -110,10 +94,10 @@ export function placements(
   return placed
 }
 
-/** The label a card shows for where a channel sits now, assigned or not. */
+/** The label a card shows for the movement a channel sits on now, assigned or not. */
 export function placementLabel(placement?: Placement): string {
-  if (!placement || !placement.approach) return 'no approach'
-  return approachLabel(placement.approach)
+  if (!placement || !placement.approach) return 'no movement'
+  return movementLabel(placement.approach)
 }
 
 export function assign(

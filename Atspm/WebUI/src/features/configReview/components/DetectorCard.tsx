@@ -6,6 +6,7 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import {
   Box,
   IconButton,
+  ListSubheader,
   Menu,
   MenuItem,
   Paper,
@@ -27,6 +28,7 @@ import {
   worstState,
   type CardState,
 } from '../cards'
+import { movementName, phaseRoles } from '../naming'
 import type { ControllerSnapshot, ReviewItem } from '../types'
 import CardLedger from './CardLedger'
 import MovementArrow, { movementNames } from './MovementArrow'
@@ -80,7 +82,7 @@ export default function DetectorCard({
       <Stack spacing={0.5}>
         <Stack direction="row" spacing={0.5} alignItems="center">
           {drag?.dragHandleProps ? (
-            <Tooltip title={`Move channel ${channel} to another phase`}>
+            <Tooltip title={`Move channel ${channel} to another movement`}>
               {/* The handle has to be an HTMLElement: dnd refuses an svg, so the props go on a
                   span rather than on the icon itself. */}
               <Box
@@ -111,7 +113,7 @@ export default function DetectorCard({
             <>
               <IconButton
                 size="small"
-                aria-label={`Assign channel ${channel} to an approach`}
+                aria-label={`Assign channel ${channel} to a movement`}
                 onClick={(event) => setAnchor(event.currentTarget)}
                 sx={{ ml: 'auto', fontSize: 12 }}
               >
@@ -122,7 +124,16 @@ export default function DetectorCard({
                 open={Boolean(anchor)}
                 onClose={() => setAnchor(null)}
               >
-                {targets.map((target) => (
+                {/* Grouped by leg, because "the westbound approach" is what an engineer looks
+                    for first and the movements under it are what ATSPM stores. */}
+                {targets.map((target, index) => [
+                  ...(index === 0 || targets[index - 1].leg !== target.leg
+                    ? [
+                        <ListSubheader key={`${target.leg}-head`}>
+                          {target.leg}
+                        </ListSubheader>,
+                      ]
+                    : []),
                   <MenuItem
                     key={String(target.id)}
                     selected={approach ? approach.id === target.id : !target.id}
@@ -132,8 +143,8 @@ export default function DetectorCard({
                     }}
                   >
                     {target.label}
-                  </MenuItem>
-                ))}
+                  </MenuItem>,
+                ])}
               </Menu>
             </>
           ) : null}
@@ -147,12 +158,12 @@ export default function DetectorCard({
         </Typography>
         <Typography variant="caption" color="text.secondary">
           {approach
-            ? `ATSPM: ${approach.overlap ? 'overlap' : 'phase'} ${approach.phase}${
+            ? `ATSPM: ${movementName(approach)} · ${phaseRoles(approach)}${
                 declared
-                  ? `, ${movementNames[declared.movement] ?? 'unknown movement'}`
-                  : ', movement not entered'
-              }${declared?.lane ? `, lane ${declared.lane}` : ''}`
-            : 'ATSPM: unassigned'}
+                  ? ` · ${movementNames[declared.movement] ?? 'movement not entered'}`
+                  : ' · movement not entered'
+              }${declared?.lane ? ` · lane ${declared.lane}` : ''}`
+            : 'ATSPM: on no movement'}
         </Typography>
         {controller && (controller.delay || controller.extend) ? (
           <Typography variant="caption" color="text.secondary">

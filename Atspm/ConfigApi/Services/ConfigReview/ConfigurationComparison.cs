@@ -82,7 +82,7 @@ internal static class ConfigurationComparison
                     (!ap.PermissiveOverlap && ap.PermissivePhase == phase.Phase));
                 if (!isDeclared)
                     Add($"approaches.{phase.Phase}", "phaseStructure", "NeedsDirection",
-                        $"Phase {phase.Phase} is in use and has no ATSPM approach.", "null",
+                        $"Phase {phase.Phase} is in use and no ATSPM movement carries it.", "null",
                         SnapshotContract.Serialize(phase.Phase), phase.Source);
                 // NeedsDirection, not Held: the controller settles that a pedestrian movement is
                 // programmed here, and the only thing missing is which approach carries it. Held
@@ -95,7 +95,7 @@ internal static class ConfigurationComparison
                     !baseline.Approaches.Any(ap => !ap.PedestrianOverlap && ap.PedestrianPhase == phase.Phase))
                     Add($"pedestrian.{phase.Phase}", "phaseStructure", "NeedsDirection",
                         $"Phase {phase.Phase} is programmed for pedestrians - walk {phase.Walk}s, clearance " +
-                        $"{phase.PedClear}s - and no ATSPM approach declares a pedestrian phase for it. " +
+                        $"{phase.PedClear}s - and no ATSPM movement declares a pedestrian phase for it. " +
                         $"Walk plus clearance also sets a floor under the phase, so a cycle shortened " +
                         $"without it is shortened below what the crossing needs.",
                         "null", SnapshotContract.Serialize(phase.Phase), phase.Source);
@@ -126,10 +126,10 @@ internal static class ConfigurationComparison
                 // ATSPM's fields is wrong - the phase, the direction, or the field wiring - needs a
                 // look at the intersection, so it stays a finding rather than a correction.
                 var summary = matches.Length == 0
-                    ? $"Channel {detector.Channel} calls phase {detector.CallPhase} and needs an approach assignment."
+                    ? $"Channel {detector.Channel} calls phase {detector.CallPhase} and sits on no ATSPM movement."
                     : $"Channel {detector.Channel} calls phase {detector.CallPhase} in the controller, and ATSPM has " +
                       $"it on {string.Join(", ", matches.Select(ap => $"phase {ap.Phase}"))}. One of the two is wrong " +
-                      $"about this approach, and every measure drawn from the channel follows ATSPM.";
+                      $"about this movement, and every measure drawn from the channel follows ATSPM.";
                 Add(field, "detectors", "NeedsDirection", summary,
                     SnapshotContract.Serialize(matches.Select(ap => ap.Phase)),
                     SnapshotContract.Serialize(detector.CallPhase), detector.Source);

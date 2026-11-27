@@ -1,4 +1,5 @@
 import { placements, type Assignments } from './assignments'
+import { movementName } from './naming'
 import type { Baseline, ControllerSnapshot, Phase, ReviewItem } from './types'
 
 /**
@@ -100,7 +101,9 @@ export function gateFailures(
     if (!approach.description?.trim()) missing.push('description')
     if (missing.length)
       failures.push({
-        subject: `Approach ${approach.overlap ? 'overlap' : 'phase'} ${approach.phase}`,
+        subject: `${movementName(approach)} on ${
+          approach.overlap ? 'overlap' : 'phase'
+        } ${approach.phase}`,
         missing,
       })
   }
@@ -153,13 +156,13 @@ export function gateFailures(
     )
       failures.push({
         subject: `Phase ${phase.phase}`,
-        missing: ['an approach to carry it'],
+        missing: ['a movement to carry it'],
       })
   for (const detector of snapshot.detectors)
     if (detector.callPhase && !placed.get(detector.channel)?.approach)
       failures.push({
         subject: `Channel ${detector.channel}`,
-        missing: [`an ATSPM detector on phase ${detector.callPhase}`],
+        missing: [`a movement on phase ${detector.callPhase} to carry it`],
       })
   return failures
 }
