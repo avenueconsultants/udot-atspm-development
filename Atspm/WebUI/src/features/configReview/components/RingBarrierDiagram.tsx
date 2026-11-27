@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material'
+import { ringOrder, splitTableFor } from '../splits'
 import type { ControllerSnapshot, Phase, ReviewItem } from '../types'
 
 export function barriersFor(phases: Phase[]) {
@@ -65,31 +66,10 @@ export default function RingBarrierDiagram({
   const rings = [...new Set(drawn.map((phase) => phase.ring!))].sort(
     (a, b) => a - b
   )
-  const sequence = snapshot.sequences.find(
-    (entry) => entry.sequenceNumber === pattern?.sequenceNumber
-  )
-  const splits = snapshot.splitTables.find(
-    (entry) => entry.splitNumber === pattern?.splitNumber
-  )
-  const orderByRing = new Map(
-    rings.map((ring) => {
-      const source = sequence?.ringPhases[String(ring)]
-      const recorded = drawn
-        .filter((phase) => phase.ring === ring)
-        .map((phase) => phase.phase)
-      return [
-        ring,
-        source
-          ? [
-              ...source,
-              ...recorded.filter((number) => !source.includes(number)),
-            ]
-          : recorded,
-      ]
-    })
-  )
+  const splits = splitTableFor(snapshot, pattern)
+  const { order: orderByRing, basis } = ringOrder(snapshot, pattern)
   const groups = barriersFor(drawn)
-  if (sequence) {
+  if (basis === 'sequence') {
     const rank = (group: Phase[]) =>
       Math.min(
         ...group.map((phase) =>
@@ -121,9 +101,11 @@ export default function RingBarrierDiagram({
     const widths = groupRings.map((phasesForRing, index) =>
       phasesForRing.map((phase) => {
         const split =
-          splits?.ringSplits[String(rings[index])]?.[
-            orderByRing.get(rings[index])!.indexOf(phase.phase)
-          ]
+          basis === 'sequence'
+            ? splits?.ringSplits[String(rings[index])]?.[
+                orderByRing.get(rings[index])!.indexOf(phase.phase)
+              ]
+            : undefined
         return split !== undefined ? Math.max(58, split * 4) : 125
       })
     )
@@ -275,10 +257,10 @@ export default function RingBarrierDiagram({
           )}
         </svg>
       </Box>
-      {!sequence && (
+      {basis === 'assumed' && (
         <Typography variant="caption" color="text.secondary">
-          Sequence definition unavailable. Phases follow snapshot order within
-          each ring.
+          Sequence definition unavailable. Phases follow ascending order within
+          each ring, and the boxes are not drawn to the programmed splits.
         </Typography>
       )}
       {phases.length > drawn.length && (

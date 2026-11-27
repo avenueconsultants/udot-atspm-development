@@ -238,6 +238,9 @@ an on-screen element with no row here means the contract is incomplete.
 | Detector tray | `detectors[]` with no ATSPM detector on the same channel |
 | Card correction ledger | `sources[]`, each record's `source`, and `conflicts` |
 | Box widths drawn to scale, or the notice that they are not | `splitTables[].ringSplits` for the selected pattern |
+| Movement arrows on a phase card | the baseline approach's direction and movement - never the phase number |
+| Programmed split on a phase card | `splitTables[].ringSplits` indexed by position from `sequences[].ringPhases` |
+| Remaining controller settings on a card | every other field present on the record, rendered generically |
 
 ## Data model and API
 
@@ -421,6 +424,41 @@ Econolite database file was supplied — NTCIP gives the pattern's cycle, offset
 sequence number, but not the split seconds behind them. With no split table the diagram is drawn
 unscaled and says so, rather than implying equal splits.
 
+#### The arrow map, the splits, and the rest of the controller's settings
+
+**Arrows come from ATSPM, not the controller.** A phase card's arrows are drawn from the direction
+and movement on the approaches that declare the phase: direction sets the rotation, movement sets the
+shape, a protected movement is filled and a permissive one outlined, and a pedestrian phase carries a
+crossing glyph. A phase the controller runs and no approach declares therefore has **no arrow**, and
+the gap is the point — it is the same fact as the `NeedsDirection` finding, in the form an engineer
+reads fastest. Nothing infers an arrow from the phase number; phase 2 is westbound at seventeen of
+nineteen locations on R2:192 and northbound at the two where the mainline runs north-south, so a
+number-to-arrow map would be quietly wrong twice per corridor.
+
+**Programmed split, and the position problem.** Split seconds live in `splitTables[].ringSplits`,
+keyed by ring and ordered by the phase's **position in that ring**, not by phase number. The position
+comes from `sequences[].ringPhases` for the pattern's sequence. Where the sequence definition is
+missing — NTCIP gives the sequence *number* but not the sequence — the position falls back to
+ascending phase order, which is the usual Econolite layout and is not proven for any particular
+controller. The card states which basis it used, and the diagram draws boxes to scale only on the
+sequence basis. An assumed position shown as a measurement would put a wrong split time next to the
+right phase, which is worse than leaving it out.
+
+**Average split is a measure, not a configuration.** The programmed split answers what the controller
+was told; the average answers what it actually served, and it comes from ATSPM's own event data
+rather than from any snapshot. The card reserves the row and labels it as not loaded until that query
+is wired, because an empty cell beside a programmed split reads as zero seconds served.
+
+**Everything else the controllers hold.** Both makes carry far more than the contract names today:
+maximum 3 and dynamic max, added initial and maximum initial, time before reduction and time to
+reduce, minimum gap, red revert, second walk and pedestrian clearance, the recall and dual-entry bits
+inside `options`, and MaxTime's own set beyond that. These are added as **named scalar fields on
+`PhaseRecord`**, one per parameter — never as a free-form settings bag. The merge engine compares,
+conflicts, ranks and attributes one scalar field at a time, so a bag would conflict as a single lump
+and lose which parameter the two sources disagreed about, which is the one thing a conflict exists to
+say. The cards render every field present on a record generically rather than from a hand-written
+list, so a parameter added to the contract appears on screen with no UI change.
+
 #### Partial completion, and the gate on saving back
 
 An engineer records what they know when they know it. No field is required to leave a card, nothing
@@ -548,6 +586,10 @@ Each phase is useful on its own and shippable.
       treats `MovementTypes.NA`, `LaneTypes.NA` and `DetectionHardwareTypes.NA` as missing.
 - [ ] A detector with no `DetectionType` fails the gate.
 - [ ] Every drag has a keyboard equivalent.
+- [ ] A phase with no ATSPM approach draws no arrow and says the direction is unknown.
+- [ ] A programmed split is attributed by sequence position where a sequence is defined, and labelled
+      as assumed where the position came from ascending phase order.
+- [ ] A phase field added to the contract appears on the card without a UI change.
 
 ### Open questions
 

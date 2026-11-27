@@ -383,6 +383,7 @@ public sealed class ConfigReviewService(ConfigContext db, ILocationRepository lo
     private async Task<Location> LiveLocation(string identifier, DateTime end, CancellationToken token)
     {
         var location = await db.Locations.Include(location => location.Approaches).ThenInclude(approach => approach.Detectors)
+            .ThenInclude(detector => detector.DetectionTypes)
             .Where(location => location.LocationIdentifier == identifier && location.Start < end)
             .OrderByDescending(location => location.Start).ThenByDescending(location => location.Id).FirstOrDefaultAsync(token);
         return location == null || location.VersionAction == LocationVersionActions.Delete

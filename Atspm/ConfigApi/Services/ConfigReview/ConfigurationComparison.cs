@@ -5,7 +5,8 @@ using Utah.Udot.Atspm.Data.Models.ConfigReviewModels;
 
 namespace Utah.Udot.Atspm.ConfigApi.Services.ConfigReview;
 
-public sealed record BaselineDetector(int Id, int Channel, int? Lane, int Movement, DateTime DateAdded, DateTime? DateDisabled);
+public sealed record BaselineDetector(int Id, int Channel, int? Lane, int Movement, DateTime DateAdded,
+    DateTime? DateDisabled, int LaneType, int Hardware, int DetectionTypes, string? Identifier);
 public sealed record BaselineApproach(int Id, int Phase, bool Overlap, int Direction, string? Description,
     int? PermissivePhase, bool PermissiveOverlap, int? PedestrianPhase, bool PedestrianOverlap,
     BaselineDetector[] Detectors);
@@ -31,7 +32,9 @@ internal static class ConfigurationComparison
                 (!detector.DateDisabled.HasValue || detector.DateDisabled.Value >= end.AddDays(-1)))
                 .OrderBy(detector => detector.Id)
                 .Select(detector => new BaselineDetector(detector.Id, detector.DetectorChannel, detector.LaneNumber,
-                    (int)detector.MovementType, detector.DateAdded, detector.DateDisabled)).ToArray())).ToArray();
+                    (int)detector.MovementType, detector.DateAdded, detector.DateDisabled, (int)detector.LaneType,
+                    (int)detector.DetectionHardware, detector.DetectionTypes.Count,
+                    detector.DectectorIdentifier)).ToArray())).ToArray();
         return new(location.Id, location.Start, approaches, fields.OrderBy(field => field.Field)
             .ToDictionary(field => field.Field, field => field.Value));
     }

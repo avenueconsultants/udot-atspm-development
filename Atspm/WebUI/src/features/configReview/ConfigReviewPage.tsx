@@ -37,6 +37,7 @@ import {
   uploadSnapshot,
 } from './api'
 import AnnotationDrawer from './components/AnnotationDrawer'
+import AssemblyBoard from './components/AssemblyBoard'
 import BaselineView from './components/BaselineView'
 import RingBarrierDiagram, {
   phaseProvenance,
@@ -622,6 +623,14 @@ function ReviewDetails({ id }: { id: string }) {
             ))}
           </Stack>
         </Paper>
+      )}
+      {baseline && (
+        <AssemblyBoard
+          locationIdentifier={review.locationIdentifier}
+          baseline={baseline}
+          snapshot={snapshot.snapshot}
+          items={items}
+        />
       )}
       {snapshot.snapshot && (
         <SnapshotView snapshot={snapshot.snapshot} items={items} />

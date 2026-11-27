@@ -74,6 +74,11 @@ export type ConfigReviewBaselineViewDetectorsItem = {
   dateAdded: string
   /** @nullable */
   dateDisabled?: string | null
+  laneType: number
+  hardware: number
+  detectionTypes: number
+  /** @nullable */
+  identifier: string | null
 }
 
 export type ConfigReviewBaselineViewApproachesItem = {
