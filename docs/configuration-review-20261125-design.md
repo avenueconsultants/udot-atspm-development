@@ -232,6 +232,12 @@ an on-screen element with no row here means the contract is incomplete.
 | "this source cannot tell you" notices | `unavailable`, `phasesNotInUse` |
 | Conflict banner | `conflicts` |
 | Provenance on hover | the `source` on each record |
+| Empty structure slots at load | nothing - the absence of `phases[].ring` and `.barrier` |
+| Phase card order | `sequences[].ringPhases`, else ascending `phases[].phase` |
+| Phase cards grouped into barriers | `phases[].concurrent` |
+| Detector tray | `detectors[]` with no ATSPM detector on the same channel |
+| Card correction ledger | `sources[]`, each record's `source`, and `conflicts` |
+| Box widths drawn to scale, or the notice that they are not | `splitTables[].ringSplits` for the selected pattern |
 
 ## Data model and API
 
@@ -300,6 +306,13 @@ WebUI/src/features/configReview/
     LoadBaselinePanel.tsx
     UploadSnapshotPanel.tsx   dropzone, schema validation report
     RingBarrierDiagram.tsx    SVG, from the contract
+    BaselineView.tsx          what ATSPM holds, before any snapshot
+    AssemblyBoard.tsx         one section per location, three zones
+    StructureSlots.tsx        the diagram's drop targets, per plan
+    PhaseCard.tsx             direction, role, pedestrian, its detectors, its ledger
+    DetectorCard.tsx          channel, call phase, movement, lane, its ledger
+    CardLedger.tsx            value, source, when, what it replaced
+    CompletionGate.tsx        what is still missing, per location
     PhaseTimingTable.tsx
     DetectorAssignment.tsx
     DifferenceList.tsx        grouped by classification
@@ -320,6 +333,136 @@ disagrees, and the marking carries the same information in one view.
 The diagram must place any phase number the snapshot contains, up to the controller's own maximum —
 40 on MaxTime, 16 on Econolite — taking ring from the phase and barrier from `concurrent`. No
 phase-number-to-ring or phase-number-to-barrier table anywhere in the component.
+
+### The assembly board
+
+The review surface is one scrolling page, one section per location in route order, and assembling a
+configuration on it is the work rather than a side effect of reading a list. This replaces the
+per-location detail page as the primary surface; the detail page stays reachable for one location's
+audit trail.
+
+The reason is measurable. At 7423 the comparison produced ninety-nine rows, of which ten were worth
+an engineer's attention, and the most consequential — detector channels 18 and 20 each assigned to
+the other's phase, which makes every measure drawn from them report the wrong approach — was one
+sentence in a table of ninety-nine. On a board it is two cards sitting in the wrong boxes, and the
+correction is dragging them across. Nineteen locations in one view also removes the click-through
+that made the corridor feel like nineteen unrelated tasks.
+
+Each location section has three zones, top to bottom:
+
+1. **Structure.** The ring, barrier and sequence diagram for the selected plan, drawn as slots. At
+   load the slots are empty, because ATSPM stores no ring, no barrier and no sequence — the empty
+   diagram is an accurate statement of what is known, not a loading state.
+2. **Phase cards**, in sequence order, lowest number first, each carrying the phase's direction,
+   movement, protected or permissive role, pedestrian service, and the detector cards already
+   assigned to it. Once concurrency is known the cards arrive grouped into their barrier, because
+   `concurrent` is exactly the statement that two phases may run together.
+3. **The tray** — detector cards belonging to no phase: every channel the controller reports with no
+   ATSPM detector against it, which at 7423 is fourteen of sixteen.
+
+#### What may be dragged, and what may not
+
+A board that lets an engineer drag anything teaches them that every box is their opinion. Some boxes
+are measurements, and moving one is how a correct configuration becomes wrong. Each field therefore
+has one authority, and the board enforces it.
+
+| Fact | Authority | On the board |
+| --- | --- | --- |
+| Ring, barrier membership, concurrency | Controller | Fills from the snapshot and locks. Draggable only while no source has reported it |
+| Sequence, and phase order within a ring | Controller (`sequences[].ringPhases`) | Same |
+| Overlap membership and type | Controller | Same |
+| Phase timing, walk, pedestrian clearance | Controller | Never draggable; editable only as a proposed change to send to the controller, which is a later step |
+| Which phase a channel calls | Controller (`detectors[].callPhase`) | Fills and locks |
+| Which approach a detector belongs to | **Engineer** | Dragged. No device holds it |
+| Direction, movement, lane, hardware, distance, speed | **Engineer** | Edited in place. No device holds direction in any form ATSPM can take |
+| Whether a phase is protected or permissive for a movement | **Engineer**, from the controller's structure | Edited in place, with the structure shown beside it |
+
+A drag before any source has spoken is a legitimate act: it records what the engineer knows. It is
+stored as an assertion with basis `engineer`, and it ranks **below** a later measurement, so when the
+controller arrives and contradicts it the measurement wins and the card logs the correction. That is
+the one place where the board's precedence differs from the engineer being right: for structure the
+device is the authority, and the engineer's placement is a provisional stand-in for a read that has
+not happened yet. For direction and detector-to-approach the engineer is the authority permanently,
+because every device on this corridor is silent about them — a radar knows lanes, not compass
+bearings, and a controller knows channels, not which pavement they sit under.
+
+#### Correction logging
+
+Every card carries its own ledger, not a single page-level audit: field, the value now, the source
+that put it there, when, and the value it replaced. "Phase 6 — corrected from phase 2 by
+`ntcip:det.18`, 26 Nov" is the card's own history, readable without leaving the board, and it is the
+same provenance the contract already carries on `sources[]` and each record's `source`. A subsequent
+load — controller, radar, lidar, or a second controller read after a cabinet visit — appends to the
+ledger rather than overwriting it, and a disagreement between two sources is a `conflicts` entry,
+which is already defined never to be resolved silently.
+
+#### Four states, and no reliance on color
+
+Marking is tied to the classifications the comparison already produces, so the board invents no
+second vocabulary:
+
+| State | What it means | Marking |
+| --- | --- | --- |
+| Agreed | ATSPM and the sources say the same thing | Plain card |
+| Not held by ATSPM | No ATSPM field exists, or it is empty | Ghosted outline, "ATSPM holds nothing" |
+| Disagrees | `Certain` — a source settles it and ATSPM differs | Accent border, source value shown in place, ATSPM value and provenance on the card |
+| Needs a person | `NeedsDirection` or `Held` | Accent border and an explicit prompt naming what is missing |
+
+Color alone must not carry any of these. Each state also carries a glyph and a text label, because
+red against green is the most common form of color blindness and this page will be read on a laptop
+in daylight in a truck.
+
+#### Per plan
+
+The diagram is drawn per coordination pattern, selected per location, because sequence and split
+proportions are properties of the pattern and not of the intersection. Boxes are drawn to scale only
+when `splitTables[].ringSplits` is present for the selected pattern, which means only where an
+Econolite database file was supplied — NTCIP gives the pattern's cycle, offset, split number and
+sequence number, but not the split seconds behind them. With no split table the diagram is drawn
+unscaled and says so, rather than implying equal splits.
+
+#### Partial completion, and the gate on saving back
+
+An engineer records what they know when they know it. No field is required to leave a card, nothing
+is lost by closing the page, and a location may sit half-assembled indefinitely — a corridor review
+runs over days, and the alternative is the engineer keeping the other half on paper.
+
+Writing back to ATSPM is gated per location, so one unfinished location does not block the other
+eighteen. The gate is the set of fields ATSPM cannot function without, taken from the model rather
+than chosen:
+
+- Per approach: `DirectionTypeId`, `ProtectedPhaseNumber`, `Description`, and
+  `IsProtectedPhaseOverlap` set deliberately rather than by default.
+- Per detector: `DetectorChannel`, `DectectorIdentifier`, `DateAdded`, `MovementType`, `LaneType`,
+  `DetectionHardware`, and an approach to belong to.
+- At least one `DetectionType` per detector. A detector saved with none feeds **no measure at all**:
+  `DetectionType` joins to `MeasureType`, so the channel is stored, looks configured, and is
+  invisible to every chart. This is the easiest field to leave empty and the most expensive.
+
+`MovementTypes.NA`, `LaneTypes.NA` and `DetectionHardwareTypes.NA` are all zero and all save without
+complaint, so the gate treats them as absent. A detector with `MovementType = NA` cannot be told from
+a through movement by anything downstream.
+
+The board shows the gate as a per-location count of what is still missing, naming the fields, and the
+save control stays disabled with that list as its reason. Promotion itself is unchanged, including
+the in-place-versus-new-version choice below, which the gate sits in front of.
+
+#### Build notes
+
+`@hello-pangea/dnd` is already a dependency and is used by the route editor, the pedestrian activity
+page and the time-of-day corridor options, so the board uses it rather than adding a second drag
+library. It supports keyboard dragging, which is required here: a drag-only interaction is unusable
+with a trackpad in the field and inaccessible to anyone not using a mouse. Every drag needs an
+equivalent path of selecting a card and choosing its target from a menu.
+
+Nineteen locations each with a diagram, phase cards and a tray is a large render. Sections virtualize
+or collapse, with the diagram and the counts always visible and the cards expanded on demand, so the
+route view stays usable at corridor length.
+
+This is a larger build than the comparison surface it replaces, and it is worth sequencing: the board
+laid out read-only from the contract first, then detector-to-phase dragging with the card ledger,
+then structure dragging for the pre-snapshot case, then the per-plan diagram with split widths, then
+the save gate. Each step is useful on its own, and the first already removes the click-through.
 
 ### The versioning trap
 
@@ -368,6 +511,9 @@ Each phase is useful on its own and shippable.
    version, audit trail.
 3. **Route-level review.** Nineteen locations at a time, with corridor-wide roll-ups: firmware in
    use, pedestrian phases declared nowhere, systematic patterns across locations.
+4. **The assembly board.** The three-zone board per location, read-only from the contract first,
+   then detector-to-phase dragging with the card ledger, then structure dragging before a snapshot
+   exists, then the per-plan diagram drawn to scale, then the completion gate on saving back.
 
 ### Validation checklist
 
@@ -390,6 +536,18 @@ Each phase is useful on its own and shippable.
 - [ ] A snapshot that fails schema validation is rejected and recorded, not partially stored.
 - [ ] Promoting in place leaves `Location.Start` unchanged; promoting as a new version sets it.
 - [ ] A promoted inference is distinguishable from a promoted measurement in the audit record.
+- [ ] Loading the ATSPM baseline alone renders the declared phases, directions, overlap flags and
+      detector channels, and names ring, barrier, sequence and timing as fields ATSPM does not hold.
+- [ ] A detector card dragged to another phase records the engineer as its basis, and a later
+      controller snapshot that contradicts a structure placement wins and leaves the correction and
+      its source on the card's ledger.
+- [ ] Structure that a source has reported cannot be dragged; detector-to-approach assignment can be,
+      at every stage.
+- [ ] Every state a card can be in is distinguishable without color.
+- [ ] A location missing required fields blocks only its own save, names the missing fields, and
+      treats `MovementTypes.NA`, `LaneTypes.NA` and `DetectionHardwareTypes.NA` as missing.
+- [ ] A detector with no `DetectionType` fails the gate.
+- [ ] Every drag has a keyboard equivalent.
 
 ### Open questions
 
@@ -399,5 +557,7 @@ Each phase is useful on its own and shippable.
 | 2 | Review entities on `ConfigContext`, or their own context? `ConfigContext` keeps joins to `Location` and `Approach` simple; a separate one keeps review history out of the configuration schema. | Data model |
 | 3 | Is promotion per location only, or can it apply across a route in one action, and is a partial route promotion acceptable? | Promotion UI and API |
 | 4 | Should the UI suggest a direction from the corridor convention, clearly as a suggestion, or stay silent? Phase 2 is westbound at 17 of 19 locations on R2:192 and northbound at the two where the mainline runs north-south. | Annotation design |
+| 5 | When two patterns at one location use different sequences, is the engineer's pre-snapshot structure placement kept per pattern or once for the location? Once is simpler and wrong wherever sequences differ; per pattern multiplies the work on locations where they do not. | The board's structure zone |
+| 6 | Does a radar or lidar source supply anything the board should treat as authoritative, beyond lane counts and geometry? Neither reports compass direction, so on present evidence they correct lanes and nothing else - worth settling before a `radar` or `lidar` source kind is defined. | Source precedence |
 
 Collection, controller file decoding and the NTCIP reader are a separate tool with its own design.
