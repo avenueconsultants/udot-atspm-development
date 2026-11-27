@@ -1,5 +1,6 @@
 import type {
   ConfigReviewBaselineView,
+  ConfigReviewBaselineViewApproachesItem,
   ConfigReviewEvidence,
   ConfigReviewFinding,
   ConfigReviewPhase,
@@ -9,6 +10,8 @@ import type {
 } from './generated/client'
 
 export type Phase = ConfigReviewPhase
+export type Baseline = ConfigReviewBaselineView
+export type BaselineApproach = ConfigReviewBaselineViewApproachesItem
 export type ReviewItem = ConfigReviewFinding
 export type Annotation = ConfigReviewEvidence
 type RecordCollections =

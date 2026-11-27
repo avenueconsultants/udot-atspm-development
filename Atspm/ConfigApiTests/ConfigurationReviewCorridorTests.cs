@@ -34,7 +34,18 @@ public class ConfigurationReviewCorridorTests(ITestOutputHelper output)
     {
         await using var fixture = await Corridor.Create();
         var entry = Assert.Single(await fixture.Service.Create(new("7423", null, AnalysisDate), "editor", default));
-        await fixture.Service.Load(entry.Id, default);
+        var loaded = await fixture.Service.Load(entry.Id, default);
+
+        // Load is what the page draws before any controller file arrives, so it has to carry
+        // everything ATSPM knows: the phase, whether that number is a phase or an overlap, the
+        // direction, and the detectors on it. Anything missing here is a blank section on screen.
+        Assert.Equal(VersionStart, loaded.Start);
+        Assert.Equal([(2, DirectionTypes.WB, 18), (6, DirectionTypes.EB, 20)],
+            loaded.Approaches.Select(ap => (ap.Phase, (DirectionTypes)ap.Direction,
+                Assert.Single(ap.Detectors).Channel)).OrderBy(ap => ap.Phase).ToArray());
+        Assert.All(loaded.Approaches, ap => Assert.False(ap.Overlap));
+        Assert.All(loaded.Approaches, ap => Assert.Equal((int)MovementTypes.T,
+            Assert.Single(ap.Detectors).Movement));
         await using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(Snapshot)))
             await fixture.Service.Upload(entry.Id, "7423-snapshot.json", stream, true, default);
         var report = await fixture.Service.Report(entry.Id, default);

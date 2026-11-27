@@ -65,6 +65,17 @@ export interface ConfigReviewCreate {
   asOfDate: string
 }
 
+export type ConfigReviewBaselineViewDetectorsItem = {
+  id: number
+  channel: number
+  /** @nullable */
+  lane: number | null
+  movement: number
+  dateAdded: string
+  /** @nullable */
+  dateDisabled?: string | null
+}
+
 export type ConfigReviewBaselineViewApproachesItem = {
   id: number
   phase: number
@@ -72,6 +83,13 @@ export type ConfigReviewBaselineViewApproachesItem = {
   direction: number
   /** @nullable */
   description: string | null
+  /** @nullable */
+  permissivePhase: number | null
+  permissiveOverlap: boolean
+  /** @nullable */
+  pedestrianPhase: number | null
+  pedestrianOverlap: boolean
+  detectors: ConfigReviewBaselineViewDetectorsItem[]
 }
 
 export type ConfigReviewBaselineViewFields = { [key: string]: string }

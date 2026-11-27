@@ -37,6 +37,7 @@ import {
   uploadSnapshot,
 } from './api'
 import AnnotationDrawer from './components/AnnotationDrawer'
+import BaselineView from './components/BaselineView'
 import RingBarrierDiagram, {
   phaseProvenance,
 } from './components/RingBarrierDiagram'
@@ -53,6 +54,28 @@ const groupNames: Record<string, string> = {
   detectors: 'detector assignments',
   configWrittenAt: 'cabinet write date',
 }
+// Almost nothing a controller holds has a field in ATSPM, so most Certain items are not
+// disagreements at all - they are values ATSPM has never stored. Listing them under one
+// heading with the real conflicts buries the handful worth arguing about.
+const sections: {
+  classification: string
+  label: string
+  stored?: boolean
+}[] = [
+  {
+    classification: 'Certain',
+    label: 'Values that disagree',
+    stored: true,
+  },
+  {
+    classification: 'Certain',
+    label: 'Values ATSPM does not hold',
+    stored: false,
+  },
+  { classification: 'NeedsDirection', label: 'Needs direction' },
+  { classification: 'Held', label: 'Held' },
+  { classification: 'NotComparable', label: 'Not comparable' },
+]
 const labels: [keyof Phase, string][] = [
   ['minGreen', 'Min green'],
   ['passage', 'Passage'],
@@ -533,11 +556,7 @@ function ReviewDetails({ id }: { id: string }) {
         <Stack spacing={1}>
           <Typography variant="h6">ATSPM baseline</Typography>
           {baseline ? (
-            <Typography>
-              Configuration version {baseline.locationId} · Effective{' '}
-              {baseline.start.slice(0, 10)} · {baseline.approaches.length}{' '}
-              approaches
-            </Typography>
+            <BaselineView baseline={baseline} />
           ) : (
             <Typography>
               Capture the configuration in effect for the review date before
@@ -609,77 +628,70 @@ function ReviewDetails({ id }: { id: string }) {
       )}
       {snapshot.snapshot && (
         <Stack spacing={1.5}>
-          <Typography variant="h6">Differences</Typography>
+          <Typography variant="h6">Findings</Typography>
           {items.length === 0 && (
             <Typography>No comparable differences were found.</Typography>
           )}
-          {['Certain', 'NeedsDirection', 'Held', 'NotComparable'].map(
-            (classification) => {
-              const rows = items.filter(
-                (item) => item.classification === classification
-              )
-              return (
-                rows.length > 0 && (
-                  <Box key={classification}>
-                    <Typography variant="subtitle1">
-                      {
-                        {
-                          Certain: 'Certain',
-                          NeedsDirection: 'Needs direction',
-                          Held: 'Held',
-                          NotComparable: 'Not comparable',
-                        }[classification]
-                      }{' '}
-                      · {rows.length}
-                    </Typography>
-                    <TableContainer component={Paper} variant="outlined">
-                      <Table size="small" aria-label={classification}>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Finding</TableCell>
-                            <TableCell>ATSPM</TableCell>
-                            <TableCell>Controller</TableCell>
-                            <TableCell>Decision</TableCell>
+          {sections.map(({ classification, label, stored }) => {
+            const rows = items.filter(
+              (item) =>
+                item.classification === classification &&
+                (stored === undefined ||
+                  stored === (item.baselineValue !== 'null'))
+            )
+            return (
+              rows.length > 0 && (
+                <Box key={label}>
+                  <Typography variant="subtitle1">
+                    {label} · {rows.length}
+                  </Typography>
+                  <TableContainer component={Paper} variant="outlined">
+                    <Table size="small" aria-label={label}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Finding</TableCell>
+                          <TableCell>ATSPM</TableCell>
+                          <TableCell>Controller</TableCell>
+                          <TableCell>Decision</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell title={item.sources}>
+                              {item.summary}
+                            </TableCell>
+                            <TableCell sx={{ overflowWrap: 'anywhere' }}>
+                              {item.baselineValue === 'null'
+                                ? '—'
+                                : item.baselineValue}
+                            </TableCell>
+                            <TableCell sx={{ overflowWrap: 'anywhere' }}>
+                              {item.controllerValue === 'null'
+                                ? '—'
+                                : item.controllerValue}
+                            </TableCell>
+                            <TableCell>
+                              {editable ? (
+                                <Button
+                                  size="small"
+                                  onClick={() => setAnnotation(item)}
+                                >
+                                  {item.disposition}
+                                </Button>
+                              ) : (
+                                item.disposition
+                              )}
+                            </TableCell>
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rows.map((item) => (
-                            <TableRow key={item.id}>
-                              <TableCell title={item.sources}>
-                                {item.summary}
-                              </TableCell>
-                              <TableCell sx={{ overflowWrap: 'anywhere' }}>
-                                {item.baselineValue === 'null'
-                                  ? '—'
-                                  : item.baselineValue}
-                              </TableCell>
-                              <TableCell sx={{ overflowWrap: 'anywhere' }}>
-                                {item.controllerValue === 'null'
-                                  ? '—'
-                                  : item.controllerValue}
-                              </TableCell>
-                              <TableCell>
-                                {editable ? (
-                                  <Button
-                                    size="small"
-                                    onClick={() => setAnnotation(item)}
-                                  >
-                                    {item.disposition}
-                                  </Button>
-                                ) : (
-                                  item.disposition
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-                )
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
               )
-            }
-          )}
+            )
+          })}
         </Stack>
       )}
       {editable && snapshot.snapshot && (
