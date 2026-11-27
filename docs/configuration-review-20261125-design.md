@@ -321,6 +321,9 @@ WebUI/src/features/configReview/
     DifferenceList.tsx        grouped by classification
     AnnotationDrawer.tsx      reuses features/locations/components/editApproach + editDetector
     PromoteBar.tsx            counts, and what is excluded and why
+  cards.ts                    the four states, the card ledger, the save gate
+  splits.ts                   split seconds by ring position, and the basis for it
+  assignments.ts              the engineer's channel placements, and the drop resolution
 ```
 
 `RingBarrierDiagram` takes `phases[]` with `ring`, `barrier` and `concurrent`, and lays out barriers
@@ -388,6 +391,37 @@ device is the authority, and the engineer's placement is a provisional stand-in 
 not happened yet. For direction and detector-to-approach the engineer is the authority permanently,
 because every device on this corridor is silent about them — a radar knows lanes, not compass
 bearings, and a controller knows channels, not which pavement they sit under.
+
+#### A drop names a phase; ATSPM stores an approach
+
+A phase card is the obvious thing to drag a channel onto, and it is not what ATSPM records. A
+detector hangs off an `Approach`, and an approach carries a phase, a direction and a description —
+so a drop has to be resolved from the phase the person aimed at to the approach the database needs.
+Three cases, and the board distinguishes them rather than picking for the person:
+
+- **One approach carries the phase.** The drop settles it. This is the common case and the one that
+  removes the click-through.
+- **Two or more carry it**, protected on one and permissive on another, or two approaches of the same
+  phase in different directions. The board will not guess which pavement the loop sits under, so it
+  says which approaches are candidates and the person picks from the card's menu.
+- **None carries it.** There is nothing in ATSPM to attach the detector to. The board says the
+  approach has to exist first rather than inventing one, because an approach invented to hold a
+  channel would carry direction NA and a blank description, and both save without complaint.
+
+Dragging a channel changes the approach it belongs to and nothing else about it: a channel ATSPM
+already holds keeps its identifier, movement, lane, hardware and detection types, and only its parent
+changes. A channel ATSPM has never held arrives with none of those, so the gate asks for all five on
+the card rather than letting a bare detector be saved — a detector with no detection type joins to no
+`MeasureType` and feeds no chart, which is worse than an unassigned channel because it looks done.
+
+A channel appears on more than one card when the controller and ATSPM disagree about it: at 7423
+channel 18 shows on the phase 6 card because the controller calls phase 6 with it, and on the phase 2
+card because ATSPM has it there. That duplication is the finding, so the board shows both rather than
+choosing a winner. Each card's drag handle is its own, and a drop from either resolves the same way.
+
+The menu is not a fallback for the drag; it is the same action. It lists every approach at the
+location plus "no approach", so every placement — including taking a channel off an approach — is
+reachable from the keyboard, and a trackpad in a cabinet doorway is enough to do the work.
 
 #### Correction logging
 
@@ -500,7 +534,9 @@ route view stays usable at corridor length.
 This is a larger build than the comparison surface it replaces, and it is worth sequencing: the board
 laid out read-only from the contract first, then detector-to-phase dragging with the card ledger,
 then structure dragging for the pre-snapshot case, then the per-plan diagram with split widths, then
-the save gate. Each step is useful on its own, and the first already removes the click-through.
+the save gate. Each step is useful on its own, and the first already removes the click-through. The
+first two are built; the placements they record live in the page only, because nothing is written
+back to ATSPM until the save step exists.
 
 ### The versioning trap
 

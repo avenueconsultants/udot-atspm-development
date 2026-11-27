@@ -1,4 +1,10 @@
 import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  type DropResult,
+} from '@hello-pangea/dnd'
+import {
   Alert,
   Box,
   Chip,
@@ -9,6 +15,17 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import {
+  assign,
+  channelOf,
+  draggableId,
+  phaseOf,
+  placements as placementsOf,
+  targetsFor,
+  targetsForPhase,
+  trayDroppableId,
+  type Assignments,
+} from '../assignments'
 import { gateFailures, phaseGroups, stateMarks } from '../cards'
 import { ringOrder, splitTableFor } from '../splits'
 import type { Baseline, ControllerSnapshot, ReviewItem } from '../types'
@@ -35,6 +52,42 @@ export default function AssemblyBoard({
   items: ReviewItem[]
 }) {
   const [selected, setSelected] = useState<number | null>(null)
+  const [assignments, setAssignments] = useState<Assignments>({})
+  const [notice, setNotice] = useState<string | null>(null)
+  const targets = targetsFor(baseline)
+  const placements = placementsOf(baseline, assignments)
+
+  const place = (channel: number, approachId: number | null) => {
+    setNotice(null)
+    setAssignments((current) => assign(baseline, current, channel, approachId))
+  }
+
+  // A drop says which phase, and an approach is what ATSPM actually stores. Where a phase has one
+  // approach the drop settles it; where it has two the person has to say which, and where it has
+  // none there is nothing to place the channel on, so the board says so instead of inventing one.
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+    const channel = channelOf(result.draggableId)
+    const target = result.destination.droppableId
+    if (target === trayDroppableId) {
+      place(channel, null)
+      return
+    }
+    const phase = phaseOf(target)
+    if (phase == null) return
+    const candidates = targetsForPhase(baseline, phase)
+    if (candidates.length === 1) {
+      place(channel, candidates[0].id)
+      return
+    }
+    setNotice(
+      candidates.length === 0
+        ? `ATSPM has no approach on phase ${phase}, so channel ${channel} cannot be placed there yet. An approach has to exist first.`
+        : `Phase ${phase} is carried by ${candidates.length} approaches, so channel ${channel} needs one chosen from its menu: ${candidates
+            .map((candidate) => candidate.label)
+            .join('; ')}.`
+    )
+  }
   const pattern =
     snapshot?.patterns.find((entry) => entry.pattern === selected) ??
     snapshot?.patterns[0]
@@ -48,157 +101,216 @@ export default function AssemblyBoard({
     )
   )
   const tray = (snapshot?.detectors ?? []).filter(
-    (detector) => !declaredChannels.has(detector.channel)
+    (detector) => !placements.get(detector.channel)?.approach
   )
-  const failures = gateFailures(baseline, snapshot)
+  const failures = gateFailures(baseline, snapshot, assignments)
   const splits = snapshot ? splitTableFor(snapshot, pattern) : undefined
 
   return (
-    <Paper variant="outlined" sx={{ p: 2 }}>
-      <Stack spacing={2}>
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          flexWrap="wrap"
-          useFlexGap
-        >
-          <Typography variant="h6">Location {locationIdentifier}</Typography>
-          <Chip
-            size="small"
-            label={`${baseline.approaches.length} approaches · ${declaredChannels.size} detectors in ATSPM`}
-          />
-          {snapshot && (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Paper variant="outlined" sx={{ p: 2 }}>
+        <Stack spacing={2}>
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            flexWrap="wrap"
+            useFlexGap
+          >
+            <Typography variant="h6">Location {locationIdentifier}</Typography>
             <Chip
               size="small"
-              label={`${snapshot.phases.length} phases · ${snapshot.detectors.length} channels read`}
+              label={`${baseline.approaches.length} approaches · ${declaredChannels.size} detectors in ATSPM`}
             />
-          )}
-          <Chip
-            size="small"
-            color={failures.length ? 'warning' : 'success'}
-            label={
-              failures.length
-                ? `${failures.length} to complete before saving`
-                : 'Ready to save'
-            }
-          />
-          {pattern && snapshot && snapshot.patterns.length > 0 && (
-            <TextField
-              select
-              size="small"
-              label="Plan"
-              value={String(pattern.pattern)}
-              onChange={(event) => setSelected(Number(event.target.value))}
-              sx={{ minWidth: 150 }}
-            >
-              {snapshot.patterns.map((entry) => (
-                <MenuItem key={entry.pattern} value={String(entry.pattern)}>
-                  Pattern {entry.pattern} · {entry.cycle}s
-                </MenuItem>
-              ))}
-            </TextField>
-          )}
-        </Stack>
-
-        <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
-          {Object.entries(stateMarks).map(([key, value]) => (
-            <Typography key={key} variant="caption" sx={{ color: value.color }}>
-              {value.glyph} {value.label}
-            </Typography>
-          ))}
-        </Stack>
-
-        {snapshot ? (
-          <>
-            {pattern && (
-              <Typography variant="body2">
-                Pattern {pattern.pattern}: cycle {pattern.cycle}s · offset{' '}
-                {pattern.offset}s · split {pattern.splitNumber ?? '—'} ·
-                sequence {pattern.sequenceNumber ?? '—'}
-                {splits
-                  ? basis === 'sequence'
-                    ? ' · splits placed by sequence'
-                    : ' · split positions assumed from ascending phase order'
-                  : ' · no split table supplied'}
-              </Typography>
+            {snapshot && (
+              <Chip
+                size="small"
+                label={`${snapshot.phases.length} phases · ${snapshot.detectors.length} channels read`}
+              />
             )}
-            <RingBarrierDiagram
-              snapshot={snapshot}
-              pattern={pattern}
-              items={items}
+            <Chip
+              size="small"
+              color={failures.length ? 'warning' : 'success'}
+              label={
+                failures.length
+                  ? `${failures.length} to complete before saving`
+                  : 'Ready to save'
+              }
             />
-          </>
-        ) : (
-          <Alert severity="info">
-            The ring, barrier and sequence slots are empty because ATSPM stores
-            none of them. They fill when a controller snapshot is uploaded.
-          </Alert>
-        )}
+            {pattern && snapshot && snapshot.patterns.length > 0 && (
+              <TextField
+                select
+                size="small"
+                label="Plan"
+                value={String(pattern.pattern)}
+                onChange={(event) => setSelected(Number(event.target.value))}
+                sx={{ minWidth: 150 }}
+              >
+                {snapshot.patterns.map((entry) => (
+                  <MenuItem key={entry.pattern} value={String(entry.pattern)}>
+                    Pattern {entry.pattern} · {entry.cycle}s
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          </Stack>
 
-        {groups.map((group) => (
-          <Box key={group.map((phase) => phase.phase).join('-')}>
-            <Typography variant="overline" color="text.secondary">
-              {group.length > 1
-                ? `Run together: ${[...group]
-                    .map((phase) => phase.phase)
-                    .sort((left, right) => left - right)
-                    .join(' + ')}`
-                : `Phase ${group[0].phase}`}
-            </Typography>
-            <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
-              {group.map((phase) => (
-                <PhaseCard
-                  key={phase.phase}
-                  phase={phase}
-                  baseline={baseline}
-                  snapshot={snapshot as ControllerSnapshot}
-                  pattern={pattern}
-                  items={items}
-                />
-              ))}
-            </Stack>
-          </Box>
-        ))}
+          <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
+            {Object.entries(stateMarks).map(([key, value]) => (
+              <Typography
+                key={key}
+                variant="caption"
+                sx={{ color: value.color }}
+              >
+                {value.glyph} {value.label}
+              </Typography>
+            ))}
+          </Stack>
 
-        {tray.length > 0 && (
+          {snapshot ? (
+            <>
+              {pattern && (
+                <Typography variant="body2">
+                  Pattern {pattern.pattern}: cycle {pattern.cycle}s · offset{' '}
+                  {pattern.offset}s · split {pattern.splitNumber ?? '—'} ·
+                  sequence {pattern.sequenceNumber ?? '—'}
+                  {splits
+                    ? basis === 'sequence'
+                      ? ' · splits placed by sequence'
+                      : ' · split positions assumed from ascending phase order'
+                    : ' · no split table supplied'}
+                </Typography>
+              )}
+              <RingBarrierDiagram
+                snapshot={snapshot}
+                pattern={pattern}
+                items={items}
+              />
+            </>
+          ) : (
+            <Alert severity="info">
+              The ring, barrier and sequence slots are empty because ATSPM
+              stores none of them. They fill when a controller snapshot is
+              uploaded.
+            </Alert>
+          )}
+
+          {groups.map((group) => (
+            <Box key={group.map((phase) => phase.phase).join('-')}>
+              <Typography variant="overline" color="text.secondary">
+                {group.length > 1
+                  ? `Run together: ${[...group]
+                      .map((phase) => phase.phase)
+                      .sort((left, right) => left - right)
+                      .join(' + ')}`
+                  : `Phase ${group[0].phase}`}
+              </Typography>
+              <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
+                {group.map((phase) => (
+                  <PhaseCard
+                    key={phase.phase}
+                    phase={phase}
+                    baseline={baseline}
+                    snapshot={snapshot as ControllerSnapshot}
+                    pattern={pattern}
+                    items={items}
+                    placements={placements}
+                    assignments={assignments}
+                    targets={targets}
+                    onAssign={place}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          ))}
+
           <Box>
             <Typography variant="overline" color="text.secondary">
-              Channels with no ATSPM detector · {tray.length}
+              Channels with no ATSPM approach · {tray.length}
             </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {tray.map((detector) => (
-                <DetectorCard
-                  key={detector.channel}
-                  channel={detector.channel}
-                  controller={detector}
-                  items={items}
-                />
-              ))}
-            </Stack>
-          </Box>
-        )}
-
-        {failures.length > 0 && (
-          <Alert severity="warning">
-            <Typography variant="body2">
-              This location cannot be saved back to ATSPM yet. Other locations
-              are unaffected.
-            </Typography>
-            <Stack component="ul" sx={{ pl: 2, m: 0 }}>
-              {failures.map((failure) => (
-                <Typography
-                  component="li"
-                  variant="caption"
-                  key={`${failure.subject}-${failure.missing.join()}`}
+            <Droppable droppableId={trayDroppableId} direction="horizontal">
+              {(provided, dropping) => (
+                <Stack
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  direction="row"
+                  spacing={1}
+                  flexWrap="wrap"
+                  useFlexGap
+                  sx={{
+                    minHeight: 56,
+                    p: 0.5,
+                    borderRadius: 1,
+                    border: '1px dashed',
+                    borderColor: dropping.isDraggingOver
+                      ? 'info.main'
+                      : 'divider',
+                  }}
                 >
-                  {failure.subject} needs {failure.missing.join(', ')}
-                </Typography>
-              ))}
-            </Stack>
-          </Alert>
-        )}
-      </Stack>
-    </Paper>
+                  {tray.length === 0 && (
+                    <Typography variant="caption" color="text.secondary">
+                      Every channel the controller assigns sits on an approach.
+                      Drop one here to take it off.
+                    </Typography>
+                  )}
+                  {tray.map((detector, index) => (
+                    <Draggable
+                      key={detector.channel}
+                      draggableId={draggableId('tray', detector.channel)}
+                      index={index}
+                    >
+                      {(dragProvided, dragState) => (
+                        <DetectorCard
+                          channel={detector.channel}
+                          controller={detector}
+                          placement={placements.get(detector.channel)}
+                          assignment={assignments[detector.channel]}
+                          targets={targets}
+                          onAssign={place}
+                          items={items}
+                          drag={{
+                            ref: dragProvided.innerRef,
+                            draggableProps: dragProvided.draggableProps,
+                            dragHandleProps: dragProvided.dragHandleProps,
+                            isDragging: dragState.isDragging,
+                          }}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </Stack>
+              )}
+            </Droppable>
+          </Box>
+
+          {notice && (
+            <Alert severity="info" onClose={() => setNotice(null)}>
+              {notice}
+            </Alert>
+          )}
+
+          {failures.length > 0 && (
+            <Alert severity="warning">
+              <Typography variant="body2">
+                This location cannot be saved back to ATSPM yet. Other locations
+                are unaffected.
+              </Typography>
+              <Stack component="ul" sx={{ pl: 2, m: 0 }}>
+                {failures.map((failure) => (
+                  <Typography
+                    component="li"
+                    variant="caption"
+                    key={`${failure.subject}-${failure.missing.join()}`}
+                  >
+                    {failure.subject} needs {failure.missing.join(', ')}
+                  </Typography>
+                ))}
+              </Stack>
+            </Alert>
+          )}
+        </Stack>
+      </Paper>
+    </DragDropContext>
   )
 }

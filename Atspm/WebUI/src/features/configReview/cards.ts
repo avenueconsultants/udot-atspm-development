@@ -1,3 +1,4 @@
+import { placements, type Assignments } from './assignments'
 import type { Baseline, ControllerSnapshot, Phase, ReviewItem } from './types'
 
 /**
@@ -88,9 +89,11 @@ const laneTypeNames: Record<number, string> = {
  */
 export function gateFailures(
   baseline: Baseline,
-  snapshot: ControllerSnapshot | null
+  snapshot: ControllerSnapshot | null,
+  assignments: Assignments = {}
 ): GateFailure[] {
   const failures: GateFailure[] = []
+  const placed = placements(baseline, assignments)
   for (const approach of baseline.approaches) {
     const missing: string[] = []
     if (!approach.direction) missing.push('direction')
@@ -101,20 +104,36 @@ export function gateFailures(
         missing,
       })
   }
-  for (const approach of baseline.approaches)
-    for (const detector of approach.detectors) {
-      const missing: string[] = []
-      if (!detector.identifier?.trim()) missing.push('identifier')
-      if (!detector.movement) missing.push('movement')
-      if (!laneTypeNames[detector.laneType]) missing.push('lane type')
-      if (!detector.hardware) missing.push('detection hardware')
-      if (!detector.detectionTypes)
-        missing.push(
-          'at least one detection type — it feeds no measure without one'
-        )
-      if (missing.length)
-        failures.push({ subject: `Channel ${detector.channel}`, missing })
+  for (const [channel, placement] of placed) {
+    if (!placement.approach) continue
+    const detector = placement.detector
+    const missing: string[] = []
+    if (!detector) {
+      // Dragging a channel onto a phase records where it belongs and nothing else about it, so the
+      // gate asks for the rest rather than saving a detector that feeds no measure.
+      failures.push({
+        subject: `Channel ${channel}`,
+        missing: [
+          'identifier',
+          'movement',
+          'lane type',
+          'detection hardware',
+          'at least one detection type — it feeds no measure without one',
+        ],
+      })
+      continue
     }
+    if (!detector.identifier?.trim()) missing.push('identifier')
+    if (!detector.movement) missing.push('movement')
+    if (!laneTypeNames[detector.laneType]) missing.push('lane type')
+    if (!detector.hardware) missing.push('detection hardware')
+    if (!detector.detectionTypes)
+      missing.push(
+        'at least one detection type — it feeds no measure without one'
+      )
+    if (missing.length)
+      failures.push({ subject: `Channel ${channel}`, missing })
+  }
   if (!snapshot) return failures
 
   const declared = new Set(
@@ -136,13 +155,8 @@ export function gateFailures(
         subject: `Phase ${phase.phase}`,
         missing: ['an approach to carry it'],
       })
-  const channels = new Set(
-    baseline.approaches.flatMap((approach) =>
-      approach.detectors.map((detector) => detector.channel)
-    )
-  )
   for (const detector of snapshot.detectors)
-    if (detector.callPhase && !channels.has(detector.channel))
+    if (detector.callPhase && !placed.get(detector.channel)?.approach)
       failures.push({
         subject: `Channel ${detector.channel}`,
         missing: [`an ATSPM detector on phase ${detector.callPhase}`],

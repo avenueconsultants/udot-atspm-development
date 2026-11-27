@@ -1,4 +1,12 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import {
+  assign,
+  channelOf,
+  draggableId,
+  placements,
+  targetsForPhase,
+} from '../assignments'
 import { gateFailures, phaseGroups, stateOf } from '../cards'
 import { programmedSplit, ringOrder } from '../splits'
 import type { Baseline, ControllerSnapshot, ReviewItem } from '../types'
@@ -245,7 +253,7 @@ test('renders the board with the plan, the cards and the tray', () => {
   expect(screen.getByText('Location 7423')).toBeTruthy()
   expect(screen.getByText(/splits placed by sequence/)).toBeTruthy()
   expect(screen.getByText('Run together: 1 + 2 + 5 + 6')).toBeTruthy()
-  expect(screen.getByText(/Channels with no ATSPM detector · 1/)).toBeTruthy()
+  expect(screen.getByText(/Channels with no ATSPM approach · 1/)).toBeTruthy()
   // Phase 1 has no approach, so it says so rather than guessing a direction from the number.
   // Six of the eight phases in service have no approach, and each card says so.
   expect(
@@ -271,4 +279,61 @@ test('says the structure slots are empty before a snapshot, rather than hiding t
   )
   expect(screen.getByText(/ATSPM stores none of them/)).toBeTruthy()
   expect(screen.getByText('Ready to save')).toBeTruthy()
+})
+
+test('a phase with one approach settles a drop, and the rest have to be chosen', () => {
+  // Phase 2 is carried by one approach, so dropping a channel on it needs no further question.
+  expect(targetsForPhase(baseline, 2).map((target) => target.id)).toEqual([1])
+  // Phase 1 is carried by none, so there is nothing in ATSPM to place a channel on.
+  expect(targetsForPhase(baseline, 1)).toEqual([])
+  expect(channelOf(draggableId('tray', 33))).toBe(33)
+})
+
+test('an assignment moves the channel and keeps what it replaced', () => {
+  const moved = assign(baseline, {}, 18, 2)
+  expect(moved[18].was).toBe('Phase 2 WB · WBT Ph2')
+  const placed = placements(baseline, moved)
+  expect(placed.get(18)?.approach?.id).toBe(2)
+  // Dragging a channel changes the approach it belongs to and nothing else about it.
+  expect(placed.get(18)?.detector?.identifier).toBe('742318')
+  expect(placed.get(18)?.source).toBe('engineer')
+
+  // A channel ATSPM never held carries no detector record, so the gate asks for the rest of it.
+  const added = assign(baseline, {}, 33, 1)
+  const failures = gateFailures(baseline, snapshot, added)
+  expect(failures).toContainEqual({
+    subject: 'Channel 33',
+    missing: [
+      'identifier',
+      'movement',
+      'lane type',
+      'detection hardware',
+      'at least one detection type — it feeds no measure without one',
+    ],
+  })
+  // and it is no longer reported as a channel with no detector at all.
+  expect(failures).not.toContainEqual({
+    subject: 'Channel 33',
+    missing: ['an ATSPM detector on phase 1'],
+  })
+})
+
+test('the menu assigns a channel without a mouse drag', async () => {
+  const user = userEvent.setup()
+  render(
+    <AssemblyBoard
+      locationIdentifier="7423"
+      baseline={baseline}
+      snapshot={snapshot}
+      items={items}
+    />
+  )
+  // Channel 33 shows twice: on the phase 1 card because the controller calls phase 1 with it, and
+  // in the tray because ATSPM holds no approach for it. Either card's menu does the same thing.
+  await user.click(
+    screen.getAllByLabelText('Assign channel 33 to an approach')[0]
+  )
+  await user.click(screen.getByText('Phase 2 WB · WBT Ph2'))
+  expect(screen.getAllByText(/was no approach/).length).toBeGreaterThan(0)
+  expect(screen.getByText(/Channels with no ATSPM approach · 0/)).toBeTruthy()
 })

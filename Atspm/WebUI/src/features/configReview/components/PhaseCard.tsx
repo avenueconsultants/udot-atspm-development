@@ -1,4 +1,12 @@
+import { Draggable, Droppable } from '@hello-pangea/dnd'
 import { Chip, Divider, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import {
+  draggableId,
+  phaseDroppableId,
+  type AssignTarget,
+  type Assignments,
+  type Placement,
+} from '../assignments'
 import {
   itemsFor,
   ledgerFor,
@@ -65,12 +73,20 @@ export default function PhaseCard({
   snapshot,
   pattern,
   items,
+  placements,
+  assignments,
+  targets,
+  onAssign,
 }: {
   phase: Phase
   baseline: Baseline
   snapshot: ControllerSnapshot
   pattern?: Pattern
   items: ReviewItem[]
+  placements: Map<number, Placement>
+  assignments: Assignments
+  targets: AssignTarget[]
+  onAssign: (channel: number, approachId: number | null) => void
 }) {
   const own = itemsFor(items, [
     `phases.${phase.phase}`,
@@ -81,12 +97,22 @@ export default function PhaseCard({
   const mark = stateMarks[state]
   const roles = rolesFor(baseline, phase.phase)
   const split = programmedSplit(snapshot, phase, pattern)
-  const channels = snapshot.detectors.filter(
-    (detector) => detector.callPhase === phase.phase
-  )
-  const declared = roles.flatMap(({ approach }) =>
-    approach.detectors.map((detector) => ({ approach, detector }))
-  )
+  // A channel belongs on this card when the controller calls this phase with it, or when ATSPM or
+  // the engineer has placed it on an approach this phase carries. At 7423 channel 18 does both on
+  // two different cards, which is the finding, so the card does not try to pick one.
+  const ours = [...placements.entries()]
+    .filter(([, placement]) =>
+      roles.some(({ approach }) => approach.id === placement.approach?.id)
+    )
+    .map(([channel]) => channel)
+  const channels = [
+    ...new Set([
+      ...snapshot.detectors
+        .filter((detector) => detector.callPhase === phase.phase)
+        .map((detector) => detector.channel),
+      ...ours,
+    ]),
+  ].sort((left, right) => left - right)
   const extra = Object.entries(phase).filter(
     ([property, value]) => !handled.has(property) && value != null
   )
@@ -203,44 +229,63 @@ export default function PhaseCard({
           </Stack>
         )}
 
-        {(channels.length > 0 || declared.length > 0) && (
-          <>
-            <Divider />
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {channels.map((detector) => {
-                const match = declared.find(
-                  (entry) => entry.detector.channel === detector.channel
-                )
-                return (
-                  <DetectorCard
-                    key={detector.channel}
-                    channel={detector.channel}
-                    controller={detector}
-                    declared={match?.detector}
-                    approach={match?.approach}
-                    items={items}
-                  />
-                )
-              })}
-              {declared
-                .filter(
-                  (entry) =>
-                    !channels.some(
-                      (detector) => detector.channel === entry.detector.channel
-                    )
-                )
-                .map(({ approach, detector }) => (
-                  <DetectorCard
-                    key={detector.channel}
-                    channel={detector.channel}
-                    declared={detector}
-                    approach={approach}
-                    items={items}
-                  />
-                ))}
+        <Divider />
+        <Droppable
+          droppableId={phaseDroppableId(phase.phase)}
+          direction="horizontal"
+        >
+          {(provided, dropping) => (
+            <Stack
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              direction="row"
+              spacing={1}
+              flexWrap="wrap"
+              useFlexGap
+              sx={{
+                minHeight: 56,
+                p: 0.5,
+                borderRadius: 1,
+                border: '1px dashed',
+                borderColor: dropping.isDraggingOver ? 'info.main' : 'divider',
+              }}
+            >
+              {channels.length === 0 && (
+                <Typography variant="caption" color="text.secondary">
+                  No channel on this phase — drag one here, or use a menu.
+                </Typography>
+              )}
+              {channels.map((channel, index) => (
+                <Draggable
+                  key={channel}
+                  draggableId={draggableId(String(phase.phase), channel)}
+                  index={index}
+                >
+                  {(dragProvided, dragState) => (
+                    <DetectorCard
+                      channel={channel}
+                      controller={snapshot.detectors.find(
+                        (detector) => detector.channel === channel
+                      )}
+                      placement={placements.get(channel)}
+                      assignment={assignments[channel]}
+                      targets={targets}
+                      onAssign={onAssign}
+                      items={items}
+                      drag={{
+                        ref: dragProvided.innerRef,
+                        draggableProps: dragProvided.draggableProps,
+                        dragHandleProps: dragProvided.dragHandleProps,
+                        isDragging: dragState.isDragging,
+                      }}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
             </Stack>
-          </>
-        )}
+          )}
+        </Droppable>
 
         <CardLedger entries={ledgerFor(own)} />
       </Stack>
